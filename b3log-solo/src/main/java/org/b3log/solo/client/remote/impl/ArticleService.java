@@ -387,10 +387,12 @@ public final class ArticleService extends AbstractRemoteService {
             final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
-            // Step 4: Fill creation properties
+            // Step 4: Fill auto properties
             final JSONObject oldArticle = articleRepository.get(articleId);
             article.put(Article.ARTICLE_CREATE_DATE, oldArticle.getString(
                     Article.ARTICLE_CREATE_DATE));
+            article.put(Article.ARTICLE_COMMENT_COUNT,
+                    oldArticle.getString(Article.ARTICLE_COMMENT_COUNT));
             // Step 5: Update
             articleRepository.update(articleId, article);
             // Step 6: Add tag-article relations
