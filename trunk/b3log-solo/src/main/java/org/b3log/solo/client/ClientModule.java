@@ -30,7 +30,7 @@ import org.b3log.latke.client.action.DoNothingAction;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 13, 2010
+ * @version 1.0.0.6, Aug 14, 2010
  */
 public final class ClientModule extends AbstractClientModule {
 
@@ -54,8 +54,8 @@ public final class ClientModule extends AbstractClientModule {
         serve("/admin-index.do",
               "/admin-article.do",
               "/admin-article-list.do",
-              "/admin-comment-list.do",
-              "").with(DoNothingAction.class);
+              "/admin-link-list.do"
+              ).with(DoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
