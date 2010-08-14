@@ -25,6 +25,7 @@ import org.b3log.solo.client.util.ArticleUtils;
 import org.b3log.latke.client.AbstractClientModule;
 import org.b3log.latke.client.action.DoNothingAction;
 import org.b3log.latke.servlet.filter.AuthenticationFilter;
+import org.b3log.solo.client.action.impl.AdminIndexAction;
 import org.b3log.solo.client.util.Preferences;
 
 /**
@@ -42,6 +43,9 @@ public final class ClientModule extends AbstractClientModule {
 
         bind(AuthenticationFilter.class).in(Scopes.SINGLETON);
         filter("/admin-index.do").through(AuthenticationFilter.class);
+
+        bind(AdminIndexAction.class).in(Scopes.SINGLETON);
+        serve("/admin-index.do").with(AdminIndexAction.class);
 
         bind(IndexAction.class).in(Scopes.SINGLETON);
         serve("/index.do").with(IndexAction.class);
