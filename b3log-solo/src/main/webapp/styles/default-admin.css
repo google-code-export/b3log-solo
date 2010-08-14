@@ -6,41 +6,51 @@
         Purpose of the stylesheet follows.
 */
 /* framework */
-.content {
-    width: 980px;
-    margin: 0 auto;
-}
-
 .side {
-    width: 200px;
-    margin: 0 12px;
+    width: 173px;
+    margin-top: 12px;
 }
 
 .main {
-    width: 744px;
-    margin-right: 12px;
+    width: auto;
+    margin-left: 12px;
 }
 
 .footer {
     text-align: center;
 }
 
-/* navi */
-#navi li {
-    padding: 2px;
+/* top */
+#top {
+    border-bottom: 1px solid #C9D7F1;
+    padding:3px;
 }
 
-#navi span{
-    color: gray;
+#top span, .footer span {
+    margin: 0 -2px;
+}
+
+#top a, .footer a {
+    text-decoration: none;
+}
+
+/* navi */
+#navi li {
+    padding: 2px 0 2px 24px;
+    margin-left: 0px;
+}
+
+#navi li {
     cursor: pointer;
 }
 
-#navi span.hover {
-    color: red;
+#navi li.hover {
+    background-color: #DDE5FF;
 }
 
-#navi span.selected {
-    color: YellowGreen;
+#navi li.selected {
+    background-color: #BBCCFF;
+    font-weight: bold;
 }
 
 /* article list */

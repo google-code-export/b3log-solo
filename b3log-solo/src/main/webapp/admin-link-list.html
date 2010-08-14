@@ -1,0 +1,181 @@
+<div id="linkList">
+</div>
+<div id="linkPagination">
+</div>
+<div style="width: 100%;height: 100%;background-color: gray;">
+
+</div>
+<div id="comments" class="none">
+</div>
+<script type="text/javascript">
+    var currentPage = 1;
+    var linkList = $("#linkList").table({
+        resizable: true,
+        colModel: [{
+                name: "选择",
+                index: "selected",
+                width: 46,
+                inputType: "checkbox",
+                textAlign: "center",
+                allSelected: true
+            }, {
+                name: "标题",
+                index: "title",
+                minWidth: 180,
+                style: "padding-left: 6px;"
+            }, {
+                textAlign: "center",
+                name: "日期",
+                index: "date",
+                width: 130
+            }, {
+                textAlign: "center",
+                name: "修改",
+                index: "update",
+                width: 60,
+                bindEvent: [{
+                        'eventName': 'click',
+                        'functionName': 'updateArticle'
+                    }],
+                style: "cursor:pointer;"
+            }, {
+                textAlign: "center",
+                name: "删除",
+                index: "deleted",
+                width: 60,
+                bindEvent: [{
+                        'eventName': 'click',
+                        'functionName': 'deleteArticle'
+                    }],
+                style: "cursor:pointer;"
+            }, {
+                textAlign: "center",
+                name: "评论",
+                index: "comments",
+                width: 60,
+                bindEvent: [{
+                        'eventName': 'click',
+                        'functionName': 'popComments'
+                    }],
+                style: "cursor:pointer;"
+            }, {
+                visible: false,
+                index: "id"
+            }]
+    });
+
+    var linkPagination = $("#linkPagination").paginate({
+        bindEvent: "getLinkList",
+        pageCount: 10,
+        windowSize: 5,
+        currentPage: 1,
+        style: "google"
+    });
+
+    var updateArticle = function (event) {
+        $("#content").load("admin-link.do", '', function () {
+            var requestJSONObject = {
+                "oId": event.data.id[0]
+            };
+
+            jsonRpc.linkService.getArticle(function (result, error) {
+                switch (result.sc) {
+                    case "GET_ARTICLE_SUCC":
+                        setCurrentNaviStyle(0);
+
+                        // set default value for link.
+                        $("#title").val(result.link.linkTitle).data('oId', event.data.id[0]);
+                        $("#linkContent").val(result.link.linkContent);
+                        $("#abstract").val(result.link.linkAbstract);
+
+                        var tags = result.link.linkTags,
+                        tagsString = '';
+                        for (var i = 0; i < tags.length; i++) {
+                            if (0 === i) {
+                                tagsString = tags[i].tagTitle;
+                            } else {
+                                tagsString += "," + tags[i].tagTitle;
+                            }
+                        }
+                        $("#tag").val(tagsString);
+
+                        break;
+                    case "GET_ARTICLE_FAIL_":
+                        break;
+                    default:
+                        break;
+                }
+            }, requestJSONObject);
+        });
+    }
+
+    var deleteArticle = function (event) {
+        var isDelete = confirm("确定删除？");
+
+        if (isDelete) {
+            var requestJSONObject = {
+                "oId": event.data.id[0]
+            };
+
+            jsonRpc.linkService.removeArticle(function (result, error) {
+                switch (result.sc) {
+                    case "REMOVE_ARTICLE_SUCC":
+                        alert("删除成功！");
+                        getLinkList(1);
+                        break;
+                    case "REMOVE_ARTICLE_FAIL_":
+                        alert("删除失败！");
+                        break;
+                    case "PERMISSION_ERROR":
+                        alert("您没有权限进行此项操作！");
+                        break;
+                    default:
+                        break;
+                }
+            }, requestJSONObject);
+        }
+    }
+
+    var getLinkList = function (pageNum) {
+        currentPage = pageNum;
+        var requestJSONObject = {
+            "paginationCurrentPageNum": pageNum,
+            "paginationPageSize": 2,
+            "paginationWindowSize": 5
+        };
+        jsonRpc.linkService.getLinks(function (result, error) {
+            switch (result.sc) {
+                case "GET_ARTICLES_SUCC":
+                    var links = result.links;
+                    var linkData = [];
+
+                    for (var i = 0; i < links.length; i++) {
+                        linkData[i] = {};
+                        linkData[i].selected = false;
+                        linkData[i].title = links[i].linkTitle;
+                        linkData[i].date = links[i].linkCreateDate;
+                        linkData[i].update = "update";
+                        linkData[i].deleted = "delete";
+                        linkData[i].comments = "count(" + links[i].linkCommentCount + ")";
+                        linkData[i].id = links[i].oId;
+                    }
+
+                    linkList.table({
+                        update:{
+                            data: linkData
+                        }
+                    });
+
+                    linkPagination.paginate({
+                        update: {
+                            pageCount: result.pagination.paginationPageCount
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }, requestJSONObject);
+    }
+    getLinkList(1);
+</script>
