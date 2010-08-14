@@ -54,8 +54,8 @@ public final class ClientModule extends AbstractClientModule {
         serve("/admin-index.do",
               "/admin-article.do",
               "/admin-article-list.do",
-              "/admin-link-list.do"
-              ).with(DoNothingAction.class);
+              "/admin-link-list.do",
+              "/admin-preference.do").with(DoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
