@@ -33,7 +33,7 @@ import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.latke.util.UtilModule;
 import org.b3log.latke.util.cache.Cache;
-import org.b3log.latke.util.cache.memory.LruMemoryCache;
+import org.b3log.latke.util.cache.qualifier.LruMemory;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.jabsorb.JSONRPCBridge;
@@ -107,10 +107,10 @@ public final class B3logServletListener extends AbstractServletListener {
         try {
             final Injector injector = getInjector();
             @SuppressWarnings(value = "unchecked")
-            final Cache<String, JSONObject> cache = (Cache<String, JSONObject>) injector.
-                    getInstance(Key.get(
-                    new TypeLiteral<LruMemoryCache<String, ?>>() {
-                    }));
+            final Cache<String, JSONObject> cache =
+                    (Cache<String, JSONObject>) injector.getInstance(Key.get(new TypeLiteral<Cache<String, ?>>() {
+            }, LruMemory.class));
+
             final String preferenceId = Preference.PREFERENCE;
             // Try load preference from datastore.
             final PreferenceRepository preferenceRepository =

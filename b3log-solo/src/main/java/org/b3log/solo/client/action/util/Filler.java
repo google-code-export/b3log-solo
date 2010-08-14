@@ -98,6 +98,7 @@ public final class Filler {
                                   final int currentPageNum)
             throws Exception {
         System.out.println(cache.get(Preference.PREFERENCE));
+        System.out.println(cache.getCachedCount());
         final JSONObject preference =
                 (JSONObject) cache.get(Preference.PREFERENCE);
 
