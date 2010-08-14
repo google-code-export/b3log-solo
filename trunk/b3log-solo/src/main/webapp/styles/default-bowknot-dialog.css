@@ -1,0 +1,35 @@
+/* 
+    Document   : default-dialog
+    Created on : Aug 12, 2010, 7:15:43 PM
+    Author     : Vanessa
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.dialog-background {
+    background-color:gray;
+    height:100%;
+    left:0;
+    opacity:0.3;
+    position:absolute;
+    top:0;
+    width:100%;
+}
+
+.dialog-panel {
+    background: #FFFFFF;
+    height: 400px;
+    width: 490px;
+    border: 1px solid;
+    position: absolute;
+    top: 100px;
+    left: 380px;
+}
+
+.dialog-content {
+    margin: 12px;
+}
+
+.dialog-close {
+    float: right;
+    cursor: pointer;
+}

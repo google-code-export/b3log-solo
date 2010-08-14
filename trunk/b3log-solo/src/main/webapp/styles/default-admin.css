@@ -1,0 +1,50 @@
+/* 
+    Document   : default-admin
+    Version    : 1.0.0.2, Aug 4, 2010
+    Author     : Vanessa
+    Description:
+        Purpose of the stylesheet follows.
+*/
+/* framework */
+.content {
+    width: 980px;
+    margin: 0 auto;
+}
+
+.side {
+    width: 200px;
+    margin: 0 12px;
+}
+
+.main {
+    width: 744px;
+    margin-right: 12px;
+}
+
+.footer {
+    text-align: center;
+}
+
+/* navi */
+#navi li {
+    padding: 2px;
+}
+
+#navi span{
+    color: gray;
+    cursor: pointer;
+}
+
+#navi span.hover {
+    color: red;
+}
+
+#navi span.selected {
+    color: YellowGreen;
+}
+
+/* article list */
+#articlePagination {
+    float: right;
+    margin: 10px;
+}

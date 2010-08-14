@@ -1,0 +1,62 @@
+/* 
+    Document   : default-pagination
+    Created on : Aug 3, 2010, 10:19:55 AM
+    Author     : Vanessa
+    Description:
+        Default style for bowknot.pagination.js.
+*/
+.pagination-clear {
+    line-height: 0px;
+    clear: both;
+    font-size: 0px;
+}
+
+.pagination-pagination span{
+    margin: 4px 5px 0 4px;
+    display: block;
+    text-align: center;
+    float: left;
+    border: 1px solid gray;
+    width: 20px;
+}
+.pagination-page {
+    background-color: #D0D0D0;
+    color: #000000;
+}
+
+.pagination-pageHover {
+    background-color: #D9F0FC;
+    color: #008EE8
+}
+
+.pagination-pageCurrent {
+    background-color: #D9F0FC;
+    color: #008EE8;
+
+}
+
+.pagination-prePage {
+    color: #000000;
+}
+
+.pagination-nextPage {
+    color: #000000;
+}
+
+.pagination-prePageHover {
+    background-color: #EEEEEE;
+    color: #000000;
+}
+
+.pagination-nextPageHover {
+    background-color: #EEEEEE;
+    color: #000000;
+}
+
+.pagination-goInput {
+    width: 18px;
+}
+
+.pagination-submit {
+
+}

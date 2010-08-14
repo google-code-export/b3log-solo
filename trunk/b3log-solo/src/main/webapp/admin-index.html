@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>B3log 后台管理</title>
+        <link type="text/css" rel="stylesheet" href="styles/default-admin.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/default-bowknot.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
+    </head>
+    <body>
+        <div class="content">
+            <div class="header">
+                <h1>B3log 后台管理</h1>
+                <a href="index.do">index</a>
+            </div>
+            <div class="left side">
+                <ul id="navi">
+                    <li>
+                        <span>文章</span>
+                    </li>
+                    <li>
+                        <span>文章列表</span>
+                    </li>
+                    <li>
+                        <span>评论列表</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="right main">
+                <div id="content">
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div class="footer">
+                copyright b3log team
+            </div>
+        </div>
+        <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
+        <script type="text/javascript" src="js/json-rpc.js"></script>
+        <script type="text/javascript" src="js/lib/jquery/jquery.bowknot.min.js"></script>
+        <script type="text/javascript">
+            $("#navi span").each(function (i) {
+                var naviURL = ['article', 'article-list', 'comment-list'],//文章,文章列表,评论列表
+                $it = $(this);
+                $it.click(function () {
+                    var loadURL = "admin-" + naviURL[i] + ".do";
+                    if (!$it.hasClass("selected")){
+                        $("#navi span").removeClass('selected');
+                        $it.addClass('selected');
+                    }
+                    $("#content").load(loadURL);
+                });
+            }).mouseover(function () {
+                $(this).addClass('hover');
+            }).mouseout(function () {
+                $(this).removeClass('hover');
+            });
+
+            // util
+            var setCurrentNaviStyle = function (i) {
+                $("#navi span").removeClass('selected');
+                $($("#navi span").get(i)).addClass("selected");
+            }
+        </script>
+    </body>
+</html>

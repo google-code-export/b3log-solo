@@ -1,0 +1,127 @@
+/* 
+    Document   : default-index
+    Version    : 1.0.0.3, Aug 13, 2010
+    Author     : Liyuan Li
+    Description:
+        user blog style.
+*/
+/* framework */
+#top {
+    border-bottom: 1px solid #C9D7F1;
+    padding:3px;
+}
+
+#top span, .footer span {
+    margin: 0 -2px;
+}
+
+#top a, .footer a {
+    text-decoration: none;
+}
+
+.content {
+    width: 980px;
+    margin: 0 auto;
+}
+
+.header {
+    height: 80px;
+}
+
+.side {
+    width: 188px;
+    margin-right: 12px;
+}
+
+.main {
+    width: 766px;
+    border-left: 2px solid  #E5ECF9;
+    padding-left: 12px;
+}
+
+.footer {
+    text-align: center;
+}
+
+/* header */
+#logo a {
+    text-decoration: none;
+}
+
+#logo span {
+    font-size:22px;
+    margin:0 -4px 0 -3px;
+}
+/* article list */
+.article {
+    margin: 12px;
+}
+
+.articleDate {
+    -moz-border-radius:5px 5px 5px 5px;
+    background-color:#E3E9FF;
+    border:1px solid #BBCCFF;
+    margin:0 24px 24px 0;
+    padding:6px;
+    width:65px;
+}
+
+.articleBody {
+    width: 85%;
+}
+
+/* article detail */
+#articleHeader {
+    border-top:1px solid #3366CC;
+    background-color:#E3E9FF;
+    height:25px;
+    padding:3px 0 0 12px;
+}
+
+#articleHeader div {
+    margin: 3px 6px;
+}
+
+#articleHeader div span {
+    margin: 0 1px;
+}
+
+#articleBottom {
+    margin: 9px 0;
+    text-align: right;
+    color: #008800;
+}
+
+#comments {
+    margin-top: 24px;
+}
+
+#comments button {
+    margin: 12px 0 0 634px;
+}
+
+/* side */
+#sideNavi a.selected {
+    text-decoration: none;
+    color: #000000;
+}
+/* pagination */
+.pagination {
+    text-align: center;
+    margin: 16px;
+}
+
+.pagination a, .pagination a:visited {
+    color: #4272DB;
+    text-decoration: none;
+}
+
+.pagination a.selected {
+    color: #000000;
+    font-weight: bold;
+}
+
+/* tags.html */
+#tags {
+    text-align: center;
+}

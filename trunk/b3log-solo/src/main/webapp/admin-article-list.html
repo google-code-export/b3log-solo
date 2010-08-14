@@ -1,0 +1,221 @@
+<div id="articleList">
+</div>
+<div id="articlePagination">
+</div>
+<div style="width: 100%;height: 100%;background-color: gray;">
+
+</div>
+<div id="comments" class="none">
+</div>
+<script type="text/javascript">
+    var currentPage = 1;
+    var articleList = $("#articleList").table({
+        resizable: true,
+        colModel: [{
+                name: "选择",
+                index: "selected",
+                width: 46,
+                inputType: "checkbox",
+                textAlign: "center",
+                allSelected: true
+            }, {
+                name: "标题",
+                index: "title",
+                minWidth: 180,
+                style: "padding-left: 6px;"
+            }, {
+                textAlign: "center",
+                name: "日期",
+                index: "date",
+                width: 130
+            }, {
+                textAlign: "center",
+                name: "修改",
+                index: "update",
+                width: 60,
+                bindEvent: [{
+                        'eventName': 'click',
+                        'functionName': 'updateArticle'
+                    }],
+                style: "cursor:pointer;"
+            }, {
+                textAlign: "center",
+                name: "删除",
+                index: "deleted",
+                width: 60,
+                bindEvent: [{
+                        'eventName': 'click',
+                        'functionName': 'deleteArticle'
+                    }],
+                style: "cursor:pointer;"
+            }, {
+                textAlign: "center",
+                name: "评论",
+                index: "comments",
+                width: 60,
+                bindEvent: [{
+                        'eventName': 'click',
+                        'functionName': 'popComments'
+                    }],
+                style: "cursor:pointer;"
+            }, {
+                visible: false,
+                index: "id"
+            }]
+    });
+
+    var articlePagination = $("#articlePagination").paginate({
+        bindEvent: "getArticleList",
+        pageCount: 10,
+        windowSize: 5,
+        currentPage: 1,
+        style: "google"
+    });
+
+    var updateArticle = function (event) {
+        $("#content").load("admin-article.do", '', function () {
+            var requestJSONObject = {
+                "oId": event.data.id[0]
+            };
+
+            jsonRpc.articleService.getArticle(function (result, error) {
+                switch (result.sc) {
+                    case "GET_ARTICLE_SUCC":
+                        setCurrentNaviStyle(0);
+
+                        // set default value for article.
+                        $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
+                        $("#articleContent").val(result.article.articleContent);
+                        $("#abstract").val(result.article.articleAbstract);
+
+                        var tags = result.article.articleTags,
+                        tagsString = '';
+                        for (var i = 0; i < tags.length; i++) {
+                            if (0 === i) {
+                                tagsString = tags[i].tagTitle;
+                            } else {
+                                tagsString += "," + tags[i].tagTitle;
+                            }
+                        }
+                        $("#tag").val(tagsString);
+                        
+                        break;
+                    case "GET_ARTICLE_FAIL_":
+                        break;
+                    default:
+                        break;
+                }
+            }, requestJSONObject);
+        });
+    }
+    
+    var deleteArticle = function (event) {
+        var isDelete = confirm("确定删除？");
+        
+        if (isDelete) {
+            var requestJSONObject = {
+                "oId": event.data.id[0]
+            };
+
+            jsonRpc.articleService.removeArticle(function (result, error) {
+                switch (result.sc) {
+                    case "REMOVE_ARTICLE_SUCC":
+                        alert("删除成功！");
+                        getArticleList(1);
+                        break;
+                    case "REMOVE_ARTICLE_FAIL_":
+                        alert("删除失败！");
+                        break;
+                    case "PERMISSION_ERROR":
+                        alert("您没有权限进行此项操作！");
+                        break;
+                    default:
+                        break;
+                }
+            }, requestJSONObject);
+        }
+    }
+
+    var getArticleList = function (pageNum) {
+        currentPage = pageNum;
+        var requestJSONObject = {
+            "paginationCurrentPageNum": pageNum,
+            "paginationPageSize": 2,
+            "paginationWindowSize": 5
+        };
+        jsonRpc.articleService.getArticles(function (result, error) {
+            switch (result.sc) {
+                case "GET_ARTICLES_SUCC":
+                    var articles = result.articles;
+                    var articleData = [];
+
+                    for (var i = 0; i < articles.length; i++) {
+                        articleData[i] = {};
+                        articleData[i].selected = false;
+                        articleData[i].title = articles[i].articleTitle;
+                        articleData[i].date = articles[i].articleCreateDate;
+                        articleData[i].update = "update";
+                        articleData[i].deleted = "delete";
+                        articleData[i].comments = "count(" + articles[i].articleCommentCount + ")";
+                        articleData[i].id = articles[i].oId;
+                    }
+
+                    articleList.table({
+                        update:{
+                            data: articleData
+                        }
+                    });
+
+                    articlePagination.paginate({
+                        update: {
+                            pageCount: result.pagination.paginationPageCount
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }, requestJSONObject);
+    }
+    getArticleList(1);
+
+    var popComments = function (event) {
+        $("#comments").dialog();
+        $("#comments").data("oId", event.data.id[0]);
+        getComment();
+    }
+
+    var getComment = function () {
+        jsonRpc.commentService.getComments(function (result, error) {
+            switch (result.sc) {
+                case "GET_COMMENTS_SUCC":
+                    var comments = result.comments,
+                    commentsHTML = '';
+                    for (var i = 0; i < comments.length; i++) {
+                        commentsHTML += "<div><span class='left'>" + comments[i].commentDate
+                            + "</span><span class='right pointer' onclick=\"deleteComment('" + comments[i].oId
+                            + "')\">delete</span><div class='clear'></div></div><div>" + comments[i].commentContent + "</div><hr/>";
+                    }
+                    $("#comments").html(commentsHTML);
+                    break;
+                default:
+                    break;
+            }
+        }, {"oId": $("#comments").data("oId")});
+    }
+
+    var deleteComment = function (id) {
+        jsonRpc.commentService.removeComment(function (result, error) {
+            switch (result.sc) {
+                case "REMOVE_COMMENT_SUCC":
+                    alert("删除成功");
+                    getComment();
+                    break;
+                default:
+                    break;
+            }
+        }, {"oId": id});
+
+        getArticleList(currentPage);
+    }
+</script>

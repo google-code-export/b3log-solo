@@ -1,0 +1,69 @@
+<link type="text/css" rel="stylesheet" href="styles/default-bowknot.css"/>
+<div id="commentList">
+</div>
+<div id="commentPagination">
+</div>
+<script type="text/javascript">
+    var deleteComment = function (event) {
+        var isDelete = confirm("确定删除？");
+
+        if (isDelete) {
+            var requestJSONObject = {
+                "oId": event.data.id[0]
+            };
+
+            jsonRpc.commentService.removeComment(function (result, error) {
+                switch (result.sc) {
+                    case "REMOVE_ARTICLE_SUCC":
+                        alert("删除成功！");
+                        getCommentList(1);
+                        break;
+                    case "REMOVE_ARTICLE_FAIL_":
+                        alert("删除失败！");
+                        break;
+                    case "PERMISSION_ERROR":
+                        alert("您没有权限进行此项操作！");
+                        break;
+                    default:
+                        break;
+                }
+            }, requestJSONObject);
+        }
+    }
+
+    var commentPagination = $("#commentPagination").pagination({
+        bindEvent: "getCommentList",
+        pageCount: 10,
+        windowSize: 5,
+        currentPage: 1,
+        style: "google"
+    });
+
+    var getCommentList = function (currentPage) {
+        var requestJSONObject = {
+            "paginationCurrentPageNum": currentPage,
+            "paginationPageSize": 2,
+            "paginationWindowSize": 5
+        };
+        jsonRpc.commentService.getComments(function (result, error) {
+            switch (result.sc) {
+                case "GET_COMMENTS_SUCC":
+                    newCommentList(result.comments);
+                    commentPagination.pagination({
+                        update: {
+                            pageCount: result.pagination.paginationPageCount
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }, requestJSONObject);
+    }
+    getCommentList(1);
+
+    var newCommentList = function (comments) {
+        var commentsHTML = '';
+
+    }
+</script>

@@ -1,0 +1,18 @@
+/*
+    Document   : default-pagination
+    Created on : Aug 3, 2010, 10:19:55 AM
+    Author     : Vanessa
+    Description:
+        Default style for jquery.bowknot.min.js.
+*/
+
+@import "default-bowknot-dialog.css";
+@import "default-bowknot-table.css";
+@import "default-bowknot-paginate.css";
+
+.bowknot-clear {
+    clear: both;
+    height: 0px;
+    font-size: 0px;
+    line-height: 0px;
+}
