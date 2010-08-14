@@ -46,14 +46,21 @@ public final class Preferences {
     /**
      * Gets preference.
      *
+     * <ul>
+     *   <li>Try get from cache</li>
+     *   <li>Try get from repository</li>
+     * </ul>
+     *
      * @return preference
      * @throws RepositoryException repository exception
      */
     @SuppressWarnings("unchecked")
     public JSONObject getPreference() throws RepositoryException {
         JSONObject ret = (JSONObject) cache.get(Preference.PREFERENCE);
+
         if (null == ret) {
             ret = preferenceRepository.get(Preference.PREFERENCE);
+
             ((Cache<String, JSONObject>) cache).put(Preference.PREFERENCE,
                                                     ret);
         }
