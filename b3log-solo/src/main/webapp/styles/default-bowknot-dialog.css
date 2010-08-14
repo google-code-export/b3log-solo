@@ -1,4 +1,4 @@
-/* 
+/*
     Document   : default-dialog
     Created on : Aug 12, 2010, 7:15:43 PM
     Author     : Vanessa
@@ -17,7 +17,7 @@
 
 .dialog-panel {
     background: #FFFFFF;
-    height: 400px;
+    max-height: 400px;
     width: 490px;
     border: 1px solid;
     position: absolute;
