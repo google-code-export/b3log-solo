@@ -56,8 +56,7 @@ public final class ClientModule extends AbstractClientModule {
         serve("/tags.do").with(TagsAction.class);
 
         bind(DoNothingAction.class).in(Scopes.SINGLETON);
-        serve("/admin-index.do",
-              "/admin-article.do",
+        serve("/admin-article.do",
               "/admin-article-list.do",
               "/admin-link-list.do",
               "/admin-preference.do").with(DoNothingAction.class);
