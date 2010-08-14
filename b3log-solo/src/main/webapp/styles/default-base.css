@@ -94,10 +94,9 @@ li {
     cursor: pointer;
 }
 
-.noUnderline {
-    text-decoration: none;
+.errorMsg {
+    color: red;
 }
-
 .line {
     margin-top: 12px;
     padding-top: 12px;
