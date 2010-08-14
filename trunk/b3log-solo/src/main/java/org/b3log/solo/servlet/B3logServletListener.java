@@ -116,37 +116,40 @@ public final class B3logServletListener extends AbstractServletListener {
             final PreferenceRepository preferenceRepository =
                     injector.getInstance(PreferenceRepository.class);
             preference = preferenceRepository.get(preferenceId);
-            if (null != preference) {
-                cache.put(preferenceId, preference);
+            if (null == preference) {
+                // Try load preference from configuration file and then cache and
+                // persist it.
+                preference = new JSONObject();
+                final ResourceBundle config = ResourceBundle.getBundle(
+                        "b3log-solo");
+                final int articleListDisplayCnt = Integer.valueOf(config.
+                        getString(
+                        Preference.ARTICLE_LIST_DISPLAY_COUNT));
+                preference.put(Preference.ARTICLE_LIST_DISPLAY_COUNT,
+                               articleListDisplayCnt);
+                final int articleListPaginationWindowSize = Integer.valueOf(
+                        config.getString(
+                        Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
+                preference.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
+                               articleListPaginationWindowSize);
+                final int mostUsedTagDisplayCnt = Integer.valueOf(config.
+                        getString(
+                        Preference.MOST_USED_TAG_DISPLAY_CNT));
+                preference.put(Preference.MOST_USED_TAG_DISPLAY_CNT,
+                               mostUsedTagDisplayCnt);
+                final int recentArticleDisplayCnt = Integer.valueOf(config.
+                        getString(
+                        Preference.RECENT_ARTICLE_DISPLAY_CNT));
+                preference.put(Preference.RECENT_ARTICLE_DISPLAY_CNT,
+                               recentArticleDisplayCnt);
 
-                return;
+                preference.put(Keys.OBJECT_ID, preferenceId);
+
+
+                preferenceRepository.add(preference);
             }
 
-            preference = new JSONObject();
-            // Try load preference from configuration file and then cache and
-            // persist it.
-            final ResourceBundle config = ResourceBundle.getBundle("b3log-solo");
-            final int articleListDisplayCnt = Integer.valueOf(config.getString(
-                    Preference.ARTICLE_LIST_DISPLAY_COUNT));
-            preference.put(Preference.ARTICLE_LIST_DISPLAY_COUNT,
-                           articleListDisplayCnt);
-            final int articleListPaginationWindowSize = Integer.valueOf(config.
-                    getString(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
-            preference.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
-                           articleListPaginationWindowSize);
-            final int mostUsedTagDisplayCnt = Integer.valueOf(config.getString(
-                    Preference.MOST_USED_TAG_DISPLAY_CNT));
-            preference.put(Preference.MOST_USED_TAG_DISPLAY_CNT,
-                           mostUsedTagDisplayCnt);
-            final int recentArticleDisplayCnt = Integer.valueOf(config.getString(
-                    Preference.RECENT_ARTICLE_DISPLAY_CNT));
-            preference.put(Preference.RECENT_ARTICLE_DISPLAY_CNT,
-                           recentArticleDisplayCnt);
-
-            preference.put(Keys.OBJECT_ID, preferenceId);
-
             cache.put(preferenceId, preference);
-            preferenceRepository.add(preference);
 
             LOGGER.info("Loaded preference[" + preference.toString(
                     JSON_PRINT_INDENT_FACTOR) + "]");
