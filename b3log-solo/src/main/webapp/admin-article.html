@@ -3,10 +3,20 @@
     <br/>
     <input id="title" type="text"/>
 </div>
+<script type="text/javascript">
+    KE.init({
+        id : "articleContent",
+        items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
+            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+            'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+    });
+
+    KE.create("articleContent");
+</script>
 <div>
     正文：
     <br/>
-    <textarea cols="80" rows="12" id="articleContent"></textarea>
+    <textarea cols="80" rows="12" name="content" id="articleContent"></textarea>
 </div>
 <div>
     tag：
