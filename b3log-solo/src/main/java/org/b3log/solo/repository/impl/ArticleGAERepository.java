@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 13, 2010
+ * @version 1.0.0.4, Aug 14, 2010
  */
 public class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository, Serializable {
@@ -153,5 +153,36 @@ public class ArticleGAERepository extends AbstractGAERepository
         }
 
         return ret;
+    }
+
+    @Override
+    public String getPrevisouArticleId(final String articleId) {
+        final Query query = new Query(getName());
+        query.addFilter(Keys.OBJECT_ID,
+                        Query.FilterOperator.LESS_THAN, articleId);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final Entity previous = preparedQuery.asIterator().next();
+
+        if (null == previous) {
+            return null;
+        }
+
+        return entity2JSONObject(previous).optString(Keys.OBJECT_ID);
+    }
+
+    @Override
+    public String getNextArticleId(final String articleId) {
+        final Query query = new Query(getName());
+        query.addFilter(Keys.OBJECT_ID,
+                        Query.FilterOperator.GREATER_THAN, articleId);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+
+        final Entity previous = preparedQuery.asIterator().next();
+
+        if (null == previous) {
+            return null;
+        }
+
+        return entity2JSONObject(previous).optString(Keys.OBJECT_ID);
     }
 }
