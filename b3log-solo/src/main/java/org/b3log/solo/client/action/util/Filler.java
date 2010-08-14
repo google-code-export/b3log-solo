@@ -30,6 +30,12 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.util.cache.Cache;
+import org.b3log.latke.util.cache.qualifier.LruMemory;
+import org.b3log.solo.model.Link;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONObject;
 
 /**
@@ -60,26 +66,26 @@ public final class Filler {
     @Inject
     private TagArticleRepository tagArticleRepository;
     /**
-     * Page size of pagination.
-     */
-    public static final int PAGE_SIZE = 2;
-    /**
-     * Window size of pagination.
-     */
-    public static final int WINDOW_SIZE = 20;
-    /**
-     * Count of recent articles.
-     */
-    public static final int RECENT_ARTICLE_CNT = 10;
-    /**
-     * Count of most used tags.
-     */
-    public static final int MOST_USED_TAG_CNT = 10;
-    /**
      * Article utilities.
      */
     @Inject
     private ArticleUtils articleUtils;
+    /**
+     * Preference repository.
+     */
+    @Inject
+    private PreferenceRepository preferenceRepository;
+    /**
+     * Link repository.
+     */
+    @Inject
+    private LinkRepository linkRepository;
+    /**
+     * Cache.
+     */
+    @Inject
+    @LruMemory
+    private Cache<String, ?> cache;
 
     /**
      * Fills articles in index.html.
@@ -91,9 +97,16 @@ public final class Filler {
     public void fillIndexArticles(final Map<String, Object> dataModel,
                                   final int currentPageNum)
             throws Exception {
+        final JSONObject preference =
+                (JSONObject) cache.get(Preference.PREFERENCE);
+        final int pageSize =
+                preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+        final int windowSize =
+                preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+
         final JSONObject result =
                 articleRepository.get(currentPageNum,
-                                      PAGE_SIZE,
+                                      pageSize,
                                       Article.ARTICLE_UPDATE_DATE,
                                       SortDirection.DESCENDING);
 
@@ -101,9 +114,9 @@ public final class Filler {
                 getInt(Pagination.PAGINATION_PAGE_COUNT);
 
         final List<Integer> pageNums = Paginator.paginate(currentPageNum,
-                                                          PAGE_SIZE,
+                                                          pageSize,
                                                           pageCount,
-                                                          WINDOW_SIZE);
+                                                          windowSize);
 
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
@@ -123,7 +136,7 @@ public final class Filler {
     public void fillMostUsedTags(final Map<String, Object> dataModel)
             throws Exception {
         final List<JSONObject> tags =
-                tagRepository.getMostUsedTags(MOST_USED_TAG_CNT);
+                tagRepository.getMostUsedTags(1);
 
         dataModel.put(Common.MOST_USED_TAGS, tags);
     }
@@ -136,8 +149,12 @@ public final class Filler {
      */
     public void fillMostCommentArticles(final Map<String, Object> dataModel)
             throws Exception {
+        final JSONObject preference =
+                (JSONObject) cache.get(Preference.PREFERENCE);
+        final int mostUsedTagDisplayCnt =
+                preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
         final List<JSONObject> mostCommentArticles =
-                articleRepository.getMostCommentArticles(RECENT_ARTICLE_CNT);
+                articleRepository.getMostCommentArticles(mostUsedTagDisplayCnt);
 
         dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
     }
@@ -150,8 +167,13 @@ public final class Filler {
      */
     public void fillRecentArticles(final Map<String, Object> dataModel)
             throws Exception {
+        final JSONObject preference =
+                (JSONObject) cache.get(Preference.PREFERENCE);
+        final int recentArticleDisplayCnt =
+                preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
+
         final List<JSONObject> recentArticles =
-                articleRepository.getRecentArticles(RECENT_ARTICLE_CNT);
+                articleRepository.getRecentArticles(recentArticleDisplayCnt);
 
         dataModel.put(Common.RECENT_ARTICLES, recentArticles);
     }
@@ -164,12 +186,17 @@ public final class Filler {
      */
     public void fillSide(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject result = tagRepository.get(1, Integer.MAX_VALUE);
+        final JSONObject tagResult = tagRepository.get(1, Integer.MAX_VALUE);
         final List<JSONObject> tags =
                 org.b3log.latke.util.CollectionUtils.jsonArrayToList(
-                result.getJSONArray(Keys.RESULTS));
-
+                tagResult.getJSONArray(Keys.RESULTS));
         dataModel.put(Tag.TAGS, tags);
+
+        final JSONObject linkResult = linkRepository.get(1, Integer.MAX_VALUE);
+        final List<JSONObject> links =
+                org.b3log.latke.util.CollectionUtils.jsonArrayToList(
+                linkResult.getJSONArray(Keys.RESULTS));
+        dataModel.put(Link.LINKS, links);
 
         fillRecentArticles(dataModel);
         fillMostUsedTags(dataModel);

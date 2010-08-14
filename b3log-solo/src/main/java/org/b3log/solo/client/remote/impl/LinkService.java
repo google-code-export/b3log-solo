@@ -77,7 +77,6 @@ public final class LinkService extends AbstractRemoteService {
      *     "oId": "",
      *     "linkTitle": "",
      *     "linkAddress": ""
-     *     }, ....],
      *     "sc": "GET_LINK_SUCC"
      * }
      * </pre>
