@@ -1,13 +1,48 @@
 <div id="top">
-        <a href="index.do">
-            <span style="color: orange;">B</span>
-            <span style="color: blue;">3</span>
-            <span style="color: green;">L</span>
-            <span style="color: red;">O</span>
-            <span style="color: blue;">G</span>
-        </a>
+    <a href="index.do">
+        <span style="color: orange;">B</span>
+        <span style="color: blue;">3</span>
+        <span style="color: green;">L</span>
+        <span style="color: red;">O</span>
+        <span style="color: blue;">G</span>
+    </a>
     <span class="right">
-        user name | language | logout
+        user name | language | <span id="loginStatus"></span>
     </span>
     <div class="clear"></div>
+    <div id="loginPanel" class="none">
+        <table class="form">
+            <tbody>
+                <tr>
+                    <th>
+                        password:
+                    </th>
+                    <td>
+                        <input id="password" type="password"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <button onclick="login();">submit</button>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+<script type="text/javascript">
+    var loginDialog = undefined;
+    if (0 === 0) {
+        $("#loginStatus").click(function () {
+            loginDialog = $("#loginPanel").dlaog();
+        }).text("login");
+    } else {
+        $("#loginStatus").click(function () {
+        }).text("logout");
+    }
+
+    var login = function () {
+        loginDialog.dialog("close");
+        alert(1);
+    }
+</script>
