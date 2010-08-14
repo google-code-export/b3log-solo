@@ -94,8 +94,8 @@
         jsonRpc.preferenceService.getPreference(function (result, error) {
             switch (result.sc) {
                 case "GET_PREFERENCE_SUCC":
-                    $("bolgTitle").val(result.preference.blogTitle),
-                    $("blogSubtitle").val(result.preference.blogSubtitle),
+                    $("#bolgTitle").val(result.preference.blogTitle),
+                    $("#blogSubtitle").val(result.preference.blogSubtitle),
                     $("#mostCommentArticleDisplayCount").val(result.preference.mostCommentArticleDisplayCount);
                     $("#recentArticleDisplayCount").val(result.preference.recentArticleDisplayCount);
                     $("#mostUsedTagDisplayCount").val(result.preference.mostUsedTagDisplayCount);
