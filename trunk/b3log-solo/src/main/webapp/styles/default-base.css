@@ -135,6 +135,7 @@ li {
 #top {
     border-bottom: 1px solid #C9D7F1;
     padding:3px;
+    margin-bottom: 24px;
 }
 
 #top span, .footer span {
