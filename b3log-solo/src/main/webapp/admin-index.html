@@ -3,24 +3,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>B3log 后台管理</title>
+        <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
+        <script type="text/javascript" src="js/json-rpc.js"></script>
+        <script type="text/javascript" src="js/lib/jquery/jquery.bowknot.min.js"></script>
+        <script type="text/javascript" src="js/lib/editor/kindeditor-min.js"></script>
         <link type="text/css" rel="stylesheet" href="styles/default-admin.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-bowknot.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
     </head>
     <body>
-        <div id="top">
-            <a href="index.do">
-                <span style="color: orange;">B</span>
-                <span style="color: blue;">3</span>
-                <span style="color: green;">L</span>
-                <span style="color: red;">O</span>
-                <span style="color: blue;">G</span>
-            </a>
-            <span class="right">
-                user name | language | logout
-            </span>
-            <div class="clear"></div>
-        </div>
+        <#include "common-top.html">
         <div>
             <div class="left side">
                 <ul id="navi">
@@ -44,22 +37,9 @@
             </div>
             <div class="clear"></div>
             <div class="footer">
-                copyright
-                <a href="index.do">
-                    <span style="color: orange;">B</span>
-                    <span style="color: blue;">3</span>
-                    <span style="color: green;">L</span>
-                    <span style="color: red;">O</span>
-                    <span style="color: blue;">G</span>
-                </a>
-                team
+                <#include "article-footer.html">
             </div>
         </div>
-        <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
-        <script type="text/javascript" src="js/json-rpc.js"></script>
-        <script type="text/javascript" src="js/lib/jquery/jquery.bowknot.min.js"></script>
-        <script type="text/javascript" src="js/lib/editor/kindeditor-min.js"></script>
         <script type="text/javascript">
             $("#navi li").each(function (i) {
                 var naviURL = ['article', 'article-list', 'link-list', 'preference'],
