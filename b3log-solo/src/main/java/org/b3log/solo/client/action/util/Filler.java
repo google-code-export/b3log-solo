@@ -97,7 +97,7 @@ public final class Filler {
     public void fillIndexArticles(final Map<String, Object> dataModel,
                                   final int currentPageNum)
             throws Exception {
-        assert cache.get(Preference.PREFERENCE) != null : "NULL!!!!";
+        System.out.println(cache.get(Preference.PREFERENCE));
         final JSONObject preference =
                 (JSONObject) cache.get(Preference.PREFERENCE);
 
