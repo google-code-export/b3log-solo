@@ -16,7 +16,9 @@
 package org.b3log.solo.client.remote.impl;
 
 import com.google.inject.Inject;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.Sessions;
@@ -71,6 +73,7 @@ public final class UserService extends AbstractRemoteService {
      * }
      * </pre>
      * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -78,10 +81,14 @@ public final class UserService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
     public JSONObject updatePassword(final JSONObject requestJSONObject,
-                                     final HttpServletRequest request)
-            throws ActionException {
+                                     final HttpServletRequest request,
+                                     final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
         try {
             final String newPwd =

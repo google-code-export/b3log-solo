@@ -16,7 +16,10 @@
 package org.b3log.solo.client.remote.impl;
 
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.solo.client.StatusCodes;
 import org.b3log.solo.client.util.ArticleUtils;
@@ -93,7 +96,8 @@ public final class ArticleService extends AbstractRemoteService {
     }
 
     /**
-     * Adds an article from the specified request json object.
+     * Adds an article from the specified request json object and http servlet
+     * request.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -106,6 +110,8 @@ public final class ArticleService extends AbstractRemoteService {
      *     },
      * }, see {@link Article} for more details
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -114,11 +120,14 @@ public final class ArticleService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      * @see Article
      */
-    public JSONObject addArticle(final JSONObject requestJSONObject)
-            throws ActionException {
-        // TODO: permission check
+    public JSONObject addArticle(final JSONObject requestJSONObject,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
 
         final JSONObject ret = new JSONObject();
 
@@ -160,6 +169,8 @@ public final class ArticleService extends AbstractRemoteService {
      *     "oId": ""
      * }
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -175,9 +186,14 @@ public final class ArticleService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject getArticle(final JSONObject requestJSONObject)
-            throws ActionException {
+    public JSONObject getArticle(final JSONObject requestJSONObject,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {
@@ -221,6 +237,8 @@ public final class ArticleService extends AbstractRemoteService {
      *     "paginationWindowSize": 10
      * }, see {@link Pagination} for more details
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -240,11 +258,16 @@ public final class ArticleService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      * @see Pagination
      * @see Article
      */
-    public JSONObject getArticles(final JSONObject requestJSONObject)
-            throws ActionException {
+    public JSONObject getArticles(final JSONObject requestJSONObject,
+                                  final HttpServletRequest request,
+                                  final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
         try {
             final int currentPageNum = requestJSONObject.getInt(
@@ -290,6 +313,8 @@ public final class ArticleService extends AbstractRemoteService {
      *     "oId": "",
      * }
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -297,9 +322,14 @@ public final class ArticleService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject removeArticle(final JSONObject requestJSONObject)
-            throws ActionException {
+    public JSONObject removeArticle(final JSONObject requestJSONObject,
+                                    final HttpServletRequest request,
+                                    final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {
@@ -345,7 +375,7 @@ public final class ArticleService extends AbstractRemoteService {
         }
 
         LOGGER.trace("Deced all tag reference count of article[oId="
-                     + articleId + "]");
+                + articleId + "]");
     }
 
     /**
@@ -363,6 +393,8 @@ public final class ArticleService extends AbstractRemoteService {
      *     }
      * }, see {@link Article} for more details
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -370,9 +402,14 @@ public final class ArticleService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject updateArticle(final JSONObject requestJSONObject)
-            throws ActionException {
+    public JSONObject updateArticle(final JSONObject requestJSONObject,
+                                    final HttpServletRequest request,
+                                    final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {
@@ -392,7 +429,7 @@ public final class ArticleService extends AbstractRemoteService {
             article.put(Article.ARTICLE_CREATE_DATE, oldArticle.getString(
                     Article.ARTICLE_CREATE_DATE));
             article.put(Article.ARTICLE_COMMENT_COUNT,
-                    oldArticle.getString(Article.ARTICLE_COMMENT_COUNT));
+                        oldArticle.getString(Article.ARTICLE_COMMENT_COUNT));
             // Step 5: Update
             articleRepository.update(articleId, article);
             // Step 6: Add tag-article relations
@@ -471,7 +508,7 @@ public final class ArticleService extends AbstractRemoteService {
             String tagId = null;
             if (null == tag) {
                 LOGGER.trace("Found a new tag[title=" + tagTitle
-                             + "] in article[title=" + article.getString(
+                        + "] in article[title=" + article.getString(
                         Article.ARTICLE_TITLE) + "]");
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
@@ -483,8 +520,8 @@ public final class ArticleService extends AbstractRemoteService {
                 tagId = tag.getString(Keys.OBJECT_ID);
                 LOGGER.trace("Found a existing tag[title=" + tag.getString(
                         Tag.TAG_TITLE) + ", oId="
-                             + tag.getString(Keys.OBJECT_ID) + "] in "
-                             + "article[title=" + article.getString(
+                        + tag.getString(Keys.OBJECT_ID) + "] in "
+                        + "article[title=" + article.getString(
                         Article.ARTICLE_TITLE) + "]");
                 final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
                 final JSONObject tagTmp = new JSONObject();

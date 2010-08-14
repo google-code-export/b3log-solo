@@ -16,7 +16,10 @@
 package org.b3log.solo.client.remote.impl;
 
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
@@ -181,6 +184,8 @@ public final class LinkService extends AbstractRemoteService {
      *     }
      * }, see {@link Link} for more details
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -188,9 +193,14 @@ public final class LinkService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject updateLink(final JSONObject requestJSONObject)
-            throws ActionException {
+    public JSONObject updateLink(final JSONObject requestJSONObject,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {
@@ -219,6 +229,8 @@ public final class LinkService extends AbstractRemoteService {
      *     "oId": "",
      * }
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -226,9 +238,14 @@ public final class LinkService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject removeLink(final JSONObject requestJSONObject)
-            throws ActionException {
+    public JSONObject removeLink(final JSONObject requestJSONObject,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {
@@ -258,8 +275,9 @@ public final class LinkService extends AbstractRemoteService {
      *         "linkAddress": ""
      *     }
      * }, see {@link Link} for more details
-     *
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -268,10 +286,13 @@ public final class LinkService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject addLink(final JSONObject requestJSONObject)
-            throws ActionException {
-        // TODO: permission check
+    public JSONObject addLink(final JSONObject requestJSONObject,
+                              final HttpServletRequest request,
+                              final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
 
         final JSONObject ret = new JSONObject();
 
