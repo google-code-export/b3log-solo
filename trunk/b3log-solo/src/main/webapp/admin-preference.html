@@ -18,6 +18,14 @@
         </tr>
         <tr>
             <th>
+                评论最多文章数目:
+            </th>
+            <td>
+                <input id="mostCommentArticleDisplayCount"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
                 文章列表显示数:
             </th>
             <td>
@@ -33,6 +41,22 @@
             </td>
         </tr>
         <tr>
+            <th>
+                博客标题:
+            </th>
+            <td>
+                <input id="blogTitle"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                博客子标题:
+            </th>
+            <td>
+                <input id="blogSubtitle"/>
+            </td>
+        </tr>
+        <tr>
             <th colspan="2">
                 <button onclick="changePreference();">submit</button>
             </th>
@@ -43,6 +67,9 @@
     var changePreference = function () {
         var requestJSONObject = {
             "preference": {
+                "blogTitle": $("#blogTitle").val(),
+                "blogSubtitle": $("#blogSubtitle").val(),
+                "mostCommentArticleDisplayCount": $("#mostCommentArticleDisplayCount").val(),
                 "recentArticleDisplayCount": $("#recentArticleDisplayCount").val(),
                 "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
                 "articleListDisplayCount": $("#articleListDisplayCount").val(),
@@ -50,7 +77,7 @@
             }
         }
 
-        jsonRpc.preferenceService.getPreference(function (result, error) {
+        jsonRpc.preferenceService.updatePreference(function (result, error) {
             switch (result.sc) {
                 case "UPDATE_PREFERENCE_SUCC":
                     alert("update sucess!");
@@ -65,9 +92,11 @@
 
     var getPreference = function () {
         jsonRpc.preferenceService.getPreference(function (result, error) {
-            alert(JSON.stringify(result));
             switch (result.sc) {
                 case "GET_PREFERENCE_SUCC":
+                    $("bolgTitle").val(result.preference.blogTitle),
+                    $("blogSubtitle").val(result.preference.blogSubtitle),
+                    $("#mostCommentArticleDisplayCount").val(result.preference.mostCommentArticleDisplayCount);
                     $("#recentArticleDisplayCount").val(result.preference.recentArticleDisplayCount);
                     $("#mostUsedTagDisplayCount").val(result.preference.mostUsedTagDisplayCount);
                     $("#articleListDisplayCount").val(result.preference.articleListDisplayCount);

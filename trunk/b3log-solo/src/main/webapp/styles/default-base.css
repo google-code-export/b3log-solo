@@ -94,6 +94,10 @@ li {
     cursor: pointer;
 }
 
+.noUnderline {
+    text-decoration: none;
+}
+
 .line {
     margin-top: 12px;
     padding-top: 12px;
