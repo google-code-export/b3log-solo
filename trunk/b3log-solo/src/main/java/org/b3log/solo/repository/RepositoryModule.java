@@ -22,13 +22,14 @@ import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.latke.service.AbstractServiceModule;
+import org.b3log.solo.repository.impl.LinkGAERepository;
 
 /**
  * Repository module for <a href="http://code.google.com/p/google-guice/">
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 10, 2010
+ * @version 1.0.0.4, Aug 14, 2010
  */
 public final class RepositoryModule extends AbstractServiceModule {
 
@@ -46,6 +47,8 @@ public final class RepositoryModule extends AbstractServiceModule {
                 in(Scopes.SINGLETON);
         bind(ArticleCommentRepository.class).to(
                 ArticleCommentGAERepository.class).
+                in(Scopes.SINGLETON);
+        bind(LinkRepository.class).to(LinkGAERepository.class).
                 in(Scopes.SINGLETON);
 
     }
