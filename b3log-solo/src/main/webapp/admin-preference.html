@@ -32,5 +32,54 @@
                 <input id="articleListPaginationWindowSize"/>
             </td>
         </tr>
+        <tr>
+            <th colspan="2">
+                <button onclick="changePreference();">submit</button>
+            </th>
+        </tr>
     </tbody>
 </table>
+<script type="text/javascript">
+    var changePreference = function () {
+        var requestJSONObject = {
+            "preference": {
+                "recentArticleDisplayCount": $("#recentArticleDisplayCount").val(),
+                "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
+                "articleListDisplayCount": $("#articleListDisplayCount").val(),
+                "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val()
+            }
+        }
+
+        jsonRpc.preferenceService.getPreference(function (result, error) {
+            switch (result.sc) {
+                case "UPDATE_PREFERENCE_SUCC":
+                    alert("update sucess!");
+                    break;
+                case "GET_ARTICLE_FAIL_":
+                    break;
+                default:
+                    break;
+            }
+        }, requestJSONObject);
+    }
+
+    var getPreference = function () {
+        jsonRpc.preferenceService.getPreference(function (result, error) {
+            alert(JSON.stringify(result));
+            switch (result.sc) {
+                case "GET_PREFERENCE_SUCC":
+                    $("#recentArticleDisplayCount").val(result.preference.recentArticleDisplayCount);
+                    $("#mostUsedTagDisplayCount").val(result.preference.mostUsedTagDisplayCount);
+                    $("#articleListDisplayCount").val(result.preference.articleListDisplayCount);
+                    $("#articleListPaginationWindowSize").val(result.preference.articleListPaginationWindowSize);
+                    break;
+                case "GET_ARTICLE_FAIL_":
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    getPreference();
+</script>

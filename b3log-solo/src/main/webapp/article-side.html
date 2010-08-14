@@ -73,7 +73,7 @@
     $("#sideNavi a").each(function () {
         var $it = $(this);
         $it.removeClass("selected");
-        if ($it.attr("name") === localStorage.getItem("sideNaviId")) {
+        if ($it.attr("name") && $it.attr("name") === localStorage.getItem("sideNaviId")) {
             $it.addClass("selected");
         }
     });
