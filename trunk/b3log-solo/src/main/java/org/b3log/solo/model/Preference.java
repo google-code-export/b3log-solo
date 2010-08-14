@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.model;
 
 /**
@@ -23,11 +22,11 @@ package org.b3log.solo.model;
  * @version 1.0.0.0, Aug 14, 2010
  */
 public final class Preference {
+
     /**
      * Preference.
      */
     public static final String PREFERENCE = "preference";
-
     /**
      * Recent article display count.
      */
@@ -36,6 +35,11 @@ public final class Preference {
      * Most used tag display count.
      */
     public static final String MOST_USED_TAG_DISPLAY_CNT = "mostUsedTagDisplayCount";
+    /**
+     * Most comment article display count.
+     */
+    public static final String MOST_COMMENT_ARTICLE_DISPLAY_CNT =
+            "mostCommentArticleDisplayCount";
     /**
      * Article list display count.
      */
