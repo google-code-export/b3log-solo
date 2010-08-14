@@ -109,7 +109,6 @@ public final class PreferenceService extends AbstractRemoteService {
      * <pre>
      * {
      *     "preference": {
-     *         "oId": "",
      *         "recentArticleDisplayCount": "",
      *         "mostUsedTagDisplayCount": "",
      *         "articleListDisplayCount": "",
