@@ -8,11 +8,10 @@
 /* framework */
 .side {
     width: 173px;
-    margin-top: 12px;
 }
 
 .main {
-    width: 84%;
+    width: 83%;
     margin-left: 6px;
     background-color: #BBCCFF;
     padding: 12px;
@@ -26,6 +25,7 @@
 #top {
     border-bottom: 1px solid #C9D7F1;
     padding:3px;
+    margin-bottom: 24px;
 }
 
 #top span, .footer span {
@@ -59,4 +59,20 @@
 #articlePagination {
     float: right;
     margin: 10px;
+}
+
+/* article */
+#editorArticle th {
+    text-align: right;
+}
+#editorArticle input, #editorArticle textarea {
+    width: 100%;
+}
+
+#editorArticle input:focus, #editorArticle textarea:focus {
+    border: 2px solid #73A6FF;
+}
+
+#editorArticle input {
+    height: 24px;
 }
