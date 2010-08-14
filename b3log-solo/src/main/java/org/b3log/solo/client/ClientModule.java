@@ -25,6 +25,7 @@ import org.b3log.solo.client.util.ArticleUtils;
 import org.b3log.latke.client.AbstractClientModule;
 import org.b3log.latke.client.action.DoNothingAction;
 import org.b3log.latke.servlet.filter.AuthenticationFilter;
+import org.b3log.solo.client.util.Preferences;
 
 /**
  * Client-side module for <a href="http://code.google.com/p/google-guice/">
@@ -64,5 +65,6 @@ public final class ClientModule extends AbstractClientModule {
         bind(Filler.class).in(Scopes.SINGLETON);
 
         bind(ArticleUtils.class).in(Scopes.SINGLETON);
+        bind(Preferences.class).in(Scopes.SINGLETON);
     }
 }
