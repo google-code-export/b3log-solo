@@ -67,17 +67,17 @@
 }
 
 /* article */
-#editorArticle th {
+.form th {
     text-align: right;
 }
-#editorArticle input, #editorArticle textarea {
+.form input, .form textarea {
     width: 100%;
 }
 
-#editorArticle input:focus, #editorArticle textarea:focus {
+.form input:focus, .form textarea:focus {
     border: 2px solid #73A6FF;
 }
 
-#editorArticle input {
+.form input {
     height: 24px;
 }
