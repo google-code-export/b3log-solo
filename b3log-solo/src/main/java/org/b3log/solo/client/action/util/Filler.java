@@ -23,7 +23,6 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.client.util.ArticleUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
