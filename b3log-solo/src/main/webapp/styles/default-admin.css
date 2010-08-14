@@ -12,8 +12,10 @@
 }
 
 .main {
-    width: auto;
-    margin-left: 12px;
+    width: 84%;
+    margin-left: 6px;
+    background-color: #BBCCFF;
+    padding: 12px;
 }
 
 .footer {
