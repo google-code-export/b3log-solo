@@ -35,13 +35,21 @@
                     </li>
                 </ul>
             </div>
-            <div class="right main">
+            <div class="left main">
                 <div id="content">
                 </div>
             </div>
             <div class="clear"></div>
             <div class="footer">
-                copyright b3log team
+                copyright
+                <a href="index.do">
+                    <span style="color: orange;">B</span>
+                    <span style="color: blue;">3</span>
+                    <span style="color: green;">L</span>
+                    <span style="color: red;">O</span>
+                    <span style="color: blue;">G</span>
+                </a>
+                team
             </div>
         </div>
         <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
@@ -49,13 +57,13 @@
         <script type="text/javascript" src="js/json-rpc.js"></script>
         <script type="text/javascript" src="js/lib/jquery/jquery.bowknot.min.js"></script>
         <script type="text/javascript">
-            $("#navi span").each(function (i) {
+            $("#navi li").each(function (i) {
                 var naviURL = ['article', 'article-list', 'link-list'],//文章,文章列表,链接
                 $it = $(this);
                 $it.click(function () {
                     var loadURL = "admin-" + naviURL[i] + ".do";
                     if (!$it.hasClass("selected")){
-                        $("#navi span").removeClass('selected');
+                        $("#navi li").removeClass('selected');
                         $it.addClass('selected');
                     }
                     $("#content").load(loadURL);
