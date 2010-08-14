@@ -1,34 +1,43 @@
-<div>
-    标题：
-    <br/>
-    <input id="title" type="text"/>
-</div>
-<script type="text/javascript">
-    KE.init({
-        id : "articleContent",
-        items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
-            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-            'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
-    });
-
-    KE.create("articleContent");
-</script>
-<div>
-    正文：
-    <br/>
-    <textarea cols="80" rows="12" name="content" id="articleContent"></textarea>
-</div>
-<div>
-    tag：
-    <br/>
-    <input id="tag" type="text"/>
-</div>
-<div>
-    摘要：
-    <br/>
-    <textarea id="abstract" rows="5" cols="80"></textarea>
-</div>
-<button id="submitArticle">提交</button>
+<table id="editorArticle" width="100%" cellpadding="0px" cellspacing="9px">
+    <tbody>
+        <tr>
+            <th>
+                标题：
+            </th>
+            <td>
+                <input id="title" type="text"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                正文：
+            </th>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <textarea cols="80" rows="12" id="articleContent"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>tags：</th>
+            <td>
+                <input id="tag" type="text"/>
+            </td>
+        </tr>
+        <tr>
+            <th valign="top">摘要：</th>
+            <td>
+                <textarea id="abstract" rows="5" cols="80"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button id="submitArticle">提交</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
 <script type="text/javascript">
     var addArticle = function () {
         var requestJSONObject = {
