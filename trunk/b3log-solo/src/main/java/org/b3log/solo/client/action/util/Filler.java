@@ -99,6 +99,7 @@ public final class Filler {
             throws Exception {
         final JSONObject preference =
                 (JSONObject) cache.get(Preference.PREFERENCE);
+
         final int pageSize =
                 preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
         final int windowSize =
