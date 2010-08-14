@@ -83,7 +83,7 @@ public final class TagsAction extends AbstractAction {
             ret.put(Tag.TAGS, tags);
 
             filler.fillSide(ret);
-            filler.fillBlogHeader(ret);
+            filler.fillBlogHeader(ret, request);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);

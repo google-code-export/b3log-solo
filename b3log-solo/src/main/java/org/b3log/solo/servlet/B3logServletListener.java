@@ -26,6 +26,7 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
 import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.client.ClientModule;
 import org.b3log.solo.event.EventModule;
@@ -36,6 +37,7 @@ import org.b3log.latke.util.cache.Cache;
 import org.b3log.latke.util.cache.qualifier.LruMemory;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
@@ -90,11 +92,38 @@ public final class B3logServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         super.contextInitialized(servletContextEvent);
 
+        initAdmin();
         initPreference();
 
         registerRemoteJSServiceSerializers();
 
         LOGGER.info("Initialized the context");
+    }
+
+    /**
+     * Initializes administrator.
+     */
+    private void initAdmin() {
+        final Injector injector = getInjector();
+
+        try {
+            final UserRepository userRepository =
+                    injector.getInstance(UserRepository.class);
+            JSONObject user = userRepository.get(User.USER);
+            if (null == user) {
+                user = new JSONObject();
+                final ResourceBundle config = ResourceBundle.getBundle(
+                        "b3log-solo");
+                final String pwd = config.getString(User.USER_PASSWORD);
+                user.put(Keys.OBJECT_ID, User.USER);
+                user.put(User.USER_PASSWORD, pwd);
+                userRepository.add(user);
+                LOGGER.info("Created user by configuration file");
+            }
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
