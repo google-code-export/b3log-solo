@@ -121,7 +121,7 @@ public final class ArticleAction extends AbstractAction {
 
 
             filler.fillSide(ret);
-            filler.fillBlogHeader(ret);
+            filler.fillBlogHeader(ret, request);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);

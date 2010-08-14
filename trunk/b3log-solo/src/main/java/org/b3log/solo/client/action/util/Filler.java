@@ -18,6 +18,7 @@ package org.b3log.solo.client.action.util;
 import com.google.inject.Inject;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.client.util.ArticleUtils;
@@ -27,6 +28,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.client.Sessions;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
@@ -222,9 +224,11 @@ public final class Filler {
      * Fills article-header.html.
      *
      * @param dataModel data model
+     * @param request http servlet request
      * @throws Exception exception
      */
-    public void fillBlogHeader(final Map<String, Object> dataModel)
+    public void fillBlogHeader(final Map<String, Object> dataModel,
+                               final HttpServletRequest request)
             throws Exception {
         final JSONObject preference = getPreference();
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
@@ -233,6 +237,12 @@ public final class Filler {
 
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
         dataModel.put(Preference.BLOG_SUBTITLE, blogSubtitle);
+        final JSONObject currentUser = Sessions.currentUser(request);
+        if (null == currentUser) {
+            dataModel.put(Common.LOGINT_STATUS, 0);
+        } else {
+            dataModel.put(Common.LOGINT_STATUS, 1);
+        }
     }
 
     /**

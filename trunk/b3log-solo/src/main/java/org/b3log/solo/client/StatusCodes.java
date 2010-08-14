@@ -83,4 +83,20 @@ public enum StatusCodes {
      * Indicates get preference successfully.
      */
     GET_PREFERENCE_SUCC,
+    /**
+     * Indicates update user password successfully.
+     */
+    UPDATE_PASSWORD_SUCC,
+    /**
+     * Indicates user logout successfully.
+     */
+    USER_LOGOUT_SUCC,
+    /**
+     * Indicates user login successfully.
+     */
+    USER_LOGIN_SUCC,
+    /**
+     * Indicates user login fail.
+     */
+    USER_LOGIN_FAIL_,
 }

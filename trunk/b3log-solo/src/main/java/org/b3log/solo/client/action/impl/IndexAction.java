@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.client.action.impl;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.AbstractAction;
 import com.google.inject.Inject;
@@ -49,10 +47,6 @@ public final class IndexAction extends AbstractAction {
      */
     private static final Logger LOGGER = Logger.getLogger(IndexAction.class);
     /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
-    /**
      * Language service.
      */
     @Inject
@@ -84,10 +78,7 @@ public final class IndexAction extends AbstractAction {
 
             filler.fillIndexArticles(ret, currentPageNum);
             filler.fillSide(ret);
-            filler.fillBlogHeader(ret);
-
-            final String loginUrl = userService.createLoginURL("admin-index.do");
-            ret.put("loginUrl", loginUrl);
+            filler.fillBlogHeader(ret, request);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);

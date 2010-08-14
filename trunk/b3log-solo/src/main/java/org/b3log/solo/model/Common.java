@@ -44,6 +44,10 @@ public final class Common {
      * Next article id.
      */
     public static final String NEXT_ARTICLE_ID = "nextArticleId";
+    /**
+     * Login status.
+     */
+    public static final String LOGINT_STATUS = "loginStatus";
 
     /**
      * Private default constructor.
