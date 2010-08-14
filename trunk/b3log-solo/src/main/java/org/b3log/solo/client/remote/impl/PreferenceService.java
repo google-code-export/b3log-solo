@@ -92,7 +92,7 @@ public final class PreferenceService extends AbstractRemoteService {
                     (JSONObject) cache.get(Preference.PREFERENCE);
 
             ret.put(Preference.PREFERENCE, preference);
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINK_SUCC);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_PREFERENCE_SUCC);
 
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
