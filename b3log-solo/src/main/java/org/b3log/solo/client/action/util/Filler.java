@@ -36,6 +36,7 @@ import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PreferenceRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -129,6 +130,23 @@ public final class Filler {
     }
 
     /**
+     * Fills links.
+     *
+     * @param dataModel data model
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void fillLinks(final Map<String, Object> dataModel)
+            throws JSONException, RepositoryException {
+        final JSONObject linkResult = linkRepository.get(1,
+                                                         Integer.MAX_VALUE);
+        final List<JSONObject> links = org.b3log.latke.util.CollectionUtils.
+                jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
+
+        dataModel.put(Link.LINKS, links);
+    }
+
+    /**
      * Gets preference.
      *
      * @return preference
@@ -207,11 +225,7 @@ public final class Filler {
      */
     public void fillSide(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject linkResult = linkRepository.get(1, Integer.MAX_VALUE);
-        final List<JSONObject> links =
-                org.b3log.latke.util.CollectionUtils.jsonArrayToList(
-                linkResult.getJSONArray(Keys.RESULTS));
-        dataModel.put(Link.LINKS, links);
+        fillLinks(dataModel);
 
         fillRecentArticles(dataModel);
         fillMostUsedTags(dataModel);
