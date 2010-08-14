@@ -1,5 +1,5 @@
 <div id="top">
-    <a href="index.do">
+    <a href="index.do" class="logo">
         <span style="color: orange;">B</span>
         <span style="color: blue;">3</span>
         <span style="color: green;">L</span>
@@ -7,14 +7,16 @@
         <span style="color: blue;">G</span>
     </a>
     <span class="right">
-        user name | language | <span id="loginStatus"></span>
+        <span>user name</span> |
+        <span>language</span> |
+        <a id="loginStatus" href="#"></a>
     </span>
     <div class="clear"></div>
     <div id="loginPanel" class="none">
-        <table class="form">
+        <table class="form" width="99%" cellspacing="9px" cellpadding="0">
             <tbody>
                 <tr>
-                    <th>
+                    <th width="80px">
                         password:
                     </th>
                     <td>
@@ -22,7 +24,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>
+                    <th colspan="2">
                         <button onclick="login();">submit</button>
                     </th>
                 </tr>
@@ -32,17 +34,27 @@
 </div>
 <script type="text/javascript">
     var loginDialog = undefined;
-    if (0 === 0) {
-        $("#loginStatus").click(function () {
-            loginDialog = $("#loginPanel").dlaog();
-        }).text("login");
-    } else {
-        $("#loginStatus").click(function () {
-        }).text("logout");
+
+    var logout = function () {
+        getStatus();
     }
+
+    var popLogin = function () {
+        loginDialog = $("#loginPanel").dialog();
+    }
+
+    var getStatus = function () {
+        $("#loginStatus").unbind("click");
+        if (0 === 0) {
+            $("#loginStatus").bind("click", popLogin).text("login");
+        } else {
+            $("#loginStatus").bind("click", logout).text("logout");
+        }
+    }
+    getStatus();
 
     var login = function () {
         loginDialog.dialog("close");
-        alert(1);
+        getStatus();
     }
 </script>
