@@ -17,19 +17,27 @@ package org.b3log.solo.servlet;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
 import com.google.inject.Stage;
+import com.google.inject.TypeLiteral;
 import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
 import org.apache.log4j.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.client.ClientModule;
 import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.latke.util.UtilModule;
+import org.b3log.latke.util.cache.Cache;
+import org.b3log.latke.util.cache.memory.LruMemoryCache;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.repository.PreferenceRepository;
 import org.jabsorb.JSONRPCBridge;
+import org.json.JSONObject;
 
 /**
  * B3log Solo servlet listener.
@@ -44,6 +52,10 @@ public final class B3logServletListener extends AbstractServletListener {
      */
     private static final Logger LOGGER =
             Logger.getLogger(B3logServletListener.class);
+    /**
+     * JSONO print indent factor.
+     */
+    public static final int JSON_PRINT_INDENT_FACTOR = 4;
 
     /**
      * Public default constructor. Initializes the package name of remote
@@ -78,11 +90,70 @@ public final class B3logServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         super.contextInitialized(servletContextEvent);
 
-        final ResourceBundle resourceBundle =
-                ResourceBundle.getBundle("b3log-solo");
+        initPreference();
+
         registerRemoteJSServiceSerializers();
 
         LOGGER.info("Initialized the context");
+    }
+
+    /**
+     * Initializes preference.
+     */
+    private void initPreference() {
+        LOGGER.info("Loading preference....");
+
+        JSONObject preference = null;
+        try {
+            final Injector injector = getInjector();
+            @SuppressWarnings(value = "unchecked")
+            final Cache<String, JSONObject> cache = (Cache<String, JSONObject>) injector.
+                    getInstance(Key.get(
+                    new TypeLiteral<LruMemoryCache<String, ?>>() {
+                    }));
+            final String preferenceId = Preference.PREFERENCE;
+            // Try load preference from datastore.
+            final PreferenceRepository preferenceRepository =
+                    injector.getInstance(PreferenceRepository.class);
+            preference = preferenceRepository.get(preferenceId);
+            if (null != preference) {
+                cache.put(preferenceId, preference);
+
+                return;
+            }
+
+            preference = new JSONObject();
+            // Try load preference from configuration file and then cache and
+            // persist it.
+            final ResourceBundle config = ResourceBundle.getBundle("b3log-solo");
+            final int articleListDisplayCnt = Integer.valueOf(config.getString(
+                    Preference.ARTICLE_LIST_DISPLAY_COUNT));
+            preference.put(Preference.ARTICLE_LIST_DISPLAY_COUNT,
+                           articleListDisplayCnt);
+            final int articleListPaginationWindowSize = Integer.valueOf(config.
+                    getString(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
+            preference.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
+                           articleListPaginationWindowSize);
+            final int mostUsedTagDisplayCnt = Integer.valueOf(config.getString(
+                    Preference.MOST_USED_TAG_DISPLAY_CNT));
+            preference.put(Preference.MOST_USED_TAG_DISPLAY_CNT,
+                           mostUsedTagDisplayCnt);
+            final int recentArticleDisplayCnt = Integer.valueOf(config.getString(
+                    Preference.RECENT_ARTICLE_DISPLAY_CNT));
+            preference.put(Preference.RECENT_ARTICLE_DISPLAY_CNT,
+                           recentArticleDisplayCnt);
+
+            preference.put(Keys.OBJECT_ID, preferenceId);
+
+            cache.put(preferenceId, preference);
+            preferenceRepository.add(preference);
+
+            LOGGER.info("Loaded preference[" + preference.toString(
+                    JSON_PRINT_INDENT_FACTOR) + "]");
+        } catch (final Exception e) {
+            LOGGER.fatal(e.getMessage(), e);
+            throw new RuntimeException("Preference load error!");
+        }
     }
 
     @Override

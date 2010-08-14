@@ -1,0 +1,149 @@
+/*
+ * Copyright (C) 2009, 2010, B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.b3log.solo.client.remote.impl;
+
+import com.google.inject.Inject;
+import org.apache.log4j.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.client.action.ActionException;
+import org.b3log.latke.client.remote.AbstractRemoteService;
+import org.b3log.latke.util.cache.Cache;
+import org.b3log.latke.util.cache.qualifier.LruMemory;
+import org.b3log.solo.client.StatusCodes;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.repository.PreferenceRepository;
+import org.jabsorb.JSONRPCBridge;
+import org.json.JSONObject;
+
+/**
+ * Preference service for JavaScript client.
+ *
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.0, Aug 14, 2010
+ */
+public final class PreferenceService extends AbstractRemoteService {
+
+    /**
+     * Default serial version uid.
+     */
+    private static final long serialVersionUID = 1L;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(
+            PreferenceService.class);
+    /**
+     * Preference repository.
+     */
+    @Inject
+    private PreferenceRepository preferenceRepository;
+    /**
+     * Cache.
+     */
+    @Inject
+    @LruMemory
+    private Cache<String, ?> cache;
+
+    /**
+     * Public constructor with parameter. Invokes constructor of superclass.
+     *
+     * @param jsonRpcBridge the specified json rpc bridge.
+     */
+    @Inject
+    public PreferenceService(final JSONRPCBridge jsonRpcBridge) {
+        super(jsonRpcBridge);
+    }
+
+    /**
+     * Gets preference.
+     *
+     * @return for example,
+     * <pre>
+     * {
+     *     "preference": {
+     *         "recentArticleDisplayCount": "",
+     *         "mostUsedTagDisplayCount": int,
+     *         "articleListDisplayCount": int,
+     *         "articleListPaginationWindowSize": int
+     *     }
+     *     "sc": "GET_PREFERENCE_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     */
+    public JSONObject getPreference() throws ActionException {
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject preference =
+                    (JSONObject) cache.get(Preference.PREFERENCE);
+
+            ret.put(Preference.PREFERENCE, preference);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINK_SUCC);
+
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Updates the preference by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "preference": {
+     *         "oId": "",
+     *         "recentArticleDisplayCount": "",
+     *         "mostUsedTagDisplayCount": "",
+     *         "articleListDisplayCount": "",
+     *         "articleListPaginationWindowSize": ""
+     *     }
+     * }, see {@link Preference} for more details
+     * </pre>
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "UPDATE_PREFERENCE_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     */
+    @SuppressWarnings("unchecked")
+    public JSONObject updatePreference(final JSONObject requestJSONObject)
+            throws ActionException {
+        final JSONObject ret = new JSONObject();
+        try {
+            final JSONObject preference =
+                    requestJSONObject.getJSONObject(Preference.PREFERENCE);
+
+
+            preferenceRepository.update(Preference.PREFERENCE, preference);
+            ((Cache<String, JSONObject>) cache).put(Preference.PREFERENCE,
+                                                    preference);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_SUCC);
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+}

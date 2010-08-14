@@ -75,4 +75,12 @@ public enum StatusCodes {
      * Indicates get links successfully.
      */
     GET_LINKS_SUCC,
+    /**
+     * Indicates update preference successfully.
+     */
+    UPDATE_PREFERENCE_SUCC,
+    /**
+     * Indicates get preference successfully.
+     */
+    GET_PREFERENCE_SUCC,
 }

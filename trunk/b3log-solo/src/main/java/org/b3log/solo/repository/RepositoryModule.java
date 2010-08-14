@@ -23,6 +23,7 @@ import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.latke.service.AbstractServiceModule;
 import org.b3log.solo.repository.impl.LinkGAERepository;
+import org.b3log.solo.repository.impl.PreferenceGAERepository;
 
 /**
  * Repository module for <a href="http://code.google.com/p/google-guice/">
@@ -49,6 +50,8 @@ public final class RepositoryModule extends AbstractServiceModule {
                 ArticleCommentGAERepository.class).
                 in(Scopes.SINGLETON);
         bind(LinkRepository.class).to(LinkGAERepository.class).
+                in(Scopes.SINGLETON);
+        bind(PreferenceRepository.class).to(PreferenceGAERepository.class).
                 in(Scopes.SINGLETON);
 
     }

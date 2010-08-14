@@ -95,7 +95,7 @@ public final class TagArticlesAction extends AbstractAction {
 
             final List<JSONObject> tagArticleRelations =
                     tagArticleRepository.getByTagId(tagId, currentPageNum,
-                                                    Filler.PAGE_SIZE);
+                                                    1);
 
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.size(); i++) {
@@ -109,11 +109,11 @@ public final class TagArticlesAction extends AbstractAction {
             }
 
             final int pageCount = (int) Math.ceil((double) articles.size()
-                                                  / (double) Filler.PAGE_SIZE);
+                                                  / (double) 1);
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum,
-                                       Filler.PAGE_SIZE, pageCount,
-                                       Filler.WINDOW_SIZE);
+                                       1, pageCount,
+                                       1);
 
             articleUtils.addTags(articles);
             ret.put(Article.ARTICLES, articles);
