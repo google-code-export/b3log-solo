@@ -84,6 +84,7 @@ public final class IndexAction extends AbstractAction {
 
             filler.fillIndexArticles(ret, currentPageNum);
             filler.fillSide(ret);
+            filler.fillBlogHeader(ret);
 
             final String loginUrl = userService.createLoginURL("admin-index.do");
             ret.put("loginUrl", loginUrl);

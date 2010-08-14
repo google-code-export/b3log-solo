@@ -119,7 +119,9 @@ public final class TagArticlesAction extends AbstractAction {
             ret.put(Article.ARTICLES, articles);
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
             filler.fillSide(ret);
+            filler.fillBlogHeader(ret);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
