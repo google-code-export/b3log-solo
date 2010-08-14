@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 14, 2010
+ * @version 1.0.0.1, Aug 15, 2010
  */
 public final class Preference {
 
