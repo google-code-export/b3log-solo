@@ -1,0 +1,112 @@
+/* 
+    Document   : default-base
+    Version    : 1.0.0.1, Aug 4, 2010
+    Author     : Vanessa
+    Description:
+        Basci css.
+*/
+*, html, body {
+    height:auto;
+    margin:0;
+    padding:0;
+}
+
+body {
+    background-color:#FFFFFF;
+    color:#000000;
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:small;
+}
+
+a, a:link {
+    color:#0000CC;
+}
+
+a:active {
+    color:red;
+}
+
+a:visited {
+    color:#551A8B;
+}
+
+p {
+    line-height:125%;
+    margin:0;
+    padding:1em 0 0;
+}
+
+img {
+    border:medium none;
+    margin:0;
+    padding:0;
+}
+
+a img {
+    border:1px solid;
+    padding:1px;
+}
+
+h1 {
+    font-size:160%;
+}
+
+h2 {
+    font-size:140%;
+}
+
+h3 {
+    font-size:120%;
+}
+
+h4 {
+    font-size:110%;
+}
+
+ul {
+    list-style: none;
+}
+
+li {
+    margin-left: 12px;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+    height: 0px;
+    font-size: 0px;
+    line-height: 0px;
+}
+
+.none {
+    display: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.line {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: thin dotted #BBBBBB;
+}
+
+.title {
+    background-color:#E3E9FF;
+    border-top:1px solid #3366CC;
+    padding:3px 0 3px 12px;
+}
+
+.contentBody {
+    padding: 12px;
+    margin-bottom: 12px;
+}

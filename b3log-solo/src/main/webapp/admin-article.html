@@ -1,0 +1,73 @@
+<div>
+    标题：
+    <br/>
+    <input id="title" type="text"/>
+</div>
+<div>
+    正文：
+    <br/>
+    <textarea cols="80" rows="12" id="articleContent"></textarea>
+</div>
+<div>
+    tag：
+    <br/>
+    <input id="tag" type="text"/>
+</div>
+<div>
+    摘要：
+    <br/>
+    <textarea id="abstract" rows="5" cols="80"></textarea>
+</div>
+<button id="submitArticle">提交</button>
+<script type="text/javascript">
+    var addArticle = function () {
+        var requestJSONObject = {
+            "article": {
+                "articleTitle": $("#title").val(),
+                "articleContent": $("#articleContent").val(),
+                "articleAbstract": $("#abstract").val(),
+                "articleTags": $("#tag").val()
+            }
+        };
+        jsonRpc.articleService.addArticle(function (result, error) {
+            switch (result.sc) {
+                case "ADD_ARTICLE_SUCC":
+                    alert("添加成功！");
+                    $("#content").load("admin-article-list.do");
+                    break;
+                default:
+                    break;
+            }
+        }, requestJSONObject);
+    }
+
+    var updateArticle = function () {
+        var requestJSONObject = {
+            "article": {
+                "oId": $("#title").data("oId"),
+                "articleTitle": $("#title").val(),
+                "articleContent": $("#articleContent").val(),
+                "articleAbstract": $("#abstract").val(),
+                "articleTags": $("#tag").val()
+            }
+        };
+        jsonRpc.articleService.updateArticle(function (result, error) {
+            switch (result.sc) {
+                case "UPDATE_ARTICLE_SUCC":
+                    alert("更新成功！");
+                    $("#content").load("admin-article-list.do");
+                    break;
+                default:
+                    break;
+            }
+        }, requestJSONObject);
+    }
+
+    $("#submitArticle").click(function () {
+        if ($("#title").data("oId")) {
+            updateArticle();
+        } else {
+            addArticle();
+        }
+    });
+</script>

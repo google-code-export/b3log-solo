@@ -1,0 +1,54 @@
+<#list articles as article>
+<div class="article">
+    <div class="articleDate left">
+        ${article.articleCreateDate}
+    </div>
+    <div class="left articleBody">
+        <div class="title">
+            <h2>
+                <a href="article-detail.do?oId=${article.oId}">
+                    ${article.articleTitle}
+                </a>
+            </h2>
+        </div>
+        <div class="contentBody">
+            ${article.articleAbstract}
+        </div>
+        <div class="right">
+            tags:
+            <#list article.articleTags as articleTag>
+            <span>
+                <a href="tag-articles.do?oId=${articleTag.oId}">
+                    ${articleTag.tagTitle}
+                </a>
+            </span>
+            &nbsp;
+            评论(${article.articleCommentCount})
+            </#list>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+</#list>
+<div class="pagination">
+    <#list paginationPageNums as paginationPageNum>
+    <a href="index.do?paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
+    </#list>
+</div>
+<script type="text/javascript">
+    if (window.location.search === "") {
+        localStorage.setItem("currentPage", 1);
+    }
+
+    $(".pagination a").click(function () {
+        localStorage.setItem("currentPage", $(this).text());
+    });
+    
+    $(".pagination a").each(function () {
+        var $it = $(this);
+        $it.removeClass("selected");
+        if ($it.text() === localStorage.getItem("currentPage")) {
+            $it.addClass("selected");
+        }
+    });
+</script>

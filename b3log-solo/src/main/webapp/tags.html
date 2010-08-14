@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <link type="text/css" rel="stylesheet" href="styles/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
+    </head>
+    <body>
+        <#include "common-top.html">
+        <div class="content">
+            <div class="header">
+                <#include "article-header.html">
+            </div>
+            <div id="tags">
+                <input/>
+                <button>search</button>
+                <div class="contentBody">
+                    <#list tags as tag>
+                    <div>
+                        ${tag.tagTitle}(${tag.tagReferenceCount})
+                    </div>
+                    </#list>
+                </div>
+            </div>
+            <div class="footer">
+                <#include "article-footer.html">
+            </div>
+        </div>
+        <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
+    </body>
+</html>

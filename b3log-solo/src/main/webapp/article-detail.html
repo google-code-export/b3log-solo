@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title></title>
+        <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="styles/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
+    </head>
+    <body>
+        <#include "common-top.html">
+        <div class="content">
+            <div class="header">
+                <#include "article-header.html">
+            </div>
+            <div>
+                <div class="left side">
+                    <#include "article-side.html">
+                </div>
+                <div class="right main">
+                    <div>
+                        <div id="articleHeader">
+                            <h2 class="left">
+                                ${article.articleTitle}
+                            </h2>
+                            <div class="right">
+                                tags:
+                                <#list articleTags as articleTag>
+                                <span>
+                                    <a href="tag-articles.do?oId=${articleTag.oId}">${articleTag.tagTitle}</a>
+                                </span>
+                                </#list>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="contentBody">
+                            ${article.articleContent}
+                        </div>
+                        <div id="articleBottom">
+                            <div class="left">
+                                <a href="#">新一篇</a>
+                                <a href="#">旧一篇</a>
+                            </div>
+                            <div class="right">
+                                <span>
+                                    comment(${article.articleCommentCount})&nbsp;
+                                </span>
+                                <span>
+                                    &nbsp;${article.articleCreateDate}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div id="comments">
+                        <#list articleComments as comment>
+                        <div>
+                            <div class="title">
+                                ${comment.commentDate}
+                            </div>
+                            <div class="contentBody">
+                                ${comment.commentContent}
+                            </div>
+                        </div>
+                        </#list>
+                        <div class="title">
+                            发表评论
+                        </div>
+                        <div class="contentBody">
+                            <textarea rows="10" cols="80" id="comment"></textarea>
+                            <br/>
+                            <button onclick="submitComment();">提交</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="footer">
+                <#include "article-footer.html">
+            </div>
+        </div>
+        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
+        <script type="text/javascript" src="js/json-rpc.js"></script>
+        <script type="text/javascript">
+            var submitComment = function () {
+                var requestJSONObject = {
+                    "oId": ${article.oId},
+                    "commentContent": $("#comment").val()
+                };
+                jsonRpc.commentService.addComment(function (result, error) {
+                    switch (result.sc) {
+                        case "COMMENT_ARTICLE_SUCC":
+                            alert("评论成功成功！");
+                            break;
+                        default:
+                            break;
+                    }
+                }, requestJSONObject);
+            }
+        </script>
+    </body>
+</html>

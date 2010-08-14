@@ -1,0 +1,104 @@
+/* 
+    Document   : table-component
+    Created on : Jun 21, 2010, 5:19:04 PM
+    Author     : Vanessa
+    Description:
+        Default style for bowknot.table.js.
+*/
+.table-main {
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    overflow: auto;
+}
+
+/* import: word break */
+.table-main table {
+    border-left: 1px solid #CCCCCC;
+    table-layout: fixed;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.table-verticalLine {
+    position: absolute;
+    width: 2px;
+    background-color: #247AC4;
+    display: none;
+    height: 100%;
+    cursor: col-resize;
+}
+
+.table-header, .table-body {
+    overflow: auto;
+}
+
+.table-header th {
+    border: 1px solid #CCCCCC;
+    border-left-style: none;
+    color: #333333;
+    height: 28px;
+    background: url("../images/table-header.jpg") repeat;
+}
+
+.table-main td {
+    border-right: 1px solid #D0D0D0;
+    border-bottom: 1px solid #D0D0D0;
+    color: #333333;
+    padding: 3px 0;
+}
+
+.table-heiglight td, .table-lineHover td {
+    color: #008EE8;
+    background-color: #D9F0FC;
+}
+
+.table-sortASC {
+    background:url("../images/table-sort.jpg") no-repeat scroll 0px 0px transparent;
+    cursor:pointer;
+    height:8px;
+    width:9px;
+    font-size: 0px;
+    line-height: 0px;
+}
+
+.table-sortDESC {
+    background:url("../images/table-sort.jpg") no-repeat scroll 0px -8px transparent;
+    cursor:pointer;
+    height:8px;
+    width:9px;
+    font-size: 0px;
+    line-height: 0px;
+}
+
+.table-sortUnactiveDESC {
+    background:url("../images/table-sort.jpg") no-repeat scroll -10px -8px transparent;
+}
+
+.table-sortUnactiveASC {
+    background:url("../images/table-sort.jpg") no-repeat scroll -10px 0px transparent;
+}
+
+.table-sort {
+    font-size: 0px;
+    line-height: 0px;
+    position: absolute;
+    margin-left: 5px;
+    float: left;
+}
+
+.table-floatLayerIcon {
+    background: url(../images/table-icon.png) no-repeat -2px -193px;
+    height:13px;
+    width:13px;
+    margin: 0 10px;
+    float: left;
+}
+
+.table-oddRow {
+    background-color: #E0E0E0;
+}
+
+.table-evenRow {
+    background-color: #F0F2F5;
+}

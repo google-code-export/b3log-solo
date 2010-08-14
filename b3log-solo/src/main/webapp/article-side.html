@@ -1,0 +1,65 @@
+<div id="sideNavi">
+    <ul>
+        <li>
+            <h2>Popular Tags</h2>
+            <ul>
+                <#list mostUsedTags as tag>
+                <li>
+                    <a name="${tag.oId}" href="tag-articles.do?oId=${tag.oId}">
+                        ${tag.tagTitle}
+                    </a>
+                </li>
+                </#list>
+            </ul>
+        </li>
+    </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
+            <h2>Recent Entries</h2>
+            <ul>
+                <#list recentArticles as article>
+                <li>
+                    <a name="${article.oId}" href="article-detail.do?oId=${article.oId}">
+                        ${article.articleTitle}
+                    </a>
+                </li>
+                </#list>
+            </ul>
+        </li>
+    </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
+            <h2>Most comments Articles</h2>
+            <ul>
+                <#list mostCommentArticles as article>
+                <li>
+                    <a name="${article.oId}" href="article-detail.do?oId=${article.oId}">
+                        ${article.articleTitle}
+                    </a>
+                </li>
+                </#list>
+            </ul>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    if (window.location.search === "") {
+        localStorage.setItem("sideNaviName", "");
+        localStorage.setItem("sideNaviId", "");
+    }
+
+    $("#sideNavi a").click(function () {
+        localStorage.setItem("sideNaviName", $(this).text());
+        localStorage.setItem("sideNaviId", $(this).attr("name"));
+    });
+
+    $("#sideNavi a").each(function () {
+        var $it = $(this);
+        $it.removeClass("selected");
+        if ($it.attr("name") === localStorage.getItem("sideNaviId")) {
+            $it.addClass("selected");
+        }
+    });
+</script>
