@@ -49,8 +49,7 @@
 }
 
 .table-heiglight td, .table-lineHover td {
-    color: #008EE8;
-    background-color: #D9F0FC;
+    background-color: #FFFFCC;
 }
 
 .table-sortASC {
@@ -96,9 +95,9 @@
 }
 
 .table-oddRow {
-    background-color: #E0E0E0;
+    background-color: #FFFFFF;
 }
 
 .table-evenRow {
-    background-color: #F0F2F5;
+    background-color: #FFFFFF;
 }
