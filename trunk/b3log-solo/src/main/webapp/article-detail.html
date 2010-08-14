@@ -38,8 +38,12 @@
                         </div>
                         <div id="articleBottom">
                             <div class="left">
+                                <#if nextArticleId??>
                                 <a href="article-detail.do?oId=${nextArticleId}">新一篇</a>
+                                </#if>
+                                <#if previousArticleId??>
                                 <a href="article-detail.do?oId=${previousArticleId}">旧一篇</a>
+                                </#if>
                             </div>
                             <div class="right">
                                 <span>
