@@ -18,7 +18,7 @@
 -->
 
 <!--
-    Description: Web deployment descriptor.
+    Description: B3log Solo web deployment descriptor.
                  Note:
                  1. DO NOT configure servlets in this file, using Guice-Servlet
                     extension instead, see class org.b3log.solo.client.ClientModule
@@ -31,12 +31,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <context-param>
-        <param-name>welcomePage</param-name>
-        <param-value>/index.do</param-value>
-    </context-param>
-    <context-param>
         <param-name>postfixExceptionPaths</param-name>
-        <param-value>/_ah/login?continue=admin-index.do
+        <param-value>/_ah/login?continue=admin-index.do,
+                     /js/lib/editor/plugins/link/link.html
         </param-value>
     </context-param>
 

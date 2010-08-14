@@ -19,7 +19,7 @@ package org.b3log.solo.client;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 11, 2010
+ * @version 1.0.0.5, Aug 14, 2010
  */
 public enum StatusCodes {
 
@@ -55,4 +55,24 @@ public enum StatusCodes {
      * Indicates remove a comment successfully.
      */
     REMOVE_COMMENT_SUCC,
+    /**
+     * Indicates add a link successfully.
+     */
+    ADD_LINK_SUCC,
+    /**
+     * Indicates remove a link successfully.
+     */
+    REMOVE_LINK_SUCC,
+    /**
+     * Indicates update a link successfully.
+     */
+    UPDATE_LINK_SUCC,
+    /**
+     * Indicates get a link successfully.
+     */
+    GET_LINK_SUCC,
+    /**
+     * Indicates get links successfully.
+     */
+    GET_LINKS_SUCC,
 }
