@@ -31,14 +31,13 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 14, 2010
+ * @version 1.0.0.5, Aug 15, 2010
  */
 public class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository, Serializable {
@@ -101,13 +100,15 @@ public class ArticleGAERepository extends AbstractGAERepository
                     Keys.SIMPLE_DATE_FORMAT.format(System.currentTimeMillis());
 
             if (!article.has(Keys.OBJECT_ID)) {
-                article.put(Article.ARTICLE_CREATE_DATE, time);
+                article.put(Article.ARTICLE_CREATE_DATE,
+                            Keys.SIMPLE_DATE_FORMAT.parse(time));
             }
 
-            article.put(Article.ARTICLE_UPDATE_DATE, time);
+            article.put(Article.ARTICLE_UPDATE_DATE,
+                        Keys.SIMPLE_DATE_FORMAT.parse(time));
 
             ret = super.add(article);
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new RepositoryException(e);
         }

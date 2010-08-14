@@ -26,6 +26,7 @@ import org.b3log.latke.client.AbstractClientModule;
 import org.b3log.latke.client.action.DoNothingAction;
 import org.b3log.latke.servlet.filter.AuthenticationFilter;
 import org.b3log.solo.client.action.impl.AdminIndexAction;
+import org.b3log.solo.client.feed.FeedServlet;
 import org.b3log.solo.client.util.Preferences;
 
 /**
@@ -69,5 +70,8 @@ public final class ClientModule extends AbstractClientModule {
 
         bind(ArticleUtils.class).in(Scopes.SINGLETON);
         bind(Preferences.class).in(Scopes.SINGLETON);
+
+        bind(FeedServlet.class).in(Scopes.SINGLETON);
+        serve("/feed.do").with(FeedServlet.class);
     }
 }
