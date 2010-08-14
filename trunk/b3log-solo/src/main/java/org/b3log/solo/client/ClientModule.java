@@ -24,6 +24,7 @@ import org.b3log.solo.client.action.util.Filler;
 import org.b3log.solo.client.util.ArticleUtils;
 import org.b3log.latke.client.AbstractClientModule;
 import org.b3log.latke.client.action.DoNothingAction;
+import org.b3log.latke.servlet.filter.AuthenticationFilter;
 
 /**
  * Client-side module for <a href="http://code.google.com/p/google-guice/">
@@ -37,6 +38,9 @@ public final class ClientModule extends AbstractClientModule {
     @Override
     protected void configureServlets() {
         super.configureServlets();
+
+        bind(AuthenticationFilter.class).in(Scopes.SINGLETON);
+        filter("/admin-index.do").through(AuthenticationFilter.class);
 
         bind(IndexAction.class).in(Scopes.SINGLETON);
         serve("/index.do").with(IndexAction.class);
