@@ -74,6 +74,7 @@ public final class IndexAction extends AbstractAction {
             Locales.setLocale(request, locale);
 
             final Map<String, String> langs = langPropsService.getAll(locale);
+            System.out.println("~~~~~~~" + langs);
             ret.putAll(langs);
 
             filler.fillIndexArticles(ret, currentPageNum);
