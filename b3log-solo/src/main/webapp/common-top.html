@@ -7,6 +7,7 @@
         <span style="color: blue;">G</span>
     </a>
     <span class="right">
+        <span  id="admin" class="none"><a href="admin-index.do">admin</a> |&nbsp;</span>
         <span>language</span> |
         <a id="loginStatus" href="#"></a>
     </span>
@@ -35,14 +36,13 @@
     </div>
 </div>
 <script type="text/javascript">
-    var loginDialog = undefined,
-    loginStatus = ${loginStatus};
+    var loginDialog = undefined;
 
     var logout = function () {
         jsonRpc.userService.logout(function (result, error) {
             switch (result.sc) {
                 case "USER_LOGOUT_SUCC":
-                    getStatus(0);
+                    window.location.href = "index.do";
                     break;
                 default:
                     break;
@@ -59,15 +59,20 @@
         });
     }
 
-    var getStatus = function (loginStatus) {
+    var getStatus = function () {
         $("#loginStatus").unbind("click");
-        if (loginStatus === 0) {
+        if (${loginStatus} === 0) {
             $("#loginStatus").bind("click", popLogin).text("login");
+            $("#admin").hide();
         } else {
+            $("#admin").show();
             $("#loginStatus").bind("click", logout).text("logout");
         }
+        if (window.location.pathname === "/admin-index.do") {
+            $("#admin").hide();
+        }
     }
-    getStatus(loginStatus);
+    getStatus();
 
     var login = function () {
         var requestJSONObject = {
@@ -77,7 +82,7 @@
             switch (result.sc) {
                 case "USER_LOGIN_SUCC":
                     loginDialog.dialog("close");
-                    getStatus(1);
+                    window.location.href = "admin-index.do";
                     break;
                 case "USER_LOGIN_FAIL_":
                     $("#error").text("login fail!");
