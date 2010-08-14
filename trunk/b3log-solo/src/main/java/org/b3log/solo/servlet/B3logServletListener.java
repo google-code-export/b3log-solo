@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.b3log.latke.util.MD5;
 import org.b3log.solo.client.ClientModule;
 import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
@@ -116,7 +117,7 @@ public final class B3logServletListener extends AbstractServletListener {
                         "b3log-solo");
                 final String pwd = config.getString(User.USER_PASSWORD);
                 user.put(Keys.OBJECT_ID, User.USER);
-                user.put(User.USER_PASSWORD, pwd);
+                user.put(User.USER_PASSWORD, MD5.hash(pwd));
                 userRepository.add(user);
                 LOGGER.info("Created user by configuration file");
             }
