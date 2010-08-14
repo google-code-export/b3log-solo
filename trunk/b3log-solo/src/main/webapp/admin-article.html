@@ -1,14 +1,4 @@
-<script type="text/javascript">
-    KE.init({
-        id : "articleContent",
-        items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
-            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-            'insertunorderedlist', '|', 'emoticons', 'image', 'link']
-    });
-
-    KE.create("articleContent");
-</script>
-<table class="form" width="100%" cellpadding="0px" cellspacing="9px">
+<table class="form" width="99%" cellpadding="0px" cellspacing="9px">
     <tbody>
         <tr>
             <th>
@@ -42,13 +32,22 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <th colspan="2">
                 <button id="submitArticle">提交</button>
-            </td>
+            </th>
         </tr>
     </tbody>
 </table>
 <script type="text/javascript">
+    KE.init({
+        id : "articleContent",
+        items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
+            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+            'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+    });
+
+    KE.create("articleContent");
+
     var addArticle = function () {
         var requestJSONObject = {
             "article": {
