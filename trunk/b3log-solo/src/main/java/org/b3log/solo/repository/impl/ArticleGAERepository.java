@@ -161,13 +161,13 @@ public class ArticleGAERepository extends AbstractGAERepository
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.LESS_THAN, articleId);
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity previous = preparedQuery.asIterator().next();
-
-        if (null == previous) {
-            return null;
+        String ret = null;
+        for (final Entity entity : preparedQuery.asIterable()) {
+            final JSONObject previous = entity2JSONObject(entity);
+            ret = previous.optString(Keys.OBJECT_ID);
         }
 
-        return entity2JSONObject(previous).optString(Keys.OBJECT_ID);
+        return ret;
     }
 
     @Override
@@ -177,12 +177,12 @@ public class ArticleGAERepository extends AbstractGAERepository
                         Query.FilterOperator.GREATER_THAN, articleId);
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
 
-        final Entity previous = preparedQuery.asIterator().next();
-
-        if (null == previous) {
-            return null;
+        String ret = null;
+        for (final Entity entity : preparedQuery.asIterable()) {
+            final JSONObject previous = entity2JSONObject(entity);
+            ret = previous.optString(Keys.OBJECT_ID);
         }
 
-        return entity2JSONObject(previous).optString(Keys.OBJECT_ID);
+        return ret;
     }
 }
