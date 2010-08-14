@@ -35,9 +35,9 @@ import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.latke.util.UtilModule;
 import org.b3log.latke.util.cache.Cache;
 import org.b3log.latke.util.cache.qualifier.LruMemory;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.UserRepository;
+import static org.b3log.solo.model.Preference.*;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
@@ -140,7 +140,7 @@ public final class B3logServletListener extends AbstractServletListener {
                     (Cache<String, JSONObject>) injector.getInstance(Key.get(new TypeLiteral<Cache<String, ?>>() {
             }, LruMemory.class));
 
-            final String preferenceId = Preference.PREFERENCE;
+            final String preferenceId = PREFERENCE;
             // Try load preference from datastore.
             final PreferenceRepository preferenceRepository =
                     injector.getInstance(PreferenceRepository.class);
@@ -152,25 +152,31 @@ public final class B3logServletListener extends AbstractServletListener {
                 final ResourceBundle config = ResourceBundle.getBundle(
                         "b3log-solo");
                 final int articleListDisplayCnt = Integer.valueOf(config.
-                        getString(
-                        Preference.ARTICLE_LIST_DISPLAY_COUNT));
-                preference.put(Preference.ARTICLE_LIST_DISPLAY_COUNT,
+                        getString(ARTICLE_LIST_DISPLAY_COUNT));
+                preference.put(ARTICLE_LIST_DISPLAY_COUNT,
                                articleListDisplayCnt);
                 final int articleListPaginationWindowSize = Integer.valueOf(
-                        config.getString(
-                        Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
-                preference.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
+                        config.getString(ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
+                preference.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
                                articleListPaginationWindowSize);
                 final int mostUsedTagDisplayCnt = Integer.valueOf(config.
-                        getString(
-                        Preference.MOST_USED_TAG_DISPLAY_CNT));
-                preference.put(Preference.MOST_USED_TAG_DISPLAY_CNT,
+                        getString(MOST_USED_TAG_DISPLAY_CNT));
+                preference.put(MOST_USED_TAG_DISPLAY_CNT,
                                mostUsedTagDisplayCnt);
+                final int mostCommentArticleDisplayCnt =
+                        Integer.valueOf(config.getString(
+                        MOST_COMMENT_ARTICLE_DISPLAY_CNT));
+                preference.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
+                               mostCommentArticleDisplayCnt);
                 final int recentArticleDisplayCnt = Integer.valueOf(config.
-                        getString(
-                        Preference.RECENT_ARTICLE_DISPLAY_CNT));
-                preference.put(Preference.RECENT_ARTICLE_DISPLAY_CNT,
+                        getString(RECENT_ARTICLE_DISPLAY_CNT));
+                preference.put(RECENT_ARTICLE_DISPLAY_CNT,
                                recentArticleDisplayCnt);
+
+                final String blogTitle = config.getString(BLOG_TITLE);
+                preference.put(BLOG_TITLE, blogTitle);
+                final String blogSubtitle = config.getString(BLOG_SUBTITLE);
+                preference.put(BLOG_SUBTITLE, blogSubtitle);
 
                 preference.put(Keys.OBJECT_ID, preferenceId);
 
