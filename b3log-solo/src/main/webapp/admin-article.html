@@ -1,3 +1,13 @@
+<script type="text/javascript">
+    KE.init({
+        id : "articleContent",
+        items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
+            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+            'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+    });
+
+    KE.create("articleContent");
+</script>
 <table id="editorArticle" width="100%" cellpadding="0px" cellspacing="9px">
     <tbody>
         <tr>
@@ -43,7 +53,7 @@
         var requestJSONObject = {
             "article": {
                 "articleTitle": $("#title").val(),
-                "articleContent": $("#articleContent").val(),
+                "articleContent": KE.html("articleContent"),
                 "articleAbstract": $("#abstract").val(),
                 "articleTags": $("#tag").val()
             }
@@ -65,7 +75,7 @@
             "article": {
                 "oId": $("#title").data("oId"),
                 "articleTitle": $("#title").val(),
-                "articleContent": $("#articleContent").val(),
+                "articleContent": KE.html("articleContent"),
                 "articleAbstract": $("#abstract").val(),
                 "articleTags": $("#tag").val()
             }
