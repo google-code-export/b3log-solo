@@ -12,13 +12,13 @@
 
 .main {
     width: 83%;
-    margin-left: 6px;
     background-color: #BBCCFF;
-    padding: 12px;
+    padding: 6px;
 }
 
 .footer {
     text-align: center;
+    margin: 12px;
 }
 
 /* top */
@@ -55,8 +55,13 @@
     font-weight: bold;
 }
 
-/* article list */
-#articlePagination {
+/* article list and link list*/
+#articlePanel, #linkPanel {
+    height: 100%;
+    background-color: #E3E9FF;
+}
+
+#articlePagination, #linkPagination {
     float: right;
     margin: 10px;
 }
