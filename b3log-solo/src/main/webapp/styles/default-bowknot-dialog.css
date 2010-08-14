@@ -6,13 +6,14 @@
         Purpose of the stylesheet follows.
 */
 .dialog-background {
-    background-color:gray;
-    height:100%;
-    left:0;
-    opacity:0.3;
+    -moz-border-radius:4px 4px 4px 4px;
+    background:none repeat scroll 0 0 #FFFFFF;
+    border:2px solid #3366CC;
+    left:380px;
+    max-height:400px;
     position:absolute;
-    top:0;
-    width:100%;
+    top:100px;
+    width:490px;;
 }
 
 .dialog-panel {
