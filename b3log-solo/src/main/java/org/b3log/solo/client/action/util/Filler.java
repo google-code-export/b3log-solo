@@ -19,6 +19,7 @@ import com.google.inject.Inject;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.client.util.ArticleUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -94,13 +95,11 @@ public final class Filler {
      * @param currentPageNum current page number
      * @throws Exception exception
      */
+    @SuppressWarnings("unchecked")
     public void fillIndexArticles(final Map<String, Object> dataModel,
                                   final int currentPageNum)
             throws Exception {
-        System.out.println(cache.get(Preference.PREFERENCE));
-        System.out.println(cache.getCachedCount());
-        final JSONObject preference =
-                (JSONObject) cache.get(Preference.PREFERENCE);
+        final JSONObject preference = getPreference();
 
         final int pageSize =
                 preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -131,6 +130,24 @@ public final class Filler {
     }
 
     /**
+     * Gets preference.
+     *
+     * @return preference
+     * @throws RepositoryException repository exception
+     */
+    @SuppressWarnings("unchecked")
+    private JSONObject getPreference() throws RepositoryException {
+        JSONObject ret = (JSONObject) cache.get(Preference.PREFERENCE);
+        if (null == ret) {
+            ret = preferenceRepository.get(Preference.PREFERENCE);
+            ((Cache<String, JSONObject>) cache).put(Preference.PREFERENCE,
+                                                    ret);
+        }
+
+        return ret;
+    }
+
+    /**
      * Fills most used tags.
      *
      * @param dataModel data model
@@ -138,8 +155,12 @@ public final class Filler {
      */
     public void fillMostUsedTags(final Map<String, Object> dataModel)
             throws Exception {
+        final JSONObject preference = getPreference();
+        final int mostUsedTagDisplayCnt =
+                preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
+
         final List<JSONObject> tags =
-                tagRepository.getMostUsedTags(1);
+                tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
 
         dataModel.put(Common.MOST_USED_TAGS, tags);
     }
@@ -152,8 +173,7 @@ public final class Filler {
      */
     public void fillMostCommentArticles(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference =
-                (JSONObject) cache.get(Preference.PREFERENCE);
+        final JSONObject preference = getPreference();
         final int mostUsedTagDisplayCnt =
                 preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
         final List<JSONObject> mostCommentArticles =
@@ -170,8 +190,7 @@ public final class Filler {
      */
     public void fillRecentArticles(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference =
-                (JSONObject) cache.get(Preference.PREFERENCE);
+        final JSONObject preference = getPreference();
         final int recentArticleDisplayCnt =
                 preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
 
@@ -189,12 +208,6 @@ public final class Filler {
      */
     public void fillSide(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject tagResult = tagRepository.get(1, Integer.MAX_VALUE);
-        final List<JSONObject> tags =
-                org.b3log.latke.util.CollectionUtils.jsonArrayToList(
-                tagResult.getJSONArray(Keys.RESULTS));
-        dataModel.put(Tag.TAGS, tags);
-
         final JSONObject linkResult = linkRepository.get(1, Integer.MAX_VALUE);
         final List<JSONObject> links =
                 org.b3log.latke.util.CollectionUtils.jsonArrayToList(
