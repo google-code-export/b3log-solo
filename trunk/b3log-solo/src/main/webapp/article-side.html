@@ -43,6 +43,21 @@
             </ul>
         </li>
     </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
+            <h2>Link</h2>
+            <ul>
+                <#list links as link>
+                <li>
+                    <a href="${link.linkAddress}" target="_blank">
+                        ${link.linkTitle}
+                    </a>
+                </li>
+                </#list>
+            </ul>
+        </li>
+    </ul>
 </div>
 <script type="text/javascript">
     if (window.location.search === "") {
