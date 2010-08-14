@@ -20,7 +20,7 @@
             <ul>
                 <#list recentArticles as article>
                 <li>
-                    <a name="${article.oId}" href="article-detail.do?oId=${article.oId}">
+                    <a name="recent${article.oId}" href="article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
                     </a>
                 </li>
@@ -35,7 +35,7 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
-                    <a name="${article.oId}" href="article-detail.do?oId=${article.oId}">
+                    <a name="$most{article.oId}" href="article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
                     </a>
                 </li>

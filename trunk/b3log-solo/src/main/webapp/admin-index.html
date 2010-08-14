@@ -33,6 +33,9 @@
                     <li>
                         <span>link</span>
                     </li>
+                    <li>
+                        <span>preference</span>
+                    </li>
                 </ul>
             </div>
             <div class="left main">
@@ -59,7 +62,8 @@
         <script type="text/javascript" src="js/lib/editor/kindeditor-min.js"></script>
         <script type="text/javascript">
             $("#navi li").each(function (i) {
-                var naviURL = ['article', 'article-list', 'link-list'],//文章,文章列表,链接
+                var naviURL = ['article', 'article-list', 'link-list', 'preference'],
+                //文章,文章列表,链接, 配置
                 $it = $(this);
                 $it.click(function () {
                     var loadURL = "admin-" + naviURL[i] + ".do";

@@ -12,44 +12,35 @@
 }
 
 .pagination-pagination span{
-    margin: 4px 5px 0 4px;
+    margin: 0px 5px 0 4px;
     display: block;
-    text-align: center;
     float: left;
-    border: 1px solid gray;
-    width: 20px;
+    cursor: pointer;
 }
+
 .pagination-page {
-    background-color: #D0D0D0;
-    color: #000000;
+    color: #4272DB;
 }
 
 .pagination-pageHover {
-    background-color: #D9F0FC;
-    color: #008EE8
 }
 
 .pagination-pageCurrent {
-    background-color: #D9F0FC;
-    color: #008EE8;
-
+    color: #000000;
+    font-weight: bold;
 }
 
 .pagination-prePage {
-    color: #000000;
 }
 
 .pagination-nextPage {
-    color: #000000;
 }
 
 .pagination-prePageHover {
-    background-color: #EEEEEE;
     color: #000000;
 }
 
 .pagination-nextPageHover {
-    background-color: #EEEEEE;
     color: #000000;
 }
 

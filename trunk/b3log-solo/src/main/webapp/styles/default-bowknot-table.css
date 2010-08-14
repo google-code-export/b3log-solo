@@ -36,13 +36,10 @@
 .table-header th {
     border: 1px solid #CCCCCC;
     border-left-style: none;
-    color: #333333;
     height: 28px;
-    background: url("../images/table-header.jpg") repeat;
 }
 
 .table-main td {
-    border-right: 1px solid #D0D0D0;
     border-bottom: 1px solid #D0D0D0;
     color: #333333;
     padding: 3px 0;
