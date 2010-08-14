@@ -304,7 +304,7 @@ public final class ArticleService extends AbstractRemoteService {
 
         try {
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
-            LOGGER.debug("Removing article[oId=" + articleId + "]");
+            LOGGER.debug("Removing an article[oId=" + articleId + "]");
             // Step 1: Dec reference count of tag
             decTagRefCount(articleId);
             // Step 2: Remove tag-article relations
@@ -314,7 +314,7 @@ public final class ArticleService extends AbstractRemoteService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
 
-            LOGGER.debug("Removed article[oId=" + articleId + "]");
+            LOGGER.debug("Removed an article[oId=" + articleId + "]");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
