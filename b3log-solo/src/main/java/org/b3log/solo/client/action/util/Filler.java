@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 12, 2010
+ * @version 1.0.0.3, Aug 14, 2010
  */
 public final class Filler {
 
@@ -216,6 +216,23 @@ public final class Filler {
                 articleRepository.getRecentArticles(recentArticleDisplayCnt);
 
         dataModel.put(Common.RECENT_ARTICLES, recentArticles);
+    }
+
+    /**
+     * Fills article-header.html.
+     *
+     * @param dataModel data model
+     * @throws Exception exception
+     */
+    public void fillBlogHeader(final Map<String, Object> dataModel)
+            throws Exception {
+        final JSONObject preference = getPreference();
+        final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+        final String blogSubtitle = preference.getString(
+                Preference.BLOG_SUBTITLE);
+
+        dataModel.put(Preference.BLOG_TITLE, blogTitle);
+        dataModel.put(Preference.BLOG_SUBTITLE, blogSubtitle);
     }
 
     /**

@@ -81,7 +81,9 @@ public final class TagsAction extends AbstractAction {
 
             final List<Object> tags = CollectionUtils.jsonArrayToList(tagArray);
             ret.put(Tag.TAGS, tags);
+
             filler.fillSide(ret);
+            filler.fillBlogHeader(ret);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);

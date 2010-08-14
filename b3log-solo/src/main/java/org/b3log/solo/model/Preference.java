@@ -28,6 +28,14 @@ public final class Preference {
      */
     public static final String PREFERENCE = "preference";
     /**
+     * Blog title.
+     */
+    public static final String BLOG_TITLE = "blogTitle";
+    /**
+     * Blog subtitle.
+     */
+    public static final String BLOG_SUBTITLE = "blogSubtitle";
+    /**
      * Recent article display count.
      */
     public static final String RECENT_ARTICLE_DISPLAY_CNT = "recentArticleDisplayCount";
