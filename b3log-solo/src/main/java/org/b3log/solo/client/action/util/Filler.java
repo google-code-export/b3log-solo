@@ -191,10 +191,11 @@ public final class Filler {
     public void fillMostCommentArticles(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = getPreference();
-        final int mostUsedTagDisplayCnt =
-                preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
+        final int mostCommentArticleDisplayCnt =
+                preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostCommentArticles =
-                articleRepository.getMostCommentArticles(mostUsedTagDisplayCnt);
+                articleRepository.getMostCommentArticles(
+                mostCommentArticleDisplayCnt);
 
         dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
     }
