@@ -36,6 +36,7 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.model.Common;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +44,7 @@ import org.json.JSONObject;
  * Article action. article-detail.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 11, 2010
+ * @version 1.0.0.3, Aug 14, 2010
  */
 public final class ArticleAction extends AbstractAction {
 
@@ -98,18 +99,26 @@ public final class ArticleAction extends AbstractAction {
                     getQueryStringJSONObject(request);
             final String articleId =
                     queryStringJSONObject.getString(Keys.OBJECT_ID);
-            // Step 1: Get the article
+            // Get the article
             final JSONObject article = articleRepository.get(articleId);
             LOGGER.trace("Article[title="
-                         + article.getString(Article.ARTICLE_TITLE) + "]");
-            // Step 2: Get tags
-            final List<JSONObject> articleTags = getTags(articleId);
-            // Step 3: Get comments
-            final List<JSONObject> articleComments = getComments(articleId);
-
-            ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
-            ret.put(Article.ARTICLE_TAGS_REF, articleTags);
+                    + article.getString(Article.ARTICLE_TITLE) + "]");
             ret.put(Article.ARTICLE, article);
+            // Get tags
+            final List<JSONObject> articleTags = getTags(articleId);
+            ret.put(Article.ARTICLE_TAGS_REF, articleTags);
+            // Get comments
+            final List<JSONObject> articleComments = getComments(articleId);
+            ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
+            // Get the previous article id
+            final String previsouArticleId = articleRepository.
+                    getPrevisouArticleId(articleId);
+            ret.put(Common.PREVIOUS_ARTICLE_ID, previsouArticleId);
+            // Get the next article id
+            final String nextArticleId =
+                    articleRepository.getNextArticleId(articleId);
+            ret.put(Common.NEXT_ARTICLE_ID, nextArticleId);
+
 
             filler.fillSide(ret);
         } catch (final Exception e) {
@@ -138,7 +147,7 @@ public final class ArticleAction extends AbstractAction {
                     articleCommentRelations.get(i);
             final String commentId =
                     articleCommentRelation.getString(Comment.COMMENT + "_"
-                                                     + Keys.OBJECT_ID);
+                    + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
             ret.add(comment);
