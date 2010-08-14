@@ -16,25 +16,7 @@
     padding: 6px;
 }
 
-.footer {
-    text-align: center;
-    margin: 12px;
-}
-
 /* top */
-#top {
-    border-bottom: 1px solid #C9D7F1;
-    padding:3px;
-    margin-bottom: 24px;
-}
-
-#top span, .footer span {
-    margin: 0 -2px;
-}
-
-#top a, .footer a {
-    text-decoration: none;
-}
 
 /* navi */
 #navi li {
@@ -64,20 +46,4 @@
 #articlePagination, #linkPagination {
     float: right;
     margin: 10px;
-}
-
-/* article */
-.form th {
-    text-align: right;
-}
-.form input, .form textarea {
-    width: 100%;
-}
-
-.form input:focus, .form textarea:focus {
-    border: 2px solid #73A6FF;
-}
-
-.form input {
-    height: 24px;
 }

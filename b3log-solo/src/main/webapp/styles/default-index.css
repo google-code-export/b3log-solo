@@ -6,19 +6,6 @@
         user blog style.
 */
 /* framework */
-#top {
-    border-bottom: 1px solid #C9D7F1;
-    padding:3px;
-}
-
-#top span, .footer span {
-    margin: 0 -2px;
-}
-
-#top a, .footer a {
-    text-decoration: none;
-}
-
 .content {
     width: 980px;
     margin: 0 auto;
@@ -37,11 +24,6 @@
     width: 766px;
     border-left: 2px solid  #E5ECF9;
     padding-left: 12px;
-}
-
-.footer {
-    text-align: center;
-    margin: 12px;
 }
 
 /* header */
