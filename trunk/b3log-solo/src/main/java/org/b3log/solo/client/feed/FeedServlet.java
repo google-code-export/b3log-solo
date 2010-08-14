@@ -76,8 +76,10 @@ public final class FeedServlet extends HttpServlet {
         try {
             final JSONObject preference = preferences.getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
 
             feed.setTitle(blogTitle);
+            feed.setSubtitle(blogSubtitle);
             feed.setUpdated(new Date());
             feed.addAuthor(blogTitle);
 
