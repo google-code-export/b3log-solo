@@ -24,7 +24,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <th colspan="2">
+                    <td>
+                        <span id="error" class="errorMsg"></span>
+                    </td>
+                    <th>
                         <button onclick="login();">submit</button>
                     </th>
                 </tr>
@@ -36,7 +39,15 @@
     var loginDialog = undefined;
 
     var logout = function () {
-        getStatus();
+        jsonRpc.userService.logout(function (result, error) {
+            switch (result.sc) {
+                case "USER_LOGOUT_SUCC":
+                    getStatus();
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     var popLogin = function () {
@@ -45,7 +56,7 @@
 
     var getStatus = function () {
         $("#loginStatus").unbind("click");
-        if (0 === 0) {
+        if (${loginStatus} === 0) {
             $("#loginStatus").bind("click", popLogin).text("login");
         } else {
             $("#loginStatus").bind("click", logout).text("logout");
@@ -54,7 +65,21 @@
     getStatus();
 
     var login = function () {
-        loginDialog.dialog("close");
-        getStatus();
+        var requestJSONObject = {
+            "userPassword": $("#password").val()
+        };
+        jsonRpc.userService.login(function (result, error) {
+            switch (result.sc) {
+                case "USER_LOGIN_SUCC":
+                    loginDialog.dialog("close");
+                    getStatus();
+                    break;
+                case "USER_LOGIN_FAIL_":
+                    $("#error").text("login fail!");
+                    break;
+                default:
+                    break;
+            }
+        }, requestJSONObject);
     }
 </script>
