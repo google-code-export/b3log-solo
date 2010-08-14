@@ -26,6 +26,7 @@ import org.b3log.latke.client.remote.AbstractRemoteService;
 import org.b3log.latke.util.cache.Cache;
 import org.b3log.latke.util.cache.qualifier.LruMemory;
 import org.b3log.solo.client.StatusCodes;
+import org.b3log.solo.client.util.Preferences;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.jabsorb.JSONRPCBridge;
@@ -59,6 +60,11 @@ public final class PreferenceService extends AbstractRemoteService {
     @Inject
     @LruMemory
     private Cache<String, ?> cache;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private Preferences preferences;
 
     /**
      * Public constructor with parameter. Invokes constructor of superclass.
@@ -91,8 +97,7 @@ public final class PreferenceService extends AbstractRemoteService {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject preference =
-                    (JSONObject) cache.get(Preference.PREFERENCE);
+            final JSONObject preference = preferences.getPreference();
 
             ret.put(Preference.PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_PREFERENCE_SUCC);
