@@ -50,10 +50,6 @@ import org.json.JSONObject;
 public final class ArticleService extends AbstractRemoteService {
 
     /**
-     * Generated serial version uid.
-     */
-    private static final long serialVersionUID = 2547731736227195231L;
-    /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleService.class);
