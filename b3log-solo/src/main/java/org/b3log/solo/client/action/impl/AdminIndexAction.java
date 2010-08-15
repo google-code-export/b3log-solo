@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Admin index action. admin-index.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 14, 2010
+ * @version 1.0.0.1, Aug 15, 2010
  */
 public final class AdminIndexAction extends AbstractAction {
 
@@ -78,8 +78,8 @@ public final class AdminIndexAction extends AbstractAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
-            final JSONObject currentUser = Sessions.currentUser(request);
-            if (null == currentUser) {
+            final String currentUserName = Sessions.currentUserName(request);
+            if (null == currentUserName) {
                 ret.put(Common.LOGINT_STATUS, 0);
             } else {
                 ret.put(Common.LOGINT_STATUS, 1);

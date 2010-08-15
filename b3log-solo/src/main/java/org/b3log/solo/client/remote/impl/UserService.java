@@ -81,14 +81,14 @@ public final class UserService extends AbstractRemoteService {
             final String requestPwd =
                     requestJSONObject.getString(User.USER_PASSWORD);
 
-            final JSONObject currentUser = Sessions.currentUser(request);
-            final String currentUserPwd =
-                    currentUser.getString(User.USER_PASSWORD);
+            final String currentUserName = Sessions.currentUserName(request);
+            String currentUserPwd = Sessions.currentUserPwd(request);
 
             if (MD5.hash(requestPwd).equals(currentUserPwd)) {
-                currentUser.put(User.USER_PASSWORD, MD5.hash(newPwd));
-                userRepository.update(User.USER, currentUser);
-                Sessions.login(request, currentUser);
+                currentUserPwd = MD5.hash(newPwd);
+                userRepository.updateUserPassword(User.USER_NAME,
+                                                  currentUserPwd);
+                Sessions.login(request, currentUserName, currentUserPwd);
 
                 ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PASSWORD_SUCC);
             }
@@ -154,12 +154,13 @@ public final class UserService extends AbstractRemoteService {
                     requestJSONObject.getString(User.USER_PASSWORD);
 
             final JSONObject user = userRepository.get(User.USER);
+            final String userName = user.getString(User.USER_NAME);
             final String userPassword = user.getString(User.USER_PASSWORD);
             if (!MD5.hash(loginPassword).equals(userPassword)) {
                 ret.put(Keys.STATUS_CODE, StatusCodes.USER_LOGIN_FAIL_);
             } else {
                 ret.put(Keys.STATUS_CODE, StatusCodes.USER_LOGIN_SUCC);
-                Sessions.login(request, user);
+                Sessions.login(request, userName, userPassword);
             }
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);

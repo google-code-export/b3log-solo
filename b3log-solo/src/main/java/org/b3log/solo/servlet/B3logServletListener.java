@@ -116,6 +116,7 @@ public final class B3logServletListener extends AbstractServletListener {
                 final ResourceBundle config = ResourceBundle.getBundle(
                         "b3log-solo");
                 final String pwd = config.getString(User.USER_PASSWORD);
+                user.put(User.USER_NAME, User.USER);
                 user.put(Keys.OBJECT_ID, User.USER);
                 user.put(User.USER_PASSWORD, MD5.hash(pwd));
                 userRepository.add(user);
