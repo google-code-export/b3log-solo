@@ -70,7 +70,7 @@ public final class FeedServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("application/xml");
+        response.setContentType("application/atom+xml");
 
         final Feed feed = feedFactory.newFeed();
         try {
