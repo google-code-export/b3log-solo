@@ -77,7 +77,7 @@ public final class ArticleService extends AbstractRemoteService {
      * Event manager.
      */
     @Inject
-    private EventManager eventManager;
+    private transient EventManager eventManager;
 
     /**
      * Public constructor with parameter. Invokes constructor of superclass.
