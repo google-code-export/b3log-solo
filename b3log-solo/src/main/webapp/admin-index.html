@@ -14,6 +14,7 @@
     </head>
     <body>
         <#include "common-top.html">
+        <div id="tipMsg" class="errorMsg">rrr</div>
         <div>
             <div class="left side">
                 <ul id="navi">
@@ -41,6 +42,16 @@
             </div>
         </div>
         <script type="text/javascript">
+            // tipMsg
+            (function () {
+                setInterval(function () {
+                    if($("#tipMsg").text() !== "") {
+                        $("#tipMsg").text("");
+                    }
+                }, 6000);
+            })();
+
+            // navi
             $("#navi li").each(function (i) {
                 var naviURL = ['article', 'article-list', 'link-list', 'preference'],
                 //文章,文章列表,链接, 配置
@@ -61,8 +72,8 @@
 
             // util
             var setCurrentNaviStyle = function (i) {
-                $("#navi span").removeClass('selected');
-                $($("#navi span").get(i)).addClass("selected");
+                $("#navi li").removeClass('selected');
+                $($("#navi li").get(i)).addClass("selected");
             }
         </script>
     </body>

@@ -6,7 +6,6 @@
     <div id="comments" class="none">
     </div>
     <div class="clear"></div>
-
     <table class="form" width="100%" cellpadding="0px" cellspacing="9px">
         <thead>
             <tr>
@@ -44,7 +43,7 @@
             <thead>
                 <tr>
                     <th style="text-align: left" colspan="2">
-                        Add Link
+                        Update Link
                     </th>
                 </tr>
             </thead>
@@ -161,14 +160,14 @@
             jsonRpc.linkService.removeLink(function (result, error) {
                 switch (result.sc) {
                     case "REMOVE_LINK_SUCC":
-                        alert("删除成功！");
+                        $("#tipMsg").text("删除成功！");
                         getLinkList(1);
                         break;
                     case "REMOVE_LINK_FAIL_":
-                        alert("删除失败！");
+                        $("#tipMsg").text("删除失败！");
                         break;
                     case "PERMISSION_ERROR":
-                        alert("您没有权限进行此项操作！");
+                        $("#tipMsg").text("您没有权限进行此项操作！");
                         break;
                     default:
                         break;
@@ -230,8 +229,8 @@
         jsonRpc.linkService.updateLink(function (result, error) {
             switch (result.sc) {
                 case "UPDATE_LINK_SUCC":
-                    alert("更新成功！");
                     linkDialog.dialog("close");
+                    $("#tipMsg").text("更新成功！");
                     getLinkList(currentPage);
                     break;
                 default:
@@ -250,7 +249,7 @@
         jsonRpc.linkService.addLink(function (result, error) {
             switch (result.sc) {
                 case "ADD_LINK_SUCC":
-                    alert("添加成功！");
+                    $("#tipMsg").text("添加成功！");
                     getLinkList(currentPage);
                     break;
                 default:

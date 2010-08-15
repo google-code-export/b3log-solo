@@ -17,6 +17,11 @@
 }
 
 /* top */
+#tipMsg {
+    line-height: 24px;
+    height: 24px;
+    text-align: center;
+}
 
 /* navi */
 #navi li {

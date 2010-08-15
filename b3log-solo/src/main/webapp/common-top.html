@@ -52,11 +52,7 @@
 
     var popLogin = function () {
         loginDialog = $("#loginPanel").dialog();
-        $("#password").focus().keypress(function (event) {
-            if (event.keyCode === 13) {
-                login();
-            }
-        });
+        $("#password").focus();
     }
 
     var getStatus = function () {
@@ -71,6 +67,15 @@
         if (window.location.pathname === "/admin-index.do") {
             $("#admin").hide();
         }
+
+        $("#password").keypress(function (event) {
+            if (event.keyCode === 13) {
+                login();
+            }
+        }).bind("focus", function () {
+            $("#error").text("");
+            $("#password").val("");
+        });
     }
     getStatus();
 

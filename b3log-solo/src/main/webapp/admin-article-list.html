@@ -121,14 +121,14 @@
             jsonRpc.articleService.removeArticle(function (result, error) {
                 switch (result.sc) {
                     case "REMOVE_ARTICLE_SUCC":
-                        alert("删除成功！");
+                        $("#tipMsg").text("删除成功！");
                         getArticleList(1);
                         break;
                     case "REMOVE_ARTICLE_FAIL_":
-                        alert("删除失败！");
+                        $("#tipMsg").text("删除失败！");
                         break;
                     case "PERMISSION_ERROR":
-                        alert("您没有权限进行此项操作！");
+                        $("#tipMsg").text("您没有权限进行此项操作！");
                         break;
                     default:
                         break;
@@ -212,7 +212,7 @@
         jsonRpc.commentService.removeComment(function (result, error) {
             switch (result.sc) {
                 case "REMOVE_COMMENT_SUCC":
-                    alert("删除成功");
+                    $("#tipMsg").text("删除成功");
                     getComment();
                     break;
                 default:
