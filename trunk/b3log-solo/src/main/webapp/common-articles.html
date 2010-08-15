@@ -15,7 +15,7 @@
             ${article.articleAbstract}
         </div>
         <div class="right">
-            tags:
+            ${tagLabel}
             <#list article.articleTags as articleTag>
             <span>
                 <a href="tag-articles.do?oId=${articleTag.oId}">
