@@ -58,12 +58,12 @@ public final class PreferenceService extends AbstractRemoteService {
      */
     @Inject
     @LruMemory
-    private transient Cache<String, ?> cache;
+    private Cache<String, ?> cache;
     /**
      * Preference utilities.
      */
     @Inject
-    private transient Preferences preferences;
+    private Preferences preferences;
 
     /**
      * Gets preference.
