@@ -60,8 +60,9 @@
         jsonRpc.articleService.addArticle(function (result, error) {
             switch (result.sc) {
                 case "ADD_ARTICLE_SUCC":
-                    alert("添加成功！");
+                    setCurrentNaviStyle(1);
                     $("#content").load("admin-article-list.do");
+                    $("#tipMsg").text("添加文章成功！");
                     break;
                 default:
                     break;
@@ -82,8 +83,9 @@
         jsonRpc.articleService.updateArticle(function (result, error) {
             switch (result.sc) {
                 case "UPDATE_ARTICLE_SUCC":
-                    alert("更新成功！");
+                    setCurrentNaviStyle(1);
                     $("#content").load("admin-article-list.do");
+                    $("#tipMsg").text("更新文章成功！");
                     break;
                 default:
                     break;

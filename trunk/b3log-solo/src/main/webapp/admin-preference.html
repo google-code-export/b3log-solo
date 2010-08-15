@@ -80,7 +80,7 @@
         jsonRpc.preferenceService.updatePreference(function (result, error) {
             switch (result.sc) {
                 case "UPDATE_PREFERENCE_SUCC":
-                    alert("update sucess!");
+                    $("#tipMsg").text("update preference sucess!");
                     break;
                 case "GET_ARTICLE_FAIL_":
                     break;
