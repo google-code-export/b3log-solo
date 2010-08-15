@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>B3log 后台管理</title>
+        <title>${adminConsole}</title>
         <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <script type="text/javascript" src="js/json-rpc.js"></script>
@@ -19,16 +19,16 @@
             <div class="left side">
                 <ul id="navi">
                     <li>
-                        <span>文章</span>
+                        <span>${postArticle}</span>
                     </li>
                     <li>
-                        <span>文章列表</span>
+                        <span>${articleList}</span>
                     </li>
                     <li>
-                        <span>link</span>
+                        <span>${linkManagement}</span>
                     </li>
                     <li>
-                        <span>preference</span>
+                        <span>${preference}</span>
                     </li>
                 </ul>
             </div>
@@ -54,7 +54,6 @@
             // navi
             $("#navi li").each(function (i) {
                 var naviURL = ['article', 'article-list', 'link-list', 'preference'],
-                //文章,文章列表,链接, 配置
                 $it = $(this);
                 $it.click(function () {
                     var loadURL = "admin-" + naviURL[i] + ".do";

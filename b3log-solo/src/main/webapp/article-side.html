@@ -1,7 +1,7 @@
 <div id="sideNavi">
     <ul>
         <li>
-            <h2>Popular Tags</h2>
+            <h2>${popTags}</h2>
             <ul>
                 <#list mostUsedTags as tag>
                 <li>
@@ -16,7 +16,7 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h2>Recent Entries</h2>
+            <h2>${recentArticles}</h2>
             <ul>
                 <#list recentArticles as article>
                 <li>
@@ -31,7 +31,7 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h2>Most comments Articles</h2>
+            <h2>${mostCommentArticles}</h2>
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
@@ -46,7 +46,7 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h2>Link</h2>
+            <h2>${link}</h2>
             <ul>
                 <#list links as link>
                 <li>
