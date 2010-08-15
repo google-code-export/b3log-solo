@@ -17,14 +17,17 @@ package org.b3log.solo.repository.impl;
 
 import org.apache.log4j.Logger;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.repository.UserRepository;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * User Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 14, 2010
+ * @version 1.0.0.1, Aug 15, 2010
  */
 public class UserGAERepository extends AbstractGAERepository
         implements UserRepository {
@@ -38,5 +41,19 @@ public class UserGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return User.USER;
+    }
+
+    @Override
+    public void updateUserPassword(final String userId, final String newPwd)
+            throws RepositoryException {
+        final JSONObject user = get(userId);
+
+        try {
+            user.put(User.USER_PASSWORD, newPwd);
+            update(userId, user);
+        } catch (final JSONException e) {
+            LOGGER.error("Updates user[oId=" + userId + "] error");
+            throw new RepositoryException(e);
+        }
     }
 }

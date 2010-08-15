@@ -211,8 +211,8 @@ public final class Filler {
 
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
         dataModel.put(Preference.BLOG_SUBTITLE, blogSubtitle);
-        final JSONObject currentUser = Sessions.currentUser(request);
-        if (null == currentUser) {
+        final String currentUserName = Sessions.currentUserName(request);
+        if (null == currentUserName) {
             dataModel.put(Common.LOGINT_STATUS, 0);
         } else {
             dataModel.put(Common.LOGINT_STATUS, 1);

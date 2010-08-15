@@ -16,12 +16,23 @@
 package org.b3log.solo.repository;
 
 import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.RepositoryException;
 
 /**
  * User repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 14, 2010
+ * @version 1.0.0.1, Aug 15, 2010
  */
 public interface UserRepository extends Repository {
+
+    /**
+     * Updates user password with the specified new password.
+     * 
+     * @param userId the specified user id
+     * @param newPwd the specified new password
+     * @throws RepositoryException repository exception
+     */
+    void updateUserPassword(final String userId, final String newPwd)
+            throws RepositoryException;
 }
