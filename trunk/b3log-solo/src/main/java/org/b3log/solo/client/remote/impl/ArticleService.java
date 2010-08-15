@@ -17,6 +17,7 @@ package org.b3log.solo.client.remote.impl;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -270,7 +271,22 @@ public final class ArticleService extends AbstractRemoteService {
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
+            // Date objects to strings
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.getJSONObject(i);
+                final Date createDate = 
+                        (Date) article.get(Article.ARTICLE_CREATE_DATE);
+                final Date updateDate = 
+                        (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+                final String createDateString = 
+                        Keys.SIMPLE_DATE_FORMAT.format(createDate);
+                final String updateDateString = 
+                        Keys.SIMPLE_DATE_FORMAT.format(updateDate);
+                
+                article.put(Article.ARTICLE_CREATE_DATE, createDateString);
+                article.put(Article.ARTICLE_UPDATE_DATE, updateDateString);
+            }
 
             ret.put(Pagination.PAGINATION, pagination);
             ret.put(Article.ARTICLES, articles);
