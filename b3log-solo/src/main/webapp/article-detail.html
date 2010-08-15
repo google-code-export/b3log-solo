@@ -57,16 +57,18 @@
                         <div class="clear"></div>
                     </div>
                     <div id="comments">
-                        <#list articleComments as comment>
                         <div>
-                            <div class="title">
-                                ${comment.commentDate}
+                            <#list articleComments as comment>
+                            <div>
+                                <div class="title">
+                                    ${comment.commentDate}
+                                </div>
+                                <div class="contentBody">
+                                    ${comment.commentContent}
+                                </div>
                             </div>
-                            <div class="contentBody">
-                                ${comment.commentContent}
-                            </div>
+                            </#list>
                         </div>
-                        </#list>
                         <div class="title">
                             发表评论
                         </div>
@@ -94,7 +96,11 @@
                 jsonRpc.commentService.addComment(function (result, error) {
                     switch (result.sc) {
                         case "COMMENT_ARTICLE_SUCC":
-                            alert("评论成功成功！");
+                            var commentHTML = "<div><div class='title'>"
+                                + ${comment.commentDate}
+                                + "</div><div class='contentBody'>" + $("#comment").val()
+                                + "</div></div>";
+                            $($("#comments div").get(0)).append(commentHTML);
                             break;
                         default:
                             break;
