@@ -65,7 +65,7 @@ public final class B3logServletListener extends AbstractServletListener {
      * JavaScript services and event listeners.
      */
     public B3logServletListener() {
-        setClientRemoteServicePackage("org/b3log/solo/client/remote/impl");
+        setClientRemoteServicePackage("org/b3log/solo/client/jsonrpc/impl");
     }
 
     /**
