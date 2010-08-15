@@ -28,7 +28,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.util.MD5;
 import org.b3log.solo.client.StatusCodes;
 import org.b3log.solo.repository.UserRepository;
-import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
 /**
@@ -52,16 +51,6 @@ public final class UserService extends AbstractRemoteService {
      */
     @Inject
     private UserRepository userRepository;
-
-    /**
-     * Public constructor with parameter. Invokes constructor of superclass.
-     *
-     * @param jsonRpcBridge the specified json rpc bridge.
-     */
-    @Inject
-    public UserService(final JSONRPCBridge jsonRpcBridge) {
-        super(jsonRpcBridge);
-    }
 
     /**
      *

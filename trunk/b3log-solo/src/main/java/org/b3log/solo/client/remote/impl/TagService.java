@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.client.remote.AbstractRemoteService;
-import org.jabsorb.JSONRPCBridge;
 
 /**
  * Tag service for JavaScript client.
@@ -48,14 +47,4 @@ public final class TagService extends AbstractRemoteService {
      */
     @Inject
     private TagArticleRepository tagArticleRepository;
-
-    /**
-     * Public constructor with parameter. Invokes constructor of superclass.
-     *
-     * @param jsonRpcBridge the specified json rpc bridge.
-     */
-    @Inject
-    public TagService(final JSONRPCBridge jsonRpcBridge) {
-        super(jsonRpcBridge);
-    }
 }

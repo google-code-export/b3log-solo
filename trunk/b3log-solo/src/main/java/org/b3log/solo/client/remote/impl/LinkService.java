@@ -29,7 +29,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.solo.client.StatusCodes;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
-import org.jabsorb.JSONRPCBridge;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,16 +53,6 @@ public final class LinkService extends AbstractRemoteService {
      */
     @Inject
     private LinkRepository linkRepository;
-
-    /**
-     * Public constructor with parameter. Invokes constructor of superclass.
-     *
-     * @param jsonRpcBridge the specified json rpc bridge.
-     */
-    @Inject
-    public LinkService(final JSONRPCBridge jsonRpcBridge) {
-        super(jsonRpcBridge);
-    }
 
     /**
      * Gets a link by the specified request json object.
