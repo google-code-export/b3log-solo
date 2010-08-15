@@ -28,7 +28,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.remote.AbstractRemoteService;
-import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
 /**
@@ -62,16 +61,6 @@ public final class CommentService extends AbstractRemoteService {
      */
     @Inject
     private ArticleRepository articleRepository;
-
-    /**
-     * Public constructor with parameter. Invokes constructor of superclass.
-     *
-     * @param jsonRpcBridge the specified json rpc bridge.
-     */
-    @Inject
-    public CommentService(final JSONRPCBridge jsonRpcBridge) {
-        super(jsonRpcBridge);
-    }
 
     /**
      * Gets comments of an article specified by the article id.
@@ -111,7 +100,7 @@ public final class CommentService extends AbstractRemoteService {
                         articleCommentRelations.get(i);
                 final String commentId =
                         articleCommentRelation.getString(Comment.COMMENT + "_"
-                                                         + Keys.OBJECT_ID);
+                        + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
                 comments.add(comment);

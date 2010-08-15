@@ -29,7 +29,6 @@ import org.b3log.solo.client.StatusCodes;
 import org.b3log.solo.client.util.Preferences;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
 /**
@@ -65,16 +64,6 @@ public final class PreferenceService extends AbstractRemoteService {
      */
     @Inject
     private transient Preferences preferences;
-
-    /**
-     * Public constructor with parameter. Invokes constructor of superclass.
-     *
-     * @param jsonRpcBridge the specified json rpc bridge.
-     */
-    @Inject
-    public PreferenceService(final JSONRPCBridge jsonRpcBridge) {
-        super(jsonRpcBridge);
-    }
 
     /**
      * Gets preference.

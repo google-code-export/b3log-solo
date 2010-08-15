@@ -37,7 +37,6 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.jabsorb.JSONRPCBridge;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,16 +77,6 @@ public final class ArticleService extends AbstractRemoteService {
      */
     @Inject
     private transient EventManager eventManager;
-
-    /**
-     * Public constructor with parameter. Invokes constructor of superclass.
-     *
-     * @param jsonRpcBridge the specified json rpc bridge.
-     */
-    @Inject
-    public ArticleService(final JSONRPCBridge jsonRpcBridge) {
-        super(jsonRpcBridge);
-    }
 
     /**
      * Adds an article from the specified request json object and http servlet
