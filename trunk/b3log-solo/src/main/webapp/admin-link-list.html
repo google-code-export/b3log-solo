@@ -74,7 +74,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var currentPage = 1,
+    var currentPage = 0, pageCount,
     linkDialog = undefined;
     var linkList = $("#linkList").table({
         resizable: true,
@@ -124,7 +124,7 @@
         bindEvent: "getLinkList",
         pageCount: 10,
         windowSize: 5,
-        currentPage: 1,
+        currentPage: 0,
         style: "google",
         isGoTo: false
     });
@@ -139,122 +139,126 @@
             switch (result.sc) {
                 case "GET_LINK_SUCC":
                     $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
-                    $("#updateLinkAddress").val(result.link.linkAddress);
-                    break;
-                case "GET_LINK_FAIL_":
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
-    }
-
-    var deleteLink = function (event) {
-        var isDelete = confirm("确定删除？");
-
-        if (isDelete) {
-            var requestJSONObject = {
-                "oId": event.data.id[0]
-            };
-
-            jsonRpc.linkService.removeLink(function (result, error) {
-                switch (result.sc) {
-                    case "REMOVE_LINK_SUCC":
-                        $("#tipMsg").text("删除成功！");
-                        getLinkList(1);
-                        break;
-                    case "REMOVE_LINK_FAIL_":
-                        $("#tipMsg").text("删除失败！");
-                        break;
-                    case "PERMISSION_ERROR":
-                        $("#tipMsg").text("您没有权限进行此项操作！");
-                        break;
-                    default:
-                        break;
-                }
-            }, requestJSONObject);
+                $("#updateLinkAddress").val(result.link.linkAddress);
+                break;
+            case "GET_LINK_FAIL_":
+                break;
+            default:
+                break;
         }
-    }
+    }, requestJSONObject);
+}
 
-    var getLinkList = function (pageNum) {
-        currentPage = pageNum;
+var deleteLink = function (event) {
+    var isDelete = confirm("确定删除？");
+
+    if (isDelete) {
         var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": 2,
-            "paginationWindowSize": 5
+            "oId": event.data.id[0]
         };
-        jsonRpc.linkService.getLinks(function (result, error) {
-            switch (result.sc) {
-                case "GET_LINKS_SUCC":
-                    var links = result.links;
-                    var linkData = [];
 
-                    for (var i = 0; i < links.length; i++) {
-                        linkData[i] = {};
-                        linkData[i].selected = false;
-                        linkData[i].linkTitle = links[i].linkTitle;
-                        linkData[i].linkAddress = links[i].linkAddress;
-                        linkData[i].update = "update";
-                        linkData[i].deleted = "delete";
-                        linkData[i].id = links[i].oId;
+        jsonRpc.linkService.removeLink(function (result, error) {
+            switch (result.sc) {
+                case "REMOVE_LINK_SUCC":
+                    $("#tipMsg").text("删除成功！");
+                    getLinkList(1);
+                    break;
+                case "REMOVE_LINK_FAIL_":
+                    $("#tipMsg").text("删除失败！");
+                    break;
+                case "PERMISSION_ERROR":
+                    $("#tipMsg").text("您没有权限进行此项操作！");
+                    break;
+                default:
+                    break;
+            }
+        }, requestJSONObject);
+    }
+}
+
+var getLinkList = function (pageNum) {
+    currentPage = pageNum;
+    var requestJSONObject = {
+        "paginationCurrentPageNum": pageNum,
+        "paginationPageSize": 2,
+        "paginationWindowSize": 5
+    };
+    jsonRpc.linkService.getLinks(function (result, error) {
+        switch (result.sc) {
+            case "GET_LINKS_SUCC":
+                var links = result.links;
+                var linkData = [];
+
+                for (var i = 0; i < links.length; i++) {
+                    linkData[i] = {};
+                    linkData[i].selected = false;
+                    linkData[i].linkTitle = links[i].linkTitle;
+                    linkData[i].linkAddress = links[i].linkAddress;
+                    linkData[i].update = "update";
+                    linkData[i].deleted = "delete";
+                    linkData[i].id = links[i].oId;
+                }
+
+                linkList.table({
+                    update:{
+                        data: linkData
                     }
+                });
+                
+                linkPagination.paginate({
+                    update: {
+                        currentPage: pageNum,
+                        pageCount: result.pagination.paginationPageCount
+                    }
+                });
+                pageCount = result.pagination.paginationPageCount;
+                break;
+            default:
+                break;
+        }
+    }, requestJSONObject);
+}
+getLinkList(1);
 
-                    linkList.table({
-                        update:{
-                            data: linkData
-                        }
-                    });
+var updateLink = function () {
+    var requestJSONObject = {
+        "link": {
+            "linkTitle": $("#updateLinkTitle").val(),
+            "oId": $("#updateLinkTitle").data("oId"),
+            "linkAddress": $("#updateLinkAddress").val()
+        }
+    };
+    jsonRpc.linkService.updateLink(function (result, error) {
+        switch (result.sc) {
+            case "UPDATE_LINK_SUCC":
+                linkDialog.dialog("close");
+                $("#tipMsg").text("更新成功！");
+                getLinkList(currentPage);
+                break;
+            default:
+                break;
+        }
+    }, requestJSONObject);
+}
 
-                    linkPagination.paginate({
-                        update: {
-                            pageCount: result.pagination.paginationPageCount
-                        }
-                    });
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
-    }
-    getLinkList(1);
-
-    var updateLink = function () {
-        var requestJSONObject = {
-            "link": {
-                "linkTitle": $("#updateLinkTitle").val(),
-                "oId": $("#updateLinkTitle").data("oId"),
-                "linkAddress": $("#updateLinkAddress").val()
-            }
-        };
-        jsonRpc.linkService.updateLink(function (result, error) {
-            switch (result.sc) {
-                case "UPDATE_LINK_SUCC":
-                    linkDialog.dialog("close");
-                    $("#tipMsg").text("更新成功！");
-                    getLinkList(currentPage);
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
-    }
-
-    var submitLink = function () {
-        var requestJSONObject = {
-            "link": {
-                "linkTitle": $("#linkTitle").val(),
-                "linkAddress": $("#linkAddress").val()
-            }
-        };
-        jsonRpc.linkService.addLink(function (result, error) {
-            switch (result.sc) {
-                case "ADD_LINK_SUCC":
-                    $("#tipMsg").text("添加成功！");
-                    getLinkList(currentPage);
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
-    }
+var submitLink = function () {
+    var requestJSONObject = {
+        "link": {
+            "linkTitle": $("#linkTitle").val(),
+            "linkAddress": $("#linkAddress").val()
+        }
+    };
+    jsonRpc.linkService.addLink(function (result, error) {
+        switch (result.sc) {
+            case "ADD_LINK_SUCC":
+                $("#tipMsg").text("添加成功！");
+                $("#linkTitle").val("");
+                $("#linkAddress").val("");
+                getLinkList(pageCount);
+                break;
+            default:
+                break;
+        }
+    }, requestJSONObject);
+}
 </script>
