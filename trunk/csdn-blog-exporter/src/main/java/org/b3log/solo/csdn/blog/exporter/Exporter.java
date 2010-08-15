@@ -15,13 +15,17 @@
  */
 package org.b3log.solo.csdn.blog.exporter;
 
-import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.log4j.Logger;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 
@@ -31,8 +35,12 @@ import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 15, 2010
  */
-public final class App {
+public final class Exporter {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Exporter.class);
     /**
      * Method.
      */
@@ -43,81 +51,129 @@ public final class App {
     private static final String URL =
             "http://blog.csdn.net/DL88250/services/metablogapi.aspx";
     /**
-     * Article id.
+     * XML-RPC client configuration.
      */
-    private static final String ARTICLE_ID = "5749003";
+    private XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
     /**
-     * User id.
+     * XML-RPC client.
      */
-    private static final String USER_ID = "DL88250";
+    private XmlRpcClient client = new XmlRpcClient();
+    /**
+     * Blogger.
+     */
+    private Blogger blogger;
 
     /**
-     * Main.
+     * Constructs a CSDN blog exporter for the specified blogger.
      *
-     * @param args args
+     * @param blogger the specified blogger
      */
-    public static void main(final String[] args) {
-        for (int year = 2006; year < 2011; year++) {
-            for (int month = 1; month < 13; month++) {
+    public Exporter(final Blogger blogger) {
+        this.blogger = blogger;
+
+        try {
+            config.setServerURL(new URL(URL));
+            client.setConfig(config);
+        } catch (final MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Exports articles.
+     *
+     * @return the exported articles, returns an empty set if not found
+     * @throws Exception exception
+     */
+    public Set<Article> export() throws Exception {
+        final Set<Article> ret = new HashSet<Article>();
+
+        final int startYear = blogger.getArchiveStartYear();
+        final int endYear = blogger.getArchiveEndYear();
+
+        final int startMonth = blogger.getArchiveStartMonth();
+        final int endMonth = blogger.getArchiveEndMonth();
+
+        final int oct = 10;
+        final int dec = 12;
+
+        for (int year = startYear; year <= endYear; year++) {
+            for (int month = (year == startYear) ? startMonth : 1;
+                    month <= ((year == endYear) ? endMonth : dec);
+                    month++) {
                 String archiveDate = year + "/";
-                if (month < 10) {
+
+                if (month < oct) {
                     archiveDate += "0" + month;
                 } else {
                     archiveDate += month;
                 }
 
-                System.out.println("Getting article ids[archiveDate="
-                        + archiveDate + "]");
+                LOGGER.info("Getting article ids[archiveDate="
+                        + archiveDate + "]....");
 
                 final List<String> articleIds = getArticleIdsByArchive(
                         archiveDate);
 
+                LOGGER.info("Start to get artiches....");
                 for (final String articleId : articleIds) {
-                    saveArticleById(articleId);
+                    final Article article = getArticleById(articleId);
+
+                    if (null !=  article) {
+                        ret.add(article);
+                    } else {
+                        LOGGER.info("Can't export the article[id=" + articleId
+                                + "] caused by an error");
+                    }
                 }
             }
         }
+
+        return ret;
     }
 
     /**
      * Gets an article by the specified article id.
      *
      * @param articleId the specified article id
+     * @return article, returns {@code null} if error or not found
      */
-    private static void saveArticleById(final String articleId) {
-        final XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+    public Article getArticleById(final String articleId) {
+        final Article ret = new Article();
 
         try {
-            config.setServerURL(new URL(URL));
-
-            final XmlRpcClient client = new XmlRpcClient();
-            client.setConfig(config);
             final List<String> params = new ArrayList<String>();
             params.add(articleId);
-            params.add(USER_ID);
+            params.add(blogger.getUserId());
             @SuppressWarnings("unchecked")
             final Map<String, ?> result =
                     (Map<String, ?>) client.execute(METHOD, params);
-            final PrintWriter out = new PrintWriter("/home/daniel/Desktop/archive/"
-                    + articleId + ".html");
-            out.println("Title: " + result.get("title") + "<br/>");
-            final Object[] tags = (Object[]) result.get("categories");
-            out.println("Tags: ");
-            for (int i = 0; i < tags.length; i++) {
-                final Object tag = tags[i];
-                out.println(tag + ", ");
-            }
-            out.println("<br/>");
 
-            out.println("Create Date: " + result.get("dateCreated") + "<br/>");
+            final String title = (String) result.get("title");
+            ret.setTitle(title);
+
+            final Object[] tagObjects = (Object[]) result.get("categories");
+            for (int i = 0; i < tagObjects.length; i++) {
+                final Object tag = tagObjects[i];
+                ret.addTag(tag.toString());
+            }
+
+            final Date createDate = (Date) result.get("dateCreated");
+            ret.setCreateDate(createDate);
+
             final String des = new String(((String) result.get("description")).
                     getBytes());
-            out.println(des.replaceAll("\\?", " "));
-            out.close();
+            final String content = des.replaceAll("\\?", " ");
+            ret.setContent(content);
+
         } catch (final Exception e) {
-            System.err.println("Export article[id=" + articleId + "] error[msg="
+            LOGGER.error("Export article[id=" + articleId + "] error[msg="
                     + e.toString() + "]");
+
+            return null;
         }
+
+        return ret;
     }
 
     /**
@@ -126,9 +182,9 @@ public final class App {
      * @param archiveDate the specified archive date(yyyy/MM)
      * @return a list of article ids, returns an empty list if not found
      */
-    private static List<String> getArticleIdsByArchive(final String archiveDate) {
+    private List<String> getArticleIdsByArchive(final String archiveDate) {
         final ArchivePageReader archivePageReader =
-                new ArchivePageReader(archiveDate);
+                new ArchivePageReader(blogger.getUserId(), archiveDate);
         final String pageContent = archivePageReader.getContent();
         final String patternString =
                 "<code><a href=\"/DL88250/archive/"
@@ -153,6 +209,6 @@ public final class App {
     /**
      * Private default constructor.
      */
-    private App() {
+    private Exporter() {
     }
 }
