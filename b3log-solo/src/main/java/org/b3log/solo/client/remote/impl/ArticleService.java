@@ -76,7 +76,7 @@ public final class ArticleService extends AbstractRemoteService {
      * Event manager.
      */
     @Inject
-    private transient EventManager eventManager;
+    private EventManager eventManager;
 
     /**
      * Adds an article from the specified request json object and http servlet
