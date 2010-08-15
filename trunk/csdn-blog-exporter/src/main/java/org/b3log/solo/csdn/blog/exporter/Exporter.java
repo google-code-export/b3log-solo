@@ -117,9 +117,16 @@ public final class Exporter {
 
                 LOGGER.info("Start to get artiches....");
                 for (final String articleId : articleIds) {
+
+                    try {
+                        Thread.sleep(5000);
+                    } catch (final InterruptedException e) {
+                        LOGGER.error(e.getMessage(), e);
+                    }
+
                     final Article article = getArticleById(articleId);
 
-                    if (null !=  article) {
+                    if (null != article) {
                         ret.add(article);
                     } else {
                         LOGGER.info("Can't export the article[id=" + articleId
