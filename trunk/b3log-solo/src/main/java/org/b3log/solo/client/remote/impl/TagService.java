@@ -30,10 +30,6 @@ import org.b3log.latke.client.remote.AbstractRemoteService;
 public final class TagService extends AbstractRemoteService {
 
     /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
-    /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagService.class);

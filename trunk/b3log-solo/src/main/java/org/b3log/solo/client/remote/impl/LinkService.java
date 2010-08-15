@@ -41,10 +41,6 @@ import org.json.JSONObject;
 public final class LinkService extends AbstractRemoteService {
 
     /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
-    /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LinkService.class);
