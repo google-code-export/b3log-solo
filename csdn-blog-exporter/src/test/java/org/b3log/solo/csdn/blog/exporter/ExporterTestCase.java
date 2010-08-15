@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.csdn.blog.exporter;
 
 import java.util.Set;
@@ -45,13 +44,13 @@ public final class ExporterTestCase {
         final Set<Article> articles = exporter.export();
 
         assertNotSame(articles.size(), 0);
-        
-        for (final Article article : articles) {
-            System.out.println("Article: ");
-            System.out.println(article.getTitle());
-            System.out.println(article.getTags());
-            System.out.println(article.getCreateDate());
-            System.out.println(article.getContent());
-        }
+
+        final Article article = articles.iterator().next();
+        System.out.println("Article: ");
+        System.out.println(article.getTitle());
+        System.out.println(article.getTags());
+        System.out.println(article.getCreateDate());
+        System.out.println(article.getContent());
+
     }
 }
