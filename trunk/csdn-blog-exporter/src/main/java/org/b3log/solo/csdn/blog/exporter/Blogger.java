@@ -122,7 +122,7 @@ public final class Blogger {
      *
      * @return blogger id
      */
-    public String getUserId() {
+    public String getId() {
         return userId;
     }
 
