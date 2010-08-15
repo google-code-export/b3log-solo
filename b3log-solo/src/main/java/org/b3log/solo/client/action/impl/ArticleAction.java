@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +37,8 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,6 +89,11 @@ public final class ArticleAction extends AbstractAction {
      */
     @Inject
     private Filler filler;
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -93,8 +101,13 @@ public final class ArticleAction extends AbstractAction {
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
+        final Locale locale = Locales.getLocale(request);
+        Locales.setLocale(request, locale);
 
         try {
+            final Map<String, String> langs = langPropsService.getAll(locale);
+            ret.putAll(langs);
+
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
             final String articleId =
