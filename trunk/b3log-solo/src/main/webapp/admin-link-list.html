@@ -10,14 +10,14 @@
         <thead>
             <tr>
                 <th style="text-align: left" colspan="2">
-                    Add Link
+                    ${addLinkLabel}
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <th width="48px">
-                    name:
+                    ${linkTitle1Label}
                 </th>
                 <td>
                     <input id="linkTitle"/>
@@ -25,7 +25,7 @@
             </tr>
             <tr>
                 <th>
-                    url:
+                    ${url1Label}
                 </th>
                 <td>
                     <input id="linkAddress"/>
@@ -43,14 +43,14 @@
             <thead>
                 <tr>
                     <th style="text-align: left" colspan="2">
-                        Update Link
+                        ${updateLinkLabel}
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <th width="48px">
-                        name:
+                        ${linkTitle1Label}
                     </th>
                     <td>
                         <input id="updateLinkTitle"/>
@@ -58,7 +58,7 @@
                 </tr>
                 <tr>
                     <th>
-                        url:
+                        ${url1Label}
                     </th>
                     <td>
                         <input id="updateLinkAddress"/>
@@ -91,7 +91,7 @@
                 width: 130
             }, {
                 style: "padding-left: 6px;",
-                name: "URL",
+                name: "${urlLabel}",
                 index: "linkAddress",
                 minWidth: 180
             }, {
