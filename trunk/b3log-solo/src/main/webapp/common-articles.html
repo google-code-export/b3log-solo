@@ -24,7 +24,7 @@
             </span>
             &nbsp;
             </#list>
-            ${comment}(${article.articleCommentCount})
+            ${commentLabel}(${article.articleCommentCount})
         </div>
     </div>
     <div class="clear"></div>
@@ -34,7 +34,7 @@
     <#list paginationPageNums as paginationPageNum>
     <a href="index.do?paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
     </#list>
-    ${sum} ${paginationPageCount} ${page}
+    ${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
 <script type="text/javascript">
     if (window.location.search === "") {
