@@ -7,8 +7,8 @@
         <span style="color: blue;">G</span>
     </a>
     <span class="right">
-        <span  id="admin" class="none"><a href="admin-index.do">admin</a> |&nbsp;</span>
-        <span>language</span> |
+        <span  id="admin" class="none"><a href="admin-index.do">${admin}</a> |&nbsp;</span>
+        <span>${lang}</span> |
         <a id="loginStatus" href="#"></a>
     </span>
     <div class="clear"></div>
@@ -17,7 +17,7 @@
             <tbody>
                 <tr>
                     <th width="80px">
-                        password:
+                        ${password}
                     </th>
                     <td>
                         <input id="password" type="password"/>
@@ -28,7 +28,7 @@
                         <span id="error" class="errorMsg"></span>
                     </td>
                     <th>
-                        <button onclick="login();">submit</button>
+                        <button onclick="login();">${login}</button>
                     </th>
                 </tr>
             </tbody>
@@ -58,11 +58,11 @@
     var getStatus = function () {
         $("#loginStatus").unbind("click");
         if (${loginStatus} === 0) {
-            $("#loginStatus").bind("click", popLogin).text("login");
+            $("#loginStatus").bind("click", popLogin).text("${login}");
             $("#admin").hide();
         } else {
             $("#admin").show();
-            $("#loginStatus").bind("click", logout).text("logout");
+            $("#loginStatus").bind("click", logout).text("${logout}");
         }
         if (window.location.pathname === "/admin-index.do") {
             $("#admin").hide();

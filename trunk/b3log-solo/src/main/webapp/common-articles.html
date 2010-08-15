@@ -24,7 +24,7 @@
             </span>
             &nbsp;
             </#list>
-            评论(${article.articleCommentCount})
+            ${comment}(${article.articleCommentCount})
         </div>
     </div>
     <div class="clear"></div>
@@ -34,7 +34,7 @@
     <#list paginationPageNums as paginationPageNum>
     <a href="index.do?paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
     </#list>
-    共${paginationPageCount}页
+    ${sum} ${paginationPageCount} ${page}
 </div>
 <script type="text/javascript">
     if (window.location.search === "") {
