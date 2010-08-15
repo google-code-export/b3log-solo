@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.io.Serializable;
 import org.apache.log4j.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Preference;
@@ -28,17 +27,13 @@ import org.b3log.solo.repository.PreferenceRepository;
  * @version 1.0.0.0, Aug 14, 2010
  */
 public class PreferenceGAERepository extends AbstractGAERepository
-        implements PreferenceRepository, Serializable {
+        implements PreferenceRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
             Logger.getLogger(PreferenceGAERepository.class);
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
 
     @Override
     public String getName() {

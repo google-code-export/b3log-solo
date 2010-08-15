@@ -20,7 +20,6 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 import com.google.appengine.api.datastore.QueryResultList;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,17 +39,13 @@ import org.json.JSONObject;
  * @version 1.0.0.3, Aug 12, 2010
  */
 public class TagArticleGAERepository extends AbstractGAERepository
-        implements TagArticleRepository, Serializable {
+        implements TagArticleRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
             Logger.getLogger(TagArticleGAERepository.class);
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
 
     @Override
     public String getName() {

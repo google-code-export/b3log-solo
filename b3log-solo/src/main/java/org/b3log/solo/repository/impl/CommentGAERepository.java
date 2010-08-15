@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.io.Serializable;
 import org.apache.log4j.Logger;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.CommentRepository;
@@ -32,17 +31,13 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Aug 10, 2010
  */
 public class CommentGAERepository extends AbstractGAERepository
-        implements CommentRepository, Serializable {
+        implements CommentRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
             Logger.getLogger(CommentGAERepository.class);
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
 
     @Override
     public String getName() {
