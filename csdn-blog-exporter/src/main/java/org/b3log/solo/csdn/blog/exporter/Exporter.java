@@ -46,11 +46,6 @@ public final class Exporter {
      */
     private static final String METHOD = "metaWeblog.getPostByID";
     /**
-     * URL.
-     */
-    private static final String URL =
-            "http://blog.csdn.net/DL88250/services/metablogapi.aspx";
-    /**
      * XML-RPC client configuration.
      */
     private XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
@@ -62,6 +57,10 @@ public final class Exporter {
      * Blogger.
      */
     private Blogger blogger;
+    /**
+     * Sleep millisecond between every article get operation.
+     */
+    private static final long GET_ARTICLE_SLEEP_MILLIS = 1000;
 
     /**
      * Constructs a CSDN blog exporter for the specified blogger.
@@ -72,7 +71,8 @@ public final class Exporter {
         this.blogger = blogger;
 
         try {
-            config.setServerURL(new URL(URL));
+            config.setServerURL(new URL("http://blog.csdn.net/"
+                    + blogger.getId() + "/services/metablogapi.aspx"));
             client.setConfig(config);
         } catch (final MalformedURLException e) {
             throw new RuntimeException(e);
@@ -119,7 +119,7 @@ public final class Exporter {
                 for (final String articleId : articleIds) {
 
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(GET_ARTICLE_SLEEP_MILLIS);
                     } catch (final InterruptedException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
@@ -151,7 +151,7 @@ public final class Exporter {
         try {
             final List<String> params = new ArrayList<String>();
             params.add(articleId);
-            params.add(blogger.getUserId());
+            params.add(blogger.getId());
             @SuppressWarnings("unchecked")
             final Map<String, ?> result =
                     (Map<String, ?>) client.execute(METHOD, params);
@@ -191,7 +191,7 @@ public final class Exporter {
      */
     private List<String> getArticleIdsByArchive(final String archiveDate) {
         final ArchivePageReader archivePageReader =
-                new ArchivePageReader(blogger.getUserId(), archiveDate);
+                new ArchivePageReader(blogger.getId(), archiveDate);
         final String pageContent = archivePageReader.getContent();
         final String patternString =
                 "<code><a href=\"/DL88250/archive/"
