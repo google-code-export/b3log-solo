@@ -64,7 +64,7 @@ public final class PreferenceService extends AbstractRemoteService {
      * Preference utilities.
      */
     @Inject
-    private Preferences preferences;
+    private transient Preferences preferences;
 
     /**
      * Public constructor with parameter. Invokes constructor of superclass.
