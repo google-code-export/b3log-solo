@@ -18,7 +18,6 @@ package org.b3log.solo.repository.impl;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,17 +37,13 @@ import org.json.JSONObject;
  * @version 1.0.0.3, Aug 13, 2010
  */
 public class ArticleCommentGAERepository extends AbstractGAERepository
-        implements ArticleCommentRepository, Serializable {
+        implements ArticleCommentRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArticleCommentGAERepository.class);
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
 
     @Override
     public String getName() {

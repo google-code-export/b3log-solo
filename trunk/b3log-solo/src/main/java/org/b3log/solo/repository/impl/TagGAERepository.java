@@ -21,7 +21,6 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultIterable;
 import com.google.inject.Inject;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,17 +40,13 @@ import org.json.JSONObject;
  * @version 1.0.0.3, Aug 12, 2010
  */
 public class TagGAERepository extends AbstractGAERepository
-        implements TagRepository, Serializable {
+        implements TagRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
             Logger.getLogger(TagGAERepository.class);
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
     /**
      * Tag-Article relation repository.
      */
