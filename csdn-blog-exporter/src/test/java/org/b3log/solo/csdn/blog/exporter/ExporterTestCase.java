@@ -37,8 +37,8 @@ public final class ExporterTestCase {
     @Test
     public void export() throws Exception {
         final Blogger blogger = new Blogger();
-        blogger.setArchiveStartDate("2006/12");
-        blogger.setArchiveEndDate("2007/01");
+        blogger.setArchiveStartDate("2010/01");
+        blogger.setArchiveEndDate("2010/02");
         blogger.setId("DL88250");
 
         final Exporter exporter = new Exporter(blogger);
