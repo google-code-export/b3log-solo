@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,8 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.util.Locales;
 import org.json.JSONObject;
 
 /**
@@ -78,6 +81,11 @@ public final class TagArticlesAction extends AbstractAction {
      */
     @Inject
     private ArticleUtils articleUtils;
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -86,7 +94,13 @@ public final class TagArticlesAction extends AbstractAction {
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
+        final Locale locale = Locales.getLocale(request);
+        Locales.setLocale(request, locale);
+
         try {
+            final Map<String, String> langs = langPropsService.getAll(locale);
+            ret.putAll(langs);
+
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
             final String tagId = queryStringJSONObject.getString(Keys.OBJECT_ID);
@@ -103,13 +117,13 @@ public final class TagArticlesAction extends AbstractAction {
                         tagArticleRelations.get(i);
                 final String articleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
+                        + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }
 
             final int pageCount = (int) Math.ceil((double) articles.size()
-                                                  / (double) 1);
+                    / (double) 1);
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum,
                                        1, pageCount,
