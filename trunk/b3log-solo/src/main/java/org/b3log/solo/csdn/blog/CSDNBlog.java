@@ -47,6 +47,10 @@ public final class CSDNBlog {
      */
     private static final String NEW_POST = "metaWeblog.newPost";
     /**
+     * Delete post method.
+     */
+    private static final String DELETE_POST = "metaWeblog.deletePost";
+    /**
      * XML-RPC client configuration.
      */
     private XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
@@ -54,6 +58,32 @@ public final class CSDNBlog {
      * XML-RPC client.
      */
     private XmlRpcClient client = new XmlRpcClient();
+
+    public void deletePost(final String csdnBlogUserName,
+                           final String csdnBlogUserPwd,
+                           final String csdnBlogArticleId) throws
+            ServiceException {
+        final Object[] params = new Object[]{
+            "ignored",
+            csdnBlogArticleId,
+            csdnBlogUserName,
+            csdnBlogUserPwd,
+            true};
+
+        try {
+            config.setServerURL(
+                    new URL("http://blog.csdn.net/" + csdnBlogUserName
+                            + "/services/metablogapi.aspx"));
+            client.setConfig(config);
+            client.execute(DELETE_POST, params);
+            LOGGER.info("Deleted article[id=" + csdnBlogArticleId
+                        + "] from CSDN blog");
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+
+            throw new ServiceException("New a post to CSDN blog error");
+        }
+    }
 
     /**
      * Creates a post to CSDN blog with specified parameters.

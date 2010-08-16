@@ -61,7 +61,7 @@ public final class WriterTestCase {
         ret.put(Article.ARTICLE_CREATE_DATE, new Date());
         ret.put(Article.ARTICLE_CONTENT, "test content");
         final Set<String> categories = new HashSet<String>();
-        categories.add("475410");
+        categories.add("Game");
         ret.put(Article.ARTICLE_TAGS_REF, (Object) categories);
 
         return ret;
