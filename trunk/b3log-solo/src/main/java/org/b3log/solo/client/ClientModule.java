@@ -34,7 +34,7 @@ import org.b3log.solo.client.util.Preferences;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 14, 2010
+ * @version 1.0.0.7, Aug 16, 2010
  */
 public final class ClientModule extends AbstractClientModule {
 
@@ -64,7 +64,8 @@ public final class ClientModule extends AbstractClientModule {
         serve("/admin-article.do",
               "/admin-article-list.do",
               "/admin-link-list.do",
-              "/admin-preference.do").with(DoNothingAction.class);
+              "/admin-preference.do",
+              "/admin-sync.do").with(DoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
