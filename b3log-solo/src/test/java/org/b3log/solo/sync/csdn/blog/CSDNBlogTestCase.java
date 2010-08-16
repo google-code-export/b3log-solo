@@ -57,9 +57,12 @@ public final class CSDNBlogTestCase {
     @Test
     public void getArchiveDate() {
         final CSDNBlog csdnBlog = new CSDNBlog();
-        final String archiveDate = csdnBlog.getArchiveDate(USER_NAME);
+        String archiveDate = csdnBlog.getArchiveDate(USER_NAME);
 
         assertEquals(archiveDate, "2006/12");
+
+        archiveDate = csdnBlog.getArchiveDate("Vanessa219");
+        assertEquals(archiveDate, "2008/01");
     }
 
     /**
