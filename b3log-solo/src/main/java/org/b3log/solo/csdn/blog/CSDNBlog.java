@@ -49,7 +49,7 @@ public final class CSDNBlog {
     /**
      * Delete post method.
      */
-    private static final String DELETE_POST = "metaWeblog.deletePost";
+    private static final String DELETE_POST = "blogger.deletePost";
     /**
      * XML-RPC client configuration.
      */
@@ -59,6 +59,14 @@ public final class CSDNBlog {
      */
     private XmlRpcClient client = new XmlRpcClient();
 
+    /**
+     * Deletes a post from CSDN blog with specified parameters.
+     *
+     * @param csdnBlogUserName the specified CSDN blog user name
+     * @param csdnBlogUserPwd the specified CSDN blog user password
+     * @param csdnBlogArticleId the specified post id
+     * @throws ServiceException service exception
+     */
     public void deletePost(final String csdnBlogUserName,
                            final String csdnBlogUserPwd,
                            final String csdnBlogArticleId) throws

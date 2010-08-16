@@ -25,26 +25,50 @@ import org.json.JSONObject;
 import org.testng.annotations.Test;
 
 /**
- * {@link Writer} test case.
+ * {@link CSDNBlogTestCase} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 16, 2010
  */
-public final class WriterTestCase {
+public final class CSDNBlogTestCase {
+
+    /**
+     * CSDN user name.
+     */
+    private static final String USER_NAME = "DL88250";
+    /**
+     * CSDN user password.
+     */
+    private static final String USER_PASSWORD = "8825088250";
 
     /**
      * Tests
-     * {@linkplain Writer#newPost(java.lang.String, java.lang.String, org.b3log.solo.csdn.blog.CSDNBlogArticle) }
+     * {@linkplain CSDNBlog#deletePost(java.lang.String, java.lang.String, java.lang.String) }
      * method.
+     *
      * @throws Exception exception
      */
     @Test
+    public void deletePost() throws Exception {
+        final String articleId = "5815956";
+
+        final CSDNBlog writer = new CSDNBlog();
+        writer.deletePost(USER_NAME, USER_PASSWORD, articleId);
+    }
+
+    /**
+     * Tests
+     * {@linkplain CSDNBlog#newPost(java.lang.String, java.lang.String, org.b3log.solo.csdn.blog.CSDNBlogArticle) }
+     * method.
+     * @throws Exception exception
+     */
+    //@Test
     public void newPost() throws Exception {
         final JSONObject article = getArticle();
         final CSDNBlogArticle csdnBlogArticle = new CSDNBlogArticle(article);
 
         final CSDNBlog writer = new CSDNBlog();
-        writer.newPost("DL88250", "8825088250", csdnBlogArticle);
+        writer.newPost(USER_NAME, USER_PASSWORD, csdnBlogArticle);
     }
 
     /**
