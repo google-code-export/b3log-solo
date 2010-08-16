@@ -32,8 +32,8 @@ import org.b3log.latke.service.ServiceException;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 16, 2010
- * @see #newPost(java.lang.String, java.lang.String, org.b3log.solo.csdn.blog.CSDNBlogArticle)
- *
+ * @see #newPost(java.lang.String, java.lang.String, org.b3log.solo.sync.csdn.blog.CSDNBlogArticle)
+ * @see #deletePost(java.lang.String, java.lang.String, java.lang.String) 
  */
 public final class CSDNBlog {
 
@@ -80,11 +80,11 @@ public final class CSDNBlog {
         try {
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
-                            + "/services/metablogapi.aspx"));
+                    + "/services/metablogapi.aspx"));
             client.setConfig(config);
             client.execute(DELETE_POST, params);
             LOGGER.info("Deleted article[id=" + csdnBlogArticleId
-                        + "] from CSDN blog");
+                    + "] from CSDN blog");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
 
@@ -102,8 +102,8 @@ public final class CSDNBlog {
      * @throws ServiceException service exception
      */
     public String newPost(final String csdnBlogUserName,
-                        final String csdnBlogUserPwd,
-                        final CSDNBlogArticle csdnBlogArticle)
+                          final String csdnBlogUserPwd,
+                          final CSDNBlogArticle csdnBlogArticle)
             throws ServiceException {
         final Object[] params = new Object[]{
             csdnBlogUserName,
@@ -115,7 +115,7 @@ public final class CSDNBlog {
         try {
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
-                            + "/services/metablogapi.aspx"));
+                    + "/services/metablogapi.aspx"));
             client.setConfig(config);
             final String articleId = (String) client.execute(NEW_POST, params);
             LOGGER.info("Post article to CSDN blog[result=" + articleId + "]");
