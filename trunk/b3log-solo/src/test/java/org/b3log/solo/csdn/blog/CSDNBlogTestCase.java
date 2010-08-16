@@ -22,7 +22,6 @@ import java.util.UUID;
 import org.b3log.solo.model.Article;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.testng.annotations.Test;
 
 /**
  * {@link CSDNBlogTestCase} test case.
@@ -50,7 +49,7 @@ public final class CSDNBlogTestCase {
      * 
      * @throws Exception exception
      */
-    @Test
+    //@org.testng.annotations.Test
     public void newPost() throws Exception {
         final JSONObject article = getArticle();
         final CSDNBlogArticle csdnBlogArticle = new CSDNBlogArticle(article);
