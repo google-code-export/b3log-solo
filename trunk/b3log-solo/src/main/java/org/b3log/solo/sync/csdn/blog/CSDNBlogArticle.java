@@ -18,6 +18,7 @@ package org.b3log.solo.sync.csdn.blog;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.b3log.solo.model.Article;
@@ -48,6 +49,13 @@ public final class CSDNBlogArticle {
      * Categories.
      */
     private Set<String> categories;
+
+    /**
+     * Constructs a {@link CSDNBlogArticle} object.
+     */
+    public CSDNBlogArticle() {
+        categories = new HashSet<String>();
+    }
 
     /**
      * Constructs a {@link CSDNBlogArticle} object from the specified json

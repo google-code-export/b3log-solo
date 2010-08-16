@@ -22,6 +22,8 @@ import java.util.UUID;
 import org.b3log.solo.model.Article;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.testng.annotations.Test;
+import static org.testng.Assert.*;
 
 /**
  * {@link CSDNBlogTestCase} test case.
@@ -39,6 +41,48 @@ public final class CSDNBlogTestCase {
      * CSDN user password.
      */
     private static final String USER_PASSWORD = "8825088250";
+    /**
+     * Article sum of 2006/12.
+     */
+    private static final int ARTICLE_SUM_2006_12 = 49;
+    /**
+     * Article sum of 2009/08.
+     */
+    private static final int ARTICLE_SUM_2009_08 = 13;
+
+    /**
+     * Tests
+     * {@linkplain CSDNBlog#getArticleIdsByArchiveDate(java.lang.String, java.lang.String)}
+     * method.
+     */
+    @Test
+    public void getArticleIdsByArchiveDate() {
+        final CSDNBlog csdnBlog = new CSDNBlog();
+        Set<String> articleIds = csdnBlog.getArticleIdsByArchiveDate(
+                USER_NAME, "2006/12");
+
+
+        assertEquals(articleIds.size(), ARTICLE_SUM_2006_12);
+
+        articleIds = csdnBlog.getArticleIdsByArchiveDate(
+                USER_NAME, "2009/08");
+
+        assertEquals(articleIds.size(), ARTICLE_SUM_2009_08);
+    }
+
+    /**
+     * Tests
+     * {@linkplain CSDNBlog#getArticleById(java.lang.String, java.lang.String)}
+     * method.
+     */
+    @Test
+    public void getArticleById() {
+        final CSDNBlog csdnBlog = new CSDNBlog();
+        final CSDNBlogArticle article = csdnBlog.getArticleById(USER_NAME,
+                                                                "4838803");
+        assertNotNull(article);
+        assertEquals(article.getTitle(), "Java 依赖注入标准（JSR-330）简介");
+    }
 
     /**
      * Tests
@@ -46,10 +90,10 @@ public final class CSDNBlogTestCase {
      * and
      * {@linkplain CSDNBlog#deletePost(java.lang.String, java.lang.String, java.lang.String) }
      * methods.
-     * 
+     *
      * @throws Exception exception
      */
-    //@org.testng.annotations.Test
+//@org.testng.annotations.Test
     public void newPost() throws Exception {
         final JSONObject article = getArticle();
         final CSDNBlogArticle csdnBlogArticle = new CSDNBlogArticle(article);
@@ -59,6 +103,8 @@ public final class CSDNBlogTestCase {
                 csdnBlog.newPost(USER_NAME, USER_PASSWORD, csdnBlogArticle);
 
         csdnBlog.deletePost(USER_NAME, USER_PASSWORD, articleId);
+
+
     }
 
     /**
@@ -78,6 +124,9 @@ public final class CSDNBlogTestCase {
         categories.add("Game");
         ret.put(Article.ARTICLE_TAGS_REF, (Object) categories);
 
+
+
         return ret;
+
     }
 }
