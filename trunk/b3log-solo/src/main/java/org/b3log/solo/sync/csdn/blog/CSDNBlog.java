@@ -40,8 +40,6 @@ import org.b3log.latke.service.ServiceException;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 16, 2010
- * @see #newPost(java.lang.String, java.lang.String, org.b3log.solo.sync.csdn.blog.CSDNBlogArticle)
- * @see #deletePost(java.lang.String, java.lang.String, java.lang.String) 
  */
 public final class CSDNBlog {
 
@@ -144,6 +142,42 @@ public final class CSDNBlog {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the oldest archive date(yyyy/MM) by the specified CSDN blog user
+     * name.
+     *
+     * @param csdnBlogUserName the specified CSDN blog user name
+     * @return the oldest archive date(yyyy/MM), returns {@code null} if not
+     * found any archive date
+     */
+    public String getArchiveDate(final String csdnBlogUserName) {
+        final IndexPageReader archivePageReader =
+                new IndexPageReader(csdnBlogUserName);
+        final String pageContent = archivePageReader.getContent();
+        final String patternString = "<a href=\"/" + csdnBlogUserName
+                + "/archive/\\d{4}/\\d{2}\\.aspx";
+        final Pattern pattern = Pattern.compile(patternString,
+                                                Pattern.CASE_INSENSITIVE);
+
+        final Matcher matcher = pattern.matcher(pageContent);
+        final boolean isMatched = matcher.matches();
+        if (!isMatched) {
+            return null;
+        }
+
+        final int groupCount = matcher.groupCount();
+
+        final int yearLength = 4;
+        final String match = matcher.group(groupCount);
+        final int idx1 = match.lastIndexOf("/");
+        final int idx2 = idx1 - yearLength;
+        final String year = match.substring(idx2, idx2 + yearLength);
+        final String month = match.substring(idx2 + yearLength, idx2);
+
+
+        return year + "/" + month;
     }
 
     /**

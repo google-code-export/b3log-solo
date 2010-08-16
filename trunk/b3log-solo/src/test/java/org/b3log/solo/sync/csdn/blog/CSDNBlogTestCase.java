@@ -52,6 +52,18 @@ public final class CSDNBlogTestCase {
 
     /**
      * Tests
+     * {@linkplain CSDNBlog#getArchiveDate(java.lang.String) } method.
+     */
+    @Test
+    public void getArchiveDate() {
+        final CSDNBlog csdnBlog = new CSDNBlog();
+        final String archiveDate = csdnBlog.getArchiveDate(USER_NAME);
+
+        assertEquals(archiveDate, "2006/12");
+    }
+
+    /**
+     * Tests
      * {@linkplain CSDNBlog#getArticleIdsByArchiveDate(java.lang.String, java.lang.String)}
      * method.
      */
