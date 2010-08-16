@@ -68,7 +68,7 @@
         bindEvent: "getArticleList",
         pageCount: 10,
         windowSize: 5,
-        currentPage: 0,
+        currentPage: 1,
         style: "google",
         isGoTo: false
     });
@@ -141,8 +141,8 @@
         currentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": 20,
-            "paginationWindowSize": 20
+            "paginationPageSize": 2,
+            "paginationWindowSize": 5
         };
         jsonRpc.articleService.getArticles(function (result, error) {
             switch (result.sc) {
@@ -166,6 +166,10 @@
                             data: articleData
                         }
                     });
+
+                    if (result.pagination.paginationPageCount === 0) {
+                        result.pagination.paginationPageCount = 1;
+                    }
 
                     articlePagination.paginate({
                         update: {
