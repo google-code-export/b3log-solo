@@ -112,8 +112,8 @@ public final class Exporter {
                 LOGGER.info("Getting article ids[archiveDate="
                         + archiveDate + "]....");
 
-                final List<String> articleIds = getArticleIdsByArchive(
-                        archiveDate);
+                final Set<String> articleIds = getArticleIdsByArchiveDate(
+                        blogger.getId(), archiveDate);
 
                 LOGGER.info("Start to get artiches....");
                 for (final String articleId : articleIds) {
@@ -160,9 +160,11 @@ public final class Exporter {
             ret.setTitle(title);
 
             final Object[] tagObjects = (Object[]) result.get("categories");
-            for (int i = 0; i < tagObjects.length; i++) {
-                final Object tag = tagObjects[i];
-                ret.addTag(tag.toString());
+            if (null != tagObjects) {
+                for (int i = 0; i < tagObjects.length; i++) {
+                    final Object tag = tagObjects[i];
+                    ret.addTag(tag.toString());
+                }
             }
 
             final Date createDate = (Date) result.get("dateCreated");
@@ -186,20 +188,22 @@ public final class Exporter {
     /**
      * Gets article ids by the specified archive date.
      *
+     * @param csdnBlogUserName the specified CSDN blog user name
      * @param archiveDate the specified archive date(yyyy/MM)
-     * @return a list of article ids, returns an empty list if not found
+     * @return a set of article ids, returns an empty list if not found
      */
-    private List<String> getArticleIdsByArchive(final String archiveDate) {
+    private Set<String> getArticleIdsByArchiveDate(
+            final String csdnBlogUserName, final String archiveDate) {
         final ArchivePageReader archivePageReader =
-                new ArchivePageReader(blogger.getId(), archiveDate);
+                new ArchivePageReader(csdnBlogUserName, archiveDate);
         final String pageContent = archivePageReader.getContent();
         final String patternString =
-                "<code><a href=\"/DL88250/archive/"
+                "<code><a href=\"/" + csdnBlogUserName + "/archive/"
                 + archiveDate + "/\\d\\d/\\d+\\.aspx";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
 
-        final List<String> ret = new ArrayList<String>();
+        final Set<String> ret = new HashSet<String>();
 
         while (matcher.find()) {
             final String match = matcher.group();
