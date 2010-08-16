@@ -52,8 +52,8 @@ public final class CSDNBlogTestCase {
     public void deletePost() throws Exception {
         final String articleId = "5815956";
 
-        final CSDNBlog writer = new CSDNBlog();
-        writer.deletePost(USER_NAME, USER_PASSWORD, articleId);
+        final CSDNBlog csdnBlog = new CSDNBlog();
+        csdnBlog.deletePost(USER_NAME, USER_PASSWORD, articleId);
     }
 
     /**
@@ -62,13 +62,16 @@ public final class CSDNBlogTestCase {
      * method.
      * @throws Exception exception
      */
-    //@Test
+    @Test
     public void newPost() throws Exception {
         final JSONObject article = getArticle();
         final CSDNBlogArticle csdnBlogArticle = new CSDNBlogArticle(article);
 
-        final CSDNBlog writer = new CSDNBlog();
-        writer.newPost(USER_NAME, USER_PASSWORD, csdnBlogArticle);
+        final CSDNBlog csdnBlog = new CSDNBlog();
+        final String articleId =
+                csdnBlog.newPost(USER_NAME, USER_PASSWORD, csdnBlogArticle);
+
+        csdnBlog.deletePost(USER_NAME, USER_PASSWORD, articleId);
     }
 
     /**
