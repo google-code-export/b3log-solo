@@ -99,9 +99,10 @@ public final class CSDNBlog {
      * @param csdnBlogUserName the specified CSDN blog user name
      * @param csdnBlogUserPwd the specified CSDN blog user password
      * @param csdnBlogArticle the specified CSDN blog article
+     * @return post id just created
      * @throws ServiceException service exception
      */
-    public void newPost(final String csdnBlogUserName,
+    public String newPost(final String csdnBlogUserName,
                         final String csdnBlogUserPwd,
                         final CSDNBlogArticle csdnBlogArticle)
             throws ServiceException {
@@ -111,17 +112,22 @@ public final class CSDNBlog {
             csdnBlogUserPwd,
             csdnBlogArticle.toPost(), true};
 
+        String ret = null;
         try {
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
                             + "/services/metablogapi.aspx"));
             client.setConfig(config);
-            final String result = (String) client.execute(NEW_POST, params);
-            LOGGER.info("Post article to CSDN blog[result=" + result + "]");
+            final String articleId = (String) client.execute(NEW_POST, params);
+            LOGGER.info("Post article to CSDN blog[result=" + articleId + "]");
+
+            ret = articleId;
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
 
             throw new ServiceException("New a post to CSDN blog error");
         }
+
+        return ret;
     }
 }
