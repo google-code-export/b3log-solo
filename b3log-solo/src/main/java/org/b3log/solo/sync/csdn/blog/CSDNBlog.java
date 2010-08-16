@@ -16,6 +16,14 @@
 package org.b3log.solo.sync.csdn.blog;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
@@ -49,6 +57,14 @@ public final class CSDNBlog {
      * Delete post method.
      */
     private static final String DELETE_POST = "blogger.deletePost";
+    /**
+     * Get post by id method.
+     */
+    private static final String GET_POST_BY_ID = "metaWeblog.getPostByID";
+    /**
+     * Sleep millisecond between every article get operation.
+     */
+    private static final long GET_ARTICLE_SLEEP_MILLIS = 1000;
     /**
      * XML-RPC client configuration.
      */
@@ -125,6 +141,92 @@ public final class CSDNBlog {
             LOGGER.error(e.getMessage(), e);
 
             throw new ServiceException("New a post to CSDN blog error");
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets article ids by the specified archive date.
+     *
+     * @param csdnBlogUserName the specified CSDN blog user name
+     * @param archiveDate the specified archive date(yyyy/MM)
+     * @return a set of article ids, returns an empty list if not found
+     */
+    public Set<String> getArticleIdsByArchiveDate(
+            final String csdnBlogUserName, final String archiveDate) {
+        final ArchivePageReader archivePageReader =
+                new ArchivePageReader(csdnBlogUserName, archiveDate);
+        final String pageContent = archivePageReader.getContent();
+        final String patternString =
+                "<code><a href=\"/" + csdnBlogUserName + "/archive/"
+                + archiveDate + "/\\d\\d/\\d+\\.aspx";
+        final Pattern pattern = Pattern.compile(patternString);
+        final Matcher matcher = pattern.matcher(pageContent);
+
+        final Set<String> ret = new HashSet<String>();
+
+        while (matcher.find()) {
+            final String match = matcher.group();
+            final int idx1 = match.lastIndexOf("/") + 1;
+            final int idx2 = match.lastIndexOf(".");
+            final String id = match.substring(idx1, idx2);
+
+            ret.add(id);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets an article by the specified article id.
+     *
+     * @param csdnBlogUserName the specified CSDN blog user name
+     * @param articleId the specified article id
+     * @return article, returns {@code null} if error or not found
+     */
+    public CSDNBlogArticle getArticleById(
+            final String csdnBlogUserName,
+            final String articleId) {
+        final CSDNBlogArticle ret = new CSDNBlogArticle();
+
+        try {
+            config.setServerURL(
+                    new URL("http://blog.csdn.net/" + csdnBlogUserName
+                    + "/services/metablogapi.aspx"));
+            client.setConfig(config);
+
+            final List<String> params = new ArrayList<String>();
+            params.add(articleId);
+            params.add(csdnBlogUserName);
+            @SuppressWarnings("unchecked")
+            final Map<String, ?> result =
+                    (Map<String, ?>) client.execute(GET_POST_BY_ID, params);
+
+            final String title = (String) result.get("title");
+            ret.setTitle(title);
+
+            final Object[] categoryObjects = (Object[]) result.get("categories");
+            if (null != categoryObjects) {
+                for (int i = 0; i < categoryObjects.length; i++) {
+                    final Object category = categoryObjects[i];
+                    ret.addCategory(category.toString());
+                }
+            }
+
+            final Date createDate = (Date) result.get("dateCreated");
+            ret.setCreateDate(createDate);
+
+            final String des = new String(((String) result.get("description")).
+                    getBytes());
+            final String content = des.replaceAll("\\?", " ");
+            ret.setContent(content);
+
+        } catch (final Exception e) {
+            LOGGER.error("Export article[id=" + articleId + "] error[msg="
+                    + e.getMessage() + "]");
+
+            return null;
         }
 
         return ret;
