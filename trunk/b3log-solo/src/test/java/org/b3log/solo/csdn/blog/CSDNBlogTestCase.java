@@ -43,23 +43,11 @@ public final class CSDNBlogTestCase {
 
     /**
      * Tests
-     * {@linkplain CSDNBlog#deletePost(java.lang.String, java.lang.String, java.lang.String) }
-     * method.
-     *
-     * @throws Exception exception
-     */
-    @Test
-    public void deletePost() throws Exception {
-        final String articleId = "5815956";
-
-        final CSDNBlog csdnBlog = new CSDNBlog();
-        csdnBlog.deletePost(USER_NAME, USER_PASSWORD, articleId);
-    }
-
-    /**
-     * Tests
      * {@linkplain CSDNBlog#newPost(java.lang.String, java.lang.String, org.b3log.solo.csdn.blog.CSDNBlogArticle) }
-     * method.
+     * and
+     * {@linkplain CSDNBlog#deletePost(java.lang.String, java.lang.String, java.lang.String) }
+     * methods.
+     * 
      * @throws Exception exception
      */
     @Test
