@@ -34,4 +34,7 @@
 .dialog-close {
     float: right;
     cursor: pointer;
+    height: 12px;
+    width: 12px;
+    background: url("../images/icon.png") no-repeat  -98px -131px;
 }
