@@ -158,24 +158,28 @@ public final class CSDNBlog {
         final String pageContent = archivePageReader.getContent();
         final String patternString = "<a href=\"/" + csdnBlogUserName
                 + "/archive/\\d{4}/\\d{2}\\.aspx";
-        final Pattern pattern = Pattern.compile(patternString,
-                                                Pattern.CASE_INSENSITIVE);
-
+        final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
-        final boolean isMatched = matcher.matches();
-        if (!isMatched) {
+
+        final List<String> matches = new ArrayList<String>();
+        while (matcher.find()) {
+            final String match = matcher.group();
+            matches.add(match);
+        }
+
+        if (0 == matches.size()) {
             return null;
         }
 
-        final int groupCount = matcher.groupCount();
-
+        final String match = matches.get(matches.size() - 1);
         final int yearLength = 4;
-        final String match = matcher.group(groupCount);
-        final int idx1 = match.lastIndexOf("/");
-        final int idx2 = idx1 - yearLength;
-        final String year = match.substring(idx2, idx2 + yearLength);
-        final String month = match.substring(idx2 + yearLength, idx2);
+        final int monthLength = 2;
 
+        final int idx1 = match.lastIndexOf("/"); // yyyy^/MM.aspx
+        final int idx2 = idx1 - yearLength; // ^yyyy/MM
+        final int idx3 = idx1 + 1; // yyyy/^MM
+        final String year = match.substring(idx2, idx1);
+        final String month = match.substring(idx3, idx3 + monthLength);
 
         return year + "/" + month;
     }
