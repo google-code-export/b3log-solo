@@ -123,7 +123,6 @@ public final class BlogSyncService extends AbstractRemoteService {
             final JSONArray articleIds = requestJSONObject.getJSONArray(
                     BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS);
             final List<String> importedIds = new ArrayList<String>();
-            ret.put(Keys.OBJECT_ID + "s", importedIds);
             for (int i = 0; i < articleIds.length(); i++) {
                 final String articleId = articleIds.getString(i);
                 final CSDNBlogArticle csdnBlogArticle = csdnBlog.getArticleById(
@@ -153,6 +152,7 @@ public final class BlogSyncService extends AbstractRemoteService {
                 importedIds.add(articleId);
             }
 
+            ret.put(Keys.OBJECT_ID + "s", importedIds);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
