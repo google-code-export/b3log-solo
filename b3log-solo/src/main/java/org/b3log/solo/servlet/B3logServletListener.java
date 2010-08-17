@@ -80,7 +80,6 @@ public final class B3logServletListener extends AbstractServletListener {
         if (null == ret) {
             LOGGER.info("Initializing Guice....");
             setInjector(Guice.createInjector(Stage.PRODUCTION,
-                                             new UtilModule(),
                                              new RepositoryModule(),
                                              new EventModule(),
                                              new SyncModule(),
