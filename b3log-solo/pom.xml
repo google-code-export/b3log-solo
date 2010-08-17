@@ -37,7 +37,6 @@
         <testng.version>5.9</testng.version>
         <!-- -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
     </properties>
 
     <organization>
