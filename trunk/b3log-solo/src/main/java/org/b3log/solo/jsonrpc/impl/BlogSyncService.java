@@ -85,6 +85,10 @@ public final class BlogSyncService extends AbstractRemoteService {
      * Maximum length of an article abstract.
      */
     private static final int MAX_ABSTRACT_LENGTH = 500;
+    /**
+     * Sleep millisecond between every article get operation.
+     */
+    private static final long GET_ARTICLE_SLEEP_MILLIS = 1000;
 
     /**
      * Imports CSDN blog article by the specified request json object and http
@@ -215,6 +219,13 @@ public final class BlogSyncService extends AbstractRemoteService {
                         csdnBlog.getArticleById(csdnBlogUserName,
                                                 articleId);
                 csdnBlogArticles.put(csdnBlogArticle.toJSONObject());
+
+
+                try {
+                    Thread.sleep(GET_ARTICLE_SLEEP_MILLIS);
+                } catch (final InterruptedException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
             }
         } catch (final JSONException e) {
             LOGGER.error(e.getMessage(), e);
