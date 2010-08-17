@@ -90,6 +90,7 @@ public interface ArticleRepository extends Repository {
      * @param article the specified article, for example,
      * <pre>
      * {
+     *     "oId": "",
      *     "articleTitle": "",
      *     "articleAbstrace": "",
      *     "articleTags": ["", "", ....],
