@@ -28,13 +28,14 @@ import org.b3log.latke.servlet.filter.AuthenticationFilter;
 import org.b3log.solo.client.action.impl.AdminIndexAction;
 import org.b3log.solo.client.feed.FeedServlet;
 import org.b3log.solo.client.util.Preferences;
+import org.b3log.solo.client.util.TagUtils;
 
 /**
  * Client-side module for <a href="http://code.google.com/p/google-guice/">
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 16, 2010
+ * @version 1.0.0.8, Aug 17, 2010
  */
 public final class ClientModule extends AbstractClientModule {
 
@@ -70,6 +71,7 @@ public final class ClientModule extends AbstractClientModule {
         bind(Filler.class).in(Scopes.SINGLETON);
 
         bind(ArticleUtils.class).in(Scopes.SINGLETON);
+        bind(TagUtils.class).in(Scopes.SINGLETON);
         bind(Preferences.class).in(Scopes.SINGLETON);
 
         bind(FeedServlet.class).in(Scopes.SINGLETON);

@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 15, 2010
+ * @version 1.0.0.6, Aug 17, 2010
  */
 public class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -180,5 +180,37 @@ public class ArticleGAERepository extends AbstractGAERepository
         }
 
         return ret;
+    }
+
+    @Override
+    public void importArticle(final JSONObject article)
+            throws RepositoryException {
+        String articleId = null;
+        try {
+            if (!article.has(Keys.OBJECT_ID)) {
+                throw new RepositoryException("The article to import MUST exist "
+                        + "id");
+            }
+            articleId = article.getString(Keys.OBJECT_ID);
+
+            if (!article.has(Article.ARTICLE_CREATE_DATE)) {
+                throw new RepositoryException("The article to import MUST exist "
+                        + "create date");
+            }
+
+            // XXX:  check other params
+
+            if (!article.has(Article.ARTICLE_UPDATE_DATE)) {
+                article.put(Article.ARTICLE_UPDATE_DATE,
+                            article.get(Article.ARTICLE_CREATE_DATE));
+            }
+
+            super.add(article);
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
+
+        LOGGER.debug("Imported an article[oId=" + articleId + "]");
     }
 }

@@ -17,13 +17,14 @@ package org.b3log.solo.repository;
 
 import java.util.List;
 import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
 
 /**
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 14, 2010
+ * @version 1.0.0.5, Aug 17, 2010
  */
 public interface ArticleRepository extends Repository {
 
@@ -61,4 +62,28 @@ public interface ArticleRepository extends Repository {
      * @return an article id, {@code null} if not found
      */
     String getNextArticleId(final String articleId);
+
+    /**
+     * Imports the specified article.
+     *
+     * <p>
+     *   <b>Note</b>: This interface is designed to import article for external
+     *   blogging system. Do NOT use this interface for adding article.
+     * </p>
+     *
+     * @param article the specified article, for example,
+     * <pre>
+     * {
+     *     "articleTitle": "",
+     *     "articleAbstrace": "",
+     *     "articleTags": ["", "", ....],
+     *     "articleContent": ""
+     *     "articleCreateDate": java.util.Date,
+     *     "articleUpdateDate": java.util.Date
+     * }
+     * </pre>
+     * @throws RepositoryException repository exception
+     */
+    void importArticle(final JSONObject article)
+            throws RepositoryException;
 }
