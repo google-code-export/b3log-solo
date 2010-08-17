@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.feed;
+package org.b3log.solo.action.feed;
 
 import com.google.inject.Inject;
 import java.io.IOException;

@@ -26,7 +26,7 @@ import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.remote.AbstractRemoteService;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.MD5;
-import org.b3log.solo.StatusCodes;
+import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONObject;
 

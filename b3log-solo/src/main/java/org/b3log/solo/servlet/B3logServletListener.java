@@ -29,11 +29,10 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.MD5;
-import org.b3log.solo.ClientModule;
+import org.b3log.solo.util.UtilModule;
 import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
-import org.b3log.latke.util.UtilModule;
 import org.b3log.latke.util.cache.Cache;
 import org.b3log.latke.util.cache.qualifier.LruMemory;
 import org.b3log.solo.repository.PreferenceRepository;
@@ -81,7 +80,7 @@ public final class B3logServletListener extends AbstractServletListener {
         if (null == ret) {
             LOGGER.info("Initializing Guice....");
             setInjector(Guice.createInjector(Stage.PRODUCTION,
-                                             new ClientModule(),
+                                             new UtilModule(),
                                              new RepositoryModule(),
                                              new EventModule(),
                                              new SyncModule(),
