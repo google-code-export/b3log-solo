@@ -222,6 +222,9 @@ public final class BlogSyncService extends AbstractRemoteService {
 
 
                 try {
+                    LOGGER.trace("Sleep main thread [" +
+                            GET_ARTICLE_SLEEP_MILLIS + "] millis for get article "
+                            + "from CSDN....");
                     Thread.sleep(GET_ARTICLE_SLEEP_MILLIS);
                 } catch (final InterruptedException e) {
                     LOGGER.error(e.getMessage(), e);
