@@ -35,6 +35,10 @@ import org.json.JSONObject;
 public final class CSDNBlogArticle {
 
     /**
+     * Id.
+     */
+    private String id;
+    /**
      * Create date.
      */
     private Date createDate;
@@ -99,6 +103,24 @@ public final class CSDNBlogArticle {
     }
 
     /**
+     * Gets the id.
+     *
+     * @return id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the id with the specified id.
+     *
+     * @param id the specified id
+     */
+    public void setId(final String id) {
+        this.id = id;
+    }
+
+    /**
      * Gets the content.
      *
      * @return content
@@ -158,10 +180,11 @@ public final class CSDNBlogArticle {
      * <p>
      *   <pre>
      *   {
-     *       "blogSyncCSDNBlogArchiveTitle": "",
-     *       "blogSyncCSDNBlogArchiveCreateDate": java.util.Date,
-     *       "blogSyncCSDNBlogArchiveCategories": ["", "", ....],
-     *       "blogSyncCSDNBlogArchiveContent": ""
+     *       "blogSyncCSDNBlogArticleId": "",
+     *       "blogSyncCSDNBlogArticleTitle": "",
+     *       "blogSyncCSDNBlogArticleCreateDate": java.util.Date,
+     *       "blogSyncCSDNBlogArticleCategories": ["", "", ....],
+     *       "blogSyncCSDNBlogArticleContent": ""
      *   }
      *   </pre>
      * </p>
@@ -169,9 +192,10 @@ public final class CSDNBlogArticle {
      * @return json object
      * @throws JSONException json exception
      */
-    public JSONObject toJSONObject() throws JSONException{
+    public JSONObject toJSONObject() throws JSONException {
         final JSONObject ret = new JSONObject();
 
+        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID, id);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE, title);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE, createDate);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES, categories);

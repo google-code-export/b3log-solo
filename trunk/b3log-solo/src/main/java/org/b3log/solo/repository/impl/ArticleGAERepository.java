@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 17, 2010
+ * @version 1.0.0.7, Aug 18, 2010
  */
 public class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -212,5 +212,15 @@ public class ArticleGAERepository extends AbstractGAERepository
         }
 
         LOGGER.debug("Imported an article[oId=" + articleId + "]");
+    }
+
+    @Override
+    public List<JSONObject> getArchivedArticles(final String archiveDate) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<String> getArchiveDates() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

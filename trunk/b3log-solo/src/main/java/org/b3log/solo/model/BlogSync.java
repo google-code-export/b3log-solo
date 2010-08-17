@@ -60,6 +60,10 @@ public final class BlogSync {
      */
     public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT = "blogSyncCSDNBlogArticleContent";
     /**
+     * Key of CSDN blog article id.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_ID = "blogSyncCSDNBlogArticleId";
+    /**
      * Key of CSDN blog article ids.
      */
     public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS = "blogSyncCSDNBlogArticleIds";
