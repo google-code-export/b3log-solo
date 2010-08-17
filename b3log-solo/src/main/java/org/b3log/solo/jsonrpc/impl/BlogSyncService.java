@@ -197,7 +197,7 @@ public final class BlogSyncService extends AbstractRemoteService {
                     BlogSync.BLOG_SYNC_CSDN_BLOG_USER_NAME);
             final String archiveDate =
                     requestJSONObject.getString(
-                    BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE);
+                    BlogSync.BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES);
             final List<String> articleIds =
                     csdnBlog.getArticleIdsByArchiveDate(csdnBlogUserName,
                                                         archiveDate);
