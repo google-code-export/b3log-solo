@@ -58,10 +58,6 @@ public final class CSDNBlog {
      */
     private static final String GET_POST_BY_ID = "metaWeblog.getPostByID";
     /**
-     * Sleep millisecond between every article get operation.
-     */
-    private static final long GET_ARTICLE_SLEEP_MILLIS = 1000;
-    /**
      * XML-RPC client configuration.
      */
     private XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
