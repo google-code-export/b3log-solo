@@ -66,7 +66,9 @@
     }
 
     var popLogin = function () {
-        loginDialog = $("#loginPanel").dialog();
+        loginDialog = $("#loginPanel").dialog({
+            width: 400
+        });
         $("#password").focus();
     }
 

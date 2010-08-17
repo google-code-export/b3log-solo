@@ -15,7 +15,7 @@
     <body>
         <#include "common-top.html">
         <div id="tipMsg" class="errorMsg"></div>
-        <div>
+        <div id="allPanel">
             <div class="left side">
                 <ul id="navi">
                     <li>
@@ -30,9 +30,12 @@
                     <li>
                         <span>${preferenceLabel}</span>
                     </li>
+                    <li>
+                        <span>{sync}</span>
+                    </li>
                 </ul>
             </div>
-            <div class="left main">
+            <div class="left" id="main">
                 <div id="content">
                 </div>
             </div>
@@ -42,18 +45,28 @@
             </div>
         </div>
         <script type="text/javascript">
-            // tipMsg
             (function () {
+                // tipMsg
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
                         $("#tipMsg").text("");
                     }
                 }, 6000);
+
+                // resize
+                var $main = $("#main");
+                var leftWidth = $(".side").width() + $.bowknot.strToInt($main.css("padding-left"))
+                    + $.bowknot.strToInt($main.css("padding-right")) + 17;
+
+                $("#main").css("width", window.innerWidth - leftWidth);
+                $(window).resize(function () {
+                    $("#main").css("width", window.innerWidth - leftWidth);
+                });
             })();
 
             // navi
             $("#navi li").each(function (i) {
-                var naviURL = ['article', 'article-list', 'link-list', 'preference'],
+                var naviURL = ['article', 'article-list', 'link-list', 'preference', 'sync'],
                 $it = $(this);
                 $it.click(function () {
                     var loadURL = "admin-" + naviURL[i] + ".do";

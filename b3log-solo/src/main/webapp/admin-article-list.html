@@ -185,9 +185,11 @@
     getArticleList(1);
 
     var popComments = function (event) {
-        $("#comments").dialog();
         $("#comments").data("oId", event.data.id[0]);
         getComment();
+        $("#comments").dialog({
+            width: 400
+        });
     }
 
     var getComment = function () {
