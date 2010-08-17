@@ -17,6 +17,7 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -101,7 +102,7 @@ public final class BlogSyncService extends AbstractRemoteService {
      * @return imported article ids, for example,
      * <pre>
      * {
-     *     "blogSyncCSDNBlogArticleIds": ["", "", ....]
+     *     "oIds": ["", "", ....]
      * }
      * </pre>
      * @throws ActionException action exception
@@ -121,6 +122,8 @@ public final class BlogSyncService extends AbstractRemoteService {
                     BlogSync.BLOG_SYNC_CSDN_BLOG_USER_NAME);
             final JSONArray articleIds = requestJSONObject.getJSONArray(
                     BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS);
+            final List<String> importedIds = new ArrayList<String>();
+            ret.put(Keys.OBJECT_ID + "s", importedIds);
             for (int i = 0; i < articleIds.length(); i++) {
                 final String articleId = articleIds.getString(i);
                 final CSDNBlogArticle csdnBlogArticle = csdnBlog.getArticleById(
@@ -147,6 +150,7 @@ public final class BlogSyncService extends AbstractRemoteService {
                 articleUtils.addTagArticleRelation(tags, article);
 
                 articleRepository.importArticle(article);
+                importedIds.add(articleId);
             }
 
         } catch (final Exception e) {
