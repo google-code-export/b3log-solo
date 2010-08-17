@@ -87,7 +87,7 @@ public final class CSDNBlogTestCase {
     @Test
     public void getArticleIdsByArchiveDate() {
         final CSDNBlog csdnBlog = new CSDNBlog();
-        Set<String> articleIds = csdnBlog.getArticleIdsByArchiveDate(
+        List<String> articleIds = csdnBlog.getArticleIdsByArchiveDate(
                 USER_NAME, "2006/12");
 
 

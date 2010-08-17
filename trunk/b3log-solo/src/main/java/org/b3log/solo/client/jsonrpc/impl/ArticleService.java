@@ -231,8 +231,8 @@ public final class ArticleService extends AbstractRemoteService {
      *         "articleTitle": "",
      *         "articleAbstract": "",
      *         "articleContent": "",
-     *         "articleCreateDate"; "",
-     *         "articleUpdateDate": ""
+     *         "articleCreateDate"; java.util.Date,
+     *         "articleUpdateDate": java.util.Date
      *      }, ....]
      *     "sc": "GET_ARTICLES_SUCC"
      * }
