@@ -141,11 +141,12 @@ public final class BlogSyncService extends AbstractRemoteService {
                 article.put(Article.ARTICLE_CONTENT, content);
                 article.put(Article.ARTICLE_CREATE_DATE, createDate);
                 final JSONArray tags = tagUtils.tag(categories.toArray(
-                        new String[0]),
-                                                    article);
+                        new String[0]), article);
 
                 article.put(Article.ARTICLE_COMMENT_COUNT, 0);
                 articleUtils.addTagArticleRelation(tags, article);
+
+                articleRepository.importArticle(article);
             }
 
         } catch (final Exception e) {
