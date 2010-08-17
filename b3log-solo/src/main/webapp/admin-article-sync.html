@@ -4,12 +4,12 @@
             <th width="124px">
                 {userNameLabel}
             </th>
-            <td>
+            <td width="360px">
                 <input id="userName"/>
             </td>
             <td>
                 <button onclick="getCSDNBlogArticleArchiveDate();">{submit}</button>
-                <select id="archiveDate" onchange="getCSDNBlogArticlesByArchiveDate();">
+                <select id="archiveDate" class="none" onchange="getCSDNBlogArticlesByArchiveDate();">
                     <option>{选择月份}</option>
                 </select>
             </td>
@@ -54,11 +54,11 @@
     var getCSDNBlogArticleArchiveDate = function () {
         userName = $("#userName").val();
         jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate(function (result, error) {
-            $("#archiveDate").html("<option>{选择月份}</option>");
+            $("#archiveDate").html("<option>{选择月份}</option>").show(600);
             for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
                 $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
             }
-            $("#getYear").html(result.blogSyncCSDNBlogArchiveDates);
+
         }, {"blogSyncCSDNBlogUserName": userName});
     }
 
