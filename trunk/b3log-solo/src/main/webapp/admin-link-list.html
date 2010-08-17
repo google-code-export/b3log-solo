@@ -133,7 +133,9 @@
     });
 
     var popUpdateLink = function (event) {
-        linkDialog = $("#updateLink").dialog();
+        linkDialog = $("#updateLink").dialog({
+            width: 400
+        });
         var requestJSONObject = {
             "oId": event.data.id[0]
         };
@@ -264,6 +266,11 @@
                     $("#tipMsg").text("添加成功！");
                     $("#linkTitle").val("");
                     $("#linkAddress").val("");
+
+                    if (linksLength === paginationPageSize) {
+                        pageCount++;
+                    }
+                    
                     getLinkList(pageCount);
                     break;
                 default:
