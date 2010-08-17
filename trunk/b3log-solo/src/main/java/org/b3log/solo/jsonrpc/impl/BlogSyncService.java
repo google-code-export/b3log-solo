@@ -172,10 +172,10 @@ public final class BlogSyncService extends AbstractRemoteService {
      * <pre>
      * {
      *     "blogSyncCSDNBlogArticles": [{
-     *         "blogSyncCSDNBlogArchiveTitle": "",
-     *         "blogSyncCSDNBlogArchiveCreateDate": java.util.Date,
-     *         "blogSyncCSDNBlogArchiveCategories": ["", "", ....],
-     *         "blogSyncCSDNBlogArchiveContent": ""
+     *         "blogSyncCSDNBlogArticleTitle": "",
+     *         "blogSyncCSDNBlogArticleCreateDate": java.util.Date,
+     *         "blogSyncCSDNBlogArticleCategories": ["", "", ....],
+     *         "blogSyncCSDNBlogArticleContent": ""
      *     }, ....]
      * }
      * </pre>
