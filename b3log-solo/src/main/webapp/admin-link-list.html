@@ -77,7 +77,7 @@
     var currentPage = 1,
     pageCount = 1,
     linkDialog = undefined,
-    paginationPageSize = 2,
+    paginationPageSize = 10,
     linksLength = 1;
     var linkList = $("#linkList").table({
         resizable: true,
@@ -186,7 +186,7 @@
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
             "paginationPageSize": paginationPageSize,
-            "paginationWindowSize": 5
+            "paginationWindowSize": 10
         };
         jsonRpc.linkService.getLinks(function (result, error) {
             switch (result.sc) {
