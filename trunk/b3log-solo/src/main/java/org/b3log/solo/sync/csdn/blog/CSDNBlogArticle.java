@@ -197,7 +197,7 @@ public final class CSDNBlogArticle {
 
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID, id);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE, title);
-        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE, createDate);
+        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE, createDate);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES, categories);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT, content);
 
