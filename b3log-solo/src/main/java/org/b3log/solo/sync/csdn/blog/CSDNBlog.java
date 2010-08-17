@@ -65,6 +65,10 @@ public final class CSDNBlog {
      * XML-RPC client.
      */
     private XmlRpcClient client = new XmlRpcClient();
+    /**
+     * Sleep millisecond between every article get operation.
+     */
+    private static final long GET_ARTICLE_SLEEP_MILLIS = 2000;
 
     /**
      * Deletes a post from CSDN blog with specified parameters.
@@ -300,6 +304,14 @@ public final class CSDNBlog {
                     + e.getMessage() + "]");
 
             return null;
+        }
+
+        try {
+            LOGGER.trace("Sleep main thread [" + GET_ARTICLE_SLEEP_MILLIS
+                    + "] millis for getting article from CSDN....");
+            Thread.sleep(GET_ARTICLE_SLEEP_MILLIS);
+        } catch (final InterruptedException e) {
+            LOGGER.error(e.getMessage(), e);
         }
 
         return ret;
