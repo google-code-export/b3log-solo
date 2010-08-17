@@ -14,60 +14,89 @@
                 </select>
             </td>
         </tr>
-        <tr>
-            <th>
-                ${password1Label}
-            </th>
-            <td>
-                <input id="userPassword"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {year}
-            </th>
-            <td>
-                <input id="year"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                {month}
-            </th>
-            <td>
-                <input id="month"/>
-            </td>
-        </tr>
-        <tr>
-            <th colspan="2">
-                <button onclick="syncBlog();">{syncBlog}</button>
-            </th>
-        </tr>
     </tbody>
 </table>
+<button onclick="sync();">{submit}</button>
+<div id="articleList"></div>
 <script type="text/javascript">
+    var userName = "",
+    articleList = $("#articleList").table({
+        resizable: true,
+        height: 300,
+        colModel: [{
+                name: "选择",
+                index: "selected",
+                width: 46,
+                inputType: "checkbox",
+                textAlign: "center",
+                allSelected: true
+            }, {
+                name: "${titleLabel}",
+                index: "title",
+                minWidth: 180,
+                style: "padding-left: 6px;"
+            },  {
+                textAlign: "center",
+                name: "{tags}",
+                index: "tags",
+                width: 160
+            }, {
+                textAlign: "center",
+                name: "${createDateLabel}",
+                index: "date",
+                width: 130
+            }, {
+                visible: false,
+                index: "id"
+            }]
+    });
+
     var getCSDNBlogArticleArchiveDate = function () {
+        userName = $("#userName").val();
         jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate(function (result, error) {
             $("#archiveDate").html("<option>{选择月份}</option>");
             for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
                 $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
             }
             $("#getYear").html(result.blogSyncCSDNBlogArchiveDates);
-        }, {"blogSyncCSDNBlogUserName": $("#userName").val()});
+        }, {"blogSyncCSDNBlogUserName": userName});
     }
 
     var getCSDNBlogArticlesByArchiveDate = function () {
         var requestJSONObject = {
-            "blogSyncCSDNBlogUserName": $("#userName").val(),
+            "blogSyncCSDNBlogUserName": userName,
             "blogSyncCSDNBlogArchiveDate": $("#archiveDate").val()
         };
         
         jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(function (result, error) {
-            
+            var articles = result.blogSyncCSDNBlogArticles,
+            articleData = [];
+
+            for (var i = 0; i < articles.length; i++) {
+                articleData[i] = {};
+                articleData[i].selected = false;
+                articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
+                articleData[i].date = new Date(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
+                articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
+                articleData[i].id = articles[i].blogSyncCSDNBlogArticleId;
+            }
+
+            articleList.table({
+                update:{
+                    data: articleData
+                }
+            });
         }, requestJSONObject);
     }
     
-    var syncBlog = function () {
+    var sync = function () {
+        var requestJSONObject = {
+            "blogSyncCSDNBlogUserName":  userName,
+            "blogSyncCSDNBlogArticleIds": $("#articleList_selected").data("id")
+        };
 
+        jsonRpc.blogSyncService.importCSDNBlogArticles(function (result, error) {
+            $("#tipMsg").text(result.blogSyncCSDNBlogArticleIds);
+        }, requestJSONObject);
     }
 </script>
