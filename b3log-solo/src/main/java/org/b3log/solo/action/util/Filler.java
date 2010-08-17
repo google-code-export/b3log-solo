@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 14, 2010
+ * @version 1.0.0.4, Aug 18, 2010
  */
 public final class Filler {
 
@@ -156,6 +156,17 @@ public final class Filler {
                 tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
 
         dataModel.put(Common.MOST_USED_TAGS, tags);
+    }
+
+    /**
+     * Fills archive dates.
+     *
+     * @param dataModel data model
+     * @throws Exception exception
+     */
+    public void fillArchiveDates(final Map<String, Object> dataModel)
+            throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**

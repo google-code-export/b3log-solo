@@ -37,7 +37,7 @@ import org.b3log.latke.service.ServiceException;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 16, 2010
+ * @version 1.0.0.1, Aug 18, 2010
  */
 public final class CSDNBlog {
 
@@ -265,6 +265,7 @@ public final class CSDNBlog {
             final String csdnBlogUserName,
             final String articleId) {
         final CSDNBlogArticle ret = new CSDNBlogArticle();
+        ret.setId(articleId);
 
         try {
             config.setServerURL(
