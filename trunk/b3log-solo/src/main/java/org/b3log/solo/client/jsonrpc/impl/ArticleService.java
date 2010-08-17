@@ -38,6 +38,8 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.solo.client.util.ArticleUtils;
+import org.b3log.solo.client.util.TagUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +48,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 10, 2010
+ * @version 1.0.0.4, Aug 17, 2010
  */
 public final class ArticleService extends AbstractRemoteService {
 
@@ -74,6 +76,16 @@ public final class ArticleService extends AbstractRemoteService {
      */
     @Inject
     private EventManager eventManager;
+    /**
+     * Tag utilities.
+     */
+    @Inject
+    private TagUtils tagUtils;
+    /**
+     * Article utilities.
+     */
+    @Inject
+    private ArticleUtils articleUtils;
 
     /**
      * Adds an article from the specified request json object and http servlet
@@ -118,14 +130,14 @@ public final class ArticleService extends AbstractRemoteService {
             final String tagsString =
                     article.getString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
-            final JSONArray tags = tag(tagTitles, article);
+            final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 2; Set comment count to 0
             article.put(Article.ARTICLE_COMMENT_COUNT, 0);
             // Step 3: Add article
             final String articleId = articleRepository.add(article);
             ret.put(Keys.OBJECT_ID, articleId);
             // Step 4: Add tag-article relations
-            addTagArticleRelation(tags, article);
+            articleUtils.addTagArticleRelation(tags, article);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_ARTICLE_SUCC);
 
@@ -275,15 +287,15 @@ public final class ArticleService extends AbstractRemoteService {
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-                final Date createDate = 
+                final Date createDate =
                         (Date) article.get(Article.ARTICLE_CREATE_DATE);
-                final Date updateDate = 
+                final Date updateDate =
                         (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-                final String createDateString = 
+                final String createDateString =
                         Keys.SIMPLE_DATE_FORMAT.format(createDate);
-                final String updateDateString = 
+                final String updateDateString =
                         Keys.SIMPLE_DATE_FORMAT.format(updateDate);
-                
+
                 article.put(Article.ARTICLE_CREATE_DATE, createDateString);
                 article.put(Article.ARTICLE_UPDATE_DATE, updateDateString);
             }
@@ -333,7 +345,7 @@ public final class ArticleService extends AbstractRemoteService {
             // Step 1: Dec reference count of tag
             decTagRefCount(articleId);
             // Step 2: Remove tag-article relations
-            removeTagArticleRelations(articleId);
+            articleUtils.removeTagArticleRelations(articleId);
             // Step 3: Remove article
             articleRepository.remove(articleId);
 
@@ -414,11 +426,11 @@ public final class ArticleService extends AbstractRemoteService {
             // Step 1: Dec reference count of tag
             decTagRefCount(articleId);
             // Step 2: Remove tag-article relations
-            removeTagArticleRelations(articleId);
+            articleUtils.removeTagArticleRelations(articleId);
             // Step 3: Add tags
             final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
-            final JSONArray tags = tag(tagTitles, article);
+            final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 4: Fill auto properties
             final JSONObject oldArticle = articleRepository.get(articleId);
             article.put(Article.ARTICLE_CREATE_DATE, oldArticle.getString(
@@ -428,7 +440,7 @@ public final class ArticleService extends AbstractRemoteService {
             // Step 5: Update
             articleRepository.update(articleId, article);
             // Step 6: Add tag-article relations
-            addTagArticleRelation(tags, article);
+            articleUtils.addTagArticleRelation(tags, article);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
 
@@ -436,97 +448,6 @@ public final class ArticleService extends AbstractRemoteService {
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
-        }
-
-        return ret;
-    }
-
-    /**
-     * Removes tag-article relations by the specified article id.
-     *
-     * @param articleId the specified article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    private void removeTagArticleRelations(final String articleId)
-            throws JSONException, RepositoryException {
-        final List<JSONObject> tagArticleRelations =
-                tagArticleRepository.getByArticleId(articleId);
-        for (int i = 0; i < tagArticleRelations.size(); i++) {
-            final JSONObject tagArticleRelation =
-                    tagArticleRelations.get(i);
-            final String relationId =
-                    tagArticleRelation.getString(Keys.OBJECT_ID);
-            tagArticleRepository.remove(relationId);
-        }
-    }
-
-    /**
-     * Adds relation of the specified tags and article.
-     *
-     * @param tags the specified tags
-     * @param article the specified article
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    private void addTagArticleRelation(final JSONArray tags,
-                                       final JSONObject article)
-            throws JSONException, RepositoryException {
-        for (int i = 0; i < tags.length(); i++) {
-            final JSONObject tag = tags.getJSONObject(i);
-            final JSONObject tagArticleRelation = new JSONObject();
-
-            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
-                                   tag.getString(Keys.OBJECT_ID));
-            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                   article.getString(Keys.OBJECT_ID));
-
-            tagArticleRepository.add(tagArticleRelation);
-        }
-    }
-
-    /**
-     * Tags the specified article with the specified tag titles.
-     *
-     * @param tagTitles the specified tag titles
-     * @param article the specified article
-     * @return an array of tags
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
-     */
-    private JSONArray tag(final String[] tagTitles, final JSONObject article)
-            throws RepositoryException, JSONException {
-        final JSONArray ret = new JSONArray();
-        for (int i = 0; i < tagTitles.length; i++) {
-            final String tagTitle = tagTitles[i].trim();
-            JSONObject tag = tagRepository.getByTitle(tagTitle);
-            String tagId = null;
-            if (null == tag) {
-                LOGGER.trace("Found a new tag[title=" + tagTitle
-                        + "] in article[title=" + article.getString(
-                        Article.ARTICLE_TITLE) + "]");
-                tag = new JSONObject();
-                tag.put(Tag.TAG_TITLE, tagTitle);
-                tag.put(Tag.TAG_REFERENCE_COUNT, 1);
-
-                tagId = tagRepository.add(tag);
-                tag.put(Keys.OBJECT_ID, tagId);
-            } else {
-                tagId = tag.getString(Keys.OBJECT_ID);
-                LOGGER.trace("Found a existing tag[title=" + tag.getString(
-                        Tag.TAG_TITLE) + ", oId="
-                        + tag.getString(Keys.OBJECT_ID) + "] in "
-                        + "article[title=" + article.getString(
-                        Article.ARTICLE_TITLE) + "]");
-                final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
-                final JSONObject tagTmp = new JSONObject();
-                tagTmp.put(Keys.OBJECT_ID, tagId);
-                tagTmp.put(Tag.TAG_TITLE, tagTitle);
-                tagTmp.put(Tag.TAG_REFERENCE_COUNT, refCnt + 1);
-                tagRepository.update(tagId, tagTmp);
-            }
-
-            ret.put(tag);
         }
 
         return ret;

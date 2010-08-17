@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.client.util;
 
 import com.google.inject.Inject;
@@ -26,6 +25,7 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,6 +54,50 @@ public final class ArticleUtils {
     private TagRepository tagRepository;
 
     /**
+     * Removes tag-article relations by the specified article id.
+     *
+     * @param articleId the specified article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void removeTagArticleRelations(final String articleId)
+            throws JSONException, RepositoryException {
+        final List<JSONObject> tagArticleRelations =
+                tagArticleRepository.getByArticleId(articleId);
+        for (int i = 0; i < tagArticleRelations.size(); i++) {
+            final JSONObject tagArticleRelation =
+                    tagArticleRelations.get(i);
+            final String relationId =
+                    tagArticleRelation.getString(Keys.OBJECT_ID);
+            tagArticleRepository.remove(relationId);
+        }
+    }
+
+    /**
+     * Adds relation of the specified tags and article.
+     *
+     * @param tags the specified tags
+     * @param article the specified article
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void addTagArticleRelation(final JSONArray tags,
+                                      final JSONObject article)
+            throws JSONException, RepositoryException {
+        for (int i = 0; i < tags.length(); i++) {
+            final JSONObject tag = tags.getJSONObject(i);
+            final JSONObject tagArticleRelation = new JSONObject();
+
+            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
+                                   tag.getString(Keys.OBJECT_ID));
+            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                                   article.getString(Keys.OBJECT_ID));
+
+            tagArticleRepository.add(tagArticleRelation);
+        }
+    }
+
+    /**
      * Adds tags for every article of the specified articles.
      *
      * @param articles the specified articles
@@ -73,7 +117,7 @@ public final class ArticleUtils {
                         tagArticleRelations.get(i);
                 final String tagId =
                         tagArticleRelation.getString(Tag.TAG + "_"
-                                                     + Keys.OBJECT_ID);
+                        + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
                 tags.add(tag);
             }

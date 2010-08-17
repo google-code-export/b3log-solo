@@ -17,14 +17,21 @@ package org.b3log.solo.client.jsonrpc.impl;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.remote.AbstractRemoteService;
+import org.b3log.solo.client.util.ArticleUtils;
+import org.b3log.solo.client.util.TagUtils;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
 import org.json.JSONArray;
@@ -54,10 +61,29 @@ public final class BlogSyncService extends AbstractRemoteService {
     @Inject
     private ArticleRepository tagArticleRepository;
     /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
+    /**
      * CSDN blog.
      */
     @Inject
     private CSDNBlog csdnBlog;
+    /**
+     * Tag utilities.
+     */
+    @Inject
+    private TagUtils tagUtils;
+    /**
+     * Article utilities.
+     */
+    @Inject
+    private ArticleUtils articleUtils;
+    /**
+     * Maximum length of an article abstract.
+     */
+    private static final int MAX_ABSTRACT_LENGTH = 500;
 
     /**
      * Imports CSDN blog article by the specified request json object and http
@@ -97,12 +123,32 @@ public final class BlogSyncService extends AbstractRemoteService {
                     BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS);
             for (int i = 0; i < articleIds.length(); i++) {
                 final String articleId = articleIds.getString(i);
-                final CSDNBlogArticle article = csdnBlog.getArticleById(
+                final CSDNBlogArticle csdnBlogArticle = csdnBlog.getArticleById(
                         csdnBlogUserName, articleId);
+                final String title = csdnBlogArticle.getTitle();
+                final Set<String> categories = csdnBlogArticle.getCategoris();
+                final Date createDate = csdnBlogArticle.getCreateDate();
+                final String content = csdnBlogArticle.getContent();
+                final int conentLength = content.length();
+                final String summary = content.substring(
+                        0, conentLength >= MAX_ABSTRACT_LENGTH
+                        ? MAX_ABSTRACT_LENGTH : conentLength / 2);
 
+                final JSONObject article = new JSONObject();
+                article.put(Keys.OBJECT_ID, articleId);
+                article.put(Article.ARTICLE_TITLE, title);
+                article.put(Article.ARTICLE_ABSTRACT, summary);
+                article.put(Article.ARTICLE_CONTENT, content);
+                article.put(Article.ARTICLE_CREATE_DATE, createDate);
+                final JSONArray tags = tagUtils.tag(categories.toArray(
+                        new String[0]),
+                                                    article);
+
+                article.put(Article.ARTICLE_COMMENT_COUNT, 0);
+                articleUtils.addTagArticleRelation(tags, article);
             }
 
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -198,7 +244,7 @@ public final class BlogSyncService extends AbstractRemoteService {
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
         checkAuthorized(request, response);
-        
+
         final JSONObject ret = new JSONObject();
 
         try {
