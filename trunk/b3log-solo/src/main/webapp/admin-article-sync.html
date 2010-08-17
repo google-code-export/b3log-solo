@@ -7,6 +7,12 @@
             <td>
                 <input id="userName"/>
             </td>
+            <td>
+                <button onclick="getCSDNBlogArticleArchiveDate();">{submit}</button>
+                <select id="archiveDate" onchange="getCSDNBlogArticlesByArchiveDate();">
+                    <option>{选择月份}</option>
+                </select>
+            </td>
         </tr>
         <tr>
             <th>
@@ -18,7 +24,7 @@
         </tr>
         <tr>
             <th>
-               {year}
+                {year}
             </th>
             <td>
                 <input id="year"/>
@@ -26,7 +32,7 @@
         </tr>
         <tr>
             <th>
-               {month}
+                {month}
             </th>
             <td>
                 <input id="month"/>
@@ -40,6 +46,27 @@
     </tbody>
 </table>
 <script type="text/javascript">
+    var getCSDNBlogArticleArchiveDate = function () {
+        jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate(function (result, error) {
+            $("#archiveDate").html("<option>{选择月份}</option>");
+            for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
+                $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
+            }
+            $("#getYear").html(result.blogSyncCSDNBlogArchiveDates);
+        }, {"blogSyncCSDNBlogUserName": $("#userName").val()});
+    }
+
+    var getCSDNBlogArticlesByArchiveDate = function () {
+        var requestJSONObject = {
+            "blogSyncCSDNBlogUserName": $("#userName").val(),
+            "blogSyncCSDNBlogArchiveDate": $("#archiveDate").val()
+        };
+        
+        jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(function (result, error) {
+            
+        }, requestJSONObject);
+    }
+    
     var syncBlog = function () {
 
     }
