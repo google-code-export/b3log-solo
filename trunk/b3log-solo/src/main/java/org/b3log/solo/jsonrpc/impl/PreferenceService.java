@@ -25,7 +25,7 @@ import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.remote.AbstractRemoteService;
 import org.b3log.latke.util.cache.Cache;
 import org.b3log.latke.util.cache.qualifier.LruMemory;
-import org.b3log.solo.StatusCodes;
+import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;

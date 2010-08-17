@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo;
+package org.b3log.solo.action;
 
 /**
  * This enumeration defines all response status codes of actions.

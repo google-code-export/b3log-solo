@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo;
+package org.b3log.solo.action;
 
 import com.google.inject.Scopes;
 import org.b3log.solo.action.impl.ArticleAction;
@@ -21,23 +21,20 @@ import org.b3log.solo.action.impl.TagArticlesAction;
 import org.b3log.solo.action.impl.IndexAction;
 import org.b3log.solo.action.impl.TagsAction;
 import org.b3log.solo.action.util.Filler;
-import org.b3log.solo.util.ArticleUtils;
 import org.b3log.latke.client.AbstractClientModule;
 import org.b3log.latke.client.action.DoNothingAction;
 import org.b3log.latke.servlet.filter.AuthenticationFilter;
 import org.b3log.solo.action.impl.AdminIndexAction;
-import org.b3log.solo.feed.FeedServlet;
-import org.b3log.solo.util.Preferences;
-import org.b3log.solo.util.TagUtils;
+import org.b3log.solo.action.feed.FeedServlet;
 
 /**
- * Client-side module for <a href="http://code.google.com/p/google-guice/">
+ * Action module for <a href="http://code.google.com/p/google-guice/">
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Aug 17, 2010
+ * @version 1.0.0.0, Aug 17, 2010
  */
-public final class ClientModule extends AbstractClientModule {
+public final class ActionModule extends AbstractClientModule {
 
     @Override
     protected void configureServlets() {
@@ -69,10 +66,6 @@ public final class ClientModule extends AbstractClientModule {
               "/admin-sync.do").with(DoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
-
-        bind(ArticleUtils.class).in(Scopes.SINGLETON);
-        bind(TagUtils.class).in(Scopes.SINGLETON);
-        bind(Preferences.class).in(Scopes.SINGLETON);
 
         bind(FeedServlet.class).in(Scopes.SINGLETON);
         serve("/feed.do").with(FeedServlet.class);

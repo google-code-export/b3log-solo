@@ -26,7 +26,7 @@ import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.client.remote.AbstractRemoteService;
 import org.b3log.latke.model.Pagination;
-import org.b3log.solo.StatusCodes;
+import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.json.JSONArray;
