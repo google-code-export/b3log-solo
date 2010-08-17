@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
+import java.util.List;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,16 +53,29 @@ public final class CSDNBlogTestCase {
 
     /**
      * Tests
-     * {@linkplain CSDNBlog#getArchiveDate(java.lang.String) } method.
+     * {@linkplain CSDNBlog#getArchiveDates(java.lang.String) } method.
      */
     @Test
-    public void getArchiveDate() {
+    public void getArchiveDates() {
         final CSDNBlog csdnBlog = new CSDNBlog();
-        String archiveDate = csdnBlog.getArchiveDate(USER_NAME);
+        final List<String> archiveDates = csdnBlog.getArchiveDates("herian");
+
+        final int herianArchiveDateCnt = 13;  // Maybe?
+        assertEquals(archiveDates.size(), herianArchiveDateCnt);
+    }
+
+    /**
+     * Tests
+     * {@linkplain CSDNBlog#getOldestArchiveDate(java.lang.String) } method.
+     */
+    @Test
+    public void getOldestArchiveDate() {
+        final CSDNBlog csdnBlog = new CSDNBlog();
+        String archiveDate = csdnBlog.getOldestArchiveDate(USER_NAME);
 
         assertEquals(archiveDate, "2006/12");
 
-        archiveDate = csdnBlog.getArchiveDate("Vanessa219");
+        archiveDate = csdnBlog.getOldestArchiveDate("Vanessa219");
         assertEquals(archiveDate, "2008/01");
     }
 

@@ -39,6 +39,7 @@ import org.b3log.latke.util.cache.qualifier.LruMemory;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.UserRepository;
 import static org.b3log.solo.model.Preference.*;
+import org.b3log.solo.sync.SyncModule;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
@@ -46,7 +47,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 15, 2010
+ * @version 1.0.0.4, Aug 17, 2010
  */
 public final class B3logServletListener extends AbstractServletListener {
 
@@ -83,6 +84,7 @@ public final class B3logServletListener extends AbstractServletListener {
                                              new ClientModule(),
                                              new RepositoryModule(),
                                              new EventModule(),
+                                             new SyncModule(),
                                              new UtilModule()));
         }
 
