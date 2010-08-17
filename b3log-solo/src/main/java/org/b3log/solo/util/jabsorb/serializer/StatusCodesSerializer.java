@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.util.jabsorb.serializer;
 
-import org.b3log.solo.client.StatusCodes;
+import org.b3log.solo.StatusCodes;
 import org.jabsorb.serializer.AbstractSerializer;
 import org.jabsorb.serializer.MarshallException;
 import org.jabsorb.serializer.ObjectMatch;

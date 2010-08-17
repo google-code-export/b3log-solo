@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.client;
+package org.b3log.solo;
 
 import com.google.inject.Scopes;
-import org.b3log.solo.client.action.impl.ArticleAction;
-import org.b3log.solo.client.action.impl.TagArticlesAction;
-import org.b3log.solo.client.action.impl.IndexAction;
-import org.b3log.solo.client.action.impl.TagsAction;
-import org.b3log.solo.client.action.util.Filler;
-import org.b3log.solo.client.util.ArticleUtils;
+import org.b3log.solo.action.impl.ArticleAction;
+import org.b3log.solo.action.impl.TagArticlesAction;
+import org.b3log.solo.action.impl.IndexAction;
+import org.b3log.solo.action.impl.TagsAction;
+import org.b3log.solo.action.util.Filler;
+import org.b3log.solo.util.ArticleUtils;
 import org.b3log.latke.client.AbstractClientModule;
 import org.b3log.latke.client.action.DoNothingAction;
 import org.b3log.latke.servlet.filter.AuthenticationFilter;
-import org.b3log.solo.client.action.impl.AdminIndexAction;
-import org.b3log.solo.client.feed.FeedServlet;
-import org.b3log.solo.client.util.Preferences;
-import org.b3log.solo.client.util.TagUtils;
+import org.b3log.solo.action.impl.AdminIndexAction;
+import org.b3log.solo.feed.FeedServlet;
+import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.TagUtils;
 
 /**
  * Client-side module for <a href="http://code.google.com/p/google-guice/">

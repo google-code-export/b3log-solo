@@ -29,7 +29,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.MD5;
-import org.b3log.solo.client.ClientModule;
+import org.b3log.solo.ClientModule;
 import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 17, 2010
+ * @version 1.0.0.5, Aug 17, 2010
  */
 public final class B3logServletListener extends AbstractServletListener {
 
@@ -66,7 +66,7 @@ public final class B3logServletListener extends AbstractServletListener {
      * JavaScript services and event listeners.
      */
     public B3logServletListener() {
-        setClientRemoteServicePackage("org/b3log/solo/client/jsonrpc/impl");
+        setClientRemoteServicePackage("org/b3log/solo/jsonrpc/impl");
     }
 
     /**
