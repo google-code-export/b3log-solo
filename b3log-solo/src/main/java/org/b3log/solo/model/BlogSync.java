@@ -28,9 +28,37 @@ public final class BlogSync {
      */
     public static final String BLOG_SYNC_CSDN_BLOG_USER_NAME = "blogSyncCSDNBlogUserName";
     /**
+     * Key of CSDN blog archive date.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE = "blogSyncCSDNBlogArchiveDate";
+    /**
      * Key of CSDN blog archive dates.
      */
     public static final String BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES = "blogSyncCSDNBlogArchiveDates";
+    /**
+     * Key of CSDN blog article.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE = "blogSyncCSDNBlogArticle";
+    /**
+     * Key of CSDN blog articles.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLES = "blogSyncCSDNBlogArticles";
+    /**
+     * Key of CSDN blog article title.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE = "blogSyncCSDNBlogArticleTitle";
+    /**
+     * Key of CSDN blog article create date.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE = "blogSyncCSDNBlogArticleCreateDate";
+    /**
+     * Key of CSDN blog article categories.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES = "blogSyncCSDNBlogArticleCategories";
+    /**
+     * Key of CSDN blog article content.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT = "blogSyncCSDNBlogArticleContent";
 
     /**
      * Private default constructor.

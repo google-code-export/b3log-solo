@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.BlogSync;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +30,7 @@ import org.json.JSONObject;
  * CSDN blog article(post, entry, article, whatever).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 16, 2010
+ * @version 1.0.0.1, Aug 17, 2010
  */
 public final class CSDNBlogArticle {
 
@@ -152,7 +153,35 @@ public final class CSDNBlogArticle {
     }
 
     /**
-     * Transforms this object to MetaWeblog post structure.
+     * Transforms this object to a json object.
+     *
+     * <p>
+     *   <pre>
+     *   {
+     *       "blogSyncCSDNBlogArchiveTitle": "",
+     *       "blogSyncCSDNBlogArchiveCreateDate": java.util.Date,
+     *       "blogSyncCSDNBlogArchiveCategories": ["", "", ....],
+     *       "blogSyncCSDNBlogArchiveContent": ""
+     *   }
+     *   </pre>
+     * </p>
+     *
+     * @return json object
+     * @throws JSONException json exception
+     */
+    public JSONObject toJSONObject() throws JSONException{
+        final JSONObject ret = new JSONObject();
+
+        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE, title);
+        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE, createDate);
+        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES, categories);
+        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT, content);
+
+        return ret;
+    }
+
+    /**
+     * Transforms this object to a MetaWeblog post structure.
      *
      * @return MetaWeblog post structure
      */

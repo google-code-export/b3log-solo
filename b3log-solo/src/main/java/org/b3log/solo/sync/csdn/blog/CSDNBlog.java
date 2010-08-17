@@ -18,10 +18,8 @@ package org.b3log.solo.sync.csdn.blog;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
@@ -231,7 +229,7 @@ public final class CSDNBlog {
      * @param archiveDate the specified archive date(yyyy/MM)
      * @return a set of article ids, returns an empty list if not found
      */
-    public Set<String> getArticleIdsByArchiveDate(
+    public List<String> getArticleIdsByArchiveDate(
             final String csdnBlogUserName, final String archiveDate) {
         final ArchivePageReader archivePageReader =
                 new ArchivePageReader(csdnBlogUserName, archiveDate);
@@ -242,7 +240,7 @@ public final class CSDNBlog {
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
 
-        final Set<String> ret = new HashSet<String>();
+        final List<String> ret = new ArrayList<String>();
 
         while (matcher.find()) {
             final String match = matcher.group();
