@@ -15,8 +15,8 @@
  */
 package org.b3log.solo.sync;
 
+import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
-import org.b3log.latke.service.AbstractServiceModule;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 
 /**
@@ -26,13 +26,10 @@ import org.b3log.solo.sync.csdn.blog.CSDNBlog;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 17, 2010
  */
-public final class SyncModule extends AbstractServiceModule {
+public final class SyncModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        super.configure();
-
         bind(CSDNBlog.class).in(Scopes.SINGLETON);
-
     }
 }
