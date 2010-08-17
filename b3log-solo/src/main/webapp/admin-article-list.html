@@ -147,8 +147,8 @@
         jsonRpc.articleService.getArticles(function (result, error) {
             switch (result.sc) {
                 case "GET_ARTICLES_SUCC":
-                    var articles = result.articles;
-                    var articleData = [];
+                    var articles = result.articles,
+                    articleData = [];
 
                     for (var i = 0; i < articles.length; i++) {
                         articleData[i] = {};
