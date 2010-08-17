@@ -30,7 +30,7 @@ import static org.testng.Assert.*;
  * {@link CSDNBlogTestCase} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 16, 2010
+ * @version 1.0.0.1, Aug 17, 2010
  */
 public final class CSDNBlogTestCase {
 
@@ -104,13 +104,13 @@ public final class CSDNBlogTestCase {
      * {@linkplain CSDNBlog#getArticleById(java.lang.String, java.lang.String)}
      * method.
      */
-    //@Test
+    @Test
     public void getArticleById() {
         final CSDNBlog csdnBlog = new CSDNBlog();
         final CSDNBlogArticle article = csdnBlog.getArticleById(USER_NAME,
-                                                                "4838803");
+                                                                "5817062");
         assertNotNull(article);
-        assertEquals(article.getTitle(), "");
+        assertEquals(article.getTitle(), "HTTP/1.1 Status Code Definitions");
     }
 
     /**
@@ -122,7 +122,7 @@ public final class CSDNBlogTestCase {
      *
      * @throws Exception exception
      */
-//@org.testng.annotations.Test
+    //@org.testng.annotations.Test
     public void newPost() throws Exception {
         final JSONObject article = getArticle();
         final CSDNBlogArticle csdnBlogArticle = new CSDNBlogArticle(article);
