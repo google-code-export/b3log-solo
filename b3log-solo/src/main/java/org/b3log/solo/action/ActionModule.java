@@ -63,7 +63,7 @@ public final class ActionModule extends AbstractClientModule {
               "/admin-article-list.do",
               "/admin-link-list.do",
               "/admin-preference.do",
-              "/admin-sync.do").with(DoNothingAction.class);
+              "/admin-article-sync.do").with(DoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
