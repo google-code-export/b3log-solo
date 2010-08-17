@@ -145,6 +145,46 @@ public final class CSDNBlog {
     }
 
     /**
+     * Gets the all archive dates(yyyy/MM) by the specified CSDN blog user
+     * name.
+     *
+     * @param csdnBlogUserName the specified CSDN blog user name
+     * @return a set of archive dates(yyyy/MM), returns an empty set if not
+     * found any archive date
+     */
+    public List<String> getArchiveDates(final String csdnBlogUserName) {
+        final List<String> ret = new ArrayList<String>();
+
+        final IndexPageReader archivePageReader =
+                new IndexPageReader(csdnBlogUserName);
+        final String pageContent = archivePageReader.getContent();
+        final String patternString = "<a href=\"/" + csdnBlogUserName
+                + "/archive/\\d{4}/\\d{2}\\.aspx";
+        final Pattern pattern = Pattern.compile(patternString);
+        final Matcher matcher = pattern.matcher(pageContent);
+
+        final List<String> matches = new ArrayList<String>();
+        while (matcher.find()) {
+            final String match = matcher.group();
+            matches.add(match);
+        }
+
+        final int yearLength = 4;
+        final int monthLength = 2;
+        for (final String match : matches) {
+            final int idx1 = match.lastIndexOf("/"); // yyyy^/MM.aspx
+            final int idx2 = idx1 - yearLength; // ^yyyy/MM
+            final int idx3 = idx1 + 1; // yyyy/^MM
+            final String year = match.substring(idx2, idx1);
+            final String month = match.substring(idx3, idx3 + monthLength);
+
+            ret.add(year + "/" + month);
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets the oldest archive date(yyyy/MM) by the specified CSDN blog user
      * name.
      *
@@ -152,7 +192,7 @@ public final class CSDNBlog {
      * @return the oldest archive date(yyyy/MM), returns {@code null} if not
      * found any archive date
      */
-    public String getArchiveDate(final String csdnBlogUserName) {
+    public String getOldestArchiveDate(final String csdnBlogUserName) {
         final IndexPageReader archivePageReader =
                 new IndexPageReader(csdnBlogUserName);
         final String pageContent = archivePageReader.getContent();

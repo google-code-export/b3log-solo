@@ -13,33 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.client.jsonrpc.impl;
-
-import com.google.inject.Inject;
-import org.apache.log4j.Logger;
-import org.b3log.latke.client.remote.AbstractRemoteService;
-import org.b3log.solo.repository.ArticleRepository;
+package org.b3log.solo.model;
 
 /**
- * Blog sync service for JavaScript client.
+ * This class defines all blog sync model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 16, 2010
+ * @version 1.0.0.0, Aug 17, 2010
  */
-public final class SyncService extends AbstractRemoteService {
+public final class BlogSync {
 
     /**
-     * Logger.
+     * Key of CSDN blog user name.
      */
-    private static final Logger LOGGER = Logger.getLogger(SyncService.class);
+    public static final String BLOG_SYNC_CSDN_BLOG_USER_NAME = "blogSyncCSDNBlogUserName";
     /**
-     * Article repository.
+     * Key of CSDN blog archive dates.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    public static final String BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES = "blogSyncCSDNBlogArchiveDates";
+
     /**
-     * Tag-Article repository.
+     * Private default constructor.
      */
-    @Inject
-    private ArticleRepository tagArticleRepository;
+    private BlogSync() {
+    }
 }
