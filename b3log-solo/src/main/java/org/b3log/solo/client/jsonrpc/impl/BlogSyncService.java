@@ -16,7 +16,10 @@
 package org.b3log.solo.client.jsonrpc.impl;
 
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.remote.AbstractRemoteService;
@@ -57,6 +60,58 @@ public final class BlogSyncService extends AbstractRemoteService {
     private CSDNBlog csdnBlog;
 
     /**
+     * Imports CSDN blog article by the specified request json object and http
+     * servlet request.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "blogSyncCSDNBlogUserName": "",
+     *     "blogSyncCSDNBlogArticleIds": ["", "", ....]
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return imported article ids, for example,
+     * <pre>
+     * {
+     *     "blogSyncCSDNBlogArticleIds": ["", "", ....]
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject importCSDNBlogArticles(final JSONObject requestJSONObject,
+                                             final HttpServletRequest request,
+                                             final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final String csdnBlogUserName =
+                    requestJSONObject.getString(
+                    BlogSync.BLOG_SYNC_CSDN_BLOG_USER_NAME);
+            final JSONArray articleIds = requestJSONObject.getJSONArray(
+                    BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS);
+            for (int i = 0; i < articleIds.length(); i++) {
+                final String articleId = articleIds.getString(i);
+                final CSDNBlogArticle article = csdnBlog.getArticleById(
+                        csdnBlogUserName, articleId);
+
+            }
+
+        } catch (final JSONException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gest CSDN blog articles by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -65,6 +120,8 @@ public final class BlogSyncService extends AbstractRemoteService {
      *     "blogSyncCSDNBlogArchiveDate": "2006/12"
      * }
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -77,9 +134,15 @@ public final class BlogSyncService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
     public JSONObject getCSDNBlogArticlesByArchiveDate(
-            final JSONObject requestJSONObject) throws ActionException {
+            final JSONObject requestJSONObject,
+            final HttpServletRequest request,
+            final HttpServletResponse response) throws ActionException,
+                                                       IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {
@@ -118,6 +181,8 @@ public final class BlogSyncService extends AbstractRemoteService {
      *     "blogSyncCSDNBlogUserName": ""
      * }
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -125,10 +190,15 @@ public final class BlogSyncService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
     public JSONObject getCSDNBlogArticleArchiveDate(
-            final JSONObject requestJSONObject)
-            throws ActionException {
+            final JSONObject requestJSONObject,
+            final HttpServletRequest request,
+            final HttpServletResponse response) throws ActionException,
+                                                       IOException {
+        checkAuthorized(request, response);
+        
         final JSONObject ret = new JSONObject();
 
         try {
