@@ -16,8 +16,11 @@
 package org.b3log.solo.client.jsonrpc.impl;
 
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.solo.client.StatusCodes;
 import org.b3log.solo.model.Article;
@@ -34,7 +37,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 13, 2010
+ * @version 1.0.0.3, Aug 17, 2010
  */
 public final class CommentService extends AbstractRemoteService {
 
@@ -67,6 +70,8 @@ public final class CommentService extends AbstractRemoteService {
      *     "oId": articleId
      * }
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example:
      * <pre>
      * {
@@ -79,9 +84,14 @@ public final class CommentService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject getComments(final JSONObject requestJSONObject)
-            throws ActionException {
+    public JSONObject getComments(final JSONObject requestJSONObject,
+                                  final HttpServletRequest request,
+                                  final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {
@@ -122,6 +132,8 @@ public final class CommentService extends AbstractRemoteService {
      *     "commentContent": ""
      * }
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -130,9 +142,14 @@ public final class CommentService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject addComment(final JSONObject requestJSONObject)
-            throws ActionException {
+    public JSONObject addComment(final JSONObject requestJSONObject,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {
@@ -176,6 +193,8 @@ public final class CommentService extends AbstractRemoteService {
      *     "oId": commentId,
      * }
      * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -183,9 +202,14 @@ public final class CommentService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject removeComment(final JSONObject requestJSONObject)
-            throws ActionException {
+    public JSONObject removeComment(final JSONObject requestJSONObject,
+                                    final HttpServletRequest request,
+                                    final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {

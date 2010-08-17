@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * User service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 14, 2010
+ * @version 1.0.0.1, Aug 17, 2010
  */
 public final class UserService extends AbstractRemoteService {
 
@@ -104,6 +104,7 @@ public final class UserService extends AbstractRemoteService {
      * Logouts.
      *
      * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -111,9 +112,13 @@ public final class UserService extends AbstractRemoteService {
      * }
      * </pre>
      * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject logout(final HttpServletRequest request)
-            throws ActionException {
+    public JSONObject logout(final HttpServletRequest request,
+                             final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
         Sessions.logout(request);
         try {

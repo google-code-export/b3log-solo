@@ -59,6 +59,10 @@ public final class BlogSync {
      * Key of CSDN blog article content.
      */
     public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT = "blogSyncCSDNBlogArticleContent";
+    /**
+     * Key of CSDN blog article ids.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS = "blogSyncCSDNBlogArticleIds";
 
     /**
      * Private default constructor.
