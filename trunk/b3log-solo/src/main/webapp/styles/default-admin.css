@@ -10,10 +10,14 @@
     width: 173px;
 }
 
-.main {
-    width: 83%;
+#main {
     background-color: #BBCCFF;
     padding: 6px;
+}
+
+/* */
+#allPanel {
+    min-width: 800px;
 }
 
 /* top */
