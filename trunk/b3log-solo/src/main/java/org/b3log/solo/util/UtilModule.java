@@ -16,7 +16,6 @@
 package org.b3log.solo.util;
 
 import com.google.inject.Scopes;
-import org.b3log.solo.model.Statistic;
 
 /**
  * Utilities module for <a href="http://code.google.com/p/google-guice/">
@@ -34,6 +33,6 @@ public final class UtilModule extends org.b3log.latke.util.UtilModule {
         bind(ArticleUtils.class).in(Scopes.SINGLETON);
         bind(TagUtils.class).in(Scopes.SINGLETON);
         bind(Preferences.class).in(Scopes.SINGLETON);
-        bind(Statistic.class).in(Scopes.SINGLETON);
+        bind(Statistics.class).in(Scopes.SINGLETON);
     }
 }
