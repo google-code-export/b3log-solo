@@ -71,6 +71,10 @@ li {
     margin-left: 12px;
 }
 
+button {
+    background: url(images/logo.png);
+}
+
 .left {
     float: left;
 }
