@@ -152,6 +152,25 @@ public class ArticleGAERepository extends AbstractGAERepository
     }
 
     @Override
+    public List<JSONObject> getMostViewCountArticles(final int num) {
+        final Query query = new Query(getName());
+        query.addSort(Article.ARTICLE_VIEW_COUNT,
+                      Query.SortDirection.DESCENDING);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final QueryResultIterable<Entity> queryResultIterable =
+                preparedQuery.asQueryResultIterable(FetchOptions.Builder.
+                withLimit(num));
+
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        for (final Entity entity : queryResultIterable) {
+            final JSONObject article = entity2JSONObject(entity);
+            ret.add(article);
+        }
+
+        return ret;
+    }
+
+    @Override
     public String getPrevisouArticleId(final String articleId) {
         final Query query = new Query(getName());
         query.addFilter(Keys.OBJECT_ID,

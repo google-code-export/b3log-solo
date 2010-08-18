@@ -170,6 +170,24 @@ public final class Filler {
     }
 
     /**
+     * Fills most view count articles.
+     *
+     * @param dataModel data model
+     * @throws Exception exception
+     */
+    public void fillMostViewCountArticles(final Map<String, Object> dataModel)
+            throws Exception {
+        final JSONObject preference = preferences.getPreference();
+        final int mostCommentArticleDisplayCnt =
+                preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
+        final List<JSONObject> mostViewCountArticles =
+                articleRepository.getMostCommentArticles(
+                mostCommentArticleDisplayCnt);
+
+        dataModel.put(Common.MOST_COMMENT_ARTICLES, mostViewCountArticles);
+    }
+
+    /**
      * Fills most comments articles.
      *
      * @param dataModel data model
@@ -243,5 +261,6 @@ public final class Filler {
         fillRecentArticles(dataModel);
         fillMostUsedTags(dataModel);
         fillMostCommentArticles(dataModel);
+        fillMostViewCountArticles(dataModel);
     }
 }
