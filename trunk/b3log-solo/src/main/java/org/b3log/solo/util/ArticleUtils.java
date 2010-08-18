@@ -77,6 +77,23 @@ public final class ArticleUtils {
     }
 
     /**
+     * Article comment count -1 for an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void decArticleCommentCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final JSONObject article = articleRepository.get(articleId);
+        final JSONObject newArticle =
+                new JSONObject(article, JSONObject.getNames(article));
+        final int viewCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
+        newArticle.put(Article.ARTICLE_COMMENT_COUNT, viewCnt - 1);
+        articleRepository.update(articleId, newArticle);
+    }
+
+    /**
      * Article view count +1 for an article specified by the given article id.
      *
      * @param articleId the given article id
@@ -157,7 +174,7 @@ public final class ArticleUtils {
                         tagArticleRelations.get(i);
                 final String tagId =
                         tagArticleRelation.getString(Tag.TAG + "_"
-                                                     + Keys.OBJECT_ID);
+                        + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
                 tags.add(tag);
             }

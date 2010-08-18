@@ -25,7 +25,6 @@ import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.Sessions;
@@ -35,7 +34,9 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.repository.StatisticRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,11 +63,6 @@ public final class Filler {
     @Inject
     private TagRepository tagRepository;
     /**
-     * Tag-Article repository.
-     */
-    @Inject
-    private TagArticleRepository tagArticleRepository;
-    /**
      * Article utilities.
      */
     @Inject
@@ -81,6 +77,32 @@ public final class Filler {
      */
     @Inject
     private LinkRepository linkRepository;
+    /**
+     * Statistic repository.
+     */
+    @Inject
+    private StatisticRepository statisticRepository;
+
+    /**
+     * Fills blog statistics for all pages.
+     *
+     * @param dataModel data model
+     * @throws Exception exception
+     */
+    public void fillStatistic(final Map<String, Object> dataModel)
+            throws Exception {
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+        final int viewCount =
+                statistic.getInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
+        final int articleCount =
+                statistic.getInt(Statistic.STATISTIC_BLOG_ARTICLE_COUNT);
+        final int commentCount =
+                statistic.getInt(Statistic.STATISTIC_BLOG_COMMENT_COUNT);
+
+        dataModel.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, viewCount);
+        dataModel.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, articleCount);
+        dataModel.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, commentCount);
+    }
 
     /**
      * Fills articles in index.html.

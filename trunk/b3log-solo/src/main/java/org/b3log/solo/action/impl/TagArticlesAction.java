@@ -37,13 +37,14 @@ import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
  * Get articles by tag action. tag-article.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 13, 2010
+ * @version 1.0.0.3, Aug 18, 2010
  */
 public final class TagArticlesAction extends AbstractAction {
 
@@ -86,6 +87,11 @@ public final class TagArticlesAction extends AbstractAction {
      */
     @Inject
     private LangPropsService langPropsService;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -136,6 +142,8 @@ public final class TagArticlesAction extends AbstractAction {
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
+
+            statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);

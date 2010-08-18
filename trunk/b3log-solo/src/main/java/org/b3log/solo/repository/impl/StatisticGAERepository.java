@@ -13,27 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.util;
+package org.b3log.solo.repository.impl;
 
-import com.google.inject.Scopes;
+import org.apache.log4j.Logger;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.StatisticRepository;
 
 /**
- * Utilities module for <a href="http://code.google.com/p/google-guice/">
- * Guice</a> configurations.
+ * Statistic Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Aug 18, 2010
+ * @version 1.0.0.0, Aug 18, 2010
  */
-public final class UtilModule extends org.b3log.latke.util.UtilModule {
+public class StatisticGAERepository extends AbstractGAERepository
+        implements StatisticRepository {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(StatisticGAERepository.class);
 
     @Override
-    protected void configure() {
-        super.configure();
-
-        bind(ArticleUtils.class).in(Scopes.SINGLETON);
-        bind(TagUtils.class).in(Scopes.SINGLETON);
-        bind(Preferences.class).in(Scopes.SINGLETON);
-        bind(Statistic.class).in(Scopes.SINGLETON);
+    public String getName() {
+        return Statistic.STATISTIC;
     }
 }

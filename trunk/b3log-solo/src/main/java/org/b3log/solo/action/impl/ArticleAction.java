@@ -41,6 +41,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,7 +49,7 @@ import org.json.JSONObject;
  * Article action. article-detail.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 14, 2010
+ * @version 1.0.0.4, Aug 18, 2010
  */
 public final class ArticleAction extends AbstractAction {
 
@@ -100,6 +101,11 @@ public final class ArticleAction extends AbstractAction {
      */
     @Inject
     private ArticleUtils articleUtils;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -121,7 +127,7 @@ public final class ArticleAction extends AbstractAction {
             // Get the article
             final JSONObject article = articleRepository.get(articleId);
             LOGGER.trace("Article[title="
-                         + article.getString(Article.ARTICLE_TITLE) + "]");
+                    + article.getString(Article.ARTICLE_TITLE) + "]");
             ret.put(Article.ARTICLE, article);
             // Get tags
             final List<JSONObject> articleTags = getTags(articleId);
@@ -144,6 +150,7 @@ public final class ArticleAction extends AbstractAction {
 
             // View count +1
             articleUtils.incArticleViewCount(articleId);
+            statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
@@ -170,7 +177,7 @@ public final class ArticleAction extends AbstractAction {
                     articleCommentRelations.get(i);
             final String commentId =
                     articleCommentRelation.getString(Comment.COMMENT + "_"
-                                                     + Keys.OBJECT_ID);
+                    + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
             ret.add(comment);

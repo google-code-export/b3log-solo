@@ -24,6 +24,7 @@ import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.latke.service.AbstractServiceModule;
 import org.b3log.solo.repository.impl.LinkGAERepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
 
 /**
@@ -31,7 +32,7 @@ import org.b3log.solo.repository.impl.UserGAERepository;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 14, 2010
+ * @version 1.0.0.5, Aug 18, 2010
  */
 public final class RepositoryModule extends AbstractServiceModule {
 
@@ -55,6 +56,8 @@ public final class RepositoryModule extends AbstractServiceModule {
         bind(PreferenceRepository.class).to(PreferenceGAERepository.class).
                 in(Scopes.SINGLETON);
         bind(UserRepository.class).to(UserGAERepository.class).
+                in(Scopes.SINGLETON);
+        bind(StatisticRepository.class).to(StatisticGAERepository.class).
                 in(Scopes.SINGLETON);
     }
 }

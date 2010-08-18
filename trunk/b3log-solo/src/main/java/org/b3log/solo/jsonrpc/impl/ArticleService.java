@@ -39,6 +39,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TagUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,6 +87,11 @@ public final class ArticleService extends AbstractRemoteService {
      */
     @Inject
     private ArticleUtils articleUtils;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
 
     /**
      * Adds an article from the specified request json object and http servlet
@@ -139,12 +145,15 @@ public final class ArticleService extends AbstractRemoteService {
             ret.put(Keys.OBJECT_ID, articleId);
             // Step 4: Add tag-article relations
             articleUtils.addTagArticleRelation(tags, article);
+            // Step 5: Inc blog article count statictis
+            statistics.incBlogArticleCount();
 
-            ret.put(Keys.STATUS_CODE, StatusCodes.ADD_ARTICLE_SUCC);
-
-            eventManager.fireEventSynchronously(new Event<JSONObject>(
+            // TODO: event handling: add article
+            eventManager.fireEventSynchronously(
+                    new Event<JSONObject>(
                     EventTypes.ADD_ARTICLE, article));
 
+            ret.put(Keys.STATUS_CODE, StatusCodes.ADD_ARTICLE_SUCC);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
@@ -349,6 +358,8 @@ public final class ArticleService extends AbstractRemoteService {
             articleUtils.removeTagArticleRelations(articleId);
             // Step 3: Remove article
             articleRepository.remove(articleId);
+            // Step 4: Dec blog article count statictis
+            statistics.decBlogArticleCount();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
 

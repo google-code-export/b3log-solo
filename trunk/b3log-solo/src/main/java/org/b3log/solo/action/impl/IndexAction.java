@@ -28,13 +28,14 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
  * Index action. index.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 13, 2010
+ * @version 1.0.0.3, Aug 18, 2010
  */
 public final class IndexAction extends AbstractAction {
 
@@ -56,6 +57,11 @@ public final class IndexAction extends AbstractAction {
      */
     @Inject
     private Filler filler;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -79,6 +85,8 @@ public final class IndexAction extends AbstractAction {
             filler.fillIndexArticles(ret, currentPageNum);
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
+            
+            statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
