@@ -72,7 +72,11 @@ li {
 }
 
 button {
-    background: url(images/logo.png);
+    background: url(../images/logo.png) repeat center bottom;
+    border:1px solid #999999;
+    height:28px;
+    margin:0;
+    vertical-align:top;
 }
 
 .left {
