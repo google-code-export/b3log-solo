@@ -439,6 +439,7 @@ public final class ArticleService extends AbstractRemoteService {
             article.put(Article.ARTICLE_COMMENT_COUNT,
                         oldArticle.getString(Article.ARTICLE_COMMENT_COUNT));
             // Step 5: Update
+
             articleRepository.update(articleId, article);
             // Step 6: Add tag-article relations
             articleUtils.addTagArticleRelation(tags, article);
