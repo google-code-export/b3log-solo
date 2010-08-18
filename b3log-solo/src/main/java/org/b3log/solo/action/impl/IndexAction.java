@@ -85,7 +85,8 @@ public final class IndexAction extends AbstractAction {
             filler.fillIndexArticles(ret, currentPageNum);
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
-            
+            filler.fillStatistic(ret);
+
             statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);

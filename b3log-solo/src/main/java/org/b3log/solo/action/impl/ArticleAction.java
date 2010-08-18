@@ -147,6 +147,7 @@ public final class ArticleAction extends AbstractAction {
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
+            filler.fillStatistic(ret);
 
             // View count +1
             articleUtils.incArticleViewCount(articleId);
