@@ -12,6 +12,7 @@
                 <select id="archiveDate" class="none" onchange="getCSDNBlogArticlesByArchiveDate();">
                     <option>{选择月份}</option>
                 </select>
+                <span id="loading"></span>
             </td>
         </tr>
     </tbody>
@@ -21,7 +22,7 @@
     <div id="articleList" class="maginTB12"></div>
     <button onclick="sync();">{submit}</button>
 </div>
-<script type="text/javascript">    
+<script type="text/javascript">
     var userName = "",
     articleList = $("#articleList").table({
         resizable: true,
@@ -71,6 +72,12 @@
     }
 
     var getCSDNBlogArticlesByArchiveDate = function () {
+        $("#loading").loading({
+            imgURL: "images/logo.png",
+            height: 16,
+            width: 16
+        });
+
         var requestJSONObject = {
             "blogSyncCSDNBlogUserName": userName,
             "blogSyncCSDNBlogArchiveDate": $("#archiveDate").val()
@@ -78,24 +85,29 @@
         
         jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(function (result, error) {
             $("#articlesPanel").show();
-            
-            var articles = result.blogSyncCSDNBlogArticles,
-            articleData = [];
 
-            for (var i = 0; i < articles.length; i++) {
-                articleData[i] = {};
-                articleData[i].selected = false;
-                articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
-                articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
-                articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
-                articleData[i].id = articles[i].blogSyncCSDNBlogArticleId;
-            }
+            if (articles.length > 0) {
+                var articles = result.blogSyncCSDNBlogArticles,
+                articleData = [];
 
-            articleList.table({
-                update:{
-                    data: articleData
+                for (var i = 0; i < articles.length; i++) {
+                    articleData[i] = {};
+                    articleData[i].selected = false;
+                    articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
+                    articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
+                    articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
+                    articleData[i].id = articles[i].blogSyncCSDNBlogArticleId;
                 }
-            });
+
+                articleList.table({
+                    update:{
+                        data: articleData
+                    }
+                });
+            } else {
+                $("#tipMsg").text("加载失败！");
+            }
+            $("#loading").loading("close");
         }, requestJSONObject);
     }
     

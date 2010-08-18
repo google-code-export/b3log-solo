@@ -85,7 +85,9 @@
 
                             KE.create("articleContent");
                         } else {
-                            KE.remove("articleContent");
+                            if (KE.g["articleContent"]) {
+                                KE.remove("articleContent");
+                            }
                         }
                     });
                 });
