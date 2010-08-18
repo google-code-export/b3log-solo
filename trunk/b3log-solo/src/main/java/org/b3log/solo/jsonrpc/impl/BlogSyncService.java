@@ -32,7 +32,6 @@ import org.b3log.solo.util.TagUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
 import org.b3log.solo.util.Htmls;
@@ -261,7 +260,8 @@ public final class BlogSyncService extends AbstractRemoteService {
      * Generates article abstract of the specified article content.
      *
      * @param content the specified article content
-     * @return
+     * @return a string without html tags as article abstract, its length less
+     * {@linkplain #MAX_ABSTRACT_LENGTH}
      */
     private String genAbstract(final String content) {
         final String contentWithoutTags = Htmls.removeHtmlTags(content);
