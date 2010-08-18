@@ -32,6 +32,7 @@ import org.b3log.solo.util.Preferences;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.util.Htmls;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,7 +40,7 @@ import org.json.JSONObject;
  * Feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 15, 2010
+ * @version 1.0.0.1, Aug 18, 2010
  */
 public final class FeedServlet extends HttpServlet {
 
@@ -76,7 +77,8 @@ public final class FeedServlet extends HttpServlet {
         try {
             final JSONObject preference = preferences.getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
+            final String blogSubtitle = preference.getString(
+                    Preference.BLOG_SUBTITLE);
 
             feed.setTitle(blogTitle);
             feed.setSubtitle(blogSubtitle);
@@ -94,8 +96,8 @@ public final class FeedServlet extends HttpServlet {
                 final Entry entry = feed.addEntry();
 
                 final String title = article.getString(Article.ARTICLE_TITLE);
-                final String summary = article.getString(
-                        Article.ARTICLE_ABSTRACT);
+                final String summary = Htmls.removeHtmlTags(article.getString(
+                        Article.ARTICLE_ABSTRACT));
                 final Date updated = (Date) article.get(
                         Article.ARTICLE_UPDATE_DATE);
                 final String id = article.getString(Keys.OBJECT_ID);
