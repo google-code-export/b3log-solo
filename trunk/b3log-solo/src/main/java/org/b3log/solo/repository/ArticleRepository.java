@@ -62,6 +62,15 @@ public interface ArticleRepository extends Repository {
     List<JSONObject> getMostCommentArticles(final int num);
 
     /**
+     * Gets most view count articles with the specified number.
+     *
+     * @param num the specified number
+     * @return a list of most view count articles, returns an empty list if not
+     * found
+     */
+    List<JSONObject> getMostViewCountArticles(final int num);
+
+    /**
      * Gets the id of the previous article((by create date, oId) by the
      * specified article id.
      *

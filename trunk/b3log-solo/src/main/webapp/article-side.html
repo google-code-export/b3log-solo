@@ -46,6 +46,21 @@
     <div class="line"></div>
     <ul>
         <li>
+            <h2>${mostViewCountArticlesLabel}</h2>
+            <ul>
+                <#list mostViewCountArticles as article>
+                <li>
+                    <a name="$most{article.oId}" href="article-detail.do?oId=${article.oId}">
+                        ${article.articleTitle}
+                    </a>
+                </li>
+                </#list>
+            </ul>
+        </li>
+    </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
             <h2>${linkLabel}</h2>
             <ul>
                 <#list links as link>
