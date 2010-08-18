@@ -13,27 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.util;
+package org.b3log.solo.repository;
 
-import com.google.inject.Scopes;
-import org.b3log.solo.model.Statistic;
+import org.b3log.latke.repository.Repository;
 
 /**
- * Utilities module for <a href="http://code.google.com/p/google-guice/">
- * Guice</a> configurations.
+ * Statistic repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Aug 18, 2010
+ * @version 1.0.0.0, Aug 18, 2010
  */
-public final class UtilModule extends org.b3log.latke.util.UtilModule {
-
-    @Override
-    protected void configure() {
-        super.configure();
-
-        bind(ArticleUtils.class).in(Scopes.SINGLETON);
-        bind(TagUtils.class).in(Scopes.SINGLETON);
-        bind(Preferences.class).in(Scopes.SINGLETON);
-        bind(Statistic.class).in(Scopes.SINGLETON);
-    }
+public interface StatisticRepository extends Repository {
 }

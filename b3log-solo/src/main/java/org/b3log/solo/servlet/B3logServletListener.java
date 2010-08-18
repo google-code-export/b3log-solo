@@ -39,6 +39,8 @@ import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.UserRepository;
 import static org.b3log.solo.model.Preference.*;
+import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.sync.SyncModule;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
@@ -47,7 +49,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 17, 2010
+ * @version 1.0.0.6, Aug 18, 2010
  */
 public final class B3logServletListener extends AbstractServletListener {
 
@@ -97,6 +99,7 @@ public final class B3logServletListener extends AbstractServletListener {
 
         initAdmin();
         initPreference();
+        initStatistic();
 
         registerRemoteJSServiceSerializers();
 
@@ -124,6 +127,35 @@ public final class B3logServletListener extends AbstractServletListener {
                 userRepository.add(user);
                 LOGGER.info("Created user by configuration file");
             }
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Initializes statistic.
+     */
+    private void initStatistic() {
+        LOGGER.info("Loading statistic....");
+        final Injector injector = getInjector();
+
+        try {
+            final StatisticRepository statisticRepository =
+                    injector.getInstance(StatisticRepository.class);
+            JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+            if (null == statistic) {
+                statistic = new JSONObject();
+                statistic.put(Keys.OBJECT_ID, Statistic.STATISTIC);
+                statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 0);
+                statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, 0);
+                statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 0);
+                statisticRepository.add(statistic);
+                LOGGER.info("Created blog statistic");
+            }
+
+            LOGGER.info("Loaded statistic[" + statistic.toString(
+                    JSON_PRINT_INDENT_FACTOR) + "]");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new RuntimeException(e);

@@ -32,6 +32,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.remote.AbstractRemoteService;
 import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
@@ -66,6 +67,11 @@ public final class CommentService extends AbstractRemoteService {
      */
     @Inject
     private ArticleUtils articleUtils;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
 
     /**
      * Gets comments of an article specified by the article id.
@@ -112,7 +118,7 @@ public final class CommentService extends AbstractRemoteService {
                         articleCommentRelations.get(i);
                 final String commentId =
                         articleCommentRelation.getString(Comment.COMMENT + "_"
-                                                         + Keys.OBJECT_ID);
+                        + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
                 comments.add(comment);
@@ -175,6 +181,8 @@ public final class CommentService extends AbstractRemoteService {
             articleCommentRepository.add(articleCommentRelation);
             // Step 3: Update article comment count
             articleUtils.incArticleCommentCount(articleId);
+            // Step 4: Update blog statistic comment count
+            statistics.incBlogArticleCount();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
             ret.put(Keys.OBJECT_ID, commentId);
@@ -230,11 +238,9 @@ public final class CommentService extends AbstractRemoteService {
             // Step 2: Remove comment
             commentRepository.remove(commentId);
             // Step 3: Update article comment count
-            final JSONObject article = articleRepository.get(articleId);
-            final JSONObject newArticle = new JSONObject(article.toString());
-            final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
-            newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt - 1);
-            articleRepository.update(articleId, newArticle);
+            articleUtils.decArticleCommentCount(articleId);
+            // Step 4: Update blog statistic comment count
+            statistics.decBlogCommentCount();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_COMMENT_SUCC);
 
