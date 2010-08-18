@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 17, 2010
+ * @version 1.0.0.5, Aug 18, 2010
  */
 public final class ArticleService extends AbstractRemoteService {
 
@@ -131,8 +131,9 @@ public final class ArticleService extends AbstractRemoteService {
                     article.getString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
-            // Step 2; Set comment count to 0
+            // Step 2; Set comment/view count to 0
             article.put(Article.ARTICLE_COMMENT_COUNT, 0);
+            article.put(Article.ARTICLE_VIEW_COUNT, 0);
             // Step 3: Add article
             final String articleId = articleRepository.add(article);
             ret.put(Keys.OBJECT_ID, articleId);

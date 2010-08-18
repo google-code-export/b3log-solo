@@ -31,13 +31,14 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.remote.AbstractRemoteService;
+import org.b3log.solo.util.ArticleUtils;
 import org.json.JSONObject;
 
 /**
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 17, 2010
+ * @version 1.0.0.4, Aug 18, 2010
  */
 public final class CommentService extends AbstractRemoteService {
 
@@ -60,6 +61,11 @@ public final class CommentService extends AbstractRemoteService {
      */
     @Inject
     private ArticleRepository articleRepository;
+    /**
+     * Article utilities.
+     */
+    @Inject
+    private ArticleUtils articleUtils;
 
     /**
      * Gets comments of an article specified by the article id.
@@ -106,7 +112,7 @@ public final class CommentService extends AbstractRemoteService {
                         articleCommentRelations.get(i);
                 final String commentId =
                         articleCommentRelation.getString(Comment.COMMENT + "_"
-                        + Keys.OBJECT_ID);
+                                                         + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
                 comments.add(comment);
@@ -168,11 +174,7 @@ public final class CommentService extends AbstractRemoteService {
                                        commentId);
             articleCommentRepository.add(articleCommentRelation);
             // Step 3: Update article comment count
-            final JSONObject article = articleRepository.get(articleId);
-            final JSONObject newArticle = new JSONObject(article.toString());
-            final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
-            newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt + 1);
-            articleRepository.update(articleId, newArticle);
+            articleUtils.incArticleCommentCount(articleId);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
             ret.put(Keys.OBJECT_ID, commentId);

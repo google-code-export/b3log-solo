@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 13, 2010
+ * @version 1.0.0.5, Aug 18, 2010
  */
 public final class Article {
 
@@ -59,6 +59,10 @@ public final class Article {
      * Key of comment count.
      */
     public static final String ARTICLE_COMMENT_COUNT = "articleCommentCount";
+    /**
+     * Key of view count.
+     */
+    public static final String ARTICLE_VIEW_COUNT = "articleViewCount";
     /**
      * Key of comments.
      */

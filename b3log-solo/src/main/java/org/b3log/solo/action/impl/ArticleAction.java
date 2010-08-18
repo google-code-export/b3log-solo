@@ -40,6 +40,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.util.ArticleUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,6 +95,11 @@ public final class ArticleAction extends AbstractAction {
      */
     @Inject
     private LangPropsService langPropsService;
+    /**
+     * Article utilities.
+     */
+    @Inject
+    private ArticleUtils articleUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -115,7 +121,7 @@ public final class ArticleAction extends AbstractAction {
             // Get the article
             final JSONObject article = articleRepository.get(articleId);
             LOGGER.trace("Article[title="
-                    + article.getString(Article.ARTICLE_TITLE) + "]");
+                         + article.getString(Article.ARTICLE_TITLE) + "]");
             ret.put(Article.ARTICLE, article);
             // Get tags
             final List<JSONObject> articleTags = getTags(articleId);
@@ -135,6 +141,9 @@ public final class ArticleAction extends AbstractAction {
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
+
+            // View count +1
+            articleUtils.incArticleViewCount(articleId);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
@@ -161,7 +170,7 @@ public final class ArticleAction extends AbstractAction {
                     articleCommentRelations.get(i);
             final String commentId =
                     articleCommentRelation.getString(Comment.COMMENT + "_"
-                    + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
             ret.add(comment);
