@@ -35,6 +35,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
+import org.b3log.solo.util.Htmls;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,16 +57,6 @@ public final class BlogSyncService extends AbstractRemoteService {
      */
     @Inject
     private ArticleRepository articleRepository;
-    /**
-     * Tag-Article repository.
-     */
-    @Inject
-    private ArticleRepository tagArticleRepository;
-    /**
-     * Tag repository.
-     */
-    @Inject
-    private TagRepository tagRepository;
     /**
      * CSDN blog.
      */
@@ -131,10 +122,7 @@ public final class BlogSyncService extends AbstractRemoteService {
                 final Set<String> categories = csdnBlogArticle.getCategoris();
                 final Date createDate = csdnBlogArticle.getCreateDate();
                 final String content = csdnBlogArticle.getContent();
-                final int conentLength = content.length();
-                final String summary = content.substring(
-                        0, conentLength >= MAX_ABSTRACT_LENGTH
-                           ? MAX_ABSTRACT_LENGTH : conentLength / 2);
+                final String summary = genAbstract(content);
 
                 final JSONObject article = new JSONObject();
                 article.put(Keys.OBJECT_ID, articleId);
@@ -267,5 +255,21 @@ public final class BlogSyncService extends AbstractRemoteService {
         }
 
         return ret;
+    }
+
+    /**
+     * Generates article abstract of the specified article content.
+     *
+     * @param content the specified article content
+     * @return
+     */
+    private String genAbstract(final String content) {
+        final String contentWithoutTags = Htmls.removeHtmlTags(content);
+        if (contentWithoutTags.length() >= MAX_ABSTRACT_LENGTH) {
+            return contentWithoutTags.substring(0, MAX_ABSTRACT_LENGTH);
+        }
+
+        return contentWithoutTags;
+
     }
 }

@@ -68,7 +68,7 @@ public final class CSDNBlog {
     /**
      * Sleep millisecond between every article get operation.
      */
-    private static final long GET_ARTICLE_SLEEP_MILLIS = 5000;
+    private static final long GET_ARTICLE_SLEEP_MILLIS = 3000;
 
     /**
      * Deletes a post from CSDN blog with specified parameters.
