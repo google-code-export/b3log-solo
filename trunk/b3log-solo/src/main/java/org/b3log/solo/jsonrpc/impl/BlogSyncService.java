@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 17, 2010
+ * @version 1.0.0.2, Aug 18, 2010
  */
 public final class BlogSyncService extends AbstractRemoteService {
 
@@ -134,7 +134,7 @@ public final class BlogSyncService extends AbstractRemoteService {
                 final int conentLength = content.length();
                 final String summary = content.substring(
                         0, conentLength >= MAX_ABSTRACT_LENGTH
-                        ? MAX_ABSTRACT_LENGTH : conentLength / 2);
+                           ? MAX_ABSTRACT_LENGTH : conentLength / 2);
 
                 final JSONObject article = new JSONObject();
                 article.put(Keys.OBJECT_ID, articleId);
@@ -145,6 +145,7 @@ public final class BlogSyncService extends AbstractRemoteService {
                 final JSONArray tags = tagUtils.tag(categories.toArray(
                         new String[0]), article);
 
+                article.put(Article.ARTICLE_VIEW_COUNT, 0);
                 article.put(Article.ARTICLE_COMMENT_COUNT, 0);
                 articleUtils.addTagArticleRelation(tags, article);
 

@@ -25,6 +25,7 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,6 +53,43 @@ public final class ArticleUtils {
      */
     @Inject
     private TagRepository tagRepository;
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Article comment count +1 for an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void incArticleCommentCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final JSONObject article = articleRepository.get(articleId);
+        final JSONObject newArticle = new JSONObject(article.toString());
+        final int viewCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
+        newArticle.put(Article.ARTICLE_COMMENT_COUNT, viewCnt + 1);
+        articleRepository.update(articleId, newArticle);
+    }
+
+    /**
+     * Article view count +1 for an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void incArticleViewCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final JSONObject article = articleRepository.get(articleId);
+        final JSONObject newArticle = new JSONObject(article.toString());
+        final int viewCnt = article.getInt(Article.ARTICLE_VIEW_COUNT);
+        newArticle.put(Article.ARTICLE_VIEW_COUNT, viewCnt + 1);
+        articleRepository.update(articleId, newArticle);
+    }
 
     /**
      * Removes tag-article relations by the specified article id.
@@ -117,7 +155,7 @@ public final class ArticleUtils {
                         tagArticleRelations.get(i);
                 final String tagId =
                         tagArticleRelation.getString(Tag.TAG + "_"
-                        + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
                 tags.add(tag);
             }

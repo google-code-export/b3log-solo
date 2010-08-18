@@ -189,13 +189,13 @@ public class ArticleGAERepository extends AbstractGAERepository
         try {
             if (!article.has(Keys.OBJECT_ID)) {
                 throw new RepositoryException("The article to import MUST exist "
-                        + "id");
+                                              + "id");
             }
             articleId = article.getString(Keys.OBJECT_ID);
 
             if (!article.has(Article.ARTICLE_CREATE_DATE)) {
                 throw new RepositoryException("The article to import MUST exist "
-                        + "create date");
+                                              + "create date");
             }
 
             // XXX:  check other params
