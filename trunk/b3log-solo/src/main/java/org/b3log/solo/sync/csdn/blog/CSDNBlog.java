@@ -261,16 +261,14 @@ public final class CSDNBlog {
      * @param articleId the specified article id
      * @return article, returns {@code null} if error or not found
      */
-    public CSDNBlogArticle getArticleById(
-            final String csdnBlogUserName,
-            final String articleId) {
+    public CSDNBlogArticle getArticleById(final String csdnBlogUserName,
+                                          final String articleId) {
         final CSDNBlogArticle ret = new CSDNBlogArticle();
         ret.setId(articleId);
 
         try {
-            config.setServerURL(
-                    new URL("http://blog.csdn.net/" + csdnBlogUserName
-                    + "/services/metablogapi.aspx"));
+            config.setServerURL(new URL("http://blog.csdn.net/"
+                    + csdnBlogUserName + "/services/metablogapi.aspx"));
             client.setConfig(config);
 
             final List<String> params = new ArrayList<String>();
@@ -294,9 +292,9 @@ public final class CSDNBlog {
             final Date createDate = (Date) result.get("dateCreated");
             ret.setCreateDate(createDate);
 
-            final String des = new String(((String) result.get("description")).
-                    getBytes());
-            final String content = des.replaceAll("\\?", " ");
+            final String description =
+                    new String(((String) result.get("description")).getBytes());
+            final String content = description.replaceAll("\\?", " "); // XXX: is really need this?
             ret.setContent(content);
 
         } catch (final Exception e) {
