@@ -23,8 +23,8 @@
     <button onclick="sync();">{submit}</button>
 </div>
 <script type="text/javascript">
-    var userName = "",
-    articleList = $("#articleList").table({
+    var userName = "";
+    $("#articleList").table({
         resizable: true,
         height: 400,
         colModel: [{
@@ -86,9 +86,9 @@
         jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(function (result, error) {
             $("#articlesPanel").show();
 
+            var articles = result.blogSyncCSDNBlogArticles;
             if (articles.length > 0) {
-                var articles = result.blogSyncCSDNBlogArticles,
-                articleData = [];
+                var articleData = [];
 
                 for (var i = 0; i < articles.length; i++) {
                     articleData[i] = {};
@@ -99,7 +99,7 @@
                     articleData[i].id = articles[i].blogSyncCSDNBlogArticleId;
                 }
 
-                articleList.table({
+                $("#articleList").table({
                     update:{
                         data: articleData
                     }
