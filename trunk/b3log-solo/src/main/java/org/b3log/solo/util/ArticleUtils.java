@@ -69,7 +69,8 @@ public final class ArticleUtils {
     public void incArticleCommentCount(final String articleId)
             throws JSONException, RepositoryException {
         final JSONObject article = articleRepository.get(articleId);
-        final JSONObject newArticle = new JSONObject(article);
+        final JSONObject newArticle =
+                new JSONObject(article, JSONObject.getNames(article));
         final int viewCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, viewCnt + 1);
         articleRepository.update(articleId, newArticle);
@@ -85,7 +86,8 @@ public final class ArticleUtils {
     public void incArticleViewCount(final String articleId)
             throws JSONException, RepositoryException {
         final JSONObject article = articleRepository.get(articleId);
-        final JSONObject newArticle = new JSONObject(article);
+        final JSONObject newArticle = new JSONObject(
+                article, JSONObject.getNames(article));
         final int viewCnt = article.getInt(Article.ARTICLE_VIEW_COUNT);
         newArticle.put(Article.ARTICLE_VIEW_COUNT, viewCnt + 1);
         articleRepository.update(articleId, newArticle);
