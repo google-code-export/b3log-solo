@@ -39,15 +39,6 @@
     </tbody>
 </table>
 <script type="text/javascript">
-    KE.init({
-        id : "articleContent",
-        items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
-            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-            'insertunorderedlist', '|', 'emoticons', 'image', 'link']
-    });
-
-    KE.create("articleContent");
-
     var addArticle = function () {
         var requestJSONObject = {
             "article": {
@@ -61,7 +52,9 @@
             switch (result.sc) {
                 case "ADD_ARTICLE_SUCC":
                     setCurrentNaviStyle(1);
-                    $("#content").load("admin-article-list.do");
+                    $("#content").load("admin-article-list.do", function () {
+                        KE.remove("articleContent");
+                    });
                     $("#tipMsg").text("添加文章成功！");
                     break;
                 default:
@@ -84,7 +77,9 @@
             switch (result.sc) {
                 case "UPDATE_ARTICLE_SUCC":
                     setCurrentNaviStyle(1);
-                    $("#content").load("admin-article-list.do");
+                    $("#content").load("admin-article-list.do", function () {
+                        KE.remove("articleContent");
+                    });
                     $("#tipMsg").text("更新文章成功！");
                     break;
                 default:

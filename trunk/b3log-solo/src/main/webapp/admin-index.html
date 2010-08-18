@@ -74,7 +74,20 @@
                         $("#navi li").removeClass('selected');
                         $it.addClass('selected');
                     }
-                    $("#content").load(loadURL);
+                    $("#content").load(loadURL, function () {
+                        if ($("#articleContent").length > 0) {
+                            KE.init({
+                                id : "articleContent",
+                                items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
+                                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                                    'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+                            });
+
+                            KE.create("articleContent");
+                        } else {
+                            KE.remove("articleContent");
+                        }
+                    });
                 });
             }).mouseover(function () {
                 $(this).addClass('hover');
