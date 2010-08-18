@@ -184,7 +184,7 @@ public final class Filler {
                 articleRepository.getMostCommentArticles(
                 mostCommentArticleDisplayCnt);
 
-        dataModel.put(Common.MOST_COMMENT_ARTICLES, mostViewCountArticles);
+        dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
     }
 
     /**
