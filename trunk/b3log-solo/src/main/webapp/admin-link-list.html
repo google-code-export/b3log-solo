@@ -79,7 +79,7 @@
     linkDialog = undefined,
     paginationPageSize = 10,
     linksLength = 1;
-    var linkList = $("#linkList").table({
+    $("#linkList").table({
         resizable: true,
         colModel: [{
                 name: "选择",
@@ -205,7 +205,7 @@
                         linkData[i].id = links[i].oId;
                     }
 
-                    linkList.table({
+                    $("#linkList").table({
                         update:{
                             data: linkData
                         }

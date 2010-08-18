@@ -9,7 +9,7 @@
 </div>
 <script type="text/javascript">
     var currentPage = 1;
-    var articleList = $("#articleList").table({
+    $("#articleList").table({
         resizable: true,
         colModel: [{
                 name: "选择",
@@ -170,7 +170,7 @@
                         articleData[i].id = articles[i].oId;
                     }
 
-                    articleList.table({
+                    $("#articleList").table({
                         update:{
                             data: articleData
                         }
