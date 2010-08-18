@@ -14,14 +14,7 @@
  * limitations under the License.
  */
 
-var getArg = function(key) {
-    var items = window.location.search.substr(1, window.location.search.length).split("&");
-    for (var i = 0; i < items.length; i++) {
-        var item = items[i].split("=");
-        var itemKey = item[0],
-        itemValue = item[1];
-        if (key === itemKey) {
-            return itemValue;
-        }
-    }
+var getDate = function(time) {
+    var date = new Date(time);
+    return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
 }

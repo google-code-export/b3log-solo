@@ -18,6 +18,11 @@
     table-layout: fixed;
     word-break: break-all;
     word-wrap: break-word;
+    background: url(../images/logo.png) center bottom;
+}
+
+.table-main table:hover {
+    border-left: 1px solid #BBBBBB;
 }
 
 .table-verticalLine {
@@ -34,7 +39,8 @@
 }
 
 .table-header th {
-    border: 1px solid #CCCCCC;
+    border: 1px solid;
+    border-color: #CCCCCC #BBBBBB #A0A0A0;
     border-left-style: none;
     height: 28px;
 }
