@@ -74,7 +74,7 @@ public final class BlogSyncService extends AbstractRemoteService {
     /**
      * Maximum length of an article abstract.
      */
-    private static final int MAX_ABSTRACT_LENGTH = 500;
+    private static final int MAX_ABSTRACT_LENGTH = 300;
 
     /**
      * Imports CSDN blog article by the specified request json object and http
@@ -266,7 +266,8 @@ public final class BlogSyncService extends AbstractRemoteService {
     private String genAbstract(final String content) {
         final String contentWithoutTags = Htmls.removeHtmlTags(content);
         if (contentWithoutTags.length() >= MAX_ABSTRACT_LENGTH) {
-            return contentWithoutTags.substring(0, MAX_ABSTRACT_LENGTH);
+            return contentWithoutTags.substring(0, MAX_ABSTRACT_LENGTH)
+                    + "....";
         }
 
         return contentWithoutTags;
