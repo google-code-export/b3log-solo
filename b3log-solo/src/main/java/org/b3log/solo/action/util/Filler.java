@@ -181,7 +181,7 @@ public final class Filler {
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostViewCountArticles =
-                articleRepository.getMostCommentArticles(
+                articleRepository.getMostViewCountArticles(
                 mostCommentArticleDisplayCnt);
 
         dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
