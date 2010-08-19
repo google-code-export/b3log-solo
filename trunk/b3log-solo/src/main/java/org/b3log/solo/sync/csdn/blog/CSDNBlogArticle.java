@@ -213,11 +213,12 @@ public final class CSDNBlogArticle {
         int i = 1;
         for (final String category : categories) {
             categoriesStringBuilder.append(category);
-            i++;
 
             if (i < categories.size()) {
                 categoriesStringBuilder.append(",");
             }
+
+            i++;
         }
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES,
                 categoriesStringBuilder.toString());
