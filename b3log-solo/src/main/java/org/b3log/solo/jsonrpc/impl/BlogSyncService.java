@@ -218,10 +218,12 @@ public final class BlogSyncService extends AbstractRemoteService {
                 final CSDNBlogArticle csdnBlogArticle =
                         csdnBlog.getArticleById(csdnBlogUserName,
                                                 articleId);
-                final JSONObject article = csdnBlogArticle.toJSONObject();
-                csdnBlogArticles.put(article);
+                if (null != csdnBlogArticle) {
+                    final JSONObject article = csdnBlogArticle.toJSONObject();
+                    csdnBlogArticles.put(article);
 
-                csdnBlogArticleRepository.add(article);
+                    csdnBlogArticleRepository.add(article);
+                }
             }
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);

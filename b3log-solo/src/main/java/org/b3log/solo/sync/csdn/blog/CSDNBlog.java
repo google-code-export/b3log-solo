@@ -259,7 +259,7 @@ public final class CSDNBlog {
      *
      * @param csdnBlogUserName the specified CSDN blog user name
      * @param articleId the specified article id
-     * @return article, returns {@code null} if error or not found
+     * @return article, returns {@code null} if error or not found or time out
      */
     public CSDNBlogArticle getArticleById(final String csdnBlogUserName,
                                           final String articleId) {
