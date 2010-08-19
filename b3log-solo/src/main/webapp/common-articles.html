@@ -34,7 +34,7 @@
 </#list>
 <div class="pagination">
     <#list paginationPageNums as paginationPageNum>
-    <a href="${actionName}.do?paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
+    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
     </#list>
     ${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
