@@ -149,7 +149,10 @@ public class ArticleGAERepository extends AbstractGAERepository
             // Step 4:
             if (!newArticle.has(Article.ARTICLE_UPDATE_DATE)
                 || null == newArticle.opt(Article.ARTICLE_UPDATE_DATE)) {
-                newArticle.put(Article.ARTICLE_UPDATE_DATE, new Date());
+                final Date updateDate = new Date();
+                LOGGER.debug("Updated article[oId=" + articleId + "] with new "
+                             + "update date[" + updateDate + "]");
+                newArticle.put(Article.ARTICLE_UPDATE_DATE, updateDate);
             }
             // Step 5:
             add(newArticle);
