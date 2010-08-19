@@ -28,6 +28,7 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -86,6 +87,7 @@ public final class IndexAction extends AbstractAction {
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
             filler.fillStatistic(ret);
+            ret.put(Common.ACTION_NAME, Common.INDEX);
 
             statistics.incBlogViewCount();
         } catch (final Exception e) {

@@ -37,6 +37,7 @@ import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
@@ -143,17 +144,24 @@ public final class TagArticlesAction extends AbstractAction {
             }
 
             // TODO: sort articles by update date
-            
+
             final int pageCount = (int) Math.ceil((double) articles.size()
-                                                  / (double) 1);
+                                                  / (double) pageSize);
+            LOGGER.trace("Paginate tag-articles[currentPageNum="
+                         + currentPageNum + ", pageSize=" + pageSize
+                         + ", pageCount=" + pageCount + ", windowSize="
+                         + windowSize + "]");
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
+
+            LOGGER.trace("tag-articles[pageNums=" + pageNums + "]");
 
             articleUtils.addTags(articles);
             ret.put(Article.ARTICLES, articles);
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+            ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
