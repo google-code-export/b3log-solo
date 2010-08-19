@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 18, 2010
+ * @version 1.0.0.6, Aug 19, 2010
  */
 public final class ArticleService extends AbstractRemoteService {
 
@@ -434,6 +434,8 @@ public final class ArticleService extends AbstractRemoteService {
                     Article.ARTICLE_CREATE_DATE));
             article.put(Article.ARTICLE_COMMENT_COUNT,
                         oldArticle.getInt(Article.ARTICLE_COMMENT_COUNT));
+            article.put(Article.ARTICLE_VIEW_COUNT,
+                        oldArticle.getInt(Article.ARTICLE_VIEW_COUNT));
             // Step 5: Update
             articleRepository.update(articleId, article);
             // Step 6: Add tag-article relations
