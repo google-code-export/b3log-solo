@@ -33,6 +33,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CSDNBlogArticleRepository;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -74,6 +75,11 @@ public final class BlogSyncService extends AbstractRemoteService {
      */
     @Inject
     private ArticleUtils articleUtils;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
 
     /**
      * Imports CSDN blog article by the specified request json object and http
@@ -129,6 +135,8 @@ public final class BlogSyncService extends AbstractRemoteService {
 
                 articleRepository.importArticle(article);
                 importedIds.add(articleId);
+
+                statistics.incBlogArticleCount();
             }
 
             ret.put(Keys.OBJECT_ID + "s", importedIds);
