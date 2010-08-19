@@ -283,14 +283,4 @@ public class ArticleGAERepository extends AbstractGAERepository
 
         LOGGER.debug("Imported an article[oId=" + articleId + "]");
     }
-
-    @Override
-    public List<JSONObject> getArchivedArticles(final String archiveDate) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<String> getArchiveDates() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

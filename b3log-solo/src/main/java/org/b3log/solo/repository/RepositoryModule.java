@@ -22,6 +22,8 @@ import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.latke.service.AbstractServiceModule;
+import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.CSDNBlogArticleGAERepository;
 import org.b3log.solo.repository.impl.LinkGAERepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
@@ -62,5 +64,9 @@ public final class RepositoryModule extends AbstractServiceModule {
                 in(Scopes.SINGLETON);
         bind(CSDNBlogArticleRepository.class).to(
                 CSDNBlogArticleGAERepository.class).in(Scopes.SINGLETON);
+        bind(ArchiveDateRepository.class).to(
+                ArchiveDateGAERepository.class).in(Scopes.SINGLETON);
+        bind(ArchiveDateArticleRepository.class).to(
+                ArchiveDateArticleGAERepository.class).in(Scopes.SINGLETON);
     }
 }

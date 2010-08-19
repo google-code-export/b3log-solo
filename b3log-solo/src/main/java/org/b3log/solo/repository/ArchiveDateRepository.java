@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.util;
+package org.b3log.solo.repository;
 
-import com.google.inject.Scopes;
+import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.RepositoryException;
+import org.json.JSONObject;
 
 /**
- * Utilities module for <a href="http://code.google.com/p/google-guice/">
- * Guice</a> configurations.
+ * Archive date repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Aug 19, 2010
+ * @version 1.0.0.0, Aug 19, 2010
  */
-public final class UtilModule extends org.b3log.latke.util.UtilModule {
+public interface ArchiveDateRepository extends Repository {
 
-    @Override
-    protected void configure() {
-        super.configure();
-
-        bind(ArticleUtils.class).in(Scopes.SINGLETON);
-        bind(TagUtils.class).in(Scopes.SINGLETON);
-        bind(Preferences.class).in(Scopes.SINGLETON);
-        bind(Statistics.class).in(Scopes.SINGLETON);
-        bind(ArchiveDateUtils.class).in(Scopes.SINGLETON);
-    }
+    /**
+     * Gets an archive date by the specified archive date string.
+     *
+     * @param archiveDate the specified archive date stirng(yyyy/MM)
+     * @return an archive date, {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    JSONObject getByArchiveDate(final String archiveDate)
+            throws RepositoryException;
 }
