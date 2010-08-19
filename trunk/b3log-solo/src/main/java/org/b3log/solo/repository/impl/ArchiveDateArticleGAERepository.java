@@ -22,40 +22,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.latke.Keys;
+import org.b3log.solo.model.Article;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.solo.model.ArchiveDate;
+import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.json.JSONObject;
 
 /**
- * Article-Comment relation Google App Engine repository.
+ * Archive date-Article relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 13, 2010
+ * @version 1.0.0.0, Aug 19, 2010
  */
-public class ArticleCommentGAERepository extends AbstractGAERepository
-        implements ArticleCommentRepository {
+public class ArchiveDateArticleGAERepository extends AbstractGAERepository
+        implements ArchiveDateArticleRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleCommentGAERepository.class);
+            Logger.getLogger(ArchiveDateArticleGAERepository.class);
 
     @Override
     public String getName() {
-        return Article.ARTICLE + "_" + Comment.COMMENT;
+        return ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE;
     }
 
     @Override
-    public List<JSONObject> getByArticleId(final String articleId)
+    public List<JSONObject> getByArchiveDate(final String archiveDate)
             throws RepositoryException {
         final Query query = new Query(getName());
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        Query.FilterOperator.EQUAL, articleId);
+        query.addFilter(ArchiveDate.ARCHIVE_DATE,
+                        Query.FilterOperator.EQUAL, archiveDate);
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
 
         final List<JSONObject> ret = new ArrayList<JSONObject>();
@@ -70,13 +70,13 @@ public class ArticleCommentGAERepository extends AbstractGAERepository
     }
 
     @Override
-    public JSONObject getByCommentId(final String commentId)
+    public JSONObject getByArticleId(final String articleId)
             throws RepositoryException {
         final Query query = new Query(getName());
-        query.addFilter(Comment.COMMENT + "_" + Keys.OBJECT_ID,
-                        Query.FilterOperator.EQUAL, commentId);
+        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                        Query.FilterOperator.EQUAL, articleId);
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        
+
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
             return null;

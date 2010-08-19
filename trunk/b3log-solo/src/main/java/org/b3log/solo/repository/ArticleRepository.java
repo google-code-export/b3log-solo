@@ -24,25 +24,9 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 18, 2010
+ * @version 1.0.0.7, Aug 19, 2010
  */
 public interface ArticleRepository extends Repository {
-
-    /**
-     * Gets archived articles with the specified archive date.
-     *
-     * @param archiveDate the specified archive date(yyyy/MM)
-     * @return a list of articles, returns an empty list if not found
-     */
-    List<JSONObject> getArchivedArticles(final String archiveDate);
-
-    /**
-     * Gets archive dates.
-     *
-     * @return a list of archive dates(["yyyy/MM", "yyyy/MM", ....]), returns
-     * an empty list if not found
-     */
-    List<String> getArchiveDates();
 
     /**
      * Gets post articles recently with the specified number.

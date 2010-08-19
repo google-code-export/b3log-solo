@@ -108,6 +108,22 @@
             </ul>
         </li>
     </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
+            <h4>${archiveLabel}</h4>
+            <ul>
+                <#list archiveDates as archiveDate>
+                <li>
+                    &bull;
+                    <a href="#" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}" target="_blank">
+                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
+                    </a>
+                </li>
+                </#list>
+            </ul>
+        </li>
+    </ul>
 </div>
 <script type="text/javascript">
     if (window.location.search === "") {

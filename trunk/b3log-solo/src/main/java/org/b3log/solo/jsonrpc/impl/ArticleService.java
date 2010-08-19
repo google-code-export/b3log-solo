@@ -36,6 +36,7 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TagUtils;
@@ -89,6 +90,11 @@ public final class ArticleService extends AbstractRemoteService {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Archive date utilities.
+     */
+    @Inject
+    private ArchiveDateUtils archiveDateUtils;
 
     /**
      * Adds an article from the specified request json object and http servlet
@@ -144,11 +150,12 @@ public final class ArticleService extends AbstractRemoteService {
             articleUtils.addTagArticleRelation(tags, article);
             // Step 5: Inc blog article count statictis
             statistics.incBlogArticleCount();
+            // Step 6: Add archive date-article relations
+            archiveDateUtils.archiveDate(article);
 
             // TODO: event handling: add article
             eventManager.fireEventSynchronously(
-                    new Event<JSONObject>(
-                    EventTypes.ADD_ARTICLE, article));
+                    new Event<JSONObject>(EventTypes.ADD_ARTICLE, article));
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_ARTICLE_SUCC);
         } catch (final Exception e) {
@@ -342,6 +349,8 @@ public final class ArticleService extends AbstractRemoteService {
             articleRepository.remove(articleId);
             // Step 4: Dec blog article count statictis
             statistics.decBlogArticleCount();
+            // Step 5: Un-archive date-article relations
+            archiveDateUtils.unArchiveDate(articleId);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
 
@@ -413,6 +422,8 @@ public final class ArticleService extends AbstractRemoteService {
             articleRepository.update(articleId, article);
             // Step 6: Add tag-article relations
             articleUtils.addTagArticleRelation(tags, article);
+            // Step 7: Add archive date-article relations
+            archiveDateUtils.archiveDate(article);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
 

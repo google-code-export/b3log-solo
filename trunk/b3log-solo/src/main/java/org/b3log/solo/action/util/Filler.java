@@ -16,6 +16,7 @@
 package org.b3log.solo.action.util;
 
 import com.google.inject.Inject;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -31,12 +32,14 @@ import org.b3log.latke.client.Sessions;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.util.ArchiveDateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -82,6 +85,11 @@ public final class Filler {
      */
     @Inject
     private StatisticRepository statisticRepository;
+    /**
+     * Archive date utilities.
+     */
+    @Inject
+    private ArchiveDateUtils archiveDateUtils;
 
     /**
      * Fills blog statistics for all pages.
@@ -135,7 +143,7 @@ public final class Filler {
                                                           pageSize,
                                                           pageCount,
                                                           windowSize);
-        
+
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
@@ -188,7 +196,18 @@ public final class Filler {
      */
     public void fillArchiveDates(final Map<String, Object> dataModel)
             throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
+        final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
+        for (final JSONObject archiveDate : archiveDates) {
+            final Date date = (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
+            final String dateString = ArchiveDate.DATE_FORMAT.format(date);
+            final String[] dateStrings = dateString.split("/");
+            final String year = dateStrings[0];
+            final String month = dateStrings[1];
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
+        }
+
+        dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates);
     }
 
     /**
