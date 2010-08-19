@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
+import org.b3log.solo.util.Htmls;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +31,7 @@ import org.json.JSONObject;
  * CSDN blog article(post, entry, article, whatever).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 17, 2010
+ * @version 1.0.0.2, Aug 19, 2010
  */
 public final class CSDNBlogArticle {
 
@@ -54,6 +55,10 @@ public final class CSDNBlogArticle {
      * Categories.
      */
     private Set<String> categories;
+    /**
+     * Maximum length of an article abstract.
+     */
+    private static final int MAX_ABSTRACT_LENGTH = 300;
 
     /**
      * Constructs a {@link CSDNBlogArticle} object.
@@ -183,8 +188,9 @@ public final class CSDNBlogArticle {
      *       "blogSyncCSDNBlogArticleId": "",
      *       "blogSyncCSDNBlogArticleTitle": "",
      *       "blogSyncCSDNBlogArticleCreateDate": java.util.Date,
-     *       "blogSyncCSDNBlogArticleCategories": ["", "", ....],
-     *       "blogSyncCSDNBlogArticleContent": ""
+     *       "blogSyncCSDNBlogArticleCategories": java.util.Set["", "", ....],
+     *       "blogSyncCSDNBlogArticleContent": "",
+     *       "blogSyncCSDNBlogArticleAbstract": ""
      *   }
      *   </pre>
      * </p>
@@ -198,8 +204,11 @@ public final class CSDNBlogArticle {
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID, id);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE, title);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE, createDate);
-        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES, categories);
+        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES,
+                (Object) categories);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT, content);
+        ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ABSTRACT, genAbstract(
+                content));
 
         return ret;
     }
@@ -217,5 +226,23 @@ public final class CSDNBlogArticle {
         ret.put("dateCreated", createDate);
 
         return ret;
+    }
+
+    /**
+     * Generates article abstract of the specified article content.
+     *
+     * @param content the specified article content
+     * @return a string without html tags as article abstract, its length less
+     * {@linkplain #MAX_ABSTRACT_LENGTH}
+     */
+    private String genAbstract(final String content) {
+        final String contentWithoutTags = Htmls.removeHtmlTags(content);
+        if (contentWithoutTags.length() >= MAX_ABSTRACT_LENGTH) {
+            return contentWithoutTags.substring(0, MAX_ABSTRACT_LENGTH)
+                   + "....";
+        }
+
+        return contentWithoutTags;
+
     }
 }
