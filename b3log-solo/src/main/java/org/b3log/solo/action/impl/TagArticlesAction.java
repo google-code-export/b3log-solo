@@ -37,6 +37,8 @@ import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -44,7 +46,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-article.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 18, 2010
+ * @version 1.0.0.4, Aug 19, 2010
  */
 public final class TagArticlesAction extends AbstractAction {
 
@@ -92,6 +94,11 @@ public final class TagArticlesAction extends AbstractAction {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private Preferences preferences;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -113,9 +120,16 @@ public final class TagArticlesAction extends AbstractAction {
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
+            final JSONObject preference = preferences.getPreference();
+            final int pageSize =
+                    preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize =
+                    preference.getInt(
+                    Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+
             final List<JSONObject> tagArticleRelations =
                     tagArticleRepository.getByTagId(tagId, currentPageNum,
-                                                    1);
+                                                    pageSize);
 
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.size(); i++) {
@@ -123,17 +137,18 @@ public final class TagArticlesAction extends AbstractAction {
                         tagArticleRelations.get(i);
                 final String articleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
-                        + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }
 
+            // TODO: sort articles by update date
+            
             final int pageCount = (int) Math.ceil((double) articles.size()
-                    / (double) 1);
+                                                  / (double) 1);
             final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum,
-                                       1, pageCount,
-                                       1);
+                    Paginator.paginate(currentPageNum, pageSize, pageCount,
+                                       windowSize);
 
             articleUtils.addTags(articles);
             ret.put(Article.ARTICLES, articles);
