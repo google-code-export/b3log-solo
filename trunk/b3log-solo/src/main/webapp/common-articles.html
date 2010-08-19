@@ -1,9 +1,9 @@
 <#list articles as article>
 <div class="article">
     <div class="articleDate left">
-        ${article.articleCreateDate?datetime}
+        ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
         <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-        ${article.articleUpdateDate?datetime}
+        ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
         </#if>
     </div>
     <div class="left articleBody">
