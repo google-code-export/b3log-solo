@@ -63,7 +63,7 @@
     var getCSDNBlogArticleArchiveDate = function () {
         userName = $("#userName").val();
         jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate(function (result, error) {
-            $("#archiveDate").html("<option>{选择月份}</option>").show();
+            $("#archiveDate").html("<option>{选择月份}</option>").show(500);
             for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
                 $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
             }
@@ -75,6 +75,7 @@
         $("#loading").loading({
             imgURL: "images/ajax-loader.gif"
         });
+        $("#articlesPanel").hide(800);
 
         var requestJSONObject = {
             "blogSyncCSDNBlogUserName": userName,

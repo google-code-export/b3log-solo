@@ -21,9 +21,13 @@
                     <div>
                         <div class="">
                             <div class="articleDate left">
-                                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
                                 <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
                                 ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
+                                <span class="errorMsg">
+                                    U
+                                </span>
+                                <#else>
+                                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
                                 </#if>
                             </div>
                             <div class="title left articleTitle">
@@ -55,19 +59,10 @@
                             </div>
                             <div class="right">
                                 <span>
-                                    tags:
-                                    <#list articleTags as articleTag>
-                                    <span>
-                                        <a href="tag-articles.do?oId=${articleTag.oId}">
-                                            ${articleTag.tagTitle}
-                                        </a>
-                                        <#if articleTag_has_next>,</#if>
-                                    </span>
-                                    </#list>
-                                    &nbsp;
+                                    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
                                 </span>
                                 <span>
-                                    comment(${article.articleCommentCount})
+                                    &nbsp;comment(${article.articleCommentCount})
                                 </span>
                                 <span>
                                     &nbsp;{articleView}: (${article.articleViewCount})
