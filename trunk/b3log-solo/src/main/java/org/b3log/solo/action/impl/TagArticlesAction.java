@@ -162,6 +162,7 @@ public final class TagArticlesAction extends AbstractAction {
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
+            ret.put(Keys.OBJECT_ID, tagId);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
