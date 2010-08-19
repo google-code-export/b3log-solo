@@ -182,7 +182,7 @@ public final class CommentService extends AbstractRemoteService {
             // Step 3: Update article comment count
             articleUtils.incArticleCommentCount(articleId);
             // Step 4: Update blog statistic comment count
-            statistics.incBlogArticleCount();
+            statistics.incBlogCommentCount();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
             ret.put(Keys.OBJECT_ID, commentId);
