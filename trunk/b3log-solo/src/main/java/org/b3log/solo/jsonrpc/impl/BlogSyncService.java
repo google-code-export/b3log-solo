@@ -119,11 +119,13 @@ public final class BlogSyncService extends AbstractRemoteService {
                         articleId);
 
                 toSoloArticle(article);
-                
+
+                final String categoriesString =
+                        article.getString(
+                        BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES);
+                final String[] tagTitles = categoriesString.split(",");
                 @SuppressWarnings(value = "unchecked")
-                final JSONArray tags = tagUtils.tag(((Set<String>) article.get(
-                                                     BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES)).
-                        toArray(new String[0]), article);
+                final JSONArray tags = tagUtils.tag(tagTitles, article);
                 articleUtils.addTagArticleRelation(tags, article);
 
                 articleRepository.importArticle(article);
@@ -183,8 +185,9 @@ public final class BlogSyncService extends AbstractRemoteService {
      *         "blogSyncCSDNBlogArticleId": "",
      *         "blogSyncCSDNBlogArticleTitle": "",
      *         "blogSyncCSDNBlogArticleCreateDate": java.util.Date,
-     *         "blogSyncCSDNBlogArticleCategories": ["", "", ....],
-     *         "blogSyncCSDNBlogArticleContent": ""
+     *         "blogSyncCSDNBlogArticleCategories": "category1, category2, ....",
+     *         "blogSyncCSDNBlogArticleContent": "",
+     *         "blogsyncCSDNBlogArticleAbstract": ""
      *     }, ....]
      * }
      * </pre>
