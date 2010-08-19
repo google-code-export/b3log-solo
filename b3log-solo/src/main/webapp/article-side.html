@@ -1,7 +1,7 @@
 <div id="sideNavi">
     <ul>
         <li>
-            <h2>{articlesInfo}</h2>
+            <h4>{articlesInfo}</h4>
             <ul>
                 <li>
                     {viewCnt}: ${statisticBlogViewCount}
@@ -19,12 +19,12 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h2>${popTagsLabel}</h2>
+            <h4>${popTagsLabel}</h4>
             <ul>
                 <#list mostUsedTags as tag>
                 <li>
                     &bull;
-                    <a name="${tag.oId}" href="tag-articles.do?oId=${tag.oId}">
+                    <a name="${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}">
                         ${tag.tagTitle}
                     </a>
                 </li>
@@ -35,13 +35,17 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h2>${recentArticlesLabel}</h2>
+            <h4>${recentArticlesLabel}</h4>
             <ul>
                 <#list recentArticles as article>
                 <li>
                     &bull;
-                    <a name="recent${article.oId}" href="article-detail.do?oId=${article.oId}">
+                    <a name="recent${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                        <#if article.articleTitle?length gt 15>
+                        ${article.articleTitle?substring(0,15)}...
+                        <#else>
                         ${article.articleTitle}
+                        </#if>
                     </a>
                 </li>
                 </#list>
@@ -51,13 +55,17 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h2>${mostCommentArticlesLabel}</h2>
+            <h4>${mostCommentArticlesLabel}</h4>
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
                     &bull;
-                    <a name="$most{article.oId}" href="article-detail.do?oId=${article.oId}">
+                    <a name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                        <#if article.articleTitle?length gt 15>
+                        ${article.articleTitle?substring(0,15)}...
+                        <#else>
                         ${article.articleTitle}
+                        </#if>
                     </a>
                 </li>
                 </#list>
@@ -67,13 +75,17 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h2>${mostViewCountArticlesLabel}</h2>
+            <h4>${mostViewCountArticlesLabel}</h4>
             <ul>
                 <#list mostViewCountArticles as article>
                 <li>
                     &bull;
-                    <a name="$most{article.oId}" href="article-detail.do?oId=${article.oId}">
+                    <a name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                        <#if article.articleTitle?length gt 15>
+                        ${article.articleTitle?substring(0,15)}...
+                        <#else>
                         ${article.articleTitle}
+                        </#if>
                     </a>
                 </li>
                 </#list>
@@ -83,12 +95,12 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h2>${linkLabel}</h2>
+            <h4>${linkLabel}</h4>
             <ul>
                 <#list links as link>
                 <li>
                     &bull;
-                    <a href="${link.linkAddress}" target="_blank">
+                    <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         ${link.linkTitle}
                     </a>
                 </li>

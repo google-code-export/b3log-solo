@@ -120,6 +120,10 @@ button:hover {
     cursor: pointer;
 }
 
+.noUnderline {
+    text-decoration: none;
+}
+
 .errorMsg {
     color: red;
 }
@@ -136,7 +140,7 @@ button:hover {
 }
 
 .contentBody {
-    padding: 12px;
+    padding: 3px 12px;
     margin-bottom: 12px;
 }
 
