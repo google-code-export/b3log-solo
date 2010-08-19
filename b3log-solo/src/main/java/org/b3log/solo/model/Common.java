@@ -57,6 +57,18 @@ public final class Common {
      * Login status.
      */
     public static final String LOGINT_STATUS = "loginStatus";
+    /**
+     * index.
+     */
+    public static final String INDEX = "index";
+    /**
+     * tag-articles.
+     */
+    public static final String TAG_ARTICLES = "tag-articles";
+    /**
+     * Action name.
+     */
+    public static final String ACTION_NAME = "actionName";
 
     /**
      * Private default constructor.
