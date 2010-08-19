@@ -19,22 +19,29 @@
                 </div>
                 <div class="right main">
                     <div>
-                        <div id="articleHeader">
-                            <h2 class="left">
-                                ${article.articleTitle}
-                            </h2>
-                            TODO: ${article.articleViewCount}
-                            <div class="right">
-                                tags:
-                                <#list articleTags as articleTag>
-                                <span>
-                                    <a href="tag-articles.do?oId=${articleTag.oId}">${articleTag.tagTitle}</a>
-                                </span>
-                                </#list>
+                        <div class="">
+                            <div class="articleDate left">
+                                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+                                <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+                                ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
+                                </#if>
                             </div>
+                            <div class="title left articleTitle">
+                                <h2>
+                                    ${article.articleTitle}
+                                </h2>
+                                <div>
+                                    tags:
+                                    <#list articleTags as articleTag>
+                                    <span>
+                                        <a href="tag-articles.do?oId=${articleTag.oId}">${articleTag.tagTitle}</a>
+                                    </span>
+                                    </#list>
+                                </div>
+                            </div>
+                            <div class="clear"></div>
                         </div>
-                        <div class="clear"></div>
-                        <div class="contentBody">
+                        <div class="articleContent">
                             ${article.articleContent}
                         </div>
                         <div id="articleBottom">
@@ -48,10 +55,22 @@
                             </div>
                             <div class="right">
                                 <span>
-                                    comment(${article.articleCommentCount})&nbsp;
+                                    tags:
+                                    <#list articleTags as articleTag>
+                                    <span>
+                                        <a href="tag-articles.do?oId=${articleTag.oId}">
+                                            ${articleTag.tagTitle}
+                                        </a>
+                                        <#if articleTag_has_next>,</#if>
+                                    </span>
+                                    </#list>
+                                    &nbsp;
                                 </span>
                                 <span>
-                                    &nbsp;${article.articleCreateDate?datetime}
+                                    comment(${article.articleCommentCount})
+                                </span>
+                                <span>
+                                    &nbsp;{articleView}: (${article.articleViewCount})
                                 </span>
                             </div>
                         </div>
@@ -79,9 +98,10 @@
                             <button onclick="submitComment();">提交</button>
                         </div>
                     </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="clear"></div>
             </div>
+            <div class="clear"></div>
             <div class="footer">
                 <#include "article-footer.html">
             </div>
@@ -97,17 +117,20 @@
                 jsonRpc.commentService.addComment(function (result, error) {
                     switch (result.sc) {
                         case "COMMENT_ARTICLE_SUCC":
-                            var commentHTML = "<div><div class='title'>"
-                                + ${comment.commentDate}
-                                + "</div><div class='contentBody'>" + $("#comment").val()
-                                + "</div></div>";
-                            $($("#comments div").get(0)).append(commentHTML);
+                            window.location.reload();
+                            $("#comment").val("").focus();
                             break;
                         default:
                             break;
                     }
                 }, requestJSONObject);
             }
+
+            $("#comment").keypress(function (event) {
+                if (event.keyCode === 13) {
+                    submitComment();
+                }
+            })
         </script>
     </body>
 </html>

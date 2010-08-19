@@ -1,23 +1,22 @@
 <#list articles as article>
 <div class="article">
-    <div class="articleDate left">
-        ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
-        <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-        ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
-        </#if>
-    </div>
-    <div class="left articleBody">
-        <div class="title">
+    <div class="articleHeader">
+        <div class="articleDate left">
+            <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+            ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
+            <span class="errorMsg">
+                U
+            </span>
+            <#else>
+            ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+            </#if>
+        </div>
+        <div class="left title articleTitle">
             <h2>
-                <a href="article-detail.do?oId=${article.oId}">
+                <a class="noUnderline" href="article-detail.do?oId=${article.oId}">
                     ${article.articleTitle}
                 </a>
             </h2>
-        </div>
-        <div class="contentBody">
-            ${article.articleAbstract}
-        </div>
-        <div class="right">
             ${tag1Label}
             <#list article.articleTags as articleTag>
             <span>
@@ -26,14 +25,23 @@
                 </a>
                 <#if articleTag_has_next>,</#if>
             </span>
-            &nbsp;
             </#list>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="articleBody">
+        <div class="articleAbstract">
+            ${article.articleAbstract}
+        </div>
+        <div class="right">
+            ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+            &nbsp;
             ${commentLabel}(${article.articleCommentCount})
             &nbsp;
             {viewCount}(${article.articleViewCount})
         </div>
+        <div class="clear"></div>
     </div>
-    <div class="clear"></div>
 </div>
 </#list>
 <div class="pagination">

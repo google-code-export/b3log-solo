@@ -38,38 +38,25 @@
     padding: 24px 12px;
 }
 
+.articleTitle {
+    width: 639px;
+}
+
 .articleDate {
     -moz-border-radius:5px 5px 5px 5px;
     background-color:#E3E9FF;
     border:1px solid #BBCCFF;
-    margin:0 24px 24px 0;
+    margin:0 12px 12px 0;
     padding:6px;
     width:65px;
 }
 
-.articleBody {
-    width: 85%;
-}
-
 /* article detail */
-#articleHeader {
-    border-top:1px solid #3366CC;
-    background-color:#E3E9FF;
-    height:25px;
-    padding:3px 0 0 12px;
-}
-
-#articleHeader div {
-    margin: 3px 6px;
-}
-
-#articleHeader div span {
-    margin: 0 1px;
+.articleContent {
+    margin: 0 12px 24px;
 }
 
 #articleBottom {
-    margin: 9px 0;
-    text-align: right;
     color: #008800;
 }
 
@@ -85,6 +72,9 @@
 #sideNavi a.selected {
     text-decoration: none;
     color: #000000;
+}
+#sideNavi li {
+    white-space: nowrap;
 }
 /* pagination */
 .pagination {
