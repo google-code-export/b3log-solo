@@ -188,7 +188,7 @@ public final class CSDNBlogArticle {
      *       "blogSyncCSDNBlogArticleId": "",
      *       "blogSyncCSDNBlogArticleTitle": "",
      *       "blogSyncCSDNBlogArticleCreateDate": java.util.Date,
-     *       "blogSyncCSDNBlogArticleCategories": java.util.Set["", "", ....],
+     *       "blogSyncCSDNBlogArticleCategories": "category1, category2, ....",
      *       "blogSyncCSDNBlogArticleContent": "",
      *       "blogSyncCSDNBlogArticleAbstract": ""
      *   }
@@ -204,8 +204,20 @@ public final class CSDNBlogArticle {
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID, id);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE, title);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE, createDate);
+
+        final StringBuilder categoriesStringBuilder = new StringBuilder();
+
+        int i = 1;
+        for (final String category : categories) {
+            categoriesStringBuilder.append(category);
+            i++;
+
+            if (i < categories.size()) {
+                categoriesStringBuilder.append(",");
+            }
+        }
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES,
-                (Object) categories);
+                categoriesStringBuilder.toString());
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT, content);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ABSTRACT, genAbstract(
                 content));
