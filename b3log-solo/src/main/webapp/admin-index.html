@@ -49,7 +49,9 @@
                 // tipMsg
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
-                        $("#tipMsg").text("");
+                        setTimeout(function () {
+                            $("#tipMsg").text("");
+                        }, 6000);
                     }
                 }, 6000);
 
