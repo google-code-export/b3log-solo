@@ -2,6 +2,9 @@
 <div class="article">
     <div class="articleDate left">
         ${article.articleCreateDate?datetime}
+        <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+        ${article.articleUpdateDate?datetime}
+        </#if>
     </div>
     <div class="left articleBody">
         <div class="title">
