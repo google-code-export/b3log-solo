@@ -16,6 +16,7 @@
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
+import java.util.List;
 import org.apache.log4j.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
@@ -74,7 +75,7 @@ public final class TagUtils {
             String tagId = null;
             if (null == tag) {
                 LOGGER.trace("Found a new tag[title=" + tagTitle
-                        + "] in article[title=" + article.getString(
+                             + "] in article[title=" + article.getString(
                         Article.ARTICLE_TITLE) + "]");
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
@@ -86,8 +87,8 @@ public final class TagUtils {
                 tagId = tag.getString(Keys.OBJECT_ID);
                 LOGGER.trace("Found a existing tag[title=" + tag.getString(
                         Tag.TAG_TITLE) + ", oId="
-                        + tag.getString(Keys.OBJECT_ID) + "] in "
-                        + "article[title=" + article.getString(
+                             + tag.getString(Keys.OBJECT_ID) + "] in "
+                             + "article[title=" + article.getString(
                         Article.ARTICLE_TITLE) + "]");
                 final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
                 final JSONObject tagTmp = new JSONObject();
@@ -101,5 +102,30 @@ public final class TagUtils {
         }
 
         return ret;
+    }
+
+    /**
+     * Decrements reference count of every tag of an article specified by the
+     * given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void decTagRefCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
+
+        for (final JSONObject tag : tags) {
+            final String tagId = tag.getString(Keys.OBJECT_ID);
+            final int refCnt =
+                    tag.getInt(Tag.TAG_REFERENCE_COUNT);
+            tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
+
+            tagRepository.update(tagId, tag);
+        }
+
+        LOGGER.trace("Deced all tag reference count of article[oId="
+                     + articleId + "]");
     }
 }
