@@ -1,10 +1,29 @@
 <div id="sideNavi">
     <ul>
         <li>
+            <h2>{articlesInfo}</h2>
+            <ul>
+                <li>
+                    {viewCnt}: ${statisticBlogViewCount}
+
+                </li>
+                <li>
+                    {articleCnt}: ${statisticBlogArticleCount}
+                </li>
+                <li>
+                    {commentCnt}: ${statisticBlogCommentCount}
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
             <h2>${popTagsLabel}</h2>
             <ul>
                 <#list mostUsedTags as tag>
                 <li>
+                    &bull;
                     <a name="${tag.oId}" href="tag-articles.do?oId=${tag.oId}">
                         ${tag.tagTitle}
                     </a>
@@ -20,6 +39,7 @@
             <ul>
                 <#list recentArticles as article>
                 <li>
+                    &bull;
                     <a name="recent${article.oId}" href="article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
                     </a>
@@ -35,6 +55,7 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
+                    &bull;
                     <a name="$most{article.oId}" href="article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
                     </a>
@@ -50,6 +71,7 @@
             <ul>
                 <#list mostViewCountArticles as article>
                 <li>
+                    &bull;
                     <a name="$most{article.oId}" href="article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
                     </a>
@@ -65,6 +87,7 @@
             <ul>
                 <#list links as link>
                 <li>
+                    &bull;
                     <a href="${link.linkAddress}" target="_blank">
                         ${link.linkTitle}
                     </a>

@@ -35,7 +35,7 @@
 
 /* article list */
 .article {
-    margin: 12px;
+    padding: 24px 12px;
 }
 
 .articleDate {
