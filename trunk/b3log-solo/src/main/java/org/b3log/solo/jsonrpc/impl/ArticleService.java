@@ -17,7 +17,6 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -287,31 +286,16 @@ public final class ArticleService extends AbstractRemoteService {
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
 
             final JSONObject pagination = new JSONObject();
+            ret.put(Pagination.PAGINATION, pagination);
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-            // Date objects to strings
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
-            for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.getJSONObject(i);
-                final Date createDate =
-                        (Date) article.get(Article.ARTICLE_CREATE_DATE);
-                final Date updateDate =
-                        (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-                final String createDateString =
-                        Keys.SIMPLE_DATE_FORMAT.format(createDate);
-                final String updateDateString =
-                        Keys.SIMPLE_DATE_FORMAT.format(updateDate);
-
-                article.put(Article.ARTICLE_CREATE_DATE, createDateString);
-                article.put(Article.ARTICLE_UPDATE_DATE, updateDateString);
-            }
-
-            ret.put(Pagination.PAGINATION, pagination);
             ret.put(Article.ARTICLES, articles);
+
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLES_SUCC);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -394,7 +378,7 @@ public final class ArticleService extends AbstractRemoteService {
         }
 
         LOGGER.trace("Deced all tag reference count of article[oId="
-                + articleId + "]");
+                     + articleId + "]");
     }
 
     /**
@@ -440,15 +424,16 @@ public final class ArticleService extends AbstractRemoteService {
             // Step 2: Remove tag-article relations
             articleUtils.removeTagArticleRelations(articleId);
             // Step 3: Add tags
-            final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
+            final String tagsString =
+                    article.getString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 4: Fill auto properties
             final JSONObject oldArticle = articleRepository.get(articleId);
-            article.put(Article.ARTICLE_CREATE_DATE, oldArticle.getString(
+            article.put(Article.ARTICLE_CREATE_DATE, oldArticle.get(
                     Article.ARTICLE_CREATE_DATE));
             article.put(Article.ARTICLE_COMMENT_COUNT,
-                        oldArticle.getString(Article.ARTICLE_COMMENT_COUNT));
+                        oldArticle.getInt(Article.ARTICLE_COMMENT_COUNT));
             // Step 5: Update
             articleRepository.update(articleId, article);
             // Step 6: Add tag-article relations
