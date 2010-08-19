@@ -56,3 +56,9 @@
     float: right;
     margin: 10px;
 }
+
+/* asyn */
+#loading {
+    margin:24px auto;
+    width:100px;
+}

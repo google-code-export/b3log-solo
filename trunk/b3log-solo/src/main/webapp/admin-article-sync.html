@@ -12,11 +12,11 @@
                 <select id="archiveDate" class="none" onchange="getCSDNBlogArticlesByArchiveDate();">
                     <option>{选择月份}</option>
                 </select>
-                <span id="loading"></span>
             </td>
         </tr>
     </tbody>
 </table>
+<div id="loading"></div>
 <div id="articlesPanel" class="none">
     <button onclick="sync();">{submit}</button>
     <div id="articleList" class="maginTB12"></div>
@@ -63,7 +63,7 @@
     var getCSDNBlogArticleArchiveDate = function () {
         userName = $("#userName").val();
         jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate(function (result, error) {
-            $("#archiveDate").html("<option>{选择月份}</option>").show(300);
+            $("#archiveDate").html("<option>{选择月份}</option>").show();
             for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
                 $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
             }
@@ -73,9 +73,7 @@
 
     var getCSDNBlogArticlesByArchiveDate = function () {
         $("#loading").loading({
-            imgURL: "images/logo.png",
-            height: 16,
-            width: 16
+            imgURL: "images/ajax-loader.gif"
         });
 
         var requestJSONObject = {
