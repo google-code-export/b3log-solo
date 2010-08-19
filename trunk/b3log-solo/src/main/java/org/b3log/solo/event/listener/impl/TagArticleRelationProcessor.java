@@ -49,7 +49,7 @@ public class TagArticleRelationProcessor extends AbstractEventListener<JSONObjec
     }
 
     @Override
-    public void process(final Event<JSONObject> event) {
+    public void action(final Event<JSONObject> event) {
         final JSONObject article = event.getData();
         LOGGER.trace("Processing an event[type=" + event.getType()
                      + ", data=" + article + "] in listener[className="
