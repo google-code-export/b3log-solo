@@ -19,54 +19,70 @@ package org.b3log.solo.model;
  * This class defines all blog sync model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 17, 2010
+ * @version 1.0.0.1, Aug 19, 2010
  */
 public final class BlogSync {
 
     /**
      * Key of CSDN blog user name.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_USER_NAME = "blogSyncCSDNBlogUserName";
+    public static final String BLOG_SYNC_CSDN_BLOG_USER_NAME =
+            "blogSyncCSDNBlogUserName";
     /**
      * Key of CSDN blog archive date.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE = "blogSyncCSDNBlogArchiveDate";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE =
+            "blogSyncCSDNBlogArchiveDate";
     /**
      * Key of CSDN blog archive dates.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES = "blogSyncCSDNBlogArchiveDates";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES =
+            "blogSyncCSDNBlogArchiveDates";
     /**
      * Key of CSDN blog article.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE = "blogSyncCSDNBlogArticle";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE =
+            "blogSyncCSDNBlogArticle";
     /**
      * Key of CSDN blog articles.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLES = "blogSyncCSDNBlogArticles";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLES =
+            "blogSyncCSDNBlogArticles";
     /**
      * Key of CSDN blog article title.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE = "blogSyncCSDNBlogArticleTitle";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE =
+            "blogSyncCSDNBlogArticleTitle";
     /**
      * Key of CSDN blog article create date.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE = "blogSyncCSDNBlogArticleCreateDate";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE =
+            "blogSyncCSDNBlogArticleCreateDate";
     /**
      * Key of CSDN blog article categories.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES = "blogSyncCSDNBlogArticleCategories";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES =
+            "blogSyncCSDNBlogArticleCategories";
     /**
      * Key of CSDN blog article content.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT = "blogSyncCSDNBlogArticleContent";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT =
+            "blogSyncCSDNBlogArticleContent";
+    /**
+     * Key of CSDN blog article abstract.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_ABSTRACT =
+            "blogSyncCSDNBlogArticleAbstract";
     /**
      * Key of CSDN blog article id.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_ID = "blogSyncCSDNBlogArticleId";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_ID =
+            "blogSyncCSDNBlogArticleId";
     /**
      * Key of CSDN blog article ids.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS = "blogSyncCSDNBlogArticleIds";
+    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS =
+            "blogSyncCSDNBlogArticleIds";
 
     /**
      * Private default constructor.
