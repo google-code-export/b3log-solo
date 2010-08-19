@@ -35,13 +35,11 @@ import org.b3log.latke.client.remote.AbstractRemoteService;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TagUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -337,7 +335,7 @@ public final class ArticleService extends AbstractRemoteService {
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.debug("Removing an article[oId=" + articleId + "]");
             // Step 1: Dec reference count of tag
-            decTagRefCount(articleId);
+            tagUtils.decTagRefCount(articleId);
             // Step 2: Remove tag-article relations
             articleUtils.removeTagArticleRelations(articleId);
             // Step 3: Remove article
@@ -354,31 +352,6 @@ public final class ArticleService extends AbstractRemoteService {
         }
 
         return ret;
-    }
-
-    /**
-     * Decrements reference count of every tag of an article specified by the
-     * given article id.
-     *
-     * @param articleId the given article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    private void decTagRefCount(final String articleId)
-            throws JSONException, RepositoryException {
-        final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
-
-        for (final JSONObject tag : tags) {
-            final String tagId = tag.getString(Keys.OBJECT_ID);
-            final int refCnt =
-                    tag.getInt(Tag.TAG_REFERENCE_COUNT);
-            tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
-
-            tagRepository.update(tagId, tag);
-        }
-
-        LOGGER.trace("Deced all tag reference count of article[oId="
-                     + articleId + "]");
     }
 
     /**
@@ -420,7 +393,7 @@ public final class ArticleService extends AbstractRemoteService {
                     requestJSONObject.getJSONObject(Article.ARTICLE);
             final String articleId = article.getString(Keys.OBJECT_ID);
             // Step 1: Dec reference count of tag
-            decTagRefCount(articleId);
+            tagUtils.decTagRefCount(articleId);
             // Step 2: Remove tag-article relations
             articleUtils.removeTagArticleRelations(articleId);
             // Step 3: Add tags
