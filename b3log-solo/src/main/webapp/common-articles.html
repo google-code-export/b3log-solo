@@ -13,7 +13,6 @@
                     ${article.articleTitle}
                 </a>
             </h2>
-            TODO: ${article.articleViewCount}
         </div>
         <div class="contentBody">
             ${article.articleAbstract}
@@ -30,6 +29,8 @@
             &nbsp;
             </#list>
             ${commentLabel}(${article.articleCommentCount})
+            &nbsp;
+            {viewCount}(${article.articleViewCount})
         </div>
     </div>
     <div class="clear"></div>
