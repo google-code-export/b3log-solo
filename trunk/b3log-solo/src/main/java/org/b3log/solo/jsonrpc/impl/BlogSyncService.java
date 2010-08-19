@@ -158,8 +158,7 @@ public final class BlogSyncService extends AbstractRemoteService {
                     article.getString(
                 BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT));
         article.put(Article.ARTICLE_CREATE_DATE,
-                    article.getString(
-                BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE));
+                    article.get(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE));
 
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
         article.put(Article.ARTICLE_COMMENT_COUNT, 0);
