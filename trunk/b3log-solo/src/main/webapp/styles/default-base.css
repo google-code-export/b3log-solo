@@ -124,19 +124,8 @@ button:hover {
     text-decoration: none;
 }
 
-.errorMsg {
+.error-msg {
     color: red;
-}
-.line {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: thin dotted #BBBBBB;
-}
-
-.title {
-    background-color:#E3E9FF;
-    border-top:1px solid #3366CC;
-    padding:3px 0 3px 12px;
 }
 
 .contentBody {
@@ -165,6 +154,7 @@ button:hover {
 #top {
     border-bottom: 1px solid #C9D7F1;
     padding:3px;
+    background-color: #FFFFFF;
 }
 
 #top span, .footer span {

@@ -6,6 +6,8 @@
         <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
         <link type="text/css" rel="stylesheet" href="styles/default-index.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
+        <!--link type="text/css" rel="stylesheet" href="skin/simple-art/default-index.css"/-->
+        <link type="text/css" rel="stylesheet" href="styles/default-bowknot.css"/>
     </head>
     <body>
         <#include "common-top.html">
@@ -13,28 +15,28 @@
             <div class="header">
                 <#include "article-header.html">
             </div>
-            <div>
+            <div class="body">
                 <div class="left side">
                     <#include "article-side.html">
                 </div>
                 <div class="right main">
                     <div class="article">
-                        <div>
-                            <div class="articleDate left">
+                        <div class="article-header">
+                            <div class="article-date">
                                 <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
                                 ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
-                                <span class="errorMsg">
+                                <span class="error-msg">
                                     U
                                 </span>
                                 <#else>
                                 ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
                                 </#if>
                             </div>
-                            <div class="title left articleTitle">
+                            <div class="article-title">
                                 <h2>
-                                    ${article.articleTitle}
+                                    <a>${article.articleTitle}</a>
                                 </h2>
-                                <div>
+                                <div class="article-tags">
                                     tags:
                                     <#list articleTags as articleTag>
                                     <span>
@@ -45,10 +47,10 @@
                             </div>
                             <div class="clear"></div>
                         </div>
-                        <div class="">
+                        <div class="article-body">
                             ${article.articleContent}
                         </div>
-                        <div id="articleBottom">
+                        <div class="article-footer">
                             <div class="left">
                                 <#if nextArticleId??>
                                 <a href="article-detail.do?oId=${nextArticleId}">新一篇</a>
@@ -58,7 +60,7 @@
                                 </#if>
                             </div>
                             <div class="right">
-                                <span>
+                                <span class="article-create-date">
                                     ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
                                 </span>
                                 <span>
@@ -68,26 +70,24 @@
                                     &nbsp;{articleView}: (${article.articleViewCount})
                                 </span>
                             </div>
+                            <div class="clear"></div>
                         </div>
-                        <div class="clear"></div>
                     </div>
-                    <div>
+                    <div class="comments">
+                        <#list articleComments as comment>
                         <div>
-                            <#list articleComments as comment>
-                            <div>
-                                <div class="title">
-                                    ${comment.commentDate}
-                                </div>
-                                <div class="contentBody">
-                                    ${comment.commentContent}
-                                </div>
+                            <div class="comment-title">
+                                ${comment.commentDate}
                             </div>
-                            </#list>
+                            <div class="comment-body">
+                                ${comment.commentContent}
+                            </div>
                         </div>
-                        <div class="title">
+                        </#list>
+                        <div class="comment-title">
                             发表评论
                         </div>
-                        <div class="contentBody">
+                        <div class="comment-body">
                             <textarea rows="10" cols="80" id="comment"></textarea>
                             <br/>
                             <button onclick="submitComment();">提交</button>
@@ -95,8 +95,8 @@
                     </div>
                     <div class="clear"></div>
                 </div>
+                <div class="clear"></div>
             </div>
-            <div class="clear"></div>
             <div class="footer">
                 <#include "article-footer.html">
             </div>
