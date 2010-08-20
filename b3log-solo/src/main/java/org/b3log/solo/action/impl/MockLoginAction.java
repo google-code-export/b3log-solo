@@ -56,6 +56,8 @@ public final class MockLoginAction extends HttpServlet {
         writer.write("</form>");
         writer.write("</body>");
         writer.write("</html>");
+
+        writer.close();
     }
 
     @Override
