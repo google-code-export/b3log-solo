@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Aug 19, 2010
+ * @version 1.0.0.9, Aug 20, 2010
  */
 public class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -101,6 +101,11 @@ public class ArticleGAERepository extends AbstractGAERepository
                             Keys.SIMPLE_DATE_FORMAT.parse(time));
             }
 
+            if (!article.has(Article.ARTICLE_UPDATE_DATE)) {
+                article.put(Article.ARTICLE_UPDATE_DATE,
+                            Keys.SIMPLE_DATE_FORMAT.parse(time));
+            }
+
             ret = super.add(article);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -124,8 +129,7 @@ public class ArticleGAERepository extends AbstractGAERepository
      *     <li>Removes the found old article if exists</li>
      *     <li>Sets article id of the old article into the specified new article</li>
      *     <li>Sets the {@linkplain Article#ARTICLE_UPDATE_DATE new update date} 
-     *       of the specified new article if this key if not found or value is
-     *       this value is {@code null}</li>
+     *       of the specified new article</li>
      *     <li>Invokes {@linkplain #add(org.json.JSONObject) add} with the
      *         new article as argument
      *     </li>
@@ -147,13 +151,7 @@ public class ArticleGAERepository extends AbstractGAERepository
             // Step 3:
             newArticle.put(Keys.OBJECT_ID, articleId);
             // Step 4:
-            if (!newArticle.has(Article.ARTICLE_UPDATE_DATE)
-                || null == newArticle.opt(Article.ARTICLE_UPDATE_DATE)) {
-                final Date updateDate = new Date();
-                LOGGER.debug("Updated article[oId=" + articleId + "] with new "
-                             + "update date[" + updateDate + "]");
-                newArticle.put(Article.ARTICLE_UPDATE_DATE, updateDate);
-            }
+            newArticle.put(Article.ARTICLE_UPDATE_DATE, new Date());
             // Step 5:
             add(newArticle);
             LOGGER.debug("Updated an article[oId=" + articleId + "]");
