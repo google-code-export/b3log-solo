@@ -33,7 +33,8 @@
     <context-param>
         <param-name>postfixExceptionPaths</param-name>
         <param-value>
-            /js/lib/editor/plugins/link/link.html
+            /js/lib/editor/plugins/link/link.html,
+            /_ah/login <!-- TODO: mock login -->
         </param-value>
     </context-param>
 
