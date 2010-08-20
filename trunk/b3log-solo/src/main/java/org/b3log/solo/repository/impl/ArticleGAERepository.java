@@ -22,7 +22,6 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultIterable;
 import com.google.inject.Inject;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.b3log.solo.model.Article;
@@ -101,11 +100,6 @@ public class ArticleGAERepository extends AbstractGAERepository
                             Keys.SIMPLE_DATE_FORMAT.parse(time));
             }
 
-            if (!article.has(Article.ARTICLE_UPDATE_DATE)) {
-                article.put(Article.ARTICLE_UPDATE_DATE,
-                            Keys.SIMPLE_DATE_FORMAT.parse(time));
-            }
-
             ret = super.add(article);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -128,8 +122,6 @@ public class ArticleGAERepository extends AbstractGAERepository
      *     O(n)
      *     <li>Removes the found old article if exists</li>
      *     <li>Sets article id of the old article into the specified new article</li>
-     *     <li>Sets the {@linkplain Article#ARTICLE_UPDATE_DATE new update date} 
-     *       of the specified new article</li>
      *     <li>Invokes {@linkplain #add(org.json.JSONObject) add} with the
      *         new article as argument
      *     </li>
@@ -151,8 +143,6 @@ public class ArticleGAERepository extends AbstractGAERepository
             // Step 3:
             newArticle.put(Keys.OBJECT_ID, articleId);
             // Step 4:
-            newArticle.put(Article.ARTICLE_UPDATE_DATE, new Date());
-            // Step 5:
             add(newArticle);
             LOGGER.debug("Updated an article[oId=" + articleId + "]");
         } catch (final Exception e) {
