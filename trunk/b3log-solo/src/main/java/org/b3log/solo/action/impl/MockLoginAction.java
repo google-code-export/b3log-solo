@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.b3log.latke.client.Sessions;
 
 /**
  * Mock login action. _ah/login
@@ -62,5 +63,8 @@ public final class MockLoginAction extends HttpServlet {
                           final HttpServletResponse response)
             throws ServletException, IOException {
         LOGGER.debug("Mock login action, do post");
+        final String continueUrl = request.getParameter("continue");
+        Sessions.login(request, "", "");
+        response.sendRedirect(continueUrl);
     }
 }
