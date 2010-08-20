@@ -92,11 +92,11 @@ public final class CSDNBlog {
         try {
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
-                    + "/services/metablogapi.aspx"));
+                            + "/services/metablogapi.aspx"));
             client.setConfig(config);
             client.execute(DELETE_POST, params);
             LOGGER.info("Deleted article[id=" + csdnBlogArticleId
-                    + "] from CSDN blog");
+                        + "] from CSDN blog");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
 
@@ -127,7 +127,7 @@ public final class CSDNBlog {
         try {
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
-                    + "/services/metablogapi.aspx"));
+                            + "/services/metablogapi.aspx"));
             client.setConfig(config);
             final String articleId = (String) client.execute(NEW_POST, params);
             LOGGER.info("Post article to CSDN blog[result=" + articleId + "]");
@@ -157,7 +157,7 @@ public final class CSDNBlog {
                 new IndexPageReader(csdnBlogUserName);
         final String pageContent = archivePageReader.getContent();
         final String patternString = "<a href=\"/" + csdnBlogUserName
-                + "/archive/\\d{4}/\\d{2}\\.aspx";
+                                     + "/archive/\\d{4}/\\d{2}\\.aspx";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
 
@@ -195,7 +195,7 @@ public final class CSDNBlog {
                 new IndexPageReader(csdnBlogUserName);
         final String pageContent = archivePageReader.getContent();
         final String patternString = "<a href=\"/" + csdnBlogUserName
-                + "/archive/\\d{4}/\\d{2}\\.aspx";
+                                     + "/archive/\\d{4}/\\d{2}\\.aspx";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
 
@@ -268,7 +268,8 @@ public final class CSDNBlog {
 
         try {
             config.setServerURL(new URL("http://blog.csdn.net/"
-                    + csdnBlogUserName + "/services/metablogapi.aspx"));
+                                        + csdnBlogUserName
+                                        + "/services/metablogapi.aspx"));
             client.setConfig(config);
 
             final List<String> params = new ArrayList<String>();
@@ -292,21 +293,20 @@ public final class CSDNBlog {
             final Date createDate = (Date) result.get("dateCreated");
             ret.setCreateDate(createDate);
 
-            final String description =
-                    new String(((String) result.get("description")).getBytes());
+            final String description = (String) result.get("description");
             final String content = description.replaceAll("\\?", " "); // XXX: is really need this?
             ret.setContent(content);
 
         } catch (final Exception e) {
             LOGGER.error("Export article[id=" + articleId + "] error[msg="
-                    + e.getMessage() + "]");
+                         + e.getMessage() + "]");
 
             return null;
         }
 
         try {
             LOGGER.trace("Sleep main thread [" + GET_ARTICLE_SLEEP_MILLIS
-                    + "] millis for getting article from CSDN....");
+                         + "] millis for getting article from CSDN....");
             Thread.sleep(GET_ARTICLE_SLEEP_MILLIS);
         } catch (final InterruptedException e) {
             LOGGER.error(e.getMessage(), e);
