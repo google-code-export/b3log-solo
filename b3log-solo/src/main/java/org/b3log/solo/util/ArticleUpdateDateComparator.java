@@ -35,7 +35,7 @@ public final class ArticleUpdateDateComparator
             final Date date1 = (Date) article1.get(Article.ARTICLE_UPDATE_DATE);
             final Date date2 = (Date) article2.get(Article.ARTICLE_UPDATE_DATE);
 
-            return date1.compareTo(date2);
+            return date2.compareTo(date1);
         } catch (final Exception e) {
             throw new RuntimeException(e);
         }
