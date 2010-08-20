@@ -26,6 +26,7 @@ import org.b3log.latke.client.action.DoNothingAction;
 import org.b3log.latke.servlet.filter.AuthenticationFilter;
 import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.FeedServlet;
+import org.b3log.solo.action.impl.MockLoginAction;
 
 /**
  * Action module for <a href="http://code.google.com/p/google-guice/">
@@ -63,8 +64,10 @@ public final class ActionModule extends AbstractClientModule {
               "/admin-article-list.do",
               "/admin-link-list.do",
               "/admin-preference.do",
-              "/admin-article-sync.do",
-              "/_ah/login").with(DoNothingAction.class); // TODO: login serve 
+              "/admin-article-sync.do").with(DoNothingAction.class);
+        // TODO: login serve
+        bind(MockLoginAction.class).in(Scopes.SINGLETON);
+        serve("/_ah/login").with(MockLoginAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 

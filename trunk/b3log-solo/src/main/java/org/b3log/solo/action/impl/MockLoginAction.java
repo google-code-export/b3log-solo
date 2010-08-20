@@ -15,14 +15,12 @@
  */
 package org.b3log.solo.action.impl;
 
-import org.b3log.latke.client.action.ActionException;
-import org.b3log.latke.client.action.AbstractAction;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
 /**
  * Mock login action. _ah/login
@@ -30,7 +28,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 20, 2010
  */
-public final class MockLoginAction extends AbstractAction {
+public final class MockLoginAction extends HttpServlet {
 
     /**
      * Default serial version uid.
@@ -42,22 +40,16 @@ public final class MockLoginAction extends AbstractAction {
     private static final Logger LOGGER = Logger.getLogger(MockLoginAction.class);
 
     @Override
-    protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ActionException {
-        final Map<String, Object> ret = new HashMap<String, Object>();
-
-        LOGGER.debug("Mock login action");
-        
-        return ret;
+    protected void doGet(final HttpServletRequest request,
+                         final HttpServletResponse response)
+            throws ServletException, IOException {
+        LOGGER.debug("Mock login action, do get");
     }
 
     @Override
-    protected JSONObject doAjaxAction(final JSONObject data,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
-            throws ActionException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    protected void doPost(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException {
+        LOGGER.debug("Mock login action, do post");
     }
 }
