@@ -20,6 +20,7 @@ import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.AbstractAction;
 import com.google.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -39,6 +40,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
@@ -47,7 +49,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-article.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 19, 2010
+ * @version 1.0.0.5, Aug 20, 2010
  */
 public final class TagArticlesAction extends AbstractAction {
 
@@ -143,7 +145,7 @@ public final class TagArticlesAction extends AbstractAction {
                 articles.add(article);
             }
 
-            // TODO: sort articles by update date
+            Collections.sort(articles, new ArticleUpdateDateComparator());
 
             final int pageCount = (int) Math.ceil((double) articles.size()
                                                   / (double) pageSize);

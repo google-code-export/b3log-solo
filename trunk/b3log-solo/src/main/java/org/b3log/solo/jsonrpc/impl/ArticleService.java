@@ -238,8 +238,9 @@ public final class ArticleService extends AbstractRemoteService {
     }
 
     /**
-     * Gets articles by the specified request json object.
-     *
+     * Gets articles(by crate date descending) by the specified request json
+     * object.
+     * 
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -290,7 +291,7 @@ public final class ArticleService extends AbstractRemoteService {
 
             final JSONObject result =
                     articleRepository.get(currentPageNum, pageSize,
-                                          Article.ARTICLE_UPDATE_DATE,
+                                          Article.ARTICLE_CREATE_DATE,
                                           SortDirection.DESCENDING);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
