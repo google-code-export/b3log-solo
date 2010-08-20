@@ -1,40 +1,46 @@
 <#list articles as article>
 <div class="article">
-    <div class="articleHeader">
-        <div class="articleDate left">
+    <div class="article-header">
+        <div class="article-date">
             <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
             ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
-            <span class="errorMsg">
+            <span class="error-msg">
                 U
             </span>
             <#else>
             ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
             </#if>
         </div>
-        <div class="left title articleTitle">
+        <div class="article-title">
             <h2>
                 <a class="noUnderline" href="article-detail.do?oId=${article.oId}">
                     ${article.articleTitle}
                 </a>
             </h2>
-            ${tag1Label}
-            <#list article.articleTags as articleTag>
-            <span>
-                <a href="tag-articles.do?oId=${articleTag.oId}">
-                    ${articleTag.tagTitle}
-                </a>
-                <#if articleTag_has_next>,</#if>
-            </span>
-            </#list>
+            <div class="article-tags">
+                ${tag1Label}
+                <#list article.articleTags as articleTag>
+                <span>
+                    <a href="tag-articles.do?oId=${articleTag.oId}">
+                        ${articleTag.tagTitle}
+                    </a>
+                    <#if articleTag_has_next>,</#if>
+                </span>
+                </#list>
+            </div>
         </div>
         <div class="clear"></div>
     </div>
-    <div class="articleBody">
+    <div class="article-body">
         <div class="articleAbstract">
             ${article.articleAbstract}
         </div>
+    </div>
+    <div class="article-footer">
         <div class="right">
-            ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+            <span class="article-create-date">
+                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+            </span>
             &nbsp;
             ${commentLabel}(${article.articleCommentCount})
             &nbsp;

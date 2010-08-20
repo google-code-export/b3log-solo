@@ -1,4 +1,4 @@
-<div id="sideNavi">
+<div id="sideNavi" class="side-navi">
     <ul>
         <li>
             <h4>{articlesInfo}</h4>
@@ -23,7 +23,7 @@
             <ul>
                 <#list mostUsedTags as tag>
                 <li>
-                    &bull;
+                    
                     <a name="${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}">
                         ${tag.tagTitle}
                     </a>
@@ -39,7 +39,7 @@
             <ul>
                 <#list recentArticles as article>
                 <li>
-                    &bull;
+                    
                     <a name="recent${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
@@ -59,7 +59,7 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
-                    &bull;
+                    
                     <a name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
@@ -79,7 +79,7 @@
             <ul>
                 <#list mostViewCountArticles as article>
                 <li>
-                    &bull;
+                    
                     <a name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
@@ -99,7 +99,7 @@
             <ul>
                 <#list links as link>
                 <li>
-                    &bull;
+                    
                     <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         ${link.linkTitle}
                     </a>
@@ -115,7 +115,7 @@
             <ul>
                 <#list archiveDates as archiveDate>
                 <li>
-                    &bull;
+                    
                     <a href="#" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}" target="_blank">
                         ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
                     </a>
