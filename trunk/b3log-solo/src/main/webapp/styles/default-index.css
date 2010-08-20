@@ -39,7 +39,7 @@
 }
 
 .articleTitle {
-    width: 663px;
+    width: 639px;
 }
 
 .articleDate {
@@ -58,13 +58,10 @@
 
 #articleBottom {
     color: #008800;
-}
-
-#comments {
     margin-top: 24px;
 }
 
-#comments button {
+.contentBody button {
     margin: 12px 0 0 634px;
 }
 

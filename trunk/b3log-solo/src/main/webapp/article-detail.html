@@ -18,8 +18,8 @@
                     <#include "article-side.html">
                 </div>
                 <div class="right main">
-                    <div>
-                        <div class="">
+                    <div class="article">
+                        <div>
                             <div class="articleDate left">
                                 <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
                                 ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -45,7 +45,7 @@
                             </div>
                             <div class="clear"></div>
                         </div>
-                        <div class="articleContent">
+                        <div class="">
                             ${article.articleContent}
                         </div>
                         <div id="articleBottom">
@@ -71,7 +71,7 @@
                         </div>
                         <div class="clear"></div>
                     </div>
-                    <div id="comments">
+                    <div>
                         <div>
                             <#list articleComments as comment>
                             <div>
