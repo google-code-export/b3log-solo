@@ -144,14 +144,18 @@ public final class ArticleService extends AbstractRemoteService {
             // Step 2; Set comment/view count to 0
             article.put(Article.ARTICLE_COMMENT_COUNT, 0);
             article.put(Article.ARTICLE_VIEW_COUNT, 0);
-            // Step 3: Add article
+            // Step 3: Set create/updat date
+            final Date date = new Date();
+            article.put(Article.ARTICLE_UPDATE_DATE, date);
+            article.put(Article.ARTICLE_CREATE_DATE, date);
+            // Step 4: Add article
             final String articleId = articleRepository.add(article);
             ret.put(Keys.OBJECT_ID, articleId);
-            // Step 4: Add tag-article relations
+            // Step 5: Add tag-article relations
             articleUtils.addTagArticleRelation(tags, article);
-            // Step 5: Inc blog article count statictis
+            // Step 6: Inc blog article count statictis
             statistics.incBlogArticleCount();
-            // Step 6: Add archive date-article relations
+            // Step 7: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
 
             // TODO: event handling: add article
