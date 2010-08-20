@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * User service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 17, 2010
+ * @version 1.0.0.2, Aug 20, 2010
  */
 public final class UserService extends AbstractRemoteService {
 
@@ -47,58 +47,6 @@ public final class UserService extends AbstractRemoteService {
      */
     @Inject
     private UserRepository userRepository;
-
-    /**
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "userNewPassword": "",
-     *     "userPassword": ""
-     * }
-     * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
-     *     "sc": UPDATE_PASSWORD_SUCC
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public JSONObject updatePassword(final JSONObject requestJSONObject,
-                                     final HttpServletRequest request,
-                                     final HttpServletResponse response)
-            throws ActionException, IOException {
-        checkAuthorized(request, response);
-
-        final JSONObject ret = new JSONObject();
-        try {
-            final String newPwd =
-                    requestJSONObject.getString(User.USER_NEW_PASSWORD);
-            final String requestPwd =
-                    requestJSONObject.getString(User.USER_PASSWORD);
-
-            final String currentUserName = Sessions.currentUserName(request);
-            String currentUserPwd = Sessions.currentUserPwd(request);
-
-            if (MD5.hash(requestPwd).equals(currentUserPwd)) {
-                currentUserPwd = MD5.hash(newPwd);
-                userRepository.updateUserPassword(User.USER_NAME,
-                                                  currentUserPwd);
-                Sessions.login(request, currentUserName, currentUserPwd);
-
-                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PASSWORD_SUCC);
-            }
-        } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
 
     /**
      * Logouts.
