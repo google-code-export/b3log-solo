@@ -32,7 +32,7 @@ import org.b3log.solo.action.feed.FeedServlet;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 17, 2010
+ * @version 1.0.0.1, Aug 20, 2010
  */
 public final class ActionModule extends AbstractClientModule {
 
@@ -63,7 +63,8 @@ public final class ActionModule extends AbstractClientModule {
               "/admin-article-list.do",
               "/admin-link-list.do",
               "/admin-preference.do",
-              "/admin-article-sync.do").with(DoNothingAction.class);
+              "/admin-article-sync.do",
+              "/_ah/login").with(DoNothingAction.class); // TODO: login serve 
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
