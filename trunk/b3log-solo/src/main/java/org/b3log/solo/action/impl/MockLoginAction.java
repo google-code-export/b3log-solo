@@ -16,6 +16,7 @@
 package org.b3log.solo.action.impl;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +45,16 @@ public final class MockLoginAction extends HttpServlet {
                          final HttpServletResponse response)
             throws ServletException, IOException {
         LOGGER.debug("Mock login action, do get");
+        final PrintWriter writer = response.getWriter();
+        writer.write("<html>");
+        writer.write("<body>");
+        writer.write("<form action=\"_ah/login\" method=\"POST\"");
+        writer.write("<p>Name: <input type=\"text\" name=\"name\" /></p>"
+                     + "<p>Pwd: <input type=\"text\" name=\"pwd\" /></p>"
+                     + "<input type=\"submit\" value=\"Submit\" />");
+        writer.write("</form>");
+        writer.write("</body>");
+        writer.write("</html>");
     }
 
     @Override
