@@ -17,6 +17,7 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 19, 2010
+ * @version 1.0.0.7, Aug 20, 2010
  */
 public final class ArticleService extends AbstractRemoteService {
 
@@ -418,11 +419,13 @@ public final class ArticleService extends AbstractRemoteService {
                         oldArticle.getInt(Article.ARTICLE_COMMENT_COUNT));
             article.put(Article.ARTICLE_VIEW_COUNT,
                         oldArticle.getInt(Article.ARTICLE_VIEW_COUNT));
-            // Step 5: Update
+            // Step 5: Set updat date
+            article.put(Article.ARTICLE_UPDATE_DATE, new Date());
+            // Step 6: Update
             articleRepository.update(articleId, article);
-            // Step 6: Add tag-article relations
+            // Step 7: Add tag-article relations
             articleUtils.addTagArticleRelation(tags, article);
-            // Step 7: Add archive date-article relations
+            // Step 8: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
