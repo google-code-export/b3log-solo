@@ -10,9 +10,9 @@
     <a href="${loginURL}">TODO: LOGIN</a>
     <#else>
     <a href="${logoutURL}">TODO: LOGOUT</a>
+    <span  id="admin"><a href="admin-index.do">${adminLabel}</a> |&nbsp;</span>
     </#if>
     <span class="right">
-        <span  id="admin" class="none"><a href="admin-index.do">${adminLabel}</a> |&nbsp;</span>
         <span>
             <select onchange="setLanguage(this);">
                 <option>
