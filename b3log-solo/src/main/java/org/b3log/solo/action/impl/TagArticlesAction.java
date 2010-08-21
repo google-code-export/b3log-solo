@@ -130,7 +130,8 @@ public final class TagArticlesAction extends AbstractAction {
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final List<JSONObject> tagArticleRelations =
-                    tagArticleRepository.getByTagId(tagId, currentPageNum,
+                    tagArticleRepository.getByTagId(tagId,
+                                                    currentPageNum,
                                                     pageSize);
 
             final List<JSONObject> articles = new ArrayList<JSONObject>();
