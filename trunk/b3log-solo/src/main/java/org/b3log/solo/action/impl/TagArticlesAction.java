@@ -124,10 +124,9 @@ public final class TagArticlesAction extends AbstractAction {
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
             final JSONObject preference = preferences.getPreference();
-            final int pageSize =
-                    preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize =
-                    preference.getInt(
+            final int pageSize = preference.getInt(
+                    Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final List<JSONObject> tagArticleRelations =
