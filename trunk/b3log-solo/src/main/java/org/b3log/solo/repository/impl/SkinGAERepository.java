@@ -16,31 +16,27 @@
 package org.b3log.solo.repository.impl;
 
 import org.apache.log4j.Logger;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.repository.CommentRepository;
-import org.b3log.latke.Keys;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.b3log.solo.model.Skin;
+import org.b3log.solo.repository.SkinRepository;
 
 /**
- * Comment Google App Engine repository.
+ * Skin Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 21, 2010
+ * @version 1.0.0.0, Aug 21, 2010
  */
-public class CommentGAERepository extends AbstractGAERepository
-        implements CommentRepository {
+public class SkinGAERepository extends AbstractGAERepository
+        implements SkinRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(CommentGAERepository.class);
+            Logger.getLogger(SkinGAERepository.class);
 
     @Override
     public String getName() {
-        return Comment.COMMENT;
+        return Skin.SKIN;
     }
 }

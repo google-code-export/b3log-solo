@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-article.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 20, 2010
+ * @version 1.0.0.6, Aug 21, 2010
  */
 public final class TagArticlesAction extends AbstractAction {
 
@@ -165,6 +165,9 @@ public final class TagArticlesAction extends AbstractAction {
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
             ret.put(Keys.OBJECT_ID, tagId);
+            final String skinFileName = preferences.getPreference().
+                    getString(Preference.SKIN_NAME);
+            ret.put(Preference.SKIN_NAME, skinFileName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);

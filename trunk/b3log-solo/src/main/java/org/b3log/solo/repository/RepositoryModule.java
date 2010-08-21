@@ -27,6 +27,7 @@ import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.CSDNBlogArticleGAERepository;
 import org.b3log.solo.repository.impl.LinkGAERepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.repository.impl.SkinGAERepository;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
 
@@ -35,7 +36,7 @@ import org.b3log.solo.repository.impl.UserGAERepository;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 19, 2010
+ * @version 1.0.0.7, Aug 21, 2010
  */
 public final class RepositoryModule extends AbstractServiceModule {
 
@@ -68,5 +69,7 @@ public final class RepositoryModule extends AbstractServiceModule {
                 ArchiveDateGAERepository.class).in(Scopes.SINGLETON);
         bind(ArchiveDateArticleRepository.class).to(
                 ArchiveDateArticleGAERepository.class).in(Scopes.SINGLETON);
+        bind(SkinRepository.class).to(
+                SkinGAERepository.class).in(Scopes.SINGLETON);
     }
 }

@@ -40,7 +40,9 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,6 +108,11 @@ public final class ArticleAction extends AbstractAction {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private Preferences preferences;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -124,26 +131,28 @@ public final class ArticleAction extends AbstractAction {
                     getQueryStringJSONObject(request);
             final String articleId =
                     queryStringJSONObject.getString(Keys.OBJECT_ID);
-            // Get the article
             final JSONObject article = articleRepository.get(articleId);
             LOGGER.trace("Article[title="
-                    + article.getString(Article.ARTICLE_TITLE) + "]");
+                         + article.getString(Article.ARTICLE_TITLE) + "]");
             ret.put(Article.ARTICLE, article);
-            // Get tags
+
             final List<JSONObject> articleTags = getTags(articleId);
             ret.put(Article.ARTICLE_TAGS_REF, articleTags);
-            // Get comments
+
             final List<JSONObject> articleComments = getComments(articleId);
             ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
-            // Get the previous article id
+
             final String previsouArticleId = articleRepository.
                     getPrevisouArticleId(articleId);
             ret.put(Common.PREVIOUS_ARTICLE_ID, previsouArticleId);
-            // Get the next article id
+
             final String nextArticleId =
                     articleRepository.getNextArticleId(articleId);
             ret.put(Common.NEXT_ARTICLE_ID, nextArticleId);
 
+            final String skinFileName = preferences.getPreference().
+                    getString(Preference.SKIN_NAME);
+            ret.put(Preference.SKIN_NAME, skinFileName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
@@ -179,7 +188,7 @@ public final class ArticleAction extends AbstractAction {
                     articleCommentRelations.get(i);
             final String commentId =
                     articleCommentRelation.getString(Comment.COMMENT + "_"
-                    + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
             ret.add(comment);

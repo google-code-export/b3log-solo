@@ -29,6 +29,8 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -63,6 +65,11 @@ public final class IndexAction extends AbstractAction {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private Preferences preferences;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -90,6 +97,10 @@ public final class IndexAction extends AbstractAction {
             filler.fillArchiveDates(ret);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
+            final String skinFileName = preferences.getPreference().
+                    getString(Preference.SKIN_NAME);
+            ret.put(Preference.SKIN_NAME, skinFileName);
+            
             statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
