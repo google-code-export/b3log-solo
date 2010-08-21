@@ -34,6 +34,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,7 +44,7 @@ import org.json.JSONObject;
  * Tag action. tags.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 18, 2010
+ * @version 1.0.0.2, Aug 21, 2010
  */
 public final class TagsAction extends AbstractAction {
 
@@ -78,6 +80,11 @@ public final class TagsAction extends AbstractAction {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private Preferences preferences;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -101,6 +108,9 @@ public final class TagsAction extends AbstractAction {
 
             final List<Object> tags = CollectionUtils.jsonArrayToList(tagArray);
             ret.put(Tag.TAGS, tags);
+            final String skinFileName = preferences.getPreference().
+                    getString(Preference.SKIN_NAME);
+            ret.put(Preference.SKIN_NAME, skinFileName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);

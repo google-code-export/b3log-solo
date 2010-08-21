@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 21, 2010
+ * @version 1.0.0.6, Aug 21, 2010
  */
 public final class CommentService extends AbstractJSONRpcService {
 
@@ -118,7 +118,7 @@ public final class CommentService extends AbstractJSONRpcService {
                         articleCommentRelations.get(i);
                 final String commentId =
                         articleCommentRelation.getString(Comment.COMMENT + "_"
-                        + Keys.OBJECT_ID);
+                                                         + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
                 comments.add(comment);
@@ -171,6 +171,9 @@ public final class CommentService extends AbstractJSONRpcService {
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
             comment.put(Comment.COMMENT_CONTENT, commentContent);
+            comment.put(Comment.COMMENT_DATE,
+                        Keys.SIMPLE_DATE_FORMAT.format(
+                    System.currentTimeMillis()));
             final String commentId = commentRepository.add(comment);
             // Step 2: Add article-comment relation
             final JSONObject articleCommentRelation = new JSONObject();

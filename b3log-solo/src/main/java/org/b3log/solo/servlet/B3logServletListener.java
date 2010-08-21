@@ -146,12 +146,12 @@ public final class B3logServletListener extends AbstractServletListener {
             }, LruMemory.class));
 
             final String preferenceId = PREFERENCE;
-            // Try load preference from datastore.
+            // Try to load preference from datastore.
             final PreferenceRepository preferenceRepository =
                     injector.getInstance(PreferenceRepository.class);
             preference = preferenceRepository.get(preferenceId);
             if (null == preference) {
-                // Try load preference from configuration file and then cache and
+                // Try to load preference from configuration file and then
                 // persist it.
                 preference = new JSONObject();
                 final ResourceBundle config = ResourceBundle.getBundle(
@@ -183,9 +183,10 @@ public final class B3logServletListener extends AbstractServletListener {
                 final String blogSubtitle = config.getString(BLOG_SUBTITLE);
                 preference.put(BLOG_SUBTITLE, blogSubtitle);
 
+                final String skinFileName = config.getString(SKIN_NAME);
+                preference.put(SKIN_NAME, skinFileName);
+
                 preference.put(Keys.OBJECT_ID, preferenceId);
-
-
                 preferenceRepository.add(preference);
             }
 
