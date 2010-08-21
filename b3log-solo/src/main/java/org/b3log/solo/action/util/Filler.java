@@ -29,7 +29,6 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.client.Sessions;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
@@ -288,13 +287,14 @@ public final class Filler {
 
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
         dataModel.put(Preference.BLOG_SUBTITLE, blogSubtitle);
-        final String currentUserName = Sessions.currentUserName(request);
-        if (null == currentUserName) {
-            final String loginURL = userService.createLoginURL("admin-index.do");
-            dataModel.put(Common.LOGIN_URL, loginURL);
-        } else {
-            final String logoutURL = userService.createLogoutURL("index.do");
+
+
+        if (userService.isUserLoggedIn() && userService.isUserAdmin()) {
+            final String logoutURL = userService.createLogoutURL("/index.do");
             dataModel.put(Common.LOGOUT_URL, logoutURL);
+        } else {
+            final String loginURL = userService.createLoginURL("/admin-index.do");
+            dataModel.put(Common.LOGIN_URL, loginURL);
         }
     }
 

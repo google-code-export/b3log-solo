@@ -19,7 +19,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 14, 2010
+ * @version 1.0.0.6, Aug 21, 2010
  */
 public enum StatusCodes {
 
@@ -83,20 +83,4 @@ public enum StatusCodes {
      * Indicates get preference successfully.
      */
     GET_PREFERENCE_SUCC,
-    /**
-     * Indicates update user password successfully.
-     */
-    UPDATE_PASSWORD_SUCC,
-    /**
-     * Indicates user logout successfully.
-     */
-    USER_LOGOUT_SUCC,
-    /**
-     * Indicates user login successfully.
-     */
-    USER_LOGIN_SUCC,
-    /**
-     * Indicates user login fail.
-     */
-    USER_LOGIN_FAIL_,
 }
