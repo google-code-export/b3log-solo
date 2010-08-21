@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.action.impl;
 
+import com.google.appengine.api.users.UserServiceFactory;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.AbstractAction;
 import com.google.inject.Inject;
@@ -24,7 +25,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import org.b3log.latke.client.Sessions;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Admin index action. admin-index.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 15, 2010
+ * @version 1.0.0.2, Aug 21, 2010
  */
 public final class AdminIndexAction extends AbstractAction {
 
@@ -47,7 +47,8 @@ public final class AdminIndexAction extends AbstractAction {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AdminIndexAction.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(AdminIndexAction.class);
     /**
      * Language service.
      */
@@ -77,13 +78,6 @@ public final class AdminIndexAction extends AbstractAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
-
-            final String currentUserName = Sessions.currentUserName(request);
-            if (null == currentUserName) {
-                ret.put(Common.LOGINT_STATUS, 0);
-            } else {
-                ret.put(Common.LOGINT_STATUS, 1);
-            }
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);

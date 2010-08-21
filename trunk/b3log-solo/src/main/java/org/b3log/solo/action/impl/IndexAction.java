@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Index action. index.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 20, 2010
+ * @version 1.0.0.6, Aug 21, 2010
  */
 public final class IndexAction extends AbstractAction {
 
@@ -92,16 +92,6 @@ public final class IndexAction extends AbstractAction {
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
             statistics.incBlogViewCount();
-
-
-            final com.google.appengine.api.users.UserService userService =
-                    UserServiceFactory.getUserService();
-            final String createLoginURL = userService.createLoginURL(
-                    "admin-index.do");
-            // TODO: GAE login
-
-
-            ret.put("loginUrl", createLoginURL);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
