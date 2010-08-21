@@ -30,7 +30,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
-import org.b3log.latke.client.remote.AbstractRemoteService;
+import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
@@ -39,9 +39,9 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 18, 2010
+ * @version 1.0.0.5, Aug 21, 2010
  */
-public final class CommentService extends AbstractRemoteService {
+public final class CommentService extends AbstractJSONRpcService {
 
     /**
      * Logger.

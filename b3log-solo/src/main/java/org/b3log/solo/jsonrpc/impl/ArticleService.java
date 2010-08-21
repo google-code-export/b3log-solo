@@ -32,11 +32,11 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.util.Paginator;
-import org.b3log.latke.client.remote.AbstractRemoteService;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
@@ -48,9 +48,9 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 20, 2010
+ * @version 1.0.0.8, Aug 21, 2010
  */
-public final class ArticleService extends AbstractRemoteService {
+public final class ArticleService extends AbstractJSONRpcService {
 
     /**
      * Logger.

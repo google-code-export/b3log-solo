@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
-import org.b3log.latke.client.remote.AbstractRemoteService;
+import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.TagUtils;
 import org.b3log.solo.model.Article;
@@ -43,9 +43,9 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 19, 2010
+ * @version 1.0.0.4, Aug 21, 2010
  */
-public final class BlogSyncService extends AbstractRemoteService {
+public final class BlogSyncService extends AbstractJSONRpcService {
 
     /**
      * Logger.

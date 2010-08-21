@@ -17,17 +17,17 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
+import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.latke.client.remote.AbstractRemoteService;
 
 /**
  * Tag service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 8, 2010
+ * @version 1.0.0.1, Aug 21, 2010
  */
-public final class TagService extends AbstractRemoteService {
+public final class TagService extends AbstractJSONRpcService {
 
     /**
      * Logger.
