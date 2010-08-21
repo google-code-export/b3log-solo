@@ -76,6 +76,8 @@ public final class AdminIndexAction extends AbstractAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+
+            filler.fillBlogHeader(ret, request);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
