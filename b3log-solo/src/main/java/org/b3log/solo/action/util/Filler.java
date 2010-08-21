@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.action.util;
 
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.util.Date;
 import java.util.List;
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 18, 2010
+ * @version 1.0.0.5, Aug 21, 2010
  */
 public final class Filler {
 
@@ -90,6 +91,11 @@ public final class Filler {
      */
     @Inject
     private ArchiveDateUtils archiveDateUtils;
+    /**
+     * User service.
+     */
+    final com.google.appengine.api.users.UserService userService =
+            UserServiceFactory.getUserService();
 
     /**
      * Fills blog statistics for all pages.
@@ -99,7 +105,8 @@ public final class Filler {
      */
     public void fillStatistic(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+        final JSONObject statistic =
+                statisticRepository.get(Statistic.STATISTIC);
         final int viewCount =
                 statistic.getInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
         final int articleCount =
@@ -283,9 +290,11 @@ public final class Filler {
         dataModel.put(Preference.BLOG_SUBTITLE, blogSubtitle);
         final String currentUserName = Sessions.currentUserName(request);
         if (null == currentUserName) {
-            dataModel.put(Common.LOGINT_STATUS, 0);
+            final String loginURL = userService.createLoginURL("admin-index.do");
+            dataModel.put(Common.LOGIN_URL, loginURL);
         } else {
-            dataModel.put(Common.LOGINT_STATUS, 1);
+            final String logoutURL = userService.createLogoutURL("index.do");
+            dataModel.put(Common.LOGOUT_URL, logoutURL);
         }
     }
 

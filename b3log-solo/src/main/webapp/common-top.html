@@ -6,7 +6,11 @@
         <span style="color: red;">O</span>
         <span style="color: blue;">G</span>
     </a>
+    <#if loginUrl??>
     <a href="${loginUrl}">TODO: LOGIN</a>
+    <#elseif logoutUrl??>
+    <a href="${logoutUrl}">TODO: LOGOUT</a>
+    </#if>
     <span class="right">
         <span  id="admin" class="none"><a href="admin-index.do">${adminLabel}</a> |&nbsp;</span>
         <span>
@@ -21,98 +25,12 @@
                     english
                 </option>
             </select>
-        </span> |
-        <a id="loginStatus" href="#"></a>
+        </span>
     </span>
     <div class="clear"></div>
-    <div id="loginPanel" class="none">
-        <table class="form" width="99%" cellspacing="9px" cellpadding="0">
-            <tbody>
-                <tr>
-                    <th width="80px">
-                        ${password1Label}
-                    </th>
-                    <td>
-                        <input id="password" type="password"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span id="error" class="error-msg"></span>
-                    </td>
-                    <th>
-                        <button onclick="login();">${loginLabel}</button>
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 </div>
 <script type="text/javascript">
     var setLanguage = function (it) {
         //alert(it.value);
-    }
-    var loginDialog = undefined;
-
-    var logout = function () {
-        jsonRpc.userService.logout(function (result, error) {
-            switch (result.sc) {
-                case "USER_LOGOUT_SUCC":
-                    window.location.href = "index.do";
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-
-    var popLogin = function () {
-        loginDialog = $("#loginPanel").dialog({
-            width: 400
-        });
-        $("#password").focus();
-    }
-
-    var getStatus = function () {
-        $("#loginStatus").unbind("click");
-        if (${loginStatus} === 0) {
-            $("#loginStatus").bind("click", popLogin).text("${loginLabel}");
-            $("#admin").hide();
-        } else {
-            $("#admin").show();
-            $("#loginStatus").bind("click", logout).text("${logoutLabel}");
-        }
-        if (window.location.pathname === "/admin-index.do") {
-            $("#admin").hide();
-        }
-
-        $("#password").keypress(function (event) {
-            if (event.keyCode === 13) {
-                login();
-            }
-        }).bind("focus", function () {
-            $("#error").text("");
-            $("#password").val("");
-        });
-    }
-    getStatus();
-
-    var login = function () {
-        var requestJSONObject = {
-            "userPassword": $("#password").val()
-        };
-        jsonRpc.userService.login(function (result, error) {
-            switch (result.sc) {
-                case "USER_LOGIN_SUCC":
-                    loginDialog.dialog("close");
-                    window.location.href = "admin-index.do";
-                    break;
-                case "USER_LOGIN_FAIL_":
-                    $("#error").text("login fail!");
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
     }
 </script>

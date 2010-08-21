@@ -19,10 +19,18 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 18, 2010
+ * @version 1.0.0.6, Aug 21, 2010
  */
 public final class Common {
 
+    /**
+     * Login URL.
+     */
+    public static final String LOGIN_URL = "loginURL";
+    /**
+     * Logout URL.
+     */
+    public static final String LOGOUT_URL = "logoutURL";
     /**
      * Most used tags.
      */
@@ -53,10 +61,6 @@ public final class Common {
      * Next article id.
      */
     public static final String NEXT_ARTICLE_ID = "nextArticleId";
-    /**
-     * Login status.
-     */
-    public static final String LOGINT_STATUS = "loginStatus";
     /**
      * index.
      */
