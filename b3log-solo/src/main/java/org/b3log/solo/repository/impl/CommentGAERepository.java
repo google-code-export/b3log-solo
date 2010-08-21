@@ -18,11 +18,7 @@ package org.b3log.solo.repository.impl;
 import org.apache.log4j.Logger;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.latke.Keys;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Comment Google App Engine repository.
