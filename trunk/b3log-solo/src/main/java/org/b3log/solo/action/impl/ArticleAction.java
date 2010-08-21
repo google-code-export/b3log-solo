@@ -150,9 +150,9 @@ public final class ArticleAction extends AbstractAction {
                     articleRepository.getNextArticleId(articleId);
             ret.put(Common.NEXT_ARTICLE_ID, nextArticleId);
 
-            final String skinFileName = preferences.getPreference().
+            final String skinName = preferences.getPreference().
                     getString(Preference.SKIN_NAME);
-            ret.put(Preference.SKIN_NAME, skinFileName);
+            ret.put(Preference.SKIN_NAME, skinName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);

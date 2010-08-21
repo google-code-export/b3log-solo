@@ -108,9 +108,9 @@ public final class TagsAction extends AbstractAction {
 
             final List<Object> tags = CollectionUtils.jsonArrayToList(tagArray);
             ret.put(Tag.TAGS, tags);
-            final String skinFileName = preferences.getPreference().
+            final String skinName = preferences.getPreference().
                     getString(Preference.SKIN_NAME);
-            ret.put(Preference.SKIN_NAME, skinFileName);
+            ret.put(Preference.SKIN_NAME, skinName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
