@@ -94,7 +94,7 @@ public final class Filler {
     /**
      * User service.
      */
-    final com.google.appengine.api.users.UserService userService =
+    private com.google.appengine.api.users.UserService userService =
             UserServiceFactory.getUserService();
 
     /**
