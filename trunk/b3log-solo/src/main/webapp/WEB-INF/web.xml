@@ -23,7 +23,7 @@
                  1. DO NOT configure servlets in this file, using Guice-Servlet
                     extension instead, see class org.b3log.solo.client.ClientModule
                     for details.
-    Version: 1.0.0.3, Aug 17, 2010
+    Version: 1.0.0.4, Aug 21, 2010
     Author: Liang Ding
 -->
 <web-app version="2.5"
@@ -34,7 +34,7 @@
         <param-name>postfixExceptionPaths</param-name>
         <param-value>
             /js/lib/editor/plugins/link/link.html,
-            /_ah/login <!-- TODO: mock login -->
+            /_ah/login, /_ah/logout
         </param-value>
     </context-param>
 
