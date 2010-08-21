@@ -49,7 +49,7 @@ public final class MockLoginAction extends HttpServlet {
         final PrintWriter writer = response.getWriter();
         writer.write("<html>");
         writer.write("<body>");
-        writer.write("<form action=\"_ah/login\" method=\"POST\"");
+        writer.write("<form action=\"/_ah/login\" method=\"POST\"");
         writer.write("<p>Name: <input type=\"text\" name=\"name\" /></p>"
                      + "<p>Pwd: <input type=\"text\" name=\"pwd\" /></p>"
                      + "<input type=\"submit\" value=\"Submit\" />");
@@ -65,8 +65,8 @@ public final class MockLoginAction extends HttpServlet {
                           final HttpServletResponse response)
             throws ServletException, IOException {
         LOGGER.debug("Mock login action, do post");
-        final String continueUrl = request.getParameter("continue");
+
         Sessions.login(request, "", "");
-        response.sendRedirect(continueUrl);
+        response.sendRedirect("/admin-index.do");
     }
 }
