@@ -23,11 +23,9 @@ import org.b3log.solo.action.impl.TagsAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.client.AbstractClientModule;
 import org.b3log.latke.client.action.DoNothingAction;
-import org.b3log.latke.servlet.filter.AuthenticationFilter;
 import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.FeedServlet;
-import org.b3log.solo.action.impl.MockLoginAction;
-import org.b3log.solo.action.impl.MockLogoutAction;
+import org.b3log.solo.auth.AuthFilter;
 
 /**
  * Action module for <a href="http://code.google.com/p/google-guice/">
@@ -42,8 +40,8 @@ public final class ActionModule extends AbstractClientModule {
     protected void configureServlets() {
         super.configureServlets();
 
-        bind(AuthenticationFilter.class).in(Scopes.SINGLETON);
-        filter("/admin-index.do").through(AuthenticationFilter.class);
+        bind(AuthFilter.class).in(Scopes.SINGLETON);
+        filter("/admin-index.do").through(AuthFilter.class);
 
         bind(AdminIndexAction.class).in(Scopes.SINGLETON);
         serve("/admin-index.do").with(AdminIndexAction.class);
@@ -71,11 +69,5 @@ public final class ActionModule extends AbstractClientModule {
 
         bind(FeedServlet.class).in(Scopes.SINGLETON);
         serve("/feed.do").with(FeedServlet.class);
-
-        // XXX: remove in production
-        bind(MockLoginAction.class).in(Scopes.SINGLETON);
-        serve("/_ah/login").with(MockLoginAction.class);
-        bind(MockLogoutAction.class).in(Scopes.SINGLETON);
-        serve("/_ah/logout").with(MockLogoutAction.class);
     }
 }
