@@ -21,14 +21,13 @@ import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.client.Sessions;
 import org.b3log.latke.client.remote.AbstractRemoteService;
 
 /**
  * Abstract remote service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 21 2010
+ * @version 1.0.0.0, Aug 21, 2010
  */
 public abstract class AbstractJSONRpcService extends AbstractRemoteService {
 
@@ -41,14 +40,13 @@ public abstract class AbstractJSONRpcService extends AbstractRemoteService {
      * Checks the specified request authorized or not(Http Status Code:
      * Forbidden 403).
      * <p>
-     * If the specified request is authorized, send an error with status code
-     * 401.
+     * If the specified request is not send from the logged in administrator,
+     * sends an error with status code 403.
      * </p>
      *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws IOException io exception
-     * @see Sessions#currentUserName(javax.servlet.http.HttpServletRequest)
      */
     @Override
     public final void checkAuthorized(final HttpServletRequest request,
