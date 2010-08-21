@@ -24,9 +24,9 @@ import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.util.Paginator;
-import org.b3log.latke.client.remote.AbstractRemoteService;
 import org.b3log.latke.model.Pagination;
 import org.b3log.solo.action.StatusCodes;
+import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.json.JSONArray;
@@ -36,9 +36,9 @@ import org.json.JSONObject;
  * Link service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 14, 2010
+ * @version 1.0.0.1, Aug 21, 2010
  */
-public final class LinkService extends AbstractRemoteService {
+public final class LinkService extends AbstractJSONRpcService {
 
     /**
      * Logger.
