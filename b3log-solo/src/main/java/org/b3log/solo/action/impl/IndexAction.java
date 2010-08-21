@@ -97,9 +97,9 @@ public final class IndexAction extends AbstractAction {
             filler.fillArchiveDates(ret);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
-            final String skinFileName = preferences.getPreference().
+            final String skinName = preferences.getPreference().
                     getString(Preference.SKIN_NAME);
-            ret.put(Preference.SKIN_NAME, skinFileName);
+            ret.put(Preference.SKIN_NAME, skinName);
             
             statistics.incBlogViewCount();
         } catch (final Exception e) {

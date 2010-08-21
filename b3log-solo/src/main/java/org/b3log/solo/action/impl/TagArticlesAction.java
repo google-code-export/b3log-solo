@@ -165,9 +165,9 @@ public final class TagArticlesAction extends AbstractAction {
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
             ret.put(Keys.OBJECT_ID, tagId);
-            final String skinFileName = preferences.getPreference().
+            final String skinName = preferences.getPreference().
                     getString(Preference.SKIN_NAME);
-            ret.put(Preference.SKIN_NAME, skinFileName);
+            ret.put(Preference.SKIN_NAME, skinName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
