@@ -17,6 +17,7 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
@@ -31,6 +32,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.util.Skins;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -155,6 +157,19 @@ public final class PreferenceService extends AbstractJSONRpcService {
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             final String skinName = skins.getSkinName(skinDirName);
             preference.put(Skin.SKIN_NAME, skinName);
+            final Set<String> skinDirNames = skins.getSkinDirNames();
+            final JSONArray skinArray = new JSONArray();
+            for (final String dirName : skinDirNames) {
+                final JSONObject skin = new JSONObject();
+                skinArray.put(skin);
+
+                final String name = skins.getSkinName(dirName);
+                skin.put(Skin.SKIN_NAME, name);
+                skin.put(Skin.SKIN_DIR_NAME, dirName);
+            }
+
+            preference.put(Skin.SKINS, skinArray.toString());
+
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
             ((Cache<String, JSONObject>) cache).put(Preference.PREFERENCE,
