@@ -34,7 +34,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
@@ -108,9 +108,9 @@ public final class TagsAction extends AbstractAction {
 
             final List<Object> tags = CollectionUtils.jsonArrayToList(tagArray);
             ret.put(Tag.TAGS, tags);
-            final String skinName = preferences.getPreference().
-                    getString(Preference.SKIN_NAME);
-            ret.put(Preference.SKIN_NAME, skinName);
+            final String skinDirName = preferences.getPreference().
+                    getString(Skin.SKIN_DIR_NAME);
+            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);

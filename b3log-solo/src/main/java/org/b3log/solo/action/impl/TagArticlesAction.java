@@ -40,6 +40,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
@@ -165,9 +166,9 @@ public final class TagArticlesAction extends AbstractAction {
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
             ret.put(Keys.OBJECT_ID, tagId);
-            final String skinName = preferences.getPreference().
-                    getString(Preference.SKIN_NAME);
-            ret.put(Preference.SKIN_NAME, skinName);
+            final String skinDirName = preferences.getPreference().
+                    getString(Skin.SKIN_DIR_NAME);
+            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);

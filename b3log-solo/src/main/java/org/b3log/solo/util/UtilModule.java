@@ -35,5 +35,6 @@ public final class UtilModule extends org.b3log.latke.util.UtilModule {
         bind(Preferences.class).in(Scopes.SINGLETON);
         bind(Statistics.class).in(Scopes.SINGLETON);
         bind(ArchiveDateUtils.class).in(Scopes.SINGLETON);
+        bind(Skins.class).in(Scopes.SINGLETON);
     }
 }

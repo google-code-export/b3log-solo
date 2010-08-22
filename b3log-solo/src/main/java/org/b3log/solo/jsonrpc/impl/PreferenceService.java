@@ -28,7 +28,9 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
+import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
 /**
@@ -60,6 +62,11 @@ public final class PreferenceService extends AbstractJSONRpcService {
      */
     @Inject
     private Preferences preferences;
+    /**
+     * Skin utilities.
+     */
+    @Inject
+    private Skins skins;
 
     /**
      * Gets preference.
@@ -68,10 +75,19 @@ public final class PreferenceService extends AbstractJSONRpcService {
      * <pre>
      * {
      *     "preference": {
-     *         "recentArticleDisplayCount": "",
+     *         "recentArticleDisplayCount": int,
      *         "mostUsedTagDisplayCount": int,
      *         "articleListDisplayCount": int,
-     *         "articleListPaginationWindowSize": int
+     *         "articleListPaginationWindowSize": int,
+     *         "blogTitle": "",
+     *         "blogSubtitle": "",
+     *         "mostCommentArticleDisplayCount": int,
+     *         "skinName": "",
+     *         "skinDirName": "",
+     *         "skins: [{
+     *             "skinName": "",
+     *             "skinDirName": ""
+     *         }, ....]
      *     }
      *     "sc": "GET_PREFERENCE_SUCC"
      * }
@@ -102,10 +118,14 @@ public final class PreferenceService extends AbstractJSONRpcService {
      * <pre>
      * {
      *     "preference": {
-     *         "recentArticleDisplayCount": "",
-     *         "mostUsedTagDisplayCount": "",
-     *         "articleListDisplayCount": "",
-     *         "articleListPaginationWindowSize": ""
+     *         "recentArticleDisplayCount": int,
+     *         "mostUsedTagDisplayCount": int,
+     *         "articleListDisplayCount": int,
+     *         "articleListPaginationWindowSize": int
+     *         "blogTitle": "",
+     *         "blogSubtitle": "",
+     *         "mostCommentArticleDisplayCount": int,
+     *         "skinDirName": "",
      *     }
      * }, see {@link Preference} for more details
      * </pre>
@@ -132,6 +152,9 @@ public final class PreferenceService extends AbstractJSONRpcService {
             final JSONObject preference =
                     requestJSONObject.getJSONObject(Preference.PREFERENCE);
 
+            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
+            final String skinName = skins.getSkinName(skinDirName);
+            preference.put(Skin.SKIN_NAME, skinName);
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
             ((Cache<String, JSONObject>) cache).put(Preference.PREFERENCE,
