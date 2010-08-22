@@ -62,13 +62,12 @@
 
     var getCSDNBlogArticleArchiveDate = function () {
         userName = $("#userName").val();
-        jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate(function (result, error) {
-            $("#archiveDate").html("<option>${selectDateLabel}</option>").show(500);
-            for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
-                $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
-            }
-
-        }, {"blogSyncCSDNBlogUserName": userName});
+        var result = jsonRpc.blogSyncService.
+            getCSDNBlogArticleArchiveDate({"blogSyncCSDNBlogUserName": userName});
+        $("#archiveDate").html("<option>${selectDateLabel}</option>").show(500);
+        for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
+            $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
+        }
     }
 
     var getCSDNBlogArticlesByArchiveDate = function () {
@@ -82,32 +81,33 @@
             "blogSyncCSDNBlogArchiveDate": $("#archiveDate").val()
         };
         
-        jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(function (result, error) {
-            $("#articlesPanel").show();
+        var result = 
+            jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(requestJSONObject);
 
-            var articles = result.blogSyncCSDNBlogArticles;
-            if (articles.length > 0) {
-                var articleData = [];
+        $("#articlesPanel").show();
 
-                for (var i = 0; i < articles.length; i++) {
-                    articleData[i] = {};
-                    articleData[i].selected = false;
-                    articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
-                    articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
-                    articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
-                    articleData[i].id = articles[i].blogSyncCSDNBlogArticleId;
-                }
+        var articles = result.blogSyncCSDNBlogArticles;
+        if (articles.length > 0) {
+            var articleData = [];
 
-                $("#articleList").table({
-                    update:{
-                        data: articleData
-                    }
-                });
-            } else {
-                $("#tipMsg").text("${getFailLabel}");
+            for (var i = 0; i < articles.length; i++) {
+                articleData[i] = {};
+                articleData[i].selected = false;
+                articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
+                articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
+                articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
+                articleData[i].id = articles[i].blogSyncCSDNBlogArticleId;
             }
-            $("#loading").loading("close");
-        }, requestJSONObject);
+
+            $("#articleList").table({
+                update:{
+                    data: articleData
+                }
+            });
+        } else {
+            $("#tipMsg").text("${getFailLabel}");
+        }
+        $("#loading").loading("close");
     }
     
     var sync = function () {
@@ -116,8 +116,7 @@
             "blogSyncCSDNBlogArticleIds": $("#articleList_selected").data("id")
         };
 
-        jsonRpc.blogSyncService.importCSDNBlogArticles(function (result, error) {
-            $("#tipMsg").text(result.oIds + "${importSuccLabel}");
-        }, requestJSONObject);
+        var result = jsonRpc.blogSyncService.importCSDNBlogArticles(requestJSONObject);
+        $("#tipMsg").text(result.oIds + "${importSuccLabel}");
     }
 </script>
