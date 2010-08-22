@@ -126,16 +126,17 @@ public final class SoloServletListener extends AbstractServletListener {
         preference.put(SKIN_NAME, skinName);
 
         final Set<String> skinDirNames = skins.getSkinDirNames();
-        final JSONArray skinDirNamesArray = new JSONArray();
-        preference.put(SKINS, skinDirNames);
+        final JSONArray skinArray = new JSONArray();
         for (final String dirName : skinDirNames) {
             final JSONObject skin = new JSONObject();
-            skinDirNamesArray.put(skin);
+            skinArray.put(skin);
 
             final String name = skins.getSkinName(dirName);
             skin.put(SKIN_NAME, name);
             skin.put(SKIN_DIR_NAME, dirName);
         }
+
+        preference.put(SKINS, skinArray.toString());
     }
 
     /**
