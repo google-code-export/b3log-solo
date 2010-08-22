@@ -142,6 +142,14 @@
         }
     }
 
+    var popComments = function (event) {
+        $("#comments").data("oId", event.data.id[0]);
+        getComment();
+        $("#comments").dialog({
+            width: 400
+        });
+    }
+    
     var getArticleList = function (pageNum) {
         currentPage = pageNum;
         var requestJSONObject = {
@@ -176,7 +184,7 @@
                 if (result.pagination.paginationPageCount === 0) {
                     result.pagination.paginationPageCount = 1;
                 }
-
+                
                 articlePagination.paginate({
                     update: {
                         pageCount: result.pagination.paginationPageCount
@@ -188,14 +196,6 @@
         }
     }
     getArticleList(1);
-
-    var popComments = function (event) {
-        $("#comments").data("oId", event.data.id[0]);
-        getComment();
-        $("#comments").dialog({
-            width: 400
-        });
-    }
 
     var getComment = function () {
         var result = jsonRpc.commentService.getComments({"oId": $("#comments").data("oId")});
