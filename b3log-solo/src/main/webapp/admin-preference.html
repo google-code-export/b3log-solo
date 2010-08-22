@@ -20,7 +20,7 @@
                 <tbody>
                     <tr>
                         <th width="124px">
-                            ${indexTagDisplayCnt1Label}
+                            首页 Tag 显示数：
                         </th>
                         <td>
                             <input id="mostUsedTagDisplayCount"/>
@@ -28,7 +28,7 @@
                     </tr>
                     <tr>
                         <th>
-                            ${indexRecentArticleDisplayCnt1Label}
+                            最新文章显示数目:
                         </th>
                         <td>
                             <input id="recentArticleDisplayCount"/>
@@ -36,7 +36,7 @@
                     </tr>
                     <tr>
                         <th>
-                            ${indexMostCommentArticleDisplayCnt1Label}
+                            评论最多文章数目:
                         </th>
                         <td>
                             <input id="mostCommentArticleDisplayCount"/>
@@ -44,7 +44,7 @@
                     </tr>
                     <tr>
                         <th>
-                            ${pageSize1Label}
+                            文章列表显示数:
                         </th>
                         <td>
                             <input id="articleListDisplayCount"/>
@@ -52,7 +52,7 @@
                     </tr>
                     <tr>
                         <th>
-                            ${windowSize1Label}
+                            分页大小:
                         </th>
                         <td>
                             <input id="articleListPaginationWindowSize"/>
@@ -60,7 +60,7 @@
                     </tr>
                     <tr>
                         <th>
-                            ${blogTitle1Label}
+                            博客标题:
                         </th>
                         <td>
                             <input id="blogTitle"/>
@@ -68,7 +68,7 @@
                     </tr>
                     <tr>
                         <th>
-                            ${blogSubtitle1Label}
+                            博客子标题:
                         </th>
                         <td>
                             <input id="blogSubtitle"/>
@@ -76,7 +76,7 @@
                     </tr>
                     <tr>
                         <th colspan="2">
-                            <button onclick="changePreference();">${saveLabel}</button>
+                            <button onclick="changePreference();">submit</button>
                         </th>
                     </tr>
                 </tbody>
@@ -85,7 +85,7 @@
         <div id="skinsPanel" class="none">
             <div id="skinMain">
             </div>
-            <button onclick="changePreference();">${saveLabel}</button>
+            <button onclick="changePreference();">submit</button>
         </div>
     </div>
 </div>
@@ -106,7 +106,6 @@
     }
     
     var changePreference = function () {
-        alert($("#shinMain").data("shinDirName"));
         var requestJSONObject = {
             "preference": {
                 "blogTitle": $("#blogTitle").val(),
@@ -116,7 +115,7 @@
                 "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
                 "articleListDisplayCount": $("#articleListDisplayCount").val(),
                 "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
-                "skinDirName": $("#shinMain").data("shinDirName")
+                "skinDirName": $("#skinMain").data("skinDirName")
             }
         }
 
@@ -148,7 +147,7 @@
                     $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
 
                     // skin
-                    $("#skinMain").data("shinDirName", preference.skinDirName);
+                    $("#skinMain").data("skinDirName", preference.skinDirName);
                     var skins = eval('(' + preference.skins + ')');
                     var skinsHTML = "";
                     for (var i = 0; i < skins.length; i++) {
@@ -158,7 +157,8 @@
                                 + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
                                 + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
                         } else {
-                            skinsHTML += "<div class='left skinItem'><img class='skinPreview' src='skins/"
+                            skinsHTML += "<div title='" + skins[i].skinDirName
+                                + "' class='left skinItem'><img class='skinPreview' src='skins/"
                                 + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
                         }
                     }
@@ -167,7 +167,7 @@
                     $(".skinItem").click(function () {
                         $(".skinItem").removeClass("selected");
                         $(this).addClass("selected");
-                        $("#skinMain").data("shinDirName", this.title);
+                        $("#skinMain").data("skinDirName", this.title);
                     });
                     break;
                 default:
