@@ -72,9 +72,25 @@
 .skinPreview {
     width: 150px;
     margin: 6px;
-    border-width: 1px;
-    border-color: #CCCCCC #BBBBBB #A0A0A0;
     cursor: pointer;
+}
+
+.skinItem {
+    text-align: center;
+    border: 1px solid #BBCCFF;
+    -moz-border-radius:4px;
+    margin: 6px;
+    width: 164px
+}
+
+.skinItem.selected {
+    border: 1px solid;
+    border-color: #CCCCCC #BBBBBB #A0A0A0;
+}
+
+.skinItem:hover {
+    border-color: #BBBBBB;
+    border-style: solid;
 }
 
 /* tabs */

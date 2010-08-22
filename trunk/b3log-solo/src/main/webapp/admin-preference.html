@@ -83,6 +83,8 @@
             </table>
         </div>
         <div id="skinsPanel" class="none">
+            <div id="skinMain">
+            </div>
             <button onclick="changePreference();">submit</button>
         </div>
     </div>
@@ -104,6 +106,7 @@
     }
     
     var changePreference = function () {
+        alert($("#shinMain").data("shinDirName"));
         var requestJSONObject = {
             "preference": {
                 "blogTitle": $("#blogTitle").val(),
@@ -113,7 +116,7 @@
                 "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
                 "articleListDisplayCount": $("#articleListDisplayCount").val(),
                 "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
-                "skinDirName": "classic" // TODO: preference skin select
+                "skinDirName": $("#shinMain").data("shinDirName")
             }
         }
 
@@ -145,13 +148,27 @@
                     $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
 
                     // skin
+                    $("#skinMain").data("shinDirName", preference.skinDirName);
                     var skins = eval('(' + preference.skins + ')');
                     var skinsHTML = "";
                     for (var i = 0; i < skins.length; i++) {
-                        skinsHTML += "<div><img class='skinPreview' src='skins/"
-                            + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
+                        if (skins[i].skinName === preference.skinName
+                            && skins[i].skinDirName === preference.skinDirName ) {
+                            skinsHTML += "<div title='" + skins[i].skinDirName
+                                + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
+                                + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
+                        } else {
+                            skinsHTML += "<div class='left skinItem'><img class='skinPreview' src='skins/"
+                                + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
+                        }
                     }
-                    $("#skinsPanel").append(skinsHTML);
+                    $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
+                    
+                    $(".skinItem").click(function () {
+                        $(".skinItem").removeClass("selected");
+                        $(this).addClass("selected");
+                        $("#skinMain").data("shinDirName", this.title);
+                    });
                     break;
                 default:
                     break;
