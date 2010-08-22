@@ -145,7 +145,7 @@
                     $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
 
                     // skin
-                    var skins = preference.skins;
+                    var skins = eval('(' + preference.skins + ')');
                     var skinsHTML = "";
                     for (var i = 0; i < skins.length; i++) {
                         skinsHTML += "<div><img class='skinPreview' src='skins/"
