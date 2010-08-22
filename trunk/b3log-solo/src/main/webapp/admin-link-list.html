@@ -165,14 +165,11 @@
             jsonRpc.linkService.removeLink(function (result, error) {
                 switch (result.sc) {
                     case "REMOVE_LINK_SUCC":
-                        $("#tipMsg").text("删除成功！");
+                        $("#tipMsg").text("${removeSuccLabel}");
                         getLinkList(1);
                         break;
                     case "REMOVE_LINK_FAIL_":
-                        $("#tipMsg").text("删除失败！");
-                        break;
-                    case "PERMISSION_ERROR":
-                        $("#tipMsg").text("您没有权限进行此项操作！");
+                        $("#tipMsg").text("${removeFailLabel}");
                         break;
                     default:
                         break;
@@ -244,7 +241,7 @@
             switch (result.sc) {
                 case "UPDATE_LINK_SUCC":
                     linkDialog.dialog("close");
-                    $("#tipMsg").text("更新成功！");
+                    $("#tipMsg").text("${updateSuccLabel}");
                     getLinkList(currentPage);
                     break;
                 default:
@@ -263,7 +260,7 @@
         jsonRpc.linkService.addLink(function (result, error) {
             switch (result.sc) {
                 case "ADD_LINK_SUCC":
-                    $("#tipMsg").text("添加成功！");
+                    $("#tipMsg").text("${addSuccLabel}");
                     $("#linkTitle").val("");
                     $("#linkAddress").val("");
 

@@ -55,7 +55,7 @@
                     $("#content").load("admin-article-list.do", function () {
                         KE.remove("articleContent");
                     });
-                    $("#tipMsg").text("添加文章成功！");
+                    $("#tipMsg").text("${addSuccLabel}");
                     break;
                 default:
                     break;
@@ -80,7 +80,7 @@
                     $("#content").load("admin-article-list.do", function () {
                         KE.remove("articleContent");
                     });
-                    $("#tipMsg").text("更新文章成功！");
+                    $("#tipMsg").text("${updateSuccLabel}");
                     break;
                 default:
                     break;
