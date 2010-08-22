@@ -134,18 +134,19 @@
         jsonRpc.preferenceService.getPreference(function (result, error) {
             switch (result.sc) {
                 case "GET_PREFERENCE_SUCC":
-                    var preferences = result.preference;
+                    var preference = result.preference;
                     // preference
-                    $("#blogTitle").val(preferences.blogTitle),
-                    $("#blogSubtitle").val(preferences.blogSubtitle),
-                    $("#mostCommentArticleDisplayCount").val(preferences.mostCommentArticleDisplayCount);
-                    $("#recentArticleDisplayCount").val(preferences.recentArticleDisplayCount);
-                    $("#mostUsedTagDisplayCount").val(preferences.mostUsedTagDisplayCount);
-                    $("#articleListDisplayCount").val(preferences.articleListDisplayCount);
-                    $("#articleListPaginationWindowSize").val(preferences.articleListPaginationWindowSize);
+                    $("#blogTitle").val(preference.blogTitle),
+                    $("#blogSubtitle").val(preference.blogSubtitle),
+                    $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
+                    $("#recentArticleDisplayCount").val(preference.recentArticleDisplayCount);
+                    $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
+                    $("#articleListDisplayCount").val(preference.articleListDisplayCount);
+                    $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
 
                     // skin
-                    var skins = preferences.skins;
+                    var skins = preference.skins;
+                    alert(skins);
                     var skinsHTML = "";
                     for (var i = 0; i < skins.length; i++) {
                         skinsHTML += "<div><img class='skinPreview' src='skins/"
