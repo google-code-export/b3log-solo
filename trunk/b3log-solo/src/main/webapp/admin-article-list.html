@@ -127,19 +127,19 @@
                 "oId": event.data.id[0]
             };
 
-            jsonRpc.articleService.removeArticle(function (result, error) {
-                switch (result.sc) {
-                    case "REMOVE_ARTICLE_SUCC":
-                        $("#tipMsg").text("${removeSuccLabel}");
-                        getArticleList(1);
-                        break;
-                    case "REMOVE_ARTICLE_FAIL_":
-                        $("#tipMsg").text("${removeFailLabel}");
-                        break;
-                    default:
-                        break;
-                }
-            }, requestJSONObject);
+            var result = jsonRpc.articleService.removeArticle(requestJSONObject);
+            
+            switch (result.sc) {
+                case "REMOVE_ARTICLE_SUCC":
+                    $("#tipMsg").text("${removeSuccLabel}");
+                    getArticleList(1);
+                    break;
+                case "REMOVE_ARTICLE_FAIL_":
+                    $("#tipMsg").text("${removeFailLabel}");
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
