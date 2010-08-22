@@ -2,15 +2,15 @@
     <tbody>
         <tr>
             <th width="124px">
-                {userNameLabel}
+                ${csdnUserName1Label}
             </th>
             <td width="360px">
                 <input id="userName"/>
             </td>
             <td>
-                <button onclick="getCSDNBlogArticleArchiveDate();">{submit}</button>
+                <button onclick="getCSDNBlogArticleArchiveDate();">${getDateLabel}</button>
                 <select id="archiveDate" class="none" onchange="getCSDNBlogArticlesByArchiveDate();">
-                    <option>{选择月份}</option>
+                    <option>${selectDateLabel}</option>
                 </select>
             </td>
         </tr>
@@ -18,9 +18,9 @@
 </table>
 <div id="loading"></div>
 <div id="articlesPanel" class="none">
-    <button onclick="sync();">{submit}</button>
+    <button onclick="sync();">${importLabel}</button>
     <div id="articleList" class="maginTB12"></div>
-    <button onclick="sync();">{submit}</button>
+    <button onclick="sync();">${importLabel}</button>
 </div>
 <script type="text/javascript">
     var userName = "";
@@ -63,7 +63,7 @@
     var getCSDNBlogArticleArchiveDate = function () {
         userName = $("#userName").val();
         jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate(function (result, error) {
-            $("#archiveDate").html("<option>{选择月份}</option>").show(500);
+            $("#archiveDate").html("<option>${selectDateLabel}</option>").show(500);
             for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
                 $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
             }

@@ -50,12 +50,14 @@
     </div>
 </div>
 </#list>
+<#if 0 != paginationPageCount>
 <div class="pagination">
     <#list paginationPageNums as paginationPageNum>
     <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
     </#list>
     ${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
+</#if>
 <script type="text/javascript">
     if (window.location.search === "") {
         localStorage.setItem("currentPage", 1);
