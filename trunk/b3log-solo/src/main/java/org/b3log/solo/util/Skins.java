@@ -80,8 +80,8 @@ public final class Skins {
      */
     public String getSkinName(final String skinDirName) {
         final String webRootPath = SoloServletListener.getWebRoot();
-        final File webRoot = new File(webRootPath);
-        final File[] skinDirs = webRoot.listFiles(new FileFilter() {
+        final File skins = new File(webRootPath + "skins/");
+        final File[] skinDirs = skins.listFiles(new FileFilter() {
 
             @Override
             public boolean accept(final File pathname) {
