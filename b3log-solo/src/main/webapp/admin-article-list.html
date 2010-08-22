@@ -14,7 +14,7 @@
         colModel: [{
                 name: "选择",
                 index: "selected",
-                width: 46,
+                width: 20,
                 inputType: "checkbox",
                 textAlign: "center",
                 allSelected: true
@@ -24,6 +24,11 @@
                 minWidth: 180,
                 style: "padding-left: 6px;"
             }, {
+                name: "{tagLabel}",
+                index: "tags",
+                width: 380,
+                style: "padding-left: 6px; white-space: nowrap; overflow: hidden; width: 174px;"
+            }, {
                 textAlign: "center",
                 name: "${createDateLabel}",
                 index: "date",
@@ -32,7 +37,7 @@
                 textAlign: "center",
                 name: "${updateLabel}",
                 index: "update",
-                width: 60,
+                width: 50,
                 bindEvent: [{
                         'eventName': 'click',
                         'functionName': 'updateArticle'
@@ -42,7 +47,7 @@
                 textAlign: "center",
                 name: "${removeLabel}",
                 index: "deleted",
-                width: 60,
+                width: 50,
                 bindEvent: [{
                         'eventName': 'click',
                         'functionName': 'deleteArticle'
@@ -167,6 +172,7 @@
                 for (var i = 0; i < articles.length; i++) {
                     articleData[i] = {};
                     articleData[i].selected = false;
+                    articleData[i].tags = articles[i].articleTags;
                     articleData[i].title = articles[i].articleTitle;
                     articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                     articleData[i].update = "update";
