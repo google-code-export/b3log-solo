@@ -1,73 +1,108 @@
-<table class="form left" width="49%" cellpadding="0" cellspacing="9px">
-    <tbody>
-        <tr>
-            <th width="124px">
-                首页 Tag 显示数：
-            </th>
-            <td>
-                <input id="mostUsedTagDisplayCount"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                最新文章显示数目:
-            </th>
-            <td>
-                <input id="recentArticleDisplayCount"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                评论最多文章数目:
-            </th>
-            <td>
-                <input id="mostCommentArticleDisplayCount"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                文章列表显示数:
-            </th>
-            <td>
-                <input id="articleListDisplayCount"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                分页大小:
-            </th>
-            <td>
-                <input id="articleListPaginationWindowSize"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                博客标题:
-            </th>
-            <td>
-                <input id="blogTitle"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                博客子标题:
-            </th>
-            <td>
-                <input id="blogSubtitle"/>
-            </td>
-        </tr>
-        <tr>
-            <th colspan="2">
-                <button onclick="changePreference();">submit</button>
-            </th>
-        </tr>
-    </tbody>
-</table>
-<div class="right" id="changeSkinPanel">
-    {changeSkin}
+<div>
+    <div class="tabs">
+        <ul>
+            <li>
+                <span class="selected" id="preferences" onclick="changeTab(this);">
+                    {preferences}
+                </span>
+            </li>
+            <li>
+                <span id="skins" onclick="changeTab(this);">
+                    {skins]
+                </span>
+            </li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="tabPanels">
+        <div id="preferencesPanel">
+            <table class="form" width="99%" cellpadding="0" cellspacing="9px">
+                <tbody>
+                    <tr>
+                        <th width="124px">
+                            首页 Tag 显示数：
+                        </th>
+                        <td>
+                            <input id="mostUsedTagDisplayCount"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            最新文章显示数目:
+                        </th>
+                        <td>
+                            <input id="recentArticleDisplayCount"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            评论最多文章数目:
+                        </th>
+                        <td>
+                            <input id="mostCommentArticleDisplayCount"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            文章列表显示数:
+                        </th>
+                        <td>
+                            <input id="articleListDisplayCount"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            分页大小:
+                        </th>
+                        <td>
+                            <input id="articleListPaginationWindowSize"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            博客标题:
+                        </th>
+                        <td>
+                            <input id="blogTitle"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            博客子标题:
+                        </th>
+                        <td>
+                            <input id="blogSubtitle"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            <button onclick="changePreference();">submit</button>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="skinsPanel" class="none">
+            <button onclick="changePreference();">submit</button>
+        </div>
+    </div>
 </div>
+
 <div class="clear"></div>
 <script type="text/javascript">
+    var changeTab = function (it) {
+        var tabs = ['preferences', 'skins'];
+        for (var i = 0; i < tabs.length; i++) {
+            if (it.id === tabs[i]) {
+                $("#" + tabs[i] + "Panel").show();
+                $("#" + tabs[i]).addClass("selected");
+            } else {
+                $("#" + tabs[i] + "Panel").hide();
+                $("#" + tabs[i]).removeClass("selected");
+            }
+        }
+    }
+    
     var changePreference = function () {
         var requestJSONObject = {
             "preference": {
@@ -99,13 +134,24 @@
         jsonRpc.preferenceService.getPreference(function (result, error) {
             switch (result.sc) {
                 case "GET_PREFERENCE_SUCC":
-                    $("#blogTitle").val(result.preference.blogTitle),
-                    $("#blogSubtitle").val(result.preference.blogSubtitle),
-                    $("#mostCommentArticleDisplayCount").val(result.preference.mostCommentArticleDisplayCount);
-                    $("#recentArticleDisplayCount").val(result.preference.recentArticleDisplayCount);
-                    $("#mostUsedTagDisplayCount").val(result.preference.mostUsedTagDisplayCount);
-                    $("#articleListDisplayCount").val(result.preference.articleListDisplayCount);
-                    $("#articleListPaginationWindowSize").val(result.preference.articleListPaginationWindowSize);
+                    var preferences = result.preference;
+                    // preference
+                    $("#blogTitle").val(preferences.blogTitle),
+                    $("#blogSubtitle").val(preferences.blogSubtitle),
+                    $("#mostCommentArticleDisplayCount").val(preferences.mostCommentArticleDisplayCount);
+                    $("#recentArticleDisplayCount").val(preferences.recentArticleDisplayCount);
+                    $("#mostUsedTagDisplayCount").val(preferences.mostUsedTagDisplayCount);
+                    $("#articleListDisplayCount").val(preferences.articleListDisplayCount);
+                    $("#articleListPaginationWindowSize").val(preferences.articleListPaginationWindowSize);
+
+                    // skin
+                    var skins = preferences.skins;
+                    var skinsHTML = "";
+                    for (var i = 0; i < skins.length; i++) {
+                        skinsHTML += "<div><img class='skinPreview' src='skins/"
+                            + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
+                    }
+                    $("#skinsPanel").append(skinsHTML);
                     break;
                 default:
                     break;

@@ -64,8 +64,31 @@
 }
 
 /* preference */
-#changeSkinPanel {
-    min-width: 300px;
-    width: 49%;
-    margin: 12px 12px 12px 0;
+#skinsPanel {
+    width: 99%;
+    min-width: 328px;
+}
+
+.skinPreview {
+    width: 150px;
+    margin: 6px;
+    border-width: 1px;
+    border-color: #CCCCCC #BBBBBB #A0A0A0;
+    cursor: pointer;
+}
+
+/* tabs */
+.tabs li {
+    float: left;
+}
+
+.tabs span {
+    cursor: pointer;
+}
+
+.tabPanels {
+    margin: 12px;
+}
+.tabs span.selected {
+    color: red;
 }
