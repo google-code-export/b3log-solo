@@ -262,9 +262,10 @@ public final class ArticleService extends AbstractJSONRpcService {
      *         "oId": "",
      *         "articleTitle": "",
      *         "articleAbstract": "",
-     *         "articleContent": "",
+     *         "articleCommentCount": int,
      *         "articleCreateDate"; java.util.Date,
-     *         "articleUpdateDate": java.util.Date
+     *         "articleViewCount": int,
+     *         "articleTags": "tag1, tag2, ...."
      *      }, ....]
      *     "sc": "GET_ARTICLES_SUCC"
      * }
@@ -305,6 +306,12 @@ public final class ArticleService extends AbstractJSONRpcService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
+            // Remove some details
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.getJSONObject(i);
+                article.remove(Article.ARTICLE_CONTENT);
+                article.remove(Article.ARTICLE_UPDATE_DATE);
+            }
             ret.put(Article.ARTICLES, articles);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLES_SUCC);
