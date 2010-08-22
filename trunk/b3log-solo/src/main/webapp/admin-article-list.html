@@ -79,43 +79,42 @@
                 "oId": event.data.id[0]
             };
 
-            jsonRpc.articleService.getArticle(function (result, error) {
-                switch (result.sc) {
-                    case "GET_ARTICLE_SUCC":
-                        setCurrentNaviStyle(0);
+            var result = jsonRpc.articleService.getArticle(requestJSONObject);
+            switch (result.sc) {
+                case "GET_ARTICLE_SUCC":
+                    setCurrentNaviStyle(0);
 
-                        KE.init({
-                            id : "articleContent",
-                            items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
-                                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                                'insertunorderedlist', '|', 'emoticons', 'image', 'link']
-                        });
+                    KE.init({
+                        id : "articleContent",
+                        items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
+                            'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                            'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+                    });
 
-                        KE.create("articleContent");
+                    KE.create("articleContent");
 
-                        // set default value for article.
-                        $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
-                        KE.html("articleContent", result.article.articleContent)
-                        $("#abstract").val(result.article.articleAbstract);
+                    // set default value for article.
+                    $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
+                    KE.html("articleContent", result.article.articleContent)
+                    $("#abstract").val(result.article.articleAbstract);
 
-                        var tags = result.article.articleTags,
-                        tagsString = '';
-                        for (var i = 0; i < tags.length; i++) {
-                            if (0 === i) {
-                                tagsString = tags[i].tagTitle;
-                            } else {
-                                tagsString += "," + tags[i].tagTitle;
-                            }
+                    var tags = result.article.articleTags,
+                    tagsString = '';
+                    for (var i = 0; i < tags.length; i++) {
+                        if (0 === i) {
+                            tagsString = tags[i].tagTitle;
+                        } else {
+                            tagsString += "," + tags[i].tagTitle;
                         }
-                        $("#tag").val(tagsString);
+                    }
+                    $("#tag").val(tagsString);
                         
-                        break;
-                    case "GET_ARTICLE_FAIL_":
-                        break;
-                    default:
-                        break;
-                }
-            }, requestJSONObject);
+                    break;
+                case "GET_ARTICLE_FAIL_":
+                    break;
+                default:
+                    break;
+            }
         });
     }
     
@@ -150,43 +149,43 @@
             "paginationPageSize": 10,
             "paginationWindowSize": 10
         };
-        jsonRpc.articleService.getArticles(function (result, error) {
-            switch (result.sc) {
-                case "GET_ARTICLES_SUCC":
-                    var articles = result.articles,
-                    articleData = [];
+        
+        var result = jsonRpc.articleService.getArticles(requestJSONObject);
+        switch (result.sc) {
+            case "GET_ARTICLES_SUCC":
+                var articles = result.articles,
+                articleData = [];
 
-                    for (var i = 0; i < articles.length; i++) {
-                        articleData[i] = {};
-                        articleData[i].selected = false;
-                        articleData[i].title = articles[i].articleTitle;
-                        articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
-                        articleData[i].update = "update";
-                        articleData[i].deleted = "delete";
-                        articleData[i].comments = "count(" + articles[i].articleCommentCount + ")";
-                        articleData[i].id = articles[i].oId;
+                for (var i = 0; i < articles.length; i++) {
+                    articleData[i] = {};
+                    articleData[i].selected = false;
+                    articleData[i].title = articles[i].articleTitle;
+                    articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
+                    articleData[i].update = "update";
+                    articleData[i].deleted = "delete";
+                    articleData[i].comments = "count(" + articles[i].articleCommentCount + ")";
+                    articleData[i].id = articles[i].oId;
+                }
+
+                $("#articleList").table({
+                    update:{
+                        data: articleData
                     }
+                });
 
-                    $("#articleList").table({
-                        update:{
-                            data: articleData
-                        }
-                    });
+                if (result.pagination.paginationPageCount === 0) {
+                    result.pagination.paginationPageCount = 1;
+                }
 
-                    if (result.pagination.paginationPageCount === 0) {
-                        result.pagination.paginationPageCount = 1;
+                articlePagination.paginate({
+                    update: {
+                        pageCount: result.pagination.paginationPageCount
                     }
-
-                    articlePagination.paginate({
-                        update: {
-                            pageCount: result.pagination.paginationPageCount
-                        }
-                    });
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
+                });
+                break;
+            default:
+                break;
+        }
     }
     getArticleList(1);
 
@@ -199,38 +198,36 @@
     }
 
     var getComment = function () {
-        jsonRpc.commentService.getComments(function (result, error) {
-            switch (result.sc) {
-                case "GET_COMMENTS_SUCC":
-                    var comments = result.comments,
-                    commentsHTML = '';
-                    for (var i = 0; i < comments.length; i++) {
-                        commentsHTML += "<div><span class='left'>" + comments[i].commentDate
-                            + "</span><span class='right pointer' onclick=\"deleteComment('" + comments[i].oId
-                            + "')\">delete</span><div class='clear'></div></div><div>" + comments[i].commentContent + "</div><hr/>";
-                    }
-                    if (commentsHTML === "") {
-                        commentsHTML = "占无评论！"
-                    }
-                    $("#comments").html(commentsHTML);
-                    break;
-                default:
-                    break;
-            }
-        }, {"oId": $("#comments").data("oId")});
+        var result = jsonRpc.commentService.getComments({"oId": $("#comments").data("oId")});
+        switch (result.sc) {
+            case "GET_COMMENTS_SUCC":
+                var comments = result.comments,
+                commentsHTML = '';
+                for (var i = 0; i < comments.length; i++) {
+                    commentsHTML += "<div><span class='left'>" + comments[i].commentDate
+                        + "</span><span class='right pointer' onclick=\"deleteComment('" + comments[i].oId
+                        + "')\">delete</span><div class='clear'></div></div><div>" + comments[i].commentContent + "</div><hr/>";
+                }
+                if (commentsHTML === "") {
+                    commentsHTML = "占无评论！"
+                }
+                $("#comments").html(commentsHTML);
+                break;
+            default:
+                break;
+        };
     }
 
     var deleteComment = function (id) {
-        jsonRpc.commentService.removeComment(function (result, error) {
-            switch (result.sc) {
-                case "REMOVE_COMMENT_SUCC":
-                    $("#tipMsg").text("${removeSuccLabel}");
-                    getComment();
-                    break;
-                default:
-                    break;
-            }
-        }, {"oId": id});
+        var result = jsonRpc.commentService.removeComment({"oId": id});
+        switch (result.sc) {
+            case "REMOVE_COMMENT_SUCC":
+                $("#tipMsg").text("${removeSuccLabel}");
+                getComment();
+                break;
+            default:
+                break;
+        }
 
         getArticleList(currentPage);
     }

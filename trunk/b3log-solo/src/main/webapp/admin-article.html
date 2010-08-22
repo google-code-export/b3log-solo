@@ -48,19 +48,18 @@
                 "articleTags": $("#tag").val()
             }
         };
-        jsonRpc.articleService.addArticle(function (result, error) {
-            switch (result.sc) {
-                case "ADD_ARTICLE_SUCC":
-                    setCurrentNaviStyle(1);
-                    $("#content").load("admin-article-list.do", function () {
-                        KE.remove("articleContent");
-                    });
-                    $("#tipMsg").text("${addSuccLabel}");
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
+        var result = jsonRpc.articleService.addArticle(requestJSONObject);
+        switch (result.sc) {
+            case "ADD_ARTICLE_SUCC":
+                setCurrentNaviStyle(1);
+                $("#content").load("admin-article-list.do", function () {
+                    KE.remove("articleContent");
+                });
+                $("#tipMsg").text("${addSuccLabel}");
+                break;
+            default:
+                break;
+        }
     }
 
     var updateArticle = function () {
@@ -73,19 +72,18 @@
                 "articleTags": $("#tag").val()
             }
         };
-        jsonRpc.articleService.updateArticle(function (result, error) {
-            switch (result.sc) {
-                case "UPDATE_ARTICLE_SUCC":
-                    setCurrentNaviStyle(1);
-                    $("#content").load("admin-article-list.do", function () {
-                        KE.remove("articleContent");
-                    });
-                    $("#tipMsg").text("${updateSuccLabel}");
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
+        var result = jsonRpc.articleService.updateArticle(requestJSONObject);
+        switch (result.sc) {
+            case "UPDATE_ARTICLE_SUCC":
+                setCurrentNaviStyle(1);
+                $("#content").load("admin-article-list.do", function () {
+                    KE.remove("articleContent");
+                });
+                $("#tipMsg").text("${updateSuccLabel}");
+                break;
+            default:
+                break;
+        }
     }
 
     $("#submitArticle").click(function () {
