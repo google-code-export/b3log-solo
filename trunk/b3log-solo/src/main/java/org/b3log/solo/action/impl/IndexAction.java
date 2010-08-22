@@ -29,7 +29,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
@@ -97,9 +97,9 @@ public final class IndexAction extends AbstractAction {
             filler.fillArchiveDates(ret);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
-            final String skinName = preferences.getPreference().
-                    getString(Preference.SKIN_NAME);
-            ret.put(Preference.SKIN_NAME, skinName);
+            final String skinDirName = preferences.getPreference().
+                    getString(Skin.SKIN_DIR_NAME);
+            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
             
             statistics.incBlogViewCount();
         } catch (final Exception e) {

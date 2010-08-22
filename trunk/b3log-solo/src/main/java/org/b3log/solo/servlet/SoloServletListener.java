@@ -21,6 +21,7 @@ import com.google.inject.Key;
 import com.google.inject.Stage;
 import com.google.inject.TypeLiteral;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
@@ -36,25 +37,29 @@ import org.b3log.latke.util.cache.qualifier.LruMemory;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.repository.PreferenceRepository;
 import static org.b3log.solo.model.Preference.*;
+import static org.b3log.solo.model.Skin.*;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.sync.SyncModule;
+import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 18, 2010
+ * @version 1.0.0.7, Aug 22, 2010
  */
-public final class B3logServletListener extends AbstractServletListener {
+public final class SoloServletListener extends AbstractServletListener {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(B3logServletListener.class);
+            Logger.getLogger(SoloServletListener.class);
     /**
      * JSONO print indent factor.
      */
@@ -64,7 +69,7 @@ public final class B3logServletListener extends AbstractServletListener {
      * Public default constructor. Initializes the package name of remote
      * JavaScript services and event listeners.
      */
-    public B3logServletListener() {
+    public SoloServletListener() {
         setClientRemoteServicePackage("org/b3log/solo/jsonrpc/impl");
     }
 
@@ -100,6 +105,36 @@ public final class B3logServletListener extends AbstractServletListener {
         registerRemoteJSServiceSerializers();
 
         LOGGER.info("Initialized the context");
+    }
+
+    /**
+     * Initializes skins from the specified configuration for the specified
+     * preference.
+     *
+     * @param config the specified configuration
+     * @param preference the specified preference
+     * @throws JSONException json exception
+     */
+    private void initSkins(final ResourceBundle config, JSONObject preference)
+            throws JSONException {
+        final String skinDirName = config.getString(SKIN_DIR_NAME);
+        preference.put(SKIN_DIR_NAME, skinDirName);
+
+        final Skins skins = getInjector().getInstance(Skins.class);
+        final String skinName = skins.getSkinName(skinDirName);
+        preference.put(SKIN_NAME, skinName);
+
+        final Set<String> skinDirNames = skins.getSkinDirNames();
+        final JSONArray skinDirNamesArray = new JSONArray();
+        preference.put(SKINS, skinDirNames);
+        for (final String dirName : skinDirNames) {
+            final JSONObject skin = new JSONObject();
+            skinDirNamesArray.put(skin);
+
+            final String name = skins.getSkinName(dirName);
+            skin.put(SKIN_NAME, name);
+            skin.put(SKIN_DIR_NAME, dirName);
+        }
     }
 
     /**
@@ -183,8 +218,7 @@ public final class B3logServletListener extends AbstractServletListener {
                 final String blogSubtitle = config.getString(BLOG_SUBTITLE);
                 preference.put(BLOG_SUBTITLE, blogSubtitle);
 
-                final String skinFileName = config.getString(SKIN_NAME);
-                preference.put(SKIN_NAME, skinFileName);
+                initSkins(config, preference);
 
                 preference.put(Keys.OBJECT_ID, preferenceId);
                 preferenceRepository.add(preference);

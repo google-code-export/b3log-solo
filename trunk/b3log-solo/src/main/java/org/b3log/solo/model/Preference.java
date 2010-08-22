@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 21, 2010
+ * @version 1.0.0.3, Aug 22, 2010
  */
 public final class Preference {
 
@@ -58,10 +58,6 @@ public final class Preference {
      */
     public static final String ARTICLE_LIST_PAGINATION_WINDOW_SIZE =
             "articleListPaginationWindowSize";
-    /**
-     * Skin name(Web root/skin/{@literal skinName}/).
-     */
-    public static final String SKIN_NAME = Skin.SKIN_NAME;
 
     /**
      * Private default constructor.
