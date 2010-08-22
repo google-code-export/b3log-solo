@@ -57,6 +57,15 @@
     margin: 10px;
 }
 
+.comment-title {
+    background-color:#E3E9FF;
+    border-top:1px solid #3366CC;
+    padding:3px 0 3px 12px;
+}
+
+.comment-body {
+    margin: 12px;
+}
 /* asyn */
 #loading {
     margin:24px auto;
