@@ -115,7 +115,8 @@ public final class SoloServletListener extends AbstractServletListener {
      * @param preference the specified preference
      * @throws JSONException json exception
      */
-    private void initSkins(final ResourceBundle config, JSONObject preference)
+    private void initSkins(final ResourceBundle config,
+                           final JSONObject preference)
             throws JSONException {
         final String skinDirName = config.getString(SKIN_DIR_NAME);
         preference.put(SKIN_DIR_NAME, skinDirName);
