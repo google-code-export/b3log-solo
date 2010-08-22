@@ -51,7 +51,7 @@ public final class Skins {
      */
     public Set<String> getSkinDirNames() {
         final String webRootPath = SoloServletListener.getWebRoot();
-        final File webRoot = new File(webRootPath);
+        final File webRoot = new File(webRootPath + "skins/");
         final File[] skinDirs = webRoot.listFiles(new FileFilter() {
 
             @Override
