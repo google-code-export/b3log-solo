@@ -104,7 +104,7 @@
                     }
                 });
             } else {
-                $("#tipMsg").text("加载失败！");
+                $("#tipMsg").text("${getFailLabel}");
             }
             $("#loading").loading("close");
         }, requestJSONObject);
@@ -117,7 +117,7 @@
         };
 
         jsonRpc.blogSyncService.importCSDNBlogArticles(function (result, error) {
-            $("#tipMsg").text(result.oIds + "导出成功！");
+            $("#tipMsg").text(result.oIds + "${importSuccLabel}");
         }, requestJSONObject);
     }
 </script>

@@ -120,7 +120,7 @@
         jsonRpc.preferenceService.updatePreference(function (result, error) {
             switch (result.sc) {
                 case "UPDATE_PREFERENCE_SUCC":
-                    $("#tipMsg").text("update preference sucess!");
+                    $("#tipMsg").text("${updateSuccLabel}");
                     break;
                 case "GET_ARTICLE_FAIL_":
                     break;
