@@ -108,16 +108,15 @@
                     "oId": ${article.oId},
                     "commentContent": $("#comment").val()
                 };
-                jsonRpc.commentService.addComment(function (result, error) {
-                    switch (result.sc) {
-                        case "COMMENT_ARTICLE_SUCC":
-                            window.location.reload();
-                            $("#comment").val("").focus();
-                            break;
-                        default:
-                            break;
-                    }
-                }, requestJSONObject);
+                var result = jsonRpc.commentService.addComment(requestJSONObject);
+                switch (result.sc) {
+                    case "COMMENT_ARTICLE_SUCC":
+                        window.location.reload();
+                        $("#comment").val("").focus();
+                        break;
+                    default:
+                        break;
+                }
             }
 
             $("#comment").keypress(function (event) {

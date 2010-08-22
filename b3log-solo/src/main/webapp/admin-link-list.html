@@ -140,18 +140,17 @@
             "oId": event.data.id[0]
         };
 
-        jsonRpc.linkService.getLink(function (result, error) {
-            switch (result.sc) {
-                case "GET_LINK_SUCC":
-                    $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
-                    $("#updateLinkAddress").val(result.link.linkAddress);
-                    break;
-                case "GET_LINK_FAIL_":
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
+        var result = jsonRpc.linkService.getLink(requestJSONObject);
+        switch (result.sc) {
+            case "GET_LINK_SUCC":
+                $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
+                $("#updateLinkAddress").val(result.link.linkAddress);
+                break;
+            case "GET_LINK_FAIL_":
+                break;
+            default:
+                break;
+        }
     }
 
     var deleteLink = function (event) {
@@ -162,19 +161,18 @@
                 "oId": event.data.id[0]
             };
 
-            jsonRpc.linkService.removeLink(function (result, error) {
-                switch (result.sc) {
-                    case "REMOVE_LINK_SUCC":
-                        $("#tipMsg").text("${removeSuccLabel}");
-                        getLinkList(1);
-                        break;
-                    case "REMOVE_LINK_FAIL_":
-                        $("#tipMsg").text("${removeFailLabel}");
-                        break;
-                    default:
-                        break;
-                }
-            }, requestJSONObject);
+            var result = jsonRpc.linkService.removeLink(requestJSONObject);
+            switch (result.sc) {
+                case "REMOVE_LINK_SUCC":
+                    $("#tipMsg").text("${removeSuccLabel}");
+                    getLinkList(1);
+                    break;
+                case "REMOVE_LINK_FAIL_":
+                    $("#tipMsg").text("${removeFailLabel}");
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -185,47 +183,46 @@
             "paginationPageSize": paginationPageSize,
             "paginationWindowSize": 10
         };
-        jsonRpc.linkService.getLinks(function (result, error) {
-            switch (result.sc) {
-                case "GET_LINKS_SUCC":
-                    var links = result.links;
-                    var linkData = [];
-                    linksLength = links.length;
+        var result = jsonRpc.linkService.getLinks(requestJSONObject);
+        switch (result.sc) {
+            case "GET_LINKS_SUCC":
+                var links = result.links;
+                var linkData = [];
+                linksLength = links.length;
 
-                    for (var i = 0; i < links.length; i++) {
-                        linkData[i] = {};
-                        linkData[i].selected = false;
-                        linkData[i].linkTitle = links[i].linkTitle;
-                        linkData[i].linkAddress = links[i].linkAddress;
-                        linkData[i].update = "update";
-                        linkData[i].deleted = "delete";
-                        linkData[i].id = links[i].oId;
+                for (var i = 0; i < links.length; i++) {
+                    linkData[i] = {};
+                    linkData[i].selected = false;
+                    linkData[i].linkTitle = links[i].linkTitle;
+                    linkData[i].linkAddress = links[i].linkAddress;
+                    linkData[i].update = "update";
+                    linkData[i].deleted = "delete";
+                    linkData[i].id = links[i].oId;
+                }
+
+                $("#linkList").table({
+                    update:{
+                        data: linkData
                     }
+                });
 
-                    $("#linkList").table({
-                        update:{
-                            data: linkData
-                        }
-                    });
-
-                    if (result.pagination.paginationPageCount === 0) {
-                        pageCount = 1;
-                    } else {
-                        pageCount = result.pagination.paginationPageCount;
-                    }
+                if (result.pagination.paginationPageCount === 0) {
+                    pageCount = 1;
+                } else {
+                    pageCount = result.pagination.paginationPageCount;
+                }
                     
-                    linkPagination.paginate({
-                        update: {
-                            currentPage: pageNum,
-                            pageCount: pageCount
-                        }
-                    });
+                linkPagination.paginate({
+                    update: {
+                        currentPage: pageNum,
+                        pageCount: pageCount
+                    }
+                });
                
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
+                break;
+            default:
+                break;
+        }
     }
     getLinkList(1);
 
@@ -237,17 +234,16 @@
                 "linkAddress": $("#updateLinkAddress").val()
             }
         };
-        jsonRpc.linkService.updateLink(function (result, error) {
-            switch (result.sc) {
-                case "UPDATE_LINK_SUCC":
-                    linkDialog.dialog("close");
-                    $("#tipMsg").text("${updateSuccLabel}");
-                    getLinkList(currentPage);
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
+        var result = jsonRpc.linkService.updateLink(requestJSONObject);
+        switch (result.sc) {
+            case "UPDATE_LINK_SUCC":
+                linkDialog.dialog("close");
+                $("#tipMsg").text("${updateSuccLabel}");
+                getLinkList(currentPage);
+                break;
+            default:
+                break;
+        }
     }
 
     var submitLink = function () {
@@ -257,22 +253,21 @@
                 "linkAddress": $("#linkAddress").val()
             }
         };
-        jsonRpc.linkService.addLink(function (result, error) {
-            switch (result.sc) {
-                case "ADD_LINK_SUCC":
-                    $("#tipMsg").text("${addSuccLabel}");
-                    $("#linkTitle").val("");
-                    $("#linkAddress").val("");
+        var result = jsonRpc.linkService.addLink(requestJSONObject);
+        switch (result.sc) {
+            case "ADD_LINK_SUCC":
+                $("#tipMsg").text("${addSuccLabel}");
+                $("#linkTitle").val("");
+                $("#linkAddress").val("");
 
-                    if (linksLength === paginationPageSize) {
-                        pageCount++;
-                    }
+                if (linksLength === paginationPageSize) {
+                    pageCount++;
+                }
                     
-                    getLinkList(pageCount);
-                    break;
-                default:
-                    break;
-            }
-        }, requestJSONObject);
+                getLinkList(pageCount);
+                break;
+            default:
+                break;
+        }
     }
 </script>
