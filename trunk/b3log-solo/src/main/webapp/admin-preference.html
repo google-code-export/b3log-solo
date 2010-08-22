@@ -20,7 +20,7 @@
                 <tbody>
                     <tr>
                         <th width="124px">
-                            首页 Tag 显示数：
+                            ${indexTagDisplayCnt1Label}
                         </th>
                         <td>
                             <input id="mostUsedTagDisplayCount"/>
@@ -28,7 +28,7 @@
                     </tr>
                     <tr>
                         <th>
-                            最新文章显示数目:
+                            ${indexRecentArticleDisplayCnt1Label}
                         </th>
                         <td>
                             <input id="recentArticleDisplayCount"/>
@@ -36,7 +36,7 @@
                     </tr>
                     <tr>
                         <th>
-                            评论最多文章数目:
+                            ${indexMostCommentArticleDisplayCnt1Label}
                         </th>
                         <td>
                             <input id="mostCommentArticleDisplayCount"/>
@@ -44,7 +44,7 @@
                     </tr>
                     <tr>
                         <th>
-                            文章列表显示数:
+                            ${pageSize1Label}
                         </th>
                         <td>
                             <input id="articleListDisplayCount"/>
@@ -52,7 +52,7 @@
                     </tr>
                     <tr>
                         <th>
-                            分页大小:
+                            ${windowSize1Label}
                         </th>
                         <td>
                             <input id="articleListPaginationWindowSize"/>
@@ -60,7 +60,7 @@
                     </tr>
                     <tr>
                         <th>
-                            博客标题:
+                            ${blogTitle1Label}
                         </th>
                         <td>
                             <input id="blogTitle"/>
@@ -68,7 +68,7 @@
                     </tr>
                     <tr>
                         <th>
-                            博客子标题:
+                            ${blogSubtitle1Label}
                         </th>
                         <td>
                             <input id="blogSubtitle"/>
@@ -76,7 +76,7 @@
                     </tr>
                     <tr>
                         <th colspan="2">
-                            <button onclick="changePreference();">submit</button>
+                            <button onclick="changePreference();">${saveLabel}</button>
                         </th>
                     </tr>
                 </tbody>
@@ -85,7 +85,7 @@
         <div id="skinsPanel" class="none">
             <div id="skinMain">
             </div>
-            <button onclick="changePreference();">submit</button>
+            <button onclick="changePreference();">${saveLabel}</button>
         </div>
     </div>
 </div>
