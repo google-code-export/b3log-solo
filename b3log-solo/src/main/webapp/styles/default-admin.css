@@ -62,3 +62,10 @@
     margin:24px auto;
     width:100px;
 }
+
+/* preference */
+#changeSkinPanel {
+    min-width: 300px;
+    width: 49%;
+    margin: 12px 12px 12px 0;
+}

@@ -6,29 +6,27 @@
         <span style="color: red;">O</span>
         <span style="color: blue;">G</span>
     </a>
-    <#if loginURL??>
-    <a href="${loginURL}">TODO: LOGIN</a>
-    <#else>
-    <a href="${logoutURL}">TODO: LOGOUT</a>
-    <span  id="admin"><a href="admin-index.do">${adminLabel}</a> |&nbsp;</span>
-    </#if>
     <span class="right">
-        <span>
-            <select onchange="setLanguage(this);">
-                <option>
-                    ${langLabel}
-                </option>
-                <option>
-                    chinese
-                </option>
-                <option>
-                    english
-                </option>
-            </select>
-        </span>
+        <#if loginURL??>
+        <a href="${loginURL}">{LOGIN}</a>&nbsp;|&nbsp;
+        <#else>
+        <a href="${logoutURL}">{LOGOUT}</a>&nbsp;|&nbsp;
+        <a href="admin-index.do">${adminLabel}</a>&nbsp;|&nbsp;
+        </#if>
+        <select onchange="setLanguage(this);">
+            <option>
+                ${langLabel}
+            </option>
+            <option>
+                chinese
+            </option>
+            <option>
+                english
+            </option>
+        </select>
     </span>
-    <div class="clear"></div>
 </div>
+<div class="clear"></div>
 <script type="text/javascript">
     var setLanguage = function (it) {
         //alert(it.value);
