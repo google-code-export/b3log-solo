@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Tag-Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 12, 2010
+ * @version 1.0.0.2, Aug 23, 2010
  */
 public interface TagArticleRepository extends Repository {
 
@@ -55,15 +55,22 @@ public interface TagArticleRepository extends Repository {
      * MUST greater then 0
      * @return for example
      * <pre>
-     * [{
+     * {
+     *     "pagination": {
+     *       "paginationPageCount": 88250
+     *     },
+     *     "rslts": [{
      *         "oId": "",
      *         "tag_oId": tagId,
      *         "article_oId": ""
-     * }, ....], returns an empty list if not found
+     *     }, ....]
+     * }, if not found any objects by the specified current page number and
+     * page size, returns pagination info as the only attribute of the returned
+     * json object
      * </pre>
      * @throws RepositoryException repository exception
      */
-    List<JSONObject> getByTagId(final String tagId,
-                                final int currentPageNum,
-                                final int pageSize) throws RepositoryException;
+    JSONObject getByTagId(final String tagId,
+                          final int currentPageNum,
+                          final int pageSize) throws RepositoryException;
 }

@@ -20,16 +20,17 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 import com.google.appengine.api.datastore.QueryResultList;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.Pagination;
 import org.b3log.solo.model.Article;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -53,26 +54,40 @@ public class ArchiveDateArticleGAERepository extends AbstractGAERepository
     }
 
     @Override
-    public List<JSONObject> getByArchiveDateId(final String archiveDateId,
-                                               final int currentPageNum,
-                                               final int pageSize)
+    public JSONObject getByArchiveDateId(final String archiveDateId,
+                                         final int currentPageNum,
+                                         final int pageSize)
             throws RepositoryException {
         final Query query = new Query(getName());
         query.addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, archiveDateId);
 
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final int offset = pageSize * (currentPageNum - 1);
-        final QueryResultList<Entity> queryResultList =
-                preparedQuery.asQueryResultList(
-                withOffset(offset).limit(pageSize));
+        final int count = preparedQuery.countEntities();
+        final int pageCount =
+                (int) Math.ceil((double) count / (double) pageSize);
 
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        for (final Entity entity : queryResultList) {
-            final Map<String, Object> properties = entity.getProperties();
-            final JSONObject e = new JSONObject(properties);
+        final JSONObject ret = new JSONObject();
+        final JSONObject pagination = new JSONObject();
+        try {
+            ret.put(Pagination.PAGINATION, pagination);
+            pagination.put(Pagination.PAGINATION, pagination);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            final int offset = pageSize * (currentPageNum - 1);
+            final QueryResultList<Entity> queryResultList =
+                    preparedQuery.asQueryResultList(
+                    withOffset(offset).limit(pageSize));
+            final JSONArray results = new JSONArray();
+            ret.put(Keys.RESULTS, results);
+            for (final Entity entity : queryResultList) {
+                final Map<String, Object> properties = entity.getProperties();
+                final JSONObject e = new JSONObject(properties);
 
-            ret.add(e);
+                results.put(e);
+            }
+        } catch (final JSONException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RepositoryException(e);
         }
 
         return ret;

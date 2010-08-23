@@ -44,6 +44,7 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -130,15 +131,19 @@ public final class TagArticlesAction extends AbstractAction {
             final int windowSize = preference.getInt(
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-            final List<JSONObject> tagArticleRelations =
+            final JSONObject result =
                     tagArticleRepository.getByTagId(tagId,
                                                     currentPageNum,
                                                     pageSize);
-
+            final int pageCount = result.getJSONObject(
+                    Pagination.PAGINATION).getInt(
+                    Pagination.PAGINATION_PAGE_COUNT);
+            final JSONArray tagArticleRelations =
+                    result.getJSONArray(Keys.RESULTS);
             final List<JSONObject> articles = new ArrayList<JSONObject>();
-            for (int i = 0; i < tagArticleRelations.size(); i++) {
+            for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation =
-                        tagArticleRelations.get(i);
+                        tagArticleRelations.getJSONObject(i);
                 final String articleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
@@ -147,9 +152,7 @@ public final class TagArticlesAction extends AbstractAction {
             }
 
             Collections.sort(articles, new ArticleUpdateDateComparator());
-
-            final int pageCount = (int) Math.ceil((double) articles.size()
-                                                  / (double) pageSize);
+         
             LOGGER.trace("Paginate tag-articles[currentPageNum="
                          + currentPageNum + ", pageSize=" + pageSize
                          + ", pageCount=" + pageCount + ", windowSize="

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository;
 
-import java.util.List;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
@@ -38,17 +37,24 @@ public interface ArchiveDateArticleRepository extends Repository {
      * MUST greater then 0
      * @return for example
      * <pre>
-     * [{
-     *      "oId": "",
-     *      "archiveDate_oId": "",
-     *      "article_oId": ""
-     * }, ....], returns an empty list if not found
+     * {
+     *     "pagination": {
+     *       "paginationPageCount": 88250
+     *     },
+     *     "rslts": [{
+     *         "oId": "",
+     *         "archiveDate_oId": "",
+     *         "article_oId": ""
+     *     }, ....]
+     * }, if not found any objects by the specified current page number and
+     * page size, returns pagination info as the only attribute of the returned
+     * json object
      * </pre>
      * @throws RepositoryException repository exception
      */
-    List<JSONObject> getByArchiveDateId(final String archiveDateId,
-                                        final int currentPageNum,
-                                        final int pageSize)
+    JSONObject getByArchiveDateId(final String archiveDateId,
+                                  final int currentPageNum,
+                                  final int pageSize)
             throws RepositoryException;
 
     /**
