@@ -79,7 +79,7 @@
         $("#loading").loading({
             imgURL: "images/ajax-loader.gif"
         });
-        $("#articlesPanel").hide(800);
+        $("#articlesPanel").hide();
 
         var requestJSONObject = {
             "blogSyncCSDNBlogUserName": userName,
@@ -88,8 +88,6 @@
         
         var result = 
             jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(requestJSONObject);
-
-        $("#articlesPanel").show();
 
         var articles = result.blogSyncCSDNBlogArticles;
         if (articles.length > 0) {
@@ -114,6 +112,7 @@
             $("#tipMsg").text("${getFailLabel}");
         }
         $("#loading").loading("close");
+        $("#articlesPanel").show();
     }
     
     var sync = function () {
