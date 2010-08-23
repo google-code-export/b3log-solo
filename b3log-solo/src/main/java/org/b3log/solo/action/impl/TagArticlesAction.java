@@ -47,7 +47,7 @@ import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
- * Get articles by tag action. tag-article.html.
+ * Get articles by tag action. tag-articles.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.6, Aug 21, 2010
