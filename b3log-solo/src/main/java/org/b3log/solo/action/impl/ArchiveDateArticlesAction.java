@@ -43,6 +43,7 @@ import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -126,14 +127,18 @@ public final class ArchiveDateArticlesAction extends AbstractAction {
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
 
-            final List<JSONObject> archiveDateArticleRelations =
+            final JSONObject result =
                     archiveDateArticleRepository.getByArchiveDateId(
                     archiveDateId, currentPageNum, pageSize);
-
+            final int pageCount = result.getJSONObject(
+                    Pagination.PAGINATION).getInt(
+                    Pagination.PAGINATION_PAGE_COUNT);
+            final JSONArray archiveDateArticleRelations = result.getJSONArray(
+                    Keys.RESULTS);
             final List<JSONObject> articles = new ArrayList<JSONObject>();
-            for (int i = 0; i < archiveDateArticleRelations.size(); i++) {
+            for (int i = 0; i < archiveDateArticleRelations.length(); i++) {
                 final JSONObject archiveDateArticleRelation =
-                        archiveDateArticleRelations.get(i);
+                        archiveDateArticleRelations.getJSONObject(i);
                 final String articleId =
                         archiveDateArticleRelation.getString(Article.ARTICLE
                                                              + "_"
@@ -144,8 +149,6 @@ public final class ArchiveDateArticlesAction extends AbstractAction {
 
             Collections.sort(articles, new ArticleUpdateDateComparator());
 
-            final int pageCount = (int) Math.ceil((double) articles.size()
-                                                  / (double) pageSize);
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
@@ -154,7 +157,7 @@ public final class ArchiveDateArticlesAction extends AbstractAction {
             ret.put(Article.ARTICLES, articles);
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-            ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
+            ret.put(Common.ACTION_NAME, Common.ARCHIVED_DATE_ARTICLES);
             ret.put(Keys.OBJECT_ID, archiveDateId);
             final String skinDirName = preferences.getPreference().
                     getString(Skin.SKIN_DIR_NAME);
