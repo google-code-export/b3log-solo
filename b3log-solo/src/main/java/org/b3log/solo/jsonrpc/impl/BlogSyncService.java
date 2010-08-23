@@ -238,7 +238,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                 JSONObject article = null;
                 if (csdnTmpImported) {
                     article = csdnBlogArticleRepository.get(articleId);
-                } else { // Not imported yet, get the article from CSDN
+                } else { // Not retrieved yet, get the article from CSDN
                     final CSDNBlogArticle csdnBlogArticle =
                             csdnBlog.getArticleById(csdnBlogUserName,
                                                     articleId);
