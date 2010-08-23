@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 21, 2010
+ * @version 1.0.0.5, Aug 23, 2010
  */
 public final class BlogSyncService extends AbstractJSONRpcService {
 
@@ -227,18 +227,29 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                     csdnBlog.getArticleIdsByArchiveDate(csdnBlogUserName,
                                                         archiveDate);
 
-            final JSONArray csdnBlogArticles = new JSONArray();
-            ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLES, csdnBlogArticles);
+            final JSONArray articles = new JSONArray();
+            ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLES, articles);
             for (final String articleId : articleIds) {
-                final CSDNBlogArticle csdnBlogArticle =
-                        csdnBlog.getArticleById(csdnBlogUserName,
-                                                articleId);
-                if (null != csdnBlogArticle) {
-                    final JSONObject article = csdnBlogArticle.toJSONObject();
-                    csdnBlogArticles.put(article);
+                final boolean imported = articleRepository.has(articleId);
+                final boolean csdnTmpImported =
+                        csdnBlogArticleRepository.has(articleId);
+                // assert imported == csdnTmpImported for consistency
 
-                    csdnBlogArticleRepository.add(article);
+                JSONObject article = null;
+                if (csdnTmpImported) {
+                    article = csdnBlogArticleRepository.get(articleId);
+                } else { // Not imported yet, get the article from CSDN
+                    final CSDNBlogArticle csdnBlogArticle =
+                            csdnBlog.getArticleById(csdnBlogUserName,
+                                                    articleId);
+                    if (null != csdnBlogArticle) {
+                        article = csdnBlogArticle.toJSONObject();
+                        csdnBlogArticleRepository.add(article);
+                    }
                 }
+
+                article.put(BlogSync.BLOG_SYNC_IMPORTED, false);
+                articles.put(article);
             }
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);

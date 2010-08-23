@@ -49,6 +49,11 @@
                 index: "date",
                 width: 100
             }, {
+                textAlign: "center",
+                name: "${importedLabel}",
+                index: "imported",
+                width: 50
+            }, {
                 visible: false,
                 index: "id"
             }]
@@ -97,6 +102,7 @@
                 articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
                 articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
                 articleData[i].id = articles[i].blogSyncCSDNBlogArticleId;
+                articleData[i].imported = articles[i].blogSyncImported;
             }
 
             $("#articleList").table({
