@@ -248,7 +248,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                     }
                 }
 
-                article.put(BlogSync.BLOG_SYNC_IMPORTED, false);
+                article.put(BlogSync.BLOG_SYNC_IMPORTED, imported);
                 articles.put(article);
             }
         } catch (final Exception e) {
