@@ -18,6 +18,8 @@ package org.b3log.solo.repository.impl;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
+import com.google.appengine.api.datastore.QueryResultList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +36,7 @@ import org.json.JSONObject;
  * Archive date-Article relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 19, 2010
+ * @version 1.0.0.1, Aug 23, 2010
  */
 public class ArchiveDateArticleGAERepository extends AbstractGAERepository
         implements ArchiveDateArticleRepository {
@@ -51,15 +53,22 @@ public class ArchiveDateArticleGAERepository extends AbstractGAERepository
     }
 
     @Override
-    public List<JSONObject> getByArchiveDate(final String archiveDate)
+    public List<JSONObject> getByArchiveDateId(final String archiveDateId,
+                                               final int currentPageNum,
+                                               final int pageSize)
             throws RepositoryException {
         final Query query = new Query(getName());
-        query.addFilter(ArchiveDate.ARCHIVE_DATE,
-                        Query.FilterOperator.EQUAL, archiveDate);
+        query.addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
+                        Query.FilterOperator.EQUAL, archiveDateId);
+
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final int offset = pageSize * (currentPageNum - 1);
+        final QueryResultList<Entity> queryResultList =
+                preparedQuery.asQueryResultList(
+                withOffset(offset).limit(pageSize));
 
         final List<JSONObject> ret = new ArrayList<JSONObject>();
-        for (final Entity entity : preparedQuery.asIterable()) {
+        for (final Entity entity : queryResultList) {
             final Map<String, Object> properties = entity.getProperties();
             final JSONObject e = new JSONObject(properties);
 

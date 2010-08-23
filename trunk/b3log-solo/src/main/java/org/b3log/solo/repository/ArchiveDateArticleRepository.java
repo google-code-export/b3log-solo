@@ -24,24 +24,31 @@ import org.json.JSONObject;
  * Archive date-Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 19, 2010
+ * @version 1.0.0.1, Aug 23, 2010
  */
 public interface ArchiveDateArticleRepository extends Repository {
 
     /**
-     * Gets archive date-article relations by the specified archive date string.
+     * Gets archive date-article relations by the specified archive date id.
      *
-     * @param archiveDate the specified archive date string(yyyy/MM)
+     * @param archiveDateId the specified archive date id
+     * @param currentPageNum the specified current page number, MUST greater
+     * then 0
+     * @param pageSize the specified page size(count of a page contains objects),
+     * MUST greater then 0
      * @return for example
      * <pre>
      * [{
-     *         "archiveDate": "2009/10",
-     *         "article_oId": ""
+     *      "oId": "",
+     *      "archiveDate_oId": "",
+     *      "article_oId": ""
      * }, ....], returns an empty list if not found
      * </pre>
      * @throws RepositoryException repository exception
      */
-    List<JSONObject> getByArchiveDate(final String archiveDate)
+    List<JSONObject> getByArchiveDateId(final String archiveDateId,
+                                        final int currentPageNum,
+                                        final int pageSize)
             throws RepositoryException;
 
     /**
@@ -59,7 +66,4 @@ public interface ArchiveDateArticleRepository extends Repository {
      */
     JSONObject getByArticleId(final String articleId)
             throws RepositoryException;
-
-    
-
 }
