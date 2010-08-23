@@ -126,6 +126,7 @@ public final class SoloServletListener extends AbstractServletListener {
         preference.put(SKIN_NAME, skinName);
 
         final Set<String> skinDirNames = skins.getSkinDirNames();
+        LOGGER.debug("Loaded skins[dirNames=" + skinDirNames + "]");
         final JSONArray skinArray = new JSONArray();
         for (final String dirName : skinDirNames) {
             final JSONObject skin = new JSONObject();
