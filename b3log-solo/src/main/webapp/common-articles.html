@@ -59,19 +59,26 @@
 </div>
 </#if>
 <script type="text/javascript">
-    if (window.location.search === "") {
-        localStorage.setItem("currentPage", 1);
-    }
-
-    $(".pagination a").click(function () {
-        localStorage.setItem("currentPage", $(this).text());
-    });
-    
-    $(".pagination a").each(function () {
-        var $it = $(this);
-        $it.removeClass("selected");
-        if ($it.text() === localStorage.getItem("currentPage")) {
-            $it.addClass("selected");
+    (function () {
+        var local = window.location.search.substring(1);
+        if (local === "") {
+            localStorage.setItem("currentPage", 1);
+        } else {
+            var paramURL = local.split("&");
+            for (var i = 0; i < paramURL.length; i++) {
+                if (paramURL[i].split("=")[0] === "paginationCurrentPageNum") {
+                    localStorage.setItem("currentPage", paramURL[i].split("=")[1]);
+                }
+            }
         }
-    });
+
+        $(".pagination a").each(function () {
+            var $it = $(this);
+            $it.removeClass("selected");
+            if ($it.text() === localStorage.getItem("currentPage")) {
+                $it.addClass("selected");
+            }
+        });
+    })();
+    
 </script>

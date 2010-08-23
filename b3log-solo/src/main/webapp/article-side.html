@@ -22,8 +22,7 @@
             <ul>
                 <#list mostUsedTags as tag>
                 <li>
-                    
-                    <a name="${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}">
+                    <a name="${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
                         ${tag.tagTitle}
                     </a>
                 </li>
