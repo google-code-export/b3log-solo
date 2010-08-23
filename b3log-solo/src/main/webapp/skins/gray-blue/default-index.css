@@ -6,7 +6,7 @@
         user blog gray-blue style.
 */
 body {
-    background-color:#D9D6CB;
+    background-color:#303B41;
     font:75%/150% verdana,sans-serif;
 }
 .content {
@@ -16,8 +16,8 @@ body {
 }
 
 .header {
-    background-color:gray;
-    height:106px;
+    background-image: url(banner.jpg);
+    height:150px;
 }
 
 .title {
@@ -33,7 +33,8 @@ body {
 .sub-title {
     font-size:15px;
     padding:0.2em 1.6em;
-    color: #FFFFFF;
+    color: #075181;
+    font-weight: bold;
 }
 
 .header-navi {
@@ -47,11 +48,11 @@ body {
 }
 
 .header-navi a:hover {
-    color: #FF0000;
+    text-decoration: underline;
 }
 
 .body {
-    background-color: #EEEEEE;
+    background-color: #FFFFFF;
 }
 
 .side {
