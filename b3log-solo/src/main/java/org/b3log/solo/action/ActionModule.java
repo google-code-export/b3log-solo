@@ -25,6 +25,7 @@ import org.b3log.latke.client.AbstractClientModule;
 import org.b3log.latke.client.action.DoNothingAction;
 import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.FeedServlet;
+import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.auth.AuthFilter;
 
 /**
@@ -32,7 +33,7 @@ import org.b3log.solo.auth.AuthFilter;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 21, 2010
+ * @version 1.0.0.3, Aug 23, 2010
  */
 public final class ActionModule extends AbstractClientModule {
 
@@ -54,6 +55,9 @@ public final class ActionModule extends AbstractClientModule {
 
         bind(TagArticlesAction.class).in(Scopes.SINGLETON);
         serve("/tag-articles.do").with(TagArticlesAction.class);
+
+        bind(ArchiveDateArticlesAction.class).in(Scopes.SINGLETON);
+        serve("/archive-date-articles.do").with(ArchiveDateArticlesAction.class);
 
         bind(TagsAction.class).in(Scopes.SINGLETON);
         serve("/tags.do").with(TagsAction.class);
