@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all blog sync model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 19, 2010
+ * @version 1.0.0.2, Aug 23, 2010
  */
 public final class BlogSync {
 
@@ -83,6 +83,11 @@ public final class BlogSync {
      */
     public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS =
             "blogSyncCSDNBlogArticleIds";
+    /**
+     * Key of imported flag.
+     */
+    public static final String BLOG_SYNC_IMPORTED =
+            "blogSyncImported";
 
     /**
      * Private default constructor.
