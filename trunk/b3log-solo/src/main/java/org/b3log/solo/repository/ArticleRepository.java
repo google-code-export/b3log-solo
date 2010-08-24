@@ -61,7 +61,7 @@ public interface ArticleRepository extends Repository {
      * @param articleId the specified article id
      * @return an article id, {@code null} if not found
      */
-    String getPrevisouArticleId(final String articleId);
+    String getPreviousArticleId(final String articleId);
 
     /**
      * Gets the id of the next article((by create date, oId) by the specified

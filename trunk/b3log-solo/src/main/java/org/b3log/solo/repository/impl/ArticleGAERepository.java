@@ -116,7 +116,7 @@ public class ArticleGAERepository extends AbstractGAERepository
     }
 
     @Override
-    public String getPrevisouArticleId(final String articleId) {
+    public String getPreviousArticleId(final String articleId) {
         final Query query = new Query(getName());
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.LESS_THAN, articleId);
