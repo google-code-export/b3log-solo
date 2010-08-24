@@ -15,8 +15,12 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.urlfetch.HTTPResponse;
+import com.google.appengine.api.urlfetch.URLFetchService;
+import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -72,6 +76,21 @@ public final class CommentService extends AbstractJSONRpcService {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * URL fetch service.
+     */
+    private URLFetchService urlFetchService =
+            URLFetchServiceFactory.getURLFetchService();
+    /**
+     * Google profile retrieval URL string.
+     */
+    private static final String GOOGLE_PROFILE_RETRIEVAL =
+            "http://www.googleapis.com/buzz/v1/people/{userId}/@self?alt=json";
+    /**
+     * Default user thumbnail.
+     */
+    private static final String DEFAULT_USER_THUMBNAIL =
+            "default-user-thumbnail.png";
 
     /**
      * Gets comments of an article specified by the article id.
@@ -89,6 +108,9 @@ public final class CommentService extends AbstractJSONRpcService {
      * {
      *     "comments": [{
      *         "oId": "",
+     *         "commentName": "",
+     *         "thumbnailUrl": "",
+     *         "commentURL": "",
      *         "commentContent": "",
      *         "commentDate": "",
      *      }, ....]
@@ -118,9 +140,10 @@ public final class CommentService extends AbstractJSONRpcService {
                         articleCommentRelations.get(i);
                 final String commentId =
                         articleCommentRelation.getString(Comment.COMMENT + "_"
-                                                         + Keys.OBJECT_ID);
+                        + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
+                comment.remove(Comment.COMMENT_EMAIL); // Remove email
                 comments.add(comment);
             }
 
@@ -183,6 +206,8 @@ public final class CommentService extends AbstractJSONRpcService {
             comment.put(Comment.COMMENT_DATE,
                         Keys.SIMPLE_DATE_FORMAT.format(
                     System.currentTimeMillis()));
+            setCommentThumbnailURL(comment);
+
             final String commentId = commentRepository.add(comment);
             // Step 2: Add article-comment relation
             final JSONObject articleCommentRelation = new JSONObject();
@@ -263,5 +288,49 @@ public final class CommentService extends AbstractJSONRpcService {
         }
 
         return ret;
+    }
+
+    /**
+     * Sets commenter thumbnail URL for the specified comment.
+     *
+     * @param comment the specified comment
+     * @throws Exception exception
+     */
+    private void setCommentThumbnailURL(final JSONObject comment)
+            throws Exception {
+        final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
+        final String id = commentEmail.split("@")[0];
+        final String domain = commentEmail.split("@")[1];
+
+
+        if ("gmail.com".equals(domain.toLowerCase())) {
+            final URL googleProfileURL =
+                    new URL(GOOGLE_PROFILE_RETRIEVAL.replace("{userId}", id));
+            // XXX: use async url fetch instead????
+            final HTTPResponse response =
+                    urlFetchService.fetch(googleProfileURL);
+            final int statusCode = response.getResponseCode();
+
+            if (HttpServletResponse.SC_OK == statusCode) {
+                final byte[] content = response.getContent();
+                final String profileJSONString = new String(content);
+                LOGGER.trace("Google profile[jsonString=" + profileJSONString
+                        + "]");
+                final JSONObject profile = new JSONObject(profileJSONString);
+                final JSONObject profileData = profile.getJSONObject("data");
+                final String thumbnailUrl = profileData.getString("thumbnailUrl");
+
+                comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailUrl);
+            } else {
+                LOGGER.warn("Can not fetch google profile[userId=" + id + ", "
+                        + "statusCode=" + statusCode + "]");
+            }
+        } else {
+            LOGGER.warn("Not supported yet for comment thumbnail excepts Gmail "
+                    + "user");
+            comment.put(Comment.COMMENT_THUMBNAIL_URL, "/images/"
+                    + DEFAULT_USER_THUMBNAIL);
+            // TODO: process other comment thumbnail URL
+        }
     }
 }

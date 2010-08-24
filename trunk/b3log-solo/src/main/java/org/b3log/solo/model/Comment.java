@@ -51,6 +51,10 @@ public final class Comment {
      * Key of comment date.
      */
     public static final String COMMENT_DATE = "commentDate";
+    /**
+     * Key of comment thumbnail URL.
+     */
+    public static final String COMMENT_THUMBNAIL_URL = "commentThumbnailURL";
 
     /**
      * Private default constructor.
