@@ -220,7 +220,8 @@ public final class BlogSyncService extends AbstractJSONRpcService {
             for (final String csdnArticleId : csdnArticleIds) {
                 final String soloArticleId = csdnBlogArticleSoloArticleRepository.
                         getSoloArticleId(csdnArticleId);
-
+                LOGGER.trace("CSDN article[id=" + csdnArticleId + "] "
+                             + "Solo article[id=" + soloArticleId + "]");
                 final boolean imported = articleRepository.has(soloArticleId);
                 final boolean csdnTmpImported =
                         csdnBlogArticleRepository.has(csdnArticleId);
@@ -239,10 +240,8 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                                                     csdnArticleId);
                     if (null != csdnBlogArticle) {
                         article = csdnBlogArticle.toJSONObject();
-                        csdnBlogArticleRepository.add(article);
-
-                        final Date createDate = (Date) article.get(
-                                BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE);
+                        final String csdnBlogArticleImportedId =
+                                csdnBlogArticleRepository.add(article);
 
                         final JSONObject csdnArticleSoloArticleRelation =
                                 new JSONObject();
@@ -250,7 +249,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                                 BLOG_SYNC_CSDN_BLOG_ARTICLE_ID, csdnArticleId);
                         csdnArticleSoloArticleRelation.put(
                                 Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                String.valueOf(createDate.getTime())); // Solo article id
+                                csdnBlogArticleImportedId);
                         csdnBlogArticleSoloArticleRepository.add(
                                 csdnArticleSoloArticleRelation);
                         LOGGER.debug("Added CSDN blog article-solo article relation["
