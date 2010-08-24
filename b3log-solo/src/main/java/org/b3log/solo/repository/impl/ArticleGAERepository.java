@@ -170,11 +170,6 @@ public class ArticleGAERepository extends AbstractGAERepository
                             article.get(Article.ARTICLE_CREATE_DATE));
             }
 
-            // Set tags
-            article.put(Article.ARTICLE_TAGS_REF,
-                        article.get(
-                    BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES));
-
             // Remove external attributes, such as "blogSync...."
             article.remove(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ABSTRACT);
             article.remove(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES);
