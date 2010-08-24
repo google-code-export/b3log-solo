@@ -15,11 +15,11 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 16, 2010
+ * @version 1.0.0.2, Aug 23, 2010
  */
 final class ArchivePageReader {
 
@@ -72,8 +72,8 @@ final class ArchivePageReader {
     private void connect() {
         try {
             final URL url = new URL("http://blog.csdn.net/" + userId
-                    + "/archive/"
-                    + archiveDate + ".aspx");
+                                    + "/archive/"
+                                    + archiveDate + ".aspx");
             connection = url.openConnection();
             connection.addRequestProperty(
                     "User-Agent",
@@ -86,25 +86,16 @@ final class ArchivePageReader {
     /**
      * Gets web page content.
      *
-     * @return content string
+     * @return content string, returns {@code null} if error
      */
     String getContent() {
-        BufferedReader bufferedReader = null;
-
-        final StringBuilder stringBuilder = new StringBuilder();
         try {
-            bufferedReader = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
-
-            String line = bufferedReader.readLine();
-            while (null != line) {
-                stringBuilder.append(line);
-                line = bufferedReader.readLine();
-            }
+            final InputStream inputStream = connection.getInputStream();
+            return IOUtils.toString(inputStream, "UTF-8");
         } catch (final IOException e) {
             LOGGER.error(e.getMessage(), e);
-        }
 
-        return stringBuilder.toString();
+            return null;
+        }
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
+import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Date;
 import java.util.HashSet;
@@ -83,7 +84,7 @@ public final class CSDNBlogTestCase {
      * {@linkplain CSDNBlog#getArticleIdsByArchiveDate(java.lang.String, java.lang.String)}
      * method.
      */
-    //@Test
+    @Test
     public void getArticleIdsByArchiveDate() {
         final CSDNBlog csdnBlog = new CSDNBlog();
         List<String> articleIds = csdnBlog.getArticleIdsByArchiveDate(
