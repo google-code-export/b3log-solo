@@ -214,22 +214,22 @@ public final class BlogSyncService extends AbstractJSONRpcService {
             ret.put(BLOG_SYNC_CSDN_BLOG_ARTICLES, articles);
             int retrievalCnt = 0;
             for (final String csdnArticleId : csdnArticleIds) {
-                final String soloArticleId = csdnBlogArticleSoloArticleRepository.
+                final String oId = csdnBlogArticleSoloArticleRepository.
                         getSoloArticleId(csdnArticleId);
                 LOGGER.trace("CSDN article[id=" + csdnArticleId + "] "
-                             + "Solo article[id=" + soloArticleId + "]");
-                final boolean imported = articleRepository.has(soloArticleId);
+                             + "Solo article[id=" + oId + "]");
+                final boolean imported = articleRepository.has(oId);
                 final boolean csdnTmpImported =
-                        csdnBlogArticleRepository.has(csdnArticleId);
+                        csdnBlogArticleRepository.has(oId);
                 // assert imported == csdnTmpImported for consistency
 
                 JSONObject article = null;
-                LOGGER.debug("CSDN blog article[id=" + csdnArticleId
+                LOGGER.debug("CSDN blog article[oId=" + oId
                              + "]'s status["
                              + "csdnTmpImported=" + csdnTmpImported
                              + ", imported=" + imported + "]");
                 if (csdnTmpImported) {
-                    article = csdnBlogArticleRepository.get(csdnArticleId);
+                    article = csdnBlogArticleRepository.get(oId);
                 } else { // Not retrieved yet, get the article from CSDN
                     final CSDNBlogArticle csdnBlogArticle =
                             csdnBlog.getArticleById(csdnBlogUserName,
