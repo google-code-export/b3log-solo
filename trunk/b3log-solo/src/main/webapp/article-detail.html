@@ -76,7 +76,9 @@
                         <#list articleComments as comment>
                         <div>
                             <div class="comment-title">
-                                ${comment.commentDate}
+                                <a href="" class="left">ss</a>
+                                <span class="right">${comment.commentDate}</span>
+                                <div class="clear"></div>
                             </div>
                             <div class="comment-body">
                                 ${comment.commentContent}
@@ -94,7 +96,7 @@
                                             ${commentName1Label}
                                         </td>
                                         <td>
-                                            <input id="commentName"/>
+                                            <input class="normalInput" id="commentName"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -102,7 +104,7 @@
                                             ${commentEmail1Label}
                                         </td>
                                         <td>
-                                            <input id="commentEmail"/>
+                                            <input class="normalInput" id="commentEmail"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -122,16 +124,16 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2" align="right">
-                                            <button onclick="submitComment();">{submit}</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
                                         <td>
                                             {Vaildate}
                                         </td>
                                         <td>
-                                            <input id="commentValidate"/>
+                                            <input class="normalInput" id="commentValidate"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <button onclick="submitComment();">{submit}</button>
                                         </td>
                                     </tr>
                                 </tbody>
