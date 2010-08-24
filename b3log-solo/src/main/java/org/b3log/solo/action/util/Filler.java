@@ -20,7 +20,6 @@ import com.google.inject.Inject;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.b3log.latke.repository.RepositoryException;
