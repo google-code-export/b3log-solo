@@ -135,6 +135,18 @@ body {
     margin-bottom: 24px;
 }
 
+.article-footer a {
+    background-color:#A6B510;
+    color:#FFFFFF;
+    margin-left:5px;
+    padding:2px 6px;
+    text-decoration:none;
+}
+
+.article-footer a:hover {
+    color: #FF7F00;
+}
+
 .article-create-date {
     color: #AAAAAA;
 }
@@ -162,8 +174,13 @@ body {
     border-top:1px solid #336699;
     margin:5px 0 6px;
     padding:3px 10px;
+    background-color: #F5F5F5;
 }
 
 .comment-body {
     margin:0 24px 12px;
+}
+
+#comment {
+    width: 100%;
 }
