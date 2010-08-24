@@ -18,7 +18,6 @@ package org.b3log.solo.jsonrpc.impl;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -132,13 +131,10 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                     Keys.OBJECT_IDS);
             final List<String> importedIds = new ArrayList<String>();
             for (int i = 0; i < articleIds.length(); i++) {
-                final String articleId = articleIds.getString(i);
-                final String csdnBlogArticleId =
-                        csdnBlogArticleSoloArticleRepository.
-                        getCSDNBlogArticleId(articleId);
+                final String oId = articleIds.getString(i);
 
                 final JSONObject csdnBlogArticle =
-                        csdnBlogArticleRepository.get(csdnBlogArticleId);
+                        csdnBlogArticleRepository.get(oId);
                 final JSONObject soloArticle = toSoloArticle(csdnBlogArticle);
 
                 final String categoriesString = csdnBlogArticle.getString(
@@ -149,7 +145,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                 articleUtils.addTagArticleRelation(tags, soloArticle);
 
                 articleRepository.importArticle(soloArticle);
-                importedIds.add(articleId);
+                importedIds.add(oId);
 
                 statistics.incBlogArticleCount();
 
@@ -265,9 +261,6 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                     }
                 }
 
-                final Date createDate = (Date) article.get(
-                        BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE);
-                article.put(Keys.OBJECT_ID, String.valueOf(createDate.getTime()));
                 article.put(BLOG_SYNC_IMPORTED, imported);
                 articles.put(article);
 
@@ -344,8 +337,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
             throws Exception {
         final JSONObject ret = new JSONObject();
 
-        ret.put(Keys.OBJECT_ID,
-                csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_ID));
+        ret.put(Keys.OBJECT_ID, Keys.OBJECT_ID);
         ret.put(Article.ARTICLE_TITLE,
                 csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE));
         ret.put(Article.ARTICLE_ABSTRACT,
