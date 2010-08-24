@@ -191,6 +191,7 @@ public final class ArticleAction extends AbstractAction {
                                                      + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
+            comment.remove(Comment.COMMENT_EMAIL); // Remove email 
             ret.add(comment);
         }
 
