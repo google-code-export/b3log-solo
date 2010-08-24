@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 23, 2010
+ * @version 1.0.0.6, Aug 24, 2010
  */
 public final class BlogSyncService extends AbstractJSONRpcService {
 
@@ -86,6 +86,10 @@ public final class BlogSyncService extends AbstractJSONRpcService {
      */
     @Inject
     private ArchiveDateUtils archiveDateUtils;
+    /**
+     * CSDN blog article retrieval count incremental.
+     */
+    public static final int CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 5;
 
     /**
      * Imports CSDN blog article by the specified request json object and http
@@ -229,6 +233,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
 
             final JSONArray articles = new JSONArray();
             ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLES, articles);
+            int retrievalCnt = 0;
             for (final String articleId : articleIds) {
                 final boolean imported = articleRepository.has(articleId);
                 final boolean csdnTmpImported =
@@ -245,6 +250,12 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                     if (null != csdnBlogArticle) {
                         article = csdnBlogArticle.toJSONObject();
                         csdnBlogArticleRepository.add(article);
+                    }
+
+                    retrievalCnt++;
+                    if (CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL
+                        == retrievalCnt) {
+                        break;
                     }
                 }
 
