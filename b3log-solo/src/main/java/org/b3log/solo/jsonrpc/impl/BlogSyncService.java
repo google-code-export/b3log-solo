@@ -31,7 +31,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CSDNBlogArticleRepository;
-import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
 import org.b3log.solo.util.ArchiveDateUtils;
