@@ -279,6 +279,7 @@ public final class CSDNBlog {
             final Map<String, ?> result =
                     (Map<String, ?>) client.execute(GET_POST_BY_ID, params);
 
+            LOGGER.trace("Post[keys=" + result.keySet() + "]");
             final String title = (String) result.get("title");
             ret.setTitle(title);
 
