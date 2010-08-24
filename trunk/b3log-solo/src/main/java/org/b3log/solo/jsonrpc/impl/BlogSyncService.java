@@ -230,7 +230,10 @@ public final class BlogSyncService extends AbstractJSONRpcService {
             final List<String> articleIds =
                     csdnBlog.getArticleIdsByArchiveDate(csdnBlogUserName,
                                                         archiveDate);
-
+            LOGGER.debug("There are [" + articleIds.size()
+                         + "] articles of CSDN"
+                         + "blog user[userName=" + csdnBlogUserName + "]"
+                         + " in [" + archiveDate + "]");
             final JSONArray articles = new JSONArray();
             ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLES, articles);
             int retrievalCnt = 0;
