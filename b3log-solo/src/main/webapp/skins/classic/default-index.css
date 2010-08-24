@@ -112,6 +112,12 @@
 /* tags.html */
 #tagsPanel .tagPanel {
     float: left;
-    border: 1px solid;
+    border: 2px solid;
     margin: 3px;
+    -moz-border-radius:6px;
+    cursor: pointer;
+}
+
+#tagsPanel .tagPanel:hover {
+    background-color: #EEEEEE;
 }
