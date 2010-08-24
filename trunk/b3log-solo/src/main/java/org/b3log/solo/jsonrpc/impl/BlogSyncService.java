@@ -263,16 +263,16 @@ public final class BlogSyncService extends AbstractJSONRpcService {
 
                         continue;
                     }
-
-                    retrievalCnt++;
-                    if (CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL
-                        == retrievalCnt) {
-                        break;
-                    }
                 }
 
                 article.put(BlogSync.BLOG_SYNC_IMPORTED, imported);
                 articles.put(article);
+
+                retrievalCnt++;
+                if (CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL
+                    == retrievalCnt) {
+                    break;
+                }
             }
 
             LOGGER.debug("Got articles[" + ret.toString(
