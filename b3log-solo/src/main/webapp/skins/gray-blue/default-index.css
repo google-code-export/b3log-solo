@@ -8,6 +8,7 @@
 body {
     background-color:#303B41;
     font:75%/150% verdana,sans-serif;
+    color: #808080;
 }
 .content {
     min-width: 760px;
@@ -17,7 +18,8 @@ body {
 
 .header {
     background-image: url(banner.jpg);
-    height:150px;
+    height:149px;
+    border-bottom:2px solid LightSlateGray;
 }
 
 .title {
@@ -77,7 +79,6 @@ body {
 
 .side-navi li li {
     margin:8px 0;
-    font-size: 95%;
 }
 
 .side-navi a {
@@ -114,7 +115,7 @@ body {
 }
 
 .article-title h2 a:hover {
-   color: #68ADD5;
+    color: #68ADD5;
 }
 
 .article-tags {
