@@ -183,6 +183,9 @@ public final class SoloServletListener extends AbstractServletListener {
                     (Cache<String, JSONObject>) injector.getInstance(Key.get(new TypeLiteral<Cache<String, ?>>() {
             }, LruMemory.class));
 
+            final ResourceBundle config = ResourceBundle.getBundle(
+                    "b3log-solo");
+
             final String preferenceId = PREFERENCE;
             // Try to load preference from datastore.
             final PreferenceRepository preferenceRepository =
@@ -192,8 +195,6 @@ public final class SoloServletListener extends AbstractServletListener {
                 // Try to load preference from configuration file and then
                 // persist it.
                 preference = new JSONObject();
-                final ResourceBundle config = ResourceBundle.getBundle(
-                        "b3log-solo");
                 final int articleListDisplayCnt = Integer.valueOf(config.
                         getString(ARTICLE_LIST_DISPLAY_COUNT));
                 preference.put(ARTICLE_LIST_DISPLAY_COUNT,
@@ -221,11 +222,12 @@ public final class SoloServletListener extends AbstractServletListener {
                 final String blogSubtitle = config.getString(BLOG_SUBTITLE);
                 preference.put(BLOG_SUBTITLE, blogSubtitle);
 
-                initSkins(config, preference);
-
                 preference.put(Keys.OBJECT_ID, preferenceId);
                 preferenceRepository.add(preference);
             }
+
+            initSkins(config, preference);
+            preferenceRepository.update(preferenceId, preference);
 
             cache.put(preferenceId, preference);
 
