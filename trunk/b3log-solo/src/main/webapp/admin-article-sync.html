@@ -16,12 +16,12 @@
         </tr>
     </tbody>
 </table>
-<div id="loading"></div>
-<div id="articlesPanel" class="none">
+<div id="articlesPanel" class="">
     <button onclick="sync();">${importLabel}</button>
     <div id="articleList" class="maginTB12"></div>
     <button onclick="sync();">${importLabel}</button>
 </div>
+<div id="loading"></div>
 <script type="text/javascript">
     var userName = "";
     $("#articleList").table({
@@ -63,7 +63,9 @@
         if (event.keyCode === 13) {
             getCSDNBlogArticleArchiveDate();
         }
-    })
+    }).focus(function () {
+        $("#archiveDate").hide(500);
+    });
 
     var getCSDNBlogArticleArchiveDate = function () {
         userName = $("#userName").val();

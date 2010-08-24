@@ -87,9 +87,55 @@
                             发表评论
                         </div>
                         <div class="comment-body">
-                            <textarea rows="10" cols="80" id="comment"></textarea>
-                            <br/>
-                            <button onclick="submitComment();">提交</button>
+                            <table class="form">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            {name}
+                                        </td>
+                                        <td>
+                                            <input id="commentName"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {email}
+                                        </td>
+                                        <td>
+                                            <input id="commentEmail"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {URL}
+                                        </td>
+                                        <td>
+                                            <input id="commentURL"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top">
+                                            {content}
+                                        </td>
+                                        <td>
+                                            <textarea rows="10" cols="80" id="comment"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="right">
+                                            <button onclick="submitComment();">{submit}</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {Vaildate}
+                                        </td>
+                                        <td>
+                                            <input id="commentValidate"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="clear"></div>
@@ -106,7 +152,10 @@
             var submitComment = function () {
                 var requestJSONObject = {
                     "oId": ${article.oId},
-                    "commentContent": $("#comment").val()
+                    "commentContent": $("#comment").val(),
+                    "commentEmail": $("#commentEmail").val(),
+                    "commentContentURL": $("#commentURL").val(),
+                    "commentContentName": $("#commentName").val()
                 };
                 var result = jsonRpc.commentService.addComment(requestJSONObject);
                 switch (result.sc) {

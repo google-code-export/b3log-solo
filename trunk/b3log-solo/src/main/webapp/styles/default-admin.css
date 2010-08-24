@@ -70,6 +70,9 @@
 #loading {
     margin:24px auto;
     width:100px;
+    position:absolute;
+    top:231px;
+    right: 500px;
 }
 
 /* preference */
