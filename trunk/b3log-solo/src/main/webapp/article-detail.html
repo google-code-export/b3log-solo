@@ -76,7 +76,7 @@
                         <#list articleComments as comment>
                         <div>
                             <div class="comment-title">
-                                <a href="" class="left">ss</a>
+                                <a href="${comment.commentURL}" class="left">${comment.commentName}</a>
                                 <span class="right">${comment.commentDate}</span>
                                 <div class="clear"></div>
                             </div>
@@ -92,41 +92,41 @@
                             <table class="form">
                                 <tbody>
                                     <tr>
-                                        <td>
+                                        <th>
                                             ${commentName1Label}
-                                        </td>
+                                        </th>
                                         <td>
                                             <input class="normalInput" id="commentName"/>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <th>
                                             ${commentEmail1Label}
-                                        </td>
+                                        </th>
                                         <td>
                                             <input class="normalInput" id="commentEmail"/>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <th>
                                             ${commentURL1Label}
-                                        </td>
+                                        </th>
                                         <td>
                                             <input id="commentURL"/>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td valign="top">
+                                        <th valign="top">
                                             ${commentContent1Label}
-                                        </td>
+                                        </th>
                                         <td>
                                             <textarea rows="10" cols="80" id="comment"></textarea>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
+                                        <th>
                                             {Vaildate}
-                                        </td>
+                                        </th>
                                         <td>
                                             <input class="normalInput" id="commentValidate"/>
                                         </td>
@@ -156,8 +156,8 @@
                     "oId": ${article.oId},
                     "commentContent": $("#comment").val(),
                     "commentEmail": $("#commentEmail").val(),
-                    "commentContentURL": $("#commentURL").val(),
-                    "commentContentName": $("#commentName").val()
+                    "commentURL": $("#commentURL").val(),
+                    "commentName": $("#commentName").val()
                 };
                 var result = jsonRpc.commentService.addComment(requestJSONObject);
                 switch (result.sc) {

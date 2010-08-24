@@ -30,5 +30,12 @@
                 <#include "article-footer.html">
             </div>
         </div>
+        <script type="text/javascript">
+            var tags =  [<#list tags as tag>{
+                            tagName: "${tag.tagTitle}",
+                            tagCount: ${tag.tagReferenceCount}
+                        }<#if tag_has_next>,</#if>
+                        </#list>];
+        </script>
     </body>
 </html>

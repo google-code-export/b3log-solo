@@ -136,6 +136,8 @@ button:hover {
 /* form */
 .form th {
     text-align: right;
+    white-space:nowrap;
+    word-wrap:break-word;
 }
 .form input, .form textarea {
     width: 100%;
