@@ -89,7 +89,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
     /**
      * CSDN blog article retrieval count incremental.
      */
-    public static final int CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 5;
+    public static final int CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 2;
 
     /**
      * Imports CSDN blog article by the specified request json object and http
