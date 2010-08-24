@@ -276,9 +276,9 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                 }
             }
 
-            LOGGER.debug("Got articles[" + ret.toString(
-                    SoloServletListener.JSON_PRINT_INDENT_FACTOR)
-                         + "] from CSDN blog");
+//            LOGGER.debug("Got articles[" + ret.toString(
+//                    SoloServletListener.JSON_PRINT_INDENT_FACTOR)
+//                         + "] from CSDN blog");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
