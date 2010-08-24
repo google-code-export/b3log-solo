@@ -84,7 +84,7 @@ public final class CSDNBlogTestCase {
      * {@linkplain CSDNBlog#getArticleIdsByArchiveDate(java.lang.String, java.lang.String)}
      * method.
      */
-    @Test
+    //@Test
     public void getArticleIdsByArchiveDate() {
         final CSDNBlog csdnBlog = new CSDNBlog();
         List<String> articleIds = csdnBlog.getArticleIdsByArchiveDate(
