@@ -45,7 +45,7 @@ public class CSDNBlogArticleSoloArticleGAERepository
 
     @Override
     public String getName() {
-        return BlogSync.BLOG_SYNC_CSDN_BLOG + "_" + "solo";
+        return BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE + "_" + Article.ARTICLE;
     }
 
     @Override
