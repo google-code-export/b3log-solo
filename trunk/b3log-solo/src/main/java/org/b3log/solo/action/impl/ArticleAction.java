@@ -143,7 +143,7 @@ public final class ArticleAction extends AbstractAction {
             ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
 
             final String previsouArticleId = articleRepository.
-                    getPrevisouArticleId(articleId);
+                    getPreviousArticleId(articleId);
             ret.put(Common.PREVIOUS_ARTICLE_ID, previsouArticleId);
 
             final String nextArticleId =
