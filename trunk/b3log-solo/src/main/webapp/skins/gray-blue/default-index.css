@@ -57,7 +57,6 @@ body {
 
 .side {
     margin: 5px 0 5px 5px;
-    background-color: #F5F5F5;
     width: 20%;
 }
 
@@ -71,7 +70,7 @@ body {
 .side-navi h4 {
     border-bottom:1px solid #CCCCCC;
     clear:both;
-    color:#000000;
+    color:#075181;
     font:bold 14px "Microsoft yahei",verdana,sans-serif;
     margin:20px 0 5px
 }
@@ -82,12 +81,13 @@ body {
 }
 
 .side-navi a {
-    color: #336699;
+    color: #075181;
     text-decoration: none;
 }
 
 .side-navi a:hover {
-    color: #D59139;
+    color: #68ADD5;
+    text-decoration: underline;
 }
 
 .artiic {
@@ -95,8 +95,7 @@ body {
 }
 
 .article-date {
-    border-bottom:1px solid #DCDCDC;
-    color:#000000;
+    color:#075181;
     font:bold 12px/24px "Georgia",sans-serif;
     padding:0 0 0 10px;
     text-align:left;
@@ -104,18 +103,18 @@ body {
 
 .article-title {
     margin: 1em 1em 0;
-    border-bottom:2px solid #DCDCDC;
+    border-bottom:1px solid #036CB4;
     font-family:"Microsoft yahei",verdana,sans-serif;
     padding-bottom: 5px;
 }
 
 .article-title h2 a {
     font-size: 15px;
-    color:#223355;
+    color:#5F5F5F;
 }
 
 .article-title h2 a:hover {
-    text-decoration: underline;
+   color: #68ADD5;
 }
 
 .article-tags {
@@ -128,15 +127,14 @@ body {
 
 .article-footer {
     margin: 1em;
-    background-color: #F5F5F5;
+    border-top: 1px solid #EEEEEE;
     padding: 3px 6px;
-    color: #336699;
+    color: #075181;
 }
 
 .article-create-date {
     color: #AAAAAA;
 }
-
 
 .pagination {
     text-align: center;
