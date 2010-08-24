@@ -26,7 +26,6 @@ import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.CSDNBlogArticleSoloArticleRepository;
-import org.json.JSONException;
 
 /**
  * CSDN blog article-Solo article Google App Engine repository.
