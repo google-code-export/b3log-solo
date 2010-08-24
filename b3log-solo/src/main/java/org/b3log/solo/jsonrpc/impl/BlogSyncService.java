@@ -152,7 +152,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                 archiveDateUtils.archiveDate(soloArticle);
             }
 
-            ret.put(Keys.OBJECT_ID + "s", importedIds);
+            ret.put(Keys.OBJECT_IDS, importedIds);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
