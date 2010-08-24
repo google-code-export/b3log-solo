@@ -15,27 +15,63 @@
             <div class="header">
                 <#include "article-header.html">
             </div>
-            <div id="tags">
+            <div>
                 <input/>
                 <button>search</button>
-                <div class="contentBody">
-                    <#list tags as tag>
-                    <div>
-                        ${tag.tagTitle}(${tag.tagReferenceCount})
-                    </div>
-                    </#list>
-                </div>
+                <div id="tagsPanel"></div>
             </div>
             <div class="footer">
                 <#include "article-footer.html">
             </div>
         </div>
         <script type="text/javascript">
-            var tags =  [<#list tags as tag>{
-                            tagName: "${tag.tagTitle}",
-                            tagCount: ${tag.tagReferenceCount}
-                        }<#if tag_has_next>,</#if>
-                        </#list>];
+            var randomColor = function () {
+                var arrHex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
+                var strHex = "#";
+                var index;
+                for(var i = 0; i < 6; i++) {
+                    index = Math.round(Math.random() * 15);
+                    strHex += arrHex[index];
+                }
+                return strHex;
+            }
+
+            var getMaxCount = function (tags) {
+                var maxCount = 0;
+                for (var i = 0; i < tags.length; i++) {
+                    if (tags[i].tagCount > maxCount) {
+                        maxCount = tags[i].tagCount;
+                    }
+                }
+
+                return maxCount;
+            }
+
+            var setTagsPanel = function () {
+                var tags = [{
+                        tagName: "title1",
+                        tagCount: 10
+                    }, {
+                        tagName: "title2",
+                        tagCount: 11
+                    }],
+                tagsHTML = "";
+                //                    [<#list tags as tag>{
+                //                                tagName: "${tag.tagTitle}",
+                //                                tagCount: ${tag.tagReferenceCount}
+                //                            }<#if tag_has_next>,</#if>
+                //                            </#list>];
+
+                var maxCount = getMaxCount(tags);
+
+                for (var i = 0; i < tags.length; i++) {
+                    tagsHTML += "<div class='tagPanel' style='color:" + randomColor() + ";'>" + tags[i].tagName + "</div>";
+                }
+                $("#tagsPanel").html(tagsHTML);
+            }
+            
+            setTagsPanel();
+            
         </script>
     </body>
 </html>
