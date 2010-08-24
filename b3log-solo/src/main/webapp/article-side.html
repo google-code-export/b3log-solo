@@ -1,6 +1,17 @@
 <div id="sideNavi" class="side-navi">
     <ul>
         <li>
+            <h4>{note}</h4>
+            <ul>
+                <li>
+                    11
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
             <h4>${statisticLabel}</h4>
             <ul>
                 <li>
@@ -37,7 +48,7 @@
             <ul>
                 <#list recentArticles as article>
                 <li>
-                    
+
                     <a name="recent${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
@@ -57,7 +68,7 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
-                    
+
                     <a name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
@@ -77,7 +88,7 @@
             <ul>
                 <#list mostViewCountArticles as article>
                 <li>
-                    
+
                     <a name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
@@ -97,7 +108,7 @@
             <ul>
                 <#list links as link>
                 <li>
-                    
+
                     <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         ${link.linkTitle}
                     </a>
@@ -113,8 +124,8 @@
             <ul>
                 <#list archiveDates as archiveDate>
                 <li>
-                    
-                    <a  href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}" target="_blank">
+
+                    <a  href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
                         ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
                     </a>
                 </li>
