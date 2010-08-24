@@ -129,7 +129,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
 
         try {
             final JSONArray articleIds = requestJSONObject.getJSONArray(
-                    BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS);
+                    Keys.OBJECT_IDS);
             final List<String> importedIds = new ArrayList<String>();
             for (int i = 0; i < articleIds.length(); i++) {
                 final String articleId = articleIds.getString(i);
@@ -250,9 +250,12 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                                 BLOG_SYNC_CSDN_BLOG_ARTICLE_ID, csdnArticleId);
                         csdnArticleSoloArticleRelation.put(
                                 Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                createDate.getTime()); // Solo article id
+                                String.valueOf(createDate.getTime())); // Solo article id
                         csdnBlogArticleSoloArticleRepository.add(
                                 csdnArticleSoloArticleRelation);
+                        LOGGER.debug("Added CSDN blog article-solo article relation["
+                                     + csdnArticleSoloArticleRelation.toString()
+                                     + "]");
 
                         retrievalCnt++;
                     } else {

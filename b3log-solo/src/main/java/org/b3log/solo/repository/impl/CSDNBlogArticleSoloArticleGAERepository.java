@@ -73,8 +73,7 @@ public class CSDNBlogArticleSoloArticleGAERepository
             throws RepositoryException {
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        Query.FilterOperator.EQUAL,
-                        soloArticleId);
+                        Query.FilterOperator.EQUAL, soloArticleId);
         final PreparedQuery preparedQuery =
                 getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
