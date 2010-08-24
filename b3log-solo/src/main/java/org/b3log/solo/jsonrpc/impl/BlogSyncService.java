@@ -267,7 +267,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                 }
 
                 final Date createDate = (Date) article.get(
-                                BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE);
+                        BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE);
                 article.put(Keys.OBJECT_ID, String.valueOf(createDate.getTime()));
                 article.put(BLOG_SYNC_IMPORTED, imported);
                 articles.put(article);
@@ -355,6 +355,8 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                 csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT));
         ret.put(Article.ARTICLE_CREATE_DATE,
                 csdnBlogArticle.get(BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE));
+        ret.put(Article.ARTICLE_TAGS_REF,
+                csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES));
 
         ret.put(Article.ARTICLE_VIEW_COUNT, 0);
         ret.put(Article.ARTICLE_COMMENT_COUNT, 0);
