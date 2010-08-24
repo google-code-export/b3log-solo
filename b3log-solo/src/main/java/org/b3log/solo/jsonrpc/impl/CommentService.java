@@ -36,6 +36,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.Buzzs;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -81,11 +82,6 @@ public final class CommentService extends AbstractJSONRpcService {
      */
     private URLFetchService urlFetchService =
             URLFetchServiceFactory.getURLFetchService();
-    /**
-     * Google profile retrieval URL string.
-     */
-    private static final String GOOGLE_PROFILE_RETRIEVAL =
-            "http://www.googleapis.com/buzz/v1/people/{userId}/@self?alt=json";
     /**
      * Default user thumbnail.
      */
@@ -305,7 +301,8 @@ public final class CommentService extends AbstractJSONRpcService {
 
         if ("gmail.com".equals(domain.toLowerCase())) {
             final URL googleProfileURL =
-                    new URL(GOOGLE_PROFILE_RETRIEVAL.replace("{userId}", id));
+                    new URL(Buzzs.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
+                                                                   id));
             // XXX: use async url fetch instead????
             final HTTPResponse response =
                     urlFetchService.fetch(googleProfileURL);

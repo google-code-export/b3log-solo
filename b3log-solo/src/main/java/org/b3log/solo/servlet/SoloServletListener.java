@@ -64,6 +64,19 @@ public final class SoloServletListener extends AbstractServletListener {
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
+    /**
+     * B3log Solo configuration file.
+     */
+    public static final ResourceBundle CONFIG = ResourceBundle.getBundle(
+            "b3log-solo");
+    /**
+     * Gmail of administrator.
+     */
+    public static final String ADMIN_GMAIL;
+
+    static {
+        ADMIN_GMAIL = CONFIG.getString("gmail");
+    }
 
     /**
      * Public default constructor. Initializes the package name of remote
@@ -183,9 +196,6 @@ public final class SoloServletListener extends AbstractServletListener {
                     (Cache<String, JSONObject>) injector.getInstance(Key.get(new TypeLiteral<Cache<String, ?>>() {
             }, LruMemory.class));
 
-            final ResourceBundle config = ResourceBundle.getBundle(
-                    "b3log-solo");
-
             final String preferenceId = PREFERENCE;
             // Try to load preference from datastore.
             final PreferenceRepository preferenceRepository =
@@ -195,38 +205,38 @@ public final class SoloServletListener extends AbstractServletListener {
                 // Try to load preference from configuration file and then
                 // persist it.
                 preference = new JSONObject();
-                final int articleListDisplayCnt = Integer.valueOf(config.
+                final int articleListDisplayCnt = Integer.valueOf(CONFIG.
                         getString(ARTICLE_LIST_DISPLAY_COUNT));
                 preference.put(ARTICLE_LIST_DISPLAY_COUNT,
                                articleListDisplayCnt);
                 final int articleListPaginationWindowSize = Integer.valueOf(
-                        config.getString(ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
+                        CONFIG.getString(ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
                 preference.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
                                articleListPaginationWindowSize);
-                final int mostUsedTagDisplayCnt = Integer.valueOf(config.
+                final int mostUsedTagDisplayCnt = Integer.valueOf(CONFIG.
                         getString(MOST_USED_TAG_DISPLAY_CNT));
                 preference.put(MOST_USED_TAG_DISPLAY_CNT,
                                mostUsedTagDisplayCnt);
                 final int mostCommentArticleDisplayCnt =
-                        Integer.valueOf(config.getString(
+                        Integer.valueOf(CONFIG.getString(
                         MOST_COMMENT_ARTICLE_DISPLAY_CNT));
                 preference.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
                                mostCommentArticleDisplayCnt);
-                final int recentArticleDisplayCnt = Integer.valueOf(config.
+                final int recentArticleDisplayCnt = Integer.valueOf(CONFIG.
                         getString(RECENT_ARTICLE_DISPLAY_CNT));
                 preference.put(RECENT_ARTICLE_DISPLAY_CNT,
                                recentArticleDisplayCnt);
 
-                final String blogTitle = config.getString(BLOG_TITLE);
+                final String blogTitle = CONFIG.getString(BLOG_TITLE);
                 preference.put(BLOG_TITLE, blogTitle);
-                final String blogSubtitle = config.getString(BLOG_SUBTITLE);
+                final String blogSubtitle = CONFIG.getString(BLOG_SUBTITLE);
                 preference.put(BLOG_SUBTITLE, blogSubtitle);
 
                 preference.put(Keys.OBJECT_ID, preferenceId);
                 preferenceRepository.add(preference);
             }
 
-            initSkins(config, preference);
+            initSkins(CONFIG, preference);
             preferenceRepository.update(preferenceId, preference);
 
             cache.put(preferenceId, preference);

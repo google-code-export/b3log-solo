@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -31,6 +32,7 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.util.Preferences;
@@ -39,6 +41,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -307,10 +310,13 @@ public final class Filler {
     public void fillSide(final Map<String, Object> dataModel)
             throws Exception {
         fillLinks(dataModel);
-
         fillRecentArticles(dataModel);
         fillMostUsedTags(dataModel);
         fillMostCommentArticles(dataModel);
         fillMostViewCountArticles(dataModel);
+
+        LOGGER.debug("Current user[userId=" 
+                + SoloServletListener.ADMIN_GMAIL + "]");
+        dataModel.put(User.USER_EMAIL, SoloServletListener.ADMIN_GMAIL);
     }
 }
