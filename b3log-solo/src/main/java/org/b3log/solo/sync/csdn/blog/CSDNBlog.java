@@ -241,7 +241,6 @@ public final class CSDNBlog {
         final Matcher matcher = pattern.matcher(pageContent);
 
         final List<String> ret = new ArrayList<String>();
-
         while (matcher.find()) {
             final String match = matcher.group();
             final int idx1 = match.lastIndexOf("/") + 1;
