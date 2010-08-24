@@ -79,6 +79,16 @@
 .comment-body {
     padding: 12px;
 }
+
+.comment-picture {
+    margin-right: 12px;
+}
+
+.comment-picture img {
+    width: 60px;
+    height: 60px;
+}
+
 /* side */
 .side-navi a.selected {
     text-decoration: none;

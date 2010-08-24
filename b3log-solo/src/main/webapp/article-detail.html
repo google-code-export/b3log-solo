@@ -81,9 +81,14 @@
                                 <div class="clear"></div>
                             </div>
                             <div class="comment-body">
-                                ${comment.commentContent}
+                                <div class="left comment-picture">
+                                    <img src="${comment.commentThumbnailURL}"/>
+                                </div>
+                                <div class="left">
+                                    ${comment.commentContent}
+                                </div>
+                                <div class="clear"></div>
                             </div>
-                            <img src="${comment.commentThumbnailURL}"/>
                         </div>
                         </#list>
                         <div class="comment-title">
@@ -152,14 +157,6 @@
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <script type="text/javascript" src="js/json-rpc.js"></script>
         <script type="text/javascript">
-            var getComments = function () {
-                jsonRpc.commentService.getComments(function(result, error){
-                    
-                }, {
-                    "oId": "${article.oId}"
-                });
-            }
-            
             var submitComment = function () {
                 var requestJSONObject = {
                     "oId": "${article.oId}",
