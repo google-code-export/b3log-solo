@@ -237,7 +237,8 @@ public final class CSDNBlog {
         final String patternString =
                 "<code><a href=\"/" + csdnBlogUserName + "/archive/"
                 + archiveDate + "/\\d\\d/\\d+\\.aspx";
-        final Pattern pattern = Pattern.compile(patternString);
+        final Pattern pattern =
+                Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
 
         final List<String> ret = new ArrayList<String>();
