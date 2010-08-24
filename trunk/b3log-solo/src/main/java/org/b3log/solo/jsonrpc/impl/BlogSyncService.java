@@ -31,6 +31,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CSDNBlogArticleRepository;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
 import org.b3log.solo.util.ArchiveDateUtils;
@@ -273,6 +274,10 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                 article.put(BlogSync.BLOG_SYNC_IMPORTED, imported);
                 articles.put(article);
             }
+
+            LOGGER.debug("Got articles[" + ret.toString(
+                    SoloServletListener.JSON_PRINT_INDENT_FACTOR)
+                         + "] from CSDN blog");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
