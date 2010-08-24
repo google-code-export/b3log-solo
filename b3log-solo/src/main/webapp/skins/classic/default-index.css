@@ -110,6 +110,8 @@
 }
 
 /* tags.html */
-#tags {
-    text-align: center;
+#tagsPanel .tagPanel {
+    float: left;
+    border: 1px solid;
+    margin: 3px;
 }

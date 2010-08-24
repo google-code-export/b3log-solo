@@ -151,9 +151,17 @@
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <script type="text/javascript" src="js/json-rpc.js"></script>
         <script type="text/javascript">
+            var getComments = function () {
+                jsonRpc.commentService.getComments(function(result, error){
+                    
+                }, {
+                    "oId": "${article.oId}"
+                });
+            }
+            
             var submitComment = function () {
                 var requestJSONObject = {
-                    "oId": ${article.oId},
+                    "oId": "${article.oId}",
                     "commentContent": $("#comment").val(),
                     "commentEmail": $("#commentEmail").val(),
                     "commentURL": $("#commentURL").val(),
