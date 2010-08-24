@@ -266,6 +266,9 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                     }
                 }
 
+                final Date createDate = (Date) article.get(
+                                BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE);
+                article.put(Keys.OBJECT_ID, String.valueOf(createDate.getTime()));
                 article.put(BLOG_SYNC_IMPORTED, imported);
                 articles.put(article);
 

@@ -187,7 +187,6 @@ public final class CSDNBlogArticle {
      * <p>
      *   <pre>
      *   {
-     *       "oId": "",
      *       "blogSyncCSDNBlogArticleId": "",
      *       "blogSyncCSDNBlogArticleTitle": "",
      *       "blogSyncCSDNBlogArticleCreateDate": java.util.Date,
@@ -204,7 +203,6 @@ public final class CSDNBlogArticle {
     public JSONObject toJSONObject() throws JSONException {
         final JSONObject ret = new JSONObject();
 
-        ret.put(Keys.OBJECT_ID, id);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID, id);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE, title);
         ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE, createDate);
