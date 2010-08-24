@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * CSDN blog article(post, entry, article, whatever).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 19, 2010
+ * @version 1.0.0.3, Aug 24, 2010
  */
 public final class CSDNBlogArticle {
 
@@ -71,6 +71,7 @@ public final class CSDNBlogArticle {
     /**
      * Constructs a {@link CSDNBlogArticle} object from the specified json
      * object.
+     * 
      * @param jsonObject the specified json object, for example,
      * <pre>
      * {
@@ -259,6 +260,5 @@ public final class CSDNBlogArticle {
         }
 
         return contentWithoutTags;
-
     }
 }

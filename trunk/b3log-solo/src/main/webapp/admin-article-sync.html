@@ -99,7 +99,7 @@
                 articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
                 articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
                 articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
-                articleData[i].id = articles[i].blogSyncCSDNBlogArticleId;
+                articleData[i].id = articles[i].oId;
                 articleData[i].imported = articles[i].blogSyncImported;
             }
 
@@ -117,8 +117,7 @@
     
     var sync = function () {
         var requestJSONObject = {
-            "blogSyncCSDNBlogUserName":  userName,
-            "blogSyncCSDNBlogArticleIds": $("#articleList_selected").data("id")
+            "oIds": $("#articleList_selected").data("id")
         };
 
         var result = jsonRpc.blogSyncService.importCSDNBlogArticles(requestJSONObject);
