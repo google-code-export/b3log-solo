@@ -4,7 +4,9 @@
             <h4>${userEmail}</h4>
             <ul>
                 <li>
-                    11
+                    <div id="displayName"></div>
+                    <img id="thumbnail" src="" />
+                    <div id="aboutMe"></div>
                 </li>
             </ul>
         </li>
@@ -154,7 +156,10 @@
     });
 
     function handleResponse(response) {
-        alert(JSON.stringify(response));
+        // alert(JSON.stringify(response));
+        $("#displayName").html(response.data.displayName);
+        $("#thumbnail").attr("src", response.data.thumbnailUrl);
+        $("#aboutMe").html(response.data.aboutMe);
     }
 </script>
-<script src="https://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>
+<script src="http://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>
