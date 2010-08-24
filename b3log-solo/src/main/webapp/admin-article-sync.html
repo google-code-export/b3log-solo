@@ -76,6 +76,7 @@
     }
 
     var getCSDNBlogArticlesByArchiveDate = function () {
+        var articleLength = 0;
         $("#loading").loading({
             imgURL: "images/ajax-loader.gif"
         });
@@ -85,34 +86,40 @@
             "blogSyncCSDNBlogUserName": userName,
             "blogSyncCSDNBlogArchiveDate": $("#archiveDate").val()
         };
-        
-        var result = 
-            jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(requestJSONObject);
 
-        var articles = result.blogSyncCSDNBlogArticles;
-        if (articles.length > 0) {
-            var articleData = [];
+        while (true) {
+            var result =
+                jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(requestJSONObject);
 
-            for (var i = 0; i < articles.length; i++) {
-                articleData[i] = {};
-                articleData[i].selected = false;
-                articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
-                articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
-                articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
-                articleData[i].id = articles[i].oId;
-                articleData[i].imported = articles[i].blogSyncImported;
+            var articles = result.blogSyncCSDNBlogArticles;
+            if (articles.length == articleLength) {
+                break;
             }
+            articleLength = articles.length;
+            if (articles.length > 0) {
+                var articleData = [];
 
-            $("#articleList").table({
-                update:{
-                    data: articleData
+                for (var i = 0; i < articles.length; i++) {
+                    articleData[i] = {};
+                    articleData[i].selected = false;
+                    articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
+                    articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
+                    articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
+                    articleData[i].id = articles[i].oId;
+                    articleData[i].imported = articles[i].blogSyncImported;
                 }
-            });
-        } else {
-            $("#tipMsg").text("${getFailLabel}");
+
+                $("#articleList").table({
+                    update:{
+                        data: articleData
+                    }
+                });
+            } else {
+                $("#tipMsg").text("${getFailLabel}");
+            }
+            $("#loading").loading("close");
+            $("#articlesPanel").show();
         }
-        $("#loading").loading("close");
-        $("#articlesPanel").show();
     }
     
     var sync = function () {
