@@ -150,6 +150,10 @@ button:hover {
     line-height: 24px;
 }
 
+.form .normalInput {
+    width: 220px;
+}
+
 /* top and footer */
 #top {
     border-bottom: 1px solid #C9D7F1;
