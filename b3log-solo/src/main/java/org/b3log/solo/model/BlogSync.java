@@ -24,6 +24,10 @@ package org.b3log.solo.model;
 public final class BlogSync {
 
     /**
+     * Key of CSDN blog.
+     */
+    public static final String BLOG_SYNC_CSDN_BLOG = "blogSyncCSDNBlog";
+    /**
      * Key of CSDN blog user name.
      */
     public static final String BLOG_SYNC_CSDN_BLOG_USER_NAME =

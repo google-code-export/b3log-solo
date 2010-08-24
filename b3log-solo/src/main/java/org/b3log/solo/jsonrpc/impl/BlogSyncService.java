@@ -18,6 +18,7 @@ package org.b3log.solo.jsonrpc.impl;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,9 +29,10 @@ import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.TagUtils;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.BlogSync;
+import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CSDNBlogArticleRepository;
+import org.b3log.solo.repository.CSDNBlogArticleSoloArticleRepository;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
 import org.b3log.solo.util.ArchiveDateUtils;
@@ -87,6 +89,11 @@ public final class BlogSyncService extends AbstractJSONRpcService {
     @Inject
     private ArchiveDateUtils archiveDateUtils;
     /**
+     * CSDN blog article-Solo article repository.
+     */
+    @Inject
+    private CSDNBlogArticleSoloArticleRepository csdnBlogArticleSoloArticleRepository;
+    /**
      * CSDN blog article retrieval count incremental.
      */
     public static final int CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 2;
@@ -98,8 +105,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
-     *     "blogSyncCSDNBlogUserName": "",
-     *     "blogSyncCSDNBlogArticleIds": ["", "", ....]
+     *     "oIds": ["", "", ....]
      * }
      * </pre>
      * @param request the specified http servlet request
@@ -122,33 +128,32 @@ public final class BlogSyncService extends AbstractJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
-            final String csdnBlogUserName =
-                    requestJSONObject.getString(
-                    BlogSync.BLOG_SYNC_CSDN_BLOG_USER_NAME);
             final JSONArray articleIds = requestJSONObject.getJSONArray(
-                    BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS);
+                    BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS);
             final List<String> importedIds = new ArrayList<String>();
             for (int i = 0; i < articleIds.length(); i++) {
                 final String articleId = articleIds.getString(i);
-                final JSONObject article = csdnBlogArticleRepository.get(
-                        articleId);
+                final String csdnBlogArticleId =
+                        csdnBlogArticleSoloArticleRepository.
+                        getCSDNBlogArticleId(articleId);
 
-                toSoloArticle(article);
+                final JSONObject csdnBlogArticle =
+                        csdnBlogArticleRepository.get(csdnBlogArticleId);
+                final JSONObject soloArticle = toSoloArticle(csdnBlogArticle);
 
-                final String categoriesString =
-                        article.getString(
-                        BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES);
+                final String categoriesString = csdnBlogArticle.getString(
+                        BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES);
                 final String[] tagTitles = categoriesString.split(",");
                 @SuppressWarnings(value = "unchecked")
-                final JSONArray tags = tagUtils.tag(tagTitles, article);
-                articleUtils.addTagArticleRelation(tags, article);
+                final JSONArray tags = tagUtils.tag(tagTitles, soloArticle);
+                articleUtils.addTagArticleRelation(tags, soloArticle);
 
-                articleRepository.importArticle(article);
+                articleRepository.importArticle(soloArticle);
                 importedIds.add(articleId);
 
                 statistics.incBlogArticleCount();
 
-                archiveDateUtils.archiveDate(article);
+                archiveDateUtils.archiveDate(soloArticle);
             }
 
             ret.put(Keys.OBJECT_ID + "s", importedIds);
@@ -158,30 +163,6 @@ public final class BlogSyncService extends AbstractJSONRpcService {
         }
 
         return ret;
-    }
-
-    /**
-     * To B3log Solo article(Key transformation) for the specified article.
-     *
-     * @param article the specified article
-     * @throws Exception exception
-     */
-    private void toSoloArticle(final JSONObject article) throws Exception {
-        article.put(Keys.OBJECT_ID,
-                    article.getString(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID));
-        article.put(Article.ARTICLE_TITLE,
-                    article.getString(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE));
-        article.put(Article.ARTICLE_ABSTRACT,
-                    article.getString(
-                BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ABSTRACT));
-        article.put(Article.ARTICLE_CONTENT,
-                    article.getString(
-                BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT));
-        article.put(Article.ARTICLE_CREATE_DATE,
-                    article.get(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE));
-
-        article.put(Article.ARTICLE_VIEW_COUNT, 0);
-        article.put(Article.ARTICLE_COMMENT_COUNT, 0);
     }
 
     /**
@@ -200,7 +181,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
      * <pre>
      * {
      *     "blogSyncCSDNBlogArticles": [{
-     *         "blogSyncCSDNBlogArticleId": "",
+     *         "oId": "",
      *         "blogSyncCSDNBlogArticleTitle": "",
      *         "blogSyncCSDNBlogArticleCreateDate": java.util.Date,
      *         "blogSyncCSDNBlogArticleCategories": "category1, category2, ....",
@@ -223,50 +204,66 @@ public final class BlogSyncService extends AbstractJSONRpcService {
 
         try {
             final String csdnBlogUserName =
-                    requestJSONObject.getString(
-                    BlogSync.BLOG_SYNC_CSDN_BLOG_USER_NAME);
+                    requestJSONObject.getString(BLOG_SYNC_CSDN_BLOG_USER_NAME);
             final String archiveDate = requestJSONObject.getString(
-                    BlogSync.BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE);
-            final List<String> articleIds =
+                    BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE);
+            final List<String> csdnArticleIds =
                     csdnBlog.getArticleIdsByArchiveDate(csdnBlogUserName,
                                                         archiveDate);
-            LOGGER.debug("There are [" + articleIds.size()
+            LOGGER.debug("There are [" + csdnArticleIds.size()
                          + "] articles of CSDN"
                          + "blog user[userName=" + csdnBlogUserName + "]"
                          + " in [" + archiveDate + "]");
             final JSONArray articles = new JSONArray();
-            ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLES, articles);
+            ret.put(BLOG_SYNC_CSDN_BLOG_ARTICLES, articles);
             int retrievalCnt = 0;
-            for (final String articleId : articleIds) {
-                final boolean imported = articleRepository.has(articleId);
+            for (final String csdnArticleId : csdnArticleIds) {
+                final String soloArticleId = csdnBlogArticleSoloArticleRepository.
+                        getSoloArticleId(csdnArticleId);
+
+                final boolean imported = articleRepository.has(soloArticleId);
                 final boolean csdnTmpImported =
-                        csdnBlogArticleRepository.has(articleId);
+                        csdnBlogArticleRepository.has(csdnArticleId);
                 // assert imported == csdnTmpImported for consistency
 
                 JSONObject article = null;
-                LOGGER.debug("CSDN blog article[id=" + articleId + "]'s status["
+                LOGGER.debug("CSDN blog article[id=" + csdnArticleId
+                             + "]'s status["
                              + "csdnTmpImported=" + csdnTmpImported
                              + ", imported=" + imported + "]");
                 if (csdnTmpImported) {
-                    article = csdnBlogArticleRepository.get(articleId);
+                    article = csdnBlogArticleRepository.get(csdnArticleId);
                 } else { // Not retrieved yet, get the article from CSDN
                     final CSDNBlogArticle csdnBlogArticle =
                             csdnBlog.getArticleById(csdnBlogUserName,
-                                                    articleId);
+                                                    csdnArticleId);
                     if (null != csdnBlogArticle) {
                         article = csdnBlogArticle.toJSONObject();
                         csdnBlogArticleRepository.add(article);
 
+                        final Date createDate = (Date) article.get(
+                                BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE);
+
+                        final JSONObject csdnArticleSoloArticleRelation =
+                                new JSONObject();
+                        csdnArticleSoloArticleRelation.put(
+                                BLOG_SYNC_CSDN_BLOG_ARTICLE_ID, csdnArticleId);
+                        csdnArticleSoloArticleRelation.put(
+                                Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                                createDate.getTime()); // Solo article id
+                        csdnBlogArticleSoloArticleRepository.add(
+                                csdnArticleSoloArticleRelation);
+
                         retrievalCnt++;
                     } else {
-                        LOGGER.warn("Retrieve article[id=" + articleId + "]"
-                                    + " from CSDN blog is null");
+                        LOGGER.warn("Retrieve article[csdnArticleId="
+                                    + csdnArticleId + "] from CSDN blog is null");
 
                         continue;
                     }
                 }
 
-                article.put(BlogSync.BLOG_SYNC_IMPORTED, imported);
+                article.put(BLOG_SYNC_IMPORTED, imported);
                 articles.put(article);
 
                 if (CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL
@@ -317,15 +314,44 @@ public final class BlogSyncService extends AbstractJSONRpcService {
 
         try {
             final String csdnBlogUserName = requestJSONObject.getString(
-                    BlogSync.BLOG_SYNC_CSDN_BLOG_USER_NAME);
+                    BLOG_SYNC_CSDN_BLOG_USER_NAME);
             final List<String> archiveDates =
                     csdnBlog.getArchiveDates(csdnBlogUserName);
 
-            ret.put(BlogSync.BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES, archiveDates);
+            ret.put(BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES, archiveDates);
         } catch (final JSONException e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
+
+        return ret;
+    }
+
+    /**
+     * To B3log Solo article(Key transformation) for the specified CSDN blog
+     * article.
+     *
+     * @param csdnBlogArticle the specified CSDN Blog article
+     * @return Solo article
+     * @throws Exception exception
+     */
+    private JSONObject toSoloArticle(final JSONObject csdnBlogArticle)
+            throws Exception {
+        final JSONObject ret = new JSONObject();
+
+        ret.put(Keys.OBJECT_ID,
+                csdnBlogArticle.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
+        ret.put(Article.ARTICLE_TITLE,
+                csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE));
+        ret.put(Article.ARTICLE_ABSTRACT,
+                csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_ABSTRACT));
+        ret.put(Article.ARTICLE_CONTENT,
+                csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT));
+        ret.put(Article.ARTICLE_CREATE_DATE,
+                csdnBlogArticle.get(BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE));
+
+        ret.put(Article.ARTICLE_VIEW_COUNT, 0);
+        ret.put(Article.ARTICLE_COMMENT_COUNT, 0);
 
         return ret;
     }
