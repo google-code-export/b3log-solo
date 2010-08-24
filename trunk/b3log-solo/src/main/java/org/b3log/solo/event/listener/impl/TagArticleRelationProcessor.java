@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.listener.impl;
 
 import com.google.inject.Inject;
@@ -29,7 +28,8 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 12, 2010
  */
-public class TagArticleRelationProcessor extends AbstractEventListener<JSONObject> {
+public final class TagArticleRelationProcessor
+        extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
