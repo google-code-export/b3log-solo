@@ -244,6 +244,9 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                 // assert imported == csdnTmpImported for consistency
 
                 JSONObject article = null;
+                LOGGER.debug("CSDN blog article[id=" + articleId + "]'s status["
+                             + "csdnTmpImported=" + csdnTmpImported
+                             + ", imported=" + imported + "]");
                 if (csdnTmpImported) {
                     article = csdnBlogArticleRepository.get(articleId);
                 } else { // Not retrieved yet, get the article from CSDN
@@ -256,6 +259,8 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                     } else {
                         LOGGER.warn("Retrieve article[id=" + articleId + "]"
                                     + " from CSDN blog is null");
+
+                        continue;
                     }
 
                     retrievalCnt++;
