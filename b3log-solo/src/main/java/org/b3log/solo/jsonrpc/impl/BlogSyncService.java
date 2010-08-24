@@ -253,6 +253,9 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                     if (null != csdnBlogArticle) {
                         article = csdnBlogArticle.toJSONObject();
                         csdnBlogArticleRepository.add(article);
+                    } else {
+                        LOGGER.warn("Retrieve article[id=" + articleId + "]"
+                                    + " from CSDN blog is null");
                     }
 
                     retrievalCnt++;
