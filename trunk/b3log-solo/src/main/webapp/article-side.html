@@ -152,4 +152,9 @@
             $it.addClass("selected");
         }
     });
+
+    function handleResponse(response) {
+        alert(JSON.stringify(response));
+    }
 </script>
+<script src="https://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>
