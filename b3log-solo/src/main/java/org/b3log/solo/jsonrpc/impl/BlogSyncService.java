@@ -337,7 +337,6 @@ public final class BlogSyncService extends AbstractJSONRpcService {
             throws Exception {
         final JSONObject ret = new JSONObject();
 
-        ret.put(Keys.OBJECT_ID, Keys.OBJECT_ID);
         ret.put(Article.ARTICLE_TITLE,
                 csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE));
         ret.put(Article.ARTICLE_ABSTRACT,
