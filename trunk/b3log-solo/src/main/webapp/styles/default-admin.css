@@ -67,6 +67,11 @@
 .comment-body {
     margin: 12px;
 }
+
+#comments {
+    height: 462px;
+    overflow: auto;
+}
 /* asyn */
 #loading {
     margin:24px auto;
