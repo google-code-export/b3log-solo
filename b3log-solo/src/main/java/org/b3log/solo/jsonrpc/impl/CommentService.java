@@ -179,8 +179,7 @@ public final class CommentService extends AbstractJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
-
+        // TODO: captcha
         final JSONObject ret = new JSONObject();
 
         try {
