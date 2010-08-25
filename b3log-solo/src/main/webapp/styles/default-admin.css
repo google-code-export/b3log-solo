@@ -13,6 +13,7 @@
 #main {
     background-color: #BBCCFF;
     padding: 6px;
+    min-height: 300px;
 }
 
 /* */
@@ -71,7 +72,7 @@
     margin:24px auto;
     width:100px;
     position:absolute;
-    top:231px;
+    top:160px;
     right: 500px;
 }
 

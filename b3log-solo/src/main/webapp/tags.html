@@ -65,15 +65,19 @@
             }
 
             var getStyle = function (maxCount, currentCount) {
-                var styleHTML = "padding:" + parseInt(16 * currentCount / maxCount) + "px;";
-
-                styleHTML += "font-size:" + parseInt(36 * currentCount / maxCount) + "px;";
+                var styleHTML = "padding:" + parseInt(16 * currentCount / maxCount) + "px;",
+                fontSize = parseInt(36 * currentCount / maxCount);
+                if (fontSize < 9) {
+                    fontSize = 9;
+                }
+                styleHTML += "font-size:" + fontSize + "px;";
 
                 if (maxCount === currentCount) {
                     styleHTML += "font-weight:bold;";
                 }
                 return styleHTML;
             }
+
             var setTagsPanel = function () {
                 var tags = [<#list tags as tag>{
                         tagName: "${tag.tagTitle}",
