@@ -16,7 +16,7 @@
         </tr>
     </tbody>
 </table>
-<div id="articlesPanel" class="">
+<div id="articlesPanel" class="none">
     <button onclick="sync();">${importLabel}</button>
     <div id="articleList" class="maginTB12"></div>
     <button onclick="sync();">${importLabel}</button>
@@ -119,9 +119,9 @@
             } else {
                 $("#tipMsg").text("${getFailLabel}");
             }
-            $("#loading").loading("close");
             $("#articlesPanel").show();
         }
+        $("#loading").loading("close");
     }
     
     var sync = function () {
