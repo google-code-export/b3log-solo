@@ -159,8 +159,8 @@
         currentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": 10,
-            "paginationWindowSize": 10
+            "paginationPageSize": 15,
+            "paginationWindowSize": 40
         };
         
         var result = jsonRpc.articleService.getArticles(requestJSONObject);
