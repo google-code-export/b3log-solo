@@ -15,6 +15,9 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.mail.MailService;
+import com.google.appengine.api.mail.MailService.Message;
+import com.google.appengine.api.mail.MailServiceFactory;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
@@ -35,8 +38,10 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Buzzs;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -87,6 +92,23 @@ public final class CommentService extends AbstractJSONRpcService {
      */
     private static final String DEFAULT_USER_THUMBNAIL =
             "default-user-thumbnail.png";
+    /**
+     * Mail service.
+     */
+    private MailService mailService =
+            MailServiceFactory.getMailService();
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private Preferences preferences;
+    /**
+     * Comment mail HTML body.
+     */
+    private static final String COMMENT_MAIL_HTML_BODY =
+            "Article[<a href=\""
+            + "{articleURL}\">" + "{articleTitle}</a>"
+            + " received a new comment[{commentContent}]";
 
     /**
      * Gets comments of an article specified by the article id.
@@ -136,7 +158,7 @@ public final class CommentService extends AbstractJSONRpcService {
                         articleCommentRelations.get(i);
                 final String commentId =
                         articleCommentRelation.getString(Comment.COMMENT + "_"
-                        + Keys.OBJECT_ID);
+                                                         + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
                 comment.remove(Comment.COMMENT_EMAIL); // Remove email
@@ -184,6 +206,7 @@ public final class CommentService extends AbstractJSONRpcService {
 
         try {
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final JSONObject article = articleRepository.get(articleId);
             final String commentName =
                     requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail =
@@ -215,6 +238,28 @@ public final class CommentService extends AbstractJSONRpcService {
             articleUtils.incArticleCommentCount(articleId);
             // Step 4: Update blog statistic comment count
             statistics.incBlogCommentCount();
+            // Step 5: Send an email to admin
+            final JSONObject preference = preferences.getPreference();
+            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            final String articleTitle = article.getString(Article.ARTICLE_TITLE);
+            final String articleURL =
+                    request.getScheme() + "://" + request.getServerName() + ":"
+                    + request.getServerPort() + "/article-detail.do?oId="
+                    + articleId;
+            LOGGER.trace("Comment[articleURL=" + articleURL + ", articleTitle="
+                         + articleTitle + ", blogTitle=" + blogTitle + "]");
+            final Message message = new Message();
+            final String mailSubject = blogTitle + ": New comment on "
+                                       + articleTitle;
+            message.setSubject(mailSubject);
+            final String mailBody = COMMENT_MAIL_HTML_BODY.replace(
+                    "{articleURL}", articleURL).
+                    replace("{articleTitle}", articleTitle).
+                    replace("{commentContent}", commentContent);
+            message.setHtmlBody(mailBody);
+            LOGGER.debug("Sending a mail[mailSubject=" + mailSubject + ", "
+                         + "mailBody=" + mailBody + "] to admins");
+            mailService.sendToAdmins(message);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
             ret.put(Keys.OBJECT_ID, commentId);
@@ -311,21 +356,22 @@ public final class CommentService extends AbstractJSONRpcService {
                 final byte[] content = response.getContent();
                 final String profileJSONString = new String(content);
                 LOGGER.trace("Google profile[jsonString=" + profileJSONString
-                        + "]");
+                             + "]");
                 final JSONObject profile = new JSONObject(profileJSONString);
                 final JSONObject profileData = profile.getJSONObject("data");
-                final String thumbnailUrl = profileData.getString("thumbnailUrl");
+                final String thumbnailUrl =
+                        profileData.getString("thumbnailUrl");
 
                 comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailUrl);
             } else {
                 LOGGER.warn("Can not fetch google profile[userId=" + id + ", "
-                        + "statusCode=" + statusCode + "]");
+                            + "statusCode=" + statusCode + "]");
             }
         } else {
             LOGGER.warn("Not supported yet for comment thumbnail excepts Gmail "
-                    + "user");
+                        + "user");
             comment.put(Comment.COMMENT_THUMBNAIL_URL, "/images/"
-                    + DEFAULT_USER_THUMBNAIL);
+                                                       + DEFAULT_USER_THUMBNAIL);
             // TODO: process other comment thumbnail URL
         }
     }
