@@ -66,15 +66,22 @@
             }
 
             var getStyle = function (maxCount, currentCount) {
-                var styleHTML = "padding:" + parseInt(16 * currentCount / maxCount) + "px;",
+                var styleHTML = {
+                    padding: "",
+                    font: "",
+                    color: ""
+                };
+                styleHTML.padding =  "padding:" + parseInt(16 * currentCount / maxCount) + "px;";
+
+                styleHTML.color = "color:" + randomColor() + ";";
+
                 fontSize = parseInt(36 * currentCount / maxCount);
                 if (fontSize < 9) {
                     fontSize = 9;
                 }
-                styleHTML += "font-size:" + fontSize + "px;";
-
+                styleHTML.font = "font-size:" + fontSize + "px;";
                 if (maxCount === currentCount) {
-                    styleHTML += "font-weight:bold;";
+                    styleHTML.font += "font-weight:bold;";
                 }
                 return styleHTML;
             }
@@ -82,7 +89,8 @@
             var setTagsPanel = function () {
                 var tags = [<#list tags as tag>{
                         tagName: "${tag.tagTitle}",
-                        tagCount: ${tag.tagReferenceCount}
+                        tagCount: ${tag.tagReferenceCount},
+                        tagId: ${tag.oId}
                     }<#if tag_has_next>,</#if>
                         </#list>],
                 tagsHTML = "";
@@ -91,9 +99,10 @@
 
                 for (var i = 0; i < tags.length; i++) {
                     var style = getStyle(maxCount, tags[i].tagCount);
-                    //var fontSize = getFontSize(maxCount, tags[i].tagCount);
-                    tagsHTML += "<div title='" + tags[i].tagCount + "' class='tagPanel' style='color:" + randomColor()
-                        + "; " + style + "'>" + tags[i].tagName + "</div>";
+                    tagsHTML += "<div title='" + tags[i].tagCount + "' class='tagPanel' style='"
+                        + style.color + style.padding + "'><a style='"
+                        + style.font + style.color + "' href='tag-articles.do?oId="
+                        + tags[i].tagId + "&paginationCurrentPageNum=1' target='_blank'>" + tags[i].tagName + "</a></div>";
                 }
                 $("#tagsPanel").append(tagsHTML + "<div class='clear'></div>");
             }
