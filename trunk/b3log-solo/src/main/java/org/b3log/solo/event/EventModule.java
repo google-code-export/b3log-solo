@@ -16,7 +16,7 @@
 package org.b3log.solo.event;
 
 import org.apache.log4j.Logger;
-import org.b3log.solo.event.listener.impl.TagArticleRelationProcessor;
+import org.b3log.solo.event.listener.impl.BlogSyncMgmtAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
 
 /**
@@ -48,6 +48,6 @@ public final class EventModule extends AbstractEventModule {
     protected void configure() {
         super.configure();
 
-        bind(TagArticleRelationProcessor.class).asEagerSingleton();
+        bind(BlogSyncMgmtAddArticleProcessor.class).asEagerSingleton();
     }
 }

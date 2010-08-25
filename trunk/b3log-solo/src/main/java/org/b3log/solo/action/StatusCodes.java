@@ -83,4 +83,8 @@ public enum StatusCodes {
      * Indicates get preference successfully.
      */
     GET_PREFERENCE_SUCC,
+    /**
+     * Indicates set blog sync management for CSDN blog successfully.
+     */
+    SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC,
 }

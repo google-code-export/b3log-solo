@@ -73,7 +73,7 @@
     var getCSDNBlogArticleArchiveDate = function () {
         userName = $("#userName").val();
         var result = jsonRpc.blogSyncService.
-            getCSDNBlogArticleArchiveDate({"blogSyncCSDNBlogUserName": userName});
+            getCSDNBlogArticleArchiveDate({"blogSyncExternalBloggingSysUserName": userName});
         $("#archiveDate").html("<option>${selectDateLabel}</option>").show(500);
         for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
             $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
@@ -88,7 +88,7 @@
         $("#articlesPanel").hide();
 
         var requestJSONObject = {
-            "blogSyncCSDNBlogUserName": userName,
+            "blogSyncExternalBloggingSysUserName": userName,
             "blogSyncCSDNBlogArchiveDate": $("#archiveDate").val()
         };
 

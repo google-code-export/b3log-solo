@@ -37,7 +37,7 @@ import org.b3log.latke.service.ServiceException;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 18, 2010
+ * @version 1.0.0.2, Aug 25, 2010
  */
 public final class CSDNBlog {
 
@@ -82,12 +82,11 @@ public final class CSDNBlog {
                            final String csdnBlogUserPwd,
                            final String csdnBlogArticleId) throws
             ServiceException {
-        final Object[] params = new Object[]{
-            "ignored",
-            csdnBlogArticleId,
-            csdnBlogUserName,
-            csdnBlogUserPwd,
-            true};
+        final Object[] params = new Object[]{"ignored",
+                                             csdnBlogArticleId,
+                                             csdnBlogUserName,
+                                             csdnBlogUserPwd,
+                                             true};
 
         try {
             config.setServerURL(

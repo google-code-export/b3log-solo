@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Aug 21, 2010
+ * @version 1.0.0.9, Aug 25, 2010
  */
 public final class ArticleService extends AbstractJSONRpcService {
 
@@ -158,7 +158,6 @@ public final class ArticleService extends AbstractJSONRpcService {
             // Step 7: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
 
-            // TODO: event handling: add article
             eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.ADD_ARTICLE, article));
 
@@ -367,6 +366,9 @@ public final class ArticleService extends AbstractJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
 
+            eventManager.fireEventSynchronously(
+                    new Event<String>(EventTypes.REMOVE_ARTICLE, articleId));
+
             LOGGER.debug("Removed an article[oId=" + articleId + "]");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -439,6 +441,9 @@ public final class ArticleService extends AbstractJSONRpcService {
             articleUtils.addTagArticleRelation(tags, article);
             // Step 8: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
+
+            eventManager.fireEventSynchronously(
+                    new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, article));
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
 
