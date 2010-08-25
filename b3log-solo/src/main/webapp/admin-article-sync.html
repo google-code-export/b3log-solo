@@ -16,8 +16,11 @@
         </tr>
     </tbody>
 </table>
-<div id="articlesPanel" class="none">
-    <button onclick="sync();">${importLabel}</button>
+<div id="articlesPanel" class="">
+    <button onclick="sync();" class="left">${importLabel}</button>
+    <div id="articlesCount" class="right error-msg maginTR12">
+    </div>
+    <div class="clear"></div>
     <div id="articleList" class="maginTB12"></div>
     <button onclick="sync();">${importLabel}</button>
 </div>
@@ -116,6 +119,8 @@
                         data: articleData
                     }
                 });
+
+                $("#articlesCount").html("${sumLabel}" + articleData.length + "{count}");
             } else {
                 $("#tipMsg").text("${getFailLabel}");
             }
