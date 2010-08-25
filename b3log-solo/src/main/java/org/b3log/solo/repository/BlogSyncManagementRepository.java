@@ -13,32 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.event;
+package org.b3log.solo.repository;
+
+import org.b3log.latke.repository.Repository;
+import org.json.JSONObject;
 
 /**
- * Event types.
+ * Blog sync management repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 25, 2010
+ * @version 1.0.0.0, Aug 25, 2010
  */
-public final class EventTypes {
+public interface BlogSyncManagementRepository extends Repository {
 
     /**
-     * Indicates a add article event.
+     * Gets a blog sync management by the specified external blogging system.
+     * 
+     * @param externalBloggingSystem the specified external blogging system
+     * @return a blog sync management, returns {@code null} if not found
      */
-    public static final String ADD_ARTICLE = "Add Article";
-    /**
-     * Indicates a update article event.
-     */
-    public static final String UPDATE_ARTICLE = "Update Article";
-    /**
-     * Indicates a remove article event.
-     */
-    public static final String REMOVE_ARTICLE = "Remove Article";
-
-    /**
-     * Private default constructor.
-     */
-    private EventTypes() {
-    }
+    JSONObject getByExternalBloggingSystem(final String externalBloggingSystem);
 }

@@ -35,6 +35,7 @@ import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.latke.util.cache.Cache;
 import org.b3log.latke.util.cache.qualifier.LruMemory;
 import org.b3log.solo.action.ActionModule;
+import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.PreferenceRepository;
 import static org.b3log.solo.model.Preference.*;
 import static org.b3log.solo.model.Skin.*;
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 22, 2010
+ * @version 1.0.0.8, Aug 25, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -73,6 +74,12 @@ public final class SoloServletListener extends AbstractServletListener {
      * Gmail of administrator.
      */
     public static final String ADMIN_GMAIL;
+    /**
+     * Supported blog sync management external blogging systems.
+     */
+    // XXX: remove this field?
+    public static final String[] SUPPORTED_BLOG_SYNC_MGMT_EXTERNAL_BLOGGING_SYSTEMS =
+            new String[]{BlogSync.BLOG_SYNC_CSDN_BLOG};
 
     static {
         ADMIN_GMAIL = CONFIG.getString("gmail");

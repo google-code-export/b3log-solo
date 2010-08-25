@@ -24,12 +24,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
+import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.TagUtils;
 import org.b3log.solo.model.Article;
 import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.CSDNBlogArticleRepository;
 import org.b3log.solo.repository.CSDNBlogArticleSoloArticleRepository;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
@@ -44,7 +46,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 24, 2010
+ * @version 1.0.0.7, Aug 25, 2010
  */
 public final class BlogSyncService extends AbstractJSONRpcService {
 
@@ -93,9 +95,95 @@ public final class BlogSyncService extends AbstractJSONRpcService {
     @Inject
     private CSDNBlogArticleSoloArticleRepository csdnBlogArticleSoloArticleRepository;
     /**
+     * Blog sync management repository.
+     */
+    @Inject
+    private BlogSyncManagementRepository blogSyncManagementRepository;
+    /**
      * CSDN blog article retrieval count incremental.
      */
     public static final int CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 2;
+
+    /**
+     * Sets blog sync add article for CSDN blog with the specified request json
+     * object, http servlet request and http servlet response.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "blogSyncExternalBloggingSysUserName": "",
+     *     "blogSyncExternalBloggingSysUserPassword": "",
+     *     "blogSyncMgmtAddEnabled": boolean,
+     *     "blogSyncMgmtUpdateEnabled": boolean,
+     *     "blogSyncMgmtRemoveEnabled": boolean
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject setBlogSyncMgmtForCSDNBlog(
+            final JSONObject requestJSONObject,
+            final HttpServletRequest request,
+            final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final JSONObject ret = new JSONObject();
+        try {
+            final String userName = requestJSONObject.getString(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
+            final String userPwd = requestJSONObject.getString(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
+            final boolean addEnabled = requestJSONObject.getBoolean(
+                    BLOG_SYNC_MGMT_ADD_ENABLED);
+            final boolean updateEnabled = requestJSONObject.getBoolean(
+                    BLOG_SYNC_MGMT_UPDATE_ENABLED);
+            final boolean removeEnabled = requestJSONObject.getBoolean(
+                    BLOG_SYNC_MGMT_REMOVE_ENABLED);
+
+            JSONObject csdnBlogSyncMgmt = blogSyncManagementRepository.
+                    getByExternalBloggingSystem(BLOG_SYNC_CSDN_BLOG);
+            if (null == csdnBlogSyncMgmt) {
+                csdnBlogSyncMgmt = new JSONObject();
+            }
+
+            csdnBlogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
+                                 BLOG_SYNC_CSDN_BLOG);
+            csdnBlogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME,
+                                 userName);
+            csdnBlogSyncMgmt.put(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD, userPwd);
+            csdnBlogSyncMgmt.put(BLOG_SYNC_MGMT_ADD_ENABLED, addEnabled);
+            csdnBlogSyncMgmt.put(BLOG_SYNC_MGMT_UPDATE_ENABLED,
+                                 updateEnabled);
+            csdnBlogSyncMgmt.put(BLOG_SYNC_MGMT_REMOVE_ENABLED,
+                                 removeEnabled);
+            
+            if (!csdnBlogSyncMgmt.has(Keys.OBJECT_ID)) {
+                blogSyncManagementRepository.add(csdnBlogSyncMgmt);
+            } else {
+                blogSyncManagementRepository.update(
+                        csdnBlogSyncMgmt.getString(Keys.OBJECT_ID),
+                        csdnBlogSyncMgmt);
+            }
+
+            ret.put(Keys.STATUS_CODE,
+                    StatusCodes.SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC);
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
 
     /**
      * Imports CSDN blog article by the specified request json object and http
@@ -167,7 +255,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
-     *     "blogSyncCSDNBlogUserName": "",
+     *     "blogSyncExternalBloggingSysUserName": "",
      *     "blogSyncCSDNBlogArchiveDate": "2006/12"
      * }
      * </pre>
@@ -200,7 +288,8 @@ public final class BlogSyncService extends AbstractJSONRpcService {
 
         try {
             final String csdnBlogUserName =
-                    requestJSONObject.getString(BLOG_SYNC_CSDN_BLOG_USER_NAME);
+                    requestJSONObject.getString(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
             final String archiveDate = requestJSONObject.getString(
                     BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE);
             final List<String> csdnArticleIds =
@@ -287,7 +376,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
-     *     "blogSyncCSDNBlogUserName": ""
+     *     "blogSyncExternalBloggingSysUserName": ""
      * }
      * </pre>
      * @param request the specified http servlet request
@@ -312,7 +401,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
 
         try {
             final String csdnBlogUserName = requestJSONObject.getString(
-                    BLOG_SYNC_CSDN_BLOG_USER_NAME);
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
             final List<String> archiveDates =
                     csdnBlog.getArchiveDates(csdnBlogUserName);
 

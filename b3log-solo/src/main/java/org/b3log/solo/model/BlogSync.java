@@ -24,19 +24,43 @@ package org.b3log.solo.model;
 public final class BlogSync {
 
     /**
+     * Key of blog sync management.
+     */
+    public static final String BLOG_SYNC_MANAGEMENT = "blogSyncManagement";
+    /**
      * Key of CSDN blog.
      */
     public static final String BLOG_SYNC_CSDN_BLOG = "blogSyncCSDNBlog";
     /**
-     * Key of CSDN blog user name.
+     * Key of blog sync external blogging system user name.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_USER_NAME =
-            "blogSyncCSDNBlogUserName";
+    public static final String BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME =
+            "blogSyncExternalBloggingSysUserName";
     /**
      * Key of CSDN blog user password.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_USER_PASSWORD =
-            "blogSyncCSDNBlogUserPassword";
+    public static final String BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD =
+            "blogSyncExternalBloggingSysUserPassword";
+    /**
+     * Key of blog sync external blogging system.
+     */
+    public static final String BLOG_SYNC_EXTERNAL_BLOGGING_SYS =
+            "blogSyncExternalBloggingSys";
+    /**
+     * Key of whether sync add CSDN blog article.
+     */
+    public static final String BLOG_SYNC_MGMT_ADD_ENABLED =
+            "blogSyncMgmtAddEnabled";
+    /**
+     * Key of whether sync update CSDN blog article.
+     */
+    public static final String BLOG_SYNC_MGMT_UPDATE_ENABLED =
+            "blogSyncMgmtUpdateEnabled";
+    /**
+     * Key of whether sync remove CSDN blog article.
+     */
+    public static final String BLOG_SYNC_MGMT_REMOVE_ENABLED =
+            "blogSyncMgmtRemoveEnabled";
     /**
      * Key of CSDN blog archive date.
      */
