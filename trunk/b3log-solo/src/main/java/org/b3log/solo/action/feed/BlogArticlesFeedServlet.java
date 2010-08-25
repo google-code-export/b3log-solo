@@ -37,12 +37,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Feed.
+ * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 18, 2010
+ * @version 1.0.0.2, Aug 25, 2010
  */
-public final class FeedServlet extends HttpServlet {
+public final class BlogArticlesFeedServlet extends HttpServlet {
 
     /**
      * Default serial version uid.
