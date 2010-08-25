@@ -103,6 +103,15 @@
     padding-top: 12px;
     border-top: thin dotted #BBBBBB;
 }
+
+#thumbnail {
+    -moz-border-radius:6px 6px 6px 6px;
+    border:1px solid #BBCCFF;
+    margin-top:9px;
+    padding:6px;
+    width:136px;
+}
+
 /* pagination */
 .pagination {
     text-align: center;

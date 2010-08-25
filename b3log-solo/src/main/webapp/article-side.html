@@ -4,8 +4,14 @@
             <h4>${userEmail}</h4>
             <ul>
                 <li>
-                    <div id="displayName"></div>
                     <img id="thumbnail" src="" />
+                </li>
+                <li>
+                    {Name}:
+                    <span id="displayName"></span>
+                </li>
+                <li>
+                    {abstract}:
                     <div id="aboutMe"></div>
                 </li>
             </ul>
@@ -156,7 +162,6 @@
     });
 
     function handleResponse(response) {
-        // alert(JSON.stringify(response));
         $("#displayName").html(response.data.displayName);
         $("#thumbnail").attr("src", response.data.thumbnailUrl);
         $("#aboutMe").html(response.data.aboutMe);
