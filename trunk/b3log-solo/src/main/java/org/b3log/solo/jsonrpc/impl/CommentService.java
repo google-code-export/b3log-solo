@@ -224,6 +224,7 @@ public final class CommentService extends AbstractJSONRpcService {
             comment.put(Comment.COMMENT_DATE,
                         Keys.SIMPLE_DATE_FORMAT.format(
                     System.currentTimeMillis()));
+            
             setCommentThumbnailURL(comment);
 
             final String commentId = commentRepository.add(comment);
@@ -345,6 +346,7 @@ public final class CommentService extends AbstractJSONRpcService {
 
 
         if ("gmail.com".equals(domain.toLowerCase())) {
+            // TODO: using google id for thumbnail
             final URL googleProfileURL =
                     new URL(Buzzs.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
                                                                    id));
