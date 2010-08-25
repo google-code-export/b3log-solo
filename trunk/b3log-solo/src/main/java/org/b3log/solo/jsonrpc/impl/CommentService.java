@@ -107,7 +107,7 @@ public final class CommentService extends AbstractJSONRpcService {
      */
     private static final String COMMENT_MAIL_HTML_BODY =
             "Article[<a href=\""
-            + "{articleURL}\">" + "{articleTitle}</a>"
+            + "{articleURL}\">" + "{articleTitle}</a>]"
             + " received a new comment[{commentContent}]";
 
     /**
