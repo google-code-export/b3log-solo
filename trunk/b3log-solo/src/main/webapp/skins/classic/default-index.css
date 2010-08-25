@@ -140,3 +140,7 @@
 #tagsPanel .tagPanel:hover {
     background-color: #EEEEEE;
 }
+
+#tagsPanel .tagPanel a {
+    text-decoration: none;
+}
