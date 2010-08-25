@@ -56,7 +56,6 @@
             <ul>
                 <#list recentArticles as article>
                 <li>
-
                     <a name="recent${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
@@ -76,8 +75,7 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
-
-                    <a name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                    <a class="test" name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
                         <#else>
