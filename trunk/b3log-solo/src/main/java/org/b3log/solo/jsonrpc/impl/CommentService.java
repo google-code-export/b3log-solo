@@ -249,6 +249,7 @@ public final class CommentService extends AbstractJSONRpcService {
             LOGGER.trace("Comment[articleURL=" + articleURL + ", articleTitle="
                          + articleTitle + ", blogTitle=" + blogTitle + "]");
             final Message message = new Message();
+            message.setSender("DL88250@gmail.com");
             final String mailSubject = blogTitle + ": New comment on "
                                        + articleTitle;
             message.setSubject(mailSubject);
