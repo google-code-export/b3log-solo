@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 25, 2010
+ * @version 1.0.0.8, Aug 27, 2010
  */
 public final class BlogSyncService extends AbstractJSONRpcService {
 
