@@ -37,6 +37,7 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
@@ -275,6 +276,9 @@ public final class CommentService extends AbstractJSONRpcService {
                     + "mailBody=" + mailBody + "] to admins");
             mailService.sendToAdmins(message);
 
+            // Step 6: Clear page cache
+            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
             ret.put(Keys.OBJECT_ID, commentId);
         } catch (final Exception e) {
@@ -332,6 +336,9 @@ public final class CommentService extends AbstractJSONRpcService {
             articleUtils.decArticleCommentCount(articleId);
             // Step 4: Update blog statistic comment count
             statistics.decBlogCommentCount();
+
+            // Step 5: Clear page cache
+            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_COMMENT_SUCC);
 

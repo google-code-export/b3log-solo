@@ -186,7 +186,8 @@
                         "commentContent": $("#comment").val(),
                         "commentEmail": $("#commentEmail").val(),
                         "commentURL": $("#commentURL").val(),
-                        "commentName": $("#commentName").val()
+                        "commentName": $("#commentName").val(),
+                        "captcha": $("#commentValidate").val()
                     };
 
                     var result = jsonRpc.commentService.addComment(requestJSONObject);

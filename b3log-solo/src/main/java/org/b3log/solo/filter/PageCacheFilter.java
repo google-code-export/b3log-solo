@@ -66,14 +66,18 @@ public final class PageCacheFilter implements Filter {
                 (HttpServletResponse) response;
 
         final String requestURI = httpServletRequest.getRequestURI();
-        if (requestURI.equals("json-rpc.do")) {
+        if (requestURI.equals("json-rpc.do")
+                || requestURI.equals("captcha.do")
+                || requestURI.equals("tag-articles-feed.do")
+                || requestURI.equals("blog-articles-feed.do")
+                || requestURI.equals("admin-index.do")) {
             chain.doFilter(request, response);
 
             return;
         }
 
 
-        final String cachedPageKey = httpServletRequest.getRequestURL().toString()
+        final String cachedPageKey = httpServletRequest.getRequestURI()
                 + httpServletRequest.getQueryString();
         LOGGER.debug("Request[cachedPageKey=" + cachedPageKey + "]");
         LOGGER.trace("Cache[cachedCount=" + PAGE_CACHE.getCachedCount()

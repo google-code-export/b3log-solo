@@ -17,7 +17,6 @@ package org.b3log.solo.action.impl;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
-import org.b3log.latke.client.action.AbstractAction;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +27,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.model.Article;
@@ -50,9 +50,9 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 23, 2010
+ * @version 1.0.0.1, Aug 26, 2010
  */
-public final class ArchiveDateArticlesAction extends AbstractAction {
+public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
     /**
      * Default serial version uid.
