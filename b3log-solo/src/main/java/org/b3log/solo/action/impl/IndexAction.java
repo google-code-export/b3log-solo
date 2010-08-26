@@ -88,7 +88,6 @@ public final class IndexAction extends AbstractCacheablePageAction {
             filler.fillIndexArticles(ret, currentPageNum);
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
-            filler.fillStatistic(ret);
             filler.fillArchiveDates(ret);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
