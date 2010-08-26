@@ -16,7 +16,9 @@ Team
 
         $("#userIntro").html(userIntroHTML);
     }
-    
+
+    jsonRpc.statisticService.incViewCount();
+
     jsonRpc.statisticService.getStatistic(function (result, error) {
         var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
             + "<li>${articleCount1Label} " + result.statisticBlogArticleCount + "</li>"
@@ -24,7 +26,5 @@ Team
         $("#statistic").html(statisticHTML);
 
     });
-
-    jsonRpc.statisticService.incViewCount();
 </script>
 <script type="text/javascript" src="http://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>
