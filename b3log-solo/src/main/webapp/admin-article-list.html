@@ -12,13 +12,6 @@
     $("#articleList").table({
         resizable: true,
         colModel: [{
-                name: "选择",
-                index: "selected",
-                width: 20,
-                inputType: "checkbox",
-                textAlign: "center",
-                allSelected: true
-            }, {
                 name: "${titleLabel}",
                 index: "title",
                 minWidth: 180,
@@ -172,9 +165,9 @@
 
                 for (var i = 0; i < articles.length; i++) {
                     articleData[i] = {};
-                    articleData[i].selected = false;
                     articleData[i].tags = articles[i].articleTags;
-                    articleData[i].title = articles[i].articleTitle;
+                    articleData[i].title = "<a href='article-detail.do?oId=" + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle + "'>"
+                        + articles[i].articleTitle + "</a>";
                     articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                     articleData[i].update = "update";
                     articleData[i].deleted = "delete";
