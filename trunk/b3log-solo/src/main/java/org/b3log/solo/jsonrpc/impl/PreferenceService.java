@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.util.cache.Cache;
 import org.b3log.latke.util.cache.CacheFactory;
@@ -168,6 +169,9 @@ public final class PreferenceService extends AbstractJSONRpcService {
             preferenceRepository.update(Preference.PREFERENCE, preference);
             ((Cache<String, JSONObject>) cache).put(Preference.PREFERENCE,
                                                     preference);
+
+            // Clear page cache
+            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_SUCC);
         } catch (final Exception e) {

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
@@ -194,6 +195,9 @@ public final class LinkService extends AbstractJSONRpcService {
             final String linkId = link.getString(Keys.OBJECT_ID);
             linkRepository.update(linkId, link);
 
+            // Clear page cache
+            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_SUCC);
 
             LOGGER.debug("Updated an link[oId=" + linkId + "]");
@@ -237,6 +241,9 @@ public final class LinkService extends AbstractJSONRpcService {
             final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.debug("Removing a link[oId=" + linkId + "]");
             linkRepository.remove(linkId);
+
+            // Clear page cache
+            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_LINK_SUCC);
 

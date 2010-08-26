@@ -30,6 +30,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.event.Event;
@@ -157,7 +158,8 @@ public final class ArticleService extends AbstractJSONRpcService {
             statistics.incBlogArticleCount();
             // Step 7: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
-
+            // Step 8: Clear page cache
+            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
             eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.ADD_ARTICLE, article));
 
@@ -363,7 +365,8 @@ public final class ArticleService extends AbstractJSONRpcService {
             statistics.decBlogArticleCount();
             // Step 5: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
-
+            // Step 6: Clear page cache
+            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
 
             eventManager.fireEventSynchronously(
@@ -441,7 +444,9 @@ public final class ArticleService extends AbstractJSONRpcService {
             articleUtils.addTagArticleRelation(tags, article);
             // Step 8: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
-
+            // Step 9: Clear page cache
+            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+            
             eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, article));
 
