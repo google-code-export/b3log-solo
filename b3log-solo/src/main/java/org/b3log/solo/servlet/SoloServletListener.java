@@ -45,6 +45,7 @@ import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.latke.util.cache.Cache;
 import org.b3log.latke.util.cache.qualifier.LruMemory;
 import org.b3log.solo.action.ActionModule;
+import org.b3log.solo.filter.FilterModule;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.PreferenceRepository;
 import static org.b3log.solo.model.Preference.*;
@@ -62,7 +63,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Aug 25, 2010
+ * @version 1.0.0.9, Aug 26, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -137,6 +138,7 @@ public final class SoloServletListener extends AbstractServletListener {
         if (null == ret) {
             LOGGER.info("Initializing Guice....");
             setInjector(Guice.createInjector(Stage.PRODUCTION,
+                                             new FilterModule(), // TODO: filter
                                              new ActionModule(),
                                              new RepositoryModule(),
                                              new EventModule(),
