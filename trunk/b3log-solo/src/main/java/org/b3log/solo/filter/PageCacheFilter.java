@@ -64,8 +64,6 @@ public final class PageCacheFilter implements Filter {
                 (HttpServletRequest) request;
         final HttpServletResponse httpServletResponse =
                 (HttpServletResponse) response;
-        final String cachedPageKey = httpServletRequest.getRequestURL().toString()
-                + httpServletRequest.getQueryString();
 
         final String requestURI = httpServletRequest.getRequestURI();
         if (requestURI.equals("json-rpc.do")) {
@@ -75,6 +73,8 @@ public final class PageCacheFilter implements Filter {
         }
 
 
+        final String cachedPageKey = httpServletRequest.getRequestURL().toString()
+                + httpServletRequest.getQueryString();
         LOGGER.debug("Request[cachedPageKey=" + cachedPageKey + "]");
         LOGGER.trace("Cache[cachedCount=" + PAGE_CACHE.getCachedCount()
                 + ", maxCount=" + PAGE_CACHE.getMaxCount() + "]");
