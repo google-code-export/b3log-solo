@@ -45,13 +45,78 @@
             <div id="loading"></div>
         </div>
         <div id="syncSettingPanel" class="none">
-            sd
+            <fieldset>
+                <legend>
+                    {CSDN sync}
+                </legend>
+                <table class="form" cellpadding="12px" cellspacing="12px;">
+                    <tbody>
+                        <tr>
+                            <th width="88px">
+                                {name}
+                            </th>
+                            <td colspan="5">
+                                <input id="nameCSDN"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {password}
+                            </th>
+                            <td colspan="5">
+                                <input type="password" id="passwordCSDN"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                {add}
+                            </th>
+                            <td>
+                                <input type="checkbox" id="addSyncCSDN"/>
+                            </td>
+                            <th>
+                                {update}
+                            </th>
+                            <td>
+                                <input type="checkbox" id="updateSyncCSDN"
+                            </td>
+                            <th>
+                                {deleted}
+                            </th>
+                            <td>
+                                <input type="checkbox" id="deleteSyncCSDN"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <button onclick="syncSettingCSDN();">{submit}</button>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+
         </div>
     </div>
 </div>
-
-
 <script type="text/javascript">
+    var syncSettingCSDN = function () {
+        var requestJSONObject = {
+            "blogSyncExternalBloggingSysUserName": $("#nameCSDN").val(),
+            "blogSyncExternalBloggingSysUserPassword": $("#passwordCSDN").val(),
+            "blogSyncMgmtAddEnabled": $("#addSyncCSDN").attr("checked"),
+            "blogSyncMgmtUpdateEnabled": $("#updateSyncCSDN").attr("checked"),
+            "blogSyncMgmtRemoveEnabled": $("#deleteSyncCSDN").attr("checked")
+        };
+
+        var result =
+            jsonRpc.blogSyncService.setBlogSyncMgmtForCSDNBlog(requestJSONObject);
+       
+        if (result.sc === "SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC") {
+            $("#tipMsg").html("{setting success}");
+        }
+    }
+
     var changeTab = function (it) {
         var tabs = ['sync', 'syncSetting'];
         for (var i = 0; i < tabs.length; i++) {
