@@ -19,8 +19,4 @@
  * Version: 1.0.0.1, Mar 19, 2010
  * Author: Liang Ding
  */
-jsonRpc = undefined;
-
-$(function(){
-    jsonRpc = new JSONRpcClient("json-rpc.do");
-});
+jsonRpc = new JSONRpcClient("json-rpc.do");
