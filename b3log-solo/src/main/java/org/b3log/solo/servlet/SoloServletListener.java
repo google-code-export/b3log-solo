@@ -15,13 +15,23 @@
  */
 package org.b3log.solo.servlet;
 
+import com.google.appengine.api.images.Image;
+import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Stage;
 import com.google.inject.TypeLiteral;
+import java.io.BufferedInputStream;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
@@ -80,6 +90,28 @@ public final class SoloServletListener extends AbstractServletListener {
     // XXX: remove this field?
     public static final String[] SUPPORTED_BLOG_SYNC_MGMT_EXTERNAL_BLOGGING_SYSTEMS =
             new String[]{BlogSync.BLOG_SYNC_CSDN_BLOG};
+    /**
+     * Maximum captcha row.
+     */
+    public static final int MAX_CAPTCHA_ROW = 10;
+    /**
+     * Maximum captcha column.
+     */
+    public static final int MAX_CAPTCHA_COLUM = 10;
+    /**
+     * Width of a captcha character.
+     */
+    public static final int WIDTH_CAPTCHA_CHAR = 13;
+    /**
+     * Height of a captcha character.
+     */
+    public static final int HEIGHT_CAPTCHA_CHAR = 20;
+    /**
+     * Captchs &lt;"imageName", Image&gt;.
+     * For example &lt;"0/5.png", Image&gt;.
+     */
+    public static final Map<String, Image> CAPTCHAS =
+            new HashMap<String, Image>();
 
     static {
         ADMIN_GMAIL = CONFIG.getString("gmail");
@@ -121,6 +153,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         initPreference();
         initStatistic();
+        loadCaptchas();
 
         registerRemoteJSServiceSerializers();
 
@@ -187,6 +220,51 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Loads captchas.
+     */
+    private void loadCaptchas() {
+        try {
+            final URL captchaURL =
+                    SoloServletListener.class.getClassLoader().getResource(
+                    "captcha.zip");
+            final ZipFile zipFile = new ZipFile(captchaURL.getFile());
+            final Set<String> imageNames = new HashSet<String>();
+            for (int row = 0; row < MAX_CAPTCHA_ROW; row++) {
+                for (int column = 0; column < MAX_CAPTCHA_COLUM; column++) {
+                    imageNames.add(row + "/" + column + ".png");
+                }
+
+            }
+
+            final Iterator<String> i = imageNames.iterator();
+            while (i.hasNext()) {
+                final String imageName = i.next();
+                final ZipEntry zipEntry = zipFile.getEntry(imageName);
+
+                final BufferedInputStream bufferedInputStream =
+                        new BufferedInputStream(zipFile.getInputStream(zipEntry));
+                final byte[] captchaCharData = new byte[bufferedInputStream.
+                        available()];
+                bufferedInputStream.read(captchaCharData);
+                bufferedInputStream.close();
+
+                final Image captchaChar =
+                        ImagesServiceFactory.makeImage(captchaCharData);
+
+                CAPTCHAS.put(imageName, captchaChar);
+            }
+
+            zipFile.close();
+        } catch (final Exception e) {
+            LOGGER.fatal("Can not load captchs!", e);
+
+            throw new RuntimeException(e);
+        }
+
+        LOGGER.info("Loaded captch image");
     }
 
     /**

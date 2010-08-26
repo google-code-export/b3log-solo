@@ -19,7 +19,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 21, 2010
+ * @version 1.0.0.7, Aug 26, 2010
  */
 public enum StatusCodes {
 
@@ -87,4 +87,8 @@ public enum StatusCodes {
      * Indicates set blog sync management for CSDN blog successfully.
      */
     SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC,
+    /**
+     * Indicates captcha error.
+     */
+    CAPTCHA_ERROR,
 }

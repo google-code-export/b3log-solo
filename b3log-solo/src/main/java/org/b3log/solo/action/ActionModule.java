@@ -23,6 +23,7 @@ import org.b3log.solo.action.impl.TagsAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.client.AbstractClientModule;
 import org.b3log.latke.client.action.DoNothingAction;
+import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.BlogArticlesFeedServlet;
 import org.b3log.solo.action.feed.TagArticlesFeedServlet;
@@ -34,7 +35,7 @@ import org.b3log.solo.auth.AuthFilter;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 25, 2010
+ * @version 1.0.0.5, Aug 26, 2010
  */
 public final class ActionModule extends AbstractClientModule {
 
@@ -76,5 +77,8 @@ public final class ActionModule extends AbstractClientModule {
         serve("/blog-articles-feed.do").with(BlogArticlesFeedServlet.class);
         bind(TagArticlesFeedServlet.class).in(Scopes.SINGLETON);
         serve("/tag-articles-feed.do").with(TagArticlesFeedServlet.class);
+
+        bind(CaptchaServlet.class).in(Scopes.SINGLETON);
+        serve("/captcha.do").with(CaptchaServlet.class);
     }
 }
