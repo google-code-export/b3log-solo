@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
@@ -39,6 +40,11 @@ public final class StatisticService extends AbstractJSONRpcService {
      */
     @Inject
     private StatisticRepository statisticRepository;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
 
     /**
      * Gets the statistic.
@@ -68,13 +74,7 @@ public final class StatisticService extends AbstractJSONRpcService {
      */
     public void incViewCount() {
         try {
-            final JSONObject statistic =
-                    statisticRepository.get(Statistic.STATISTIC);
-            final int viewCount =
-                    statistic.getInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
-            statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, viewCount + 1);
-
-            statisticRepository.update(Statistic.STATISTIC, statistic);
+            statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
