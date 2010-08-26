@@ -8,10 +8,13 @@ Copyright (C) 2009, 2010,
 </a>
 Team
 <script type="text/javascript">
-        function handleResponse(response) {
-        $("#displayName").html(response.data.displayName);
-        $("#thumbnail").attr("src", response.data.thumbnailUrl);
-        $("#aboutMe").html(response.data.aboutMe);
+    // this code is used to article-side.html
+     function handleResponse (response) {
+        var userIntroHTML = "<li><img src='" + response.data.thumbnailUrl + "'/></li>"
+                + "<li>" + response.data.displayName + "</li>"
+                + "<li>" + response.data.aboutMe + "</li>";
+
+        $("#userIntro").html(userIntroHTML);
     }
 </script>
 <script type="text/javascript" src="http://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>

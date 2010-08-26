@@ -104,7 +104,7 @@
     border-top: thin dotted #BBBBBB;
 }
 
-#thumbnail {
+#userIntro img {
     -moz-border-radius:6px 6px 6px 6px;
     border:1px solid #BBCCFF;
     margin-top:9px;
