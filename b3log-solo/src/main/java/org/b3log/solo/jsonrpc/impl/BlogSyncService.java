@@ -238,9 +238,10 @@ public final class BlogSyncService extends AbstractJSONRpcService {
 
                 statistics.incBlogArticleCount();
                 archiveDateUtils.archiveDate(soloArticle);
-                // Clear page cache
-                AbstractCacheablePageAction.PAGE_CACHE.removeAll();
             }
+
+            // Clear page cache
+            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
             ret.put(Keys.OBJECT_IDS, importedIds);
         } catch (final Exception e) {
