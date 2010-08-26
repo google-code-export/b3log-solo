@@ -77,11 +77,6 @@ public final class Filler {
     @Inject
     private LinkRepository linkRepository;
     /**
-     * Statistic repository.
-     */
-    @Inject
-    private StatisticRepository statisticRepository;
-    /**
      * Archive date utilities.
      */
     @Inject
@@ -91,28 +86,6 @@ public final class Filler {
      */
     private com.google.appengine.api.users.UserService userService =
             UserServiceFactory.getUserService();
-
-    /**
-     * Fills blog statistics for all pages.
-     *
-     * @param dataModel data model
-     * @throws Exception exception
-     */
-    public void fillStatistic(final Map<String, Object> dataModel)
-            throws Exception {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
-        final int viewCount =
-                statistic.getInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
-        final int articleCount =
-                statistic.getInt(Statistic.STATISTIC_BLOG_ARTICLE_COUNT);
-        final int commentCount =
-                statistic.getInt(Statistic.STATISTIC_BLOG_COMMENT_COUNT);
-
-        dataModel.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, viewCount);
-        dataModel.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, articleCount);
-        dataModel.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, commentCount);
-    }
 
     /**
      * Fills articles in index.html.

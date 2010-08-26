@@ -155,7 +155,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
-            filler.fillStatistic(ret);
             filler.fillArchiveDates(ret);
 
             // View count +1

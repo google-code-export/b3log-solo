@@ -109,7 +109,6 @@ public final class TagsAction extends AbstractCacheablePageAction {
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
-            filler.fillStatistic(ret);
             filler.fillArchiveDates(ret);
 
             statistics.incBlogViewCount();
