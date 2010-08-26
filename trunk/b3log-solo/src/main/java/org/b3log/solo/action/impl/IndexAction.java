@@ -16,7 +16,6 @@
 package org.b3log.solo.action.impl;
 
 import org.b3log.latke.client.action.ActionException;
-import org.b3log.latke.client.action.AbstractAction;
 import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.Locale;
@@ -24,6 +23,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
@@ -38,9 +38,10 @@ import org.json.JSONObject;
  * Index action. index.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 21, 2010
+ * @version 1.0.0.7, Aug 26, 2010
  */
-public final class IndexAction extends AbstractAction {
+public final class IndexAction extends AbstractCacheablePageAction {
+    // TODO: page cache action
 
     /**
      * Default serial version uid.
@@ -100,7 +101,7 @@ public final class IndexAction extends AbstractAction {
             final String skinDirName = preferences.getPreference().
                     getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
-            
+
             statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);

@@ -282,6 +282,7 @@ public final class Filler {
     public void fillBlogHeader(final Map<String, Object> dataModel,
                                final HttpServletRequest request)
             throws Exception {
+        LOGGER.trace("Filling blog header....");
         final JSONObject preference = preferences.getPreference();
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         final String blogSubtitle = preference.getString(
