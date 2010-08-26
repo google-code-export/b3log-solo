@@ -80,7 +80,7 @@ public final class PageCacheFilter implements Filter {
         final String cachedPageKey = httpServletRequest.getRequestURI()
                 + httpServletRequest.getQueryString();
         LOGGER.debug("Request[cachedPageKey=" + cachedPageKey + "]");
-        LOGGER.trace("Cache[cachedCount=" + PAGE_CACHE.getCachedCount()
+        LOGGER.trace("Page cache[cachedCount=" + PAGE_CACHE.getCachedCount()
                 + ", maxCount=" + PAGE_CACHE.getMaxCount() + "]");
         final Object cachedPageContentObject = PAGE_CACHE.get(cachedPageKey);
         if (null == cachedPageContentObject) {
