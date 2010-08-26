@@ -170,13 +170,14 @@
                 SyntaxHighlighter.config.tagName = "textarea";
                 SyntaxHighlighter.all();
 
-                $("#comment").keypress(function (event) {
+                $("#commentValidate").keypress(function (event) {
                     if (event.keyCode === 13) {
                         submitComment();
                     }
                 });
             }
             codeHeightLight();
+
             var validateComment = function () {
                 if ($("#commentName").val().replace(/\s/g, "") === "") {
                     $("#commentErrorTip").html("{姓名不能为空！}");
