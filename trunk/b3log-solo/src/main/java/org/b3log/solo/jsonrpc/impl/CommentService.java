@@ -37,7 +37,6 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
@@ -109,7 +108,7 @@ public final class CommentService extends AbstractJSONRpcService {
             + " received a new comment[{commentContent}]";
 
     /**
-     * Gets comments of an article specified by the article id.
+     * Gets comments of an article specified by the article id for front.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -125,6 +124,72 @@ public final class CommentService extends AbstractJSONRpcService {
      *     "comments": [{
      *         "oId": "",
      *         "commentName": "",
+     *         "thumbnailUrl": "",
+     *         "commentURL": "",
+     *         "commentContent": "",
+     *         "commentDate": "",
+     *      }, ....]
+     *     "sc": "GET_COMMENTS_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject getCommentsForFront(final JSONObject requestJSONObject,
+                                          final HttpServletRequest request,
+                                          final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
+            // Step 1: Get article-comment relations
+            final List<JSONObject> articleCommentRelations =
+                    articleCommentRepository.getByArticleId(articleId);
+            // Step 2: Get comments
+            final List<JSONObject> comments = new ArrayList<JSONObject>();
+            for (int i = 0; i < articleCommentRelations.size(); i++) {
+                final JSONObject articleCommentRelation =
+                        articleCommentRelations.get(i);
+                final String commentId =
+                        articleCommentRelation.getString(Comment.COMMENT + "_"
+                        + Keys.OBJECT_ID);
+
+                final JSONObject comment = commentRepository.get(commentId);
+                comment.remove(Comment.COMMENT_EMAIL); // Remove email
+                comments.add(comment);
+            }
+
+            ret.put(Comment.COMMENTS, comments);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets comments of an article specified by the article id for administrator.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": articleId
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example:
+     * <pre>
+     * {
+     *     "comments": [{
+     *         "oId": "",
+     *         "commentName": "",
+     *         "commentEmail": "",
      *         "thumbnailUrl": "",
      *         "commentURL": "",
      *         "commentContent": "",
@@ -159,7 +224,6 @@ public final class CommentService extends AbstractJSONRpcService {
                         + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
-                comment.remove(Comment.COMMENT_EMAIL); // Remove email
                 comments.add(comment);
             }
 

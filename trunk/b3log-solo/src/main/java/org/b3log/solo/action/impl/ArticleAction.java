@@ -134,9 +134,6 @@ public final class ArticleAction extends AbstractAction {
             final List<JSONObject> articleTags = getTags(articleId);
             ret.put(Article.ARTICLE_TAGS_REF, articleTags);
 
-            final List<JSONObject> articleComments = getComments(articleId);
-            ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
-
             final String previsouArticleId = articleRepository.
                     getPreviousArticleId(articleId);
             ret.put(Common.PREVIOUS_ARTICLE_ID, previsouArticleId);
