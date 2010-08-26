@@ -34,10 +34,10 @@
                             </div>
                             <div class="article-title">
                                 <h2>
-                                    <a>${article.articleTitle}</a>
+                                    <a href="/article-detail.do?oId=${article.oId}">${article.articleTitle}</a>
                                 </h2>
                                 <div class="article-tags">
-                                    tags:
+                                    ${tag1Label}
                                     <#list articleTags as articleTag>
                                     <span>
                                         <a href="tag-articles.do?oId=${articleTag.oId}">${articleTag.tagTitle}</a>
