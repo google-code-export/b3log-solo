@@ -37,7 +37,7 @@ import static org.b3log.solo.servlet.SoloServletListener.*;
  *
  * <p>
  *   See <a href="http://isend-blog.appspot.com/2010/03/25/captcha_on_GAE.html">
- *   《在GAE上拼接生成图形验证码》</a> for philosophy. Checkout
+ *  在GAE上拼接生成图形验证码</a> for philosophy. Checkout
  *    <a href="http://toy-code.googlecode.com/svn/trunk/CaptchaGenerator">
  *    the sample captcha generator</a> for mor details.
  * </p>
