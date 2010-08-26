@@ -93,8 +93,7 @@ public final class PageCacheFilter implements Filter {
             response.setContentType("text/html");
             response.setCharacterEncoding("UTF-8");
             final PrintWriter writer = response.getWriter();
-            final String cachedPageContent = new String(
-                    ((String) cachedPageContentObject).getBytes(), "UTF-8");
+            final String cachedPageContent = (String) cachedPageContentObject;
             writer.write(cachedPageContent);
             writer.close();
         }
