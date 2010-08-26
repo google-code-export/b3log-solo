@@ -8,10 +8,10 @@
     </a>
     <span class="right">
         <#if loginURL??>
-        <a href="${loginURL}">${loginLabel}</a>&nbsp;|&nbsp;
+        <a class="noUnderline" href="${loginURL}">${loginLabel}</a>&nbsp;|&nbsp;
         <#else>
-        <a href="${logoutURL}">${logoutLabel}</a>&nbsp;|&nbsp;
-        <a href="admin-index.do">${adminLabel}</a>&nbsp;|&nbsp;
+        <a class="noUnderline" href="${logoutURL}">${logoutLabel}</a>&nbsp;|&nbsp;
+        <a class="noUnderline" href="admin-index.do">${adminLabel}</a>&nbsp;|&nbsp;
         </#if>
         <select onchange="setLanguage(this);">
             <option>

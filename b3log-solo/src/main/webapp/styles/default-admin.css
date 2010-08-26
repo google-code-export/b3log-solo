@@ -72,13 +72,22 @@
     height: 462px;
     overflow: auto;
 }
-/* asyn */
+
+/* sync */
 #loading {
     margin:24px auto;
     width:100px;
     position:absolute;
     top:160px;
     right: 500px;
+}
+
+#syncSettingPanel fieldset{
+    -moz-border-radius:12px 12px 12px 12px;
+    float:left;
+    margin:12px;
+    padding:12px;
+    width:31%;
 }
 
 /* preference */
