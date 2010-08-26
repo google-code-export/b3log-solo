@@ -17,18 +17,13 @@ Team
         $("#userIntro").html(userIntroHTML);
     }
 
-    var statistic = function () {
-        jsonRpc.statisticService.incViewCount();
+    jsonRpc.statisticService.incViewCount();
 
-        jsonRpc.statisticService.getStatistic(function (result, error) {
-            alert(1);
-            var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
-                + "<li>${articleCount1Label} " + result.statisticBlogArticleCount + "</li>"
-                + "<li>${commentCount1Label} "+ result.statisticBlogCommentCount + "</li>";
-            $("#statistic").html(statisticHTML);
-        });
-    }
-    statistic();
-    
+    jsonRpc.statisticService.getStatistic(function (result, error) {
+        var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
+            + "<li>${articleCount1Label} " + result.statisticBlogArticleCount + "</li>"
+            + "<li>${commentCount1Label} "+ result.statisticBlogCommentCount + "</li>";
+        $("#statistic").html(statisticHTML);
+    });
 </script>
 <script type="text/javascript" src="http://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>
