@@ -34,7 +34,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Statistic;
@@ -72,11 +71,6 @@ public final class Filler {
      */
     @Inject
     private ArticleUtils articleUtils;
-    /**
-     * Preference utilities.
-     */
-    @Inject
-    private Preferences preferences;
     /**
      * Link repository.
      */
@@ -131,7 +125,7 @@ public final class Filler {
     public void fillIndexArticles(final Map<String, Object> dataModel,
                                   final int currentPageNum)
             throws Exception {
-        final JSONObject preference = preferences.getPreference();
+        final JSONObject preference = SoloServletListener.getUserPreference();
 
         final int pageSize =
                 preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -186,7 +180,7 @@ public final class Filler {
      */
     public void fillMostUsedTags(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = preferences.getPreference();
+        final JSONObject preference = SoloServletListener.getUserPreference();
         final int mostUsedTagDisplayCnt =
                 preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
 
@@ -226,7 +220,7 @@ public final class Filler {
      */
     public void fillMostViewCountArticles(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = preferences.getPreference();
+        final JSONObject preference = SoloServletListener.getUserPreference();
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostViewCountArticles =
@@ -244,7 +238,7 @@ public final class Filler {
      */
     public void fillMostCommentArticles(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = preferences.getPreference();
+        final JSONObject preference = SoloServletListener.getUserPreference();
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostCommentArticles =
@@ -262,7 +256,7 @@ public final class Filler {
      */
     public void fillRecentArticles(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = preferences.getPreference();
+        final JSONObject preference = SoloServletListener.getUserPreference();
         final int recentArticleDisplayCnt =
                 preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
 
@@ -283,7 +277,7 @@ public final class Filler {
                                final HttpServletRequest request)
             throws Exception {
         LOGGER.trace("Filling blog header....");
-        final JSONObject preference = preferences.getPreference();
+        final JSONObject preference = SoloServletListener.getUserPreference();
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         final String blogSubtitle = preference.getString(
                 Preference.BLOG_SUBTITLE);

@@ -41,8 +41,8 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -99,11 +99,6 @@ public final class TagArticlesAction extends AbstractAction {
      */
     @Inject
     private Statistics statistics;
-    /**
-     * Preference utilities.
-     */
-    @Inject
-    private Preferences preferences;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -125,7 +120,7 @@ public final class TagArticlesAction extends AbstractAction {
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference = SoloServletListener.getUserPreference();
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(
@@ -146,17 +141,17 @@ public final class TagArticlesAction extends AbstractAction {
                         tagArticleRelations.getJSONObject(i);
                 final String articleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
+                        + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }
 
             Collections.sort(articles, new ArticleUpdateDateComparator());
-         
+
             LOGGER.trace("Paginate tag-articles[currentPageNum="
-                         + currentPageNum + ", pageSize=" + pageSize
-                         + ", pageCount=" + pageCount + ", windowSize="
-                         + windowSize + "]");
+                    + currentPageNum + ", pageSize=" + pageSize
+                    + ", pageCount=" + pageCount + ", windowSize="
+                    + windowSize + "]");
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
@@ -169,8 +164,7 @@ public final class TagArticlesAction extends AbstractAction {
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
             ret.put(Keys.OBJECT_ID, tagId);
-            final String skinDirName = preferences.getPreference().
-                    getString(Skin.SKIN_DIR_NAME);
+            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret);

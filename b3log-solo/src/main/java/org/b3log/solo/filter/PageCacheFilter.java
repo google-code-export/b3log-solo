@@ -15,10 +15,6 @@
  */
 package org.b3log.solo.filter;
 
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.TypeLiteral;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.Filter;
@@ -30,8 +26,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
-import org.b3log.latke.util.cache.Cache;
-import org.b3log.latke.util.cache.memory.LruMemoryCache;
+import static org.b3log.latke.client.action.AbstractCacheablePageAction.*;
 
 /**
  * Page cache filter.
@@ -41,17 +36,6 @@ import org.b3log.latke.util.cache.memory.LruMemoryCache;
  */
 public final class PageCacheFilter implements Filter {
 
-//    /**
-//     * Cache.
-//     */
-//    @Inject
-//    @LruMemory
-//    private Cache<String, String> pageCache;
-    /**
-     * Injector.
-     */
-    @Inject
-    private Injector injector;
     /**
      * Logger.
      */
@@ -81,24 +65,21 @@ public final class PageCacheFilter implements Filter {
         final HttpServletResponse httpServletResponse =
                 (HttpServletResponse) response;
         final String cachedPageKey = httpServletRequest.getRequestURL().toString()
-                                     + httpServletRequest.getQueryString();
+                + httpServletRequest.getQueryString();
 
         LOGGER.trace("Request[cachedPageKey=" + cachedPageKey + "]");
-// TODO: cache
-        final Cache<String, String> pageCache = injector.getInstance(
-                Key.get(new TypeLiteral<LruMemoryCache<String, String>>() {
-        }));
-        LOGGER.debug("Cache[cachedCount=" + pageCache.getCachedCount()
-                     + ", maxCount=" + pageCache.getMaxCount() + "]");
-        @SuppressWarnings("unchecked")
-        final String cachedPageContent = pageCache.get(cachedPageKey);
+
+
+        LOGGER.debug("Cache[cachedCount=" + PAGE_CACHE.getCachedCount()
+                + ", maxCount=" + PAGE_CACHE.getMaxCount() + "]");
+        final String cachedPageContent = (String) PAGE_CACHE.get(cachedPageKey);
         if (null == cachedPageContent) {
             chain.doFilter(request, response);
 
             return;
         } else {
             LOGGER.trace("Writes resposne for page[cachedPageKey="
-                         + cachedPageKey + "] from cache");
+                    + cachedPageKey + "] from cache");
             final PrintWriter writer = response.getWriter();
             writer.write(new String(cachedPageContent.getBytes(), "UTF-8"));
             writer.close();

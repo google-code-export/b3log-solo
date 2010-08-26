@@ -29,13 +29,13 @@ import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.b3log.latke.Keys;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.Htmls;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -68,11 +68,6 @@ public final class TagArticlesFeedServlet extends HttpServlet {
     @Inject
     private TagArticleRepository tagArticleRepository;
     /**
-     * Preference utilities.
-     */
-    @Inject
-    private Preferences preferences;
-    /**
      * Feed factory.
      */
     private Factory feedFactory = Abdera.getNewFactory();
@@ -103,14 +98,15 @@ public final class TagArticlesFeedServlet extends HttpServlet {
                         tagArticleRelations.getJSONObject(i);
                 final String articleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
+                        + Keys.OBJECT_ID);
                 articles.add(articleRepository.get(articleId));
             }
 
             final String tagTitle =
                     tagRepository.get(tagId).getString(Tag.TAG_TITLE);
 
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
                     Preference.BLOG_SUBTITLE) + ", " + tagTitle;

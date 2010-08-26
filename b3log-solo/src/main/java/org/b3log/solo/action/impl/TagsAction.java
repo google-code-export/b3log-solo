@@ -35,7 +35,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -80,11 +80,6 @@ public final class TagsAction extends AbstractAction {
      */
     @Inject
     private Statistics statistics;
-    /**
-     * Preference utilities.
-     */
-    @Inject
-    private Preferences preferences;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -108,8 +103,8 @@ public final class TagsAction extends AbstractAction {
 
             final List<Object> tags = CollectionUtils.jsonArrayToList(tagArray);
             ret.put(Tag.TAGS, tags);
-            final String skinDirName = preferences.getPreference().
-                    getString(Skin.SKIN_DIR_NAME);
+            final JSONObject preference = SoloServletListener.getUserPreference();
+            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret);

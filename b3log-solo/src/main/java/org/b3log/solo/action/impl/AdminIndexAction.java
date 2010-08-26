@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
@@ -57,11 +56,6 @@ public final class AdminIndexAction extends AbstractAction {
      */
     @Inject
     private Filler filler;
-    /**
-     * Preference utilities.
-     */
-    @Inject
-    private Preferences preferences;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

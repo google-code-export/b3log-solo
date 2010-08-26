@@ -28,10 +28,10 @@ import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.Htmls;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,11 +54,6 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
     @Inject
     private ArticleRepository articleRepository;
     /**
-     * Preference utilities.
-     */
-    @Inject
-    private Preferences preferences;
-    /**
      * Feed factory.
      */
     private Factory feedFactory = Abdera.getNewFactory();
@@ -75,7 +70,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
 
         final Feed feed = feedFactory.newFeed();
         try {
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
                     Preference.BLOG_SUBTITLE);
