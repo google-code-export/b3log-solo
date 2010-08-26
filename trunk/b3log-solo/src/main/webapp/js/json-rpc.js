@@ -16,7 +16,7 @@
 
 /*
  * Description: JSON-RPC(http://jabsorb.org) client.
- * Version: 1.0.0.1, Mar 19, 2010
+ * Version: 1.0.0.2, Aug 27, 2010
  * Author: Liang Ding
  */
 jsonRpc = new JSONRpcClient("json-rpc.do");
