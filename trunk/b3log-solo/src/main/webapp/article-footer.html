@@ -9,12 +9,22 @@ Copyright (C) 2009, 2010,
 Team
 <script type="text/javascript">
     // this code is used to article-side.html
-     function handleResponse (response) {
+    function handleResponse (response) {
         var userIntroHTML = "<li><img src='" + response.data.thumbnailUrl + "'/></li>"
-                + "<li>" + response.data.displayName + "</li>"
-                + "<li>" + response.data.aboutMe + "</li>";
+            + "<li>" + response.data.displayName + "</li>"
+            + "<li>" + response.data.aboutMe + "</li>";
 
         $("#userIntro").html(userIntroHTML);
     }
+    
+    jsonRpc.statisticService.getStatistic(function (result, error) {
+        var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
+            + "<li>${articleCount1Label} " + result.statisticBlogArticleCount + "</li>"
+            + "<li>${commentCount1Label} "+ result.statisticBlogCommentCount + "</li>";
+        $("#statistic").html(statisticHTML);
+
+    });
+
+    jsonRpc.statisticService.incViewCount();
 </script>
 <script type="text/javascript" src="http://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>
