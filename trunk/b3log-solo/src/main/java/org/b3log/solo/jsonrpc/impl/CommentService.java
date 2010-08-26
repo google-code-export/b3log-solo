@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.model.Article;
@@ -37,6 +38,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
+import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.ArticleUtils;
@@ -181,7 +183,11 @@ public final class CommentService extends AbstractJSONRpcService {
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
+     *     "captcha": "",
      *     "oId": articleId,
+     *     "commentName": "",
+     *     "commentEmail": "",
+     *     "commentURL": "",
      *     "commentContent": ""
      * }
      * </pre>
@@ -201,10 +207,20 @@ public final class CommentService extends AbstractJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        // TODO: captcha
         final JSONObject ret = new JSONObject();
 
         try {
+            final String captcha = requestJSONObject.getString(
+                    CaptchaServlet.CAPTCHA);
+            final HttpSession session = request.getSession();
+            final String storedCaptcha = (String) session.getAttribute(
+                    CaptchaServlet.CAPTCHA);
+            if (!storedCaptcha.equals(captcha)) {
+                ret.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
+
+                return ret;
+            }
+
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject article = articleRepository.get(articleId);
             final String commentName =
@@ -224,7 +240,7 @@ public final class CommentService extends AbstractJSONRpcService {
             comment.put(Comment.COMMENT_DATE,
                         Keys.SIMPLE_DATE_FORMAT.format(
                     System.currentTimeMillis()));
-            
+
             setCommentThumbnailURL(comment);
 
             final String commentId = commentRepository.add(comment);
@@ -369,6 +385,8 @@ public final class CommentService extends AbstractJSONRpcService {
             } else {
                 LOGGER.warn("Can not fetch google profile[userId=" + id + ", "
                             + "statusCode=" + statusCode + "]");
+                comment.put(Comment.COMMENT_THUMBNAIL_URL,
+                            "/images/" + DEFAULT_USER_THUMBNAIL);
             }
         } else {
             LOGGER.warn("Not supported yet for comment thumbnail excepts Gmail "
