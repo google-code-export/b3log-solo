@@ -30,7 +30,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -41,7 +41,6 @@ import org.json.JSONObject;
  * @version 1.0.0.7, Aug 26, 2010
  */
 public final class IndexAction extends AbstractCacheablePageAction {
-    // TODO: page cache action
 
     /**
      * Default serial version uid.
@@ -66,11 +65,6 @@ public final class IndexAction extends AbstractCacheablePageAction {
      */
     @Inject
     private Statistics statistics;
-    /**
-     * Preference utilities.
-     */
-    @Inject
-    private Preferences preferences;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -98,8 +92,8 @@ public final class IndexAction extends AbstractCacheablePageAction {
             filler.fillArchiveDates(ret);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
-            final String skinDirName = preferences.getPreference().
-                    getString(Skin.SKIN_DIR_NAME);
+            final JSONObject preference = SoloServletListener.getUserPreference();
+            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             statistics.incBlogViewCount();

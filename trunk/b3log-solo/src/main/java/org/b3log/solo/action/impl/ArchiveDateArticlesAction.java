@@ -40,8 +40,8 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -93,11 +93,6 @@ public final class ArchiveDateArticlesAction extends AbstractAction {
      */
     @Inject
     private Statistics statistics;
-    /**
-     * Preference utilities.
-     */
-    @Inject
-    private Preferences preferences;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -120,7 +115,8 @@ public final class ArchiveDateArticlesAction extends AbstractAction {
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(
@@ -141,8 +137,8 @@ public final class ArchiveDateArticlesAction extends AbstractAction {
                         archiveDateArticleRelations.getJSONObject(i);
                 final String articleId =
                         archiveDateArticleRelation.getString(Article.ARTICLE
-                                                             + "_"
-                                                             + Keys.OBJECT_ID);
+                        + "_"
+                        + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }
@@ -159,8 +155,7 @@ public final class ArchiveDateArticlesAction extends AbstractAction {
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.ARCHIVED_DATE_ARTICLES);
             ret.put(Keys.OBJECT_ID, archiveDateId);
-            final String skinDirName = preferences.getPreference().
-                    getString(Skin.SKIN_DIR_NAME);
+            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret);

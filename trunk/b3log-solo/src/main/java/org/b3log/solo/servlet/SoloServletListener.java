@@ -19,9 +19,7 @@ import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Key;
 import com.google.inject.Stage;
-import com.google.inject.TypeLiteral;
 import java.io.BufferedInputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -42,8 +40,6 @@ import org.b3log.solo.util.UtilModule;
 import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
-import org.b3log.latke.util.cache.Cache;
-import org.b3log.latke.util.cache.qualifier.LruMemory;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.filter.FilterModule;
 import org.b3log.solo.model.BlogSync;
@@ -113,9 +109,22 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final Map<String, Image> CAPTCHAS =
             new HashMap<String, Image>();
+    /**
+     * Preference.
+     */
+    private static JSONObject userPreference;
 
     static {
         ADMIN_GMAIL = CONFIG.getString("gmail");
+    }
+
+    /**
+     * Gets user preference.
+     *
+     * @return user preference
+     */
+    public static JSONObject getUserPreference() {
+        return userPreference;
     }
 
     /**
@@ -275,60 +284,53 @@ public final class SoloServletListener extends AbstractServletListener {
     private void initPreference() {
         LOGGER.info("Loading preference....");
 
-        JSONObject preference = null;
         try {
             final Injector injector = getInjector();
-            @SuppressWarnings(value = "unchecked")
-            final Cache<String, JSONObject> cache =
-                    (Cache<String, JSONObject>) injector.getInstance(Key.get(new TypeLiteral<Cache<String, ?>>() {
-            }, LruMemory.class));
 
             final String preferenceId = PREFERENCE;
             // Try to load preference from datastore.
             final PreferenceRepository preferenceRepository =
                     injector.getInstance(PreferenceRepository.class);
-            preference = preferenceRepository.get(preferenceId);
-            if (null == preference) {
+            userPreference = preferenceRepository.get(preferenceId);
+            if (null == userPreference) {
                 // Try to load preference from configuration file and then
                 // persist it.
-                preference = new JSONObject();
+                userPreference = new JSONObject();
                 final int articleListDisplayCnt = Integer.valueOf(CONFIG.
                         getString(ARTICLE_LIST_DISPLAY_COUNT));
-                preference.put(ARTICLE_LIST_DISPLAY_COUNT,
-                               articleListDisplayCnt);
+                userPreference.put(ARTICLE_LIST_DISPLAY_COUNT,
+                                   articleListDisplayCnt);
                 final int articleListPaginationWindowSize = Integer.valueOf(
                         CONFIG.getString(ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
-                preference.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
-                               articleListPaginationWindowSize);
+                userPreference.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
+                                   articleListPaginationWindowSize);
                 final int mostUsedTagDisplayCnt = Integer.valueOf(CONFIG.
                         getString(MOST_USED_TAG_DISPLAY_CNT));
-                preference.put(MOST_USED_TAG_DISPLAY_CNT,
-                               mostUsedTagDisplayCnt);
+                userPreference.put(MOST_USED_TAG_DISPLAY_CNT,
+                                   mostUsedTagDisplayCnt);
                 final int mostCommentArticleDisplayCnt =
                         Integer.valueOf(CONFIG.getString(
                         MOST_COMMENT_ARTICLE_DISPLAY_CNT));
-                preference.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
-                               mostCommentArticleDisplayCnt);
+                userPreference.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
+                                   mostCommentArticleDisplayCnt);
                 final int recentArticleDisplayCnt = Integer.valueOf(CONFIG.
                         getString(RECENT_ARTICLE_DISPLAY_CNT));
-                preference.put(RECENT_ARTICLE_DISPLAY_CNT,
-                               recentArticleDisplayCnt);
+                userPreference.put(RECENT_ARTICLE_DISPLAY_CNT,
+                                   recentArticleDisplayCnt);
 
                 final String blogTitle = CONFIG.getString(BLOG_TITLE);
-                preference.put(BLOG_TITLE, blogTitle);
+                userPreference.put(BLOG_TITLE, blogTitle);
                 final String blogSubtitle = CONFIG.getString(BLOG_SUBTITLE);
-                preference.put(BLOG_SUBTITLE, blogSubtitle);
+                userPreference.put(BLOG_SUBTITLE, blogSubtitle);
 
-                preference.put(Keys.OBJECT_ID, preferenceId);
-                preferenceRepository.add(preference);
+                userPreference.put(Keys.OBJECT_ID, preferenceId);
+                preferenceRepository.add(userPreference);
             }
 
-            initSkins(CONFIG, preference);
-            preferenceRepository.update(preferenceId, preference);
+            initSkins(CONFIG, userPreference);
+            preferenceRepository.update(preferenceId, userPreference);
 
-            cache.put(preferenceId, preference);
-
-            LOGGER.info("Loaded preference[" + preference.toString(
+            LOGGER.info("Loaded preference[" + userPreference.toString(
                     JSON_PRINT_INDENT_FACTOR) + "]");
         } catch (final Exception e) {
             LOGGER.fatal(e.getMessage(), e);

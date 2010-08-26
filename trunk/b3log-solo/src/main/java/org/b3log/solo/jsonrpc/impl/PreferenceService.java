@@ -24,13 +24,13 @@ import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.util.cache.Cache;
-import org.b3log.latke.util.cache.qualifier.LruMemory;
+import org.b3log.latke.util.cache.CacheFactory;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,14 +56,7 @@ public final class PreferenceService extends AbstractJSONRpcService {
     /**
      * Cache.
      */
-    @Inject
-    @LruMemory
-    private Cache<String, ?> cache;
-    /**
-     * Preference utilities.
-     */
-    @Inject
-    private Preferences preferences;
+    private Cache<String, ?> cache = CacheFactory.getCache(Preference.PREFERENCE);
     /**
      * Skin utilities.
      */
@@ -100,7 +93,8 @@ public final class PreferenceService extends AbstractJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
 
             ret.put(Preference.PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_PREFERENCE_SUCC);
