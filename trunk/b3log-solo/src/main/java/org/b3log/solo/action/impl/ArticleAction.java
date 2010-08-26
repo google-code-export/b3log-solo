@@ -17,7 +17,6 @@ package org.b3log.solo.action.impl;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
-import org.b3log.latke.client.action.AbstractAction;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +26,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -51,9 +51,9 @@ import org.json.JSONObject;
  * Article action. article-detail.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 18, 2010
+ * @version 1.0.0.5, Aug 26, 2010
  */
-public final class ArticleAction extends AbstractAction {
+public final class ArticleAction extends AbstractCacheablePageAction {
 
     /**
      * Default serial version uid.
@@ -145,6 +145,13 @@ public final class ArticleAction extends AbstractAction {
             final JSONObject preference = SoloServletListener.getUserPreference();
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
+
+            final List<JSONObject> articleComments = getComments(articleId);
+            ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
+
+            // Remove cached page for this article
+            AbstractCacheablePageAction.PAGE_CACHE.remove("article-detail.dooId="
+                    + articleId);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);

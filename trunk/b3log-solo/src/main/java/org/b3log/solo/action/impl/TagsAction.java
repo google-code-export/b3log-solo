@@ -19,7 +19,6 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import java.util.List;
 import org.b3log.latke.client.action.ActionException;
-import org.b3log.latke.client.action.AbstractAction;
 import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.Locale;
@@ -31,6 +30,7 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
@@ -44,9 +44,9 @@ import org.json.JSONObject;
  * Tag action. tags.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 21, 2010
+ * @version 1.0.0.3, Aug 26, 2010
  */
-public final class TagsAction extends AbstractAction {
+public final class TagsAction extends AbstractCacheablePageAction {
 
     /**
      * Default serial version uid.
