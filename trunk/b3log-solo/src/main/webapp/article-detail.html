@@ -159,9 +159,23 @@
                 <#include "article-footer.html">
             </div>
         </div>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <script type="text/javascript" src="js/json-rpc.js"></script>
         <script type="text/javascript">
+            var codeHeightLight = function () {
+                $(".article-body textarea").addClass("brush: js;");
+                SyntaxHighlighter.config.tagName = "textarea";
+                SyntaxHighlighter.all();
+
+                $("#comment").keypress(function (event) {
+                    if (event.keyCode === 13) {
+                        submitComment();
+                    }
+                });
+            }
+            codeHeightLight();
             var validateComment = function () {
                 if ($("#commentName").val().replace(/\s/g, "") === "") {
                     $("#commentErrorTip").html("{姓名不能为空！}");
@@ -205,12 +219,6 @@
                     }
                 }
             }
-
-            $("#comment").keypress(function (event) {
-                if (event.keyCode === 13) {
-                    submitComment();
-                }
-            })
         </script>
     </body>
 </html>
