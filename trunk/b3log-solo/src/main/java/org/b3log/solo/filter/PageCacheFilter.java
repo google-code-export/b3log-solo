@@ -67,21 +67,31 @@ public final class PageCacheFilter implements Filter {
         final String cachedPageKey = httpServletRequest.getRequestURL().toString()
                 + httpServletRequest.getQueryString();
 
-        LOGGER.trace("Request[cachedPageKey=" + cachedPageKey + "]");
+        final String requestURI = httpServletRequest.getRequestURI();
+        if (requestURI.equals("json-rpc.do")) {
+            chain.doFilter(request, response);
+
+            return;
+        }
 
 
-        LOGGER.debug("Cache[cachedCount=" + PAGE_CACHE.getCachedCount()
+        LOGGER.debug("Request[cachedPageKey=" + cachedPageKey + "]");
+        LOGGER.trace("Cache[cachedCount=" + PAGE_CACHE.getCachedCount()
                 + ", maxCount=" + PAGE_CACHE.getMaxCount() + "]");
-        final String cachedPageContent = (String) PAGE_CACHE.get(cachedPageKey);
-        if (null == cachedPageContent) {
+        final Object cachedPageContentObject = PAGE_CACHE.get(cachedPageKey);
+        if (null == cachedPageContentObject) {
             chain.doFilter(request, response);
 
             return;
         } else {
             LOGGER.trace("Writes resposne for page[cachedPageKey="
                     + cachedPageKey + "] from cache");
+            response.setContentType("text/html");
+            response.setCharacterEncoding("UTF-8");
             final PrintWriter writer = response.getWriter();
-            writer.write(new String(cachedPageContent.getBytes(), "UTF-8"));
+            final String cachedPageContent = new String(
+                    ((String) cachedPageContentObject).getBytes(), "UTF-8");
+            writer.write(cachedPageContent);
             writer.close();
         }
     }
