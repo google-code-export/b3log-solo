@@ -109,7 +109,35 @@ public final class BlogSyncService extends AbstractJSONRpcService {
     public static final int CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 2;
 
     /**
-     * Sets blog sync add article for CSDN blog with the specified request json
+     * Gets blog sync management for CSDN blog with the specified http servlet
+     * request and http servlet response.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "blogSyncExternalBloggingSysUserName": "",
+     *     "blogSyncExternalBloggingSysUserPassword": "",
+     *     "blogSyncMgmtAddEnabled": boolean,
+     *     "blogSyncMgmtUpdateEnabled": boolean,
+     *     "blogSyncMgmtRemoveEnabled": boolean
+     * }, returns {@code null} if not found
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject getBlogSyncMgmtForCSDNBlog(
+            final HttpServletRequest request, final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        return blogSyncManagementRepository.getByExternalBloggingSystem(
+                BLOG_SYNC_CSDN_BLOG);
+    }
+
+    /**
+     * Sets blog sync management for CSDN blog with the specified request json
      * object, http servlet request and http servlet response.
      *
      * @param requestJSONObject the specified request json object, for example,
