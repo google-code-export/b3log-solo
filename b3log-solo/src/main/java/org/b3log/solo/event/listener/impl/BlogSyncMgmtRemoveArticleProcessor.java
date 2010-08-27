@@ -17,6 +17,7 @@ package org.b3log.solo.event.listener.impl;
 
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -108,10 +109,21 @@ public final class BlogSyncMgmtRemoveArticleProcessor
                             BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
                     final String userPwd = blogSyncMgmt.getString(
                             BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
-                    final String csdnBlogArticleId =
+                    final JSONObject csdnArticleSoloArticleRelation =
                             csdnBlogArticleSoloArticleRepository.
-                            getCSDNBlogArticleId(articleId);
-                    csdnBlog.deletePost(userName, userPwd, csdnBlogArticleId);
+                            getBySoloArticleId(articleId);
+                    if (null != csdnArticleSoloArticleRelation) {
+                        final String csdnBlogArticleId =
+                                csdnArticleSoloArticleRelation.getString(
+                                BLOG_SYNC_CSDN_BLOG_ARTICLE_ID);
+
+                        csdnBlog.deletePost(userName, userPwd, csdnBlogArticleId);
+
+                        final String relationId =
+                                csdnArticleSoloArticleRelation.getString(
+                                Keys.OBJECT_ID);
+                        csdnBlogArticleSoloArticleRepository.remove(relationId);
+                    }
                 }
             }
         } catch (final Exception e) {

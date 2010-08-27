@@ -17,12 +17,13 @@ package org.b3log.solo.repository;
 
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
+import org.json.JSONObject;
 
 /**
  * CSDN blog article(for sync)-Solo article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 24, 2010
+ * @version 1.0.0.1, Aug 27, 2010
  */
 public interface CSDNBlogArticleSoloArticleRepository extends Repository {
 
@@ -44,5 +45,27 @@ public interface CSDNBlogArticleSoloArticleRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     String getCSDNBlogArticleId(final String soloArticleId)
+            throws RepositoryException;
+
+    /**
+     * Gets a CSDN blog article-Solo article relation by the specified CSDN
+     * blog article id.
+     *
+     * @param csdnBlogArticleId the specified CSDN blog article id
+     * @return the relation, {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    JSONObject getByCSDNBlogArticleId(final String csdnBlogArticleId)
+            throws RepositoryException;
+
+    /**
+     * Gets a CSDN blog article-Solo article relation by the specified Solo
+     * article id.
+     *
+     * @param soloArticleId the specified Solo article id
+     * @return the relation, {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    JSONObject getBySoloArticleId(final String soloArticleId)
             throws RepositoryException;
 }
