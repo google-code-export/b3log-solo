@@ -119,6 +119,15 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
+     * Sets the user preference with the specified preference.
+     * 
+     * @param preference the specified preference
+     */
+    public static void setUserPreference(final JSONObject preference) {
+        userPreference = preference;
+    }
+
+    /**
      * Gets user preference.
      *
      * @return user preference

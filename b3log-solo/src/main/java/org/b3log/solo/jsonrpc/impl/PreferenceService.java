@@ -24,8 +24,6 @@ import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
-import org.b3log.latke.util.cache.Cache;
-import org.b3log.latke.util.cache.CacheFactory;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Preference;
@@ -54,10 +52,6 @@ public final class PreferenceService extends AbstractJSONRpcService {
      */
     @Inject
     private PreferenceRepository preferenceRepository;
-    /**
-     * Cache.
-     */
-    private Cache<String, ?> cache = CacheFactory.getCache(Preference.PREFERENCE);
     /**
      * Skin utilities.
      */
@@ -167,8 +161,7 @@ public final class PreferenceService extends AbstractJSONRpcService {
 
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
-            ((Cache<String, JSONObject>) cache).put(Preference.PREFERENCE,
-                                                    preference);
+            SoloServletListener.setUserPreference(preference);
 
             // Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();

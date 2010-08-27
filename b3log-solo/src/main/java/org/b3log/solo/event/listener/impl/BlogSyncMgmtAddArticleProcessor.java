@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.solo.event.EventTypes;
 import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.servlet.SoloServletListener;
@@ -54,14 +55,14 @@ public final class BlogSyncMgmtAddArticleProcessor
     private CSDNBlog csdnBlog;
 
     /**
-     * Constructs a {@link TagArticleRelationProcessor} object with the specified
-     * event manager.
+     * Constructs a {@link TagArticleRelationProcessor} object with the
+     * specified event manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
     public BlogSyncMgmtAddArticleProcessor(final EventManager eventManager) {
-        super(eventManager);
+        super(EventTypes.ADD_ARTICLE, eventManager);
     }
 
     @Override
@@ -99,5 +100,15 @@ public final class BlogSyncMgmtAddArticleProcessor
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    /**
+     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     *
+     * @return event type
+     */
+    @Override
+    public String getEventType() {
+        return EventTypes.ADD_ARTICLE;
     }
 }
