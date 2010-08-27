@@ -251,8 +251,9 @@ public final class CSDNBlogArticle {
             ret.put("description", content);
             ret.put("categories", categories.<String>toArray(new String[0]));
 
+            // FIXME: CSDN blog created date bug
             ret.put("dateCreated",
-                    CSDNBlog.CST_DATE_FORMAT.parse( // FIXME: CSDN blog created date bug
+                    CSDNBlog.CST_DATE_FORMAT.parse(
                     CSDNBlog.UTC_DATE_FORMAT.format(createDate)));
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
