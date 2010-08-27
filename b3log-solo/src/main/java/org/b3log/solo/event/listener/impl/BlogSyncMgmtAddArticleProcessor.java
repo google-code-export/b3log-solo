@@ -19,6 +19,7 @@ import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
 import static org.b3log.solo.model.BlogSync.*;
@@ -66,7 +67,7 @@ public final class BlogSyncMgmtAddArticleProcessor
     }
 
     @Override
-    public void action(final Event<JSONObject> event) {
+    public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject article = event.getData();
         LOGGER.trace("Processing an event[type=" + event.getType()
                      + ", data=" + article + "] in listener[className="
@@ -81,7 +82,17 @@ public final class BlogSyncMgmtAddArticleProcessor
                 final JSONObject blogSyncMgmt =
                         blogSyncManagementRepository.getByExternalBloggingSystem(
                         knownExternalBloggingSys);
-                if (null == blogSyncMgmt || !blogSyncMgmt.getBoolean(
+                if (null == blogSyncMgmt) {
+                    LOGGER.debug("Not found syn management settings for external "
+                                 + "blogging system[" + knownExternalBloggingSys
+                                 + "]");
+                    continue;
+                }
+
+                LOGGER.debug("Got a blog sync management setting["
+                             + blogSyncMgmt.toString(
+                        SoloServletListener.JSON_PRINT_INDENT_FACTOR) + "]");
+                if (!blogSyncMgmt.getBoolean(
                         BLOG_SYNC_MGMT_ADD_ENABLED)) {
                     LOGGER.info("External blogging system["
                                 + knownExternalBloggingSys
@@ -99,6 +110,9 @@ public final class BlogSyncMgmtAddArticleProcessor
             }
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
+
+            throw new EventException("Can not handle event[" + getEventType()
+                                     + "]");
         }
     }
 
