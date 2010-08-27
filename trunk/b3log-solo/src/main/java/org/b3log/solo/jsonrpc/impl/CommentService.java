@@ -236,7 +236,7 @@ public final class CommentService extends AbstractJSONRpcService {
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_DATE,
-                        Keys.SIMPLE_DATE_FORMAT.format(
+                        Keys.SIMPLE_DATE_FORMAT1.format(
                     System.currentTimeMillis()));
 
             setCommentThumbnailURL(comment);
