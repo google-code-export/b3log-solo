@@ -15,11 +15,13 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
+import com.google.inject.Inject;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.SimpleTimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
@@ -73,6 +75,19 @@ public final class CSDNBlog {
      * Connection timeout in milliseconds.
      */
     private static final int CONNECTION_TIMEOUT = 10000;
+    /**
+     * GMT offset(Asia/Shanghai).
+     */
+    private static final int GMT_OFFSET = 8;
+
+    /**
+     * Initializes {@linkplain #config}.
+     */
+    @Inject
+    private void initConfig() {
+        config.setConnectionTimeout(CONNECTION_TIMEOUT);
+        config.setTimeZone(new SimpleTimeZone(GMT_OFFSET, "Asia/Shanghai"));
+    }
 
     /**
      * Deletes a post from CSDN blog with specified parameters.
@@ -93,7 +108,6 @@ public final class CSDNBlog {
                                              true};
 
         try {
-            config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
                             + "/services/metablogapi.aspx"));
@@ -129,7 +143,6 @@ public final class CSDNBlog {
 
         String ret = null;
         try {
-            config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
                             + "/services/metablogapi.aspx"));
