@@ -101,7 +101,7 @@ public final class BlogSyncMgmtRemoveArticleProcessor
                         BLOG_SYNC_MGMT_REMOVE_ENABLED)) {
                     LOGGER.info("External blogging system["
                                 + knownExternalBloggingSys
-                                + "] need NOT to syn add article");
+                                + "] need NOT to syn remove article");
                 } else {
                     // XXX: Design external blogging system interface
                     final String userName = blogSyncMgmt.getString(
