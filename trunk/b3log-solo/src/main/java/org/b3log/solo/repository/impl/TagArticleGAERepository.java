@@ -61,7 +61,7 @@ public class TagArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, articleId);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Iterable<Entity> entities = preparedQuery.asIterable();
 
         final List<JSONObject> ret = new ArrayList<JSONObject>();
@@ -84,7 +84,7 @@ public class TagArticleGAERepository extends AbstractGAERepository
         query.addFilter(Tag.TAG + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, tagId);
 
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final int count = preparedQuery.countEntities();
         final int pageCount =
                 (int) Math.ceil((double) count / (double) pageSize);

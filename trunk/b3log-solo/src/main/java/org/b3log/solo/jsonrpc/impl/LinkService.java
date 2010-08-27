@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +27,7 @@ import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Link;
@@ -186,7 +188,8 @@ public final class LinkService extends AbstractJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
         try {
@@ -198,10 +201,12 @@ public final class LinkService extends AbstractJSONRpcService {
             // Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
+            transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_SUCC);
 
             LOGGER.debug("Updated an link[oId=" + linkId + "]");
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -234,7 +239,8 @@ public final class LinkService extends AbstractJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
         try {
@@ -245,10 +251,12 @@ public final class LinkService extends AbstractJSONRpcService {
             // Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
+            transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_LINK_SUCC);
 
             LOGGER.debug("Removed a link[oId=" + linkId + "]");
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -285,19 +293,21 @@ public final class LinkService extends AbstractJSONRpcService {
                               final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
         try {
             final JSONObject link =
                     requestJSONObject.getJSONObject(Link.LINK);
             final String articleId = linkRepository.add(link);
+
+            transaction.commit();
             ret.put(Keys.OBJECT_ID, articleId);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_LINK_SUCC);
-
-
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }

@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Date;
@@ -37,6 +38,7 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
@@ -131,9 +133,10 @@ public final class ArticleService extends AbstractJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-
         final JSONObject ret = new JSONObject();
 
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
             final JSONObject article =
                     requestJSONObject.getJSONObject(Article.ARTICLE);
@@ -164,8 +167,10 @@ public final class ArticleService extends AbstractJSONRpcService {
             eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.ADD_ARTICLE, article));
 
+            transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_ARTICLE_SUCC);
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -350,7 +355,8 @@ public final class ArticleService extends AbstractJSONRpcService {
                                     final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
         try {
@@ -373,8 +379,10 @@ public final class ArticleService extends AbstractJSONRpcService {
             eventManager.fireEventSynchronously(
                     new Event<String>(EventTypes.REMOVE_ARTICLE, articleId));
 
+            transaction.commit();
             LOGGER.debug("Removed an article[oId=" + articleId + "]");
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -413,7 +421,8 @@ public final class ArticleService extends AbstractJSONRpcService {
                                     final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
         try {
@@ -447,14 +456,16 @@ public final class ArticleService extends AbstractJSONRpcService {
             archiveDateUtils.archiveDate(article);
             // Step 9: Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
-            
+
             eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, article));
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
 
+            transaction.commit();
             LOGGER.debug("Updated an article[oId=" + articleId + "]");
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }

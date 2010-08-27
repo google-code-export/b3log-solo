@@ -62,7 +62,7 @@ public class ArchiveDateArticleGAERepository extends AbstractGAERepository
         query.addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, archiveDateId);
 
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final int count = preparedQuery.countEntities();
         final int pageCount =
                 (int) Math.ceil((double) count / (double) pageSize);
@@ -99,7 +99,7 @@ public class ArchiveDateArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, articleId);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
 
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {

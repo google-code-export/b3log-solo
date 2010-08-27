@@ -56,8 +56,7 @@ public class CSDNBlogArticleSoloArticleGAERepository
         query.addFilter(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID,
                         Query.FilterOperator.EQUAL,
                         csdnBlogArticleId);
-        final PreparedQuery preparedQuery =
-                getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
         if (null == entity) {
@@ -75,8 +74,7 @@ public class CSDNBlogArticleSoloArticleGAERepository
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, soloArticleId);
-        final PreparedQuery preparedQuery =
-                getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
         if (null == entity) {
@@ -95,8 +93,7 @@ public class CSDNBlogArticleSoloArticleGAERepository
         query.addFilter(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID,
                         Query.FilterOperator.EQUAL,
                         csdnBlogArticleId);
-        final PreparedQuery preparedQuery =
-                getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
         if (null == entity) {
@@ -112,8 +109,7 @@ public class CSDNBlogArticleSoloArticleGAERepository
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, soloArticleId);
-        final PreparedQuery preparedQuery =
-                getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
         if (null == entity) {

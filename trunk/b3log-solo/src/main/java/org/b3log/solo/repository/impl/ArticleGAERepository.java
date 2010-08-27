@@ -63,7 +63,7 @@ public class ArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addSort(Article.ARTICLE_UPDATE_DATE,
                       Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
                 withLimit(num));
@@ -82,7 +82,7 @@ public class ArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addSort(Article.ARTICLE_COMMENT_COUNT,
                       Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
                 withLimit(num));
@@ -101,7 +101,7 @@ public class ArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addSort(Article.ARTICLE_VIEW_COUNT,
                       Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
                 withLimit(num));
@@ -120,7 +120,7 @@ public class ArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.LESS_THAN, articleId);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         String ret = null;
         for (final Entity entity : preparedQuery.asIterable()) {
             final JSONObject previous = entity2JSONObject(entity);
@@ -135,7 +135,7 @@ public class ArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.GREATER_THAN, articleId);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
 
         String ret = null;
         for (final Entity entity : preparedQuery.asIterable()) {

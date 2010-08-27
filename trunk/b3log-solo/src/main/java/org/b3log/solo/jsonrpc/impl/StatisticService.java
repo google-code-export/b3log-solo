@@ -15,8 +15,10 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
@@ -34,7 +36,8 @@ public final class StatisticService extends AbstractJSONRpcService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatisticService.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(StatisticService.class);
     /**
      * Statistic repository.
      */
@@ -73,9 +76,13 @@ public final class StatisticService extends AbstractJSONRpcService {
      * View count +1.
      */
     public void incViewCount() {
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
             statistics.incBlogViewCount();
+            transaction.commit();
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
         }
     }
