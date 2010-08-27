@@ -369,7 +369,7 @@ public final class ArticleService extends AbstractJSONRpcService {
             // Step 6: Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
-
+            // Step 7: Fire remove article event
             eventManager.fireEventSynchronously(
                     new Event<String>(EventTypes.REMOVE_ARTICLE, articleId));
 
