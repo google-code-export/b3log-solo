@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Set;
@@ -24,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Preference;
@@ -137,7 +139,8 @@ public final class PreferenceService extends AbstractJSONRpcService {
                                        final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
         try {
             final JSONObject preference =
@@ -166,8 +169,10 @@ public final class PreferenceService extends AbstractJSONRpcService {
             // Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
+            transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_SUCC);
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }

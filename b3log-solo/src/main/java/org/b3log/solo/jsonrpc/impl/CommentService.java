@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.mail.MailService;
 import com.google.appengine.api.mail.MailService.Message;
 import com.google.appengine.api.mail.MailServiceFactory;
@@ -39,6 +40,7 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Preference;
@@ -142,7 +144,6 @@ public final class CommentService extends AbstractJSONRpcService {
                                   final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-
         final JSONObject ret = new JSONObject();
 
         try {
@@ -157,7 +158,7 @@ public final class CommentService extends AbstractJSONRpcService {
                         articleCommentRelations.get(i);
                 final String commentId =
                         articleCommentRelation.getString(Comment.COMMENT + "_"
-                        + Keys.OBJECT_ID);
+                                                         + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
                 comments.add(comment);
@@ -204,7 +205,8 @@ public final class CommentService extends AbstractJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
             final String captcha = requestJSONObject.getString(
                     CaptchaServlet.CAPTCHA);
@@ -261,11 +263,11 @@ public final class CommentService extends AbstractJSONRpcService {
                     + request.getServerPort() + "/article-detail.do?oId="
                     + articleId;
             LOGGER.trace("Comment[articleURL=" + articleURL + ", articleTitle="
-                    + articleTitle + ", blogTitle=" + blogTitle + "]");
+                         + articleTitle + ", blogTitle=" + blogTitle + "]");
             final Message message = new Message();
             message.setSender("DL88250@gmail.com"); // XXX: from my personal mail????
             final String mailSubject = blogTitle + ": New comment on "
-                    + articleTitle;
+                                       + articleTitle;
             message.setSubject(mailSubject);
             final String mailBody = COMMENT_MAIL_HTML_BODY.replace(
                     "{articleURL}", articleURL).
@@ -273,15 +275,17 @@ public final class CommentService extends AbstractJSONRpcService {
                     replace("{commentContent}", commentContent);
             message.setHtmlBody(mailBody);
             LOGGER.debug("Sending a mail[mailSubject=" + mailSubject + ", "
-                    + "mailBody=" + mailBody + "] to admins");
+                         + "mailBody=" + mailBody + "] to admins");
             mailService.sendToAdmins(message);
 
             // Step 6: Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
+            transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
             ret.put(Keys.OBJECT_ID, commentId);
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -316,7 +320,8 @@ public final class CommentService extends AbstractJSONRpcService {
         checkAuthorized(request, response);
 
         final JSONObject ret = new JSONObject();
-
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
             final String commentId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.debug("Removing comment[oId=" + commentId + "]");
@@ -340,10 +345,12 @@ public final class CommentService extends AbstractJSONRpcService {
             // Step 5: Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
+            transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_COMMENT_SUCC);
 
             LOGGER.debug("Removed comment[oId=" + commentId + "]");
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -378,7 +385,7 @@ public final class CommentService extends AbstractJSONRpcService {
                 final byte[] content = response.getContent();
                 final String profileJSONString = new String(content);
                 LOGGER.trace("Google profile[jsonString=" + profileJSONString
-                        + "]");
+                             + "]");
                 final JSONObject profile = new JSONObject(profileJSONString);
                 final JSONObject profileData = profile.getJSONObject("data");
                 final String thumbnailUrl =
@@ -387,15 +394,15 @@ public final class CommentService extends AbstractJSONRpcService {
                 comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailUrl);
             } else {
                 LOGGER.warn("Can not fetch google profile[userId=" + id + ", "
-                        + "statusCode=" + statusCode + "]");
+                            + "statusCode=" + statusCode + "]");
                 comment.put(Comment.COMMENT_THUMBNAIL_URL,
                             "/images/" + DEFAULT_USER_THUMBNAIL);
             }
         } else {
             LOGGER.warn("Not supported yet for comment thumbnail excepts Gmail "
-                    + "user");
+                        + "user");
             comment.put(Comment.COMMENT_THUMBNAIL_URL, "/images/"
-                    + DEFAULT_USER_THUMBNAIL);
+                                                       + DEFAULT_USER_THUMBNAIL);
             // TODO: process other comment thumbnail URL
         }
     }
