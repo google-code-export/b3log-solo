@@ -18,7 +18,6 @@ package org.b3log.solo.repository.impl;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import java.util.Map;
 import org.apache.log4j.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.BlogSync;
@@ -29,7 +28,7 @@ import org.json.JSONObject;
  * Blog sync management Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 25, 2010
+ * @version 1.0.0.1, Aug 27, 2010
  */
 public class BlogSyncMgmtGAERepository extends AbstractGAERepository
         implements BlogSyncManagementRepository {
@@ -57,8 +56,6 @@ public class BlogSyncMgmtGAERepository extends AbstractGAERepository
             return null;
         }
 
-        final Map<String, Object> properties = entity.getProperties();
-
-        return new JSONObject(properties);
+        return entity2JSONObject(entity);
     }
 }
