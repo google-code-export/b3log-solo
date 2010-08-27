@@ -26,12 +26,13 @@ import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.CSDNBlogArticleSoloArticleRepository;
+import org.json.JSONObject;
 
 /**
  * CSDN blog article-Solo article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 24, 2010
+ * @version 1.0.0.1, Aug 27, 2010
  */
 public class CSDNBlogArticleSoloArticleGAERepository
         extends AbstractGAERepository
@@ -85,5 +86,40 @@ public class CSDNBlogArticleSoloArticleGAERepository
         final Map<String, Object> properties = entity.getProperties();
 
         return (String) properties.get(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID);
+    }
+
+    @Override
+    public JSONObject getByCSDNBlogArticleId(final String csdnBlogArticleId)
+            throws RepositoryException {
+        final Query query = new Query(getName());
+        query.addFilter(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID,
+                        Query.FilterOperator.EQUAL,
+                        csdnBlogArticleId);
+        final PreparedQuery preparedQuery =
+                getDatastoreService().prepare(query);
+        final Entity entity = preparedQuery.asSingleEntity();
+
+        if (null == entity) {
+            return null;
+        }
+
+        return entity2JSONObject(entity);
+    }
+
+    @Override
+    public JSONObject getBySoloArticleId(final String soloArticleId)
+            throws RepositoryException {
+        final Query query = new Query(getName());
+        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                        Query.FilterOperator.EQUAL, soloArticleId);
+        final PreparedQuery preparedQuery =
+                getDatastoreService().prepare(query);
+        final Entity entity = preparedQuery.asSingleEntity();
+
+        if (null == entity) {
+            return null;
+        }
+
+        return entity2JSONObject(entity);
     }
 }
