@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
@@ -37,6 +38,10 @@ import org.json.JSONObject;
  */
 public final class CSDNBlogArticle {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(CSDNBlogArticle.class);
     /**
      * Id.
      */
@@ -240,10 +245,18 @@ public final class CSDNBlogArticle {
      */
     Map<String, Object> toPost() {
         final Map<String, Object> ret = new HashMap<String, Object>();
-        ret.put("title", title);
-        ret.put("description", content);
-        ret.put("categories", categories.<String>toArray(new String[0]));
-        ret.put("dateCreated", createDate);
+
+        try {
+            ret.put("title", title);
+            ret.put("description", content);
+            ret.put("categories", categories.<String>toArray(new String[0]));
+
+            ret.put("dateCreated",
+                    CSDNBlog.CST_DATE_FORMAT.parse( // FIXME: CSDN blog created date bug
+                    CSDNBlog.UTC_DATE_FORMAT.format(createDate)));
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
 
         return ret;
     }
