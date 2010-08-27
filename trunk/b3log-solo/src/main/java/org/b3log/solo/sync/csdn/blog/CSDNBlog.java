@@ -37,7 +37,7 @@ import org.b3log.latke.service.ServiceException;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 25, 2010
+ * @version 1.0.0.3, Aug 27, 2010
  */
 public final class CSDNBlog {
 
@@ -69,6 +69,10 @@ public final class CSDNBlog {
      * Sleep millisecond between every article get operation.
      */
     private static final long GET_ARTICLE_SLEEP_MILLIS = 3000;
+    /**
+     * Connection timeout in milliseconds.
+     */
+    private static final int CONNECTION_TIMEOUT = 10000;
 
     /**
      * Deletes a post from CSDN blog with specified parameters.
@@ -89,6 +93,7 @@ public final class CSDNBlog {
                                              true};
 
         try {
+            config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
                             + "/services/metablogapi.aspx"));
@@ -124,6 +129,7 @@ public final class CSDNBlog {
 
         String ret = null;
         try {
+            config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
                             + "/services/metablogapi.aspx"));
