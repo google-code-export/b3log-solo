@@ -160,6 +160,7 @@ public final class ArticleService extends AbstractJSONRpcService {
             archiveDateUtils.archiveDate(article);
             // Step 8: Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+            // Step 9: Fire add article event
             eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.ADD_ARTICLE, article));
 
