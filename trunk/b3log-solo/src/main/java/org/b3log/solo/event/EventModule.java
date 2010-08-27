@@ -18,6 +18,7 @@ package org.b3log.solo.event;
 import org.apache.log4j.Logger;
 import org.b3log.solo.event.listener.impl.BlogSyncMgmtAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
+import org.b3log.solo.event.listener.impl.BlogSyncMgmtRemoveArticleProcessor;
 
 /**
  * Event module for IoC
@@ -25,7 +26,7 @@ import org.b3log.latke.event.AbstractEventModule;
  * configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 12, 2010
+ * @version 1.0.0.1, Aug 27, 2010
  */
 public final class EventModule extends AbstractEventModule {
 
@@ -49,5 +50,6 @@ public final class EventModule extends AbstractEventModule {
         super.configure();
 
         bind(BlogSyncMgmtAddArticleProcessor.class).asEagerSingleton();
+        bind(BlogSyncMgmtRemoveArticleProcessor.class).asEagerSingleton();
     }
 }
