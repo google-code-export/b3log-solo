@@ -147,7 +147,7 @@ public final class SoloServletListener extends AbstractServletListener {
         if (null == ret) {
             LOGGER.info("Initializing Guice....");
             setInjector(Guice.createInjector(Stage.PRODUCTION,
-                                             new FilterModule(), // TODO: filter
+                                             new FilterModule(),
                                              new ActionModule(),
                                              new RepositoryModule(),
                                              new EventModule(),
