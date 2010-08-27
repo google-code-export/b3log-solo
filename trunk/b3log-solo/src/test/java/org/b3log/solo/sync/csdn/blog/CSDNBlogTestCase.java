@@ -17,8 +17,6 @@ package org.b3log.solo.sync.csdn.blog;
 
 import java.util.List;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 import org.b3log.solo.model.Article;
 import org.json.JSONException;
@@ -29,7 +27,7 @@ import static org.testng.Assert.*;
  * {@link CSDNBlogTestCase} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 17, 2010
+ * @version 1.0.0.2, Aug 27, 2010
  */
 public final class CSDNBlogTestCase {
 
@@ -148,13 +146,9 @@ public final class CSDNBlogTestCase {
                 UUID.randomUUID().toString());
         ret.put(Article.ARTICLE_CREATE_DATE, new Date());
         ret.put(Article.ARTICLE_CONTENT, "test content");
-        final Set<String> categories = new HashSet<String>();
-        categories.add("Game");
-        ret.put(Article.ARTICLE_TAGS_REF, (Object) categories);
-
-
+        final String categories = "Game";
+        ret.put(Article.ARTICLE_TAGS_REF, categories);
 
         return ret;
-
     }
 }

@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.b3log.latke.Keys;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.util.Htmls;
@@ -32,7 +33,7 @@ import org.json.JSONObject;
  * CSDN blog article(post, entry, article, whatever).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 24, 2010
+ * @version 1.0.0.4, Aug 27, 2010
  */
 public final class CSDNBlogArticle {
 
@@ -78,7 +79,7 @@ public final class CSDNBlogArticle {
      *     "articleTitle": "",
      *     "articleCreateDate": java.util.Date,
      *     "articleContent": "",
-     *     "articleTags": java.util.Set&lt;String&gt;
+     *     "articleTags": ""
      * }
      * </pre>
      * @throws JSONException json exception
@@ -88,7 +89,9 @@ public final class CSDNBlogArticle {
         title = jsonObject.getString(Article.ARTICLE_TITLE);
         createDate = (Date) jsonObject.get(Article.ARTICLE_CREATE_DATE);
         content = jsonObject.getString(Article.ARTICLE_CONTENT);
-        categories = (Set<String>) jsonObject.get(Article.ARTICLE_TAGS_REF);
+        final String tagsString = jsonObject.getString(Article.ARTICLE_TAGS_REF);
+        final String[] tagStrings = tagsString.split(",");
+        categories = CollectionUtils.<String>arrayToSet(tagStrings);
     }
 
     /**
