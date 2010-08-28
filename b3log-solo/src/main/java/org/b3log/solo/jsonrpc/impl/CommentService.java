@@ -41,6 +41,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.MD5;
 import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Preference;
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 24, 2010
+ * @version 1.0.0.8, Aug 28, 2010
  */
 public final class CommentService extends AbstractJSONRpcService {
 
@@ -108,7 +109,8 @@ public final class CommentService extends AbstractJSONRpcService {
     private static final String COMMENT_MAIL_HTML_BODY =
             "Article[<a href=\""
             + "{articleURL}\">" + "{articleTitle}</a>]"
-            + " received a new comment[{commentContent}]";
+            + " received a new comment[<a href=\"{commentSharpURL}\""
+            + "{commentContent}]</a>";
 
     /**
      * Gets comments of an article specified by the article id for administrator.
@@ -258,10 +260,12 @@ public final class CommentService extends AbstractJSONRpcService {
                     SoloServletListener.getUserPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String articleTitle = article.getString(Article.ARTICLE_TITLE);
-            final String articleURL =
-                    request.getScheme() + "://" + request.getServerName() + ":"
-                    + request.getServerPort() + "/article-detail.do?oId="
+            final String baseArticleURL =
+                    "http://" + request.getServerName()
+                    + "/article-detail.do?oId="
                     + articleId;
+            final String articleURL = baseArticleURL;
+            final String commentSharpURL = baseArticleURL + "#" + commentId;
             LOGGER.trace("Comment[articleURL=" + articleURL + ", articleTitle="
                          + articleTitle + ", blogTitle=" + blogTitle + "]");
             final Message message = new Message();
@@ -272,7 +276,8 @@ public final class CommentService extends AbstractJSONRpcService {
             final String mailBody = COMMENT_MAIL_HTML_BODY.replace(
                     "{articleURL}", articleURL).
                     replace("{articleTitle}", articleTitle).
-                    replace("{commentContent}", commentContent);
+                    replace("{commentContent}", commentContent).
+                    replace("{commentSharpURL", commentSharpURL);
             message.setHtmlBody(mailBody);
             LOGGER.debug("Sending a mail[mailSubject=" + mailSubject + ", "
                          + "mailBody=" + mailBody + "] to admins");
@@ -369,10 +374,10 @@ public final class CommentService extends AbstractJSONRpcService {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String id = commentEmail.split("@")[0];
         final String domain = commentEmail.split("@")[1];
+        String thumbnailURL = null;
 
-
+        // Try to set thumbnail URL using Google Buzz API
         if ("gmail.com".equals(domain.toLowerCase())) {
-            // TODO: using google id for thumbnail
             final URL googleProfileURL =
                     new URL(Buzzs.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
                                                                    id));
@@ -388,22 +393,44 @@ public final class CommentService extends AbstractJSONRpcService {
                              + "]");
                 final JSONObject profile = new JSONObject(profileJSONString);
                 final JSONObject profileData = profile.getJSONObject("data");
-                final String thumbnailUrl =
-                        profileData.getString("thumbnailUrl");
+                thumbnailURL = profileData.getString("thumbnailUrl");
+                comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
+                LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
 
-                comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailUrl);
+                return;
             } else {
                 LOGGER.warn("Can not fetch google profile[userId=" + id + ", "
                             + "statusCode=" + statusCode + "]");
-                comment.put(Comment.COMMENT_THUMBNAIL_URL,
-                            "/images/" + DEFAULT_USER_THUMBNAIL);
             }
+        }
+
+        // Try to set thumbnail URL using Gravatar service
+        final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
+        final int size = 60;
+        final URL gravatarURL =
+                new URL("http://www.gravatar.com/" + hashedEmail + "?s="
+                        + size + "&r=G");
+        // XXX: use async url fetch instead????
+        final HTTPResponse response = urlFetchService.fetch(gravatarURL);
+        final int statusCode = response.getResponseCode();
+
+        if (HttpServletResponse.SC_OK == statusCode) {
+            thumbnailURL = "http://www.gravatar.com/" + hashedEmail + "?s="
+                           + size + "&r=G";
+            comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
+            LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
+
+            return;
         } else {
-            LOGGER.warn("Not supported yet for comment thumbnail excepts Gmail "
-                        + "user");
-            comment.put(Comment.COMMENT_THUMBNAIL_URL, "/images/"
-                                                       + DEFAULT_USER_THUMBNAIL);
-            // TODO: process other comment thumbnail URL
+            LOGGER.warn("Can not fetch thumbnail from Gravatar[commentEmail="
+                        + commentEmail + ", " + "statusCode=" + statusCode + "]");
+        }
+
+        if (null == thumbnailURL) {
+            thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
+            LOGGER.warn("Not supported yet for comment thumbnail for email["
+                        + commentEmail + "]");
+            comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }
     }
 }
