@@ -254,8 +254,6 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                                              final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
         try {
@@ -263,33 +261,41 @@ public final class BlogSyncService extends AbstractJSONRpcService {
                     Keys.OBJECT_IDS);
             final List<String> importedIds = new ArrayList<String>();
             for (int i = 0; i < articleIds.length(); i++) {
-                final String oId = articleIds.getString(i);
+                final Transaction transaction =
+                        AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                try {
 
-                final JSONObject csdnBlogArticle =
-                        csdnBlogArticleRepository.get(oId);
-                final JSONObject soloArticle = toSoloArticle(csdnBlogArticle);
+                    final String oId = articleIds.getString(i);
 
-                final String categoriesString = csdnBlogArticle.getString(
-                        BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES);
-                final String[] tagTitles = categoriesString.split(",");
-                @SuppressWarnings(value = "unchecked")
-                final JSONArray tags = tagUtils.tag(tagTitles, soloArticle);
-                articleUtils.addTagArticleRelation(tags, soloArticle);
+                    final JSONObject csdnBlogArticle =
+                            csdnBlogArticleRepository.get(oId);
+                    final JSONObject soloArticle =
+                            toSoloArticle(csdnBlogArticle);
 
-                articleRepository.importArticle(soloArticle);
-                importedIds.add(oId);
+                    final String categoriesString = csdnBlogArticle.getString(
+                            BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES);
+                    final String[] tagTitles = categoriesString.split(",");
+                    @SuppressWarnings(value = "unchecked")
+                    final JSONArray tags = tagUtils.tag(tagTitles, soloArticle);
+                    articleUtils.addTagArticleRelation(tags, soloArticle);
 
-                statistics.incBlogArticleCount();
-                archiveDateUtils.archiveDate(soloArticle);
+                    articleRepository.importArticle(soloArticle);
+                    importedIds.add(oId);
+
+                    statistics.incBlogArticleCount();
+                    archiveDateUtils.archiveDate(soloArticle);
+
+                    transaction.commit();
+                } catch (final Exception e) {
+                    LOGGER.error(e.getMessage(), e);
+                    transaction.rollback();
+                }
             }
 
             // Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
-
-            transaction.commit();
             ret.put(Keys.OBJECT_IDS, importedIds);
-        } catch (final Exception e) {
-            transaction.rollback();
+        } catch (final JSONException e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
