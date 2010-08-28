@@ -229,7 +229,7 @@ public final class BlogSyncService extends AbstractJSONRpcService {
     }
 
     /**
-     * Imports CSDN blog article by the specified request json object and http
+     * Imports CSDN blog articles by the specified request json object and http
      * servlet request.
      *
      * @param requestJSONObject the specified request json object, for example,
