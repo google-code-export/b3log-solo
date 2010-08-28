@@ -9,6 +9,11 @@
 @import "default-bowknot-dialog.css";
 @import "default-bowknot-table.css";
 @import "default-bowknot-paginate.css";
+@import "default-bowknot-completed.css";
+
+.bowknot-nont {
+    display: none;
+}
 
 .bowknot-clear {
     clear: both;
