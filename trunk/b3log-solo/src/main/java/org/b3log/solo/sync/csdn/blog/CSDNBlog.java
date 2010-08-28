@@ -325,7 +325,7 @@ public final class CSDNBlog {
             final String content = description.replaceAll(
                     "<textarea",
                     "<pre name='code' class='brush:java;'").
-                    replaceAll("</textarea>", "</pre>");
+                    replaceAll("</textarea>", "</pre>"); // Syntax highlighting
             ret.setContent(content);
 
         } catch (final Exception e) {
