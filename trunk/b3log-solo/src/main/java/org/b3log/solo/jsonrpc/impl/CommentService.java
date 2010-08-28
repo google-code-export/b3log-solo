@@ -408,14 +408,14 @@ public final class CommentService extends AbstractJSONRpcService {
         final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
         final int size = 60;
         final URL gravatarURL =
-                new URL("http://www.gravatar.com/" + hashedEmail + "?s="
+                new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
                         + size + "&r=G");
         // XXX: use async url fetch instead????
         final HTTPResponse response = urlFetchService.fetch(gravatarURL);
         final int statusCode = response.getResponseCode();
 
         if (HttpServletResponse.SC_OK == statusCode) {
-            thumbnailURL = "http://www.gravatar.com/" + hashedEmail + "?s="
+            thumbnailURL = "http://www.gravatar.com/avatar" + hashedEmail + "?s="
                            + size + "&r=G";
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
             LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
