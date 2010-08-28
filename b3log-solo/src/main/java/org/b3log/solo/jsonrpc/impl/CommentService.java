@@ -110,7 +110,7 @@ public final class CommentService extends AbstractJSONRpcService {
             "Article[<a href=\""
             + "{articleURL}\">" + "{articleTitle}</a>]"
             + " received a new comment[<a href=\"{commentSharpURL}\""
-            + "{commentContent}]</a>";
+            + "{commentContent}></a>]";
 
     /**
      * Gets comments of an article specified by the article id for administrator.
@@ -280,7 +280,7 @@ public final class CommentService extends AbstractJSONRpcService {
                     replace("{commentSharpURL}", commentSharpURL);
             message.setHtmlBody(mailBody);
             LOGGER.debug("Sending a mail[mailSubject=" + mailSubject + ", "
-                         + "mailBody=" + mailBody + "] to admins");
+                         + "mailBody=[" + mailBody + "] to admins");
             mailService.sendToAdmins(message);
 
             // Step 6: Clear page cache
@@ -415,7 +415,8 @@ public final class CommentService extends AbstractJSONRpcService {
         final int statusCode = response.getResponseCode();
 
         if (HttpServletResponse.SC_OK == statusCode) {
-            thumbnailURL = "http://www.gravatar.com/avatar/" + hashedEmail + "?s="
+            thumbnailURL = "http://www.gravatar.com/avatar/" + hashedEmail
+                           + "?s="
                            + size + "&r=G";
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
             LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
