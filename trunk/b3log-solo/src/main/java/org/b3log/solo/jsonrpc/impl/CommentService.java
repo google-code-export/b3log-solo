@@ -277,7 +277,7 @@ public final class CommentService extends AbstractJSONRpcService {
                     "{articleURL}", articleURL).
                     replace("{articleTitle}", articleTitle).
                     replace("{commentContent}", commentContent).
-                    replace("{commentSharpURL", commentSharpURL);
+                    replace("{commentSharpURL}", commentSharpURL);
             message.setHtmlBody(mailBody);
             LOGGER.debug("Sending a mail[mailSubject=" + mailSubject + ", "
                          + "mailBody=" + mailBody + "] to admins");
