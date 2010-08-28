@@ -9,9 +9,9 @@
     <span class="right">
         <#if loginURL??>
         <a class="noUnderline" href="${loginURL}">${loginLabel}</a>&nbsp;|&nbsp;
-        <a class="noUnderline" href="#" onclick="clearCache();">{clearCache}</a>&nbsp;|&nbsp;
         <#else>
         <a class="noUnderline" href="${logoutURL}">${logoutLabel}</a>&nbsp;|&nbsp;
+        <a class="noUnderline" href="#" onclick="clearCache();">{clearCache}</a>&nbsp;|&nbsp;
         <a class="noUnderline" href="admin-index.do">${adminLabel}</a>&nbsp;|&nbsp;
         </#if>
         <select onchange="setLanguage(this);">
@@ -35,5 +35,6 @@
 
     var clearCache = function () {
         jsonRpc.adminService.clearPageCache();
+        window.location.reload();
     }
 </script>
