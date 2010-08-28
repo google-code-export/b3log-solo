@@ -7,7 +7,7 @@
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <script type="text/javascript" src="js/json-rpc.js"></script>
         <script type="text/javascript" src="js/lib/jquery/jquery.bowknot.min.js"></script>
-        <script type="text/javascript" src="js/lib/editor/kindeditor-min.js"></script>
+        <script type="text/javascript" src="js/lib/tiny_mce/tiny_mce.js"></script>
         <link type="text/css" rel="stylesheet" href="styles/default-admin.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-bowknot.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
@@ -86,18 +86,7 @@
                     }
                     $("#content").load(loadURL, function () {
                         if ($("#articleContent").length > 0) {
-                            KE.init({
-                                id : "articleContent",
-                                items : ['fontname', 'fontsize', '|', 'textcolor', 'bgcolor', 'bold', 'italic', 'underline',
-                                    'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
-                                    'insertunorderedlist', '|', 'emoticons', 'image', 'link']
-                            });
-
-                            KE.create("articleContent");
                         } else {
-                            if (KE.g["articleContent"]) {
-                                KE.remove("articleContent");
-                            }
                         }
                     });
                 });

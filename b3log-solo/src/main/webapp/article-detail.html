@@ -164,10 +164,16 @@
         </div>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
         <script type="text/javascript">
             var codeHeightLight = function () {
                 $(".article-body textarea").addClass("brush: js;");
                 SyntaxHighlighter.config.tagName = "textarea";
+                SyntaxHighlighter.config.tagName = "pre";
+                SyntaxHighlighter.config.stripBrs = true;
+                SyntaxHighlighter.defaults["gutter"] = true;
                 SyntaxHighlighter.all();
 
                 $("#commentValidate").keypress(function (event) {
