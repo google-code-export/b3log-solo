@@ -322,7 +322,10 @@ public final class CSDNBlog {
             ret.setCreateDate(createDate);
 
             final String description = (String) result.get("description");
-            final String content = description.replaceAll("\\?", " "); // XXX: is really need this?
+            final String content = description.replaceAll(
+                    "<textarea",
+                    "<pre name='code' class='brush:java;'").
+                    replaceAll("</textarea>", "</pre>");
             ret.setContent(content);
 
         } catch (final Exception e) {
