@@ -117,6 +117,21 @@
         }
     }
 
+    var syncGetCSDN = function () {
+        var requestJSONObject = {
+            "blogSyncMgmtAddEnabled": $("#addSyncCSDN").attr("checked"),
+            "blogSyncMgmtUpdateEnabled": $("#updateSyncCSDN").attr("checked"),
+            "blogSyncMgmtRemoveEnabled": $("#deleteSyncCSDN").attr("checked")
+        };
+
+        jsonRpc.blogSyncService.getBlogSyncMgmtForCSDNBlog(function (result, error) {
+            $("#nameCSDN").val(result.blogSyncExternalBloggingSysUserName);
+            $("#passwordCSDN").val(result.blogSyncExternalBloggingSysUserPassword);
+            alert(result.blogSyncMgmtAddEnabled);
+        });
+    }
+    syncGetCSDN();
+
     var changeTab = function (it) {
         var tabs = ['sync', 'syncSetting'];
         for (var i = 0; i < tabs.length; i++) {
