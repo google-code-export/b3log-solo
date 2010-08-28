@@ -415,7 +415,7 @@ public final class CommentService extends AbstractJSONRpcService {
         final int statusCode = response.getResponseCode();
 
         if (HttpServletResponse.SC_OK == statusCode) {
-            thumbnailURL = "http://www.gravatar.com/avatar" + hashedEmail + "?s="
+            thumbnailURL = "http://www.gravatar.com/avatar/" + hashedEmail + "?s="
                            + size + "&r=G";
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
             LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
