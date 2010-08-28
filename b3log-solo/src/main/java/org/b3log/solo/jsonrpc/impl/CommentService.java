@@ -109,8 +109,8 @@ public final class CommentService extends AbstractJSONRpcService {
     private static final String COMMENT_MAIL_HTML_BODY =
             "Article[<a href=\""
             + "{articleURL}\">" + "{articleTitle}</a>]"
-            + " received a new comment[<a href=\"{commentSharpURL}\""
-            + "{commentContent}></a>]";
+            + " received a new comment[<a href=\"{commentSharpURL}\">"
+            + "{commentContent}</a>]";
 
     /**
      * Gets comments of an article specified by the article id for administrator.
