@@ -118,16 +118,16 @@
     }
 
     var syncGetCSDN = function () {
-        var requestJSONObject = {
-            "blogSyncMgmtAddEnabled": $("#addSyncCSDN").attr("checked"),
-            "blogSyncMgmtUpdateEnabled": $("#updateSyncCSDN").attr("checked"),
-            "blogSyncMgmtRemoveEnabled": $("#deleteSyncCSDN").attr("checked")
-        };
-
         jsonRpc.blogSyncService.getBlogSyncMgmtForCSDNBlog(function (result, error) {
+            if (null === result) {
+                return;
+            }
+
             $("#nameCSDN").val(result.blogSyncExternalBloggingSysUserName);
             $("#passwordCSDN").val(result.blogSyncExternalBloggingSysUserPassword);
-            alert(result.blogSyncMgmtAddEnabled);
+            result.blogSyncMgmtAddEnabled ? $("#addSyncCSDN").attr("checked", "checked") : $("#addSyncCSDN").removeAttr("checked");
+            result.blogSyncMgmtUpdateEnabled ? $("#updateSyncCSDN").attr("checked", "checked") : $("#updateSyncCSDN").removeAttr("checked");
+            result.blogSyncMgmtRemoveEnabled ? $("#deleteSyncCSDN").attr("checked", "checked") : $("#deleteSyncCSDN").removeAttr("checked");
         });
     }
     syncGetCSDN();
