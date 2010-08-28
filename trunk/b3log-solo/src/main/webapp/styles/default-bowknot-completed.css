@@ -1,0 +1,19 @@
+/* 
+    Document   : default-completed
+    Created on : Aug 28, 2010, 7:15:43 PM
+    Author     : Vanessa
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.completed-panel {
+    -moz-border-radius:4px;
+    background-color:#FFFFFF;
+    border:1px solid #639ECD;
+    display:none;
+    overflow: auto;
+    position: absolute;
+}
+
+.completed-panel div.selected {
+    background-color: gray;
+}
