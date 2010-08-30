@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.users.UserServiceFactory;
 import org.apache.log4j.Logger;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
@@ -31,6 +32,38 @@ public final class AdminService extends AbstractJSONRpcService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AdminService.class);
+    /**
+     * User service.
+     */
+    private com.google.appengine.api.users.UserService userService =
+            UserServiceFactory.getUserService();
+
+    /**
+     * Gets the login URL.
+     *
+     * @return login URL
+     */
+    public String getLoginURL() {
+        return userService.createLoginURL("/admin-index.do");
+    }
+
+    /**
+     * Gets the logout URL.
+     *
+     * @return logout URL
+     */
+    public String getLogoutURL() {
+        return userService.createLogoutURL("/index.do");
+    }
+
+    /**
+     * Determines whether the administrator is logged in.
+     *
+     * @return {@code true} if logged in, returns {@code false} otherwise
+     */
+    public boolean isAdminLoggedIn() {
+        return userService.isUserLoggedIn() && userService.isUserAdmin();
+    }
 
     /**
      * Clear all page cache.

@@ -7,13 +7,26 @@
         <span style="color: blue;">G</span>
     </a>
     <span class="right">
-        <#if loginURL??>
-        <a class="noUnderline" href="${loginURL}">${loginLabel}</a>&nbsp;|&nbsp;
-        <#else>
-        <a class="noUnderline" href="${logoutURL}">${logoutLabel}</a>&nbsp;|&nbsp;
-        <a class="noUnderline" href="#" onclick="clearCache();">${clearCache}</a>&nbsp;|&nbsp;
-        <a class="noUnderline" href="admin-index.do">${adminLabel}</a>&nbsp;|&nbsp;
-        </#if>
+        <span id="admin"></span>
+        <script type="text/javascript">
+            var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
+
+            if (isAdminLoggedIn) {
+                var logoutURL = jsonRpc.adminService.getLogoutURL();
+                var logout = $("<a class='noUnderline'>${logoutLabel}</a>&nbsp;|&nbsp;");
+                logout.attr("href", logoutURL);
+                $("#admin").append(logout);
+                var clearCache = $("<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>&nbsp;|&nbsp;");
+                $("#admin").append(clearCache);
+                var adminIndex = $("<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;");
+                $("#admin").append(adminIndex);
+            } else {
+                var loginURL = jsonRpc.adminService.getLoginURL();
+                var login = $("<a class='noUnderline'>${loginLabel}</a>&nbsp;|&nbsp;");
+                login.attr("href", loginURL);
+                $("#admin").append(login);
+            }
+        </script>
         <select onchange="setLanguage(this);">
             <option>
                 ${langLabel}

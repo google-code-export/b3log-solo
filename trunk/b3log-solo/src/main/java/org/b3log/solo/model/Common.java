@@ -24,14 +24,6 @@ package org.b3log.solo.model;
 public final class Common {
 
     /**
-     * Login URL.
-     */
-    public static final String LOGIN_URL = "loginURL";
-    /**
-     * Logout URL.
-     */
-    public static final String LOGOUT_URL = "logoutURL";
-    /**
      * Most used tags.
      */
     public static final String MOST_USED_TAGS = "mostUsedTags";
