@@ -261,9 +261,9 @@ public final class CommentService extends AbstractJSONRpcService {
             sendNotificationMail(article, commentId, commentContent, request);
             // Step 6: Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.remove(
-                    "/article-details.dooId=" + articleId);
+                    "/article-detail.dooId=" + articleId);
             AbstractCacheablePageAction.PAGE_CACHE.remove(
-                    "/article-details.dooId=" + articleId + "#" + commentId);
+                    "/article-detail.dooId=" + articleId + "#" + commentId);
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
