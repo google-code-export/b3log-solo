@@ -70,7 +70,7 @@
                                     &nbsp;${commentLabel}(${article.articleCommentCount})
                                 </span>
                                 <span>
-                                    &nbsp;${viewLabel}(${article.articleViewCount})
+                                    &nbsp;${viewLabel}(<span id="articleViewCount"></span>)
                                 </span>
                             </div>
                             <div class="clear"></div>
@@ -168,7 +168,7 @@
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
         <script type="text/javascript">
-            var codeHeightLight = function () {
+            var codeHighlighting = function () {
                 $(".article-body textarea").addClass("brush: js;");
                 SyntaxHighlighter.config.tagName = "textarea";
                 SyntaxHighlighter.config.tagName = "pre";
@@ -182,7 +182,7 @@
                     }
                 });
             }
-            codeHeightLight();
+            codeHighlighting();
 
             var validateComment = function () {
                 if ($("#commentName").val().replace(/\s/g, "") === "") {
@@ -227,6 +227,11 @@
                     }
                 }
             }
+
+            jsonRpc.statisticService.incArticleViewCount("${article.oId}");
+            jsonRpc.statisticService.getArticleViewCount(function (result, error) {
+                $("#articleViewCount").html(result);
+            },"${article.oId}");
         </script>
     </body>
 </html>
