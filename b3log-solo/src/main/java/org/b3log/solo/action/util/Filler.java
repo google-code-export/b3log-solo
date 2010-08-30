@@ -266,15 +266,6 @@ public final class Filler {
 
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
         dataModel.put(Preference.BLOG_SUBTITLE, blogSubtitle);
-
-        if (userService.isUserLoggedIn() && userService.isUserAdmin()) {
-            final String logoutURL = userService.createLogoutURL("/index.do");
-            dataModel.put(Common.LOGOUT_URL, logoutURL);
-        } else {
-            final String loginURL =
-                    userService.createLoginURL("/admin-index.do");
-            dataModel.put(Common.LOGIN_URL, loginURL);
-        }
     }
 
     /**
