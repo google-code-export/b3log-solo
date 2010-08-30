@@ -12,7 +12,10 @@
             var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
 
             if (isAdminLoggedIn) {
-                var logoutURL = jsonRpc.adminService.getLogoutURL();
+                var logoutURL = undefined;
+                jsonRpc.adminService.getLogoutURL(function (result, error) {
+                    loginURL = result;
+                });
                 var logout = $("<a class='noUnderline'>${logoutLabel}</a>&nbsp;|&nbsp;");
                 logout.attr("href", logoutURL);
                 $("#admin").append(logout);
@@ -21,7 +24,10 @@
                 var adminIndex = $("<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;");
                 $("#admin").append(adminIndex);
             } else {
-                var loginURL = jsonRpc.adminService.getLoginURL();
+                var loginURL = undefined;
+                jsonRpc.adminService.getLoginURL(function (result, error) {
+                    loginURL = result;
+                });
                 var login = $("<a class='noUnderline'>${loginLabel}</a>&nbsp;|&nbsp;");
                 login.attr("href", loginURL);
                 $("#admin").append(login);
