@@ -22,6 +22,7 @@ import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -48,6 +49,11 @@ public final class StatisticService extends AbstractJSONRpcService {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Article utilities.
+     */
+    @Inject
+    private ArticleUtils articleUtils;
 
     /**
      * Gets the blog statistic.
@@ -73,7 +79,7 @@ public final class StatisticService extends AbstractJSONRpcService {
     }
 
     /**
-     * View count +1.
+     * Blog view count +1.
      */
     public void incBlogViewCount() {
         final Transaction transaction =
@@ -84,6 +90,38 @@ public final class StatisticService extends AbstractJSONRpcService {
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * View count +1 for an article specified by the given article id.
+     * .
+     * @param articleId the given article id
+     */
+    public void incArticleViewCount(final String articleId) {
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            articleUtils.incArticleViewCount(articleId);
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Gets view count for an article specified by the given article id.
+     * .
+     * @param articleId the given article id
+     * @return article view count
+     */
+    public int getArticleViewCount(final String articleId) {
+        try {
+            return articleUtils.getArticleViewCount(articleId);
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            return 0;
         }
     }
 }
