@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Statistic service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 27, 2010
+ * @version 1.0.0.1, Aug 30, 2010
  */
 public final class StatisticService extends AbstractJSONRpcService {
 
@@ -50,7 +50,7 @@ public final class StatisticService extends AbstractJSONRpcService {
     private Statistics statistics;
 
     /**
-     * Gets the statistic.
+     * Gets the blog statistic.
      *
      * @return for example,
      * <pre>
@@ -61,7 +61,7 @@ public final class StatisticService extends AbstractJSONRpcService {
      * }
      * </pre>
      */
-    public JSONObject getStatistic() {
+    public JSONObject getBlogStatistic() {
         JSONObject ret = null;
         try {
             ret = statisticRepository.get(Statistic.STATISTIC);
@@ -75,7 +75,7 @@ public final class StatisticService extends AbstractJSONRpcService {
     /**
      * View count +1.
      */
-    public void incViewCount() {
+    public void incBlogViewCount() {
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
