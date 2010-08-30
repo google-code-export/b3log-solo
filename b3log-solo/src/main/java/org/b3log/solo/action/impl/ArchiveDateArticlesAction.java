@@ -137,8 +137,8 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                         archiveDateArticleRelations.getJSONObject(i);
                 final String articleId =
                         archiveDateArticleRelation.getString(Article.ARTICLE
-                        + "_"
-                        + Keys.OBJECT_ID);
+                                                             + "_"
+                                                             + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }
@@ -160,6 +160,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
+            filler.fillBlogFooter(ret, request);
             filler.fillArchiveDates(ret);
 
             statistics.incBlogViewCount();

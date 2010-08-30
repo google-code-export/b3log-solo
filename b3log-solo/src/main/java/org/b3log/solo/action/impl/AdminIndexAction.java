@@ -72,6 +72,7 @@ public final class AdminIndexAction extends AbstractAction {
             ret.putAll(langs);
 
             filler.fillBlogHeader(ret, request);
+            filler.fillBlogFooter(ret, request);
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);

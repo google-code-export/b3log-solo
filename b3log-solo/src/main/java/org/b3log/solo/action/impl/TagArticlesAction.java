@@ -120,7 +120,8 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(
@@ -141,7 +142,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                         tagArticleRelations.getJSONObject(i);
                 final String articleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
-                        + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }
@@ -149,9 +150,9 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             Collections.sort(articles, new ArticleUpdateDateComparator());
 
             LOGGER.trace("Paginate tag-articles[currentPageNum="
-                    + currentPageNum + ", pageSize=" + pageSize
-                    + ", pageCount=" + pageCount + ", windowSize="
-                    + windowSize + "]");
+                         + currentPageNum + ", pageSize=" + pageSize
+                         + ", pageCount=" + pageCount + ", windowSize="
+                         + windowSize + "]");
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
@@ -169,6 +170,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
+            filler.fillBlogFooter(ret, request);
             filler.fillArchiveDates(ret);
 
             statistics.incBlogViewCount();

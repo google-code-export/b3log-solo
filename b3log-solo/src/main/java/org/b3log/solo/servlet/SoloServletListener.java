@@ -59,7 +59,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Aug 26, 2010
+ * @version 1.0.1.0, Aug 30, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -81,6 +81,10 @@ public final class SoloServletListener extends AbstractServletListener {
      * Gmail of administrator.
      */
     public static final String ADMIN_GMAIL;
+    /**
+     * B3log Solo version.
+     */
+    public static final String VERSION;
     /**
      * Supported blog sync management external blogging systems.
      */
@@ -116,6 +120,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
     static {
         ADMIN_GMAIL = CONFIG.getString("gmail");
+        VERSION = CONFIG.getString("version");
     }
 
     /**
@@ -181,17 +186,15 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * Initializes skins from the specified configuration for the specified
+     * Initializes skins from the default configuration for the specified
      * preference.
      *
-     * @param config the specified configuration
      * @param preference the specified preference
      * @throws JSONException json exception
      */
-    private void initSkins(final ResourceBundle config,
-                           final JSONObject preference)
+    private void initSkins(final JSONObject preference)
             throws JSONException {
-        final String skinDirName = config.getString(SKIN_DIR_NAME);
+        final String skinDirName = DefaultPreference.DEFAULT_SKIN_DIR_NAME;
         preference.put(SKIN_DIR_NAME, skinDirName);
 
         final Skins skins = getInjector().getInstance(Skins.class);
@@ -305,38 +308,26 @@ public final class SoloServletListener extends AbstractServletListener {
                 // Try to load preference from configuration file and then
                 // persist it.
                 userPreference = new JSONObject();
-                final int articleListDisplayCnt = Integer.valueOf(CONFIG.
-                        getString(ARTICLE_LIST_DISPLAY_COUNT));
                 userPreference.put(ARTICLE_LIST_DISPLAY_COUNT,
-                                   articleListDisplayCnt);
-                final int articleListPaginationWindowSize = Integer.valueOf(
-                        CONFIG.getString(ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
+                                   DefaultPreference.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
                 userPreference.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
-                                   articleListPaginationWindowSize);
-                final int mostUsedTagDisplayCnt = Integer.valueOf(CONFIG.
-                        getString(MOST_USED_TAG_DISPLAY_CNT));
+                                   DefaultPreference.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
                 userPreference.put(MOST_USED_TAG_DISPLAY_CNT,
-                                   mostUsedTagDisplayCnt);
-                final int mostCommentArticleDisplayCnt =
-                        Integer.valueOf(CONFIG.getString(
-                        MOST_COMMENT_ARTICLE_DISPLAY_CNT));
+                                   DefaultPreference.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
                 userPreference.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
-                                   mostCommentArticleDisplayCnt);
-                final int recentArticleDisplayCnt = Integer.valueOf(CONFIG.
-                        getString(RECENT_ARTICLE_DISPLAY_CNT));
+                                   DefaultPreference.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
                 userPreference.put(RECENT_ARTICLE_DISPLAY_CNT,
-                                   recentArticleDisplayCnt);
-
-                final String blogTitle = CONFIG.getString(BLOG_TITLE);
-                userPreference.put(BLOG_TITLE, blogTitle);
-                final String blogSubtitle = CONFIG.getString(BLOG_SUBTITLE);
-                userPreference.put(BLOG_SUBTITLE, blogSubtitle);
+                                   DefaultPreference.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
+                userPreference.put(BLOG_TITLE,
+                                   DefaultPreference.DEFAULT_BLOG_TITLE);
+                userPreference.put(BLOG_SUBTITLE,
+                                   DefaultPreference.DEFAULT_BLOG_SUBTITLE);
 
                 userPreference.put(Keys.OBJECT_ID, preferenceId);
                 preferenceRepository.add(userPreference);
             }
 
-            initSkins(CONFIG, userPreference);
+            initSkins(userPreference);
             preferenceRepository.update(preferenceId, userPreference);
 
             LOGGER.info("Loaded preference[" + userPreference.toString(
@@ -381,6 +372,55 @@ public final class SoloServletListener extends AbstractServletListener {
         } catch (final Exception e) {
             LOGGER.fatal(e.getMessage(), e);
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Default preference.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Aug 30, 2010
+     */
+    private static final class DefaultPreference {
+
+        /**
+         * Default recent article display count.
+         */
+        private static final int DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT = 10;
+        /**
+         * Default most used tag display count.
+         */
+        private static final int DEFAULT_MOST_USED_TAG_DISPLAY_COUNT = 20;
+        /**
+         * Default article list display count.
+         */
+        private static final int DEFAULT_ARTICLE_LIST_DISPLAY_COUNT = 20;
+        /**
+         * Default article list pagination window size.
+         */
+        private static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE =
+                15;
+        /**
+         * Default most comment article display count.
+         */
+        private static final int DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT = 5;
+        /**
+         * Default blog title.
+         */
+        private static final String DEFAULT_BLOG_TITLE = "Pig Gong & Pig Po";
+        /**
+         * Default blog subtitle.
+         */
+        private static final String DEFAULT_BLOG_SUBTITLE = "Java 4ever";
+        /**
+         * Default skin directory name.
+         */
+        private static final String DEFAULT_SKIN_DIR_NAME = "classic";
+
+        /**
+         * Private default constructor.
+         */
+        private DefaultPreference() {
         }
     }
 }

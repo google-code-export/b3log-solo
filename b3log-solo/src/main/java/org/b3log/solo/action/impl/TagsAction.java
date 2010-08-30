@@ -103,12 +103,14 @@ public final class TagsAction extends AbstractCacheablePageAction {
 
             final List<Object> tags = CollectionUtils.jsonArrayToList(tagArray);
             ret.put(Tag.TAGS, tags);
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
+            filler.fillBlogFooter(ret, request);
             filler.fillArchiveDates(ret);
 
             statistics.incBlogViewCount();

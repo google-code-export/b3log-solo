@@ -128,7 +128,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     queryStringJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject article = articleRepository.get(articleId);
             LOGGER.trace("Article[title="
-                    + article.getString(Article.ARTICLE_TITLE) + "]");
+                         + article.getString(Article.ARTICLE_TITLE) + "]");
             ret.put(Article.ARTICLE, article);
 
             final List<JSONObject> articleTags = getTags(articleId);
@@ -142,7 +142,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     articleRepository.getNextArticleId(articleId);
             ret.put(Common.NEXT_ARTICLE_ID, nextArticleId);
 
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
@@ -151,10 +152,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             // Remove cached page for this article
             AbstractCacheablePageAction.PAGE_CACHE.remove("article-detail.dooId="
-                    + articleId);
+                                                          + articleId);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
+            filler.fillBlogFooter(ret, request);
             filler.fillArchiveDates(ret);
 
             // View count +1
@@ -186,7 +188,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     articleCommentRelations.get(i);
             final String commentId =
                     articleCommentRelation.getString(Comment.COMMENT + "_"
-                    + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
             comment.remove(Comment.COMMENT_EMAIL); // Remove email
