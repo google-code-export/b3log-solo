@@ -8,24 +8,6 @@
     </a>
     <span class="right">
         <span id="admin"></span>
-        <script type="text/javascript">
-            var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
-
-            if (isAdminLoggedIn) {
-                var logout = $("<a class='noUnderline' href='/_ah/logout?continue=%2Findex.do'>${logoutLabel}</a>");
-                logout.html(logout.html() + "&nbsp;|&nbsp;");
-                $("#admin").append(logout);
-                var clearCache = $("<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>");
-                clearCache.html(clearCache.html() + "&nbsp;|&nbsp;");
-                $("#admin").append(clearCache);
-                var adminIndex = $("<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>");
-                adminIndex.html(adminIndex.html() + "&nbsp;|&nbsp;");
-                $("#admin").append(adminIndex);
-            } else {
-                var login = $("<a class='noUnderline' href='/_ah/login?continue=%2Fadmin-index.do'>${loginLabel}</a>&nbsp;|&nbsp;");
-                $("#admin").append(login);
-            }
-        </script>
         <select onchange="setLanguage(this);">
             <option>
                 ${langLabel}
@@ -45,6 +27,19 @@
         //alert(it.value);
     }
 
+    var setLoginState = function () {
+        var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
+        if (isAdminLoggedIn) {
+            var loginHTML = "<a class='noUnderline' href='/_ah/logout?continue=%2Findex.do'>${logoutLabel}</a>&nbsp;|&nbsp;"
+                + "<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>&nbsp;|&nbsp;"
+                + "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;";
+            $("#admin").append(loginHTML);
+        } else {
+            $("#admin").append("<a class='noUnderline' href='/_ah/login?continue=%2Fadmin-index.do'>${loginLabel}</a>&nbsp;|&nbsp;");
+        }
+    }
+
+    setLoginState();
     var clearCache = function () {
         jsonRpc.adminService.clearPageCache();
         window.location.reload();
