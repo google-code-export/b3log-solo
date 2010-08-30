@@ -49,6 +49,7 @@ import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Buzzs;
 import org.b3log.solo.util.Statistics;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -256,35 +257,11 @@ public final class CommentService extends AbstractJSONRpcService {
             // Step 4: Update blog statistic comment count
             statistics.incBlogCommentCount();
             // Step 5: Send an email to admin
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String articleTitle = article.getString(Article.ARTICLE_TITLE);
-            final String baseArticleURL =
-                    "http://" + request.getServerName()
-                    + "/article-detail.do?oId="
-                    + articleId;
-            final String articleURL = baseArticleURL;
-            final String commentSharpURL = baseArticleURL + "#" + commentId;
-            LOGGER.trace("Comment[articleURL=" + articleURL + ", articleTitle="
-                         + articleTitle + ", blogTitle=" + blogTitle + "]");
-            final Message message = new Message();
-            message.setSender(SoloServletListener.ADMIN_GMAIL);
-            final String mailSubject = blogTitle + ": New comment on "
-                                       + articleTitle;
-            message.setSubject(mailSubject);
-            final String mailBody = COMMENT_MAIL_HTML_BODY.replace(
-                    "{articleURL}", articleURL).
-                    replace("{articleTitle}", articleTitle).
-                    replace("{commentContent}", commentContent).
-                    replace("{commentSharpURL}", commentSharpURL);
-            message.setHtmlBody(mailBody);
-            LOGGER.debug("Sending a mail[mailSubject=" + mailSubject + ", "
-                         + "mailBody=[" + mailBody + "] to admins");
-            mailService.sendToAdmins(message);
-
+            sendNotificationMail(article, commentId, commentContent,
+                                 request);
             // Step 6: Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+            AbstractCacheablePageAction.PAGE_CACHE.remove(
+                    "/article-details.do?oId=" + articleId);
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
@@ -296,6 +273,53 @@ public final class CommentService extends AbstractJSONRpcService {
         }
 
         return ret;
+    }
+
+    /**
+     * Sends a notification mail to administrator for notifying the specified
+     * article received a comment which specified by the given comment id and
+     * comment content.
+     *
+     * @param article the specified article
+     * @param commentId the given comment id
+     * @param commentContent the given comment content
+     * @param request the specified http servlet request
+     * @throws IOException io exception
+     * @throws JSONException json exception
+     */
+    private void sendNotificationMail(final JSONObject article,
+                                      final String commentId,
+                                      final String commentContent,
+                                      final HttpServletRequest request)
+            throws IOException, JSONException {
+        final String articleId = article.getString(Keys.OBJECT_ID);
+        final JSONObject preference =
+                SoloServletListener.getUserPreference();
+        final String blogTitle =
+                preference.getString(Preference.BLOG_TITLE);
+        final String articleTitle =
+                article.getString(Article.ARTICLE_TITLE);
+        final String baseArticleURL =
+                "http://" + request.getServerName() + "/article-detail.do?oId="
+                + articleId;
+        final String articleURL = baseArticleURL;
+        final String commentSharpURL = baseArticleURL + "#" + commentId;
+        LOGGER.trace("Comment[articleURL=" + articleURL + ", articleTitle="
+                     + articleTitle + ", blogTitle=" + blogTitle + "]");
+        final Message message = new Message();
+        message.setSender(SoloServletListener.ADMIN_GMAIL);
+        final String mailSubject = blogTitle + ": New comment on "
+                                   + articleTitle;
+        message.setSubject(mailSubject);
+        final String mailBody =
+                COMMENT_MAIL_HTML_BODY.replace("{articleURL}", articleURL).
+                replace("{articleTitle}", articleTitle).
+                replace("{commentContent}", commentContent).
+                replace("{commentSharpURL}", commentSharpURL);
+        message.setHtmlBody(mailBody);
+        LOGGER.debug("Sending a mail[mailSubject=" + mailSubject + ", "
+                     + "mailBody=[" + mailBody + "] to admins");
+        mailService.sendToAdmins(message);
     }
 
     /**
