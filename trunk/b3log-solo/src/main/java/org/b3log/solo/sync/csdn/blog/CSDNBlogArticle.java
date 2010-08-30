@@ -256,7 +256,7 @@ public final class CSDNBlogArticle {
             descriptionBuilder.append("<p>");
             descriptionBuilder.append(
                     "本文是使用<a href='http://b3log-solo.googlecode.com/'>");
-            descriptionBuilder.append("B3log Solo</a>从<a href='");
+            descriptionBuilder.append("B3log Solo</a>从<a href='http://");
             descriptionBuilder.append(preference.getString(Preference.BLOG_HOST));
             descriptionBuilder.append("'>");
             descriptionBuilder.append(blogTitle);
