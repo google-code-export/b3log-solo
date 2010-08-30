@@ -12,22 +12,19 @@
             var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
 
             if (isAdminLoggedIn) {
-                var logoutURL = undefined;
-                jsonRpc.adminService.getLogoutURL(function (result, error) {
-                    loginURL = result;
-                });
-                var logout = $("<a class='noUnderline'>${logoutLabel}</a>&nbsp;|&nbsp;");
+                var logoutURL = jsonRpc.adminService.getLogoutURL();
+                var logout = $("<a class='noUnderline'>${logoutLabel}</a>");
                 logout.attr("href", logoutURL);
+                logout.html(logout.html() + "&nbsp;|&nbsp;");
                 $("#admin").append(logout);
-                var clearCache = $("<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>&nbsp;|&nbsp;");
+                var clearCache = $("<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>");
+                clearCache.html(clearCache.html() + "&nbsp;|&nbsp;");
                 $("#admin").append(clearCache);
-                var adminIndex = $("<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;");
+                var adminIndex = $("<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>");
+                adminIndex.html(adminIndex.html() + "&nbsp;|&nbsp;");
                 $("#admin").append(adminIndex);
             } else {
-                var loginURL = undefined;
-                jsonRpc.adminService.getLoginURL(function (result, error) {
-                    loginURL = result;
-                });
+                var loginURL = jsonRpc.adminService.getLoginURL();
                 var login = $("<a class='noUnderline'>${loginLabel}</a>&nbsp;|&nbsp;");
                 login.attr("href", loginURL);
                 $("#admin").append(login);
