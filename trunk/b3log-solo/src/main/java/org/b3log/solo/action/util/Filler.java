@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 21, 2010
+ * @version 1.0.0.6, Aug 30, 2010
  */
 public final class Filler {
 
@@ -238,6 +238,17 @@ public final class Filler {
     }
 
     /**
+     * Fills article-footer.html.
+     *
+     * @param dataModel data model
+     * @param request http servlet request
+     */
+    public void fillBlogFooter(final Map<String, Object> dataModel,
+                               final HttpServletRequest request) {
+        dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+    }
+
+    /**
      * Fills article-header.html.
      *
      * @param dataModel data model
@@ -256,12 +267,12 @@ public final class Filler {
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
         dataModel.put(Preference.BLOG_SUBTITLE, blogSubtitle);
 
-
         if (userService.isUserLoggedIn() && userService.isUserAdmin()) {
             final String logoutURL = userService.createLogoutURL("/index.do");
             dataModel.put(Common.LOGOUT_URL, logoutURL);
         } else {
-            final String loginURL = userService.createLoginURL("/admin-index.do");
+            final String loginURL =
+                    userService.createLoginURL("/admin-index.do");
             dataModel.put(Common.LOGIN_URL, loginURL);
         }
     }
@@ -280,8 +291,8 @@ public final class Filler {
         fillMostCommentArticles(dataModel);
         fillMostViewCountArticles(dataModel);
 
-        LOGGER.debug("Current user[userId=" 
-                + SoloServletListener.ADMIN_GMAIL + "]");
+        LOGGER.debug("Current user[userId="
+                     + SoloServletListener.ADMIN_GMAIL + "]");
         dataModel.put(User.USER_EMAIL, SoloServletListener.ADMIN_GMAIL);
     }
 }

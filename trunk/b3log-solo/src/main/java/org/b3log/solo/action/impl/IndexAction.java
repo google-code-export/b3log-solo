@@ -88,10 +88,12 @@ public final class IndexAction extends AbstractCacheablePageAction {
             filler.fillIndexArticles(ret, currentPageNum);
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
+            filler.fillBlogFooter(ret, request);
             filler.fillArchiveDates(ret);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 

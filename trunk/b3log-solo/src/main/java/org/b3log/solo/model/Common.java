@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 23, 2010
+ * @version 1.0.0.8, Aug 30, 2010
  */
 public final class Common {
 
@@ -73,6 +73,10 @@ public final class Common {
      * Action name.
      */
     public static final String ACTION_NAME = "actionName";
+    /**
+     * Version.
+     */
+    public static final String VERSION = "version";
 
     /**
      * Private default constructor.
