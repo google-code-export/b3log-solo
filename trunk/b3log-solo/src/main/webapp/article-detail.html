@@ -121,11 +121,8 @@
                                         <th>
                                             ${commentURL1Label}
                                         </th>
-                                        <td width="40px">
-                                            http://
-                                        </td>
                                         <td>
-                                            <input id="commentURL"/>
+                                            <input value="http://" id="commentURL"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -141,8 +138,8 @@
                                             ${captcha1Label}
                                         </th>
                                         <td>
-                                            <img id="captcha" src="/captcha.do"></img>
                                             <input class="normalInput" id="commentValidate"/>
+                                            <img id="captcha" alt="validate" src="/captcha.do"></img>
                                         </td>
                                         <th>
                                             <span class="error-msg" id="commentErrorTip"/>
@@ -171,7 +168,8 @@
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
         <script type="text/javascript">
-            var codeHighlighting = function () {
+            var loadAction = function () {
+                // code high lighter
                 $(".article-body textarea").addClass("brush: js;");
                 SyntaxHighlighter.config.tagName = "textarea";
                 SyntaxHighlighter.config.tagName = "pre";
@@ -179,13 +177,27 @@
                 SyntaxHighlighter.defaults["gutter"] = true;
                 SyntaxHighlighter.all();
 
+                // submit comment
                 $("#commentValidate").keypress(function (event) {
                     if (event.keyCode === 13) {
                         submitComment();
                     }
                 });
+                
+                // comment url
+                $("#commentURL").keyup(function () {
+                    if (-1 === this.value.indexOf("http://")) {
+                        this.value = "http://";
+                    }
+                });
+
+                // article view count
+                jsonRpc.statisticService.incArticleViewCount("${article.oId}");
+                jsonRpc.statisticService.getArticleViewCount(function (result, error) {
+                    $("#articleViewCount").html(result);
+                },"${article.oId}");
             }
-            codeHighlighting();
+            loadAction();
 
             var validateComment = function () {
                 if ($("#commentName").val().replace(/\s/g, "") === "") {
@@ -221,7 +233,7 @@
                             $("#commentErrorTip").html("");
                             $("#comment").val("");
                             $("#commentEmail").val("");
-                            $("#commentURL").val("");
+                            $("#commentURL").val("http://");
                             $("#commentName").val("");
                             window.location.reload();
                             break;
@@ -230,11 +242,6 @@
                     }
                 }
             }
-
-            jsonRpc.statisticService.incArticleViewCount("${article.oId}");
-            jsonRpc.statisticService.getArticleViewCount(function (result, error) {
-                $("#articleViewCount").html(result);
-            },"${article.oId}");
         </script>
     </body>
 </html>
