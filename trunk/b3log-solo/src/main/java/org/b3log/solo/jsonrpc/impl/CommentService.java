@@ -261,9 +261,9 @@ public final class CommentService extends AbstractJSONRpcService {
             sendNotificationMail(article, commentId, commentContent, request);
             // Step 6: Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.remove(
-                    "/article-details.do?oId=" + articleId);
+                    "/article-details.dooId=" + articleId);
             AbstractCacheablePageAction.PAGE_CACHE.remove(
-                    "/article-details.do?oId=" + articleId + "#" + commentId);
+                    "/article-details.dooId=" + articleId + "#" + commentId);
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
@@ -437,38 +437,46 @@ public final class CommentService extends AbstractJSONRpcService {
                 new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
                         + size + "&r=G");
         // XXX: use async url fetch instead????
-        final HTTPResponse response = urlFetchService.fetch(gravatarURL);
-        final int statusCode = response.getResponseCode();
+        try {
+            final HTTPResponse response = urlFetchService.fetch(gravatarURL);
+            final int statusCode = response.getResponseCode();
 
-        if (HttpServletResponse.SC_OK == statusCode) {
-            final List<HTTPHeader> headers = response.getHeaders();
-            boolean defaultFileNameMatched = false;
-            boolean defaultFileLengthMatched = false;
-            for (final HTTPHeader httpHeader : headers) {
-                if ("Content-Disposition".equals(httpHeader.getName())) {
-                    if (httpHeader.getValue().contains("none.jpg")) {
-                        defaultFileNameMatched = true;
+            if (HttpServletResponse.SC_OK == statusCode) {
+                final List<HTTPHeader> headers = response.getHeaders();
+                boolean defaultFileNameMatched = false;
+                boolean defaultFileLengthMatched = false;
+                for (final HTTPHeader httpHeader : headers) {
+                    if ("Content-Disposition".equals(httpHeader.getName())) {
+                        if (httpHeader.getValue().contains("none.jpg")) {
+                            defaultFileNameMatched = true;
+                        }
+                    }
+                    if ("Content-Length".equals(httpHeader.getName())) {
+                        if (httpHeader.getValue().equals("2147")) {
+                            defaultFileLengthMatched = true;
+                        }
                     }
                 }
-                if ("Content-Length".equals(httpHeader.getName())) {
-                    if (httpHeader.getValue().equals("2147")) {
-                        defaultFileLengthMatched = true;
-                    }
+
+                if (!defaultFileNameMatched && !defaultFileLengthMatched) {
+                    thumbnailURL = "http://www.gravatar.com/avatar/"
+                                   + hashedEmail
+                                   + "?s="
+                                   + size + "&r=G";
+                    comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
+                    LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
+
+                    return;
                 }
+            } else {
+                LOGGER.warn("Can not fetch thumbnail from Gravatar[commentEmail="
+                            + commentEmail + ", " + "statusCode=" + statusCode
+                            + "]");
             }
-
-            if (!defaultFileNameMatched && !defaultFileLengthMatched) {
-                thumbnailURL = "http://www.gravatar.com/avatar/" + hashedEmail
-                               + "?s="
-                               + size + "&r=G";
-                comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
-
-                return;
-            }
-        } else {
+        } catch (final IOException e) {
+            LOGGER.warn(e.getMessage(), e);
             LOGGER.warn("Can not fetch thumbnail from Gravatar[commentEmail="
-                        + commentEmail + ", " + "statusCode=" + statusCode + "]");
+                        + commentEmail + "]");
         }
 
         if (null == thumbnailURL) {
