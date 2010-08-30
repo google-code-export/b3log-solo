@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Aug 28, 2010
+ * @version 1.0.0.9, Aug 30, 2010
  */
 public final class CommentService extends AbstractJSONRpcService {
 
@@ -269,7 +269,7 @@ public final class CommentService extends AbstractJSONRpcService {
             LOGGER.trace("Comment[articleURL=" + articleURL + ", articleTitle="
                          + articleTitle + ", blogTitle=" + blogTitle + "]");
             final Message message = new Message();
-            message.setSender("DL88250@gmail.com"); // XXX: from my personal mail????
+            message.setSender(SoloServletListener.ADMIN_GMAIL);
             final String mailSubject = blogTitle + ": New comment on "
                                        + articleTitle;
             message.setSubject(mailSubject);
