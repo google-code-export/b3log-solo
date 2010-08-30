@@ -282,8 +282,9 @@ public final class Filler {
         fillMostCommentArticles(dataModel);
         fillMostViewCountArticles(dataModel);
 
-        LOGGER.debug("Current user[userId="
-                     + SoloServletListener.ADMIN_GMAIL + "]");
-        dataModel.put(User.USER_EMAIL, SoloServletListener.ADMIN_GMAIL);
+        final JSONObject preference = SoloServletListener.getUserPreference();
+        final String adminGmail = preference.getString(Preference.ADMIN_GMAIL);
+        LOGGER.debug("Current user[userId=" + adminGmail + "]");
+        dataModel.put(User.USER_EMAIL, adminGmail);
     }
 }
