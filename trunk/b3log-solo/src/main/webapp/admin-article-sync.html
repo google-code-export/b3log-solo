@@ -3,12 +3,12 @@
         <ul>
             <li>
                 <span class="selected" id="sync" onclick="changeTab(this);">
-                    {syncLabel}
+                    ${blogArticleImportLabel}
                 </span>
             </li>
             <li>
                 <span id="syncSetting" onclick="changeTab(this);">
-                    {syncSettingLabel}
+                    ${blogSyncMgmtLabel}
                 </span>
             </li>
         </ul>
@@ -47,13 +47,13 @@
         <div id="syncSettingPanel" class="none">
             <fieldset>
                 <legend>
-                    {CSDN sync}
+                    ${syncMgmtCSDNLabel}
                 </legend>
                 <table class="form" cellpadding="12px" cellspacing="12px;">
                     <tbody>
                         <tr>
                             <th width="88px">
-                                {name}
+                                ${userName1Label}
                             </th>
                             <td colspan="5">
                                 <input id="nameCSDN"/>
@@ -61,7 +61,7 @@
                         </tr>
                         <tr>
                             <th>
-                                {password}
+                                ${userPassword1Label}
                             </th>
                             <td colspan="5">
                                 <input type="password" id="passwordCSDN"/>
@@ -69,19 +69,19 @@
                         </tr>
                         <tr>
                             <th>
-                                {add}
+                                ${syncPostLabel}
                             </th>
                             <td>
                                 <input type="checkbox" id="addSyncCSDN"/>
                             </td>
                             <th>
-                                {update}
+                                ${syncUpdateLabel}
                             </th>
                             <td>
                                 <input type="checkbox" id="updateSyncCSDN"
                             </td>
                             <th>
-                                {deleted}
+                                ${syncRemoveLabel}
                             </th>
                             <td>
                                 <input type="checkbox" id="deleteSyncCSDN"/>
@@ -89,7 +89,7 @@
                         </tr>
                         <tr>
                             <th colspan="6">
-                                <button onclick="syncSettingCSDN();">{submit}</button>
+                                <button onclick="syncSettingCSDN();">${saveLabel}</button>
                             </th>
                         </tr>
                     </tbody>
