@@ -258,8 +258,7 @@ public final class CommentService extends AbstractJSONRpcService {
             // Step 4: Update blog statistic comment count
             statistics.incBlogCommentCount();
             // Step 5: Send an email to admin
-            sendNotificationMail(article, commentId, commentContent,
-                                 request);
+            sendNotificationMail(article, commentId, commentContent, request);
             // Step 6: Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.remove(
                     "/article-details.do?oId=" + articleId);
