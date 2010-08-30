@@ -83,6 +83,14 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>
+                            ${adminGmail1Label}
+                        </th>
+                        <td>
+                            <input id="adminGmail"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <th colspan="2">
                             <button onclick="changePreference();">${updateLabel}</button>
                         </th>
@@ -124,7 +132,8 @@
                 "articleListDisplayCount": $("#articleListDisplayCount").val(),
                 "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
                 "skinDirName": $("#skinMain").data("skinDirName"),
-                "blogHost": $("#blogHost").val()
+                "blogHost": $("#blogHost").val(),
+                "adminGmail": $("#adminGmail").val()
             }
         }
 
@@ -154,6 +163,7 @@
                 $("#articleListDisplayCount").val(preference.articleListDisplayCount);
                 $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
                 $("#blogHost").val(preference.blogHost);
+                $("#adminGmail").val(preference.adminGmail);
 
                 // skin
                 $("#skinMain").data("skinDirName", preference.skinDirName);
