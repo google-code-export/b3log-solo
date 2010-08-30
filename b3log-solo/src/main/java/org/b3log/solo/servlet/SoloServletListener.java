@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -64,6 +63,10 @@ import org.json.JSONObject;
 public final class SoloServletListener extends AbstractServletListener {
 
     /**
+     * B3log Solo version.
+     */
+    public static final String VERSION = "0.1.0";
+    /**
      * Logger.
      */
     private static final Logger LOGGER =
@@ -72,19 +75,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
-    /**
-     * B3log Solo configuration file.
-     */
-    public static final ResourceBundle CONFIG = ResourceBundle.getBundle(
-            "b3log-solo");
-    /**
-     * Gmail of administrator.
-     */
-    public static final String ADMIN_GMAIL;
-    /**
-     * B3log Solo version.
-     */
-    public static final String VERSION;
     /**
      * Supported blog sync management external blogging systems.
      */
@@ -117,11 +107,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * Preference.
      */
     private static JSONObject userPreference;
-
-    static {
-        ADMIN_GMAIL = CONFIG.getString("gmail");
-        VERSION = CONFIG.getString("version");
-    }
 
     /**
      * Sets the user preference with the specified preference.
@@ -322,6 +307,10 @@ public final class SoloServletListener extends AbstractServletListener {
                                    DefaultPreference.DEFAULT_BLOG_TITLE);
                 userPreference.put(BLOG_SUBTITLE,
                                    DefaultPreference.DEFAULT_BLOG_SUBTITLE);
+                userPreference.put(BLOG_HOST,
+                                   DefaultPreference.DEFAULT_BLOG_HOST);
+                userPreference.put(ADMIN_GMAIL,
+                                   DefaultPreference.DEFAULT_ADMIN_GMAIL);
 
                 userPreference.put(Keys.OBJECT_ID, preferenceId);
                 preferenceRepository.add(userPreference);
@@ -416,6 +405,14 @@ public final class SoloServletListener extends AbstractServletListener {
          * Default skin directory name.
          */
         private static final String DEFAULT_SKIN_DIR_NAME = "classic";
+        /**
+         * Default administrator mail.
+         */
+        private static final String DEFAULT_ADMIN_GMAIL = "b3log.solo@gmail.com";
+        /**
+         * Default blog host.
+         */
+        private static final String DEFAULT_BLOG_HOST = "localhost:8080";
 
         /**
          * Private default constructor.

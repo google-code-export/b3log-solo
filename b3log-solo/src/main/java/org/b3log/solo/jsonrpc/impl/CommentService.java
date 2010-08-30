@@ -309,7 +309,7 @@ public final class CommentService extends AbstractJSONRpcService {
         LOGGER.trace("Comment[articleURL=" + articleURL + ", articleTitle="
                      + articleTitle + ", blogTitle=" + blogTitle + "]");
         final Message message = new Message();
-        message.setSender(SoloServletListener.ADMIN_GMAIL);
+        message.setSender(preference.getString(Preference.ADMIN_GMAIL));
         final String mailSubject = blogTitle + ": New comment on "
                                    + articleTitle;
         message.setSubject(mailSubject);

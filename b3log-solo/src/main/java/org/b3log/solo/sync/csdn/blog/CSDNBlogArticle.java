@@ -26,6 +26,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.Htmls;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +36,7 @@ import org.json.JSONObject;
  * CSDN blog article(post, entry, article, whatever).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 27, 2010
+ * @version 1.0.0.5, Aug 30, 2010
  */
 public final class CSDNBlogArticle {
 
@@ -248,10 +250,22 @@ public final class CSDNBlogArticle {
 
         try {
             ret.put("title", title);
-            ret.put("description", content);
+            final StringBuilder descriptionBuilder = new StringBuilder(content);
+            final JSONObject preference = SoloServletListener.getUserPreference();
+            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            descriptionBuilder.append("<p>");
+            descriptionBuilder.append(
+                    "本文是使用<a href='http://b3log-solo.googlecode.com/'>");
+            descriptionBuilder.append("B3log Solo</a>从<a href='");
+            descriptionBuilder.append(preference.getString(Preference.BLOG_HOST));
+            descriptionBuilder.append("'>");
+            descriptionBuilder.append(blogTitle);
+            descriptionBuilder.append("</a>进行同步发布的。");
+            descriptionBuilder.append("</p>");
+            ret.put("description", descriptionBuilder.toString());
             ret.put("categories", categories.<String>toArray(new String[0]));
 
-            // FIXME: CSDN blog created date bug
+            // FIXME: CSDN blog created date bug(time zone)
             ret.put("dateCreated",
                     CSDNBlog.CST_DATE_FORMAT.parse(
                     CSDNBlog.UTC_DATE_FORMAT.format(createDate)));
@@ -273,7 +287,7 @@ public final class CSDNBlogArticle {
         final String contentWithoutTags = Htmls.removeHtmlTags(content);
         if (contentWithoutTags.length() >= MAX_ABSTRACT_LENGTH) {
             return contentWithoutTags.substring(0, MAX_ABSTRACT_LENGTH)
-                   + "....";
+                    + "....";
         }
 
         return contentWithoutTags;
