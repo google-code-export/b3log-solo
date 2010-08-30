@@ -75,6 +75,14 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>
+                            ${blogHost1Label}
+                        </th>
+                        <td>
+                            <input id="blogHost"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <th colspan="2">
                             <button onclick="changePreference();">${saveLabel}</button>
                         </th>
@@ -115,7 +123,8 @@
                 "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
                 "articleListDisplayCount": $("#articleListDisplayCount").val(),
                 "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
-                "skinDirName": $("#skinMain").data("skinDirName")
+                "skinDirName": $("#skinMain").data("skinDirName"),
+                "blogHost": $("#blogHost").val()
             }
         }
 
@@ -144,6 +153,7 @@
                 $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
                 $("#articleListDisplayCount").val(preference.articleListDisplayCount);
                 $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
+                $("#blogHost").val(preference.blogHost);
 
                 // skin
                 $("#skinMain").data("skinDirName", preference.skinDirName);
