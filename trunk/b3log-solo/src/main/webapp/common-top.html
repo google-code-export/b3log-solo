@@ -12,9 +12,7 @@
             var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
 
             if (isAdminLoggedIn) {
-                var logoutURL = jsonRpc.adminService.getLogoutURL();
-                var logout = $("<a class='noUnderline'>${logoutLabel}</a>");
-                logout.attr("href", logoutURL);
+                var logout = $("<a class='noUnderline' href='/_ah/logout?continue=%2Findex.do'>${logoutLabel}</a>");
                 logout.html(logout.html() + "&nbsp;|&nbsp;");
                 $("#admin").append(logout);
                 var clearCache = $("<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>");
@@ -24,9 +22,7 @@
                 adminIndex.html(adminIndex.html() + "&nbsp;|&nbsp;");
                 $("#admin").append(adminIndex);
             } else {
-                var loginURL = jsonRpc.adminService.getLoginURL();
-                var login = $("<a class='noUnderline'>${loginLabel}</a>&nbsp;|&nbsp;");
-                login.attr("href", loginURL);
+                var login = $("<a class='noUnderline' href='/_ah/login?continue=%2Fadmin-index.do'>${loginLabel}</a>&nbsp;|&nbsp;");
                 $("#admin").append(login);
             }
         </script>

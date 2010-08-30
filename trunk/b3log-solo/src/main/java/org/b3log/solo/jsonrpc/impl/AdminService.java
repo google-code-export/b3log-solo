@@ -24,7 +24,7 @@ import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 28, 2010
+ * @version 1.0.0.1, Aug 30, 2010
  */
 public final class AdminService extends AbstractJSONRpcService {
 
@@ -37,24 +37,6 @@ public final class AdminService extends AbstractJSONRpcService {
      */
     private com.google.appengine.api.users.UserService userService =
             UserServiceFactory.getUserService();
-
-    /**
-     * Gets the login URL.
-     *
-     * @return login URL
-     */
-    public String getLoginURL() {
-        return userService.createLoginURL("/admin-index.do");
-    }
-
-    /**
-     * Gets the logout URL.
-     *
-     * @return logout URL
-     */
-    public String getLogoutURL() {
-        return userService.createLogoutURL("/index.do");
-    }
 
     /**
      * Determines whether the administrator is logged in.
