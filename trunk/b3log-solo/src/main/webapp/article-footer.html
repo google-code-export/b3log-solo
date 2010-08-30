@@ -18,9 +18,9 @@ Powered by
         $("#userIntro").html(userIntroHTML);
     }
 
-    jsonRpc.statisticService.incViewCount();
+    jsonRpc.statisticService.incBlogViewCount();
 
-    jsonRpc.statisticService.getStatistic(function (result, error) {
+    jsonRpc.statisticService.getBlogStatistic(function (result, error) {
         var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
             + "<li>${articleCount1Label} " + result.statisticBlogArticleCount + "</li>"
             + "<li>${commentCount1Label} "+ result.statisticBlogCommentCount + "</li>";
