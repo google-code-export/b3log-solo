@@ -16,15 +16,19 @@
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.users.UserServiceFactory;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
+import org.b3log.latke.client.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 
 /**
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 30, 2010
+ * @version 1.0.0.2, Aug 31, 2010
  */
 public final class AdminService extends AbstractJSONRpcService {
 
@@ -40,17 +44,52 @@ public final class AdminService extends AbstractJSONRpcService {
 
     /**
      * Determines whether the administrator is logged in.
-     *
+     * 
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws ActionException action exception
+     * @throws IOException io exception
      * @return {@code true} if logged in, returns {@code false} otherwise
      */
-    public boolean isAdminLoggedIn() {
+    public boolean isAdminLoggedIn(final HttpServletRequest request,
+                                   final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         return userService.isUserLoggedIn() && userService.isUserAdmin();
     }
 
     /**
-     * Clear all page cache.
+     * Clears a page cache specified by the given cached page key.
+     *
+     * @param cachedPageKey the given cached page key
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public void clearPageCache() {
+    public void clearPageCache(final String cachedPageKey,
+                               final HttpServletRequest request,
+                               final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        AbstractCacheablePageAction.PAGE_CACHE.remove(cachedPageKey);
+    }
+
+    /**
+     * Clears all page cache.
+     * 
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public void clearAllPageCache(final HttpServletRequest request,
+                                  final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         AbstractCacheablePageAction.PAGE_CACHE.removeAll();
     }
 }
