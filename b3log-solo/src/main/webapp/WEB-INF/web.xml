@@ -20,16 +20,16 @@
     Description: B3log Solo web deployment descriptor.
                  Note:
                  1. DO NOT configure servlets in this file, using Guice-Servlet
-                    extension instead, see class org.b3log.solo.client.ClientModule
+                    extension instead, see class org.b3log.solo.action.ActionModule
                     for details.
-    Version: 1.0.0.5, Aug 22, 2010
+    Version: 1.0.0.6, Aug 31, 2010
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <context-param>
         <param-name>postfixExceptionPaths</param-name>
         <param-value>
-            /js/lib/editor/plugins/link/link.html,
+            /index.jsp,
             /_ah/login, /_ah/logout
         </param-value>
     </context-param>
@@ -50,6 +50,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.do</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
