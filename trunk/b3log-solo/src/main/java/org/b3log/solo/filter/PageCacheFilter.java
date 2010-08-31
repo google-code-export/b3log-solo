@@ -78,11 +78,9 @@ public final class PageCacheFilter implements Filter {
         }
 
 
-        String cachedPageKey = null;
+        String cachedPageKey = requestURI;
         final String queryString = httpServletRequest.getQueryString();
-        if (Strings.isEmptyOrNull(queryString)) {
-            cachedPageKey = requestURI;
-        } else {
+        if (!Strings.isEmptyOrNull(queryString)) {
             cachedPageKey += "?" + queryString;
         }
 
