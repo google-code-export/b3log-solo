@@ -65,7 +65,7 @@ public final class AdminService extends AbstractJSONRpcService {
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
-        return userService.createLogoutURL("/admin-index.do");
+        return userService.createLogoutURL("/index.do");
     }
 
     /**
@@ -80,7 +80,7 @@ public final class AdminService extends AbstractJSONRpcService {
     public String getLoginURL(final HttpServletRequest request,
                               final HttpServletResponse response)
             throws ActionException, IOException {
-        return userService.createLoginURL("/index.do");
+        return userService.createLoginURL("/admin-index.do");
     }
 
     /**
