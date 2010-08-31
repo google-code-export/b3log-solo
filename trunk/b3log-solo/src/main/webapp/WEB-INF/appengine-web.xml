@@ -25,7 +25,7 @@
     Author: Liang Ding
 -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <application>b3log-solo</application>
+    <application>solo-demo</application>
     <version>0-1-0-snapshot</version>
     <sessions-enabled>true</sessions-enabled>
 </appengine-web-app>
