@@ -52,6 +52,38 @@ public final class AdminService extends AbstractJSONRpcService {
     }
 
     /**
+     * Gets the administrator logout.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return logout URL
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public String getLogoutURL(final HttpServletRequest request,
+                            final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        return userService.createLogoutURL("/admin-index.do");
+    }
+
+    /**
+     * Gets the administrator login.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return login URL
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public String getLoginURL(final HttpServletRequest request,
+                              final HttpServletResponse response)
+            throws ActionException, IOException {
+        return userService.createLoginURL("/index.do");
+    }
+
+    /**
      * Clears a page cache specified by the given cached page key.
      *
      * @param cachedPageKey the given cached page key
