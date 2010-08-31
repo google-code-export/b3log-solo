@@ -39,24 +39,44 @@
     </tbody>
 </table>
 <script type="text/javascript">
-    var content = tinyMCE.init({
-        // General options
-        mode : "exact",
-        elements : "articleContent",
-        theme : "advanced",
-        plugins : "style,advhr,advimage,advlink,emotions,preview,media,paste,fullscreen",
+    var init = function () {
+        // submit action
+        $("#submitArticle").click(function () {
+            if ($("#title").data("oId")) {
+                updateArticle();
+            } else {
+                addArticle();
+            }
+        });
 
-        // Theme options
-        theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-        theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,charmap,emotions,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen",
-        theme_advanced_buttons3 : "",
-        theme_advanced_toolbar_location : "top",
-        theme_advanced_toolbar_align : "left",
-        theme_advanced_resizing : true,
+        // tag auto completed
+        jsonRpc.tagService.getTags(function (result, error) {
+            $("#tag").completed({
+                data: result
+            });
+        })
 
-        extended_valid_elements: "pre[name|class]"
-    });
+        // editor
+        tinyMCE.init({
+            // General options
+            mode : "exact",
+            elements : "articleContent",
+            theme : "advanced",
+            plugins : "style,advhr,advimage,advlink,emotions,preview,media,paste,fullscreen",
 
+            // Theme options
+            theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
+            theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,charmap,emotions,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen",
+            theme_advanced_buttons3 : "",
+            theme_advanced_toolbar_location : "top",
+            theme_advanced_toolbar_align : "left",
+            theme_advanced_resizing : true,
+
+            extended_valid_elements: "pre[name|class]"
+        });
+    }
+
+    init();
     
     var addArticle = function () {
         var requestJSONObject = {
@@ -104,16 +124,4 @@
                 break;
         }
     }
-
-    $("#submitArticle").click(function () {
-        if ($("#title").data("oId")) {
-            updateArticle();
-        } else {
-            addArticle();
-        }
-    });
-
-    $("#tag").completed({
-        data: ["javascript", "java", "html"]
-    });
 </script>
