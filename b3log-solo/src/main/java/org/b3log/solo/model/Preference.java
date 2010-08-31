@@ -66,6 +66,10 @@ public final class Preference {
      * Administrator's Gmail.
      */
     public static final String ADMIN_GMAIL = "adminGmail";
+    /**
+     * Locale string.
+     */
+    public static final String LOCALE_STRING = "localeString";
 
     /**
      * Private default constructor.

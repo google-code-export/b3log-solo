@@ -101,10 +101,14 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
-        final Locale locale = Locales.getLocale(request);
-        Locales.setLocale(request, locale);
-
         try {
+            final JSONObject preference = SoloServletListener.getUserPreference();
+            final String localeString = preference.getString(
+                    Preference.LOCALE_STRING);
+            final Locale locale = new Locale(
+                    Locales.getLanguage(localeString),
+                    Locales.getCountry(localeString));
+
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
@@ -115,8 +119,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(
@@ -137,8 +139,8 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                         archiveDateArticleRelations.getJSONObject(i);
                 final String articleId =
                         archiveDateArticleRelation.getString(Article.ARTICLE
-                                                             + "_"
-                                                             + Keys.OBJECT_ID);
+                        + "_"
+                        + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }

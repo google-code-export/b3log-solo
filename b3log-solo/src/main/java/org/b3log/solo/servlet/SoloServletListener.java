@@ -311,6 +311,7 @@ public final class SoloServletListener extends AbstractServletListener {
                                    DefaultPreference.DEFAULT_BLOG_HOST);
                 userPreference.put(ADMIN_GMAIL,
                                    DefaultPreference.DEFAULT_ADMIN_GMAIL);
+                userPreference.put(LOCALE_STRING, DefaultPreference.DEFAULT_LANGUAGE);
 
                 userPreference.put(Keys.OBJECT_ID, preferenceId);
                 preferenceRepository.add(userPreference);
@@ -413,6 +414,10 @@ public final class SoloServletListener extends AbstractServletListener {
          * Default blog host.
          */
         private static final String DEFAULT_BLOG_HOST = "localhost:8080";
+        /**
+         * Default language.
+         */
+        private static final String DEFAULT_LANGUAGE = "zh_CN";
 
         /**
          * Private default constructor.

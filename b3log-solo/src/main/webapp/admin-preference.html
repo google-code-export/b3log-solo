@@ -90,6 +90,14 @@
                             <input id="adminGmail"/>
                         </td>
                     </tr>
+                     <tr>
+                        <th>
+                            ${localeString1Label}
+                        </th>
+                        <td>
+                            <input id="localeString"/>
+                        </td>
+                    </tr>
                     <tr>
                         <th colspan="2">
                             <button onclick="changePreference();">${updateLabel}</button>
@@ -133,7 +141,8 @@
                 "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
                 "skinDirName": $("#skinMain").data("skinDirName"),
                 "blogHost": $("#blogHost").val(),
-                "adminGmail": $("#adminGmail").val()
+                "adminGmail": $("#adminGmail").val(),
+                "localeString": $("#localeString").val()
             }
         }
 
@@ -164,6 +173,7 @@
                 $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
                 $("#blogHost").val(preference.blogHost);
                 $("#adminGmail").val(preference.adminGmail);
+                $("#localeString").val(preference.localeString);
 
                 // skin
                 $("#skinMain").data("skinDirName", preference.skinDirName);

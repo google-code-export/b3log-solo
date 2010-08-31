@@ -29,6 +29,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.Statistics;
@@ -79,8 +80,12 @@ public final class IndexAction extends AbstractCacheablePageAction {
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
-            final Locale locale = Locales.getLocale(request);
-            Locales.setLocale(request, locale);
+            final JSONObject preference = SoloServletListener.getUserPreference();
+            final String localeString = preference.getString(
+                    Preference.LOCALE_STRING);
+            final Locale locale = new Locale(
+                    Locales.getLanguage(localeString),
+                    Locales.getCountry(localeString));
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
@@ -92,8 +97,6 @@ public final class IndexAction extends AbstractCacheablePageAction {
             filler.fillArchiveDates(ret);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
         } catch (final Exception e) {
