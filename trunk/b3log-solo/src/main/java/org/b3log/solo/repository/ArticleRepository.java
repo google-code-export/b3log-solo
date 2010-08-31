@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 19, 2010
+ * @version 1.0.0.8, Aug 31, 2010
  */
 public interface ArticleRepository extends Repository {
 
@@ -55,7 +55,7 @@ public interface ArticleRepository extends Repository {
     List<JSONObject> getMostViewCountArticles(final int num);
 
     /**
-     * Gets the id of the previous article((by create date, oId) by the
+     * Gets the id of the previous article(by create date, oId) by the
      * specified article id.
      *
      * @param articleId the specified article id
@@ -64,13 +64,30 @@ public interface ArticleRepository extends Repository {
     String getPreviousArticleId(final String articleId);
 
     /**
-     * Gets the id of the next article((by create date, oId) by the specified
+     * Gets the id of the next article(by create date, oId) by the specified
      * article id.
      *
      * @param articleId the specified article id
      * @return an article id, {@code null} if not found
      */
     String getNextArticleId(final String articleId);
+
+    /**
+     * Gets the previous article(by create date, oId) by the specified article
+     * id.
+     *
+     * @param articleId the specified article id
+     * @return the previous article, {@code null} if not found
+     */
+    JSONObject getPreviousArticle(final String articleId);
+
+    /**
+     * Gets the next article(by create date, oId) by the specified article id.
+     *
+     * @param articleId the specified article id
+     * @return the next article, {@code null} if not found
+     */
+    JSONObject getNextArticle(final String articleId);
 
     /**
      * Imports the specified article.
