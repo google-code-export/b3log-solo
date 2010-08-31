@@ -136,19 +136,24 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             final JSONObject previous =
                     articleRepository.getPreviousArticle(articleId);
-            final String previousArticleId =
-                    preference.getString(Keys.OBJECT_ID);
-            final String previousArticleTitle =
-                    previous.getString(Article.ARTICLE_TITLE);
-            ret.put(Common.PREVIOUS_ARTICLE_ID, previousArticleId);
-            ret.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticleTitle);
+            if (null != previous) {
+                final String previousArticleId =
+                        preference.getString(Keys.OBJECT_ID);
+                final String previousArticleTitle =
+                        previous.getString(Article.ARTICLE_TITLE);
+                ret.put(Common.PREVIOUS_ARTICLE_ID, previousArticleId);
+                ret.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticleTitle);
+            }
 
             final JSONObject next = articleRepository.getNextArticle(articleId);
-            final String nextArticleId =
-                    next.getString(Keys.OBJECT_ID);
-            final String nextArticleTitle = next.getString(Article.ARTICLE_TITLE);
-            ret.put(Common.NEXT_ARTICLE_ID, nextArticleId);
-            ret.put(Common.NEXT_ARTICLE_TITLE, nextArticleTitle);
+            if (null != next) {
+                final String nextArticleId =
+                        next.getString(Keys.OBJECT_ID);
+                final String nextArticleTitle = next.getString(
+                        Article.ARTICLE_TITLE);
+                ret.put(Common.NEXT_ARTICLE_ID, nextArticleId);
+                ret.put(Common.NEXT_ARTICLE_TITLE, nextArticleTitle);
+            }
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
