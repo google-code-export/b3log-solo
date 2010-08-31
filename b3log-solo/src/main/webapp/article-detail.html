@@ -235,8 +235,13 @@
                             $("#commentEmail").val("");
                             $("#commentURL").val("http://");
                             $("#commentName").val("");
+                            $("#commentValidate").val("");
                             window.location.reload();
                             break;
+                        case "CAPTCHA_ERROR":
+                            $("#commentErrorTip").html("{CAPTCHA_ERROR}");
+                            $("#commentValidate").val("").focus();
+                            break
                         default:
                             break;
                     }

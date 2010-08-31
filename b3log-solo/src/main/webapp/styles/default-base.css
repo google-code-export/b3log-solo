@@ -75,6 +75,7 @@ button {
     margin:0;
     vertical-align:top;
     -moz-border-radius:4px;
+    padding:0 6px;
 }
 
 button:hover {
@@ -153,7 +154,7 @@ button:hover {
 }
 
 .form .normalInput {
-    width: 220px;
+    width: auto;
 }
 
 /* top and footer */
@@ -163,7 +164,7 @@ button:hover {
     background-color: #FFFFFF;
 }
 
-#top span, .footer span {
+#top a span, .footer span {
     margin: 0 -2px;
 }
 
