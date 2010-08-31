@@ -30,8 +30,10 @@
     var clearCache = function () {
         var locationString = window.location.toString();
         var cachedPageKey = locationString.substring(locationString.lastIndexOf("/"), locationString.length);
+        alert(cachedPageKey);
         jsonRpc.adminService.clearCache(cachedPageKey);
         window.location.reload();
+        alert(1);
     }
 
     var clearAllCache = function () {
