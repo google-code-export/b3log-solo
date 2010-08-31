@@ -14,7 +14,9 @@
     </head>
     <body>
         <#include "common-top.html">
-        <div id="tipMsg" class="error-msg"></div>
+        <div class="topMsg">
+            <span id="tipMsg" class="none"></span>
+        </div>
         <div id="allPanel">
             <div class="left side">
                 <ul id="navi">
@@ -59,8 +61,8 @@
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
                         setTimeout(function () {
-                            $("#tipMsg").text("");
-                        }, 6000);
+                            $("#tipMsg").hide().text("");
+                        }, 5000);
                     }
                 }, 6000);
 

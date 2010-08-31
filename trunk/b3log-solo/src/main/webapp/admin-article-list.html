@@ -119,11 +119,11 @@
             
             switch (result.sc) {
                 case "REMOVE_ARTICLE_SUCC":
-                    $("#tipMsg").text("${removeSuccLabel}");
+                    $("#tipMsg").text("${removeSuccLabel}").show();
                     getArticleList(1);
                     break;
                 case "REMOVE_ARTICLE_FAIL_":
-                    $("#tipMsg").text("${removeFailLabel}");
+                    $("#tipMsg").text("${removeFailLabel}").show();
                     break;
                 default:
                     break;
@@ -213,7 +213,7 @@
         var result = jsonRpc.commentService.removeComment({"oId": id});
         switch (result.sc) {
             case "REMOVE_COMMENT_SUCC":
-                $("#tipMsg").text("${removeSuccLabel}");
+                $("#tipMsg").text("${removeSuccLabel}").show();
                 getComment();
                 break;
             default:
