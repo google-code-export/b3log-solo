@@ -198,7 +198,7 @@
     var getCSDNBlogArticlesByArchiveDate = function () {
         var articleLength = 0;
         $("#articlesPanel").hide();
-        $("#tipMsg").html("loading...").show();
+        $("#tipMsg").html("${loadingLabel}").show();
 
         var requestJSONObject = {
             "blogSyncExternalBloggingSysUserName": userName,
