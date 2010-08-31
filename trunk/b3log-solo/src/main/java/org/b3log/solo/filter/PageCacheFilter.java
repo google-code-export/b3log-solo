@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.filter;
 
+import org.b3log.latke.util.Strings;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.Filter;
@@ -32,7 +33,7 @@ import static org.b3log.latke.client.action.AbstractCacheablePageAction.*;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 26, 2010
+ * @version 1.0.0.1, Aug 31, 2010
  */
 public final class PageCacheFilter implements Filter {
 
@@ -67,21 +68,27 @@ public final class PageCacheFilter implements Filter {
 
         final String requestURI = httpServletRequest.getRequestURI();
         if (requestURI.equals("json-rpc.do")
-                || requestURI.equals("captcha.do")
-                || requestURI.equals("tag-articles-feed.do")
-                || requestURI.equals("blog-articles-feed.do")
-                || requestURI.equals("admin-index.do")) {
+            || requestURI.equals("captcha.do")
+            || requestURI.equals("tag-articles-feed.do")
+            || requestURI.equals("blog-articles-feed.do")
+            || requestURI.equals("admin-index.do")) {
             chain.doFilter(request, response);
 
             return;
         }
 
 
-        final String cachedPageKey = httpServletRequest.getRequestURI()
-                + httpServletRequest.getQueryString();
+        String cachedPageKey = null;
+        final String queryString = httpServletRequest.getQueryString();
+        if (Strings.isEmptyOrNull(queryString)) {
+            cachedPageKey = requestURI;
+        } else {
+            cachedPageKey += "?" + queryString;
+        }
+
         LOGGER.debug("Request[cachedPageKey=" + cachedPageKey + "]");
         LOGGER.trace("Page cache[cachedCount=" + PAGE_CACHE.getCachedCount()
-                + ", maxCount=" + PAGE_CACHE.getMaxCount() + "]");
+                     + ", maxCount=" + PAGE_CACHE.getMaxCount() + "]");
         final Object cachedPageContentObject = PAGE_CACHE.get(cachedPageKey);
         if (null == cachedPageContentObject) {
             chain.doFilter(request, response);
@@ -89,7 +96,7 @@ public final class PageCacheFilter implements Filter {
             return;
         } else {
             LOGGER.trace("Writes resposne for page[cachedPageKey="
-                    + cachedPageKey + "] from cache");
+                         + cachedPageKey + "] from cache");
             response.setContentType("text/html");
             response.setCharacterEncoding("UTF-8");
             final PrintWriter writer = response.getWriter();

@@ -28,8 +28,8 @@
     setLoginState();
 
     var clearCache = function () {
-        var cachedPageKey = window.location;
-        alert(cachedPageKey);
+        var locationString = window.location.toString();
+        var cachedPageKey = locationString.substring(locationString.lastIndexOf("/"), locationString.length);
         jsonRpc.adminService.clearCache(cachedPageKey);
     }
 
