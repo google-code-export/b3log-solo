@@ -45,17 +45,9 @@ public final class AdminService extends AbstractJSONRpcService {
     /**
      * Determines whether the administrator is logged in.
      * 
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws ActionException action exception
-     * @throws IOException io exception
      * @return {@code true} if logged in, returns {@code false} otherwise
      */
-    public boolean isAdminLoggedIn(final HttpServletRequest request,
-                                   final HttpServletResponse response)
-            throws ActionException, IOException {
-        checkAuthorized(request, response);
-
+    public boolean isAdminLoggedIn() {
         return userService.isUserLoggedIn() && userService.isUserAdmin();
     }
 
