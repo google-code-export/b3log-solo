@@ -240,6 +240,7 @@
                             break;
                         case "CAPTCHA_ERROR":
                             $("#commentErrorTip").html("${captchaErrorLabel}");
+                            $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
                             $("#commentValidate").val("").focus();
                             break
                         default:
