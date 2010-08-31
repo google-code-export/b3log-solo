@@ -138,7 +138,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     articleRepository.getPreviousArticle(articleId);
             if (null != previous) {
                 final String previousArticleId =
-                        preference.getString(Keys.OBJECT_ID);
+                        previous.getString(Keys.OBJECT_ID);
                 final String previousArticleTitle =
                         previous.getString(Article.ARTICLE_TITLE);
                 ret.put(Common.PREVIOUS_ARTICLE_ID, previousArticleId);
