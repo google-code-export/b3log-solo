@@ -152,7 +152,7 @@
         var result = jsonRpc.preferenceService.updatePreference(requestJSONObject);
         switch (result.sc) {
             case "UPDATE_PREFERENCE_SUCC":
-                $("#tipMsg").text("${updateSuccLabel}");
+                $("#tipMsg").text("${updateSuccLabel}").show();
                 break;
             case "GET_ARTICLE_FAIL_":
                 break;

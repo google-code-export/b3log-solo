@@ -134,7 +134,8 @@
 
     var popUpdateLink = function (event) {
         linkDialog = $("#updateLink").dialog({
-            width: 400
+            width: 700,
+            height:200
         });
         var requestJSONObject = {
             "oId": event.data.id[0]
@@ -164,11 +165,11 @@
             var result = jsonRpc.linkService.removeLink(requestJSONObject);
             switch (result.sc) {
                 case "REMOVE_LINK_SUCC":
-                    $("#tipMsg").text("${removeSuccLabel}");
+                    $("#tipMsg").text("${removeSuccLabel}").show();
                     getLinkList(1);
                     break;
                 case "REMOVE_LINK_FAIL_":
-                    $("#tipMsg").text("${removeFailLabel}");
+                    $("#tipMsg").text("${removeFailLabel}").show();
                     break;
                 default:
                     break;
@@ -238,7 +239,7 @@
         switch (result.sc) {
             case "UPDATE_LINK_SUCC":
                 linkDialog.dialog("close");
-                $("#tipMsg").text("${updateSuccLabel}");
+                $("#tipMsg").text("${updateSuccLabel}").show();
                 getLinkList(currentPage);
                 break;
             default:
@@ -256,7 +257,7 @@
         var result = jsonRpc.linkService.addLink(requestJSONObject);
         switch (result.sc) {
             case "ADD_LINK_SUCC":
-                $("#tipMsg").text("${addSuccLabel}");
+                $("#tipMsg").text("${addSuccLabel}").show();
                 $("#linkTitle").val("");
                 $("#linkAddress").val("");
 

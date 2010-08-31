@@ -42,7 +42,6 @@
                 <div id="articleList" class="maginTB12"></div>
                 <button onclick="sync();">${importLabel}</button>
             </div>
-            <div id="loading"></div>
         </div>
         <div id="syncSettingPanel" class="none">
             <fieldset>
@@ -95,7 +94,6 @@
                     </tbody>
                 </table>
             </fieldset>
-
         </div>
     </div>
 </div>
@@ -113,7 +111,7 @@
             jsonRpc.blogSyncService.setBlogSyncMgmtForCSDNBlog(requestJSONObject);
        
         if (result.sc === "SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC") {
-            $("#tipMsg").html("${updateSuccLabel}");
+            $("#tipMsg").html("${updateSuccLabel}").show();
         }
     }
 
@@ -201,10 +199,8 @@
 
     var getCSDNBlogArticlesByArchiveDate = function () {
         var articleLength = 0;
-        $("#loading").loading({
-            imgURL: "images/ajax-loader.gif"
-        });
         $("#articlesPanel").hide();
+        $("#tipMsg").html("loading...").show();
 
         var requestJSONObject = {
             "blogSyncExternalBloggingSysUserName": userName,
@@ -241,11 +237,11 @@
 
                 $("#articlesCount").html("${sumLabel} " + articleData.length + " {count}");
             } else {
-                $("#tipMsg").text("${getFailLabel}");
+                $("#tipMsg").text("${getFailLabel}").show();
             }
             $("#articlesPanel").show();
         }
-        $("#loading").loading("close");
+        $("#tipMsg").text("").hide();
     }
     
     var sync = function () {
@@ -254,6 +250,6 @@
         };
 
         var result = jsonRpc.blogSyncService.importCSDNBlogArticles(requestJSONObject);
-        $("#tipMsg").text(result.oIds + "${importSuccLabel}");
+        $("#tipMsg").text(result.oIds + "${importSuccLabel}").show();
     }
 </script>
