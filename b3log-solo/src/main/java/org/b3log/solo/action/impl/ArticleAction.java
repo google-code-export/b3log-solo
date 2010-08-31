@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Article action. article-detail.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 26, 2010
+ * @version 1.0.0.6, Aug 31, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -134,13 +134,21 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final List<JSONObject> articleTags = getTags(articleId);
             ret.put(Article.ARTICLE_TAGS_REF, articleTags);
 
-            final String previsouArticleId = articleRepository.
-                    getPreviousArticleId(articleId);
-            ret.put(Common.PREVIOUS_ARTICLE_ID, previsouArticleId);
+            final JSONObject previous =
+                    articleRepository.getPreviousArticle(articleId);
+            final String previousArticleId =
+                    preference.getString(Keys.OBJECT_ID);
+            final String previousArticleTitle =
+                    previous.getString(Article.ARTICLE_TITLE);
+            ret.put(Common.PREVIOUS_ARTICLE_ID, previousArticleId);
+            ret.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticleTitle);
 
+            final JSONObject next = articleRepository.getNextArticle(articleId);
             final String nextArticleId =
-                    articleRepository.getNextArticleId(articleId);
+                    next.getString(Keys.OBJECT_ID);
+            final String nextArticleTitle = next.getString(Article.ARTICLE_TITLE);
             ret.put(Common.NEXT_ARTICLE_ID, nextArticleId);
+            ret.put(Common.NEXT_ARTICLE_TITLE, nextArticleTitle);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);

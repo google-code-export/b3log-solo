@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Aug 22, 2010
+ * @version 1.0.1.1, Aug 31, 2010
  */
 public class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -147,25 +147,55 @@ public class ArticleGAERepository extends AbstractGAERepository
     }
 
     @Override
+    public JSONObject getPreviousArticle(final String articleId) {
+        final Query query = new Query(getName());
+        query.addFilter(Keys.OBJECT_ID,
+                        Query.FilterOperator.LESS_THAN, articleId);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        
+        final Entity next = preparedQuery.asSingleEntity();
+        if (null == next) {
+            return null;
+        } else {
+            return entity2JSONObject(next);
+        }
+    }
+
+    @Override
+    public JSONObject getNextArticle(final String articleId) {
+        final Query query = new Query(getName());
+        query.addFilter(Keys.OBJECT_ID,
+                        Query.FilterOperator.GREATER_THAN, articleId);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+
+        final Entity previous = preparedQuery.asSingleEntity();
+        if (null == previous) {
+            return null;
+        } else {
+            return entity2JSONObject(previous);
+        }
+    }
+
+    @Override
     public void importArticle(final JSONObject article)
             throws RepositoryException {
         String articleId = null;
         try {
             if (!article.has(Keys.OBJECT_ID)) {
                 throw new RepositoryException("The article to import MUST exist "
-                                              + "id");
+                        + "id");
             }
             articleId = article.getString(Keys.OBJECT_ID);
 
             if (!article.has(Article.ARTICLE_CREATE_DATE)) {
                 throw new RepositoryException("The article to import MUST exist "
-                                              + "create date");
+                        + "create date");
             }
 
             // XXX:  check other params
 
             if (!article.has(Article.ARTICLE_UPDATE_DATE)
-                || null == article.get(Article.ARTICLE_UPDATE_DATE)) {
+                    || null == article.get(Article.ARTICLE_UPDATE_DATE)) {
                 article.put(Article.ARTICLE_UPDATE_DATE,
                             article.get(Article.ARTICLE_CREATE_DATE));
             }

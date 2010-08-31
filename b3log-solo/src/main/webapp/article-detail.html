@@ -56,10 +56,10 @@
                         <div class="article-footer">
                             <div class="left">
                                 <#if nextArticleId??>
-                                <a href="article-detail.do?oId=${nextArticleId}">新一篇</a>
+                                <a href="article-detail.do?oId=${nextArticleId}">${nextArticleLabel}${nextArticleTitle}</a>
                                 </#if>
                                 <#if previousArticleId??>
-                                <a href="article-detail.do?oId=${previousArticleId}">旧一篇</a>
+                                <a href="article-detail.do?oId=${previousArticleId}">${previousArticleLabel}${previousArticleTitle}</a>
                                 </#if>
                             </div>
                             <div class="right">
