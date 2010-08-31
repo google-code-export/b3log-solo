@@ -121,13 +121,15 @@ public class ArticleGAERepository extends AbstractGAERepository
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.LESS_THAN, articleId);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
-        String ret = null;
-        for (final Entity entity : preparedQuery.asIterable()) {
-            final JSONObject previous = entity2JSONObject(entity);
-            ret = previous.optString(Keys.OBJECT_ID);
+        final List<Entity> result =
+                preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+
+        if (1 == result.size()) {
+            final JSONObject previous = entity2JSONObject(result.get(0));
+            return previous.optString(Keys.OBJECT_ID);
         }
 
-        return ret;
+        return null;
     }
 
     @Override
@@ -136,14 +138,15 @@ public class ArticleGAERepository extends AbstractGAERepository
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.GREATER_THAN, articleId);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final List<Entity> result =
+                preparedQuery.asList(FetchOptions.Builder.withLimit(1));
 
-        String ret = null;
-        for (final Entity entity : preparedQuery.asIterable()) {
-            final JSONObject previous = entity2JSONObject(entity);
-            ret = previous.optString(Keys.OBJECT_ID);
+        if (1 == result.size()) {
+            final JSONObject previous = entity2JSONObject(result.get(0));
+            return previous.optString(Keys.OBJECT_ID);
         }
 
-        return ret;
+        return null;
     }
 
     @Override
@@ -152,13 +155,14 @@ public class ArticleGAERepository extends AbstractGAERepository
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.LESS_THAN, articleId);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
-        
-        final Entity next = preparedQuery.asSingleEntity();
-        if (null == next) {
-            return null;
-        } else {
-            return entity2JSONObject(next);
+        final List<Entity> result =
+                preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+
+        if (1 == result.size()) {
+            return entity2JSONObject(result.get(0));
         }
+
+        return null;
     }
 
     @Override
@@ -167,13 +171,14 @@ public class ArticleGAERepository extends AbstractGAERepository
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.GREATER_THAN, articleId);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final List<Entity> result =
+                preparedQuery.asList(FetchOptions.Builder.withLimit(1));
 
-        final Entity previous = preparedQuery.asSingleEntity();
-        if (null == previous) {
-            return null;
-        } else {
-            return entity2JSONObject(previous);
+        if (1 == result.size()) {
+            return entity2JSONObject(result.get(0));
         }
+
+        return null;
     }
 
     @Override
