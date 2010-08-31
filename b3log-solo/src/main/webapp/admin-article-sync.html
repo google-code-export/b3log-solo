@@ -219,7 +219,10 @@
 
                 for (var i = 0; i < articles.length; i++) {
                     articleData[i] = {};
-                    articleData[i].selected = false;
+                    articleData[i].selected = {
+                        value: false,
+                        disabled: articles[i].blogSyncImported
+                    };
                     articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
                     articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
                     articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;

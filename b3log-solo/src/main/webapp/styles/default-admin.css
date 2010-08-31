@@ -87,6 +87,7 @@
     float:left;
     padding:12px;
     width:29%;
+    min-width: 340px;
 }
 
 /* preference */
