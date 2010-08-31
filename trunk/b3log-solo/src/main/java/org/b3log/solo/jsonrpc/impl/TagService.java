@@ -69,7 +69,7 @@ public final class TagService extends AbstractJSONRpcService {
         JSONArray ret = new JSONArray();
         try {
             final JSONObject result = tagRepository.get(1, Integer.MAX_VALUE);
-            JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
+            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
             if (null != tagArray) {
                 ret = tagArray;
             }
