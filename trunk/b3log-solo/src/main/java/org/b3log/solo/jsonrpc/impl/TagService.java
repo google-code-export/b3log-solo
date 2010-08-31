@@ -16,16 +16,23 @@
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.client.action.ActionException;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
-import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Tag service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 21, 2010
+ * @version 1.0.0.2, Aug 31, 2010
  */
 public final class TagService extends AbstractJSONRpcService {
 
@@ -38,9 +45,38 @@ public final class TagService extends AbstractJSONRpcService {
      */
     @Inject
     private TagRepository tagRepository;
+
     /**
-     * Tag-Article repository.
+     * Gets all tags.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * [
+     *     {"tagTitle": "", "tagReferenceCount": int},
+     *     ....
+     * ]
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    @Inject
-    private TagArticleRepository tagArticleRepository;
+    public JSONArray getTags(final HttpServletRequest request,
+                             final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        JSONArray ret = new JSONArray();
+        try {
+            final JSONObject result = tagRepository.get(1, Integer.MAX_VALUE);
+            JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
+            if (null != tagArray) {
+                ret = tagArray;
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return ret;
+    }
 }
