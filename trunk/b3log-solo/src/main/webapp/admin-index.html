@@ -71,9 +71,10 @@
                 var leftWidth = $(".side").width() + $.bowknot.strToInt($main.css("padding-left"))
                     + $.bowknot.strToInt($main.css("padding-right")) + 17;
 
-                $("#main").css("width", window.innerWidth - leftWidth);
+                
+                $("#main").css("width", document.documentElement.clientWidth - leftWidth);
                 $(window).resize(function () {
-                    $("#main").css("width", window.innerWidth - leftWidth);
+                    $("#main").css("width", document.documentElement.clientWidth - leftWidth);
                 });
             })();
 
