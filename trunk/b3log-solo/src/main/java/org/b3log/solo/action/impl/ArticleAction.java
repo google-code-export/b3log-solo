@@ -145,7 +145,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                 ret.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticleTitle);
             }
 
-            final JSONObject next = articleRepository.getNextArticle(articleId);
+            final JSONObject next =
+                    articleRepository.getNextArticle(articleId);
             if (null != next) {
                 final String nextArticleId =
                         next.getString(Keys.OBJECT_ID);
