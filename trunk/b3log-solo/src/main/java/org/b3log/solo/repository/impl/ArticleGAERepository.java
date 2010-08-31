@@ -20,12 +20,10 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultIterable;
-import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
@@ -47,11 +45,6 @@ public class ArticleGAERepository extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArticleGAERepository.class);
-    /**
-     * Article-Comment repository.
-     */
-    @Inject
-    private ArticleCommentRepository articleCommentRepository;
 
     @Override
     public String getName() {
