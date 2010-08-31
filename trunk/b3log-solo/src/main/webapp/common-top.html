@@ -16,6 +16,7 @@
         var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
         if (isAdminLoggedIn) {
             var loginHTML = "<a class='noUnderline' href='/_ah/logout?continue=%2Findex.do'>${logoutLabel}</a>&nbsp;|&nbsp;"
+                + "<a class='noUnderline' href='#' onclick='clearAllCache();'>${clearAllCache}</a>&nbsp;|&nbsp;"
                 + "<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>&nbsp;|&nbsp;"
                 + "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>";
             $("#admin").append(loginHTML);
@@ -25,8 +26,15 @@
     }
 
     setLoginState();
+
     var clearCache = function () {
-        jsonRpc.adminService.clearPageCache();
+        var cachedPageKey = window.location;
+        alert(cachedPageKey);
+        jsonRpc.adminService.clearCache(cachedPageKey);
+    }
+
+    var clearAllCache = function () {
+        jsonRpc.adminService.clearAllPageCache();
         window.location.reload();
     }
 </script>
