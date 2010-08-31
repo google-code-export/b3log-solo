@@ -9,18 +9,18 @@
     <span class="right">
         <span id="admin"></span>
     </span>
+    <div class="clear"></div>
 </div>
-<div class="clear"></div>
 <script type="text/javascript">
     var setLoginState = function () {
         var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
         if (isAdminLoggedIn) {
             var loginHTML = "<a class='noUnderline' href='/_ah/logout?continue=%2Findex.do'>${logoutLabel}</a>&nbsp;|&nbsp;"
                 + "<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>&nbsp;|&nbsp;"
-                + "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;";
+                + "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>";
             $("#admin").append(loginHTML);
         } else {
-            $("#admin").append("<a class='noUnderline' href='/_ah/login?continue=%2Fadmin-index.do'>${loginLabel}</a>&nbsp;|&nbsp;");
+            $("#admin").append("<a class='noUnderline' href='/_ah/login?continue=%2Fadmin-index.do'>${loginLabel}</a>");
         }
     }
 
