@@ -38,7 +38,7 @@
 }
 
 /* article list */
-.article {
+.article, .comments {
     padding: 24px 12px;
 }
 
@@ -67,7 +67,7 @@
 
 .article-footer {
     color: #008800;
-    margin-top: 24px;
+    margin: 24px 12px 0 0;
 }
 
 .comment-title {
