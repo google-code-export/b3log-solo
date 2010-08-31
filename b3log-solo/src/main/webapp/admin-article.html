@@ -51,9 +51,15 @@
 
         // tag auto completed
         jsonRpc.tagService.getTags(function (result, error) {
-            $("#tag").completed({
-                data: result
-            });
+            if (result.length > 0) {
+                var tags = [];
+                for (var i = 0; i < result.length; i++) {
+                    tags.push(result[i].tagTitle);
+                }
+                $("#tag").completed({
+                    data: tags
+                });
+            }
         })
 
         // editor
