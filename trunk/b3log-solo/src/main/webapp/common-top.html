@@ -8,25 +8,10 @@
     </a>
     <span class="right">
         <span id="admin"></span>
-        <select onchange="setLanguage(this);">
-            <option>
-                ${langLabel}
-            </option>
-            <option>
-                简体中文
-            </option>
-            <option>
-                English(US)
-            </option>
-        </select>
     </span>
 </div>
 <div class="clear"></div>
 <script type="text/javascript">
-    var setLanguage = function (it) {
-        //alert(it.value);
-    }
-
     var setLoginState = function () {
         var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
         if (isAdminLoggedIn) {

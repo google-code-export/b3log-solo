@@ -27,6 +27,8 @@ import org.apache.log4j.Logger;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
 
 /**
@@ -65,10 +67,16 @@ public final class AdminIndexAction extends AbstractAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final Locale locale = Locales.getLocale(request);
-            Locales.setLocale(request, locale);
+            final JSONObject preference = SoloServletListener.getUserPreference();
+            final String localeString = preference.getString(Preference.LOCALE_STRING);
+            final Locale locale = new Locale(
+                    Locales.getLanguage(localeString),
+                    Locales.getCountry(localeString));
+
+            Locales.setLocale(request, locale); // For other admin DoNothing actions
 
             final Map<String, String> langs = langPropsService.getAll(locale);
+            LOGGER.trace("Langs[values=" + langs.values() + "]");
             ret.putAll(langs);
 
             filler.fillBlogHeader(ret, request);

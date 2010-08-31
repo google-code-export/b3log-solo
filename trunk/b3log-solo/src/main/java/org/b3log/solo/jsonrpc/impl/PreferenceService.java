@@ -74,6 +74,9 @@ public final class PreferenceService extends AbstractJSONRpcService {
      *         "blogTitle": "",
      *         "blogSubtitle": "",
      *         "mostCommentArticleDisplayCount": int,
+     *         "blogHost": "",
+     *         "adminGmail": "",
+     *         "localeString": ""
      *         "skinName": "",
      *         "skinDirName": "",
      *         "skins: [{
@@ -119,6 +122,9 @@ public final class PreferenceService extends AbstractJSONRpcService {
      *         "blogSubtitle": "",
      *         "mostCommentArticleDisplayCount": int,
      *         "skinDirName": "",
+     *         "blogHost": "",
+     *         "adminGmail": "",
+     *         "localeString": ""
      *     }
      * }, see {@link Preference} for more details
      * </pre>
@@ -161,7 +167,6 @@ public final class PreferenceService extends AbstractJSONRpcService {
             }
 
             preference.put(Skin.SKINS, skinArray.toString());
-
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
             SoloServletListener.setUserPreference(preference);

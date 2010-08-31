@@ -34,6 +34,7 @@ import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.Statistics;
@@ -88,10 +89,14 @@ public final class TagsAction extends AbstractCacheablePageAction {
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
-        final Locale locale = Locales.getLocale(request);
-        Locales.setLocale(request, locale);
-
         try {
+            final JSONObject preference = SoloServletListener.getUserPreference();
+            final String localeString = preference.getString(
+                    Preference.LOCALE_STRING);
+            final Locale locale = new Locale(
+                    Locales.getLanguage(localeString),
+                    Locales.getCountry(localeString));
+
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
@@ -103,8 +108,6 @@ public final class TagsAction extends AbstractCacheablePageAction {
 
             final List<Object> tags = CollectionUtils.jsonArrayToList(tagArray);
             ret.put(Tag.TAGS, tags);
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
