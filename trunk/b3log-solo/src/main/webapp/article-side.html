@@ -26,7 +26,7 @@
                     <a href="tag-articles-feed.do?oId=${tag.oId}">
                         <img alt="${tag.tagTitle}" src="images/rss.gif"/>
                     </a>
-                    <a name="${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
+                    <a name="tags${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
                         ${tag.tagTitle}
                     </a>
                 </li>
@@ -47,7 +47,7 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
-                    <a class="test" name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                    <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
                         <#else>
@@ -66,7 +66,7 @@
             <ul>
                 <#list mostViewCountArticles as article>
                 <li>
-                    <a name="$most{article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                    <a name="mostView${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         <#if article.articleTitle?length gt 15>
                         ${article.articleTitle?substring(0,15)}...
                         <#else>
@@ -100,7 +100,7 @@
             <ul>
                 <#list archiveDates as archiveDate>
                 <li>
-                    <a  href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
+                    <a  name="archiveDates${archiveDate.oId}" href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
                         ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
                     </a>
                 </li>
@@ -109,40 +109,3 @@
         </li>
     </ul>
 </div>
-<script type="text/javascript">
-    if (window.location.search === "") {
-        localStorage.setItem("sideNaviName", "");
-        localStorage.setItem("sideNaviId", "");
-    }
-
-    $("#sideNavi a").click(function () {
-        localStorage.setItem("sideNaviName", $(this).text());
-        localStorage.setItem("sideNaviId", $(this).attr("name"));
-    });
-
-    $("#sideNavi a").each(function () {
-        var $it = $(this);
-        $it.removeClass("selected");
-        if ($it.attr("name") && $it.attr("name") === localStorage.getItem("sideNaviId")) {
-            $it.addClass("selected");
-        }
-    });
-
-    jsonRpc.commentService.getRecentComments(function (result, error) {
-        var recentCommentsHTML = "<ul>";
-
-        for (var i = 0; i < result.recentComments.length; i++) {
-            var comment = result.recentComments[i];
-            var itemHTML = "<li><a href=" + comment.commentSharpURL + ">"
-                + comment.commentName + "</a>: ";
-            var commentContent = comment.commentContent.length > 50 ?
-                comment.commentContent.substring(0, 50) : comment.commentContent;
-            itemHTML += commentContent + "</li>";
-
-            recentCommentsHTML += itemHTML;
-        }
-
-        recentCommentsHTML += "</ul>";
-        $("#recentComments").after(recentCommentsHTML);
-    });
-</script>
