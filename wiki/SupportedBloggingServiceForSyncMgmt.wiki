@@ -1,0 +1,2 @@
+All supported blogging services for article management(Add/Update/Remove) by synchronization:
+ * [http://blog.csdn.net/ CSDN Blog]
