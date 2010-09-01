@@ -33,7 +33,7 @@ import static org.b3log.latke.client.action.AbstractCacheablePageAction.*;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 31, 2010
+ * @version 1.0.0.2, Sep 2, 2010
  */
 public final class PageCacheFilter implements Filter {
 
@@ -67,11 +67,11 @@ public final class PageCacheFilter implements Filter {
                 (HttpServletResponse) response;
 
         final String requestURI = httpServletRequest.getRequestURI();
-        if (requestURI.equals("json-rpc.do")
-            || requestURI.equals("captcha.do")
-            || requestURI.equals("tag-articles-feed.do")
-            || requestURI.equals("blog-articles-feed.do")
-            || requestURI.equals("admin-index.do")) {
+        if (requestURI.equals("/json-rpc.do")
+            || requestURI.equals("/captcha.do")
+            || requestURI.equals("/tag-articles-feed.do")
+            || requestURI.equals("/blog-articles-feed.do")
+            || requestURI.equals("/admin-index.do")) {
             chain.doFilter(request, response);
 
             return;
