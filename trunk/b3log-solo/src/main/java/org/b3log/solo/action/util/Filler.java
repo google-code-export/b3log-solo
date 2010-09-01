@@ -301,8 +301,8 @@ public final class Filler {
     public void fillSide(final Map<String, Object> dataModel)
             throws Exception {
         fillLinks(dataModel);
-        fillRecentArticles(dataModel);
-        fillRecentComments(dataModel);
+//        fillRecentArticles(dataModel);
+//        fillRecentComments(dataModel);
         fillMostUsedTags(dataModel);
         fillMostCommentArticles(dataModel);
         fillMostViewCountArticles(dataModel);
