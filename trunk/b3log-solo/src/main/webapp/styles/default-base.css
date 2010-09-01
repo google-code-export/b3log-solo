@@ -86,6 +86,10 @@ button:hover {
     padding-bottom: 12px;
 }
 
+.magin12 {
+    margin: 12px;
+}
+
 .maginTB12 {
     margin: 12px 0;
 }

@@ -16,7 +16,26 @@
     </div>
     <div class="tabPanels">
         <div id="syncPanel">
-            <table class="form" width="99%" cellpadding="0" cellspacing="9px">
+            <table id="archiveDatePanel" class="form left none" cellpadding="0" cellspacing="9px">
+                <tbody>
+                    <tr>
+                        <th>
+                            {choose date}
+                        </th>
+                        <td>
+                            <select id="archiveDate">
+                                <option>${selectDateLabel}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button onclick="getCSDNBlogArticlesByArchiveDate();">
+                                {ok}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="form left" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
                         <th width="96px">
@@ -27,13 +46,11 @@
                         </td>
                         <td>
                             <button onclick="getCSDNBlogArticleArchiveDate();">${getDateLabel}</button>
-                            <select id="archiveDate" class="none" onchange="getCSDNBlogArticlesByArchiveDate();">
-                                <option>${selectDateLabel}</option>
-                            </select>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <div class="clear"></div>
             <div id="articlesPanel" class="none">
                 <button onclick="sync();" class="left">${importLabel}</button>
                 <div id="articlesCount" class="right error-msg maginTR12">
@@ -98,6 +115,64 @@
     </div>
 </div>
 <script type="text/javascript">
+    var userName = "";
+    var initSync = function () {
+        $("#articleList").table({
+            height: 400,
+            colModel: [{
+                    name: "选择",
+                    index: "selected",
+                    width: 46,
+                    inputType: "checkbox",
+                    textAlign: "center",
+                    allSelected: true
+                }, {
+                    name: "${titleLabel}",
+                    index: "title",
+                    minWidth: 180,
+                    style: "padding-left: 6px;"
+                },  {
+                    name: "${categoryLabel}",
+                    index: "tags",
+                    width: 160
+                }, {
+                    textAlign: "center",
+                    name: "${createDateLabel}",
+                    index: "date",
+                    width: 100
+                }, {
+                    textAlign: "center",
+                    name: "${importedLabel}",
+                    index: "imported",
+                    width: 50
+                }, {
+                    visible: false,
+                    index: "id"
+                }]
+        });
+
+        $("#userName").keypress(function (event) {
+            if (event.keyCode === 13) {
+                getCSDNBlogArticleArchiveDate();
+            }
+        });
+
+        // get sync
+        jsonRpc.blogSyncService.getBlogSyncMgmtForCSDNBlog(function (result, error) {
+            if (null === result) {
+                return;
+            }
+
+            $("#nameCSDN").val(result.blogSyncExternalBloggingSysUserName);
+            $("#passwordCSDN").val(result.blogSyncExternalBloggingSysUserPassword);
+            result.blogSyncMgmtAddEnabled ? $("#addSyncCSDN").attr("checked", "checked") : $("#addSyncCSDN").removeAttr("checked");
+            result.blogSyncMgmtUpdateEnabled ? $("#updateSyncCSDN").attr("checked", "checked") : $("#updateSyncCSDN").removeAttr("checked");
+            result.blogSyncMgmtRemoveEnabled ? $("#deleteSyncCSDN").attr("checked", "checked") : $("#deleteSyncCSDN").removeAttr("checked");
+        });
+    }
+
+    initSync();
+
     var syncSettingCSDN = function () {
         var requestJSONObject = {
             "blogSyncExternalBloggingSysUserName": $("#nameCSDN").val(),
@@ -115,21 +190,6 @@
         }
     }
 
-    var syncGetCSDN = function () {
-        jsonRpc.blogSyncService.getBlogSyncMgmtForCSDNBlog(function (result, error) {
-            if (null === result) {
-                return;
-            }
-
-            $("#nameCSDN").val(result.blogSyncExternalBloggingSysUserName);
-            $("#passwordCSDN").val(result.blogSyncExternalBloggingSysUserPassword);
-            result.blogSyncMgmtAddEnabled ? $("#addSyncCSDN").attr("checked", "checked") : $("#addSyncCSDN").removeAttr("checked");
-            result.blogSyncMgmtUpdateEnabled ? $("#updateSyncCSDN").attr("checked", "checked") : $("#updateSyncCSDN").removeAttr("checked");
-            result.blogSyncMgmtRemoveEnabled ? $("#deleteSyncCSDN").attr("checked", "checked") : $("#deleteSyncCSDN").removeAttr("checked");
-        });
-    }
-    syncGetCSDN();
-
     var changeTab = function (it) {
         var tabs = ['sync', 'syncSetting'];
         for (var i = 0; i < tabs.length; i++) {
@@ -143,56 +203,15 @@
         }
     }
 
-    var userName = "";
-    $("#articleList").table({
-        height: 400,
-        colModel: [{
-                name: "选择",
-                index: "selected",
-                width: 46,
-                inputType: "checkbox",
-                textAlign: "center",
-                allSelected: true
-            }, {
-                name: "${titleLabel}",
-                index: "title",
-                minWidth: 180,
-                style: "padding-left: 6px;"
-            },  {
-                name: "${categoryLabel}",
-                index: "tags",
-                width: 160
-            }, {
-                textAlign: "center",
-                name: "${createDateLabel}",
-                index: "date",
-                width: 100
-            }, {
-                textAlign: "center",
-                name: "${importedLabel}",
-                index: "imported",
-                width: 50
-            }, {
-                visible: false,
-                index: "id"
-            }]
-    });
-
-    $("#userName").keypress(function (event) {
-        if (event.keyCode === 13) {
-            getCSDNBlogArticleArchiveDate();
-        }
-    }).focus(function () {
-        $("#archiveDate").hide(500);
-    });
-
     var getCSDNBlogArticleArchiveDate = function () {
+        $("#archiveDatePanel").hide(500);
         userName = $("#userName").val();
         var result = jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate({"blogSyncExternalBloggingSysUserName": userName});
-        $("#archiveDate").html("<option>${selectDateLabel}</option>").show(500);
+        $("#archiveDate").html("<option>${selectDateLabel}</option>");
         for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
             $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
         }
+        $("#archiveDatePanel").show(500);
     }
 
     var getCSDNBlogArticlesByArchiveDate = function () {

@@ -90,6 +90,10 @@
     min-width: 340px;
 }
 
+#archiveDatePanel {
+    margin-right: 20%;
+}
+
 /* preference */
 #skinsPanel {
     width: 99%;
