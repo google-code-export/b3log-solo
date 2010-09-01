@@ -52,14 +52,14 @@ public class ArticleGAERepository extends AbstractGAERepository
     }
 
     @Override
-    public List<JSONObject> getRecentArticles(final int num) {
+    public List<JSONObject> getRecentArticles(final int fetchSize) {
         final Query query = new Query(getName());
         query.addSort(Article.ARTICLE_UPDATE_DATE,
                       Query.SortDirection.DESCENDING);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
-                withLimit(num));
+                withLimit(fetchSize));
 
         final List<JSONObject> ret = new ArrayList<JSONObject>();
         for (final Entity entity : queryResultIterable) {

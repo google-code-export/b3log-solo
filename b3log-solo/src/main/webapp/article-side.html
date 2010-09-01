@@ -37,40 +37,7 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h4>${recentArticlesLabel}</h4>
-            <ul>
-                <#list recentArticles as article>
-                <li>
-                    <a name="recent${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
-                        <#if article.articleTitle?length gt 15>
-                        ${article.articleTitle?substring(0,15)}...
-                        <#else>
-                        ${article.articleTitle}
-                        </#if>
-                    </a>
-                </li>
-                </#list>
-            </ul>
-        </li>
-    </ul>
-    <div class="line"></div>
-    <ul>
-        <li>
-            <h4>${recentCommentsLabel}</h4>
-            <ul>
-                <#list recentComments as comment>
-                <li>
-                    <a href="${comment.commentSharpURL}">
-                        ${comment.commentName}
-                    </a>:
-                    <#if comment.commentContent?length gt 50>
-                    ${comment.commentContent?substring(0,50)}...
-                    <#else>
-                    ${comment.commentContent}
-                    </#if>
-                </li>
-                </#list>
-            </ul>
+            <h4 id="recentComments">${recentCommentsLabel}</h4>
         </li>
     </ul>
     <div class="line"></div>
@@ -162,5 +129,24 @@
         if ($it.attr("name") && $it.attr("name") === localStorage.getItem("sideNaviId")) {
             $it.addClass("selected");
         }
+    });
+
+    jsonRpc.commentService.getRecentComments(function (result, error) {
+        var recentCommentsHTML = "<ul>";
+
+        for (var i = 0; i < result.recentComments.length; i++) {
+            var comment = result.recentComments[i];
+            var itemHTML = "<li><a href=" + comment.commentSharpURL + ">"
+                + comment.commentName + "</a>: ";
+            var commentContent = comment.commentContent.length > 50 ?
+                comment.commentContent.substring(0, 50) : comment.commentContent;
+            itemHTML += commentContent + "</li>";
+
+            recentCommentsHTML += itemHTML;
+        }
+
+        recentCommentsHTML += "</ul>";
+        $("#recentComments").html($("#recentComments").html()
+            + recentCommentsHTML);
     });
 </script>

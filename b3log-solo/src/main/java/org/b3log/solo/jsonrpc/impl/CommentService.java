@@ -45,6 +45,7 @@ import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.MD5;
 import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.ArticleUtils;
@@ -115,6 +116,67 @@ public final class CommentService extends AbstractJSONRpcService {
             + "{commentContent}</a>]";
 
     /**
+     * Gets recent comments with the specified http servlet request and response.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example:
+     * <pre>
+     * {
+     *     "recentComments": [{
+     *         "oId": "",
+     *         "commentName": "",
+     *         "thumbnailUrl": "",
+     *         "commentURL": "",
+     *         "commentContent": "",
+     *         "commentDate": "",
+     *      }, ....]
+     *     "sc": "GET_COMMENTS_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject getRecentComments(final HttpServletRequest request,
+                                        final HttpServletResponse response)
+            throws ActionException, IOException {
+        final JSONObject ret = new JSONObject();
+        try {
+            final String requestHost =
+                    request.getServerName() + ":" + request.getServerPort();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
+            final String configuredHost = preference.getString(
+                    Preference.BLOG_HOST);
+            LOGGER.trace("Request[host=" + requestHost + "], configured[host="
+                    + configuredHost + "]");
+            if (!requestHost.equals(configuredHost)) {
+                LOGGER.warn("Unauthorized request[host=" + requestHost + "]");
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return ret;
+            }
+
+
+            final int fetchSize = preference.getInt(
+                    Preference.RECENT_COMMENT_DISPLAY_CNT);
+            final List<JSONObject> recentComments =
+                    commentRepository.getRecentComments(fetchSize);
+            // Erase email for security reason
+            for (final JSONObject comment : recentComments) {
+                comment.remove(Comment.COMMENT_EMAIL);
+            }
+
+            ret.put(Common.RECENT_COMMENTS, recentComments);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets comments of an article specified by the article id for administrator.
      *
      * @param requestJSONObject the specified request json object, for example,
@@ -125,7 +187,7 @@ public final class CommentService extends AbstractJSONRpcService {
      * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
-     * @return for example:
+     * @return for example,
      * <pre>
      * {
      *     "comments": [{
@@ -136,6 +198,7 @@ public final class CommentService extends AbstractJSONRpcService {
      *         "commentURL": "",
      *         "commentContent": "",
      *         "commentDate": "",
+     *         "commentSharpURL": ""
      *      }, ....]
      *     "sc": "GET_COMMENTS_SUCC"
      * }
@@ -162,7 +225,7 @@ public final class CommentService extends AbstractJSONRpcService {
                         articleCommentRelations.get(i);
                 final String commentId =
                         articleCommentRelation.getString(Comment.COMMENT + "_"
-                                                         + Keys.OBJECT_ID);
+                        + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
                 comments.add(comment);
@@ -313,7 +376,7 @@ public final class CommentService extends AbstractJSONRpcService {
         final Message message = new Message();
         message.setSender(preference.getString(Preference.ADMIN_GMAIL));
         final String mailSubject = blogTitle + ": New comment on "
-                                   + articleTitle;
+                + articleTitle;
         message.setSubject(mailSubject);
         final String articleURL = getArticleURL(request, articleId);
         final String mailBody =
@@ -323,7 +386,7 @@ public final class CommentService extends AbstractJSONRpcService {
                 replace("{commentSharpURL}", commentSharpURL);
         message.setHtmlBody(mailBody);
         LOGGER.debug("Sending a mail[mailSubject=" + mailSubject + ", "
-                     + "mailBody=[" + mailBody + "] to admins");
+                + "mailBody=[" + mailBody + "] to admins");
         mailService.sendToAdmins(message);
     }
 
@@ -419,7 +482,7 @@ public final class CommentService extends AbstractJSONRpcService {
                 final byte[] content = response.getContent();
                 final String profileJSONString = new String(content);
                 LOGGER.trace("Google profile[jsonString=" + profileJSONString
-                             + "]");
+                        + "]");
                 final JSONObject profile = new JSONObject(profileJSONString);
                 final JSONObject profileData = profile.getJSONObject("data");
                 thumbnailURL = profileData.getString("thumbnailUrl");
@@ -429,7 +492,7 @@ public final class CommentService extends AbstractJSONRpcService {
                 return;
             } else {
                 LOGGER.warn("Can not fetch google profile[userId=" + id + ", "
-                            + "statusCode=" + statusCode + "]");
+                        + "statusCode=" + statusCode + "]");
             }
         }
 
@@ -438,7 +501,7 @@ public final class CommentService extends AbstractJSONRpcService {
         final int size = 60;
         final URL gravatarURL =
                 new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
-                        + size + "&r=G");
+                + size + "&r=G");
         // XXX: use async url fetch instead????
         try {
             final HTTPResponse response = urlFetchService.fetch(gravatarURL);
@@ -463,9 +526,9 @@ public final class CommentService extends AbstractJSONRpcService {
 
                 if (!defaultFileNameMatched && !defaultFileLengthMatched) {
                     thumbnailURL = "http://www.gravatar.com/avatar/"
-                                   + hashedEmail
-                                   + "?s="
-                                   + size + "&r=G";
+                            + hashedEmail
+                            + "?s="
+                            + size + "&r=G";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
                     LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
 
@@ -473,19 +536,19 @@ public final class CommentService extends AbstractJSONRpcService {
                 }
             } else {
                 LOGGER.warn("Can not fetch thumbnail from Gravatar[commentEmail="
-                            + commentEmail + ", " + "statusCode=" + statusCode
-                            + "]");
+                        + commentEmail + ", " + "statusCode=" + statusCode
+                        + "]");
             }
         } catch (final IOException e) {
             LOGGER.warn(e.getMessage(), e);
             LOGGER.warn("Can not fetch thumbnail from Gravatar[commentEmail="
-                        + commentEmail + "]");
+                    + commentEmail + "]");
         }
 
         if (null == thumbnailURL) {
             thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
             LOGGER.warn("Not supported yet for comment thumbnail for email["
-                        + commentEmail + "]");
+                    + commentEmail + "]");
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }
     }
@@ -515,6 +578,7 @@ public final class CommentService extends AbstractJSONRpcService {
     private String getArticleURL(final HttpServletRequest request,
                                  final String articleId) {
         return request.getScheme() + "://" + request.getServerName() + ":"
-               + request.getServerPort() + "/article-detail.do?oId=" + articleId;
+                + request.getServerPort() + "/article-detail.do?oId="
+                + articleId;
     }
 }

@@ -28,10 +28,10 @@ import org.json.JSONObject;
 public interface CommentRepository extends Repository {
 
     /**
-     * Gets post comments recently with the specified number.
+     * Gets post comments recently with the specified fetch.
      *
-     * @param num the specified number
+     * @param fetchSize the specified fetch size
      * @return a list of comments recently, returns an empty list if not found
      */
-    List<JSONObject> getRecentComments(final int num);
+    List<JSONObject> getRecentComments(final int fetchSize);
 }

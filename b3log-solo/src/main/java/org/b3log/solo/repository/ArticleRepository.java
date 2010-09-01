@@ -29,12 +29,12 @@ import org.json.JSONObject;
 public interface ArticleRepository extends Repository {
 
     /**
-     * Gets post articles recently with the specified number.
+     * Gets post articles recently with the specified fetch size.
      *
-     * @param num the specified number
+     * @param fetchSize the specified fetch size
      * @return a list of articles recently, returns an empty list if not found
      */
-    List<JSONObject> getRecentArticles(final int num);
+    List<JSONObject> getRecentArticles(final int fetchSize);
 
     /**
      * Gets most comment articles with the specified number.
