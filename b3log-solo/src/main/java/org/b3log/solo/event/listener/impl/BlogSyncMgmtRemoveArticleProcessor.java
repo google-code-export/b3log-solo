@@ -62,7 +62,7 @@ public final class BlogSyncMgmtRemoveArticleProcessor
     private CSDNBlogArticleSoloArticleRepository csdnBlogArticleSoloArticleRepository;
 
     /**
-     * Constructs a {@link TagArticleRelationProcessor} object with the
+     * Constructs a {@link BlogSyncMgmtRemoveArticleProcessor} object with the
      * specified event manager.
      *
      * @param eventManager the specified event manager

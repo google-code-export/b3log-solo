@@ -40,7 +40,7 @@ import org.b3log.latke.service.ServiceException;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 27, 2010
+ * @version 1.0.0.4, Sep 1, 2010
  */
 public final class CSDNBlog {
 
@@ -56,6 +56,10 @@ public final class CSDNBlog {
      * Delete post method.
      */
     private static final String DELETE_POST = "blogger.deletePost";
+    /**
+     * Edit post method.
+     */
+    private static final String EDIT_POST = "metaWeblog.editPost";
     /**
      * Get post by id method.
      */
@@ -117,11 +121,11 @@ public final class CSDNBlog {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
-                            + "/services/metablogapi.aspx"));
+                    + "/services/metablogapi.aspx"));
             client.setConfig(config);
             client.execute(DELETE_POST, params);
             LOGGER.info("Deleted article[id=" + csdnBlogArticleId
-                        + "] from CSDN blog");
+                    + "] from CSDN blog");
         } catch (final Exception e) {
             LOGGER.error(e.getMessage(), e);
 
@@ -153,7 +157,7 @@ public final class CSDNBlog {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
-                            + "/services/metablogapi.aspx"));
+                    + "/services/metablogapi.aspx"));
             client.setConfig(config);
             final String articleId = (String) client.execute(NEW_POST, params);
             LOGGER.info("Post article to CSDN blog[result=" + articleId + "]");
@@ -166,6 +170,42 @@ public final class CSDNBlog {
         }
 
         return ret;
+    }
+
+    /**
+     * Updates a post specified by the given post id to CSDN blog with
+     * specified parameters.
+     *
+     * @param postId the given post id
+     * @param csdnBlogUserName the specified CSDN blog user name
+     * @param csdnBlogUserPwd the specified CSDN blog user password
+     * @param csdnBlogArticle the specified CSDN blog article to update
+     * @throws ServiceException service exception
+     */
+    public void editPost(final String postId,
+                         final String csdnBlogUserName,
+                         final String csdnBlogUserPwd,
+                         final CSDNBlogArticle csdnBlogArticle)
+            throws ServiceException {
+        final Object[] params = new Object[]{
+            postId,
+            csdnBlogUserName,
+            csdnBlogUserPwd,
+            csdnBlogArticle.toPost(), true};
+
+        try {
+            config.setConnectionTimeout(CONNECTION_TIMEOUT);
+            config.setServerURL(
+                    new URL("http://blog.csdn.net/" + csdnBlogUserName
+                    + "/services/metablogapi.aspx"));
+            client.setConfig(config);
+            client.execute(EDIT_POST, params);
+            LOGGER.info("Edit article[postId=" + postId + "] to CSDN blog");
+        } catch (final Exception e) {
+            LOGGER.error(e.getMessage(), e);
+
+            throw new ServiceException("Edit a post to CSDN blog error");
+        }
     }
 
     /**
@@ -183,7 +223,7 @@ public final class CSDNBlog {
                 new IndexPageReader(csdnBlogUserName);
         final String pageContent = archivePageReader.getContent();
         final String patternString = "<a href=\"/" + csdnBlogUserName
-                                     + "/archive/\\d{4}/\\d{2}\\.aspx";
+                + "/archive/\\d{4}/\\d{2}\\.aspx";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
 
@@ -221,7 +261,7 @@ public final class CSDNBlog {
                 new IndexPageReader(csdnBlogUserName);
         final String pageContent = archivePageReader.getContent();
         final String patternString = "<a href=\"/" + csdnBlogUserName
-                                     + "/archive/\\d{4}/\\d{2}\\.aspx";
+                + "/archive/\\d{4}/\\d{2}\\.aspx";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
 
@@ -295,8 +335,8 @@ public final class CSDNBlog {
         try {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(new URL("http://blog.csdn.net/"
-                                        + csdnBlogUserName
-                                        + "/services/metablogapi.aspx"));
+                    + csdnBlogUserName
+                    + "/services/metablogapi.aspx"));
             client.setConfig(config);
 
             final List<String> params = new ArrayList<String>();
@@ -330,14 +370,14 @@ public final class CSDNBlog {
 
         } catch (final Exception e) {
             LOGGER.error("Export article[id=" + articleId + "] error[msg="
-                         + e.getMessage() + "]");
+                    + e.getMessage() + "]");
 
             return null;
         }
 
         try {
             LOGGER.trace("Sleep main thread [" + GET_ARTICLE_SLEEP_MILLIS
-                         + "] millis for getting article from CSDN....");
+                    + "] millis for getting article from CSDN....");
             Thread.sleep(GET_ARTICLE_SLEEP_MILLIS);
         } catch (final InterruptedException e) {
             LOGGER.error(e.getMessage(), e);
