@@ -18,8 +18,6 @@ Powered by
         $("#userIntro").html(userIntroHTML);
     }
 
-    jsonRpc.statisticService.incBlogViewCount();
-
     jsonRpc.statisticService.getBlogStatistic(function (result, error) {
         if (!error) {
             var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
@@ -28,5 +26,23 @@ Powered by
             $("#statistic").html(statisticHTML);
         }
     });
+
+    var setLoginState = function () {
+        var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
+        if (isAdminLoggedIn) {
+            var loginHTML = "<span class='noUnderline' onclick='adminLogout();'>${logoutLabel}</span>&nbsp;|&nbsp;"
+                + "<a class='noUnderline' href='#' onclick='clearAllCache();'>${clearAllCache}</a>&nbsp;|&nbsp;"
+                + "<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>&nbsp;|&nbsp;"
+                + "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;"
+                + "<a class='noUnderline' href='index.do'>${indexLabel}</a>"
+            $("#admin").append(loginHTML);
+        } else {
+            $("#admin").append("<span class='noUnderline' onclick='adminLogin();'>${loginLabel}</span>");
+        }
+    }
+
+    setLoginState();
+
+    jsonRpc.statisticService.incBlogViewCount();
 </script>
 <script type="text/javascript" src="http://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>

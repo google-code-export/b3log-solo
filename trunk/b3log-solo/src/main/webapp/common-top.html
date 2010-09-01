@@ -13,22 +13,6 @@
     <div class="clear"></div>
 </div>
 <script type="text/javascript">
-    var setLoginState = function () {
-        var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
-        if (isAdminLoggedIn) {
-            var loginHTML = "<span class='noUnderline' onclick='adminLogout();'>${logoutLabel}</span>&nbsp;|&nbsp;"
-                + "<a class='noUnderline' href='#' onclick='clearAllCache();'>${clearAllCache}</a>&nbsp;|&nbsp;"
-                + "<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>&nbsp;|&nbsp;"
-                + "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;"
-                + "<a class='noUnderline' href='index.do'>${indexLabel}</a>"
-            $("#admin").append(loginHTML);
-        } else {
-            $("#admin").append("<span class='noUnderline' onclick='adminLogin();'>${loginLabel}</span>");
-        }
-    }
-
-    setLoginState();
-
     var clearCache = function () {
         var locationString = window.location.toString();
         var cachedPageKey = locationString.substring(locationString.lastIndexOf("/"), locationString.length);
