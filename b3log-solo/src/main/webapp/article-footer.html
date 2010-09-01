@@ -13,7 +13,7 @@ Powered by
     function handleResponse (response) {
         var userIntroHTML = "<li><img src='" + response.data.thumbnailUrl + "'/></li>"
             + "<li>" + response.data.displayName + "</li>"
-            + "<li>" + response.data.aboutMe + "</li>";
+            + "<li class='aboutMe'>" + response.data.aboutMe + "</li>";
 
         $("#userIntro").html(userIntroHTML);
     }
