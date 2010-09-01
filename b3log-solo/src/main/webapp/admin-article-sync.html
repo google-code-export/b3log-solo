@@ -204,6 +204,7 @@
     }
 
     var getCSDNBlogArticleArchiveDate = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
         $("#archiveDatePanel").hide(500);
         userName = $("#userName").val();
         var result = jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate({"blogSyncExternalBloggingSysUserName": userName});
@@ -211,6 +212,7 @@
         for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
             $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
         }
+        $("#tipMsg").text("").hide();
         $("#archiveDatePanel").show(500);
     }
 
@@ -265,11 +267,15 @@
     }
     
     var sync = function () {
-        var requestJSONObject = {
-            "oIds": $("#articleList_selected").data("id")
-        };
-
-        var result = jsonRpc.blogSyncService.importCSDNBlogArticles(requestJSONObject);
-        $("#tipMsg").text(result.oIds + "${importSuccLabel}").show();
+        if ($("#articleList_selected").data("id").length === 0) {
+            $("#tipMsg").text("{choose article}").show();
+        } else {
+            $("#tipMsg").text("${loadingLabel}").show();
+            var requestJSONObject = {
+                "oIds": $("#articleList_selected").data("id")
+            };
+            var result = jsonRpc.blogSyncService.importCSDNBlogArticles(requestJSONObject);
+            $("#tipMsg").text("${importSuccLabel}").show();
+        }
     }
 </script>
