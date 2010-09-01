@@ -7,8 +7,9 @@
 */
 /* framework */
 .content {
-    width: 980px;
-    margin: 0 auto;
+    margin:0 auto;
+    min-width:980px;
+    width:90%;
 }
 
 .header {
@@ -16,14 +17,15 @@
 }
 
 .side {
-    width: 188px;
-    margin-right: 12px;
+    min-width:188px;
+    width:20%;
 }
 
 .main {
-    width: 766px;
-    border-left: 2px solid  #E5ECF9;
-    padding-left: 12px;
+    border-left:2px solid #E5ECF9;
+    min-width:766px;
+    padding-left:12px;
+    width:78%;
 }
 
 /* header */
@@ -45,9 +47,8 @@
 .article-title {
     background-color:#E3E9FF;
     border-top:1px solid #3366CC;
+    margin-left:91px;
     padding:3px 0 3px 12px;
-    float: left;
-    width: 651px;
 }
 
 .article-date {
@@ -97,6 +98,7 @@
 }
 .side-navi li {
     white-space: nowrap;
+    overflow: hidden;
 }
 
 .side-navi li.aboutMe {
