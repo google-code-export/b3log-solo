@@ -7,6 +7,7 @@
 */
 .completed-panel {
     -moz-border-radius:4px;
+    -webkit-border-radius:4px;
     background-color:#FFFFFF;
     border:1px solid #639ECD;
     display:none;

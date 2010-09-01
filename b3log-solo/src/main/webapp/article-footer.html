@@ -9,7 +9,74 @@ Powered by
 </a>
 , ver ${version}
 <script type="text/javascript">
-    // this code is used to article-side.html
+    var initArticle = function () {
+        // common-top.html use state
+        jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
+            if (result) {
+                var loginHTML = "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;"
+                    + "<span onclick='clearAllCache();'>${clearAllCache}</span>&nbsp;|&nbsp;"
+                    + "<span onclick='clearCache();'>${clearCache}</span>&nbsp;|&nbsp;"
+                    + "<span onclick='adminLogout();'>${logoutLabel}</span>";
+                $("#admin").append(loginHTML);
+            } else {
+                $("#admin").append("<span class='noUnderline' onclick='adminLogin();'>${loginLabel}</span>");
+            }
+        });
+        
+        // article-side.html selected style
+        if (window.location.search === "") {
+            localStorage.setItem("sideNaviName", "");
+            localStorage.setItem("sideNaviId", "");
+        }
+
+        $("#sideNavi a").click(function () {
+            localStorage.setItem("sideNaviName", $(this).text());
+            localStorage.setItem("sideNaviId", $(this).attr("name"));
+        });
+
+        $("#sideNavi a").each(function () {
+            var $it = $(this);
+            $it.removeClass("selected");
+            if ($it.attr("name") && $it.attr("name") === localStorage.getItem("sideNaviId")) {
+                $it.addClass("selected");
+            }
+        });
+
+        // article-side.html comments
+        jsonRpc.commentService.getRecentComments(function (result, error) {
+            var recentCommentsHTML = "<ul>";
+
+            for (var i = 0; i < result.recentComments.length; i++) {
+                var comment = result.recentComments[i];
+                var itemHTML = "<li><a href=" + comment.commentSharpURL + ">"
+                    + comment.commentName + "</a>: ";
+                var commentContent = comment.commentContent.length > 20 ?
+                    comment.commentContent.substring(0, 20) : comment.commentContent;
+                itemHTML += commentContent + "</li>";
+
+                recentCommentsHTML += itemHTML;
+            }
+
+            recentCommentsHTML += "</ul>";
+            $("#recentComments").after(recentCommentsHTML);
+        });
+
+        // article-side.html blogStatistic
+        jsonRpc.statisticService.getBlogStatistic(function (result, error) {
+            if (!error) {
+                var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
+                    + "<li>${articleCount1Label} " + result.statisticBlogArticleCount + "</li>"
+                    + "<li>${commentCount1Label} "+ result.statisticBlogCommentCount + "</li>";
+                $("#statistic").html(statisticHTML);
+            }
+        });
+    }
+
+    initArticle();
+
+    jsonRpc.statisticService.incBlogViewCount();
+
+    //article-side.html
     function handleResponse (response) {
         var userIntroHTML = "<li><img src='" + response.data.thumbnailUrl + "'/></li>"
             + "<li>" + response.data.displayName + "</li>"
@@ -17,32 +84,5 @@ Powered by
 
         $("#userIntro").html(userIntroHTML);
     }
-
-    jsonRpc.statisticService.getBlogStatistic(function (result, error) {
-        if (!error) {
-            var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
-                + "<li>${articleCount1Label} " + result.statisticBlogArticleCount + "</li>"
-                + "<li>${commentCount1Label} "+ result.statisticBlogCommentCount + "</li>";
-            $("#statistic").html(statisticHTML);
-        }
-    });
-
-    var setLoginState = function () {
-        var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
-        if (isAdminLoggedIn) {
-            var loginHTML = "<span class='noUnderline' onclick='adminLogout();'>${logoutLabel}</span>&nbsp;|&nbsp;"
-                + "<a class='noUnderline' href='#' onclick='clearAllCache();'>${clearAllCache}</a>&nbsp;|&nbsp;"
-                + "<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>&nbsp;|&nbsp;"
-                + "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;"
-                + "<a class='noUnderline' href='index.do'>${indexLabel}</a>"
-            $("#admin").append(loginHTML);
-        } else {
-            $("#admin").append("<span class='noUnderline' onclick='adminLogin();'>${loginLabel}</span>");
-        }
-    }
-
-    setLoginState();
-
-    jsonRpc.statisticService.incBlogViewCount();
 </script>
 <script type="text/javascript" src="http://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>

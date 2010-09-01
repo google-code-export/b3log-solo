@@ -52,7 +52,8 @@
 }
 
 .article-date {
-    -moz-border-radius:5px 5px 5px 5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
     background-color:#E3E9FF;
     border:1px solid #BBCCFF;
     margin:0 12px 12px 0;
@@ -112,7 +113,8 @@
 }
 
 #userIntro img {
-    -moz-border-radius:6px 6px 6px 6px;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
     border:1px solid #BBCCFF;
     margin-top:9px;
     padding:6px;
@@ -140,6 +142,7 @@
     border: 2px solid;
     margin: 3px;
     -moz-border-radius:6px;
+    -webkit-border-radius:6px;
     cursor: pointer;
 }
 

@@ -75,6 +75,7 @@ button {
     margin:0;
     vertical-align:top;
     -moz-border-radius:4px;
+    -webkit-border-radius:4px;
     padding:0 6px;
 }
 
@@ -162,6 +163,10 @@ button:hover {
 }
 
 /* top and footer */
+#admin span {
+    cursor:pointer;
+}
+
 #top {
     border-bottom: 1px solid #C9D7F1;
     padding:3px;

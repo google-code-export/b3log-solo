@@ -109,11 +109,9 @@
             var setLoginState = function () {
                 var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
                 if (isAdminLoggedIn) {
-                    var loginHTML = "<span class='noUnderline' onclick='adminLogout();'>${logoutLabel}</span>&nbsp;|&nbsp;"
-                        + "<a class='noUnderline' href='#' onclick='clearAllCache();'>${clearAllCache}</a>&nbsp;|&nbsp;"
-                        + "<a class='noUnderline' href='#' onclick='clearCache();'>${clearCache}</a>&nbsp;|&nbsp;"
-                        + "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;"
-                        + "<a class='noUnderline' href='index.do'>${indexLabel}</a>"
+                    var loginHTML = "<a class='noUnderline' href='index.do'>${indexLabel}</a>&nbsp;|&nbsp;"
+                    + "<span onclick='adminLogout();'>${logoutLabel}</span>";
+                        
                     $("#admin").append(loginHTML);
                 } else {
                     $("#admin").append("<span class='noUnderline' onclick='adminLogin();'>${loginLabel}</span>");
