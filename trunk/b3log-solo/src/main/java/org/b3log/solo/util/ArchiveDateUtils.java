@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 19, 2010
+ * @version 1.0.0.1, Sep 1, 2010
  */
 public final class ArchiveDateUtils {
 
@@ -140,6 +140,9 @@ public final class ArchiveDateUtils {
                                archiveDateArticleCnt);
             archiveDateRepository.update(archiveDateId, newArchiveDate);
         }
+
+        archiveDateArticleRepository.remove(archiveDateArticleRelation.getString(
+                Keys.OBJECT_ID));
     }
 
     /**

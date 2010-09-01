@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
+import org.b3log.latke.Keys;
 import java.util.List;
 import java.util.Date;
 import java.util.UUID;
@@ -27,7 +28,7 @@ import static org.testng.Assert.*;
  * {@link CSDNBlogTestCase} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 27, 2010
+ * @version 1.0.0.3, Sep 1, 2010
  */
 public final class CSDNBlogTestCase {
 
@@ -142,6 +143,7 @@ public final class CSDNBlogTestCase {
     private JSONObject getArticle() throws JSONException {
         final JSONObject ret = new JSONObject();
 
+        ret.put(Keys.OBJECT_ID, "test id");
         ret.put(Article.ARTICLE_TITLE,
                 UUID.randomUUID().toString());
         ret.put(Article.ARTICLE_CREATE_DATE, new Date());

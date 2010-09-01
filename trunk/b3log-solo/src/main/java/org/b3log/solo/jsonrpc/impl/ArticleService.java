@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Aug 25, 2010
+ * @version 1.0.1.0, Sep 1, 2010
  */
 public final class ArticleService extends AbstractJSONRpcService {
 
@@ -161,9 +161,7 @@ public final class ArticleService extends AbstractJSONRpcService {
             statistics.incBlogArticleCount();
             // Step 7: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
-            // Step 8: Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
-            // Step 9: Fire add article event
+            // Step 8: Fire add article event
             eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.ADD_ARTICLE, article));
 
@@ -174,6 +172,8 @@ public final class ArticleService extends AbstractJSONRpcService {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
+
+        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
         return ret;
     }
@@ -372,20 +372,21 @@ public final class ArticleService extends AbstractJSONRpcService {
             statistics.decBlogArticleCount();
             // Step 5: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
-            // Step 6: Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
-            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
-            // Step 7: Fire remove article event
+            // Step 6: Fire remove article event
             eventManager.fireEventSynchronously(
                     new Event<String>(EventTypes.REMOVE_ARTICLE, articleId));
 
             transaction.commit();
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
             LOGGER.debug("Removed an article[oId=" + articleId + "]");
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
+
+        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
         return ret;
     }
@@ -431,14 +432,16 @@ public final class ArticleService extends AbstractJSONRpcService {
             final String articleId = article.getString(Keys.OBJECT_ID);
             // Step 1: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
-            // Step 2: Remove tag-article relations
+            // Step 2: Un-archive date-article relations
+            archiveDateUtils.unArchiveDate(articleId);
+            // Step 3: Remove tag-article relations
             articleUtils.removeTagArticleRelations(articleId);
-            // Step 3: Add tags
+            // Step 4: Add tags
             final String tagsString =
                     article.getString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
-            // Step 4: Fill auto properties
+            // Step 5: Fill auto properties
             final JSONObject oldArticle = articleRepository.get(articleId);
             article.put(Article.ARTICLE_CREATE_DATE, oldArticle.get(
                     Article.ARTICLE_CREATE_DATE));
@@ -446,17 +449,15 @@ public final class ArticleService extends AbstractJSONRpcService {
                         oldArticle.getInt(Article.ARTICLE_COMMENT_COUNT));
             article.put(Article.ARTICLE_VIEW_COUNT,
                         oldArticle.getInt(Article.ARTICLE_VIEW_COUNT));
-            // Step 5: Set updat date
+            // Step 6: Set updat date
             article.put(Article.ARTICLE_UPDATE_DATE, new Date());
-            // Step 6: Update
+            // Step 7: Update
             articleRepository.update(articleId, article);
-            // Step 7: Add tag-article relations
+            // Step 8: Add tag-article relations
             articleUtils.addTagArticleRelation(tags, article);
-            // Step 8: Add archive date-article relations
+            // Step 9: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
-            // Step 9: Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
-
+            // Step 10: Fire update article event
             eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, article));
 
@@ -469,6 +470,8 @@ public final class ArticleService extends AbstractJSONRpcService {
             LOGGER.error(e.getMessage(), e);
             throw new ActionException(e);
         }
+
+        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
         return ret;
     }
