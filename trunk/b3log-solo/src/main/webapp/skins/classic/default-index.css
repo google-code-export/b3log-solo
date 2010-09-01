@@ -39,7 +39,7 @@
 
 /* article list */
 .article, .comments {
-    padding: 24px 12px;
+    padding: 24px 0 24px 12px;
 }
 
 .article-title {
@@ -47,7 +47,7 @@
     border-top:1px solid #3366CC;
     padding:3px 0 3px 12px;
     float: left;
-    width: 639px;
+    width: 651px;
 }
 
 .article-date {
@@ -63,6 +63,7 @@
 /* article detail */
 .article-body {
     margin: 0 12px 24px;
+    overflow: auto;
 }
 
 .article-footer {
@@ -96,6 +97,10 @@
 }
 .side-navi li {
     white-space: nowrap;
+}
+
+.side-navi li.aboutMe {
+    white-space: normal;
 }
 
 .line {
