@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Aug 30, 2010
+ * @version 1.0.1.0, Sep 1, 2010
  */
 public final class CommentService extends AbstractJSONRpcService {
 
@@ -261,9 +261,9 @@ public final class CommentService extends AbstractJSONRpcService {
             sendNotificationMail(article, commentId, commentContent, request);
             // Step 6: Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.remove(
-                    "/article-detail.dooId=" + articleId);
+                    "/article-detail.do?oId=" + articleId);
             AbstractCacheablePageAction.PAGE_CACHE.remove(
-                    "/article-detail.dooId=" + articleId + "#" + commentId);
+                    "/article-detail.do?oId=" + articleId + "#" + commentId);
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
