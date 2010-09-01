@@ -138,6 +138,7 @@
 
 #tagsPanel .tagPanel:hover {
     background-color: #EEEEEE;
+    border: 2px dashed;
 }
 
 #tagsPanel .tagPanel a {
