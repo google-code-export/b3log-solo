@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 24, 2010
+ * @version 1.0.0.3, Sep 1, 2010
  */
 public final class Comment {
 
@@ -47,6 +47,10 @@ public final class Comment {
      * Key of comment URL.
      */
     public static final String COMMENT_URL = "commentURL";
+    /**
+     * Key of comment sharp URL.
+     */
+    public static final String COMMENT_SHARP_URL = "commentSharpURL";
     /**
      * Key of comment date.
      */

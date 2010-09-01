@@ -56,6 +56,26 @@
     <div class="line"></div>
     <ul>
         <li>
+            <h4>${recentCommentsLabel}</h4>
+            <ul>
+                <#list recentComments as comment>
+                <li>
+                    <a href="${comment.commentSharpURL}">
+                        ${comment.commentName}
+                    </a>:
+                    <#if comment.commentContent?length gt 50>
+                    ${comment.commentContent?substring(0,50)}...
+                    <#else>
+                    ${comment.commentContent}
+                    </#if>
+                </li>
+                </#list>
+            </ul>
+        </li>
+    </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
             <h4>${mostCommentArticlesLabel}</h4>
             <ul>
                 <#list mostCommentArticles as article>

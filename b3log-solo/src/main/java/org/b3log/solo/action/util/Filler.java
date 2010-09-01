@@ -36,6 +36,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.ArchiveDateUtils;
@@ -46,7 +47,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 30, 2010
+ * @version 1.0.0.7, Sep 1, 2010
  */
 public final class Filler {
 
@@ -59,6 +60,11 @@ public final class Filler {
      */
     @Inject
     private ArticleRepository articleRepository;
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
     /**
      * Tag repository.
      */
@@ -238,6 +244,24 @@ public final class Filler {
     }
 
     /**
+     * Fills post comments recently.
+     *
+     * @param dataModel data model
+     * @throws Exception exception
+     */
+    public void fillRecentComments(final Map<String, Object> dataModel)
+            throws Exception {
+        final JSONObject preference = SoloServletListener.getUserPreference();
+        final int recentCommentDisplayCnt =
+                preference.getInt(Preference.RECENT_COMMENT_DISPLAY_CNT);
+
+        final List<JSONObject> recentComments =
+                commentRepository.getRecentComments(recentCommentDisplayCnt);
+
+        dataModel.put(Common.RECENT_COMMENTS, recentComments);
+    }
+
+    /**
      * Fills article-footer.html.
      *
      * @param dataModel data model
@@ -278,6 +302,7 @@ public final class Filler {
             throws Exception {
         fillLinks(dataModel);
         fillRecentArticles(dataModel);
+        fillRecentComments(dataModel);
         fillMostUsedTags(dataModel);
         fillMostCommentArticles(dataModel);
         fillMostViewCountArticles(dataModel);

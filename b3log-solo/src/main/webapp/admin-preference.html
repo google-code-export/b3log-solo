@@ -36,6 +36,14 @@
                     </tr>
                     <tr>
                         <th>
+                            ${indexRecentCommentDisplayCnt1Label}
+                        </th>
+                        <td>
+                            <input id="recentCommentDisplayCount"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             ${indexMostCommentArticleDisplayCnt1Label}
                         </th>
                         <td>
@@ -139,6 +147,7 @@
                 "blogSubtitle": $("#blogSubtitle").val(),
                 "mostCommentArticleDisplayCount": $("#mostCommentArticleDisplayCount").val(),
                 "recentArticleDisplayCount": $("#recentArticleDisplayCount").val(),
+                "recentCommentDisplayCount": $("#recentCommentDisplayCount").val(),
                 "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
                 "articleListDisplayCount": $("#articleListDisplayCount").val(),
                 "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
@@ -171,6 +180,7 @@
                 $("#blogSubtitle").val(preference.blogSubtitle),
                 $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
                 $("#recentArticleDisplayCount").val(preference.recentArticleDisplayCount);
+                $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
                 $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
                 $("#articleListDisplayCount").val(preference.articleListDisplayCount);
                 $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);

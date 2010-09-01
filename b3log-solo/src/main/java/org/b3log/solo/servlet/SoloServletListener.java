@@ -303,6 +303,8 @@ public final class SoloServletListener extends AbstractServletListener {
                                    DefaultPreference.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
                 userPreference.put(RECENT_ARTICLE_DISPLAY_CNT,
                                    DefaultPreference.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
+                userPreference.put(RECENT_COMMENT_DISPLAY_CNT,
+                                   DefaultPreference.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
                 userPreference.put(BLOG_TITLE,
                                    DefaultPreference.DEFAULT_BLOG_TITLE);
                 userPreference.put(BLOG_SUBTITLE,
@@ -311,7 +313,8 @@ public final class SoloServletListener extends AbstractServletListener {
                                    DefaultPreference.DEFAULT_BLOG_HOST);
                 userPreference.put(ADMIN_GMAIL,
                                    DefaultPreference.DEFAULT_ADMIN_GMAIL);
-                userPreference.put(LOCALE_STRING, DefaultPreference.DEFAULT_LANGUAGE);
+                userPreference.put(LOCALE_STRING,
+                                   DefaultPreference.DEFAULT_LANGUAGE);
 
                 userPreference.put(Keys.OBJECT_ID, preferenceId);
                 preferenceRepository.add(userPreference);
@@ -377,6 +380,10 @@ public final class SoloServletListener extends AbstractServletListener {
          * Default recent article display count.
          */
         private static final int DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT = 10;
+        /**
+         * Default recent comment display count.
+         */
+        private static final int DEFAULT_RECENT_COMMENT_DISPLAY_COUNT = 10;
         /**
          * Default most used tag display count.
          */

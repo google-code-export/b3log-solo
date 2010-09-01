@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Aug 31, 2010
+ * @version 1.0.1.0, Sep 1, 2010
  */
 public final class Common {
 
@@ -41,6 +41,10 @@ public final class Common {
      * Recent articles.
      */
     public static final String RECENT_ARTICLES = "recentArticles";
+    /**
+     * Recent comments.
+     */
+    public static final String RECENT_COMMENTS = "recentComments";
     /**
      * Previous article id.
      */
