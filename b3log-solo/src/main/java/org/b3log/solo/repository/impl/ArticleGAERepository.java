@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Aug 31, 2010
+ * @version 1.0.1.2, Sep 1, 2010
  */
 public class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -113,6 +113,7 @@ public class ArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.LESS_THAN, articleId);
+        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final List<Entity> result =
                 preparedQuery.asList(FetchOptions.Builder.withLimit(1));
@@ -147,6 +148,7 @@ public class ArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.LESS_THAN, articleId);
+        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final List<Entity> result =
                 preparedQuery.asList(FetchOptions.Builder.withLimit(1));
@@ -181,19 +183,19 @@ public class ArticleGAERepository extends AbstractGAERepository
         try {
             if (!article.has(Keys.OBJECT_ID)) {
                 throw new RepositoryException("The article to import MUST exist "
-                        + "id");
+                                              + "id");
             }
             articleId = article.getString(Keys.OBJECT_ID);
 
             if (!article.has(Article.ARTICLE_CREATE_DATE)) {
                 throw new RepositoryException("The article to import MUST exist "
-                        + "create date");
+                                              + "create date");
             }
 
             // XXX:  check other params
 
             if (!article.has(Article.ARTICLE_UPDATE_DATE)
-                    || null == article.get(Article.ARTICLE_UPDATE_DATE)) {
+                || null == article.get(Article.ARTICLE_UPDATE_DATE)) {
                 article.put(Article.ARTICLE_UPDATE_DATE,
                             article.get(Article.ARTICLE_CREATE_DATE));
             }
