@@ -1,4 +1,3 @@
 #labels Featured
-
-All supported blogging services for article import
+All supported blogging services for article import so far:
  * [http://blog.csdn.net/ CSDN Blog]
