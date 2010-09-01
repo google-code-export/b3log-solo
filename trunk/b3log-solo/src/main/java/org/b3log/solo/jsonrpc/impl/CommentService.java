@@ -50,6 +50,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Buzzs;
+import org.b3log.solo.util.Htmls;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -294,8 +295,9 @@ public final class CommentService extends AbstractJSONRpcService {
                     requestJSONObject.getString(Comment.COMMENT_EMAIL);
             final String commentURL =
                     requestJSONObject.optString(Comment.COMMENT_URL);
-            final String commentContent =
+            String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT);
+            commentContent = Htmls.removeHtmlTags(commentURL);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
             comment.put(Comment.COMMENT_NAME, commentName);
