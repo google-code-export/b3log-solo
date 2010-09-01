@@ -15,13 +15,23 @@
  */
 package org.b3log.solo.repository;
 
+import java.util.List;
 import org.b3log.latke.repository.Repository;
+import org.json.JSONObject;
 
 /**
  * Comment repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 10, 2010
+ * @version 1.0.0.1, Sep 1, 2010
  */
 public interface CommentRepository extends Repository {
+
+    /**
+     * Gets post comments recently with the specified number.
+     *
+     * @param num the specified number
+     * @return a list of comments recently, returns an empty list if not found
+     */
+    List<JSONObject> getRecentComments(final int num);
 }

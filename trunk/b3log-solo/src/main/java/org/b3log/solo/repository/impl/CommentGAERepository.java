@@ -15,16 +15,25 @@
  */
 package org.b3log.solo.repository.impl;
 
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.QueryResultIterable;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.json.JSONObject;
 
 /**
  * Comment Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 21, 2010
+ * @version 1.0.0.2, Sep 1, 2010
  */
 public class CommentGAERepository extends AbstractGAERepository
         implements CommentRepository {
@@ -38,5 +47,24 @@ public class CommentGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return Comment.COMMENT;
+    }
+
+    @Override
+    public List<JSONObject> getRecentComments(final int num) {
+        final Query query = new Query(getName());
+        query.addSort(Keys.OBJECT_ID,
+                      Query.SortDirection.DESCENDING);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final QueryResultIterable<Entity> queryResultIterable =
+                preparedQuery.asQueryResultIterable(FetchOptions.Builder.
+                withLimit(num));
+
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        for (final Entity entity : queryResultIterable) {
+            final JSONObject comment = entity2JSONObject(entity);
+            ret.add(comment);
+        }
+
+        return ret;
     }
 }

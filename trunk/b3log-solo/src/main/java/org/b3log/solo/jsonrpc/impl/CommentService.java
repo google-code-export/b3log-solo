@@ -246,6 +246,12 @@ public final class CommentService extends AbstractJSONRpcService {
             setCommentThumbnailURL(comment);
 
             final String commentId = commentRepository.add(comment);
+            // Save comment sharp URL
+            final String commentSharpURL = getCommentSharpURL(request,
+                                                              articleId,
+                                                              commentId);
+            comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
+            commentRepository.update(commentId, comment);
             // Step 2: Add article-comment relation
             final JSONObject articleCommentRelation = new JSONObject();
             articleCommentRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
@@ -301,18 +307,15 @@ public final class CommentService extends AbstractJSONRpcService {
                 preference.getString(Preference.BLOG_TITLE);
         final String articleTitle =
                 article.getString(Article.ARTICLE_TITLE);
-        final String baseArticleURL =
-                "http://" + request.getServerName() + "/article-detail.do?oId="
-                + articleId;
-        final String articleURL = baseArticleURL;
-        final String commentSharpURL = baseArticleURL + "#" + commentId;
-        LOGGER.trace("Comment[articleURL=" + articleURL + ", articleTitle="
-                     + articleTitle + ", blogTitle=" + blogTitle + "]");
+        final String commentSharpURL = getCommentSharpURL(request,
+                                                          articleId,
+                                                          commentId);
         final Message message = new Message();
         message.setSender(preference.getString(Preference.ADMIN_GMAIL));
         final String mailSubject = blogTitle + ": New comment on "
                                    + articleTitle;
         message.setSubject(mailSubject);
+        final String articleURL = getArticleURL(request, articleId);
         final String mailBody =
                 COMMENT_MAIL_HTML_BODY.replace("{articleURL}", articleURL).
                 replace("{articleTitle}", articleTitle).
@@ -485,5 +488,33 @@ public final class CommentService extends AbstractJSONRpcService {
                         + commentEmail + "]");
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }
+    }
+
+    /**
+     * Gets comment sharp URL with the specified http servlet request, article
+     * id and comment id.
+     *
+     * @param request the specified http servlet request
+     * @param articleId the specified article id
+     * @param commentId the specified comment id
+     * @return comment sharp URL
+     */
+    private String getCommentSharpURL(final HttpServletRequest request,
+                                      final String articleId,
+                                      final String commentId) {
+        return getArticleURL(request, articleId) + "#" + commentId;
+    }
+
+    /**
+     * Gets article URL with the specified http servlet request and article id.
+     *
+     * @param request the specified http servlet request
+     * @param articleId the specified article id
+     * @return article URL
+     */
+    private String getArticleURL(final HttpServletRequest request,
+                                 final String articleId) {
+        return request.getScheme() + "://" + request.getServerName() + ":"
+               + request.getServerPort() + "/article-detail.do?oId=" + articleId;
     }
 }

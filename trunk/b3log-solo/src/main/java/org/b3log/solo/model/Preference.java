@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 30, 2010
+ * @version 1.0.0.5, Sep 1, 2010
  */
 public final class Preference {
 
@@ -38,11 +38,18 @@ public final class Preference {
     /**
      * Recent article display count.
      */
-    public static final String RECENT_ARTICLE_DISPLAY_CNT = "recentArticleDisplayCount";
+    public static final String RECENT_ARTICLE_DISPLAY_CNT =
+            "recentArticleDisplayCount";
+    /**
+     * Recent comment display count.
+     */
+    public static final String RECENT_COMMENT_DISPLAY_CNT =
+            "recentCommentDisplayCount";
     /**
      * Most used tag display count.
      */
-    public static final String MOST_USED_TAG_DISPLAY_CNT = "mostUsedTagDisplayCount";
+    public static final String MOST_USED_TAG_DISPLAY_CNT =
+            "mostUsedTagDisplayCount";
     /**
      * Most comment article display count.
      */
