@@ -16,8 +16,8 @@
 package org.b3log.solo.action.impl;
 
 import java.util.logging.Level;
-import org.b3log.latke.client.action.ActionException;
-import org.b3log.latke.client.action.AbstractAction;
+import org.b3log.latke.action.ActionException;
+import org.b3log.latke.action.AbstractAction;
 import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.Locale;

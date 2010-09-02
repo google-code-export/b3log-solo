@@ -28,7 +28,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static org.b3log.latke.client.action.AbstractCacheablePageAction.*;
+import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 
 /**
  * Page cache filter.

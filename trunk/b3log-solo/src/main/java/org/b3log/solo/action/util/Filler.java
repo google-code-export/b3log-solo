@@ -30,7 +30,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.client.action.util.Paginator;
+import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.SortDirection;

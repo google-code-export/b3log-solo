@@ -21,15 +21,15 @@ import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.client.remote.AbstractRemoteService;
+import org.b3log.latke.jsonrpc.AbstractJSONRpcService;
 
 /**
- * Abstract remote service.
+ * Abstract json RPC service on GAE.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 21, 2010
+ * @version 1.0.0.1, Sep 2, 2010
  */
-public abstract class AbstractJSONRpcService extends AbstractRemoteService {
+public abstract class AbstractGAEJSONRpcService extends AbstractJSONRpcService {
 
     /**
      * User service.

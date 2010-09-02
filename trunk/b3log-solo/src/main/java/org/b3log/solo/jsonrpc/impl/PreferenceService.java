@@ -23,11 +23,11 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.client.action.AbstractCacheablePageAction;
-import org.b3log.latke.client.action.ActionException;
+import org.b3log.latke.action.AbstractCacheablePageAction;
+import org.b3log.latke.action.ActionException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.StatusCodes;
-import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
+import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Aug 21, 2010
  */
-public final class PreferenceService extends AbstractJSONRpcService {
+public final class PreferenceService extends AbstractGAEJSONRpcService {
 
     /**
      * Logger.
