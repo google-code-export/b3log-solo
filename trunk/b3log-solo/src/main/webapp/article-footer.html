@@ -72,16 +72,29 @@ Powered by
         });
 
         // article-side.html ellipsis
-        $("#mostCommentArticles a").each(function () {
-            var str = $.bowknot.ellipsis(this.innerHTML, 37);
-            $(this).text(str.toString());
+        var sideEllipsis = function () {
+            var sideLength = parseInt(($("#sideNavi").width() - 24) / 7);
+            $("#mostCommentArticles a").each(function () {
+                var str = $.bowknot.ellipsis(this.title, sideLength);
+                $(this).text(str.toString());
+            });
+            $("#mostViewCountArticles a").each(function () {
+                var str = $.bowknot.ellipsis(this.title, sideLength);
+                $(this).text(str.toString());
+            });
+             $("#sideLink a").each(function () {
+                var str = $.bowknot.ellipsis(this.title, sideLength);
+                $(this).text(str.toString());
+            });
+        }
+        
+        sideEllipsis();
+        
+        $(window).resize(function () {
+            if ($("#sideNavi").width() > 195) {
+                sideEllipsis();
+            }
         });
-         $("#mostViewCountArticles a").each(function () {
-            var str = $.bowknot.ellipsis(this.innerHTML, 37);
-            $(this).text(str.toString());
-        });
-
-
     }
 
     initArticle();
