@@ -58,6 +58,6 @@
 
     <error-page>
         <error-code>404</error-code>
-        <location></location>
+        <location>error.do</location>
     </error-page>
 </web-app>
