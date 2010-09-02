@@ -56,8 +56,8 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <error-page>
+<!--    <error-page>
         <error-code>404</error-code>
-        <location>error.do</location>
-    </error-page>
+        <location>/error.do</location>
+    </error-page>-->
 </web-app>
