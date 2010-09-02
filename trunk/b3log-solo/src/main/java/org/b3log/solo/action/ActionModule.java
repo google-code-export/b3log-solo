@@ -28,6 +28,7 @@ import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.BlogArticlesFeedServlet;
 import org.b3log.solo.action.feed.TagArticlesFeedServlet;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
+import org.b3log.solo.action.impl.ErrorAction;
 import org.b3log.solo.auth.AuthFilter;
 
 /**
@@ -35,7 +36,7 @@ import org.b3log.solo.auth.AuthFilter;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 26, 2010
+ * @version 1.0.0.6, Sep 2, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -80,5 +81,8 @@ public final class ActionModule extends AbstractActionModule {
 
         bind(CaptchaServlet.class).in(Scopes.SINGLETON);
         serve("/captcha.do").with(CaptchaServlet.class);
+
+        bind(ErrorAction.class).in(Scopes.SINGLETON);
+        serve("/error.").with(ErrorAction.class);
     }
 }

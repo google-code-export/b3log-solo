@@ -15,30 +15,28 @@
  */
 package org.b3log.solo.action.impl;
 
-import java.util.logging.Level;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.AbstractAction;
 import com.google.inject.Inject;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.action.util.Filler;
+import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Locales;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.action.util.Filler;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
- * Admin index action. admin-index.ftl.
+ * Error action. error.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 21, 2010
+ * @version 1.0.0.0, Sep 2, 2010
  */
-public final class AdminIndexAction extends AbstractAction {
+public final class ErrorAction extends AbstractAction {
 
     /**
      * Default serial version uid.
@@ -48,12 +46,21 @@ public final class AdminIndexAction extends AbstractAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(AdminIndexAction.class.getName());
+            Logger.getLogger(ErrorAction.class.getName());
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
     /**
      * Filler.
      */
@@ -68,20 +75,10 @@ public final class AdminIndexAction extends AbstractAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference = SoloServletListener.getUserPreference();
-            final String localeString = preference.getString(Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
-
-            Locales.setLocale(request, locale); // For other admin DoNothing actions
-
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            LOGGER.log(Level.FINEST, "Langs[values={0}]", langs.values());
-            ret.putAll(langs);
-
             filler.fillBlogHeader(ret);
+            filler.fillSide(ret);
             filler.fillBlogFooter(ret);
+            statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);

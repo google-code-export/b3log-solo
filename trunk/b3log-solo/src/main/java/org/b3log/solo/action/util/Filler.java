@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.model.Article;
@@ -94,7 +93,7 @@ public final class Filler {
             UserServiceFactory.getUserService();
 
     /**
-     * Fills articles in index.html.
+     * Fills articles in index.ftl.
      *
      * @param dataModel data model
      * @param currentPageNum current page number
@@ -268,25 +267,21 @@ public final class Filler {
     }
 
     /**
-     * Fills article-footer.html.
+     * Fills article-footer.ftl.
      *
      * @param dataModel data model
-     * @param request http servlet request
      */
-    public void fillBlogFooter(final Map<String, Object> dataModel,
-                               final HttpServletRequest request) {
+    public void fillBlogFooter(final Map<String, Object> dataModel) {
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
     }
 
     /**
-     * Fills article-header.html.
+     * Fills article-header.ftl.
      *
      * @param dataModel data model
-     * @param request http servlet request
      * @throws Exception exception
      */
-    public void fillBlogHeader(final Map<String, Object> dataModel,
-                               final HttpServletRequest request)
+    public void fillBlogHeader(final Map<String, Object> dataModel)
             throws Exception {
         LOGGER.finest("Filling blog header....");
         final JSONObject preference = SoloServletListener.getUserPreference();
@@ -299,7 +294,7 @@ public final class Filler {
     }
 
     /**
-     * Fills article-side.html.
+     * Fills article-side.ftl.
      *
      * @param dataModel data model
      * @throws Exception exception

@@ -47,7 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Get articles by archive date. archive-articles.html.
+ * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Sep 2, 2010
@@ -165,8 +165,8 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret);
-            filler.fillBlogHeader(ret, request);
-            filler.fillBlogFooter(ret, request);
+            filler.fillBlogHeader(ret);
+            filler.fillBlogFooter(ret);
             filler.fillArchiveDates(ret);
 
             statistics.incBlogViewCount();
