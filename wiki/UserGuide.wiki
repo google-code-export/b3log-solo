@@ -1,8 +1,8 @@
 #labels Featured
 ==前提准备==
  # 正确安装 JDK，在命令行下可以使用 javac 命令
- # 下载 Goole App Engine，解压。设解压目录为 ${gae.home}。
- # 下载 B3log Solo，直接解压，设解压目录为 ${solo.war}。
+ # 下载 Goole App Engine，解压。设解压目录为 `${gae.home}`。
+ # 下载 B3log Solo，直接解压，设解压目录为 `${solo.war}`。
 ==本地测试==
 （Windows）在命令行下 cd 进入 ${gae.home}/bin/ 目录，执行：
 {{{
