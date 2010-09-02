@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 26, 2010
+ * @version 1.0.0.8, Sep 2, 2010
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -169,6 +169,10 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
             articleUtils.addTags(articles);
             ret.put(Article.ARTICLES, articles);
+
+            ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            ret.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                    pageNums.get(pageNums.size() - 1));
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);

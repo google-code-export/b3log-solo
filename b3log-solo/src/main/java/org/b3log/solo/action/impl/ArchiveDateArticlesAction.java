@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 26, 2010
+ * @version 1.0.0.2, Sep 2, 2010
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -102,7 +102,8 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -139,8 +140,8 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                         archiveDateArticleRelations.getJSONObject(i);
                 final String articleId =
                         archiveDateArticleRelation.getString(Article.ARTICLE
-                        + "_"
-                        + Keys.OBJECT_ID);
+                                                             + "_"
+                                                             + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }
@@ -153,6 +154,9 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
 
             articleUtils.addTags(articles);
             ret.put(Article.ARTICLES, articles);
+            ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            ret.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                    pageNums.get(pageNums.size() - 1));
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.ARCHIVED_DATE_ARTICLES);
