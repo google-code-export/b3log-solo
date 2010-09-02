@@ -35,6 +35,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
+import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.UtilModule;
 import org.b3log.solo.event.EventModule;
@@ -149,6 +150,7 @@ public final class SoloServletListener extends AbstractServletListener {
             setInjector(Guice.createInjector(Stage.PRODUCTION,
                                              new FilterModule(),
                                              new ActionModule(),
+                                             new JSONRpcServiceModule(),
                                              new RepositoryModule(),
                                              new EventModule(),
                                              new SyncModule(),

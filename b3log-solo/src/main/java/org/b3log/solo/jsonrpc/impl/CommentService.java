@@ -40,15 +40,15 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.client.action.AbstractCacheablePageAction;
-import org.b3log.latke.client.action.ActionException;
+import org.b3log.latke.action.AbstractCacheablePageAction;
+import org.b3log.latke.action.ActionException;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.MD5;
 import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
+import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.0, Sep 1, 2010
  */
-public final class CommentService extends AbstractJSONRpcService {
+public final class CommentService extends AbstractGAEJSONRpcService {
 
     /**
      * Logger.

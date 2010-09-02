@@ -21,9 +21,9 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.client.action.ActionException;
+import org.b3log.latke.action.ActionException;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
+import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.repository.TagRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Aug 31, 2010
  */
-public final class TagService extends AbstractJSONRpcService {
+public final class TagService extends AbstractGAEJSONRpcService {
 
     /**
      * Logger.

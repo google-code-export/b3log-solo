@@ -16,7 +16,7 @@
 package org.b3log.solo.action.impl;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.client.action.ActionException;
+import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,12 +27,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.client.action.AbstractCacheablePageAction;
+import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.latke.client.action.util.Paginator;
+import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;

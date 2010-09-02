@@ -19,7 +19,7 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
+import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.util.ArticleUtils;
@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Aug 30, 2010
  */
-public final class StatisticService extends AbstractJSONRpcService {
+public final class StatisticService extends AbstractGAEJSONRpcService {
 
     /**
      * Logger.

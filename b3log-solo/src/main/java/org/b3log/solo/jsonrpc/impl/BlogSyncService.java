@@ -25,11 +25,11 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.client.action.AbstractCacheablePageAction;
-import org.b3log.latke.client.action.ActionException;
+import org.b3log.latke.action.AbstractCacheablePageAction;
+import org.b3log.latke.action.ActionException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.StatusCodes;
-import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
+import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.TagUtils;
 import org.b3log.solo.model.Article;
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.8, Aug 27, 2010
  */
-public final class BlogSyncService extends AbstractJSONRpcService {
+public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
     /**
      * Logger.

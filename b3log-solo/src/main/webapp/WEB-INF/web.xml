@@ -22,17 +22,10 @@
                  1. DO NOT configure servlets in this file, using Guice-Servlet
                     extension instead, see class org.b3log.solo.action.ActionModule
                     for details.
-    Version: 1.0.0.6, Aug 31, 2010
+    Version: 1.0.0.7, Sep 2, 2010
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    <context-param>
-        <param-name>postfixExceptionPaths</param-name>
-        <param-value>
-            /index.jsp,
-            /_ah/login, /_ah/logout
-        </param-value>
-    </context-param>
     <filter>
         <filter-name>GuiceFilter</filter-name>
         <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
