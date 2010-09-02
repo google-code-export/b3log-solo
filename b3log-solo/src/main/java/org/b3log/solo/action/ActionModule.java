@@ -83,6 +83,6 @@ public final class ActionModule extends AbstractActionModule {
         serve("/captcha.do").with(CaptchaServlet.class);
 
         bind(ErrorAction.class).in(Scopes.SINGLETON);
-        serve("/error.do").with(ErrorAction.class);
+        serve("error.do").with(ErrorAction.class);
     }
 }
