@@ -56,7 +56,7 @@
             </div>
         </div>
         <script type="text/javascript">
-            (function () {
+            var initAdmin = function () {
                 // tipMsg
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
@@ -83,49 +83,48 @@
                     }
                     $("#main").css("width", windowWidth);
                 });
-            })();
 
-            // navi
-            $("#navi li").each(function (i) {
-                var naviURL = ['article', 'article-list', 'link-list', 'preference', 'article-sync'],
-                $it = $(this);
-                $it.click(function () {
-                    var loadURL = "admin-" + naviURL[i] + ".do";
-                    if (!$it.hasClass("selected")){
-                        $("#navi li").removeClass('selected');
-                        $it.addClass('selected');
-                    }
-                    $("#content").load(loadURL, function () {
-                        if ($("#articleContent").length > 0) {
-                        } else {
+                // navi action
+                $("#navi li").each(function (i) {
+                    var naviURL = ['article', 'article-list', 'link-list', 'preference', 'article-sync'],
+                    $it = $(this);
+                    $it.click(function () {
+                        var loadURL = "admin-" + naviURL[i] + ".do";
+                        if (!$it.hasClass("selected")){
+                            $("#navi li").removeClass('selected');
+                            $it.addClass('selected');
                         }
+                        $("#content").load(loadURL, function () {
+                            if ($("#articleContent").length > 0) {
+                            } else {
+                            }
+                        });
                     });
+                }).mouseover(function () {
+                    $(this).addClass('hover');
+                }).mouseout(function () {
+                    $(this).removeClass('hover');
                 });
-            }).mouseover(function () {
-                $(this).addClass('hover');
-            }).mouseout(function () {
-                $(this).removeClass('hover');
-            });
 
-            // util
-            var setCurrentNaviStyle = function (i) {
-                $("#navi li").removeClass('selected');
-                $($("#navi li").get(i)).addClass("selected");
-            }
-
-            var setLoginState = function () {
+                // login state
                 var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
                 if (isAdminLoggedIn) {
                     var loginHTML = "<a class='noUnderline' href='index.do'>${indexLabel}</a>&nbsp;|&nbsp;"
                         + "<span onclick='adminLogout();'>${logoutLabel}</span>";
-                        
+
                     $("#admin").append(loginHTML);
                 } else {
                     $("#admin").append("<span class='noUnderline' onclick='adminLogin();'>${loginLabel}</span>");
                 }
             }
 
-            setLoginState();
+            initAdmin();
+
+            // util for admin
+            var setCurrentNaviStyle = function (i) {
+                $("#navi li").removeClass('selected');
+                $($("#navi li").get(i)).addClass("selected");
+            }
         </script>
     </body>
 </html>
