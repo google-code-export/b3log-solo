@@ -23,9 +23,9 @@ import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
@@ -56,7 +56,8 @@ public final class TagsAction extends AbstractCacheablePageAction {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagsAction.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(TagsAction.class.getName());
     /**
      * User service.
      */
@@ -90,7 +91,8 @@ public final class TagsAction extends AbstractCacheablePageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -118,7 +120,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
 
             statistics.incBlogViewCount();
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 

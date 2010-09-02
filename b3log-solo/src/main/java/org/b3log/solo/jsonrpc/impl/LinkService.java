@@ -19,9 +19,10 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
@@ -46,7 +47,8 @@ public final class LinkService extends AbstractJSONRpcService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkService.class);
+    private static final Logger LOGGER = 
+            Logger.getLogger(LinkService.class.getName());
     /**
      * Link repository.
      */
@@ -84,9 +86,9 @@ public final class LinkService extends AbstractJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINK_SUCC);
 
-            LOGGER.debug("Got an link[oId=" + linkId + "]");
+            LOGGER.log(Level.FINER, "Got an link[oId={0}]", linkId);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -152,7 +154,7 @@ public final class LinkService extends AbstractJSONRpcService {
             ret.put(Link.LINKS, links);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINKS_SUCC);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -204,10 +206,10 @@ public final class LinkService extends AbstractJSONRpcService {
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_SUCC);
 
-            LOGGER.debug("Updated an link[oId=" + linkId + "]");
+            LOGGER.log(Level.FINER, "Updated an link[oId={0}]", linkId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -245,7 +247,7 @@ public final class LinkService extends AbstractJSONRpcService {
 
         try {
             final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
-            LOGGER.debug("Removing a link[oId=" + linkId + "]");
+            LOGGER.log(Level.FINER, "Removing a link[oId={0}]", linkId);
             linkRepository.remove(linkId);
 
             // Clear page cache
@@ -254,10 +256,10 @@ public final class LinkService extends AbstractJSONRpcService {
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_LINK_SUCC);
 
-            LOGGER.debug("Removed a link[oId=" + linkId + "]");
+            LOGGER.log(Level.FINER, "Removed a link[oId={0}]", linkId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -308,7 +310,7 @@ public final class LinkService extends AbstractJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_LINK_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 

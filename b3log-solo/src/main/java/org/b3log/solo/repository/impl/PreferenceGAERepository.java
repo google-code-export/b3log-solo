@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
@@ -33,7 +33,7 @@ public class PreferenceGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PreferenceGAERepository.class);
+            Logger.getLogger(PreferenceGAERepository.class.getName());
 
     @Override
     public String getName() {

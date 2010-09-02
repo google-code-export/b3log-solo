@@ -17,7 +17,8 @@ package org.b3log.solo.util;
 
 import com.google.inject.Inject;
 import java.util.List;
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleCommentRepository;
@@ -40,7 +41,8 @@ public final class TagUtils {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagUtils.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(TagUtils.class.getName());
     /**
      * Article-Comment repository.
      */
@@ -74,9 +76,10 @@ public final class TagUtils {
             JSONObject tag = tagRepository.getByTitle(tagTitle);
             String tagId = null;
             if (null == tag) {
-                LOGGER.trace("Found a new tag[title=" + tagTitle
-                             + "] in article[title=" + article.getString(
-                        Article.ARTICLE_TITLE) + "]");
+                LOGGER.log(Level.FINEST,
+                           "Found a new tag[title={0}] in article[title={1}]",
+                           new Object[]{
+                            tagTitle, article.getString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_COUNT, 1);
@@ -85,11 +88,11 @@ public final class TagUtils {
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
                 tagId = tag.getString(Keys.OBJECT_ID);
-                LOGGER.trace("Found a existing tag[title=" + tag.getString(
-                        Tag.TAG_TITLE) + ", oId="
-                             + tag.getString(Keys.OBJECT_ID) + "] in "
-                             + "article[title=" + article.getString(
-                        Article.ARTICLE_TITLE) + "]");
+                LOGGER.log(Level.FINEST,
+                           "Found a existing tag[title={0}, oId={1}] in article[title={2}]",
+                           new Object[]{tag.getString(Tag.TAG_TITLE),
+                                        tag.getString(Keys.OBJECT_ID),
+                                        article.getString(Article.ARTICLE_TITLE)});
                 final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
@@ -125,7 +128,8 @@ public final class TagUtils {
             tagRepository.update(tagId, tag);
         }
 
-        LOGGER.trace("Deced all tag reference count of article[oId="
-                     + articleId + "]");
+        LOGGER.log(Level.FINEST,
+                   "Deced all tag reference count of article[oId={0}]",
+                   articleId);
     }
 }

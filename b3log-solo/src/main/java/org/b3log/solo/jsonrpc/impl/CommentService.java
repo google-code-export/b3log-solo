@@ -28,10 +28,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.log4j.Logger;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -69,7 +70,8 @@ public final class CommentService extends AbstractJSONRpcService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentService.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(CommentService.class.getName());
     /**
      * Comment repository.
      */
@@ -157,10 +159,11 @@ public final class CommentService extends AbstractJSONRpcService {
                     SoloServletListener.getUserPreference();
             final String configuredHost = preference.getString(
                     Preference.BLOG_HOST);
-            LOGGER.trace("Request[host=" + requestHost + "], configured[host="
-                         + configuredHost + "]");
+            LOGGER.log(Level.FINEST, "Request[host={0}], configured[host={1}]",
+                       new Object[]{requestHost, configuredHost});
             if (!requestHost.equals(configuredHost)) {
-                LOGGER.warn("Unauthorized request[host=" + requestHost + "]");
+                LOGGER.log(Level.WARNING, "Unauthorized request[host={0}]",
+                           requestHost);
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return ret;
             }
@@ -178,7 +181,7 @@ public final class CommentService extends AbstractJSONRpcService {
             ret.put(Common.RECENT_COMMENTS, recentComments);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -243,7 +246,7 @@ public final class CommentService extends AbstractJSONRpcService {
             ret.put(Comment.COMMENTS, comments);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -349,7 +352,7 @@ public final class CommentService extends AbstractJSONRpcService {
             ret.put(Keys.OBJECT_ID, commentId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -400,8 +403,9 @@ public final class CommentService extends AbstractJSONRpcService {
                 replace("{commentContent}", commentContent).
                 replace("{commentSharpURL}", commentSharpURL);
         message.setHtmlBody(mailBody);
-        LOGGER.debug("Sending a mail[mailSubject=" + mailSubject + ", "
-                     + "mailBody=[" + mailBody + "] to admins");
+        LOGGER.log(Level.FINER,
+                   "Sending a mail[mailSubject={0}, mailBody=[{1}] to admins",
+                   new Object[]{mailSubject, mailBody});
         mailService.sendToAdmins(message);
     }
 
@@ -436,7 +440,7 @@ public final class CommentService extends AbstractJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
             final String commentId = requestJSONObject.getString(Keys.OBJECT_ID);
-            LOGGER.debug("Removing comment[oId=" + commentId + "]");
+            LOGGER.log(Level.FINER, "Removing comment[oId={0}]", commentId);
 
             // Step 1: Remove article-comment relation
             final JSONObject articleCommentRelation =
@@ -460,10 +464,10 @@ public final class CommentService extends AbstractJSONRpcService {
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_COMMENT_SUCC);
 
-            LOGGER.debug("Removed comment[oId=" + commentId + "]");
+            LOGGER.log(Level.FINER, "Removed comment[oId={0}]", commentId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -498,18 +502,20 @@ public final class CommentService extends AbstractJSONRpcService {
             if (HttpServletResponse.SC_OK == statusCode) {
                 final byte[] content = response.getContent();
                 final String profileJSONString = new String(content);
-                LOGGER.trace("Google profile[jsonString=" + profileJSONString
-                             + "]");
+                LOGGER.log(Level.FINEST, "Google profile[jsonString={0}]",
+                           profileJSONString);
                 final JSONObject profile = new JSONObject(profileJSONString);
                 final JSONObject profileData = profile.getJSONObject("data");
                 thumbnailURL = profileData.getString("thumbnailUrl");
                 comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
+                LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
+                           thumbnailURL);
 
                 return;
             } else {
-                LOGGER.warn("Can not fetch google profile[userId=" + id + ", "
-                            + "statusCode=" + statusCode + "]");
+                LOGGER.log(Level.WARNING,
+                           "Can not fetch google profile[userId={0}, statusCode={1}]",
+                           new Object[]{id, statusCode});
             }
         }
 
@@ -547,25 +553,28 @@ public final class CommentService extends AbstractJSONRpcService {
                                    + "?s="
                                    + size + "&r=G";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                    LOGGER.trace("Comment thumbnail[URL=" + thumbnailURL + "]");
+                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
+                               thumbnailURL);
 
                     return;
                 }
             } else {
-                LOGGER.warn("Can not fetch thumbnail from Gravatar[commentEmail="
-                            + commentEmail + ", " + "statusCode=" + statusCode
-                            + "]");
+                LOGGER.log(Level.WARNING,
+                           "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
+                           new Object[]{commentEmail, statusCode});
             }
         } catch (final IOException e) {
-            LOGGER.warn(e.getMessage(), e);
-            LOGGER.warn("Can not fetch thumbnail from Gravatar[commentEmail="
-                        + commentEmail + "]");
+            LOGGER.warning(e.getMessage());
+            LOGGER.log(Level.WARNING,
+                       "Can not fetch thumbnail from Gravatar[commentEmail={0}]",
+                       commentEmail);
         }
 
         if (null == thumbnailURL) {
             thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
-            LOGGER.warn("Not supported yet for comment thumbnail for email["
-                        + commentEmail + "]");
+            LOGGER.log(Level.WARNING,
+                       "Not supported yet for comment thumbnail for email[{0}]",
+                       commentEmail);
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }
     }

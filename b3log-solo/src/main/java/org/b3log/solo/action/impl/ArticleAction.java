@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.action.impl;
 
+import java.util.logging.Level;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import com.google.inject.Inject;
@@ -23,9 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Article;
@@ -62,7 +63,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleAction.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(ArticleAction.class.getName());
     /**
      * Article repository.
      */
@@ -112,7 +114,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -127,8 +130,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final String articleId =
                     queryStringJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject article = articleRepository.get(articleId);
-            LOGGER.trace("Article[title="
-                    + article.getString(Article.ARTICLE_TITLE) + "]");
+            LOGGER.log(Level.FINEST, "Article[title={0}]",
+                       article.getString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE, article);
 
             final List<JSONObject> articleTags = getTags(articleId);
@@ -164,14 +167,14 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             // Remove cached page for this article
             AbstractCacheablePageAction.PAGE_CACHE.remove("article-detail.dooId="
-                    + articleId);
+                                                          + articleId);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret, request);
             filler.fillBlogFooter(ret, request);
             filler.fillArchiveDates(ret);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -196,7 +199,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     articleCommentRelations.get(i);
             final String commentId =
                     articleCommentRelation.getString(Comment.COMMENT + "_"
-                    + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
             comment.remove(Comment.COMMENT_EMAIL); // Remove email

@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.event;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.solo.event.listener.impl.BlogSyncMgmtAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
 import org.b3log.solo.event.listener.impl.BlogSyncMgmtRemoveArticleProcessor;
@@ -35,7 +35,7 @@ public final class EventModule extends AbstractEventModule {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(EventModule.class);
+            Logger.getLogger(EventModule.class.getName());
 
     /**
      * Public default constructor.

@@ -21,7 +21,7 @@ import com.google.appengine.api.datastore.Query;
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 import com.google.appengine.api.datastore.QueryResultList;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
 import org.b3log.solo.model.Article;
@@ -46,7 +46,7 @@ public class ArchiveDateArticleGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArchiveDateArticleGAERepository.class);
+            Logger.getLogger(ArchiveDateArticleGAERepository.class.getName());
 
     @Override
     public String getName() {
@@ -86,7 +86,7 @@ public class ArchiveDateArticleGAERepository extends AbstractGAERepository
                 results.put(e);
             }
         } catch (final JSONException e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new RepositoryException(e);
         }
 

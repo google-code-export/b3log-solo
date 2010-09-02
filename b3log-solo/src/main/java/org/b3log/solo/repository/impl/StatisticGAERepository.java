@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
@@ -33,7 +33,7 @@ public class StatisticGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(StatisticGAERepository.class);
+            Logger.getLogger(StatisticGAERepository.class.getName());
 
     @Override
     public String getName() {

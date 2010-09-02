@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.filter;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.b3log.latke.util.Strings;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +28,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import static org.b3log.latke.client.action.AbstractCacheablePageAction.*;
 
 /**
@@ -41,7 +42,7 @@ public final class PageCacheFilter implements Filter {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PageCacheFilter.class);
+            Logger.getLogger(PageCacheFilter.class.getName());
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -84,17 +85,19 @@ public final class PageCacheFilter implements Filter {
             cachedPageKey += "?" + queryString;
         }
 
-        LOGGER.debug("Request[cachedPageKey=" + cachedPageKey + "]");
-        LOGGER.trace("Page cache[cachedCount=" + PAGE_CACHE.getCachedCount()
-                     + ", maxCount=" + PAGE_CACHE.getMaxCount() + "]");
+        LOGGER.log(Level.FINER, "Request[cachedPageKey={0}]", cachedPageKey);
+        LOGGER.log(Level.FINEST, "Page cache[cachedCount={0}, maxCount={1}]",
+                   new Object[]{PAGE_CACHE.getCachedCount(),
+                                PAGE_CACHE.getMaxCount()});
         final Object cachedPageContentObject = PAGE_CACHE.get(cachedPageKey);
         if (null == cachedPageContentObject) {
             chain.doFilter(request, response);
 
             return;
         } else {
-            LOGGER.trace("Writes resposne for page[cachedPageKey="
-                         + cachedPageKey + "] from cache");
+            LOGGER.log(Level.FINEST,
+                       "Writes resposne for page[cachedPageKey={0}] from cache",
+                       cachedPageKey);
             response.setContentType("text/html");
             response.setCharacterEncoding("UTF-8");
             final PrintWriter writer = response.getWriter();

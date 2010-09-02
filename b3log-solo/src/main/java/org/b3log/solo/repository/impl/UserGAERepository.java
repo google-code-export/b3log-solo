@@ -15,7 +15,8 @@
  */
 package org.b3log.solo.repository.impl;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
@@ -36,7 +37,7 @@ public class UserGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(UserGAERepository.class);
+            Logger.getLogger(UserGAERepository.class.getName());
 
     @Override
     public String getName() {
@@ -52,7 +53,7 @@ public class UserGAERepository extends AbstractGAERepository
             user.put(User.USER_PASSWORD, newPwd);
             update(userId, user);
         } catch (final JSONException e) {
-            LOGGER.error("Updates user[oId=" + userId + "] error");
+            LOGGER.log(Level.SEVERE, "Updates user[oId={0}] error", userId);
             throw new RepositoryException(e);
         }
     }

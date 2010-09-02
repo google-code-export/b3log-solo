@@ -24,7 +24,7 @@ import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
@@ -46,7 +46,7 @@ public class TagGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(TagGAERepository.class);
+            Logger.getLogger(TagGAERepository.class.getName());
     /**
      * Tag-Article relation repository.
      */
@@ -110,7 +110,7 @@ public class TagGAERepository extends AbstractGAERepository
                 ret.add(tag);
             }
         } catch (final JSONException e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new RepositoryException(e);
         }
 

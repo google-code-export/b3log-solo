@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 
 /**
  * Archive page reader.
@@ -38,7 +38,7 @@ final class ArchivePageReader {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArchivePageReader.class);
+            Logger.getLogger(ArchivePageReader.class.getName());
     /**
      * Connection.
      */
@@ -79,7 +79,7 @@ final class ArchivePageReader {
                     "User-Agent",
                     "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.8) Gecko/20100723 Ubuntu/10.04 (lucid) Firefox/3.6.8 GTB7.1");
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
         }
     }
 
@@ -93,7 +93,7 @@ final class ArchivePageReader {
             final InputStream inputStream = connection.getInputStream();
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (final IOException e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
 
             return null;
         }

@@ -23,7 +23,7 @@ import com.google.appengine.api.datastore.QueryResultList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagArticleRepository;
@@ -48,7 +48,7 @@ public class TagArticleGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(TagArticleGAERepository.class);
+            Logger.getLogger(TagArticleGAERepository.class.getName());
 
     @Override
     public String getName() {
@@ -109,7 +109,7 @@ public class TagArticleGAERepository extends AbstractGAERepository
                 results.put(e);
             }
         } catch (final JSONException e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new RepositoryException(e);
         }
 

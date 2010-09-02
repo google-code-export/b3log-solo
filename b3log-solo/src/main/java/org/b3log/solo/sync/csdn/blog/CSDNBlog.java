@@ -23,9 +23,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.log4j.Logger;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.b3log.latke.service.ServiceException;
@@ -47,7 +48,8 @@ public final class CSDNBlog {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CSDNBlog.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(CSDNBlog.class.getName());
     /**
      * New post method.
      */
@@ -121,13 +123,13 @@ public final class CSDNBlog {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
-                    + "/services/metablogapi.aspx"));
+                            + "/services/metablogapi.aspx"));
             client.setConfig(config);
             client.execute(DELETE_POST, params);
-            LOGGER.info("Deleted article[id=" + csdnBlogArticleId
-                    + "] from CSDN blog");
+            LOGGER.log(Level.INFO, "Deleted article[id={0}] from CSDN blog",
+                       csdnBlogArticleId);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
 
             throw new ServiceException("New a post to CSDN blog error");
         }
@@ -157,14 +159,15 @@ public final class CSDNBlog {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
-                    + "/services/metablogapi.aspx"));
+                            + "/services/metablogapi.aspx"));
             client.setConfig(config);
             final String articleId = (String) client.execute(NEW_POST, params);
-            LOGGER.info("Post article to CSDN blog[result=" + articleId + "]");
+            LOGGER.log(Level.INFO, "Post article to CSDN blog[result={0}]",
+                       articleId);
 
             ret = articleId;
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
 
             throw new ServiceException("New a post to CSDN blog error");
         }
@@ -197,12 +200,13 @@ public final class CSDNBlog {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(
                     new URL("http://blog.csdn.net/" + csdnBlogUserName
-                    + "/services/metablogapi.aspx"));
+                            + "/services/metablogapi.aspx"));
             client.setConfig(config);
             client.execute(EDIT_POST, params);
-            LOGGER.info("Edit article[postId=" + postId + "] to CSDN blog");
+            LOGGER.log(Level.INFO, "Edit article[postId={0}] to CSDN blog",
+                       postId);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
 
             throw new ServiceException("Edit a post to CSDN blog error");
         }
@@ -223,7 +227,7 @@ public final class CSDNBlog {
                 new IndexPageReader(csdnBlogUserName);
         final String pageContent = archivePageReader.getContent();
         final String patternString = "<a href=\"/" + csdnBlogUserName
-                + "/archive/\\d{4}/\\d{2}\\.aspx";
+                                     + "/archive/\\d{4}/\\d{2}\\.aspx";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
 
@@ -261,7 +265,7 @@ public final class CSDNBlog {
                 new IndexPageReader(csdnBlogUserName);
         final String pageContent = archivePageReader.getContent();
         final String patternString = "<a href=\"/" + csdnBlogUserName
-                + "/archive/\\d{4}/\\d{2}\\.aspx";
+                                     + "/archive/\\d{4}/\\d{2}\\.aspx";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
 
@@ -335,8 +339,8 @@ public final class CSDNBlog {
         try {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(new URL("http://blog.csdn.net/"
-                    + csdnBlogUserName
-                    + "/services/metablogapi.aspx"));
+                                        + csdnBlogUserName
+                                        + "/services/metablogapi.aspx"));
             client.setConfig(config);
 
             final List<String> params = new ArrayList<String>();
@@ -346,7 +350,7 @@ public final class CSDNBlog {
             final Map<String, ?> result =
                     (Map<String, ?>) client.execute(GET_POST_BY_ID, params);
 
-            LOGGER.trace("Post[keys=" + result.keySet() + "]");
+            LOGGER.log(Level.FINEST, "Post[keys={0}]", result.keySet());
             final String title = (String) result.get("title");
             ret.setTitle(title);
 
@@ -369,18 +373,19 @@ public final class CSDNBlog {
             ret.setContent(content);
 
         } catch (final Exception e) {
-            LOGGER.error("Export article[id=" + articleId + "] error[msg="
-                    + e.getMessage() + "]");
+            LOGGER.log(Level.SEVERE, "Export article[id={0}] error[msg={1}]",
+                       new Object[]{articleId, e.getMessage()});
 
             return null;
         }
 
         try {
-            LOGGER.trace("Sleep main thread [" + GET_ARTICLE_SLEEP_MILLIS
-                    + "] millis for getting article from CSDN....");
+            LOGGER.log(Level.FINEST,
+                       "Sleep main thread [{0}] millis for getting article from CSDN....",
+                       GET_ARTICLE_SLEEP_MILLIS);
             Thread.sleep(GET_ARTICLE_SLEEP_MILLIS);
         } catch (final InterruptedException e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
         }
 
         return ret;

@@ -16,7 +16,8 @@
 package org.b3log.solo.event.listener.impl;
 
 import com.google.inject.Inject;
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
@@ -44,7 +45,7 @@ public final class BlogSyncMgmtRemoveArticleProcessor
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(BlogSyncMgmtRemoveArticleProcessor.class);
+            Logger.getLogger(BlogSyncMgmtRemoveArticleProcessor.class.getName());
     /**
      * Blog sync management repository.
      */
@@ -75,9 +76,11 @@ public final class BlogSyncMgmtRemoveArticleProcessor
     @Override
     public void action(final Event<String> event) throws EventException {
         final String articleId = event.getData();
-        LOGGER.trace("Processing an event[type=" + event.getType()
-                     + ", data=" + articleId + "] in listener[className="
-                     + BlogSyncMgmtRemoveArticleProcessor.class.getName() + "]");
+        LOGGER.log(Level.FINEST,
+                   "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                   new Object[]{event.getType(),
+                                articleId,
+                                BlogSyncMgmtRemoveArticleProcessor.class.getName()});
 
         final String[] knownExternalBloggingSystems =
                 SoloServletListener.SUPPORTED_BLOG_SYNC_MGMT_EXTERNAL_BLOGGING_SYSTEMS;
@@ -89,20 +92,21 @@ public final class BlogSyncMgmtRemoveArticleProcessor
                         blogSyncManagementRepository.getByExternalBloggingSystem(
                         knownExternalBloggingSys);
                 if (null == blogSyncMgmt) {
-                    LOGGER.debug("Not found syn management settings for external "
-                                 + "blogging system[" + knownExternalBloggingSys
-                                 + "]");
+                    LOGGER.log(Level.FINER,
+                               "Not found syn management settings for external blogging system[{0}]",
+                               knownExternalBloggingSys);
                     continue;
                 }
 
-                LOGGER.debug("Got a blog sync management setting["
-                             + blogSyncMgmt.toString(
-                        SoloServletListener.JSON_PRINT_INDENT_FACTOR) + "]");
+                LOGGER.log(Level.FINER,
+                           "Got a blog sync management setting[{0}]",
+                           blogSyncMgmt.toString(
+                        SoloServletListener.JSON_PRINT_INDENT_FACTOR));
                 if (!blogSyncMgmt.getBoolean(
                         BLOG_SYNC_MGMT_REMOVE_ENABLED)) {
-                    LOGGER.info("External blogging system["
-                                + knownExternalBloggingSys
-                                + "] need NOT to syn remove article");
+                    LOGGER.log(Level.INFO,
+                               "External blogging system[{0}] need NOT to syn remove article",
+                               knownExternalBloggingSys);
                 } else {
                     // XXX: Design external blogging system interface
                     final String userName = blogSyncMgmt.getString(
@@ -127,7 +131,7 @@ public final class BlogSyncMgmtRemoveArticleProcessor
                 }
             }
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
 
             throw new EventException("Can not handle event[" + getEventType()
                                      + "]");

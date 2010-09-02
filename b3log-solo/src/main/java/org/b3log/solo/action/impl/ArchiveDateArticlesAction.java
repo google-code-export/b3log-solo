@@ -24,9 +24,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.util.ArticleUtils;
@@ -62,7 +62,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArchiveDateArticlesAction.class);
+            Logger.getLogger(ArchiveDateArticlesAction.class.getName());
     /**
      * Article repository.
      */
@@ -167,7 +167,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
 
             statistics.incBlogViewCount();
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
