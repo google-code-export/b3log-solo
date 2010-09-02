@@ -1,2 +1,2 @@
-All supported blogging services for article import so far:
+目前为止支持从以下博客服务导入文章：
  * [http://blog.csdn.net/ CSDN Blog]
