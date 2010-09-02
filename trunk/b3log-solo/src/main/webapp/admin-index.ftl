@@ -13,7 +13,7 @@
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
     </head>
     <body>
-        <#include "common-top.html">
+        <#include "common-top.ftl">
         <div class="topMsg">
             <span id="tipMsg" class="none"></span>
         </div>

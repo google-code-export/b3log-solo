@@ -11,23 +11,23 @@
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
     </head>
     <body>
-        <#include "common-top.html">
+        <#include "common-top.ftl">
         <div class="content">
             <div class="header">
-                <#include "article-header.html">
+                <#include "article-header.ftl">
             </div>
             <div class="body">
                 <div class="left side">
-                    <#include "article-side.html">
+                    <#include "article-side.ftl">
                 </div>
                 <div class="right main">
                     <h2>${archive1Label}<span id="archiveDateId"></span></h2>
-                    <#include "common-articles.html">
+                    <#include "common-articles.ftl">
                 </div>
                 <div class="clear"></div>
             </div>
             <div class="footer">
-                <#include "article-footer.html">
+                <#include "article-footer.ftl">
             </div>
         </div>
         <script type="text/javascript">
