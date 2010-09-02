@@ -49,7 +49,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Article action. article-detail.html.
+ * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.6, Aug 31, 2010
@@ -170,8 +170,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                                                           + articleId);
 
             filler.fillSide(ret);
-            filler.fillBlogHeader(ret, request);
-            filler.fillBlogFooter(ret, request);
+            filler.fillBlogHeader(ret);
+            filler.fillBlogFooter(ret);
             filler.fillArchiveDates(ret);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());

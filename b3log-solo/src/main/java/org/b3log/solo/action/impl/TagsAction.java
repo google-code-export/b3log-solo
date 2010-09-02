@@ -42,7 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Tag action. tags.html.
+ * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.3, Aug 26, 2010
@@ -114,8 +114,8 @@ public final class TagsAction extends AbstractCacheablePageAction {
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret);
-            filler.fillBlogHeader(ret, request);
-            filler.fillBlogFooter(ret, request);
+            filler.fillBlogHeader(ret);
+            filler.fillBlogFooter(ret);
             filler.fillArchiveDates(ret);
 
             statistics.incBlogViewCount();

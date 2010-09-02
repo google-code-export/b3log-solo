@@ -36,7 +36,7 @@ import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
- * Index action. index.html.
+ * Index action. index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.7, Aug 26, 2010
@@ -94,8 +94,8 @@ public final class IndexAction extends AbstractCacheablePageAction {
 
             filler.fillIndexArticles(ret, currentPageNum);
             filler.fillSide(ret);
-            filler.fillBlogHeader(ret, request);
-            filler.fillBlogFooter(ret, request);
+            filler.fillBlogHeader(ret);
+            filler.fillBlogFooter(ret);
             filler.fillArchiveDates(ret);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
