@@ -92,6 +92,7 @@ public final class ErrorAction extends AbstractAction {
             filler.fillBlogHeader(ret);
             filler.fillSide(ret);
             filler.fillBlogFooter(ret);
+            filler.fillArchiveDates(ret);
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
             statistics.incBlogViewCount();
