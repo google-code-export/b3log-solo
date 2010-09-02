@@ -310,7 +310,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                     requestJSONObject.optString(Comment.COMMENT_URL);
             String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT);
-            commentContent = Htmls.removeHtmlTags(commentURL);
+            commentContent = Htmls.removeHtmlTags(commentContent);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
             comment.put(Comment.COMMENT_NAME, commentName);
