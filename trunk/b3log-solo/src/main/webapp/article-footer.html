@@ -9,6 +9,27 @@ Powered by
 </a>
 , ver ${version}
 <script type="text/javascript">
+    var ellipsis = function (str, strLength) {
+        var length = 0,
+        strTrim = str.replace(/(^\s*)|(\s*$)/g, ""),
+        strArray = strTrim.split(""),
+        resultStr = "";
+        for (var i = 0; i < strArray.length; i++) {
+            if (length < strLength) {
+                if(strArray[i]&& strArray[i].match(/[^u4E00-u9FA5]/)) {
+                    length += 2;
+                } else {
+                    length++;
+                }
+                resultStr += strArray[i];
+            }
+        }
+        if (strTrim !== resultStr) {
+            resultStr += "...";
+        }
+        return resultStr;
+    }
+    
     var initArticle = function () {
         // common-top.html use state
         jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
@@ -75,15 +96,15 @@ Powered by
         var sideEllipsis = function () {
             var sideLength = parseInt(($("#sideNavi").width() - 24) / 7);
             $("#mostCommentArticles a").each(function () {
-                var str = $.bowknot.ellipsis(this.title, sideLength);
+                var str = ellipsis(this.title, sideLength);
                 $(this).text(str.toString());
             });
             $("#mostViewCountArticles a").each(function () {
-                var str = $.bowknot.ellipsis(this.title, sideLength);
+                var str = ellipsis(this.title, sideLength);
                 $(this).text(str.toString());
             });
-             $("#sideLink a").each(function () {
-                var str = $.bowknot.ellipsis(this.title, sideLength);
+            $("#sideLink a").each(function () {
+                var str = ellipsis(this.title, sideLength);
                 $(this).text(str.toString());
             });
         }
