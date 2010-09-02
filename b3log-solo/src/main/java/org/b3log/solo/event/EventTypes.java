@@ -19,7 +19,7 @@ package org.b3log.solo.event;
  * Event types.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 25, 2010
+ * @version 1.0.0.2, Sep 2, 2010
  */
 public final class EventTypes {
 
@@ -35,6 +35,14 @@ public final class EventTypes {
      * Indicates a remove article event.
      */
     public static final String REMOVE_ARTICLE = "Remove Article";
+    /**
+     * Indicates a add comment event.
+     */
+    public static final String ADD_COMMENT = "Add Comment";
+    /**
+     * Indicate a remove comment event.
+     */
+    public static final String REMOVE_COMMENT = "Remove Comment";
 
     /**
      * Private default constructor.
