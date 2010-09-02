@@ -12,5 +12,12 @@ dev_appserver.cmd ${solo.war}
 等启动完毕后，在浏览器中访问：[http://localhost:8080]
 
 ==部署至 GAE==
- # 进入GAE管理控制台，没有 GAE 帐号点击[[http://appengine.google.com/ 这里]申请
- #   
+ # 创建 GAE 应用，假设 ID 为`${application-id}`,（没有 GAE 帐号点击[http://appengine.google.com/ 这里]申请）
+ # 将 `${solo.war}/WEB-INF/appengine-web.xml` 文件里的
+{{{
+<application>solo-demo</application>
+}}}
+修改为
+{{{
+<application>${application-id}</application>
+}}}
