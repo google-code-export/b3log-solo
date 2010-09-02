@@ -64,8 +64,8 @@
 
     var articlePagination = $("#articlePagination").paginate({
         bindEvent: "getArticleList",
-        pageCount: 10,
-        windowSize: 5,
+        pageCount: 1,
+        windowSize: 10,
         currentPage: 1,
         style: "google",
         isGoTo: false
@@ -144,8 +144,8 @@
         currentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": 15,
-            "paginationWindowSize": 40
+            "paginationPageSize": 2,
+            "paginationWindowSize": 10
         };
         
         var result = jsonRpc.articleService.getArticles(requestJSONObject);
