@@ -376,9 +376,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                 JSONObject article = null;
                 LOGGER.log(Level.FINER,
                            "CSDN blog article[oId={0}]'s status[csdnTmpImported={1}, imported={2}]",
-                           new Object[]{oId,
-                                        csdnTmpImported,
-                                        imported});
+                           new Object[]{oId, csdnTmpImported, imported});
                 if (csdnTmpImported) {
                     article = csdnBlogArticleRepository.get(oId);
                 } else { // Not retrieved yet, get the article from CSDN
