@@ -71,10 +71,17 @@
                 var leftWidth = $(".side").width() + $.bowknot.strToInt($main.css("padding-left"))
                     + $.bowknot.strToInt($main.css("padding-right")) + 17;
 
-                
-                $("#main").css("width", document.documentElement.clientWidth - leftWidth);
+                var windowWidth = document.documentElement.clientWidth - leftWidth;
+                if (windowWidth < 700) {
+                    windowWidth = 700;
+                }
+                $("#main").css("width", windowWidth);
                 $(window).resize(function () {
-                    $("#main").css("width", document.documentElement.clientWidth - leftWidth);
+                    var windowWidth = document.documentElement.clientWidth - leftWidth;
+                    if (windowWidth < 700) {
+                        windowWidth = 700;
+                    }
+                    $("#main").css("width", windowWidth);
                 });
             })();
 
@@ -110,7 +117,7 @@
                 var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
                 if (isAdminLoggedIn) {
                     var loginHTML = "<a class='noUnderline' href='index.do'>${indexLabel}</a>&nbsp;|&nbsp;"
-                    + "<span onclick='adminLogout();'>${logoutLabel}</span>";
+                        + "<span onclick='adminLogout();'>${logoutLabel}</span>";
                         
                     $("#admin").append(loginHTML);
                 } else {
