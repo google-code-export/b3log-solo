@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo version.
-    Version: 1.0.0.9, Aug 31, 2010
+    Version: 1.0.1.0, Sep 2, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -11,7 +11,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>solo</artifactId>
     <packaging>war</packaging>
-    <version>1.0.0</version>
+    <version>0.1.0-preview1</version>
     <name>B3log Solo</name>
     <url>http://b3log-solo.googlecode.com</url>
     <description>B3log Solo version.</description>
