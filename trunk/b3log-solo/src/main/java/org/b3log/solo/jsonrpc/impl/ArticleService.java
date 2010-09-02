@@ -20,9 +20,10 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
@@ -58,7 +59,8 @@ public final class ArticleService extends AbstractJSONRpcService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleService.class);
+    private static final Logger LOGGER = 
+            Logger.getLogger(ArticleService.class.getName());
     /**
      * Article repository.
      */
@@ -169,7 +171,7 @@ public final class ArticleService extends AbstractJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_ARTICLE_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -235,9 +237,9 @@ public final class ArticleService extends AbstractJSONRpcService {
             article.put(Article.ARTICLE_TAGS_REF, tags);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLE_SUCC);
 
-            LOGGER.debug("Got an article[oId=" + articleId + "]");
+            LOGGER.log(Level.FINER, "Got an article[oId={0}]", articleId);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -323,7 +325,7 @@ public final class ArticleService extends AbstractJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLES_SUCC);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -361,7 +363,7 @@ public final class ArticleService extends AbstractJSONRpcService {
 
         try {
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
-            LOGGER.debug("Removing an article[oId=" + articleId + "]");
+            LOGGER.log(Level.FINER, "Removing an article[oId={0}]", articleId);
             // Step 1: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
             // Step 2: Remove tag-article relations
@@ -379,10 +381,10 @@ public final class ArticleService extends AbstractJSONRpcService {
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
-            LOGGER.debug("Removed an article[oId=" + articleId + "]");
+            LOGGER.log(Level.FINER, "Removed an article[oId={0}]", articleId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 
@@ -464,10 +466,10 @@ public final class ArticleService extends AbstractJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
 
             transaction.commit();
-            LOGGER.debug("Updated an article[oId=" + articleId + "]");
+            LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 

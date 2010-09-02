@@ -15,15 +15,16 @@
  */
 package org.b3log.solo.action.impl;
 
+import java.util.logging.Level;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.latke.client.action.AbstractAction;
 import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
@@ -47,7 +48,7 @@ public final class AdminIndexAction extends AbstractAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(AdminIndexAction.class);
+            Logger.getLogger(AdminIndexAction.class.getName());
     /**
      * Language service.
      */
@@ -76,13 +77,13 @@ public final class AdminIndexAction extends AbstractAction {
             Locales.setLocale(request, locale); // For other admin DoNothing actions
 
             final Map<String, String> langs = langPropsService.getAll(locale);
-            LOGGER.trace("Langs[values=" + langs.values() + "]");
+            LOGGER.log(Level.FINEST, "Langs[values={0}]", langs.values());
             ret.putAll(langs);
 
             filler.fillBlogHeader(ret, request);
             filler.fillBlogFooter(ret, request);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 

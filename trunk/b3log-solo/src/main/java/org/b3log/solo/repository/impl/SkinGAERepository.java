@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.SkinRepository;
@@ -33,7 +33,7 @@ public class SkinGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(SkinGAERepository.class);
+            Logger.getLogger(SkinGAERepository.class.getName());
 
     @Override
     public String getName() {

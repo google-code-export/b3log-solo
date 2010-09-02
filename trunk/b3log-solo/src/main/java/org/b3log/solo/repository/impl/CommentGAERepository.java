@@ -22,7 +22,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultIterable;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.CommentRepository;
@@ -42,7 +42,7 @@ public class CommentGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(CommentGAERepository.class);
+            Logger.getLogger(CommentGAERepository.class.getName());
 
     @Override
     public String getName() {

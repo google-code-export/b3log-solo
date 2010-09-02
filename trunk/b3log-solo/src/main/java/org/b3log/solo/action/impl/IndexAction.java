@@ -20,9 +20,9 @@ import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
@@ -50,7 +50,8 @@ public final class IndexAction extends AbstractCacheablePageAction {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(IndexAction.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(IndexAction.class.getName());
     /**
      * Language service.
      */
@@ -80,7 +81,8 @@ public final class IndexAction extends AbstractCacheablePageAction {
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -100,7 +102,7 @@ public final class IndexAction extends AbstractCacheablePageAction {
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 

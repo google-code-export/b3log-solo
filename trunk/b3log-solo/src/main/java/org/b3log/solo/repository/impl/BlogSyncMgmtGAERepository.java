@@ -18,7 +18,7 @@ package org.b3log.solo.repository.impl;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
@@ -37,7 +37,7 @@ public class BlogSyncMgmtGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(BlogSyncMgmtGAERepository.class);
+            Logger.getLogger(BlogSyncMgmtGAERepository.class.getName());
 
     @Override
     public String getName() {

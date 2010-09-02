@@ -20,7 +20,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.text.ParseException;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.ArchiveDate;
@@ -40,7 +40,7 @@ public class ArchiveDateGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArchiveDateGAERepository.class);
+            Logger.getLogger(ArchiveDateGAERepository.class.getName());
 
     @Override
     public String getName() {
@@ -67,7 +67,7 @@ public class ArchiveDateGAERepository extends AbstractGAERepository
 
             return new JSONObject(properties);
         } catch (final ParseException e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new RepositoryException(e);
         }
     }

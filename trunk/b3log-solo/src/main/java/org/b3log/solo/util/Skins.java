@@ -21,7 +21,8 @@ import java.io.FileReader;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.b3log.solo.servlet.SoloServletListener;
 
 /**
@@ -35,7 +36,7 @@ public final class Skins {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Skins.class);
+    private static final Logger LOGGER = Logger.getLogger(Skins.class.getName());
 
     /**
      * Gets all skin directory names. Scans the
@@ -91,13 +92,14 @@ public final class Skins {
         });
 
         if (null == skinDirs) {
-            LOGGER.error("Skin directory is null");
+            LOGGER.severe("Skin directory is null");
 
             return null;
         }
 
         if (1 != skinDirs.length) {
-            LOGGER.error("Skin directory count[" + skinDirs.length + "]");
+            LOGGER.log(Level.SEVERE, "Skin directory count[{0}]",
+                       skinDirs.length);
 
             return null;
         }
@@ -110,8 +112,8 @@ public final class Skins {
 
             return ret.getProperty("name");
         } catch (final Exception e) {
-            LOGGER.error("Read skin configuration error[msg=" + e.getMessage()
-                         + "]");
+            LOGGER.log(Level.SEVERE, "Read skin configuration error[msg={0}]", e.
+                    getMessage());
 
             return null;
         }

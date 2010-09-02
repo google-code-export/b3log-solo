@@ -18,6 +18,7 @@ package org.b3log.solo.auth;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -26,7 +27,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 
 /**
  * Authentication filter.
@@ -40,7 +40,7 @@ public final class AuthFilter implements Filter {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(AuthFilter.class);
+            Logger.getLogger(AuthFilter.class.getName());
     /**
      * User service.
      */
@@ -73,7 +73,7 @@ public final class AuthFilter implements Filter {
 
 
         if (!USER_SERVICE.isUserLoggedIn() || !USER_SERVICE.isUserAdmin()) {
-            LOGGER.warn("Authenticate fail");
+            LOGGER.warning("Authenticate fail");
 
             httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
         }

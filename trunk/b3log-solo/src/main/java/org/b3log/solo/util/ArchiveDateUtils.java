@@ -20,7 +20,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
@@ -44,7 +44,8 @@ public final class ArchiveDateUtils {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArchiveDateUtils.class);
+    private static final Logger LOGGER = 
+            Logger.getLogger(ArchiveDateUtils.class.getName());
     /**
      * Archive date repository.
      */
@@ -87,7 +88,7 @@ public final class ArchiveDateUtils {
 
                 archiveDateRepository.add(archiveDate);
             } catch (final ParseException e) {
-                LOGGER.error(e.getMessage(), e);
+                LOGGER.severe(e.getMessage());
                 throw new RepositoryException(e);
             }
         }

@@ -17,7 +17,7 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
 import org.b3log.solo.model.Statistic;
@@ -38,7 +38,7 @@ public final class StatisticService extends AbstractJSONRpcService {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(StatisticService.class);
+            Logger.getLogger(StatisticService.class.getName());
     /**
      * Statistic repository.
      */
@@ -72,7 +72,7 @@ public final class StatisticService extends AbstractJSONRpcService {
         try {
             ret = statisticRepository.get(Statistic.STATISTIC);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
         }
 
         return ret;
@@ -89,7 +89,7 @@ public final class StatisticService extends AbstractJSONRpcService {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
         }
     }
 
@@ -106,7 +106,7 @@ public final class StatisticService extends AbstractJSONRpcService {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
         }
     }
 
@@ -120,7 +120,7 @@ public final class StatisticService extends AbstractJSONRpcService {
         try {
             return articleUtils.getArticleViewCount(articleId);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             return 0;
         }
     }

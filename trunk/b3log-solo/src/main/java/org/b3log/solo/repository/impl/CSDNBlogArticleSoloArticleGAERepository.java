@@ -19,7 +19,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
@@ -42,7 +42,8 @@ public class CSDNBlogArticleSoloArticleGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(CSDNBlogArticleSoloArticleGAERepository.class);
+            Logger.getLogger(CSDNBlogArticleSoloArticleGAERepository.class.
+            getName());
 
     @Override
     public String getName() {

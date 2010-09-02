@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
@@ -43,7 +43,8 @@ public final class CSDNBlogArticle {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CSDNBlogArticle.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(CSDNBlogArticle.class.getName());
     /**
      * Id.
      */
@@ -251,7 +252,8 @@ public final class CSDNBlogArticle {
         try {
             ret.put("title", title);
             final StringBuilder descriptionBuilder = new StringBuilder(content);
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             descriptionBuilder.append("<p>");
             descriptionBuilder.append(
@@ -270,7 +272,7 @@ public final class CSDNBlogArticle {
                     CSDNBlog.CST_DATE_FORMAT.parse(
                     CSDNBlog.UTC_DATE_FORMAT.format(createDate)));
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
         }
 
         return ret;
@@ -287,7 +289,7 @@ public final class CSDNBlogArticle {
         final String contentWithoutTags = Htmls.removeHtmlTags(content);
         if (contentWithoutTags.length() >= MAX_ABSTRACT_LENGTH) {
             return contentWithoutTags.substring(0, MAX_ABSTRACT_LENGTH)
-                    + "....";
+                   + "....";
         }
 
         return contentWithoutTags;

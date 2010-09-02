@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.action.impl;
 
+import java.util.logging.Level;
 import org.b3log.latke.Keys;
 import org.b3log.latke.client.action.ActionException;
 import com.google.inject.Inject;
@@ -24,9 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.util.ArticleUtils;
@@ -63,7 +64,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(TagArticlesAction.class);
+            Logger.getLogger(TagArticlesAction.class.getName());
     /**
      * Article repository.
      */
@@ -109,7 +110,8 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
 
         try {
-            final JSONObject preference = SoloServletListener.getUserPreference();
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -146,22 +148,24 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                         tagArticleRelations.getJSONObject(i);
                 final String articleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
-                        + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }
 
             Collections.sort(articles, new ArticleUpdateDateComparator());
 
-            LOGGER.trace("Paginate tag-articles[currentPageNum="
-                    + currentPageNum + ", pageSize=" + pageSize
-                    + ", pageCount=" + pageCount + ", windowSize="
-                    + windowSize + "]");
+            LOGGER.log(Level.FINEST,
+                       "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
+                       new Object[]{currentPageNum,
+                                    pageSize,
+                                    pageCount,
+                                    windowSize});
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
 
-            LOGGER.trace("tag-articles[pageNums=" + pageNums + "]");
+            LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
 
             articleUtils.addTags(articles);
             ret.put(Article.ARTICLES, articles);
@@ -179,7 +183,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
             statistics.incBlogViewCount();
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
 

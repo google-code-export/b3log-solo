@@ -27,12 +27,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
-import org.apache.log4j.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.UtilModule;
@@ -70,7 +71,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(SoloServletListener.class);
+            Logger.getLogger(SoloServletListener.class.getName());
     /**
      * JSONO print indent factor.
      */
@@ -187,7 +188,7 @@ public final class SoloServletListener extends AbstractServletListener {
         preference.put(SKIN_NAME, skinName);
 
         final Set<String> skinDirNames = skins.getSkinDirNames();
-        LOGGER.debug("Loaded skins[dirNames=" + skinDirNames + "]");
+        LOGGER.log(Level.FINER, "Loaded skins[dirNames={0}]", skinDirNames);
         final JSONArray skinArray = new JSONArray();
         for (final String dirName : skinDirNames) {
             final JSONObject skin = new JSONObject();
@@ -222,10 +223,10 @@ public final class SoloServletListener extends AbstractServletListener {
                 LOGGER.info("Created blog statistic");
             }
 
-            LOGGER.info("Loaded statistic[" + statistic.toString(
-                    JSON_PRINT_INDENT_FACTOR) + "]");
+            LOGGER.log(Level.INFO, "Loaded statistic[{0}]", statistic.toString(
+                    JSON_PRINT_INDENT_FACTOR));
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -267,7 +268,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
             zipFile.close();
         } catch (final Exception e) {
-            LOGGER.fatal("Can not load captchs!", e);
+            LOGGER.severe("Can not load captchs!");
 
             throw new RuntimeException(e);
         }
@@ -323,10 +324,10 @@ public final class SoloServletListener extends AbstractServletListener {
             initSkins(userPreference);
             preferenceRepository.update(preferenceId, userPreference);
 
-            LOGGER.info("Loaded preference[" + userPreference.toString(
-                    JSON_PRINT_INDENT_FACTOR) + "]");
+            LOGGER.log(Level.INFO, "Loaded preference[{0}]",
+                       userPreference.toString(JSON_PRINT_INDENT_FACTOR));
         } catch (final Exception e) {
-            LOGGER.fatal(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new RuntimeException("Preference load error!");
         }
     }
@@ -363,7 +364,7 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             jsonRpcBridge.registerSerializer(new StatusCodesSerializer());
         } catch (final Exception e) {
-            LOGGER.fatal(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new RuntimeException(e);
         }
     }

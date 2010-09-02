@@ -17,9 +17,9 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import org.b3log.latke.client.action.AbstractCacheablePageAction;
 import org.b3log.latke.client.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractJSONRpcService;
@@ -35,7 +35,8 @@ public final class AdminService extends AbstractJSONRpcService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AdminService.class);
+    private static final Logger LOGGER = 
+            Logger.getLogger(AdminService.class.getName());
     /**
      * User service.
      */

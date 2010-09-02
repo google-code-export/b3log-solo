@@ -22,7 +22,8 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultIterable;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
@@ -44,7 +45,7 @@ public class ArticleGAERepository extends AbstractGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleGAERepository.class);
+            Logger.getLogger(ArticleGAERepository.class.getName());
 
     @Override
     public String getName() {
@@ -210,10 +211,10 @@ public class ArticleGAERepository extends AbstractGAERepository
 
             super.add(article);
         } catch (final Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            LOGGER.severe(e.getMessage());
             throw new RepositoryException(e);
         }
 
-        LOGGER.debug("Imported an article[oId=" + articleId + "]");
+        LOGGER.log(Level.FINER, "Imported an article[oId={0}]", articleId);
     }
 }

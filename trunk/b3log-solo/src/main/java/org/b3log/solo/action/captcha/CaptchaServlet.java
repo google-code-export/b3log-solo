@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.action.captcha;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import com.google.appengine.api.images.Composite;
 import com.google.appengine.api.images.Image;
@@ -29,7 +31,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Logger;
 import static org.b3log.solo.servlet.SoloServletListener.*;
 
 /**
@@ -50,7 +51,8 @@ public final class CaptchaServlet extends HttpServlet {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CaptchaServlet.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(CaptchaServlet.class.getName());
     /**
      * Default serial version uid.
      */
@@ -95,8 +97,9 @@ public final class CaptchaServlet extends HttpServlet {
         }
 
         final HttpSession httpSession = request.getSession();
-        LOGGER.debug("Captcha[" + captcha + "] for session[id="
-                     + httpSession.getId() + "]");
+        LOGGER.log(Level.FINER, "Captcha[{0}] for session[id={1}]",
+                   new Object[]{captcha,
+                                httpSession.getId()});
         httpSession.setAttribute(CAPTCHA, captcha);
 
         final Image captchaImage =

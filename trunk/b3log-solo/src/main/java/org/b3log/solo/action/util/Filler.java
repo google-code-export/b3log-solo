@@ -20,8 +20,9 @@ import com.google.inject.Inject;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.log4j.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.model.Article;
@@ -54,7 +55,8 @@ public final class Filler {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Filler.class);
+    private static final Logger LOGGER =
+            Logger.getLogger(Filler.class.getName());
     /**
      * Article repository.
      */
@@ -282,7 +284,7 @@ public final class Filler {
     public void fillBlogHeader(final Map<String, Object> dataModel,
                                final HttpServletRequest request)
             throws Exception {
-        LOGGER.trace("Filling blog header....");
+        LOGGER.finest("Filling blog header....");
         final JSONObject preference = SoloServletListener.getUserPreference();
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         final String blogSubtitle = preference.getString(
@@ -309,7 +311,7 @@ public final class Filler {
 
         final JSONObject preference = SoloServletListener.getUserPreference();
         final String adminGmail = preference.getString(Preference.ADMIN_GMAIL);
-        LOGGER.debug("Current user[userId=" + adminGmail + "]");
+        LOGGER.log(Level.FINER, "Current user[userId={0}]", adminGmail);
         dataModel.put(User.USER_EMAIL, adminGmail);
     }
 }
