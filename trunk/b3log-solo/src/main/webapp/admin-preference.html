@@ -28,14 +28,6 @@
                     </tr>
                     <tr>
                         <th>
-                            ${indexRecentArticleDisplayCnt1Label}
-                        </th>
-                        <td>
-                            <input id="recentArticleDisplayCount"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             ${indexRecentCommentDisplayCnt1Label}
                         </th>
                         <td>
@@ -146,7 +138,7 @@
                 "blogTitle": $("#blogTitle").val(),
                 "blogSubtitle": $("#blogSubtitle").val(),
                 "mostCommentArticleDisplayCount": $("#mostCommentArticleDisplayCount").val(),
-                "recentArticleDisplayCount": $("#recentArticleDisplayCount").val(),
+                "recentArticleDisplayCount": 10, // XXX: remove recentArticleDisplayCount
                 "recentCommentDisplayCount": $("#recentCommentDisplayCount").val(),
                 "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
                 "articleListDisplayCount": $("#articleListDisplayCount").val(),
@@ -179,7 +171,6 @@
                 $("#blogTitle").val(preference.blogTitle),
                 $("#blogSubtitle").val(preference.blogSubtitle),
                 $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
-                $("#recentArticleDisplayCount").val(preference.recentArticleDisplayCount);
                 $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
                 $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
                 $("#articleListDisplayCount").val(preference.articleListDisplayCount);

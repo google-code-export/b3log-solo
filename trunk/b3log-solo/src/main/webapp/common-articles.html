@@ -54,9 +54,15 @@
 </#list>
 <#if 0 != paginationPageCount>
 <div class="pagination">
+    <#if paginationFirstPageNum!=1>
+    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=1"><<</a>
+    </#if>
     <#list paginationPageNums as paginationPageNum>
     <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
     </#list>
+    <#if paginationLastPageNum!=paginationPageCount>
+    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}">>></a>
+    </#if>
     ${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
 </#if>
