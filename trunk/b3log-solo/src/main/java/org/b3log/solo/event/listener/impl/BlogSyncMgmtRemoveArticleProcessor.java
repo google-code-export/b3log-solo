@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 27, 2010
+ * @version 1.0.0.1, Sep 2, 2010
  */
 public final class BlogSyncMgmtRemoveArticleProcessor
         extends AbstractEventListener<String> {
@@ -69,7 +69,7 @@ public final class BlogSyncMgmtRemoveArticleProcessor
      */
     @Inject
     public BlogSyncMgmtRemoveArticleProcessor(final EventManager eventManager) {
-        super(EventTypes.REMOVE_ARTICLE, eventManager);
+        super(eventManager);
     }
 
     @Override

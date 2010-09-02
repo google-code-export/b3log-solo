@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 1, 2010
+ * @version 1.0.0.1, Sep 2, 2010
  */
 public final class BlogSyncMgmtUpdateArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -70,15 +70,15 @@ public final class BlogSyncMgmtUpdateArticleProcessor
      */
     @Inject
     public BlogSyncMgmtUpdateArticleProcessor(final EventManager eventManager) {
-        super(EventTypes.UPDATE_ARTICLE, eventManager);
+        super(eventManager);
     }
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject article = event.getData();
         LOGGER.trace("Processing an event[type=" + event.getType()
-                + ", data=" + article + "] in listener[className="
-                + BlogSyncMgmtUpdateArticleProcessor.class.getName() + "]");
+                     + ", data=" + article + "] in listener[className="
+                     + BlogSyncMgmtUpdateArticleProcessor.class.getName() + "]");
 
         final String[] knownExternalBloggingSystems =
                 SoloServletListener.SUPPORTED_BLOG_SYNC_MGMT_EXTERNAL_BLOGGING_SYSTEMS;
@@ -91,19 +91,19 @@ public final class BlogSyncMgmtUpdateArticleProcessor
                         knownExternalBloggingSys);
                 if (null == blogSyncMgmt) {
                     LOGGER.debug("Not found syn management settings for external "
-                            + "blogging system[" + knownExternalBloggingSys
-                            + "]");
+                                 + "blogging system[" + knownExternalBloggingSys
+                                 + "]");
                     continue;
                 }
 
                 LOGGER.debug("Got a blog sync management setting["
-                        + blogSyncMgmt.toString(
+                             + blogSyncMgmt.toString(
                         SoloServletListener.JSON_PRINT_INDENT_FACTOR) + "]");
                 if (!blogSyncMgmt.getBoolean(
                         BLOG_SYNC_MGMT_UPDATE_ENABLED)) {
                     LOGGER.info("External blogging system["
-                            + knownExternalBloggingSys
-                            + "] need NOT to syn update article");
+                                + knownExternalBloggingSys
+                                + "] need NOT to syn update article");
                 } else {
                     // XXX: Design external blogging system interface
                     final String userName = blogSyncMgmt.getString(
@@ -112,7 +112,7 @@ public final class BlogSyncMgmtUpdateArticleProcessor
                             BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
                     final CSDNBlogArticle csdnBlogArticle =
                             new CSDNBlogArticle(article);
-                    
+
                     final String articleId = article.getString(Keys.OBJECT_ID);
                     final JSONObject csdnArticleSoloArticleRelation =
                             csdnBlogArticleSoloArticleRepository.
@@ -126,7 +126,7 @@ public final class BlogSyncMgmtUpdateArticleProcessor
             LOGGER.error(e.getMessage(), e);
 
             throw new EventException("Can not handle event[" + getEventType()
-                    + "]");
+                                     + "]");
         }
     }
 

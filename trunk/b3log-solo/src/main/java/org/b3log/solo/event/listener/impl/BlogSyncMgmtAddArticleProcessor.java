@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 27, 2010
+ * @version 1.0.0.2, Sep 2, 2010
  */
 public final class BlogSyncMgmtAddArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -71,7 +71,7 @@ public final class BlogSyncMgmtAddArticleProcessor
      */
     @Inject
     public BlogSyncMgmtAddArticleProcessor(final EventManager eventManager) {
-        super(EventTypes.ADD_ARTICLE, eventManager);
+        super(eventManager);
     }
 
     @Override
