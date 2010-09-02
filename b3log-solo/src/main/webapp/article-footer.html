@@ -70,6 +70,18 @@ Powered by
                 $("#statistic").html(statisticHTML);
             }
         });
+
+        // article-side.html ellipsis
+        $("#mostCommentArticles a").each(function () {
+            var str = $.bowknot.ellipsis(this.innerHTML, 37);
+            $(this).text(str.toString());
+        });
+         $("#mostViewCountArticles a").each(function () {
+            var str = $.bowknot.ellipsis(this.innerHTML, 37);
+            $(this).text(str.toString());
+        });
+
+
     }
 
     initArticle();

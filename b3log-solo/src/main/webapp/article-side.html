@@ -44,15 +44,11 @@
     <ul>
         <li>
             <h4>${mostCommentArticlesLabel}</h4>
-            <ul>
+            <ul id="mostCommentArticles">
                 <#list mostCommentArticles as article>
                 <li>
                     <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
-                        <#if article.articleTitle?length gt 15>
-                        ${article.articleTitle?substring(0,15)}...
-                        <#else>
                         ${article.articleTitle}
-                        </#if>
                     </a>
                 </li>
                 </#list>
@@ -63,15 +59,11 @@
     <ul>
         <li>
             <h4>${mostViewCountArticlesLabel}</h4>
-            <ul>
+            <ul id="mostViewCountArticles">
                 <#list mostViewCountArticles as article>
                 <li>
                     <a name="mostView${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
-                        <#if article.articleTitle?length gt 15>
-                        ${article.articleTitle?substring(0,15)}...
-                        <#else>
                         ${article.articleTitle}
-                        </#if>
                     </a>
                 </li>
                 </#list>
