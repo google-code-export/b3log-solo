@@ -17,7 +17,7 @@ dev_appserver.cmd ${solo.war}
 {{{
 <application>solo-demo</application>
 }}}
-修改为
+ 修改为
   {{{
   <application>${application-id}</application>
   }}}
