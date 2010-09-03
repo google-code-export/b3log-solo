@@ -1,17 +1,18 @@
 #labels Featured
-==前提准备==
+==安装==
+===前提准备===
  # 正确安装 [http://www.oracle.com/technetwork/java/javase/downloads/index.html JDK]，在命令行下可以使用 `javac` 命令
  # 下载 [http://code.google.com/appengine/downloads.html Google App Engine SDK for Java]，解压。设解压目录为 `${gae.home}`。
  # 下载 B3log Solo，直接解压，设解压目录为 `${solo.war}`。
 
-==本地测试==
+===本地测试===
 （Windows）在命令行下 `cd` 进入 `${gae.home}/bin/` 目录，执行：
 {{{
 dev_appserver.cmd ${solo.war}
 }}}
 等启动完毕后，在浏览器中访问：[http://localhost:8080]
 
-==部署至 GAE==
+===部署至 GAE===
 <ol>
 <li>创建 GAE 应用</li>
 假设 ID 为`${application-id}`,（没有 GAE 帐号请点击<a href="http://appengine.google.com/">这里</a>申请）
@@ -30,3 +31,5 @@ dev_appserver.cmd ${solo.war}
 appcfg.cmd update ${solo.war}
 }}}
 </ol>
+
+==配置==
