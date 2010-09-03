@@ -35,7 +35,7 @@ import org.b3log.latke.service.ServiceException;
  * CSDN blog.
  *
  * <p>
- * CSDN blog provides remote article(post, entry, article, whatever) management
+ * CSDN blog provides article(post, entry, article, whatever) remote management
  * via <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a>. The service
  * address is:http://blog.csdn.net/<b>userId</b>/services/metablogapi.aspx
  * </p>
