@@ -196,6 +196,9 @@
                 // article view count
                 jsonRpc.statisticService.incArticleViewCount("${article.oId}");
                 jsonRpc.statisticService.getArticleViewCount(function (result, error) {
+                    if (!result || error) {
+                        return;
+                    }
                     $("#articleViewCount").html(result);
                 },"${article.oId}");
             }
@@ -230,25 +233,28 @@
                         "captcha": $("#commentValidate").val()
                     };
 
-                    var result = jsonRpc.commentService.addComment(requestJSONObject);
-                    switch (result.sc) {
-                        case "COMMENT_ARTICLE_SUCC":
-                            $("#commentErrorTip").html("");
-                            $("#comment").val("");
-                            $("#commentEmail").val("");
-                            $("#commentURL").val("http://");
-                            $("#commentName").val("");
-                            $("#commentValidate").val("");
-                            window.location.reload();
-                            break;
-                        case "CAPTCHA_ERROR":
-                            $("#commentErrorTip").html("${captchaErrorLabel}");
-                            $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
-                            $("#commentValidate").val("").focus();
-                            break
-                        default:
-                            break;
-                    }
+                    jsonRpc.commentService.addComment(function (result, error) {
+                        if (result && !error) {
+                            switch (result.sc) {
+                                case "COMMENT_ARTICLE_SUCC":
+                                    $("#commentErrorTip").html("");
+                                    $("#comment").val("");
+                                    $("#commentEmail").val("");
+                                    $("#commentURL").val("http://");
+                                    $("#commentName").val("");
+                                    $("#commentValidate").val("");
+                                    window.location.reload();
+                                    break;
+                                case "CAPTCHA_ERROR":
+                                    $("#commentErrorTip").html("${captchaErrorLabel}");
+                                    $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
+                                    $("#commentValidate").val("").focus();
+                                    break
+                                default:
+                                    break;
+                            }
+                        }
+                    }, requestJSONObject);
                 }
             }
         </script>
