@@ -123,11 +123,12 @@ public final class Filler {
                                                           pageSize,
                                                           pageCount,
                                                           windowSize);
-
-        dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
-                      pageNums.get(0));
-        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                      pageNums.get(pageNums.size() - 1));
+        if (0 != pageNums.size()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
+                          pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                          pageNums.get(pageNums.size() - 1));
+        }
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
         final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
