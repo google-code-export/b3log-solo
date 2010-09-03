@@ -28,6 +28,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.sync.MetaWeblogPost;
 import org.b3log.solo.util.Htmls;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,9 +37,9 @@ import org.json.JSONObject;
  * CSDN blog article(post, entry, article, whatever).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 30, 2010
+ * @version 1.0.0.6, Sep 3, 2010
  */
-public final class CSDNBlogArticle {
+public final class CSDNBlogArticle implements MetaWeblogPost {
 
     /**
      * Logger.
@@ -102,92 +103,52 @@ public final class CSDNBlogArticle {
         categories = CollectionUtils.<String>arrayToSet(tagStrings);
     }
 
-    /**
-     * Gets the create date.
-     *
-     * @return create date
-     */
+    @Override
     public Date getCreateDate() {
         return createDate;
     }
 
-    /**
-     * Sets the create date with the specified create date.
-     *
-     * @param createDate the specified create date
-     */
+    @Override
     public void setCreateDate(final Date createDate) {
         this.createDate = createDate;
     }
 
-    /**
-     * Gets the id.
-     *
-     * @return id
-     */
+    @Override
     public String getId() {
         return id;
     }
 
-    /**
-     * Sets the id with the specified id.
-     *
-     * @param id the specified id
-     */
+    @Override
     public void setId(final String id) {
         this.id = id;
     }
 
-    /**
-     * Gets the content.
-     *
-     * @return content
-     */
+    @Override
     public String getContent() {
         return content;
     }
 
-    /**
-     * Sets the content with the specified content.
-     *
-     * @param content the specified content
-     */
+    @Override
     public void setContent(final String content) {
         this.content = content;
     }
 
-    /**
-     * Gets the title.
-     *
-     * @return title
-     */
+    @Override
     public String getTitle() {
         return title;
     }
 
-    /**
-     * Sets the title with the specified title.
-     *
-     * @param title the specified title
-     */
+    @Override
     public void setTitle(final String title) {
         this.title = title;
     }
 
-    /**
-     * Gets the categories.
-     *
-     * @return categories
-     */
+    @Override
     public Set<String> getCategoris() {
         return Collections.unmodifiableSet(categories);
     }
 
-    /**
-     * Adds the specified category.
-     *
-     * @param category the specified category
-     */
+    @Override
     public void addCategory(final String category) {
         categories.add(category);
     }
@@ -212,6 +173,7 @@ public final class CSDNBlogArticle {
      * @return json object
      * @throws JSONException json exception
      */
+    @Override
     public JSONObject toJSONObject() throws JSONException {
         final JSONObject ret = new JSONObject();
 
@@ -241,12 +203,8 @@ public final class CSDNBlogArticle {
         return ret;
     }
 
-    /**
-     * Transforms this object to a MetaWeblog post structure.
-     *
-     * @return MetaWeblog post structure
-     */
-    Map<String, Object> toPost() {
+    @Override
+    public Map<String, Object> toPost() {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {

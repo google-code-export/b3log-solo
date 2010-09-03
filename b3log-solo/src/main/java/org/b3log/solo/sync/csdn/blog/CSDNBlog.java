@@ -30,6 +30,8 @@ import java.util.regex.Pattern;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.solo.sync.MetaWeblog;
+import org.b3log.solo.sync.MetaWeblogPost;
 
 /**
  * CSDN blog.
@@ -43,7 +45,7 @@ import org.b3log.latke.service.ServiceException;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.4, Sep 1, 2010
  */
-public final class CSDNBlog {
+public final class CSDNBlog implements MetaWeblog {
 
     /**
      * Logger.
@@ -101,14 +103,7 @@ public final class CSDNBlog {
         UTC_DATE_FORMAT.setTimeZone(utcTimeZone);
     }
 
-    /**
-     * Deletes a post from CSDN blog with specified parameters.
-     *
-     * @param csdnBlogUserName the specified CSDN blog user name
-     * @param csdnBlogUserPwd the specified CSDN blog user password
-     * @param csdnBlogArticleId the specified post id
-     * @throws ServiceException service exception
-     */
+    @Override
     public void deletePost(final String csdnBlogUserName,
                            final String csdnBlogUserPwd,
                            final String csdnBlogArticleId) throws
@@ -135,18 +130,10 @@ public final class CSDNBlog {
         }
     }
 
-    /**
-     * Creates a post to CSDN blog with specified parameters.
-     *
-     * @param csdnBlogUserName the specified CSDN blog user name
-     * @param csdnBlogUserPwd the specified CSDN blog user password
-     * @param csdnBlogArticle the specified CSDN blog article
-     * @return post id just created
-     * @throws ServiceException service exception
-     */
+    @Override
     public String newPost(final String csdnBlogUserName,
                           final String csdnBlogUserPwd,
-                          final CSDNBlogArticle csdnBlogArticle)
+                          final MetaWeblogPost csdnBlogArticle)
             throws ServiceException {
         final Object[] params = new Object[]{
             csdnBlogUserName,
@@ -175,20 +162,11 @@ public final class CSDNBlog {
         return ret;
     }
 
-    /**
-     * Updates a post specified by the given post id to CSDN blog with
-     * specified parameters.
-     *
-     * @param postId the given post id
-     * @param csdnBlogUserName the specified CSDN blog user name
-     * @param csdnBlogUserPwd the specified CSDN blog user password
-     * @param csdnBlogArticle the specified CSDN blog article to update
-     * @throws ServiceException service exception
-     */
+    @Override
     public void editPost(final String postId,
                          final String csdnBlogUserName,
                          final String csdnBlogUserPwd,
-                         final CSDNBlogArticle csdnBlogArticle)
+                         final MetaWeblogPost csdnBlogArticle)
             throws ServiceException {
         final Object[] params = new Object[]{
             postId,
