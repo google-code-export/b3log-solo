@@ -123,7 +123,7 @@
                                         <th>
                                             ${commentURL1Label}
                                         </th>
-                                        <td>
+                                        <td colspan="2">
                                             <input value="http://" id="commentURL"/>
                                         </td>
                                     </tr>

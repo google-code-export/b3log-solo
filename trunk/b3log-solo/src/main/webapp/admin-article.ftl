@@ -1,7 +1,7 @@
 <table class="form" width="99%" cellpadding="0px" cellspacing="9px">
     <tbody>
         <tr>
-            <th width="40px">
+            <th width="60">
                 ${title1Label}
             </th>
             <td>
