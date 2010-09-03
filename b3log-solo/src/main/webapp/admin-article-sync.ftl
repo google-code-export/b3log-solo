@@ -117,8 +117,9 @@
 <script type="text/javascript">
     var userName = "";
     var initSync = function () {
+        // CSDN Blog table
         $("#articleList").table({
-            height: 400,
+            height: 357,
             colModel: [{
                     name: "选择",
                     index: "selected",
@@ -151,6 +152,7 @@
                 }]
         });
 
+        // enter
         $("#userName").keypress(function (event) {
             if (event.keyCode === 13) {
                 getCSDNBlogArticleArchiveDate();
@@ -207,18 +209,18 @@
         $("#tipMsg").text("${loadingLabel}").show();
         $("#archiveDatePanel").hide(500);
         userName = $("#userName").val();
+        var archveDates = "";
         var result = jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate({"blogSyncExternalBloggingSysUserName": userName});
-        $("#archiveDate").html("<option>${selectDateLabel}</option>");
         for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
-            $("#archiveDate").append("<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>");
+            archveDates += "<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>";
         }
+        $("#archiveDate").html(archveDates);
         $("#tipMsg").text("").hide();
         $("#archiveDatePanel").show(500);
     }
 
     var getCSDNBlogArticlesByArchiveDate = function () {
-        var articleLength = 0;
-        $("#articlesPanel").hide();
+        $("#articlesPanel").show();
         $("#tipMsg").html("${loadingLabel}").show();
 
         var requestJSONObject = {
@@ -229,15 +231,12 @@
         while (true) {
             var result =
                 jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(requestJSONObject);
-
             var articles = result.blogSyncCSDNBlogArticles;
-            if (articles.length == articleLength) {
+            if (articles.length == $("#articleListTableMain tr").length) {
                 break;
             }
-            articleLength = articles.length;
             if (articles.length > 0) {
                 var articleData = [];
-
                 for (var i = 0; i < articles.length; i++) {
                     articleData[i] = {};
                     articleData[i].selected = {
@@ -250,22 +249,21 @@
                     articleData[i].id = articles[i].oId;
                     articleData[i].imported = articles[i].blogSyncImported;
                 }
-
+                
                 $("#articleList").table({
                     update:{
                         data: articleData
                     }
                 });
-
+                
                 $("#articlesCount").html("${sumLabel} " + articleData.length + " {count}");
             } else {
                 $("#tipMsg").text("${getFailLabel}").show();
             }
-            $("#articlesPanel").show();
         }
         $("#tipMsg").text("").hide();
     }
-    
+
     var sync = function () {
         if ($("#articleList_selected").data("id").length === 0) {
             $("#tipMsg").text("{choose article}").show();
@@ -277,5 +275,8 @@
             var result = jsonRpc.blogSyncService.importCSDNBlogArticles(requestJSONObject);
             $("#tipMsg").text("${importSuccLabel}").show();
         }
+    }
+    var cancelGetCSDN = function () {
+        window.stop();
     }
 </script>

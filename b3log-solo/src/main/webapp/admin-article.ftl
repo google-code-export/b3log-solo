@@ -1,7 +1,7 @@
 <table class="form" width="99%" cellpadding="0px" cellspacing="9px">
     <tbody>
         <tr>
-            <th>
+            <th width="40px">
                 ${title1Label}
             </th>
             <td>
@@ -16,7 +16,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <textarea cols="80" rows="12" id="articleContent" name="articleContent"></textarea>
+                <textarea rows="15" id="articleContent" name="articleContent"></textarea>
             </td>
         </tr>
         <tr>
@@ -28,7 +28,7 @@
         <tr>
             <th valign="top">${abstract1Label}</th>
             <td>
-                <textarea id="abstract" rows="3" cols="80"></textarea>
+                <textarea id="abstract" rows="3"></textarea>
             </td>
         </tr>
         <tr>
@@ -68,11 +68,11 @@
             mode : "exact",
             elements : "articleContent",
             theme : "advanced",
-            plugins : "style,advhr,advimage,advlink,emotions,preview,media,paste,fullscreen",
+            plugins : "style,advhr,advimage,advlink,preview,media,paste,fullscreen",
 
             // Theme options
             theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-            theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,charmap,emotions,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen",
+            theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen",
             theme_advanced_buttons3 : "",
             theme_advanced_toolbar_location : "top",
             theme_advanced_toolbar_align : "left",
