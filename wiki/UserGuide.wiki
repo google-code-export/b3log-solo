@@ -1,4 +1,7 @@
 #labels Featured
+=B3log Solo 用户向导=
+<wiki:toc max_depth="3" />
+
 ==安装==
 ===前提准备===
  # 正确安装 [http://www.oracle.com/technetwork/java/javase/downloads/index.html JDK]，在命令行下可以使用 `javac` 命令
