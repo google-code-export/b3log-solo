@@ -178,7 +178,6 @@
     initSync();
 
     var syncSettingCSDN = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
         var requestJSONObject = {
             "blogSyncExternalBloggingSysUserName": $("#nameCSDN").val(),
             "blogSyncExternalBloggingSysUserPassword": $("#passwordCSDN").val(),
@@ -193,7 +192,6 @@
         if (result.sc === "SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC") {
             $("#tipMsg").html("${updateSuccLabel}").show();
         }
-        $("#tipMsg").text("").hide();
     }
 
     var changeTab = function (it) {
