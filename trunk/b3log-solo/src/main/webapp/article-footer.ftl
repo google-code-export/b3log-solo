@@ -33,7 +33,7 @@ Powered by
     var initArticle = function () {
         // common-top.ftl use state
         jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
-            if (result) {
+            if (result && !error) {
                 var loginHTML = "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;"
                     + "<span onclick='clearAllCache();'>${clearAllCache}</span>&nbsp;|&nbsp;"
                     + "<span onclick='clearCache();'>${clearCache}</span>&nbsp;|&nbsp;"
@@ -65,6 +65,9 @@ Powered by
 
         // article-side.ftl comments
         jsonRpc.commentService.getRecentComments(function (result, error) {
+            if (!result || error) {
+                return;
+            }
             var recentCommentsHTML = "<ul>";
 
             for (var i = 0; i < result.recentComments.length; i++) {
@@ -84,7 +87,7 @@ Powered by
 
         // article-side.ftl blogStatistic
         jsonRpc.statisticService.getBlogStatistic(function (result, error) {
-            if (!error) {
+            if (!error && result) {
                 var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
                     + "<li>${articleCount1Label} " + result.statisticBlogArticleCount + "</li>"
                     + "<li>${commentCount1Label} "+ result.statisticBlogCommentCount + "</li>";
