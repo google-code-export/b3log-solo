@@ -25,7 +25,7 @@ import org.b3log.latke.service.ServiceException;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 3, 2010
  */
-public interface MetaWeblog {
+public interface Metaweblog {
 
     /**
      * Deletes a post from a MetaWeblog blog with specified parameters.
