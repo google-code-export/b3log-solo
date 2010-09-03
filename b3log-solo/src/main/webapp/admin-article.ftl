@@ -40,6 +40,7 @@
 </table>
 <script type="text/javascript">
     var init = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
         // submit action
         $("#submitArticle").click(function () {
             if ($("#title").data("oId")) {
@@ -80,11 +81,13 @@
 
             extended_valid_elements: "pre[name|class]"
         });
+        $("#tipMsg").text("").hide();
     }
 
     init();
     
     var addArticle = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
         var requestJSONObject = {
             "article": {
                 "articleTitle": $("#title").val(),
@@ -96,11 +99,9 @@
         var result = jsonRpc.articleService.addArticle(requestJSONObject);
         switch (result.sc) {
             case "ADD_ARTICLE_SUCC":
-                setCurrentNaviStyle(1);
-                $("#content").load("admin-article-list.do", function () {
-                    //KE.remove("articleContent");
-                });
                 $("#tipMsg").text("${addSuccLabel}").show();
+                setCurrentNaviStyle(1);
+                $("#content").load("admin-article-list.do");
                 break;
             default:
                 break;
