@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.solo.sync.Metaweblog;
+import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.MetaWeblogPost;
 
 /**
@@ -45,7 +45,7 @@ import org.b3log.solo.sync.MetaWeblogPost;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.4, Sep 1, 2010
  */
-public final class CSDNBlog implements Metaweblog {
+public final class CSDNBlog implements MetaWeblog {
 
     /**
      * Logger.
