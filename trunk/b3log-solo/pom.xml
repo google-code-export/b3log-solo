@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo version.
-    Version: 1.0.1.0, Sep 2, 2010
+    Version: 1.0.1.1, Sep 3, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -33,6 +33,7 @@
         <maven-checkstyle-plugin.version>2.5</maven-checkstyle-plugin.version>
         <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
         <maven-gae-plugin.version>0.7.0</maven-gae-plugin.version>
+        <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
         <!-- Unit Test -->
         <testng.version>5.9</testng.version>
         <!-- -->
@@ -314,7 +315,15 @@
                     <sdkDir>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</sdkDir>
                     <appDir>${project.build.directory}/${project.build.finalName}</appDir>
                 </configuration>
+            </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <show>private</show>
+                </configuration>
             </plugin>
 
         </plugins>
