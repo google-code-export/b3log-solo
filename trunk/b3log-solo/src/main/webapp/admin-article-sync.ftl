@@ -260,7 +260,7 @@
                     }
                 });
                 
-                $("#articlesCount").html("${sumLabel} " + articleData.length + " {count}");
+                $("#articlesCount").html("${sumLabel} " + articleData.length + " ${countLabel}");
             } else {
                 $("#tipMsg").text("${getFailLabel}").show();
             }
