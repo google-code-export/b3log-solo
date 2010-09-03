@@ -119,50 +119,8 @@
 
 <div class="clear"></div>
 <script type="text/javascript">
-    var changeTab = function (it) {
-        var tabs = ['preferences', 'skins'];
-        for (var i = 0; i < tabs.length; i++) {
-            if (it.id === tabs[i]) {
-                $("#" + tabs[i] + "Panel").show();
-                $("#" + tabs[i]).addClass("selected");
-            } else {
-                $("#" + tabs[i] + "Panel").hide();
-                $("#" + tabs[i]).removeClass("selected");
-            }
-        }
-    }
-    
-    var changePreference = function () {
-        var requestJSONObject = {
-            "preference": {
-                "blogTitle": $("#blogTitle").val(),
-                "blogSubtitle": $("#blogSubtitle").val(),
-                "mostCommentArticleDisplayCount": $("#mostCommentArticleDisplayCount").val(),
-                "recentArticleDisplayCount": 10, // XXX: remove recentArticleDisplayCount
-                "recentCommentDisplayCount": $("#recentCommentDisplayCount").val(),
-                "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
-                "articleListDisplayCount": $("#articleListDisplayCount").val(),
-                "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
-                "skinDirName": $("#skinMain").data("skinDirName"),
-                "blogHost": $("#blogHost").val(),
-                "adminGmail": $("#adminGmail").val(),
-                "localeString": $("#localeString").val()
-            }
-        }
-
-        var result = jsonRpc.preferenceService.updatePreference(requestJSONObject);
-        switch (result.sc) {
-            case "UPDATE_PREFERENCE_SUCC":
-                $("#tipMsg").text("${updateSuccLabel}").show();
-                break;
-            case "GET_ARTICLE_FAIL_":
-                break;
-            default:
-                break;
-        }
-    }
-
-    var getPreference = function () {
+     var getPreference = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
         var result = jsonRpc.preferenceService.getPreference();
         switch (result.sc) {
             case "GET_PREFERENCE_SUCC":
@@ -196,7 +154,7 @@
                     }
                 }
                 $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
-                    
+
                 $(".skinItem").click(function () {
                     $(".skinItem").removeClass("selected");
                     $(this).addClass("selected");
@@ -206,6 +164,51 @@
             default:
                 break;
         }
+        $("#tipMsg").text("").hide();
     }
     getPreference();
+    
+    var changeTab = function (it) {
+        var tabs = ['preferences', 'skins'];
+        for (var i = 0; i < tabs.length; i++) {
+            if (it.id === tabs[i]) {
+                $("#" + tabs[i] + "Panel").show();
+                $("#" + tabs[i]).addClass("selected");
+            } else {
+                $("#" + tabs[i] + "Panel").hide();
+                $("#" + tabs[i]).removeClass("selected");
+            }
+        }
+    }
+    
+    var changePreference = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
+        var requestJSONObject = {
+            "preference": {
+                "blogTitle": $("#blogTitle").val(),
+                "blogSubtitle": $("#blogSubtitle").val(),
+                "mostCommentArticleDisplayCount": $("#mostCommentArticleDisplayCount").val(),
+                "recentArticleDisplayCount": 10, // XXX: remove recentArticleDisplayCount
+                "recentCommentDisplayCount": $("#recentCommentDisplayCount").val(),
+                "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
+                "articleListDisplayCount": $("#articleListDisplayCount").val(),
+                "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
+                "skinDirName": $("#skinMain").data("skinDirName"),
+                "blogHost": $("#blogHost").val(),
+                "adminGmail": $("#adminGmail").val(),
+                "localeString": $("#localeString").val()
+            }
+        }
+
+        var result = jsonRpc.preferenceService.updatePreference(requestJSONObject);
+        switch (result.sc) {
+            case "UPDATE_PREFERENCE_SUCC":
+                $("#tipMsg").text("${updateSuccLabel}").show();
+                break;
+            case "GET_ARTICLE_FAIL_":
+                break;
+            default:
+                break;
+        }
+    }
 </script>

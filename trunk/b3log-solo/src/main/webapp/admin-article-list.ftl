@@ -62,7 +62,7 @@
             }]
     });
 
-    var articlePagination = $("#articlePagination").paginate({
+    $("#articlePagination").paginate({
         bindEvent: "getArticleList",
         pageCount: 1,
         windowSize: WINDOW_SIZE,
@@ -73,6 +73,7 @@
 
     var updateArticle = function (event) {
         $("#content").load("admin-article.do", '', function () {
+            $("#tipMsg").text("${loadingLabel}").show();
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -104,6 +105,7 @@
                 default:
                     break;
             }
+            $("#tipMsg").text("").hide();
         });
     }
     
@@ -114,7 +116,7 @@
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
-
+            $("#tipMsg").text("${loadingLabel}").show();
             var result = jsonRpc.articleService.removeArticle(requestJSONObject);
             
             switch (result.sc) {
@@ -128,6 +130,7 @@
                 default:
                     break;
             }
+            $("#tipMsg").text("").hide();
         }
     }
 
@@ -141,6 +144,7 @@
     }
     
     var getArticleList = function (pageNum) {
+        $("#tipMsg").text("${loadingLabel}").show();
         currentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
@@ -176,7 +180,7 @@
                     result.pagination.paginationPageCount = 1;
                 }
                 
-                articlePagination.paginate({
+                $("#articlePagination").paginate({
                     update: {
                         pageCount: result.pagination.paginationPageCount
                     }
@@ -185,10 +189,12 @@
             default:
                 break;
         }
+        $("#tipMsg").text("").hide();
     }
     getArticleList(1);
 
     var getComment = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
         var result = jsonRpc.commentService.getComments({"oId": $("#comments").data("oId")});
         switch (result.sc) {
             case "GET_COMMENTS_SUCC":
@@ -207,9 +213,11 @@
             default:
                 break;
         };
+        $("#tipMsg").text("").hide();
     }
 
     var deleteComment = function (id) {
+        $("#tipMsg").text("${loadingLabel}").show();
         var result = jsonRpc.commentService.removeComment({"oId": id});
         switch (result.sc) {
             case "REMOVE_COMMENT_SUCC":
@@ -219,7 +227,7 @@
             default:
                 break;
         }
-
         getArticleList(currentPage);
+        $("#tipMsg").text("").hide();
     }
 </script>

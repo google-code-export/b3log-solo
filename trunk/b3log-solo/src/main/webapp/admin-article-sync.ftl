@@ -160,6 +160,7 @@
         });
 
         // get sync
+        $("#tipMsg").text("${loadingLabel}").show();
         jsonRpc.blogSyncService.getBlogSyncMgmtForCSDNBlog(function (result, error) {
             if (null === result) {
                 return;
@@ -171,11 +172,13 @@
             result.blogSyncMgmtUpdateEnabled ? $("#updateSyncCSDN").attr("checked", "checked") : $("#updateSyncCSDN").removeAttr("checked");
             result.blogSyncMgmtRemoveEnabled ? $("#deleteSyncCSDN").attr("checked", "checked") : $("#deleteSyncCSDN").removeAttr("checked");
         });
+        $("#tipMsg").text("").hide();
     }
 
     initSync();
 
     var syncSettingCSDN = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
         var requestJSONObject = {
             "blogSyncExternalBloggingSysUserName": $("#nameCSDN").val(),
             "blogSyncExternalBloggingSysUserPassword": $("#passwordCSDN").val(),
@@ -190,6 +193,7 @@
         if (result.sc === "SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC") {
             $("#tipMsg").html("${updateSuccLabel}").show();
         }
+        $("#tipMsg").text("").hide();
     }
 
     var changeTab = function (it) {
@@ -215,13 +219,13 @@
             archveDates += "<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>";
         }
         $("#archiveDate").html(archveDates);
-        $("#tipMsg").text("").hide();
         $("#archiveDatePanel").show(500);
+        $("#tipMsg").text("").hide();
     }
 
     var getCSDNBlogArticlesByArchiveDate = function () {
-        $("#articlesPanel").show();
         $("#tipMsg").html("${loadingLabel}").show();
+        $("#articlesPanel").show();
 
         var requestJSONObject = {
             "blogSyncExternalBloggingSysUserName": userName,
@@ -269,14 +273,10 @@
             $("#tipMsg").text("{choose article}").show();
         } else {
             $("#tipMsg").text("${loadingLabel}").show();
-            var requestJSONObject = {
+            jsonRpc.blogSyncService.importCSDNBlogArticles({
                 "oIds": $("#articleList_selected").data("id")
-            };
-            var result = jsonRpc.blogSyncService.importCSDNBlogArticles(requestJSONObject);
+            });
             $("#tipMsg").text("${importSuccLabel}").show();
         }
-    }
-    var cancelGetCSDN = function () {
-        window.stop();
     }
 </script>

@@ -132,6 +132,7 @@
     });
 
     var popUpdateLink = function (event) {
+        $("#tipMsg").text("${loadingLabel}").show();
         linkDialog = $("#updateLink").dialog({
             width: 700,
             height:200
@@ -145,6 +146,7 @@
             case "GET_LINK_SUCC":
                 $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
                 $("#updateLinkAddress").val(result.link.linkAddress);
+                $("#tipMsg").text("${updateSuccLabel}").show();
                 break;
             case "GET_LINK_FAIL_":
                 break;
@@ -157,6 +159,7 @@
         var isDelete = confirm("${confirmRemoveLabel}");
 
         if (isDelete) {
+            $("#tipMsg").text("${loadingLabel}").show();
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -177,6 +180,7 @@
     }
 
     var getLinkList = function (pageNum) {
+        $("#tipMsg").text("${loadingLabel}").show();
         currentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
@@ -223,10 +227,12 @@
             default:
                 break;
         }
+        $("#tipMsg").text("").hide();
     }
     getLinkList(1);
 
     var updateLink = function () {
+        $("#tipMsg").text("").hide();
         var requestJSONObject = {
             "link": {
                 "linkTitle": $("#updateLinkTitle").val(),
@@ -247,6 +253,7 @@
     }
 
     var submitLink = function () {
+        $("#tipMsg").text("").hide();
         var requestJSONObject = {
             "link": {
                 "linkTitle": $("#linkTitle").val(),
