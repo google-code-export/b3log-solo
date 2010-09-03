@@ -31,7 +31,7 @@ Powered by
     }
     
     var initArticle = function () {
-        // common-top.html use state
+        // common-top.ftl use state
         jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
             if (result) {
                 var loginHTML = "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;"
@@ -44,7 +44,7 @@ Powered by
             }
         });
         
-        // article-side.html selected style
+        // article-side.ftl selected style
         if (window.location.search === "") {
             localStorage.setItem("sideNaviName", "");
             localStorage.setItem("sideNaviId", "");
@@ -63,7 +63,7 @@ Powered by
             }
         });
 
-        // article-side.html comments
+        // article-side.ftl comments
         jsonRpc.commentService.getRecentComments(function (result, error) {
             var recentCommentsHTML = "<ul>";
 
@@ -82,7 +82,7 @@ Powered by
             $("#recentComments").after(recentCommentsHTML);
         });
 
-        // article-side.html blogStatistic
+        // article-side.ftl blogStatistic
         jsonRpc.statisticService.getBlogStatistic(function (result, error) {
             if (!error) {
                 var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
@@ -92,7 +92,7 @@ Powered by
             }
         });
 
-        // article-side.html ellipsis
+        // article-side.ftl ellipsis
         var sideEllipsis = function () {
             var sideLength = parseInt(($("#sideNavi").width() - 24) / 7);
             $("#mostCommentArticles a").each(function () {
@@ -122,7 +122,7 @@ Powered by
 
     jsonRpc.statisticService.incBlogViewCount();
 
-    //article-side.html
+    //article-side.ftl
     function handleResponse (response) {
         var userIntroHTML = "<li><img src='" + response.data.thumbnailUrl + "'/></li>"
             + "<li>" + response.data.displayName + "</li>"
