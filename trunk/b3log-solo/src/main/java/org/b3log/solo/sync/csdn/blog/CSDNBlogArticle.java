@@ -15,13 +15,9 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.solo.model.BlogSync;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.sync.AbstractMetaWeblogPost;
 import org.json.JSONException;
 import org.json.JSONObject;
