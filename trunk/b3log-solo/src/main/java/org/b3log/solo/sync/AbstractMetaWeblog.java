@@ -107,11 +107,12 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             config.setServerURL(new URL(getApiAddress()));
             client.setConfig(config);
             client.execute(DELETE_POST, params);
-            LOGGER.log(Level.INFO, "Deleted article[id={0}] from CSDN blog",
-                       postId);
+            LOGGER.log(Level.INFO, "Deleted article[id={0}] from [{1}]",
+                       new String[]{postId, getBloggingServiceProvider()});
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new ServiceException("Delete post to CSDN blog error");
+            throw new ServiceException("Delete post to ["
+                                       + getBloggingServiceProvider() + "]error");
         }
     }
 
@@ -128,7 +129,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             client.setConfig(config);
             final Map<String, ?> result =
                     (Map<String, ?>) client.execute(GET_POST, params);
-            LOGGER.log(Level.INFO, "Got an article[id={0}] from [{1}]",
+            LOGGER.log(Level.INFO, "Got an article[id={0}] from [{from1}]",
                        new String[]{postId, getBloggingServiceProvider()});
 
             final CSDNBlogArticle ret = new CSDNBlogArticle();
