@@ -186,12 +186,14 @@
         $("#tipMsg").text("${loadingLabel}").show();
         blogType = $("#blogType").val();
         jsonRpc.blogSyncService.getBlogSyncMgmt(function (result, error) {
-            $("#magName").val(result.blogSyncExternalBloggingSysUserName);
-            $("#magPassword").val(result.blogSyncExternalBloggingSysUserPassword);
-            result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
-            result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
-            result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
-            $("#tipMsg").text("").hide();
+            if (result) {
+                $("#magName").val(result.blogSyncExternalBloggingSysUserName);
+                $("#magPassword").val(result.blogSyncExternalBloggingSysUserPassword);
+                result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
+                result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
+                result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
+                $("#tipMsg").text("").hide();
+            }
         }, {
             "blogSyncExternalBloggingSys": blogType
         });

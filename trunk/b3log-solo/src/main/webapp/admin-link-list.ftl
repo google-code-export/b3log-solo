@@ -94,22 +94,22 @@
                 textAlign: "center",
                 name: "${updateLabel}",
                 index: "update",
-                width: 60,
+                width: 56,
                 bindEvent: [{
                         'eventName': 'click',
                         'functionName': 'popUpdateLink'
                     }],
-                style: "cursor:pointer;"
+                style: "cursor:pointer; margin-left:22px;"
             }, {
                 textAlign: "center",
                 name: "${removeLabel}",
                 index: "deleted",
-                width: 60,
+                width: 56,
                 bindEvent: [{
                         'eventName': 'click',
                         'functionName': 'deleteLink'
                     }],
-                style: "cursor:pointer;"
+                style: "cursor:pointer; margin-left:22px;"
             }, {
                 visible: false,
                 index: "id"
@@ -192,8 +192,8 @@
                     linkData[i] = {};
                     linkData[i].linkTitle = links[i].linkTitle;
                     linkData[i].linkAddress = links[i].linkAddress;
-                    linkData[i].update = "update";
-                    linkData[i].deleted = "delete";
+                    linkData[i].update = "<div class='updateIcon'></div>";
+                    linkData[i].deleted = "<div class='deleteIcon'></div>";
                     linkData[i].id = links[i].oId;
                 }
 
