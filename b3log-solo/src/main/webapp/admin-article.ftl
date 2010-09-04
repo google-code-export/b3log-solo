@@ -1,43 +1,31 @@
-<table class="form" width="99%" cellpadding="0px" cellspacing="9px">
-    <tbody>
-        <tr>
-            <th width="60">
-                ${title1Label}
-            </th>
-            <td>
-                <input id="title" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                ${content1Label}
-            </th>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <textarea rows="15" id="articleContent" name="articleContent"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <th>${tag1Label}</th>
-            <td>
-                <input id="tag" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th valign="top">${abstract1Label}</th>
-            <td>
-                <textarea id="abstract" rows="3"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <th colspan="2">
-                <button id="submitArticle">${postLabel}</button>
-            </th>
-        </tr>
-    </tbody>
-</table>
+<div class="form" widdiv="99%" cellpadding="0px" cellspacing="9px">
+    <div class='left label'>
+        ${title1Label}
+    </div>
+    <div class="left input">
+        <input id="title" type="text"/>
+    </div>
+    <div class="clear"></div>
+    <div class="label">
+        ${content1Label}
+    </div>
+    <div>
+        <textarea rows="15" id="articleContent" style="width: 99%;" name="articleContent"></textarea>
+    </div>
+    <div class="left label">${tag1Label}</div>
+    <div class="left input">
+        <input id="tag" type="text"/>
+    </div>
+    <div class="clear"></div>
+    <div class="left label">${abstract1Label}</div>
+    <div class="left input">
+        <textarea id="abstract" rows="3"></textarea>
+    </div>
+    <div class="clear"></div>
+    <div class="right label">
+        <button id="submitArticle">${postLabel}</button>
+    </div>
+</div>
 <script type="text/javascript">
     var init = function () {
         $("#tipMsg").text("${loadingLabel}").show();
@@ -88,6 +76,13 @@
     
     var addArticle = function () {
         $("#tipMsg").text("${loadingLabel}").show();
+        var tagArray = $("#tag").val().split(","),
+        tagsString = "";
+
+        for (var i = 0; i < tagArray.length; i++) {
+            tagsString += tagArray[i].replace(/(^\s*)|(\s*$)/g, "");
+        }
+
         var requestJSONObject = {
             "article": {
                 "articleTitle": $("#title").val(),
