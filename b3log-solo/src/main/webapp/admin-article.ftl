@@ -78,15 +78,15 @@
         $("#tipMsg").text("${loadingLabel}").show();
         if ($("#title").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${titleEmptyLabel}").show();
-            $("#title").focus().val();
+            $("#title").focus().val("");
         } else if (tinyMCE.get('articleContent').getContent().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${contentEmptyLabel}").show();
+        } else if ($("#tag").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${tagsEmptyLabel}").show();
+            $("#tag").focus().val("");
         } else if($("#abstract").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${abstractEmptyLabel}").show();
             $("#abstract").focus().val("");
-        }  else if ($("#tag").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${tagsEmptyLabel}").show();
-            $("#tag").focus().val("");
         } else {
             return true;
         }
