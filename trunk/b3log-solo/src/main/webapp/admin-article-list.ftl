@@ -17,7 +17,7 @@
                 minWidth: 180,
                 style: "padding-left: 6px;"
             }, {
-                name: "${tagLabel}",
+                name: "${tagsLabel}",
                 index: "tags",
                 width: 380,
                 style: "padding-left: 6px; white-space: nowrap; overflow: hidden; "
