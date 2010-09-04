@@ -162,6 +162,18 @@ button:hover {
     width: auto;
 }
 
+.form .label {
+    width: 6%;
+    font-weight: bold;
+    text-align: right;
+    line-height: 26px;
+    margin: 6px 0;
+}
+
+.form .input {
+    width: 93%;
+    margin: 6px 0;
+}
 /* top and footer */
 #admin span {
     cursor:pointer;
@@ -183,5 +195,5 @@ button:hover {
 
 .footer {
     text-align: center;
-    margin: 12px;
+    padding: 12px;
 }

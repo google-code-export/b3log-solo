@@ -133,6 +133,7 @@
 
 .pagination a, .pagination a:visited {
     color: #4272DB;
+    padding: 0 3px;
     text-decoration: none;
 }
 
