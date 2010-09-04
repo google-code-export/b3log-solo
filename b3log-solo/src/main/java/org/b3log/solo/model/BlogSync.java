@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all blog sync model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 25, 2010
+ * @version 1.0.0.4, Sep 4, 2010
  */
 public final class BlogSync {
 
@@ -31,6 +31,10 @@ public final class BlogSync {
      * Key of CSDN blog.
      */
     public static final String BLOG_SYNC_CSDN_BLOG = "blogSyncCSDNBlog";
+    /**
+     * Key of CnBlogs.
+     */
+    public static final String BLOG_SYNC_CNBLOGS = "blogSyncCnBlogs";
     /**
      * Key of blog sync external blogging system user name.
      */
