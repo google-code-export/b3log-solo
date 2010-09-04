@@ -16,10 +16,10 @@
 package org.b3log.solo.event;
 
 import java.util.logging.Logger;
-import org.b3log.solo.event.listener.impl.CSDNBlogAddArticleProcessor;
+import org.b3log.solo.event.listener.sync.impl.CSDNBlogAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
-import org.b3log.solo.event.listener.impl.CSDNBlogRemoveArticleProcessor;
-import org.b3log.solo.event.listener.impl.CSDNBlogUpdateArticleProcessor;
+import org.b3log.solo.event.listener.sync.impl.CSDNBlogRemoveArticleProcessor;
+import org.b3log.solo.event.listener.sync.impl.CSDNBlogUpdateArticleProcessor;
 
 /**
  * Event module for IoC
