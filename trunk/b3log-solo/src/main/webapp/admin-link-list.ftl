@@ -124,7 +124,7 @@
         isGoTo: false
     });
 
-    var validateLink = function () {
+    var validateUpdateLink = function () {
         $("#tipMsg").text("${loadingLabel}").show();
         if ($("#updateLinkTitle").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${titleEmptyLabel}").show();
@@ -138,28 +138,40 @@
         return false;
     }
 
-    var popUpdateLink = function (event) {
-        if (validateLink()) {
-            $("#updateLink").dialog({
-                width: 700,
-                height:200
-            });
-            var requestJSONObject = {
-                "oId": event.data.id[0]
-            };
+    var validateLink = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
+        if ($("#linkTitle").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${titleEmptyLabel}").show();
+            $("#linkTitle").focus().val("");
+        } else if ($("#linkAddress").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${addressEmptyLabel}").show();
+            $("#linkAddress").focus().val("");
+        } else {
+            return true;
+        }
+        return false;
+    }
 
-            var result = jsonRpc.linkService.getLink(requestJSONObject);
-            switch (result.sc) {
-                case "GET_LINK_SUCC":
-                    $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
-                    $("#updateLinkAddress").val(result.link.linkAddress);
-                    $("#tipMsg").text("${updateSuccLabel}").show();
-                    break;
-                case "GET_LINK_FAIL_":
-                    break;
-                default:
-                    break;
-            }
+    var popUpdateLink = function (event) {
+        $("#updateLink").dialog({
+            width: 700,
+            height:200
+        });
+        var requestJSONObject = {
+            "oId": event.data.id[0]
+        };
+
+        var result = jsonRpc.linkService.getLink(requestJSONObject);
+        switch (result.sc) {
+            case "GET_LINK_SUCC":
+                $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
+                $("#updateLinkAddress").val(result.link.linkAddress);
+                $("#tipMsg").text("${updateSuccLabel}").show();
+                break;
+            case "GET_LINK_FAIL_":
+                break;
+            default:
+                break;
         }
     }
 
@@ -239,7 +251,7 @@
     getLinkList(1);
 
     var updateLink = function () {
-        if (validateLink()) {
+        if (validateUpdateLink()) {
             var requestJSONObject = {
                 "link": {
                     "linkTitle": $("#updateLinkTitle").val(),
@@ -261,28 +273,27 @@
     }
 
     var submitLink = function () {
-        $("#tipMsg").text("").hide();
-        var requestJSONObject = {
-            "link": {
-                "linkTitle": $("#linkTitle").val(),
-                "linkAddress": $("#linkAddress").val()
-            }
-        };
-        var result = jsonRpc.linkService.addLink(requestJSONObject);
-        switch (result.sc) {
-            case "ADD_LINK_SUCC":
-                $("#tipMsg").text("${addSuccLabel}").show();
-                $("#linkTitle").val("");
-                $("#linkAddress").val("");
-
-                if (linksLength === PAGE_SIZE) {
-                    pageCount++;
+        if (validateLink()) {
+            var requestJSONObject = {
+                "link": {
+                    "linkTitle": $("#linkTitle").val(),
+                    "linkAddress": $("#linkAddress").val()
                 }
-                    
-                getLinkList(pageCount);
-                break;
-            default:
-                break;
+            };
+            var result = jsonRpc.linkService.addLink(requestJSONObject);
+            switch (result.sc) {
+                case "ADD_LINK_SUCC":
+                    $("#linkTitle").val("");
+                    $("#linkAddress").val("");
+                    if (linksLength === PAGE_SIZE) {
+                        pageCount++;
+                    }
+
+                    getLinkList(pageCount);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 </script>
