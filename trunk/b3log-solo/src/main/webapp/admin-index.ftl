@@ -11,6 +11,7 @@
         <link type="text/css" rel="stylesheet" href="styles/default-admin.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-bowknot.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
+        <link rel='shortcut icon' href='images/favicon.gif' type="image/x-icon" />
     </head>
     <body>
         <#include "common-top.ftl">
