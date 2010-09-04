@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.sync.cnblogs;
 
+import org.b3log.solo.sync.MetaWeblogPost;
 import java.util.List;
 import java.util.Date;
 import org.b3log.latke.service.ServiceException;
@@ -96,8 +97,8 @@ public final class CnBlogsBlogTestCase {
     //@org.testng.annotations.Test
     public void newPost() throws Exception {
         final JSONObject article = getArticle();
-        final CnBlogsBlogArticle cnBlogsBlogArticle =
-                new CnBlogsBlogArticle(article);
+        final MetaWeblogPost cnBlogsBlogArticle =
+                new MetaWeblogPost(article);
 
         final String articleId = cnBlogsBlog.newPost(cnBlogsBlogArticle);
 

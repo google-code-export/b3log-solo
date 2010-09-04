@@ -13,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.sync;
 
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.sync.cnblogs.CnBlogsBlog;
-import org.b3log.solo.sync.cnblogs.CnBlogsBlogArticle;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
-import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Blog factory.
@@ -31,47 +26,6 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Sep 4, 2010
  */
 public final class BlogFactory {
-
-    /**
-     * Gets a {@link Post} by the specified external blogging system name and
-     * Solo article.
-     *
-     * @param externalSysName the specified external blogging system name
-     * @param article Solo article
-     * @return MetaWeblog
-     */
-    public static Post getPost(final String externalSysName,
-                               final JSONObject article) {
-        try {
-            if (BlogSync.BLOG_SYNC_CSDN_BLOG.equals(externalSysName)) {
-                return new CSDNBlogArticle(article);
-            } else if (BlogSync.BLOG_SYNC_CNBLOGS.equals(externalSysName)) {
-                return new CnBlogsBlogArticle(article);
-            } else {
-                throw new RuntimeException("Not supported external blogging system["
-                                           + externalSysName + "]");
-            }
-        } catch (final JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Gets a {@link Post} by the specified external blogging system name.
-     *
-     * @param externalSysName the specified external blogging system name
-     * @return MetaWeblog
-     */
-    public static Post getPost(final String externalSysName) {
-        if (BlogSync.BLOG_SYNC_CSDN_BLOG.equals(externalSysName)) {
-            return new CSDNBlogArticle();
-        } else if (BlogSync.BLOG_SYNC_CNBLOGS.equals(externalSysName)) {
-            return new CnBlogsBlogArticle();
-        } else {
-            throw new RuntimeException("Not supported external blogging system["
-                                       + externalSysName + "]");
-        }
-    }
 
     /**
      * Gets a {@link MetaWeblog} by the specified external blogging system name.

@@ -31,6 +31,7 @@ import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
+import org.b3log.solo.sync.MetaWeblogPost;
 import org.b3log.solo.sync.Post;
 import org.json.JSONObject;
 
@@ -110,8 +111,7 @@ public abstract class AbstractAddArticleProcessor
                 final String userPwd = blogSyncMgmt.getString(
                         BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
 
-                final Post post = BlogFactory.getPost(externalBloggingSys,
-                                                      article);
+                final Post post = new MetaWeblogPost(article);
                 final MetaWeblog metaWeblog =
                         BlogFactory.getMetaWeblog(externalBloggingSys);
                 metaWeblog.setUserName(userName);
