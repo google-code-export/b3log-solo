@@ -36,6 +36,11 @@ public final class BlogSync {
      */
     public static final String BLOG_SYNC_CNBLOGS = "blogSyncCnBlogs";
     /**
+     * Key of BlogJava.
+     */
+    public static final String BLOG_SYNC_BLOGJAVA = "blogSyncBlogJava";
+
+    /**
      * Key of blog sync external blogging system user name.
      */
     public static final String BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME =
