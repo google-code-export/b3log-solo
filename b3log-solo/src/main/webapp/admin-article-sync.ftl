@@ -13,7 +13,7 @@
             </li>
         </ul>
         <div class="clear"></div>
-        <div class="form">
+        <div class="form maginTB12">
             <span class="label">${chooseBlogType1Label}</span>
             <select id="blogType" onchange="changeBlogType();">
                 <option value="">&nbsp;</option>
@@ -189,11 +189,18 @@
             if (result) {
                 $("#magName").val(result.blogSyncExternalBloggingSysUserName);
                 $("#magPassword").val(result.blogSyncExternalBloggingSysUserPassword);
+                $("#userName").val(result.blogSyncExternalBloggingSysUserName);
+                $("#password").val(result.blogSyncExternalBloggingSysUserPassword);
                 result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
                 result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
                 result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
                 $("#archiveDatePanel").hide();
                 $("#articlesPanel").hide();
+            } else {
+                $("#magName").val("");
+                $("#magPassword").val("");
+                $("#userName").val("");
+                $("#password").val("");
             }
             $("#tipMsg").text("").hide();
         }, {
