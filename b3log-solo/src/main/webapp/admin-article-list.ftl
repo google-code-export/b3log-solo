@@ -30,7 +30,7 @@
                 textAlign: "center",
                 name: "${updateLabel}",
                 index: "update",
-                width: 50,
+                width: 56,
                 bindEvent: [{
                         'eventName': 'click',
                         'functionName': 'updateArticle'
@@ -40,7 +40,7 @@
                 textAlign: "center",
                 name: "${removeLabel}",
                 index: "deleted",
-                width: 50,
+                width: 56,
                 bindEvent: [{
                         'eventName': 'click',
                         'functionName': 'deleteArticle'
@@ -50,7 +50,7 @@
                 textAlign: "center",
                 name: "${commentLabel}",
                 index: "comments",
-                width: 60,
+                width: 66,
                 bindEvent: [{
                         'eventName': 'click',
                         'functionName': 'popComments'

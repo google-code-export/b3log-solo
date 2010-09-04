@@ -119,7 +119,8 @@
 
 <div class="clear"></div>
 <script type="text/javascript">
-     var getPreference = function () {
+    var localeString = "";
+    var getPreference = function () {
         $("#tipMsg").text("${loadingLabel}").show();
         var result = jsonRpc.preferenceService.getPreference();
         switch (result.sc) {
@@ -136,6 +137,7 @@
                 $("#blogHost").val(preference.blogHost);
                 $("#adminGmail").val(preference.adminGmail);
                 $("#localeString").val(preference.localeString);
+                localeString = preference.localeString;
 
                 // skin
                 $("#skinMain").data("skinDirName", preference.skinDirName);
@@ -204,6 +206,9 @@
         switch (result.sc) {
             case "UPDATE_PREFERENCE_SUCC":
                 $("#tipMsg").text("${updateSuccLabel}").show();
+                if ($("#localeString").val() !== localeString) {
+                    window.location.reload();
+                }
                 break;
             case "GET_ARTICLE_FAIL_":
                 break;

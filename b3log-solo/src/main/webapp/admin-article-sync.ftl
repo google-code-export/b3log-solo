@@ -45,6 +45,9 @@
                             <input id="userName"/>
                         </td>
                         <td>
+                            <input id="password" type="password"/>
+                        </td>
+                        <td>
                             <button onclick="getCSDNBlogArticleArchiveDate();">${getDateLabel}</button>
                         </td>
                     </tr>
@@ -115,7 +118,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    var userName = "";
+    var userName = "",
+    password = "";
     var initSync = function () {
         // CSDN Blog table
         $("#articleList").table({
@@ -153,7 +157,7 @@
         });
 
         // enter
-        $("#userName").keypress(function (event) {
+        $("#password").keypress(function (event) {
             if (event.keyCode === 13) {
                 getCSDNBlogArticleArchiveDate();
             }
@@ -211,8 +215,12 @@
         $("#tipMsg").text("${loadingLabel}").show();
         $("#archiveDatePanel").hide(500);
         userName = $("#userName").val();
+        password = $("#password").val();
         var archveDates = "";
-        var result = jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate({"blogSyncExternalBloggingSysUserName": userName});
+        var result = jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate({
+            "blogSyncExternalBloggingSysUserName": userName,
+            "blogSyncExternalBloggingSysPassword": password
+        });
         for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
             archveDates += "<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>";
         }
@@ -227,6 +235,7 @@
 
         var requestJSONObject = {
             "blogSyncExternalBloggingSysUserName": userName,
+            "blogSyncExternalBloggingSysPassword": password,
             "blogSyncCSDNBlogArchiveDate": $("#archiveDate").val()
         };
 

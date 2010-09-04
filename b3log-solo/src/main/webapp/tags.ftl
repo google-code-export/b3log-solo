@@ -64,8 +64,8 @@
                 styleHTML.color = "color:" + randomColor() + ";";
 
                 fontSize = parseInt(36 * currentCount / maxCount);
-                if (fontSize < 9) {
-                    fontSize = 9;
+                if (fontSize < 10) {
+                    fontSize = 10;
                 }
                 styleHTML.font = "font-size:" + fontSize + "px;";
                 if (maxCount === currentCount) {
@@ -87,10 +87,9 @@
 
                 for (var i = 0; i < tags.length; i++) {
                     var style = getStyle(maxCount, tags[i].tagCount);
-                    tagsHTML += "<div title='" + tags[i].tagCount + "' class='tagPanel' style='"
-                        + style.color + style.padding + "'><a style='"
-                        + style.font + style.color + "' href='tag-articles.do?oId="
-                        + tags[i].tagId + "&paginationCurrentPageNum=1' target='_blank'>" + tags[i].tagName + "</a></div>";
+                    tagsHTML += "<a title='" + tags[i].tagCount + "' class='tagPanel' style='"
+                        + style.font + style.color + style.padding + "' href='tag-articles.do?oId="
+                        + tags[i].tagId + "&paginationCurrentPageNum=1' target='_blank'>" + tags[i].tagName + "</a>";
                 }
                 $("#tagsPanel").append(tagsHTML + "<div class='clear'></div>");
             }

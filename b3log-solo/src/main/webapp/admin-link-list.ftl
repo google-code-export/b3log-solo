@@ -81,13 +81,7 @@
     $("#linkList").table({
         resizable: true,
         colModel: [{
-                name: "选择",
-                index: "selected",
-                width: 46,
-                inputType: "checkbox",
-                textAlign: "center",
-                allSelected: true
-            }, {
+                style: "padding-left: 6px;",
                 name: "${linkTitleLabel}",
                 index: "linkTitle",
                 width: 130
@@ -196,7 +190,6 @@
 
                 for (var i = 0; i < links.length; i++) {
                     linkData[i] = {};
-                    linkData[i].selected = false;
                     linkData[i].linkTitle = links[i].linkTitle;
                     linkData[i].linkAddress = links[i].linkAddress;
                     linkData[i].update = "update";
@@ -267,7 +260,7 @@
                 $("#linkTitle").val("");
                 $("#linkAddress").val("");
 
-                if (linksLength === paginationPageSize) {
+                if (linksLength === PAGE_SIZE) {
                     pageCount++;
                 }
                     
