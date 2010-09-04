@@ -25,38 +25,38 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
-import org.b3log.solo.repository.CSDNBlogArticleSoloArticleRepository;
+import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.json.JSONObject;
 
 /**
- * CSDN blog article-Solo article Google App Engine repository.
+ * External blog article-Solo article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 27, 2010
+ * @version 1.0.0.2, Sep 4, 2010
  */
-public class CSDNBlogArticleSoloArticleGAERepository
+public class ExternalArticleSoloArticleGAERepository
         extends AbstractGAERepository
-        implements CSDNBlogArticleSoloArticleRepository {
+        implements ExternalArticleSoloArticleRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(CSDNBlogArticleSoloArticleGAERepository.class.
+            Logger.getLogger(ExternalArticleSoloArticleGAERepository.class.
             getName());
 
     @Override
     public String getName() {
-        return BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE + "_" + Article.ARTICLE;
+        return BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE + "_" + Article.ARTICLE;
     }
 
     @Override
-    public String getSoloArticleId(final String csdnBlogArticleId)
+    public String getSoloArticleId(final String externalArticleId)
             throws RepositoryException {
         final Query query = new Query(getName());
-        query.addFilter(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID,
+        query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID,
                         Query.FilterOperator.EQUAL,
-                        csdnBlogArticleId);
+                        externalArticleId);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
@@ -70,7 +70,7 @@ public class CSDNBlogArticleSoloArticleGAERepository
     }
 
     @Override
-    public String getCSDNBlogArticleId(final String soloArticleId)
+    public String getExternalArticleId(final String soloArticleId)
             throws RepositoryException {
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
@@ -84,16 +84,16 @@ public class CSDNBlogArticleSoloArticleGAERepository
 
         final Map<String, Object> properties = entity.getProperties();
 
-        return (String) properties.get(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID);
+        return (String) properties.get(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID);
     }
 
     @Override
-    public JSONObject getByCSDNBlogArticleId(final String csdnBlogArticleId)
+    public JSONObject getByExternalArticleId(final String externalArticleId)
             throws RepositoryException {
         final Query query = new Query(getName());
-        query.addFilter(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID,
+        query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID,
                         Query.FilterOperator.EQUAL,
-                        csdnBlogArticleId);
+                        externalArticleId);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 

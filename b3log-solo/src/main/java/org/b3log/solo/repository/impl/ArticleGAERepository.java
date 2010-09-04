@@ -201,13 +201,13 @@ public class ArticleGAERepository extends AbstractGAERepository
                             article.get(Article.ARTICLE_CREATE_DATE));
             }
 
-            // Remove external attributes, such as "blogSync...."
-            article.remove(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ABSTRACT);
-            article.remove(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES);
-            article.remove(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT);
-            article.remove(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE);
-            article.remove(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_ID);
-            article.remove(BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE);
+            // Remove external attributes, such as "blogSyncExternal...."
+            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ABSTRACT);
+            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES);
+            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_CONTENT);
+            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_CREATE_DATE);
+            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID);
+            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_TITLE);
 
             super.add(article);
         } catch (final Exception e) {

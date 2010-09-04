@@ -22,13 +22,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Post(Article/Entry) of
- * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a>.
+ * Post(Article/Entry).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 3, 2010
+ * @version 1.0.0.1, Sep 4, 2010
  */
-public interface MetaWeblogPost {
+public interface Post {
 
     /**
      * Gets the create date.
@@ -120,5 +119,5 @@ public interface MetaWeblogPost {
      *
      * @return MetaWeblog post structure
      */
-    Map<String, Object> toPost();
+    Map<String, Object> toMetaWeblogPost();
 }

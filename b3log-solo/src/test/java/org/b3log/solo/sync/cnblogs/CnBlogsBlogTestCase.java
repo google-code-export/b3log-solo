@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Date;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.sync.MetaWeblogPost;
+import org.b3log.solo.sync.Post;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static org.testng.Assert.*;
@@ -79,7 +79,7 @@ public final class CnBlogsBlogTestCase {
      */
     //@org.testng.annotations.Test
     public void getPost() throws ServiceException {
-        final MetaWeblogPost article = cnBlogsBlog.getPost("1818114");
+        final Post article = cnBlogsBlog.getPost("1818114");
         assertNotNull(article);
         assertEquals(article.getTitle(), "For Solo 同步测试");
     }

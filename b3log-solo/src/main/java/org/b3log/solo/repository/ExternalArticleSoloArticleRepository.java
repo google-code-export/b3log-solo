@@ -20,46 +20,47 @@ import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
 
 /**
- * CSDN blog article(for sync)-Solo article repository.
+ * External blogging system article(for sync)-Solo article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 27, 2010
+ * @version 1.0.0.2, Sep 4, 2010
  */
-public interface CSDNBlogArticleSoloArticleRepository extends Repository {
+public interface ExternalArticleSoloArticleRepository extends Repository {
 
     /**
-     * Gets Solo article id by the specified CSDN blog article id.
+     * Gets Solo article id by the specified external blog article id.
      *
-     * @param csdnBlogArticleId the specified CSDN blog article id
+     * @param externalArticleId the specified external blog article id
      * @return Solo article id, returns {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    String getSoloArticleId(final String csdnBlogArticleId)
+    String getSoloArticleId(final String externalArticleId)
             throws RepositoryException;
 
     /**
-     * Gets CSDN blog article id by the specified Solo article id.
+     * Gets external blogging system blog article id by the specified Solo
+     * article id.
      *
      * @param soloArticleId the specified Solo article id
-     * @return CSDN blog article id, returns {@code null} if not found
+     * @return external blog article id, returns {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    String getCSDNBlogArticleId(final String soloArticleId)
+    String getExternalArticleId(final String soloArticleId)
             throws RepositoryException;
 
     /**
-     * Gets a CSDN blog article-Solo article relation by the specified CSDN
-     * blog article id.
+     * Gets a external blog article-Solo article relation by the specified
+     * external article id.
      *
-     * @param csdnBlogArticleId the specified CSDN blog article id
+     * @param externalArticleId the specified external article id
      * @return the relation, {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    JSONObject getByCSDNBlogArticleId(final String csdnBlogArticleId)
+    JSONObject getByExternalArticleId(final String externalArticleId)
             throws RepositoryException;
 
     /**
-     * Gets a CSDN blog article-Solo article relation by the specified Solo
+     * Gets an external blog article-Solo article relation by the specified Solo
      * article id.
      *
      * @param soloArticleId the specified Solo article id

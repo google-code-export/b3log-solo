@@ -16,10 +16,10 @@
 package org.b3log.solo.event;
 
 import java.util.logging.Logger;
-import org.b3log.solo.event.listener.sync.BlogSyncMgmtAddArticleProcessor;
+import org.b3log.solo.event.listener.impl.CSDNBlogAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
-import org.b3log.solo.event.listener.sync.BlogSyncMgmtRemoveArticleProcessor;
-import org.b3log.solo.event.listener.sync.BlogSyncMgmtUpdateArticleProcessor;
+import org.b3log.solo.event.listener.impl.CSDNBlogRemoveArticleProcessor;
+import org.b3log.solo.event.listener.impl.CSDNBlogUpdateArticleProcessor;
 
 /**
  * Event module for IoC
@@ -27,7 +27,7 @@ import org.b3log.solo.event.listener.sync.BlogSyncMgmtUpdateArticleProcessor;
  * configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 1, 2010
+ * @version 1.0.0.3, Sep 4, 2010
  */
 public final class EventModule extends AbstractEventModule {
 
@@ -50,8 +50,8 @@ public final class EventModule extends AbstractEventModule {
     protected void configure() {
         super.configure();
 
-        bind(BlogSyncMgmtAddArticleProcessor.class).asEagerSingleton();
-        bind(BlogSyncMgmtRemoveArticleProcessor.class).asEagerSingleton();
-        bind(BlogSyncMgmtUpdateArticleProcessor.class).asEagerSingleton();
+        bind(CSDNBlogAddArticleProcessor.class).asEagerSingleton();
+        bind(CSDNBlogRemoveArticleProcessor.class).asEagerSingleton();
+        bind(CSDNBlogUpdateArticleProcessor.class).asEagerSingleton();
     }
 }
