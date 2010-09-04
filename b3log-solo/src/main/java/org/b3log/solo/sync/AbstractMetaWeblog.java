@@ -149,11 +149,22 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             ret.setCreateDate(createDate);
 
             final String description = (String) result.get("description");
+            // TODO: // Syntax highlighting for CSDN
             final String content = description.replaceAll(
                     "<textarea",
                     "<pre name='code' class='brush:java;'").
-                    replaceAll("</textarea>", "</pre>"); // Syntax highlighting
+                    replaceAll("</textarea>", "</pre>");
             ret.setContent(content);
+
+            try {
+                LOGGER.log(Level.INFO,
+                           "Sleeping [{0}] milliseconds after retrieving post[id={1}]",
+                           new Object[]{String.valueOf(GET_ARTICLE_SLEEP_MILLIS),
+                                        postId});
+                Thread.sleep(GET_ARTICLE_SLEEP_MILLIS);
+            } catch (final InterruptedException e) {
+                LOGGER.warning(e.getMessage());
+            }
 
             return ret;
         } catch (final Exception e) {
@@ -168,9 +179,12 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
         final Object[] params = new Object[]{getUserName(),
                                              getUserName(),
                                              getUserPassword(),
-                                             metaWeblogPost.toMetaWeblogPost(), true};
+                                             metaWeblogPost.toMetaWeblogPost(),
+                                             true};
 
         String ret = null;
+
+
         try {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(new URL(getApiAddress()));
@@ -180,14 +194,22 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
                        new String[]{getBloggingServiceProvider(), articleId});
 
             ret = articleId;
+
+
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
+
+
             throw new ServiceException("New post to ["
                                        + getBloggingServiceProvider()
                                        + "] error");
+
+
         }
 
         return ret;
+
+
     }
 
     @Override
@@ -197,7 +219,10 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
         final Object[] params = new Object[]{postId,
                                              getUserName(),
                                              getUserPassword(),
-                                             metaWeblogPost.toMetaWeblogPost(), true};
+                                             metaWeblogPost.toMetaWeblogPost(),
+                                             true};
+
+
 
         try {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
@@ -206,11 +231,16 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             client.execute(EDIT_POST, params);
             LOGGER.log(Level.INFO, "Edit an article[postId={0}] to [{1}]",
                        new String[]{postId, getBloggingServiceProvider()});
+
+
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
+
+
             throw new ServiceException("Edit a post to ["
                                        + getBloggingServiceProvider()
                                        + "] error");
+
         }
     }
 }
