@@ -74,7 +74,7 @@
 
     init();
     
-    var validataArticle = function () {
+    var validateArticle = function () {
         $("#tipMsg").text("${loadingLabel}").show();
         if ($("#title").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${titleEmptyLabel}").show();
@@ -94,7 +94,7 @@
     }
     
     var addArticle = function () {
-        if (validataArticle()) {
+        if (validateArticle()) {
             var tagArray = $("#tag").val().split(","),
             tagsString = "";
 
