@@ -306,6 +306,11 @@
     var getBlogArticlesByArchiveDate = function () {
         $("#tipMsg").html("${loadingLabel}").show();
         $("#articlesPanel").show();
+        $("#articleList").table({
+            update:{
+                data: articleData
+            }
+        });
 
         var requestJSONObject = {
             "blogSyncExternalBloggingSys": blogType,
@@ -318,7 +323,7 @@
             var result =
                 jsonRpc.blogSyncService.getExternalArticlesByArchiveDate(requestJSONObject);
             var articles = result.blogSyncExternalArticles;
-            if (articles.length == $("#articleListTableMain tr").length) {
+            if (articles.length === $("#articleListTableMain tr").length) {
                 break;
             }
             if (articles.length > 0) {
@@ -343,11 +348,12 @@
                 });
                 
                 $("#articlesCount").html("${sumLabel} " + articleData.length + " ${countLabel}");
+                $("#tipMsg").text("${loadingLabel}");
             } else {
-                $("#tipMsg").text("${getFailLabel}").show();
+                $("#tipMsg").text("${getFailLabel}");
             }
         }
-        $("#tipMsg").text("").hide();
+        $("#tipMsg").hide();
     }
 
     var sync = function () {
