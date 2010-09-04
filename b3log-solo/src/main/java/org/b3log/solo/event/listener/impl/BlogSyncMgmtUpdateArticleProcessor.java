@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 2, 2010
+ * @version 1.0.0.2, Sep 4, 2010
  */
 public final class BlogSyncMgmtUpdateArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -52,11 +52,6 @@ public final class BlogSyncMgmtUpdateArticleProcessor
      */
     @Inject
     private BlogSyncManagementRepository blogSyncManagementRepository;
-    /**
-     * CSDN blog.
-     */
-    @Inject
-    private CSDNBlog csdnBlog;
     /**
      * CSDN blog article-Solo article repository.
      */
@@ -123,7 +118,10 @@ public final class BlogSyncMgmtUpdateArticleProcessor
                             getBySoloArticleId(articleId);
                     final String postId = csdnArticleSoloArticleRelation.
                             getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_ID);
-                    csdnBlog.editPost(postId, userName, userPwd, csdnBlogArticle);
+                                        final CSDNBlog csdnBlog = new CSDNBlog();
+                    csdnBlog.setUserName(userName);
+                    csdnBlog.setUserPassword(userPwd);
+                    csdnBlog.editPost(postId, csdnBlogArticle);
                 }
             }
         } catch (final Exception e) {

@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Aug 27, 2010
+ * @version 1.0.0.9, Sep 4, 2010
  */
 public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
@@ -70,11 +70,6 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private CSDNBlogArticleRepository csdnBlogArticleRepository;
-    /**
-     * CSDN blog.
-     */
-    @Inject
-    private CSDNBlog csdnBlog;
     /**
      * Tag utilities.
      */
@@ -351,9 +346,11 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                     BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
             final String archiveDate = requestJSONObject.getString(
                     BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE);
+            final CSDNBlog csdnBlog = new CSDNBlog();
+            csdnBlog.setUserName(csdnBlogUserName);
+            csdnBlog.setUserPassword("ignored");
             final List<String> csdnArticleIds =
-                    csdnBlog.getArticleIdsByArchiveDate(csdnBlogUserName,
-                                                        archiveDate);
+                    csdnBlog.getArticleIdsByArchiveDate(archiveDate);
             LOGGER.log(Level.FINER,
                        "There are [{0}] articles of CSDN blog user[userName={1}] in [{2}]",
                        new Object[]{csdnArticleIds.size(),
@@ -380,9 +377,8 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                 if (csdnTmpImported) {
                     article = csdnBlogArticleRepository.get(oId);
                 } else { // Not retrieved yet, get the article from CSDN
-                    final CSDNBlogArticle csdnBlogArticle =
-                            csdnBlog.getArticleById(csdnBlogUserName,
-                                                    csdnArticleId);
+                    final CSDNBlogArticle csdnBlogArticle = null;
+                    // TODO: csdnBlog.getArticleById(csdnArticleId);
                     if (null != csdnBlogArticle) {
                         article = csdnBlogArticle.toJSONObject();
                         final String csdnBlogArticleImportedId =
@@ -465,8 +461,12 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
         try {
             final String csdnBlogUserName = requestJSONObject.getString(
                     BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
-            final List<String> archiveDates =
-                    csdnBlog.getArchiveDates(csdnBlogUserName);
+            final String csdnBlogUserPwd = requestJSONObject.getString(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
+            final CSDNBlog csdnBlog = new CSDNBlog();
+            csdnBlog.setUserName(csdnBlogUserName);
+            csdnBlog.setUserPassword(csdnBlogUserPwd);
+            final List<String> archiveDates = csdnBlog.getArchiveDates();
 
             ret.put(BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES, archiveDates);
         } catch (final JSONException e) {

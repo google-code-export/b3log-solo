@@ -1,0 +1,216 @@
+/*
+ * Copyright (C) 2009, 2010, B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.b3log.solo.sync;
+
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.xmlrpc.client.XmlRpcClient;
+import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
+import org.b3log.latke.service.ServiceException;
+import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
+
+/**
+ * Abstract MetaWeblog.
+ *
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.0, Sep 4, 2010
+ */
+public abstract class AbstractMetaWeblog extends AbstractBlog
+        implements MetaWeblog {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(AbstractMetaWeblog.class.getName());
+    /**
+     * New post method.
+     */
+    public static final String NEW_POST = "metaWeblog.newPost";
+    /**
+     * Delete post method.
+     */
+    public static final String DELETE_POST = "blogger.deletePost";
+    /**
+     * Edit post method.
+     */
+    public static final String EDIT_POST = "metaWeblog.editPost";
+    /**
+     * Get post by id method(need password).
+     */
+    public static final String GET_POST = "metaWeblog.getPost";
+    /**
+     * XML-RPC client configuration.
+     */
+    private XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
+    /**
+     * XML-RPC client.
+     */
+    private XmlRpcClient client = new XmlRpcClient();
+    /**
+     * Sleep millisecond between every article get operation.
+     */
+    private static final long GET_ARTICLE_SLEEP_MILLIS = 3000;
+    /**
+     * Connection timeout in milliseconds.
+     */
+    private static final int CONNECTION_TIMEOUT = 10000;
+    /**
+     * Shanghai date format.
+     */
+    public static final DateFormat CST_DATE_FORMAT =
+            new SimpleDateFormat();
+    /**
+     * CST date format.
+     */
+    public static final DateFormat UTC_DATE_FORMAT =
+            new SimpleDateFormat();
+
+    static {
+        final TimeZone cstTimeZone = TimeZone.getTimeZone("CST");
+        CST_DATE_FORMAT.setTimeZone(cstTimeZone);
+
+        final TimeZone utcTimeZone = TimeZone.getTimeZone("UTC");
+        UTC_DATE_FORMAT.setTimeZone(utcTimeZone);
+    }
+
+    @Override
+    public void deletePost(final String postId) throws
+            ServiceException {
+        final Object[] params = new Object[]{"ignored",
+                                             postId,
+                                             getUserName(),
+                                             getUserPassword(),
+                                             true};
+
+        try {
+            config.setConnectionTimeout(CONNECTION_TIMEOUT);
+            config.setServerURL(new URL(getApiAddress()));
+            client.setConfig(config);
+            client.execute(DELETE_POST, params);
+            LOGGER.log(Level.INFO, "Deleted article[id={0}] from CSDN blog",
+                       postId);
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new ServiceException("Delete post to CSDN blog error");
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public MetaWeblogPost getPost(final String postId)
+            throws ServiceException {
+        final Object[] params = new Object[]{postId,
+                                             getUserName(),
+                                             getUserPassword()};
+        try {
+            config.setConnectionTimeout(CONNECTION_TIMEOUT);
+            config.setServerURL(new URL(getApiAddress()));
+            client.setConfig(config);
+            final Map<String, ?> result =
+                    (Map<String, ?>) client.execute(GET_POST, params);
+            LOGGER.log(Level.INFO, "Got an article[id={0}] from [{1}]",
+                       new String[]{postId, getBloggingServiceProvider()});
+
+            final CSDNBlogArticle ret = new CSDNBlogArticle();
+            ret.setId(postId);
+            LOGGER.log(Level.FINEST, "Post[keys={0}]", result.keySet());
+            final String title = (String) result.get("title");
+            ret.setTitle(title);
+
+            final Object[] categoryObjects = (Object[]) result.get("categories");
+            if (null != categoryObjects) {
+                for (int i = 0; i < categoryObjects.length; i++) {
+                    final Object category = categoryObjects[i];
+                    ret.addCategory(category.toString());
+                }
+            }
+
+            final Date createDate = (Date) result.get("dateCreated");
+            ret.setCreateDate(createDate);
+
+            final String description = (String) result.get("description");
+            final String content = description.replaceAll(
+                    "<textarea",
+                    "<pre name='code' class='brush:java;'").
+                    replaceAll("</textarea>", "</pre>"); // Syntax highlighting
+            ret.setContent(content);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.warning(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public String newPost(final MetaWeblogPost metaWeblogPost)
+            throws ServiceException {
+        final Object[] params = new Object[]{getUserName(),
+                                             getUserName(),
+                                             getUserPassword(),
+                                             metaWeblogPost.toPost(), true};
+
+        String ret = null;
+        try {
+            config.setConnectionTimeout(CONNECTION_TIMEOUT);
+            config.setServerURL(new URL(getApiAddress()));
+            client.setConfig(config);
+            final String articleId = (String) client.execute(NEW_POST, params);
+            LOGGER.log(Level.INFO, "Post an article to [{0}] [result={1}]",
+                       new String[]{getBloggingServiceProvider(), articleId});
+
+            ret = articleId;
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new ServiceException("New post to ["
+                                       + getBloggingServiceProvider()
+                                       + "] error");
+        }
+
+        return ret;
+    }
+
+    @Override
+    public void editPost(final String postId,
+                         final MetaWeblogPost metaWeblogPost)
+            throws ServiceException {
+        final Object[] params = new Object[]{postId,
+                                             getUserName(),
+                                             getUserPassword(),
+                                             metaWeblogPost.toPost(), true};
+
+        try {
+            config.setConnectionTimeout(CONNECTION_TIMEOUT);
+            config.setServerURL(new URL(getApiAddress()));
+            client.setConfig(config);
+            client.execute(EDIT_POST, params);
+            LOGGER.log(Level.INFO, "Edit an article[postId={0}] to [{1}]",
+                       new String[]{postId, getBloggingServiceProvider()});
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new ServiceException("Edit a post to ["
+                                       + getBloggingServiceProvider()
+                                       + "] error");
+        }
+    }
+}

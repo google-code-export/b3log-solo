@@ -15,23 +15,16 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.xmlrpc.client.XmlRpcClient;
-import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
-import org.b3log.latke.service.ServiceException;
-import org.b3log.solo.sync.MetaWeblog;
-import org.b3log.solo.sync.MetaWeblogPost;
+import org.b3log.solo.sync.AbstractMetaWeblog;
+import org.b3log.solo.sync.util.PageReader;
 
 /**
  * CSDN blog.
@@ -43,57 +36,15 @@ import org.b3log.solo.sync.MetaWeblogPost;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Sep 1, 2010
+ * @version 1.0.0.5, Sep 4, 2010
  */
-public final class CSDNBlog implements MetaWeblog {
+public final class CSDNBlog extends AbstractMetaWeblog {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
             Logger.getLogger(CSDNBlog.class.getName());
-    /**
-     * New post method.
-     */
-    private static final String NEW_POST = "metaWeblog.newPost";
-    /**
-     * Delete post method.
-     */
-    private static final String DELETE_POST = "blogger.deletePost";
-    /**
-     * Edit post method.
-     */
-    private static final String EDIT_POST = "metaWeblog.editPost";
-    /**
-     * Get post by id method.
-     */
-    private static final String GET_POST_BY_ID = "metaWeblog.getPostByID";
-    /**
-     * XML-RPC client configuration.
-     */
-    private XmlRpcClientConfigImpl config = new XmlRpcClientConfigImpl();
-    /**
-     * XML-RPC client.
-     */
-    private XmlRpcClient client = new XmlRpcClient();
-    /**
-     * Sleep millisecond between every article get operation.
-     */
-    private static final long GET_ARTICLE_SLEEP_MILLIS = 3000;
-    /**
-     * Connection timeout in milliseconds.
-     */
-    private static final int CONNECTION_TIMEOUT = 10000;
-    /**
-     * Shanghai date format.
-     */
-    public static final DateFormat CST_DATE_FORMAT =
-            new SimpleDateFormat();
-    /**
-     * CST date format.
-     */
-    public static final DateFormat UTC_DATE_FORMAT =
-            new SimpleDateFormat();
 
     static {
         final TimeZone cstTimeZone = TimeZone.getTimeZone("CST");
@@ -104,107 +55,22 @@ public final class CSDNBlog implements MetaWeblog {
     }
 
     @Override
-    public void deletePost(final String csdnBlogUserName,
-                           final String csdnBlogUserPwd,
-                           final String csdnBlogArticleId) throws
-            ServiceException {
-        final Object[] params = new Object[]{"ignored",
-                                             csdnBlogArticleId,
-                                             csdnBlogUserName,
-                                             csdnBlogUserPwd,
-                                             true};
-
-        try {
-            config.setConnectionTimeout(CONNECTION_TIMEOUT);
-            config.setServerURL(
-                    new URL("http://blog.csdn.net/" + csdnBlogUserName
-                            + "/services/metablogapi.aspx"));
-            client.setConfig(config);
-            client.execute(DELETE_POST, params);
-            LOGGER.log(Level.INFO, "Deleted article[id={0}] from CSDN blog",
-                       csdnBlogArticleId);
-        } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-
-            throw new ServiceException("New a post to CSDN blog error");
-        }
+    public String getApiAddress() {
+        return "http://blog.csdn.net/" + getUserName()
+               + "/services/metablogapi.aspx";
     }
 
     @Override
-    public String newPost(final String csdnBlogUserName,
-                          final String csdnBlogUserPwd,
-                          final MetaWeblogPost csdnBlogArticle)
-            throws ServiceException {
-        final Object[] params = new Object[]{
-            csdnBlogUserName,
-            csdnBlogUserName,
-            csdnBlogUserPwd,
-            csdnBlogArticle.toPost(), true};
-
-        String ret = null;
-        try {
-            config.setConnectionTimeout(CONNECTION_TIMEOUT);
-            config.setServerURL(
-                    new URL("http://blog.csdn.net/" + csdnBlogUserName
-                            + "/services/metablogapi.aspx"));
-            client.setConfig(config);
-            final String articleId = (String) client.execute(NEW_POST, params);
-            LOGGER.log(Level.INFO, "Post article to CSDN blog[result={0}]",
-                       articleId);
-
-            ret = articleId;
-        } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-
-            throw new ServiceException("New a post to CSDN blog error");
-        }
-
-        return ret;
+    public String getBloggingServiceProvider() {
+        return "CSDN Blog";
     }
 
     @Override
-    public void editPost(final String postId,
-                         final String csdnBlogUserName,
-                         final String csdnBlogUserPwd,
-                         final MetaWeblogPost csdnBlogArticle)
-            throws ServiceException {
-        final Object[] params = new Object[]{
-            postId,
-            csdnBlogUserName,
-            csdnBlogUserPwd,
-            csdnBlogArticle.toPost(), true};
-
-        try {
-            config.setConnectionTimeout(CONNECTION_TIMEOUT);
-            config.setServerURL(
-                    new URL("http://blog.csdn.net/" + csdnBlogUserName
-                            + "/services/metablogapi.aspx"));
-            client.setConfig(config);
-            client.execute(EDIT_POST, params);
-            LOGGER.log(Level.INFO, "Edit article[postId={0}] to CSDN blog",
-                       postId);
-        } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-
-            throw new ServiceException("Edit a post to CSDN blog error");
-        }
-    }
-
-    /**
-     * Gets the all archive dates(yyyy/MM) by the specified CSDN blog user
-     * name.
-     *
-     * @param csdnBlogUserName the specified CSDN blog user name
-     * @return a set of archive dates(yyyy/MM), returns an empty set if not
-     * found any archive date
-     */
-    public List<String> getArchiveDates(final String csdnBlogUserName) {
+    public List<String> getArchiveDates() {
         final List<String> ret = new ArrayList<String>();
 
-        final IndexPageReader archivePageReader =
-                new IndexPageReader(csdnBlogUserName);
-        final String pageContent = archivePageReader.getContent();
-        final String patternString = "<a href=\"/" + csdnBlogUserName
+        final String pageContent = PageReader.getContent(getIndexPageURL());
+        final String patternString = "<a href=\"/" + getUserName()
                                      + "/archive/\\d{4}/\\d{2}\\.aspx";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
@@ -231,18 +97,14 @@ public final class CSDNBlog implements MetaWeblog {
     }
 
     /**
-     * Gets the oldest archive date(yyyy/MM) by the specified CSDN blog user
-     * name.
+     * Gets the oldest archive date.
      *
-     * @param csdnBlogUserName the specified CSDN blog user name
-     * @return the oldest archive date(yyyy/MM), returns {@code null} if not
-     * found any archive date
+     * @return the oldest archive date(yyyy/MM), returns {@code null} if
+     * occurs error or not found
      */
-    public String getOldestArchiveDate(final String csdnBlogUserName) {
-        final IndexPageReader archivePageReader =
-                new IndexPageReader(csdnBlogUserName);
-        final String pageContent = archivePageReader.getContent();
-        final String patternString = "<a href=\"/" + csdnBlogUserName
+    public String getOldestArchiveDate() {
+        final String pageContent = PageReader.getContent(getIndexPageURL());
+        final String patternString = "<a href=\"/" + getUserName()
                                      + "/archive/\\d{4}/\\d{2}\\.aspx";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
@@ -270,20 +132,12 @@ public final class CSDNBlog implements MetaWeblog {
         return year + "/" + month;
     }
 
-    /**
-     * Gets article ids by the specified archive date.
-     *
-     * @param csdnBlogUserName the specified CSDN blog user name
-     * @param archiveDate the specified archive date(yyyy/MM)
-     * @return a set of article ids, returns an empty list if not found
-     */
-    public List<String> getArticleIdsByArchiveDate(
-            final String csdnBlogUserName, final String archiveDate) {
-        final ArchivePageReader archivePageReader =
-                new ArchivePageReader(csdnBlogUserName, archiveDate);
-        final String pageContent = archivePageReader.getContent();
+    @Override
+    public List<String> getArticleIdsByArchiveDate(final String archiveDate) {
+        final URL archivePageURL = getArchivePageURL(archiveDate);
+        final String pageContent = PageReader.getContent(archivePageURL);
         final String patternString =
-                "<code><a href=\"/" + csdnBlogUserName + "/archive/"
+                "<code><a href=\"/" + getUserName() + "/archive/"
                 + archiveDate + "/\\d\\d/\\d+\\.aspx";
         final Pattern pattern =
                 Pattern.compile(patternString);
@@ -302,70 +156,24 @@ public final class CSDNBlog implements MetaWeblog {
         return ret;
     }
 
-    /**
-     * Gets an article by the specified article id.
-     *
-     * @param csdnBlogUserName the specified CSDN blog user name
-     * @param articleId the specified article id
-     * @return article, returns {@code null} if error or not found or time out
-     */
-    public CSDNBlogArticle getArticleById(final String csdnBlogUserName,
-                                          final String articleId) {
-        final CSDNBlogArticle ret = new CSDNBlogArticle();
-        ret.setId(articleId);
-
+    @Override
+    public URL getArchivePageURL(final String archiveDate) {
         try {
-            config.setConnectionTimeout(CONNECTION_TIMEOUT);
-            config.setServerURL(new URL("http://blog.csdn.net/"
-                                        + csdnBlogUserName
-                                        + "/services/metablogapi.aspx"));
-            client.setConfig(config);
-
-            final List<String> params = new ArrayList<String>();
-            params.add(articleId);
-            params.add(csdnBlogUserName);
-            @SuppressWarnings("unchecked")
-            final Map<String, ?> result =
-                    (Map<String, ?>) client.execute(GET_POST_BY_ID, params);
-
-            LOGGER.log(Level.FINEST, "Post[keys={0}]", result.keySet());
-            final String title = (String) result.get("title");
-            ret.setTitle(title);
-
-            final Object[] categoryObjects = (Object[]) result.get("categories");
-            if (null != categoryObjects) {
-                for (int i = 0; i < categoryObjects.length; i++) {
-                    final Object category = categoryObjects[i];
-                    ret.addCategory(category.toString());
-                }
-            }
-
-            final Date createDate = (Date) result.get("dateCreated");
-            ret.setCreateDate(createDate);
-
-            final String description = (String) result.get("description");
-            final String content = description.replaceAll(
-                    "<textarea",
-                    "<pre name='code' class='brush:java;'").
-                    replaceAll("</textarea>", "</pre>"); // Syntax highlighting
-            ret.setContent(content);
-
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Export article[id={0}] error[msg={1}]",
-                       new Object[]{articleId, e.getMessage()});
-
+            return new URL("http://blog.csdn.net/" + getUserName()
+                           + "/archive/" + archiveDate + ".aspx");
+        } catch (final MalformedURLException e) {
+            LOGGER.severe(e.getMessage());
             return null;
         }
+    }
 
+    @Override
+    public URL getIndexPageURL() {
         try {
-            LOGGER.log(Level.FINEST,
-                       "Sleep main thread [{0}] millis for getting article from CSDN....",
-                       GET_ARTICLE_SLEEP_MILLIS);
-            Thread.sleep(GET_ARTICLE_SLEEP_MILLIS);
-        } catch (final InterruptedException e) {
+            return new URL("http://blog.csdn.net/" + getUserName());
+        } catch (final MalformedURLException e) {
             LOGGER.severe(e.getMessage());
+            return null;
         }
-
-        return ret;
     }
 }

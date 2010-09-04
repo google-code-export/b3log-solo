@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.sync;
 
 import org.b3log.latke.service.ServiceException;
@@ -23,35 +22,46 @@ import org.b3log.latke.service.ServiceException;
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a> blog.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 3, 2010
+ * @version 1.0.0.1, Sep 4, 2010
  */
-public interface MetaWeblog {
+public interface MetaWeblog extends Blog {
+
+    /**
+     * Gets API address with the specified user name.
+     *
+     * @return API address, for example,
+     * {@code http://blog.csdn.net/${userName}/services/metablogapi.aspx}
+     */
+    String getApiAddress();
+
+    /**
+     * Gets a post from a MetaWeblog blog with the specified parameters.
+     *
+     * @param postId the specified post id
+     * @return blog post, returns {@code null} if occurs error or not
+     * found
+     * @throws ServiceException service exception
+     */
+    MetaWeblogPost getPost(final String postId)
+            throws ServiceException;
 
     /**
      * Deletes a post from a MetaWeblog blog with specified parameters.
      *
-     * @param userName the specified blog user name
-     * @param userPwd the specified blog user password
      * @param postId the specified post id
      * @throws ServiceException service exception
      */
-    void deletePost(final String userName,
-                    final String userPwd,
-                    final String postId)
+    void deletePost(final String postId)
             throws ServiceException;
 
     /**
      * Creates a post to a MetaWeblog blog with specified parameters.
      *
-     * @param userName the specified blog user name
-     * @param userPwd the specified blog user password
      * @param metaWeblogPost the specified blog post
      * @return post id just created
      * @throws ServiceException service exception
      */
-    String newPost(final String userName,
-                   final String userPwd,
-                   final MetaWeblogPost metaWeblogPost)
+    String newPost(final MetaWeblogPost metaWeblogPost)
             throws ServiceException;
 
     /**
@@ -59,14 +69,10 @@ public interface MetaWeblog {
      * specified parameters.
      *
      * @param postId the given post id
-     * @param userName the specified blog user name
-     * @param userPwd the specified blog user password
      * @param metaWeblogPost the specified blog post to update
      * @throws ServiceException service exception
      */
     void editPost(final String postId,
-                  final String userName,
-                  final String userPwd,
                   final MetaWeblogPost metaWeblogPost)
             throws ServiceException;
 }
