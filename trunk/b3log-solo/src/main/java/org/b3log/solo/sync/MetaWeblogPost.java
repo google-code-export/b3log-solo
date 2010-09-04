@@ -28,7 +28,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
-import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.b3log.solo.util.Htmls;
 import org.json.JSONException;
 import org.json.JSONObject;
