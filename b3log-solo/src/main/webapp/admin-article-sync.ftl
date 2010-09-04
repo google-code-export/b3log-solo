@@ -288,7 +288,7 @@
         while (true) {
             var result =
                 jsonRpc.blogSyncService.getExternalArticlesByArchiveDate(requestJSONObject);
-            var articles = result.blogSyncBlogArticles;
+            var articles = result.blogSyncExternalArticles;
             if (articles.length == $("#articleListTableMain tr").length) {
                 break;
             }
