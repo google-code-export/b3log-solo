@@ -15,31 +15,26 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
+import org.testng.annotations.Test;
 import org.b3log.latke.Keys;
 import java.util.List;
 import java.util.Date;
 import java.util.UUID;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.sync.MetaWeblogPost;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static org.testng.Assert.*;
 
 /**
- * {@link CSDNBlogTestCase} test case.
+ * {@link CSDNBlog} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 1, 2010
+ * @version 1.0.0.4, Sep 4, 2010
  */
 public final class CSDNBlogTestCase {
 
-    /**
-     * CSDN user name.
-     */
-    private static final String USER_NAME = "DL88250";
-    /**
-     * CSDN user password.
-     */
-    private static final String USER_PASSWORD = "8825088250";
     /**
      * Article sum of 2006/12.
      */
@@ -48,6 +43,18 @@ public final class CSDNBlogTestCase {
      * Article sum of 2009/08.
      */
     private static final int ARTICLE_SUM_2009_08 = 13;
+    /**
+     * CSDN blog.
+     */
+    private CSDNBlog csdnBlog = new CSDNBlog();
+
+    /**
+     * Public default constructor.
+     */
+    public CSDNBlogTestCase() {
+        csdnBlog.setUserName("DL88250");
+        csdnBlog.setUserPassword("ModifiedThis");
+    }
 
     /**
      * Tests
@@ -55,58 +62,32 @@ public final class CSDNBlogTestCase {
      */
     //@Test
     public void getArchiveDates() {
-        final CSDNBlog csdnBlog = new CSDNBlog();
-        final List<String> archiveDates = csdnBlog.getArchiveDates("herian");
+        final List<String> archiveDates = csdnBlog.getArchiveDates();
 
-        final int herianArchiveDateCnt = 13;  // Maybe?
-        assertEquals(archiveDates.size(), herianArchiveDateCnt);
+        final int dl88250ArchiveDateCnt = 46;  // Maybe?
+        assertEquals(archiveDates.size(), dl88250ArchiveDateCnt);
     }
 
     /**
      * Tests
-     * {@linkplain CSDNBlog#getOldestArchiveDate(java.lang.String) } method.
-     */
-    //@Test
-    public void getOldestArchiveDate() {
-        final CSDNBlog csdnBlog = new CSDNBlog();
-        String archiveDate = csdnBlog.getOldestArchiveDate(USER_NAME);
-
-        assertEquals(archiveDate, "2006/12");
-
-        archiveDate = csdnBlog.getOldestArchiveDate("Vanessa219");
-        assertEquals(archiveDate, "2008/01");
-    }
-
-    /**
-     * Tests
-     * {@linkplain CSDNBlog#getArticleIdsByArchiveDate(java.lang.String, java.lang.String)}
-     * method.
+     * {@linkplain CSDNBlog#getArchiveDates() } method.
      */
     //@Test
     public void getArticleIdsByArchiveDate() {
-        final CSDNBlog csdnBlog = new CSDNBlog();
-        List<String> articleIds = csdnBlog.getArticleIdsByArchiveDate(
-                USER_NAME, "2006/12");
-
-
+        List<String> articleIds = csdnBlog.getArticleIdsByArchiveDate("2006/12");
         assertEquals(articleIds.size(), ARTICLE_SUM_2006_12);
 
-        articleIds = csdnBlog.getArticleIdsByArchiveDate(
-                USER_NAME, "2009/08");
-
+        articleIds = csdnBlog.getArticleIdsByArchiveDate("2009/08");
         assertEquals(articleIds.size(), ARTICLE_SUM_2009_08);
     }
 
     /**
-     * Tests
-     * {@linkplain CSDNBlog#getArticleById(java.lang.String, java.lang.String)}
-     * method.
+     * Tests {@linkplain CSDNBlog#getPost(java.lang.String)} method.
+     * @throws ServiceException service exception
      */
-    //@Test
-    public void getArticleById() {
-        final CSDNBlog csdnBlog = new CSDNBlog();
-        final CSDNBlogArticle article = csdnBlog.getArticleById(USER_NAME,
-                                                                "5817062");
+    @Test
+    public void getPost() throws ServiceException {
+        final MetaWeblogPost article = csdnBlog.getPost("5817062");
         assertNotNull(article);
         assertEquals(article.getTitle(), "HTTP/1.1 Status Code Definitions");
     }
@@ -125,13 +106,9 @@ public final class CSDNBlogTestCase {
         final JSONObject article = getArticle();
         final CSDNBlogArticle csdnBlogArticle = new CSDNBlogArticle(article);
 
-        final CSDNBlog csdnBlog = new CSDNBlog();
-        final String articleId =
-                csdnBlog.newPost(USER_NAME, USER_PASSWORD, csdnBlogArticle);
+        final String articleId = csdnBlog.newPost(csdnBlogArticle);
 
-        csdnBlog.deletePost(USER_NAME, USER_PASSWORD, articleId);
-
-
+        csdnBlog.deletePost(articleId);
     }
 
     /**

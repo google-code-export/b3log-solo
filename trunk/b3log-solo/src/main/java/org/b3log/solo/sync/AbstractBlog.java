@@ -13,20 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.sync;
 
-import com.google.inject.AbstractModule;
-
 /**
- * Sync module for <a href="http://code.google.com/p/google-guice/">
- * Guice</a> configurations.
+ * Abstract blog.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 4, 2010
+ * @version 1.0.0.0, Sep 4, 2010
  */
-public final class SyncModule extends AbstractModule {
+public abstract class AbstractBlog implements Blog {
+
+    /**
+     * User name.
+     */
+    private String userName;
+    /**
+     * User password.
+     */
+    private String userPassword;
 
     @Override
-    protected void configure() {
+    public final void setUserName(final String userName) {
+        this.userName = userName;
+    }
+
+    @Override
+    public final void setUserPassword(final String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    @Override
+    public final String getUserName() {
+        return userName;
+    }
+
+    @Override
+    public final String getUserPassword() {
+        return userPassword;
     }
 }

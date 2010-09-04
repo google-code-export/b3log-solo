@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 2, 2010
+ * @version 1.0.0.2, Sep 4, 2010
  */
 public final class BlogSyncMgmtRemoveArticleProcessor
         extends AbstractEventListener<String> {
@@ -51,11 +51,6 @@ public final class BlogSyncMgmtRemoveArticleProcessor
      */
     @Inject
     private BlogSyncManagementRepository blogSyncManagementRepository;
-    /**
-     * CSDN blog.
-     */
-    @Inject
-    private CSDNBlog csdnBlog;
     /**
      * CSDN blog article-Solo article repository.
      */
@@ -120,8 +115,10 @@ public final class BlogSyncMgmtRemoveArticleProcessor
                         final String csdnBlogArticleId =
                                 csdnArticleSoloArticleRelation.getString(
                                 BLOG_SYNC_CSDN_BLOG_ARTICLE_ID);
-
-                        csdnBlog.deletePost(userName, userPwd, csdnBlogArticleId);
+                        final CSDNBlog csdnBlog = new CSDNBlog();
+                        csdnBlog.setUserName(userName);
+                        csdnBlog.setUserPassword(userPwd);
+                        csdnBlog.deletePost(csdnBlogArticleId);
 
                         final String relationId =
                                 csdnArticleSoloArticleRelation.getString(

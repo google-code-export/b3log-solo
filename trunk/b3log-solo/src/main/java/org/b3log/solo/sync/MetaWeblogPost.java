@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.sync;
 
 import java.util.Date;
@@ -92,7 +91,14 @@ public interface MetaWeblogPost {
      *
      * @return categories
      */
-    Set<String> getCategoris();
+    Set<String> getCategories();
+
+    /**
+     * Sets the categories with the specified categories.
+     *
+     * @param categories the specified categories
+     */
+    void setCategories(final Set<String> categories);
 
     /**
      * Adds the specified category.
