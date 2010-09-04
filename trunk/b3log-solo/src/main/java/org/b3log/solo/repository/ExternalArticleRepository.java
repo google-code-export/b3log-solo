@@ -18,10 +18,10 @@ package org.b3log.solo.repository;
 import org.b3log.latke.repository.Repository;
 
 /**
- * CSDN blog article repository.
+ * External article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 19, 2010
+ * @version 1.0.0.1, Sep 4, 2010
  */
-public interface CSDNBlogArticleRepository extends Repository {
+public interface ExternalArticleRepository extends Repository {
 }

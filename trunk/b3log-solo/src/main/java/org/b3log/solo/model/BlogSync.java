@@ -66,60 +66,55 @@ public final class BlogSync {
     public static final String BLOG_SYNC_MGMT_REMOVE_ENABLED =
             "blogSyncMgmtRemoveEnabled";
     /**
-     * Key of CSDN blog archive date.
+     * Key of external blogging system blog archive date.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE =
-            "blogSyncCSDNBlogArchiveDate";
+    public static final String BLOG_SYNC_EXTERNAL_ARCHIVE_DATE =
+            "blogSyncExternalArchiveDate";
     /**
-     * Key of CSDN blog archive dates.
+     * Key of external blogging system blog archive dates.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES =
-            "blogSyncCSDNBlogArchiveDates";
+    public static final String BLOG_SYNC_EXTERNAL_ARCHIVE_DATES =
+            "blogSyncExternalArchiveDates";
     /**
-     * Key of CSDN blog article.
+     * Key of external blogging system article.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE =
-            "blogSyncCSDNBlogArticle";
+    public static final String BLOG_SYNC_EXTERNAL_ARTICLE =
+            "blogSyncExternalArticle";
     /**
-     * Key of CSDN blog articles.
+     * Key of external blogging system articles.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLES =
-            "blogSyncCSDNBlogArticles";
+    public static final String BLOG_SYNC_EXTERNAL_ARTICLES =
+            "blogSyncExternalArticles";
     /**
-     * Key of CSDN blog article title.
+     * Key of external blogging system article title.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE =
-            "blogSyncCSDNBlogArticleTitle";
+    public static final String BLOG_SYNC_EXTERNAL_ARTICLE_TITLE =
+            "blogSyncExternalArticleTitle";
     /**
-     * Key of CSDN blog article create date.
+     *Key of external blogging system article create date.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE =
-            "blogSyncCSDNBlogArticleCreateDate";
+    public static final String BLOG_SYNC_EXTERNAL_ARTICLE_CREATE_DATE =
+            "blogSyncExternalArticleCreateDate";
     /**
-     * Key of CSDN blog article categories.
+     * Key of external blogging system article categories.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES =
-            "blogSyncCSDNBlogArticleCategories";
+    public static final String BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES =
+            "blogSyncExternalArticleCategories";
     /**
-     * Key of CSDN blog article content.
+     * Key ofexternal blogging system article content.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT =
-            "blogSyncCSDNBlogArticleContent";
+    public static final String BLOG_SYNC_EXTERNAL_ARTICLE_CONTENT =
+            "blogSyncExternalArticleContent";
     /**
-     * Key of CSDN blog article abstract.
+     * Key ofexternal blogging system article abstract.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_ABSTRACT =
-            "blogSyncCSDNBlogArticleAbstract";
+    public static final String BLOG_SYNC_EXTERNAL_ARTICLE_ABSTRACT =
+            "blogSyncExternalArticleAbstract";
     /**
-     * Key of CSDN blog article id.
+     * Key of external blogging system article id.
      */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_ID =
-            "blogSyncCSDNBlogArticleId";
-    /**
-     * Key of CSDN blog article ids.
-     */
-    public static final String BLOG_SYNC_CSDN_BLOG_ARTICLE_IDS =
-            "blogSyncCSDNBlogArticleIds";
+    public static final String BLOG_SYNC_EXTERNAL_ARTICLE_ID =
+            "blogSyncExternalArticleId";
     /**
      * Key of imported flag.
      */

@@ -118,7 +118,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
 
     @Override
     @SuppressWarnings("unchecked")
-    public MetaWeblogPost getPost(final String postId)
+    public Post getPost(final String postId)
             throws ServiceException {
         final Object[] params = new Object[]{postId,
                                              getUserName(),
@@ -164,12 +164,12 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
     }
 
     @Override
-    public String newPost(final MetaWeblogPost metaWeblogPost)
+    public String newPost(final Post metaWeblogPost)
             throws ServiceException {
         final Object[] params = new Object[]{getUserName(),
                                              getUserName(),
                                              getUserPassword(),
-                                             metaWeblogPost.toPost(), true};
+                                             metaWeblogPost.toMetaWeblogPost(), true};
 
         String ret = null;
         try {
@@ -193,12 +193,12 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
 
     @Override
     public void editPost(final String postId,
-                         final MetaWeblogPost metaWeblogPost)
+                         final Post metaWeblogPost)
             throws ServiceException {
         final Object[] params = new Object[]{postId,
                                              getUserName(),
                                              getUserPassword(),
-                                             metaWeblogPost.toPost(), true};
+                                             metaWeblogPost.toMetaWeblogPost(), true};
 
         try {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);

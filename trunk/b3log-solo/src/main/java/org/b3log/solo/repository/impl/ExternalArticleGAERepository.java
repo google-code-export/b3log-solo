@@ -18,25 +18,25 @@ package org.b3log.solo.repository.impl;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.BlogSync;
-import org.b3log.solo.repository.CSDNBlogArticleRepository;
+import org.b3log.solo.repository.ExternalArticleRepository;
 
 /**
- * CSDN blog article Google App Engine repository.
+ * External blog article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 19, 2010
+ * @version 1.0.0.1, Sep 4, 2010
  */
-public class CSDNBlogArticleGAERepository extends AbstractGAERepository
-        implements CSDNBlogArticleRepository {
+public class ExternalArticleGAERepository extends AbstractGAERepository
+        implements ExternalArticleRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(CSDNBlogArticleGAERepository.class.getName());
+            Logger.getLogger(ExternalArticleGAERepository.class.getName());
 
     @Override
     public String getName() {
-        return BlogSync.BLOG_SYNC_CSDN_BLOG_ARTICLE;
+        return BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE;
     }
 }

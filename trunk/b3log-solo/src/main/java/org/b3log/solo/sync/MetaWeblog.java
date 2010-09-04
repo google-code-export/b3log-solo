@@ -42,7 +42,7 @@ public interface MetaWeblog extends Blog {
      * found
      * @throws ServiceException service exception
      */
-    MetaWeblogPost getPost(final String postId)
+    Post getPost(final String postId)
             throws ServiceException;
 
     /**
@@ -61,7 +61,7 @@ public interface MetaWeblog extends Blog {
      * @return post id just created
      * @throws ServiceException service exception
      */
-    String newPost(final MetaWeblogPost metaWeblogPost)
+    String newPost(final Post metaWeblogPost)
             throws ServiceException;
 
     /**
@@ -73,6 +73,6 @@ public interface MetaWeblog extends Blog {
      * @throws ServiceException service exception
      */
     void editPost(final String postId,
-                  final MetaWeblogPost metaWeblogPost)
+                  final Post metaWeblogPost)
             throws ServiceException;
 }

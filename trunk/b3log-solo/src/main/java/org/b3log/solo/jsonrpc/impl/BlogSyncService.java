@@ -36,11 +36,12 @@ import org.b3log.solo.model.Article;
 import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
-import org.b3log.solo.repository.CSDNBlogArticleRepository;
-import org.b3log.solo.repository.CSDNBlogArticleSoloArticleRepository;
+import org.b3log.solo.repository.ExternalArticleRepository;
+import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.servlet.SoloServletListener;
-import org.b3log.solo.sync.csdn.blog.CSDNBlog;
-import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
+import org.b3log.solo.sync.BlogFactory;
+import org.b3log.solo.sync.MetaWeblog;
+import org.b3log.solo.sync.Post;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
@@ -69,7 +70,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * CSDN blog article repository.
      */
     @Inject
-    private CSDNBlogArticleRepository csdnBlogArticleRepository;
+    private ExternalArticleRepository externalArticleRepository;
     /**
      * Tag utilities.
      */
@@ -94,16 +95,16 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * CSDN blog article-Solo article repository.
      */
     @Inject
-    private CSDNBlogArticleSoloArticleRepository csdnBlogArticleSoloArticleRepository;
+    private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository;
     /**
      * Blog sync management repository.
      */
     @Inject
     private BlogSyncManagementRepository blogSyncManagementRepository;
     /**
-     * CSDN blog article retrieval count incremental.
+     * External blog article retrieval count incremental.
      */
-    public static final int CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 2;
+    public static final int EXTERNAL_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 2;
 
     /**
      * Gets blog sync management for CSDN blog with the specified http servlet
@@ -274,12 +275,12 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                     final String oId = articleIds.getString(i);
 
                     final JSONObject csdnBlogArticle =
-                            csdnBlogArticleRepository.get(oId);
+                            externalArticleRepository.get(oId);
                     final JSONObject soloArticle =
                             toSoloArticle(csdnBlogArticle);
 
                     final String categoriesString = csdnBlogArticle.getString(
-                            BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES);
+                            BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES);
                     final String[] tagTitles = categoriesString.split(",");
                     @SuppressWarnings(value = "unchecked")
                     final JSONArray tags = tagUtils.tag(tagTitles, soloArticle);
@@ -310,12 +311,15 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Gest CSDN blog articles by the specified request json object.
+     * Gest external blogging system articles by the specified request json
+     * object.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
+     *     "blogSyncExternalBloggingSys": "",
      *     "blogSyncExternalBloggingSysUserName": "",
+     *     "blogSyncExternalBloggingSysUserPassword": "",
      *     "blogSyncCSDNBlogArchiveDate": "2006/12"
      * }
      * </pre>
@@ -324,92 +328,100 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "blogSyncCSDNBlogArticles": [{
+     *     "blogSyncExternalArticles": [{
      *         "oId": "",
-     *         "blogSyncCSDNBlogArticleTitle": "",
-     *         "blogSyncCSDNBlogArticleCreateDate": java.util.Date,
-     *         "blogSyncCSDNBlogArticleCategories": "category1, category2, ....",
-     *         "blogSyncCSDNBlogArticleContent": "",
-     *         "blogsyncCSDNBlogArticleAbstract": ""
+     *         "blogSyncExternalArticleTitle": "",
+     *         "blogSyncExternalArticleCreateDate": java.util.Date,
+     *         "blogSyncExternalArticleCategories": "category1, category2, ....",
+     *         "blogSyncExternalArticleContent": "",
+     *         "blogsyncExternalArticleAbstract": ""
      *     }, ....]
      * }
      * </pre>
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject getCSDNBlogArticlesByArchiveDate(
+    public JSONObject getExternalArticlesByArchiveDate(
             final JSONObject requestJSONObject,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
         checkAuthorized(request, response);
+
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
         try {
-            final String csdnBlogUserName =
+            final String externalSys = requestJSONObject.getString(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS);
+            final String userName =
                     requestJSONObject.getString(
                     BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
+            final String userPwd =
+                    requestJSONObject.getString(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
             final String archiveDate = requestJSONObject.getString(
-                    BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATE);
-            final CSDNBlog csdnBlog = new CSDNBlog();
-            csdnBlog.setUserName(csdnBlogUserName);
-            csdnBlog.setUserPassword("ignored");
-            final List<String> csdnArticleIds =
-                    csdnBlog.getArticleIdsByArchiveDate(archiveDate);
+                    BLOG_SYNC_EXTERNAL_ARCHIVE_DATE);
+            final MetaWeblog metaWeblog = BlogFactory.getMetaWeblog(externalSys);
+            metaWeblog.setUserName(userName);
+            metaWeblog.setUserPassword(userPwd);
+            final List<String> externalArticleIds =
+                    metaWeblog.getArticleIdsByArchiveDate(archiveDate);
             LOGGER.log(Level.FINER,
-                       "There are [{0}] articles of CSDN blog user[userName={1}] in [{2}]",
-                       new Object[]{csdnArticleIds.size(),
-                                    csdnBlogUserName,
+                       "There are [{0}] articles of [{1}] user[userName={2}] in [{3}]",
+                       new Object[]{externalArticleIds.size(),
+                                    externalSys,
+                                    userName,
                                     archiveDate});
             final JSONArray articles = new JSONArray();
-            ret.put(BLOG_SYNC_CSDN_BLOG_ARTICLES, articles);
+            ret.put(BLOG_SYNC_EXTERNAL_ARTICLES, articles);
             int retrievalCnt = 0;
-            for (final String csdnArticleId : csdnArticleIds) {
-                final String oId = csdnBlogArticleSoloArticleRepository.
-                        getSoloArticleId(csdnArticleId);
+            for (final String externalArticleId : externalArticleIds) {
+                final String oId = externalArticleSoloArticleRepository.
+                        getSoloArticleId(externalArticleId);
                 LOGGER.log(Level.FINEST,
-                           "CSDN article[id={0}] Solo article[id={1}]",
-                           new Object[]{csdnArticleId, oId});
+                           "External[{0}] article[id={1}] Solo article[id={2}]",
+                           new String[]{externalSys, externalArticleId, oId});
                 final boolean imported = articleRepository.has(oId);
-                final boolean csdnTmpImported =
-                        csdnBlogArticleRepository.has(oId);
-                // assert imported == csdnTmpImported for consistency
+                final boolean tmpImported =
+                        externalArticleRepository.has(oId);
+                // assert imported == tmpImported for consistency
 
                 JSONObject article = null;
                 LOGGER.log(Level.FINER,
-                           "CSDN blog article[oId={0}]'s status[csdnTmpImported={1}, imported={2}]",
-                           new Object[]{oId, csdnTmpImported, imported});
-                if (csdnTmpImported) {
-                    article = csdnBlogArticleRepository.get(oId);
-                } else { // Not retrieved yet, get the article from CSDN
-                    final CSDNBlogArticle csdnBlogArticle = null;
-                    // TODO: csdnBlog.getArticleById(csdnArticleId);
-                    if (null != csdnBlogArticle) {
-                        article = csdnBlogArticle.toJSONObject();
-                        final String csdnBlogArticleImportedId =
-                                csdnBlogArticleRepository.add(article);
+                           "External[{0}] blog article[oId={0}]'s status[csdnTmpImported={1}, imported={2}]",
+                           new Object[]{externalSys, oId, tmpImported, imported});
+                if (tmpImported) {
+                    article = externalArticleRepository.get(oId);
+                } else { // Not retrieved yet, get the article from External blogging system
+                    final Post externalPost =
+                            metaWeblog.getPost(externalArticleId);
+                    if (null != externalPost) {
+                        article = externalPost.toJSONObject();
+                        final String externalArticleImportedId =
+                                externalArticleRepository.add(article);
 
-                        final JSONObject csdnArticleSoloArticleRelation =
+                        final JSONObject externalArticleSoloArticleRelation =
                                 new JSONObject();
-                        csdnArticleSoloArticleRelation.put(
-                                BLOG_SYNC_CSDN_BLOG_ARTICLE_ID, csdnArticleId);
-                        csdnArticleSoloArticleRelation.put(
+                        externalArticleSoloArticleRelation.put(
+                                BLOG_SYNC_EXTERNAL_ARTICLE_ID,
+                                externalArticleId);
+                        externalArticleSoloArticleRelation.put(
                                 Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                csdnBlogArticleImportedId);
-                        csdnBlogArticleSoloArticleRepository.add(
-                                csdnArticleSoloArticleRelation);
+                                externalArticleImportedId);
+                        externalArticleSoloArticleRepository.add(
+                                externalArticleSoloArticleRelation);
                         LOGGER.log(Level.FINER,
-                                   "Added CSDN blog article-solo article relation[{0}]",
-                                   csdnArticleSoloArticleRelation.toString());
-
+                                   "Added an external[{0}] blog article-solo article relation[{1}]",
+                                   new String[]{
+                                    externalSys,
+                                    externalArticleSoloArticleRelation.toString()});
                         retrievalCnt++;
                     } else {
                         LOGGER.log(Level.WARNING,
-                                   "Retrieve article[csdnArticleId={0}] from CSDN blog is null",
-                                   csdnArticleId);
-
+                                   "Retrieve article[postId={0}] from external blogging system[{1}]is null",
+                                   new String[]{externalArticleId, externalSys});
                         continue;
                     }
                 }
@@ -417,15 +429,11 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                 article.put(BLOG_SYNC_IMPORTED, imported);
                 articles.put(article);
 
-                if (CSDN_BLOG_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL
-                    == retrievalCnt) {
+                if (EXTERNAL_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL == retrievalCnt) {
                     break;
                 }
             }
 
-//            LOGGER.debug("Got articles[" + ret.toString(
-//                    SoloServletListener.JSON_PRINT_INDENT_FACTOR)
-//                         + "] from CSDN blog");
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
@@ -437,11 +445,13 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Gets CSDN blog archive dates by the specified request json object.
+     * Gets external blogging system article archive dates by the specified
+     * request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
+     *     "blogSyncExternalBloggingSys": "",
      *     "blogSyncExternalBloggingSysUserName": ""
      * }
      * </pre>
@@ -450,13 +460,13 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "blogSyncCSDNBlogArchiveDates": ["2006/12", "2007/01", ...]
+     *     "blogSyncExternalArchiveDates": ["2006/12", "2007/01", ...]
      * }
      * </pre>
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject getCSDNBlogArticleArchiveDate(
+    public JSONObject getExternalArticleArchiveDate(
             final JSONObject requestJSONObject,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException,
@@ -466,16 +476,16 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
-            final String csdnBlogUserName = requestJSONObject.getString(
+            final String externalSys = requestJSONObject.getString(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS);
+            final String userName = requestJSONObject.getString(
                     BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
-            final String csdnBlogUserPwd = requestJSONObject.getString(
-                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
-            final CSDNBlog csdnBlog = new CSDNBlog();
-            csdnBlog.setUserName(csdnBlogUserName);
-            csdnBlog.setUserPassword(csdnBlogUserPwd);
-            final List<String> archiveDates = csdnBlog.getArchiveDates();
+            final MetaWeblog metaWeblog = BlogFactory.getMetaWeblog(externalSys);
+            metaWeblog.setUserName(userName);
+            metaWeblog.setUserPassword("ignored");
+            final List<String> archiveDates = metaWeblog.getArchiveDates();
 
-            ret.put(BLOG_SYNC_CSDN_BLOG_ARCHIVE_DATES, archiveDates);
+            ret.put(BLOG_SYNC_EXTERNAL_ARCHIVE_DATES, archiveDates);
         } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
@@ -485,28 +495,28 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * To B3log Solo article(Key transformation) for the specified CSDN blog
+     * To B3log Solo article(Key transformation) for the specified external blog
      * article.
      *
-     * @param csdnBlogArticle the specified CSDN Blog article
+     * @param externalArticle the specified external Blog article
      * @return Solo article
      * @throws Exception exception
      */
-    private JSONObject toSoloArticle(final JSONObject csdnBlogArticle)
+    private JSONObject toSoloArticle(final JSONObject externalArticle)
             throws Exception {
         final JSONObject ret = new JSONObject();
 
-        ret.put(Keys.OBJECT_ID, csdnBlogArticle.getString(Keys.OBJECT_ID));
+        ret.put(Keys.OBJECT_ID, externalArticle.getString(Keys.OBJECT_ID));
         ret.put(Article.ARTICLE_TITLE,
-                csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_TITLE));
+                externalArticle.getString(BLOG_SYNC_EXTERNAL_ARTICLE_TITLE));
         ret.put(Article.ARTICLE_ABSTRACT,
-                csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_ABSTRACT));
+                externalArticle.getString(BLOG_SYNC_EXTERNAL_ARTICLE_ABSTRACT));
         ret.put(Article.ARTICLE_CONTENT,
-                csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_CONTENT));
+                externalArticle.getString(BLOG_SYNC_EXTERNAL_ARTICLE_CONTENT));
         ret.put(Article.ARTICLE_CREATE_DATE,
-                csdnBlogArticle.get(BLOG_SYNC_CSDN_BLOG_ARTICLE_CREATE_DATE));
+                externalArticle.get(BLOG_SYNC_EXTERNAL_ARTICLE_CREATE_DATE));
         ret.put(Article.ARTICLE_TAGS_REF,
-                csdnBlogArticle.getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_CATEGORIES));
+                externalArticle.getString(BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES));
 
         ret.put(Article.ARTICLE_VIEW_COUNT, 0);
         ret.put(Article.ARTICLE_COMMENT_COUNT, 0);

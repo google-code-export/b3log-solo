@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.UUID;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.sync.MetaWeblogPost;
+import org.b3log.solo.sync.Post;
 import org.json.JSONException;
 import org.json.JSONObject;
 import static org.testng.Assert.*;
@@ -86,7 +86,7 @@ public final class CSDNBlogTestCase {
      */
     //@Test
     public void getPost() throws ServiceException {
-        final MetaWeblogPost article = csdnBlog.getPost("5817062");
+        final Post article = csdnBlog.getPost("5817062");
         assertNotNull(article);
         assertEquals(article.getTitle(), "HTTP/1.1 Status Code Definitions");
     }

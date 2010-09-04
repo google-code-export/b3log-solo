@@ -22,8 +22,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
@@ -38,7 +40,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 4, 2010
  */
-public abstract class AbstractMetaWeblogPost implements MetaWeblogPost {
+public abstract class AbstractMetaWeblogPost implements Post {
 
     /**
      * Logger.
@@ -157,8 +159,60 @@ public abstract class AbstractMetaWeblogPost implements MetaWeblogPost {
         categories.add(category);
     }
 
+    /**
+     * Transforms this object to a json object.
+     *
+     * <p>
+     *   <pre>
+     *   {
+     *       "oId": "",
+     *       "blogSyncExternalArticleId": "",
+     *       "blogSyncExternalArticleTitle": "",
+     *       "blogSyncExternalArticleCreateDate": java.util.Date,
+     *       "blogSyncExternalArticleCategories": "category1, category2, ....",
+     *       "blogSyncExternalArticleContent": "",
+     *       "blogSyncExternalArticleAbstract": ""
+     *   }
+     *   </pre>
+     * </p>
+     *
+     * @return json object
+     * @throws JSONException json exception
+     */
     @Override
-    public Map<String, Object> toPost() {
+    public JSONObject toJSONObject() throws JSONException {
+        final JSONObject ret = new JSONObject();
+
+        ret.put(Keys.OBJECT_ID, String.valueOf(getCreateDate().getTime()));
+        ret.put(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID, getId());
+        ret.put(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_TITLE, getTitle());
+        ret.put(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_CREATE_DATE,
+                getCreateDate());
+
+        final StringBuilder categoriesStringBuilder = new StringBuilder();
+
+        int i = 1;
+        final int size = getCategories().size();
+        for (final String category : getCategories()) {
+            categoriesStringBuilder.append(category);
+
+            if (i < size) {
+                categoriesStringBuilder.append(",");
+            }
+
+            i++;
+        }
+        ret.put(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES,
+                categoriesStringBuilder.toString());
+        ret.put(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_CONTENT, getContent());
+        ret.put(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ABSTRACT, genAbstract(
+                getContent()));
+
+        return ret;
+    }
+
+    @Override
+    public Map<String, Object> toMetaWeblogPost() {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
