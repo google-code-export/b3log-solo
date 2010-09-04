@@ -82,7 +82,8 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     // XXX: remove this field?
     public static final String[] SUPPORTED_BLOG_SYNC_MGMT_EXTERNAL_BLOGGING_SYSTEMS =
-            new String[]{BlogSync.BLOG_SYNC_CSDN_BLOG};
+            new String[]{BlogSync.BLOG_SYNC_CSDN_BLOG,
+                         BlogSync.BLOG_SYNC_CNBLOGS};
     /**
      * Maximum captcha row.
      */
