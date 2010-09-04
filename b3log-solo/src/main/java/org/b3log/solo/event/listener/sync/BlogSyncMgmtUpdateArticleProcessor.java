@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.event.listener.impl;
+package org.b3log.solo.event.listener.sync;
 
 import com.google.inject.Inject;
 import java.util.logging.Level;
@@ -29,23 +29,24 @@ import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.CSDNBlogArticleSoloArticleRepository;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
+import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for blog sync remove article to external blogging
+ * This listener is responsible for blog sync update article to external blogging
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Sep 4, 2010
  */
-public final class BlogSyncMgmtRemoveArticleProcessor
-        extends AbstractEventListener<String> {
+public final class BlogSyncMgmtUpdateArticleProcessor
+        extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(BlogSyncMgmtRemoveArticleProcessor.class.getName());
+            Logger.getLogger(BlogSyncMgmtUpdateArticleProcessor.class.getName());
     /**
      * Blog sync management repository.
      */
@@ -58,24 +59,24 @@ public final class BlogSyncMgmtRemoveArticleProcessor
     private CSDNBlogArticleSoloArticleRepository csdnBlogArticleSoloArticleRepository;
 
     /**
-     * Constructs a {@link BlogSyncMgmtRemoveArticleProcessor} object with the
+     * Constructs a {@link BlogSyncMgmtUpdateArticleProcessor} object with the
      * specified event manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
-    public BlogSyncMgmtRemoveArticleProcessor(final EventManager eventManager) {
+    public BlogSyncMgmtUpdateArticleProcessor(final EventManager eventManager) {
         super(eventManager);
     }
 
     @Override
-    public void action(final Event<String> event) throws EventException {
-        final String articleId = event.getData();
+    public void action(final Event<JSONObject> event) throws EventException {
+        final JSONObject article = event.getData();
         LOGGER.log(Level.FINEST,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
-                                articleId,
-                                BlogSyncMgmtRemoveArticleProcessor.class.getName()});
+                                article,
+                                BlogSyncMgmtUpdateArticleProcessor.class.getName()});
 
         final String[] knownExternalBloggingSystems =
                 SoloServletListener.SUPPORTED_BLOG_SYNC_MGMT_EXTERNAL_BLOGGING_SYSTEMS;
@@ -98,9 +99,9 @@ public final class BlogSyncMgmtRemoveArticleProcessor
                            blogSyncMgmt.toString(
                         SoloServletListener.JSON_PRINT_INDENT_FACTOR));
                 if (!blogSyncMgmt.getBoolean(
-                        BLOG_SYNC_MGMT_REMOVE_ENABLED)) {
+                        BLOG_SYNC_MGMT_UPDATE_ENABLED)) {
                     LOGGER.log(Level.INFO,
-                               "External blogging system[{0}] need NOT to syn remove article",
+                               "External blogging system[{0}] need NOT to syn update article",
                                knownExternalBloggingSys);
                 } else {
                     // XXX: Design external blogging system interface
@@ -108,23 +109,19 @@ public final class BlogSyncMgmtRemoveArticleProcessor
                             BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
                     final String userPwd = blogSyncMgmt.getString(
                             BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
+                    final CSDNBlogArticle csdnBlogArticle =
+                            new CSDNBlogArticle(article);
+
+                    final String articleId = article.getString(Keys.OBJECT_ID);
                     final JSONObject csdnArticleSoloArticleRelation =
                             csdnBlogArticleSoloArticleRepository.
                             getBySoloArticleId(articleId);
-                    if (null != csdnArticleSoloArticleRelation) {
-                        final String csdnBlogArticleId =
-                                csdnArticleSoloArticleRelation.getString(
-                                BLOG_SYNC_CSDN_BLOG_ARTICLE_ID);
-                        final CSDNBlog csdnBlog = new CSDNBlog();
-                        csdnBlog.setUserName(userName);
-                        csdnBlog.setUserPassword(userPwd);
-                        csdnBlog.deletePost(csdnBlogArticleId);
-
-                        final String relationId =
-                                csdnArticleSoloArticleRelation.getString(
-                                Keys.OBJECT_ID);
-                        csdnBlogArticleSoloArticleRepository.remove(relationId);
-                    }
+                    final String postId = csdnArticleSoloArticleRelation.
+                            getString(BLOG_SYNC_CSDN_BLOG_ARTICLE_ID);
+                                        final CSDNBlog csdnBlog = new CSDNBlog();
+                    csdnBlog.setUserName(userName);
+                    csdnBlog.setUserPassword(userPwd);
+                    csdnBlog.editPost(postId, csdnBlogArticle);
                 }
             }
         } catch (final Exception e) {
@@ -136,12 +133,12 @@ public final class BlogSyncMgmtRemoveArticleProcessor
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#REMOVE_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
      *
      * @return event type
      */
     @Override
     public String getEventType() {
-        return EventTypes.REMOVE_ARTICLE;
+        return EventTypes.UPDATE_ARTICLE;
     }
 }
