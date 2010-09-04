@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
-import org.testng.annotations.Test;
 import org.b3log.latke.Keys;
 import java.util.List;
 import java.util.Date;
