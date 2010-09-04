@@ -11,7 +11,8 @@
         <link type="text/css" rel="stylesheet" href="styles/default-admin.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-bowknot.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
-        <link type="image/ico" rel="icon" href="/favicon_1.ico"/>
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link rel="icon" type="image/gif" href="animated_favicon.gif" />
     </head>
     <body>
         <#include "common-top.ftl">
