@@ -144,7 +144,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                     BLOG_SYNC_EXTERNAL_BLOGGING_SYS);
             return blogSyncManagementRepository.getByExternalBloggingSystem(
                     externalSys);
-        } catch (JSONException e) {
+        } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());
         }
 
