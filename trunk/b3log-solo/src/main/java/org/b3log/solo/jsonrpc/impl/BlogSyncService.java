@@ -256,7 +256,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject importCSDNBlogArticles(final JSONObject requestJSONObject,
+    public JSONObject importExternalArticles(final JSONObject requestJSONObject,
                                              final HttpServletRequest request,
                                              final HttpServletResponse response)
             throws ActionException, IOException {
