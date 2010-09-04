@@ -12,11 +12,11 @@
                 </span>
             </li>
             <li class="form">
-                <span class="label">{chooseBlogType}:</span>
-                <select>
+                <span class="label">${chooseBlogTypeLabel}</span>
+                <select id="blogType">
                     <option>CSDN</option>
-                    <option>cnblog</option>
-                    <option>blog java</option>
+                    <option>BlogJava</option>
+                    <option>CnBlogs</option>
                 </select>
             </li>
         </ul>
@@ -129,7 +129,7 @@
     var userName = "",
     password = "";
     var initSync = function () {
-        // CSDN Blog table
+        // Blog table
         $("#articleList").table({
             height: 357,
             colModel: [{
@@ -167,7 +167,7 @@
         // enter
         $("#password").keypress(function (event) {
             if (event.keyCode === 13) {
-                getCSDNBlogArticleArchiveDate();
+                getBlogArticleArchiveDate();
             }
         });
 
@@ -177,7 +177,7 @@
             if (null === result) {
                 return;
             }
-
+            $("#blogType").val("CnBlogs"); // TODO:
             $("#magName").val(result.blogSyncExternalBloggingSysUserName);
             $("#magPassword").val(result.blogSyncExternalBloggingSysUserPassword);
             result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
@@ -219,7 +219,7 @@
         }
     }
 
-    var getCSDNBlogArticleArchiveDate = function () {
+    var getBlogArticleArchiveDate = function () {
         $("#archiveDatePanel").hide(500);
         $("#tipMsg").text("${loadingLabel}").show();
         $("#archiveDatePanel").hide(500);
