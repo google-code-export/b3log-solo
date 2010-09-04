@@ -25,6 +25,7 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.BlogSync;
 import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
@@ -75,7 +76,7 @@ public abstract class AbstractAddArticleProcessor
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject article = event.getData();
-        LOGGER.log(Level.FINEST,
+        LOGGER.log(Level.FINER,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 article,
@@ -83,9 +84,9 @@ public abstract class AbstractAddArticleProcessor
 
         String postId = null;
         String articleId = null;
+        final String externalBloggingSys = getExternalBloggingSys();
         try {
             articleId = article.getString(Keys.OBJECT_ID);
-            final String externalBloggingSys = getExternalBloggingSys();
             final JSONObject blogSyncMgmt =
                     blogSyncManagementRepository.getByExternalBloggingSystem(
                     externalBloggingSys);
@@ -131,6 +132,8 @@ public abstract class AbstractAddArticleProcessor
                     BLOG_SYNC_EXTERNAL_ARTICLE_ID, postId);
             postSoloArticleRelation.put(Article.ARTICLE + "_"
                                         + Keys.OBJECT_ID, articleId);
+            postSoloArticleRelation.put(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
+                                        externalBloggingSys);
             externalArticleSoloArticleRepository.add(
                     postSoloArticleRelation);
             LOGGER.log(Level.FINER,

@@ -28,45 +28,41 @@ import org.json.JSONObject;
 public interface ExternalArticleSoloArticleRepository extends Repository {
 
     /**
-     * Gets Solo article id by the specified external blog article id.
+     * Gets Solo article id by the specified external blogging system name and
+     * external article id.
      *
      * @param externalArticleId the specified external blog article id
+     * @param externalBloggingSys external blogging system name
      * @return Solo article id, returns {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    String getSoloArticleId(final String externalArticleId)
-            throws RepositoryException;
-
-    /**
-     * Gets external blogging system blog article id by the specified Solo
-     * article id.
-     *
-     * @param soloArticleId the specified Solo article id
-     * @return external blog article id, returns {@code null} if not found
-     * @throws RepositoryException repository exception
-     */
-    String getExternalArticleId(final String soloArticleId)
+    String getSoloArticleId(final String externalArticleId,
+                            final String externalBloggingSys)
             throws RepositoryException;
 
     /**
      * Gets a external blog article-Solo article relation by the specified
-     * external article id.
+     * external blogging system name and external article id.
      *
      * @param externalArticleId the specified external article id
+     * @param externalBloggingSys external blogging system name
      * @return the relation, {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    JSONObject getByExternalArticleId(final String externalArticleId)
+    JSONObject getByExternalArticleId(final String externalArticleId,
+                                      final String externalBloggingSys)
             throws RepositoryException;
 
     /**
-     * Gets an external blog article-Solo article relation by the specified Solo
-     * article id.
+     * Gets an external blog article-Solo article relation by the specified 
+     * external blogging system name and Solo article id.
      *
      * @param soloArticleId the specified Solo article id
+     * @param externalBloggingSys external blogging system name
      * @return the relation, {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    JSONObject getBySoloArticleId(final String soloArticleId)
+    JSONObject getBySoloArticleId(final String soloArticleId,
+                                  final String externalBloggingSys)
             throws RepositoryException;
 }

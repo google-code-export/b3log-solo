@@ -72,7 +72,7 @@ public abstract class AbstractRemoveArticleProcessor
     @Override
     public void action(final Event<String> event) throws EventException {
         final String articleId = event.getData();
-        LOGGER.log(Level.FINEST,
+        LOGGER.log(Level.FINER,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 articleId,
@@ -105,7 +105,7 @@ public abstract class AbstractRemoveArticleProcessor
                         BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
                 final JSONObject externalArticleSoloArticleRelation =
                         externalArticleSoloArticleRepository.getBySoloArticleId(
-                        articleId);
+                        articleId, externalBloggingSys);
                 if (null != externalArticleSoloArticleRelation) {
                     final String externalArticleId =
                             externalArticleSoloArticleRelation.getString(
