@@ -82,7 +82,6 @@ final class IndexPageReader {
      */
     String getContent() {
         BufferedReader bufferedReader = null;
-
         final StringBuilder stringBuilder = new StringBuilder();
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(
