@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.sync.csdn.blog;
+package org.b3log.solo.sync.cnblogs;
 
-import org.b3log.latke.Keys;
 import java.util.List;
 import java.util.Date;
-import java.util.UUID;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.sync.MetaWeblogPost;
@@ -27,75 +25,70 @@ import org.json.JSONObject;
 import static org.testng.Assert.*;
 
 /**
- * {@link CSDNBlog} test case.
+ * {@link CnBlogsBlog} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Sep 4, 2010
+ * @version 1.0.0.0, Sep 4, 2010
  */
-public final class CSDNBlogTestCase {
+public final class CnBlogsBlogTestCase {
 
     /**
-     * Article sum of 2006/12.
+     * Article sum of 2010/08.
      */
-    private static final int ARTICLE_SUM_2006_12 = 49;
+    private static final int ARTICLE_SUM_2010_09 = 1;
     /**
-     * Article sum of 2009/08.
+     * CnBlogs blog.
      */
-    private static final int ARTICLE_SUM_2009_08 = 13;
-    /**
-     * CSDN blog.
-     */
-    private CSDNBlog csdnBlog = new CSDNBlog();
+    private CnBlogsBlog cnBlogsBlog = new CnBlogsBlog();
 
     /**
      * Public default constructor.
      */
-    public CSDNBlogTestCase() {
-        csdnBlog.setUserName("DL88250");
-        csdnBlog.setUserPassword("ModifiedThis");
+    public CnBlogsBlogTestCase() {
+        cnBlogsBlog.setUserName("DL88250");
+        cnBlogsBlog.setUserPassword("dl88250");
     }
 
     /**
      * Tests
-     * {@linkplain CSDNBlog#getArchiveDates(java.lang.String) } method.
+     * {@linkplain CnBlogsBlog#getArchiveDates(java.lang.String) } method.
      */
-    //@Test
+    //@org.testng.annotations.Test
     public void getArchiveDates() {
-        final List<String> archiveDates = csdnBlog.getArchiveDates();
+        final List<String> archiveDates = cnBlogsBlog.getArchiveDates();
 
-        final int dl88250ArchiveDateCnt = 46;  // Maybe?
-        assertEquals(archiveDates.size(), dl88250ArchiveDateCnt);
+        final int archiveDateCnt = 1;  // Maybe?
+        assertEquals(archiveDates.size(), archiveDateCnt);
     }
 
     /**
      * Tests
-     * {@linkplain CSDNBlog#getArchiveDates() } method.
+     * {@linkplain CnBlogsBlog#getArchiveDates() } method.
      */
-    //@Test
+    //@org.testng.annotations.Test
     public void getArticleIdsByArchiveDate() {
-        List<String> articleIds = csdnBlog.getArticleIdsByArchiveDate("2006/12");
-        assertEquals(articleIds.size(), ARTICLE_SUM_2006_12);
-
-        articleIds = csdnBlog.getArticleIdsByArchiveDate("2009/08");
-        assertEquals(articleIds.size(), ARTICLE_SUM_2009_08);
+        final List<String> articleIds =
+                cnBlogsBlog.getArticleIdsByArchiveDate("2010/09");
+        assertEquals(articleIds.size(), ARTICLE_SUM_2010_09);
+        System.out.println(articleIds);
     }
 
     /**
-     * Tests {@linkplain CSDNBlog#getPost(java.lang.String)} method.
+     * Tests {@linkplain CnBlogsBlog#getPost(java.lang.String)} method.
      * @throws ServiceException service exception
      */
-    //@Test
+    //@org.testng.annotations.Test
     public void getPost() throws ServiceException {
-        final MetaWeblogPost article = csdnBlog.getPost("5817062");
+        final MetaWeblogPost article = cnBlogsBlog.getPost("1818114");
         assertNotNull(article);
-        assertEquals(article.getTitle(), "HTTP/1.1 Status Code Definitions");
+        assertEquals(article.getTitle(), "For Solo 同步测试");
     }
 
     /**
      * Tests
-     * {@linkplain CSDNBlog#newPost(org.b3log.solo.sync.MetaWeblogPost)}
+     * {@linkplain CnBlogsBlog#newPost(org.b3log.solo.sync.MetaWeblogPost) }
      * and
-     * {@linkplain CSDNBlog#deletePost(java.lang.String) }
+     * {@linkplain CnBlogsBlog#deletePost(java.lang.String) }
      * methods.
      *
      * @throws Exception exception
@@ -103,11 +96,12 @@ public final class CSDNBlogTestCase {
     //@org.testng.annotations.Test
     public void newPost() throws Exception {
         final JSONObject article = getArticle();
-        final CSDNBlogArticle csdnBlogArticle = new CSDNBlogArticle(article);
+        final CnBlogsBlogArticle cnBlogsBlogArticle =
+                new CnBlogsBlogArticle(article);
 
-        final String articleId = csdnBlog.newPost(csdnBlogArticle);
+        final String articleId = cnBlogsBlog.newPost(cnBlogsBlogArticle);
 
-        csdnBlog.deletePost(articleId);
+        cnBlogsBlog.deletePost(articleId);
     }
 
     /**
@@ -119,12 +113,10 @@ public final class CSDNBlogTestCase {
     private JSONObject getArticle() throws JSONException {
         final JSONObject ret = new JSONObject();
 
-        ret.put(Keys.OBJECT_ID, "test id");
-        ret.put(Article.ARTICLE_TITLE,
-                UUID.randomUUID().toString());
+        ret.put(Article.ARTICLE_TITLE, "测试 Solo 同步发文");
         ret.put(Article.ARTICLE_CREATE_DATE, new Date());
-        ret.put(Article.ARTICLE_CONTENT, "test content");
-        final String categories = "Game";
+        ret.put(Article.ARTICLE_CONTENT, "测试 Solo 同步发文");
+        final String categories = "B3log, 测试";
         ret.put(Article.ARTICLE_TAGS_REF, categories);
 
         return ret;

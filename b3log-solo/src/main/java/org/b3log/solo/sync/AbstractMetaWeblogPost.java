@@ -167,16 +167,20 @@ public abstract class AbstractMetaWeblogPost implements MetaWeblogPost {
                     new StringBuilder(getContent());
             final JSONObject preference =
                     SoloServletListener.getUserPreference();
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            descriptionBuilder.append("<p>");
-            descriptionBuilder.append(
-                    "本文是使用<a href='http://b3log-solo.googlecode.com/'>");
-            descriptionBuilder.append("B3log Solo</a>从<a href='http://");
-            descriptionBuilder.append(preference.getString(Preference.BLOG_HOST));
-            descriptionBuilder.append("'>");
-            descriptionBuilder.append(blogTitle);
-            descriptionBuilder.append("</a>进行同步发布的。");
-            descriptionBuilder.append("</p>");
+            if (null != preference) { // Preference is null under test env
+                final String blogTitle = preference.getString(
+                        Preference.BLOG_TITLE);
+                descriptionBuilder.append("<p>");
+                descriptionBuilder.append(
+                        "本文是使用<a href='http://b3log-solo.googlecode.com/'>");
+                descriptionBuilder.append("B3log Solo</a>从<a href='http://");
+                descriptionBuilder.append(preference.getString(
+                        Preference.BLOG_HOST));
+                descriptionBuilder.append("'>");
+                descriptionBuilder.append(blogTitle);
+                descriptionBuilder.append("</a>进行同步发布的。");
+                descriptionBuilder.append("</p>");
+            }
             ret.put("description", descriptionBuilder.toString());
             ret.put("categories", getCategories().<String>toArray(new String[0]));
 
@@ -186,6 +190,7 @@ public abstract class AbstractMetaWeblogPost implements MetaWeblogPost {
                     CSDNBlog.UTC_DATE_FORMAT.format(getCreateDate())));
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
+            throw new RuntimeException(e);
         }
 
         return ret;

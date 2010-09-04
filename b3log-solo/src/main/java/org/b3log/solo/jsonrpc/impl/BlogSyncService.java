@@ -158,16 +158,18 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject setBlogSyncMgmtForCSDNBlog(
-            final JSONObject requestJSONObject,
-            final HttpServletRequest request,
-            final HttpServletResponse response)
+    public JSONObject setBlogSyncMgmt(final JSONObject requestJSONObject,
+                                      final HttpServletRequest request,
+                                      final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
         try {
+            final String externalBloggingSys =
+                    requestJSONObject.getString(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS);
             final String userName = requestJSONObject.getString(
                     BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
             final String userPwd = requestJSONObject.getString(
@@ -186,7 +188,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             }
 
             csdnBlogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
-                                 BLOG_SYNC_CSDN_BLOG);
+                                 externalBloggingSys);
             csdnBlogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME,
                                  userName);
             csdnBlogSyncMgmt.put(
@@ -200,24 +202,29 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             if (!csdnBlogSyncMgmt.has(Keys.OBJECT_ID)) {
                 blogSyncManagementRepository.add(csdnBlogSyncMgmt);
                 LOGGER.log(Level.FINER,
-                           "Added blog sync management for CSDN[{0}]",
-                           csdnBlogSyncMgmt.toString(
-                        SoloServletListener.JSON_PRINT_INDENT_FACTOR));
+                           "Added blog sync management for [{0}] [{1}]",
+                           new String[]{
+                            externalBloggingSys,
+                            csdnBlogSyncMgmt.toString(
+                            SoloServletListener.JSON_PRINT_INDENT_FACTOR)
+                        });
 
             } else {
                 blogSyncManagementRepository.update(
                         csdnBlogSyncMgmt.getString(Keys.OBJECT_ID),
                         csdnBlogSyncMgmt);
                 LOGGER.log(Level.FINER,
-                           "Updated blog sync management for CSDN[{0}]",
-                           csdnBlogSyncMgmt.toString(
-                        SoloServletListener.JSON_PRINT_INDENT_FACTOR));
-
+                           "Updated blog sync management for [{0}] [{1}]",
+                           new String[]{
+                            externalBloggingSys,
+                            csdnBlogSyncMgmt.toString(
+                            SoloServletListener.JSON_PRINT_INDENT_FACTOR)
+                        });
             }
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE,
-                    StatusCodes.SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC);
+                    StatusCodes.SET_BLOG_SYNC_MGMT_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
