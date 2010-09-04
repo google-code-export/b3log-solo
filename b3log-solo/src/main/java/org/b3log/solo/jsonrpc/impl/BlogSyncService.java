@@ -409,7 +409,8 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                 JSONObject article = null;
                 LOGGER.log(Level.FINER,
                            "External[{0}] blog article[oId={0}]'s status[tmpImported={1}, imported={2}]",
-                           new Object[]{externalSys, oId, tmpImported, imported});
+                           new String[]{externalSys, oId, Boolean.toString(
+                            tmpImported), Boolean.toString(imported)});
                 if (tmpImported) {
                     article = externalArticleRepository.get(oId);
                 } else { // Not retrieved yet, get the article from External blogging system
