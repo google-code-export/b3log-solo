@@ -96,11 +96,7 @@
                             $("#navi li").removeClass('selected');
                             $it.addClass('selected');
                         }
-                        $("#content").load(loadURL, function () {
-                            if ($("#articleContent").length > 0) {
-                            } else {
-                            }
-                        });
+                        $("#content").load(loadURL);
                     });
                 }).mouseover(function () {
                     $(this).addClass('hover');

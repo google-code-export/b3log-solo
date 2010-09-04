@@ -157,6 +157,6 @@
     border: 2px dashed;
 }
 
-#tagsPanel .tagPanel a {
+#tagsPanel .tagPanel {
     text-decoration: none;
 }

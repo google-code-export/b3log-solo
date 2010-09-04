@@ -88,8 +88,8 @@
     -webkit-border-radius:12px;
     float:left;
     padding:12px;
-    width:29%;
-    min-width: 340px;
+    min-width: 420px;
+    border:2px solid #A0A0A0;
 }
 
 #archiveDatePanel {

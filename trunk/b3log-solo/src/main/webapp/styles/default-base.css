@@ -167,11 +167,11 @@ button:hover {
     font-weight: bold;
     text-align: right;
     line-height: 26px;
-    margin: 6px 0;
+    margin: 6px;
 }
 
 .form .input {
-    width: 93%;
+    width: 92%;
     margin: 6px 0;
 }
 /* top and footer */
