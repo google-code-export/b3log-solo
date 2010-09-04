@@ -448,14 +448,14 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                    new String[]{externalArticleId, externalSys});
                         continue;
                     }
+                }
 
-                    article.put(BLOG_SYNC_IMPORTED, imported);
-                    articles.put(article);
-
-                    if (EXTERNAL_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL
-                        == retrievalCnt) {
-                        break;
-                    }
+                article.put(BLOG_SYNC_IMPORTED, imported);
+                articles.put(article);
+                
+                if (EXTERNAL_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL
+                    == retrievalCnt) {
+                    break;
                 }
             }
 
