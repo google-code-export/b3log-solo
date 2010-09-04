@@ -11,6 +11,14 @@
                     ${blogSyncMgmtLabel}
                 </span>
             </li>
+            <li class="form">
+                <span class="label">{chooseBlogType}:</span>
+                <select>
+                    <option>CSDN</option>
+                    <option>cnblog</option>
+                    <option>blog java</option>
+                </select>
+            </li>
         </ul>
         <div class="clear"></div>
     </div>
@@ -28,7 +36,7 @@
                             </select>
                         </td>
                         <td>
-                            <button onclick="getCSDNBlogArticlesByArchiveDate();">
+                            <button onclick="getBlogArticlesByArchiveDate();">
                                 ${getArticleLabel}
                             </button>
                         </td>
@@ -39,7 +47,7 @@
                 <tbody>
                     <tr>
                         <th width="96px">
-                            ${csdnUserName1Label}
+                            ${userName1Label}
                         </th>
                         <td>
                             <input id="userName"/>
@@ -66,7 +74,7 @@
         <div id="syncSettingPanel" class="none">
             <fieldset>
                 <legend>
-                    ${syncMgmtCSDNLabel}
+                    ${syncMgmtLabel}
                 </legend>
                 <table class="form" cellpadding="12px" cellspacing="12px;">
                     <tbody>
@@ -75,7 +83,7 @@
                                 ${userName1Label}
                             </th>
                             <td colspan="5">
-                                <input id="nameCSDN"/>
+                                <input id="magName"/>
                             </td>
                         </tr>
                         <tr>
@@ -83,24 +91,24 @@
                                 ${userPassword1Label}
                             </th>
                             <td colspan="5">
-                                <input type="password" id="passwordCSDN"/>
+                                <input type="password" id="magPassword"/>
                             </td>
                         </tr>
                         <tr>
                             <th>
-                                <input type="checkbox" id="addSyncCSDN" class="normalInput"/>
+                                <input type="checkbox" id="addSync" class="normalInput"/>
                             </th>
                             <td>
                                 ${syncPostLabel}
                             </td>
                             <th>
-                                <input type="checkbox" id="updateSyncCSDN"
+                                <input type="checkbox" id="updateSync"
                             </th>
                             <td>
                                 ${syncUpdateLabel}
                             </td>
                             <th>
-                                <input type="checkbox" id="deleteSyncCSDN"/>
+                                <input type="checkbox" id="deleteSync"/>
                             </th>
                             <td>
                                 ${syncRemoveLabel}
@@ -108,7 +116,7 @@
                         </tr>
                         <tr>
                             <th colspan="6">
-                                <button onclick="syncSettingCSDN();">${updateLabel}</button>
+                                <button onclick="syncSetting();">${updateLabel}</button>
                             </th>
                         </tr>
                     </tbody>
@@ -149,7 +157,7 @@
                     textAlign: "center",
                     name: "${importedLabel}",
                     index: "imported",
-                    width: 50
+                    width: 60
                 }, {
                     visible: false,
                     index: "id"
@@ -170,24 +178,24 @@
                 return;
             }
 
-            $("#nameCSDN").val(result.blogSyncExternalBloggingSysUserName);
-            $("#passwordCSDN").val(result.blogSyncExternalBloggingSysUserPassword);
-            result.blogSyncMgmtAddEnabled ? $("#addSyncCSDN").attr("checked", "checked") : $("#addSyncCSDN").removeAttr("checked");
-            result.blogSyncMgmtUpdateEnabled ? $("#updateSyncCSDN").attr("checked", "checked") : $("#updateSyncCSDN").removeAttr("checked");
-            result.blogSyncMgmtRemoveEnabled ? $("#deleteSyncCSDN").attr("checked", "checked") : $("#deleteSyncCSDN").removeAttr("checked");
+            $("#magName").val(result.blogSyncExternalBloggingSysUserName);
+            $("#magPassword").val(result.blogSyncExternalBloggingSysUserPassword);
+            result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
+            result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
+            result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
         });
         $("#tipMsg").text("").hide();
     }
 
     initSync();
 
-    var syncSettingCSDN = function () {
+    var syncSetting = function () {
         var requestJSONObject = {
-            "blogSyncExternalBloggingSysUserName": $("#nameCSDN").val(),
-            "blogSyncExternalBloggingSysUserPassword": $("#passwordCSDN").val(),
-            "blogSyncMgmtAddEnabled": $("#addSyncCSDN").attr("checked"),
-            "blogSyncMgmtUpdateEnabled": $("#updateSyncCSDN").attr("checked"),
-            "blogSyncMgmtRemoveEnabled": $("#deleteSyncCSDN").attr("checked")
+            "blogSyncExternalBloggingSysUserName": $("#magName").val(),
+            "blogSyncExternalBloggingSysUserPassword": $("#magPassword").val(),
+            "blogSyncMgmtAddEnabled": $("#addSync").attr("checked"),
+            "blogSyncMgmtUpdateEnabled": $("#updateSync").attr("checked"),
+            "blogSyncMgmtRemoveEnabled": $("#deleteSync").attr("checked")
         };
 
         var result =
@@ -212,6 +220,7 @@
     }
 
     var getCSDNBlogArticleArchiveDate = function () {
+        $("#archiveDatePanel").hide(500);
         $("#tipMsg").text("${loadingLabel}").show();
         $("#archiveDatePanel").hide(500);
         userName = $("#userName").val();
@@ -219,23 +228,27 @@
         var archveDates = "";
         var result = jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate({
             "blogSyncExternalBloggingSysUserName": userName,
-            "blogSyncExternalBloggingSysPassword": password
+            "blogSyncExternalBloggingSysUserPassword": password
         });
-        for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
-            archveDates += "<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>";
+        if (result.blogSyncCSDNBlogArchiveDates.length === 0) {
+            $("#tipMsg").text("${syncImportErrorLabel}").show();
+        } else {
+            for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
+                archveDates += "<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>";
+            }
+            $("#archiveDate").html(archveDates);
+            $("#archiveDatePanel").show(500);
+            $("#tipMsg").text("").hide();
         }
-        $("#archiveDate").html(archveDates);
-        $("#archiveDatePanel").show(500);
-        $("#tipMsg").text("").hide();
     }
 
-    var getCSDNBlogArticlesByArchiveDate = function () {
+    var getBlogArticlesByArchiveDate = function () {
         $("#tipMsg").html("${loadingLabel}").show();
         $("#articlesPanel").show();
 
         var requestJSONObject = {
             "blogSyncExternalBloggingSysUserName": userName,
-            "blogSyncExternalBloggingSysPassword": password,
+            "blogSyncExternalBloggingSysUserPassword": password,
             "blogSyncCSDNBlogArchiveDate": $("#archiveDate").val()
         };
 
