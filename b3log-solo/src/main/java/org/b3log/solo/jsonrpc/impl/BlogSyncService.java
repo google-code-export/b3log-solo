@@ -408,7 +408,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
                 JSONObject article = null;
                 LOGGER.log(Level.FINER,
-                           "External[{0}] blog article[oId={0}]'s status[tmpImported={1}, imported={2}]",
+                           "External[{0}] blog article[oId={1}]'s status[tmpImported={2}, imported={3}]",
                            new String[]{externalSys, oId, Boolean.toString(
                             tmpImported), Boolean.toString(imported)});
                 if (tmpImported) {
