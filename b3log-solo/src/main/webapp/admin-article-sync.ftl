@@ -15,9 +15,9 @@
                 <span class="label">${chooseBlogType1Label}</span>
                 <select id="blogType" onchange="changeBlogType();">
                     <option>&nbsp;</option>
-                    <option>CSDN</option>
-                    <option>BlogJava</option>
-                    <option>CnBlogs</option>
+                    <option value="blogSyncCSDNBlog">CSDN</option>
+                    <option value="blogSyncBlogJava">BlogJava</option>
+                    <option value="blogSyncCnBlogs">CnBlogs</option>
                 </select>
             </li>
         </ul>
