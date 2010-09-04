@@ -12,8 +12,9 @@
                 </span>
             </li>
             <li class="form">
-                <span class="label">${chooseBlogTypeLabel}</span>
-                <select id="blogType">
+                <span class="label">${chooseBlogType1Label}</span>
+                <select id="blogType" onchange="changeBlogType();">
+                    <option>&nbsp;</option>
                     <option>CSDN</option>
                     <option>BlogJava</option>
                     <option>CnBlogs</option>
@@ -56,7 +57,7 @@
                             <input id="password" type="password"/>
                         </td>
                         <td>
-                            <button onclick="getCSDNBlogArticleArchiveDate();">${getDateLabel}</button>
+                            <button onclick="getBlogArticleArchiveDate();">${getDateLabel}</button>
                         </td>
                     </tr>
                 </tbody>
@@ -127,8 +128,10 @@
 </div>
 <script type="text/javascript">
     var userName = "",
-    password = "";
+    password = "",
+    blogType = "";
     var initSync = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
         // Blog table
         $("#articleList").table({
             height: 357,
@@ -171,37 +174,42 @@
             }
         });
 
-        // get sync
-        $("#tipMsg").text("${loadingLabel}").show();
-        jsonRpc.blogSyncService.getBlogSyncMgmtForCSDNBlog(function (result, error) {
+        $("#tipMsg").text("").hide();
+    }
+
+    initSync();
+
+    var changeBlogType = function () {
+        blogType = $("#blogType").val();
+        jsonRpc.blogSyncService['getBlogSyncMgmtFor' + blogType + 'Blog'](function (result, error) {
             if (null === result) {
                 return;
             }
-            $("#blogType").val("CnBlogs"); // TODO:
             $("#magName").val(result.blogSyncExternalBloggingSysUserName);
             $("#magPassword").val(result.blogSyncExternalBloggingSysUserPassword);
             result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
             result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
             result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
         });
-        $("#tipMsg").text("").hide();
     }
 
-    initSync();
-
     var syncSetting = function () {
+        var addSync = $("#addSync").attr("checked"),
+        updateSync = $("#updateSync").attr("checked"),
+        deleteSync =  $("#deleteSync").attr("checked");
         var requestJSONObject = {
+            "blogSyncExternalBloggingSys": bolgType,
             "blogSyncExternalBloggingSysUserName": $("#magName").val(),
             "blogSyncExternalBloggingSysUserPassword": $("#magPassword").val(),
-            "blogSyncMgmtAddEnabled": $("#addSync").attr("checked"),
-            "blogSyncMgmtUpdateEnabled": $("#updateSync").attr("checked"),
-            "blogSyncMgmtRemoveEnabled": $("#deleteSync").attr("checked")
+            "blogSyncMgmtAddEnabled": addSync,
+            "blogSyncMgmtUpdateEnabled": updateSync,
+            "blogSyncMgmtRemoveEnabled": deleteSync
         };
 
         var result =
-            jsonRpc.blogSyncService.setBlogSyncMgmtForCSDNBlog(requestJSONObject);
+            jsonRpc.blogSyncService.setBlogSyncMgmtFor(requestJSONObject);
        
-        if (result.sc === "SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC") {
+        if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
             $("#tipMsg").html("${updateSuccLabel}").show();
         }
     }
@@ -220,21 +228,20 @@
     }
 
     var getBlogArticleArchiveDate = function () {
-        $("#archiveDatePanel").hide(500);
         $("#tipMsg").text("${loadingLabel}").show();
         $("#archiveDatePanel").hide(500);
         userName = $("#userName").val();
         password = $("#password").val();
         var archveDates = "";
-        var result = jsonRpc.blogSyncService.getCSDNBlogArticleArchiveDate({
+        var result = jsonRpc.blogSyncService['get' + blogType + 'BlogArticleArchiveDate']({
             "blogSyncExternalBloggingSysUserName": userName,
             "blogSyncExternalBloggingSysUserPassword": password
         });
-        if (result.blogSyncCSDNBlogArchiveDates.length === 0) {
+        if (result['blogSync' + blogType + 'BlogArchiveDates'].length === 0) {
             $("#tipMsg").text("${syncImportErrorLabel}").show();
         } else {
-            for (var i = 0; i < result.blogSyncCSDNBlogArchiveDates.length; i++) {
-                archveDates += "<option>" + result.blogSyncCSDNBlogArchiveDates[i] + "</option>";
+            for (var i = 0; i < result['blogSync' + blogType + 'BlogArchiveDates'].length; i++) {
+                archveDates += "<option>" + result['blogSync' + blogType + 'BlogArchiveDates'][i] + "</option>";
             }
             $("#archiveDate").html(archveDates);
             $("#archiveDatePanel").show(500);
@@ -249,13 +256,13 @@
         var requestJSONObject = {
             "blogSyncExternalBloggingSysUserName": userName,
             "blogSyncExternalBloggingSysUserPassword": password,
-            "blogSyncCSDNBlogArchiveDate": $("#archiveDate").val()
+            "blogSyncBlogArchiveDate": $("#archiveDate").val()
         };
 
         while (true) {
             var result =
-                jsonRpc.blogSyncService.getCSDNBlogArticlesByArchiveDate(requestJSONObject);
-            var articles = result.blogSyncCSDNBlogArticles;
+                jsonRpc.blogSyncService['get' + blogType + 'BlogArticlesByArchiveDate'](requestJSONObject);
+            var articles = result['blogSync' + blogType + 'BlogArticles'];
             if (articles.length == $("#articleListTableMain tr").length) {
                 break;
             }
@@ -267,9 +274,9 @@
                         value: false,
                         disabled: articles[i].blogSyncImported
                     };
-                    articleData[i].title = articles[i].blogSyncCSDNBlogArticleTitle;
-                    articleData[i].date = $.bowknot.getDate(articles[i].blogSyncCSDNBlogArticleCreateDate.time);
-                    articleData[i].tags = articles[i].blogSyncCSDNBlogArticleCategories;
+                    articleData[i].title = articles[i]['blogSync' + blogType + 'BlogArticleTitle'];
+                    articleData[i].date = $.bowknot.getDate(articles[i]['blogSync' + blogType+ 'BlogArticleCreateDate'].time);
+                    articleData[i].tags = articles[i]['blogSync' + blogType + 'BlogArticleCategories'];
                     articleData[i].id = articles[i].oId;
                     articleData[i].imported = articles[i].blogSyncImported;
                 }
@@ -293,7 +300,7 @@
             $("#tipMsg").text("{choose article}").show();
         } else {
             $("#tipMsg").text("${loadingLabel}").show();
-            jsonRpc.blogSyncService.importCSDNBlogArticles({
+            jsonRpc.blogSyncService['import' + blogType + 'BlogArticles']({
                 "oIds": $("#articleList_selected").data("id")
             });
             $("#tipMsg").text("${importSuccLabel}").show();
