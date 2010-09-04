@@ -92,7 +92,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     @Inject
     private ArchiveDateUtils archiveDateUtils;
     /**
-     * CSDN blog article-Solo article repository.
+     * External blog article-Solo article repository.
      */
     @Inject
     private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository;
@@ -110,11 +110,18 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * Gets blog sync management for CSDN blog with the specified http servlet
      * request and http servlet response.
      *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     ""blogSyncExternalBloggingSys": ""
+     * }
+     * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
+     *     "blogSyncExternalBloggingSys": "",
      *     "blogSyncExternalBloggingSysUserName": "",
      *     "blogSyncExternalBloggingSysUserPassword": "",
      *     "blogSyncMgmtAddEnabled": boolean,
@@ -125,13 +132,23 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject getBlogSyncMgmtForCSDNBlog(
-            final HttpServletRequest request, final HttpServletResponse response)
+    public JSONObject getBlogSyncMgmt(final JSONObject requestJSONObject,
+                                      final HttpServletRequest request,
+                                      final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
-        return blogSyncManagementRepository.getByExternalBloggingSystem(
-                BLOG_SYNC_CSDN_BLOG);
+        String externalSys = null;
+        try {
+            externalSys = requestJSONObject.getString(
+                    BLOG_SYNC_EXTERNAL_BLOGGING_SYS);
+            return blogSyncManagementRepository.getByExternalBloggingSystem(
+                    externalSys);
+        } catch (JSONException e) {
+            LOGGER.severe(e.getMessage());
+        }
+
+        return null;
     }
 
     /**
@@ -141,6 +158,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
+     *     ""blogSyncExternalBloggingSys": "",
      *     "blogSyncExternalBloggingSysUserName": "",
      *     "blogSyncExternalBloggingSysUserPassword": "",
      *     "blogSyncMgmtAddEnabled": boolean,
@@ -236,8 +254,8 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Imports CSDN blog articles by the specified request json object and http
-     * servlet request.
+     * Imports external blogging system articles by the specified request json
+     * object and http servlet request.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -274,12 +292,12 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
                     final String oId = articleIds.getString(i);
 
-                    final JSONObject csdnBlogArticle =
+                    final JSONObject externalArticle =
                             externalArticleRepository.get(oId);
                     final JSONObject soloArticle =
-                            toSoloArticle(csdnBlogArticle);
+                            toSoloArticle(externalArticle);
 
-                    final String categoriesString = csdnBlogArticle.getString(
+                    final String categoriesString = externalArticle.getString(
                             BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES);
                     final String[] tagTitles = categoriesString.split(",");
                     @SuppressWarnings(value = "unchecked")
@@ -320,7 +338,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      *     "blogSyncExternalBloggingSys": "",
      *     "blogSyncExternalBloggingSysUserName": "",
      *     "blogSyncExternalBloggingSysUserPassword": "",
-     *     "blogSyncCSDNBlogArchiveDate": "2006/12"
+     *     "blogSyncExternalArchiveDate": "2006/12"
      * }
      * </pre>
      * @param request the specified http servlet request
@@ -390,7 +408,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
                 JSONObject article = null;
                 LOGGER.log(Level.FINER,
-                           "External[{0}] blog article[oId={0}]'s status[csdnTmpImported={1}, imported={2}]",
+                           "External[{0}] blog article[oId={0}]'s status[tmpImported={1}, imported={2}]",
                            new Object[]{externalSys, oId, tmpImported, imported});
                 if (tmpImported) {
                     article = externalArticleRepository.get(oId);
