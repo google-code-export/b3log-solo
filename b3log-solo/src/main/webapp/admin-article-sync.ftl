@@ -181,7 +181,7 @@
 
     var changeBlogType = function () {
         blogType = $("#blogType").val();
-        jsonRpc.blogSyncService['getBlogSyncMgmtFor' + blogType + 'Blog'](function (result, error) {
+        jsonRpc.blogSyncService.getBlogSyncMgmtForBlog(function (result, error) {
             if (null === result) {
                 return;
             }
@@ -227,25 +227,44 @@
         }
     }
 
-    var getBlogArticleArchiveDate = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
-        $("#archiveDatePanel").hide(500);
-        userName = $("#userName").val();
-        password = $("#password").val();
-        var archveDates = "";
-        var result = jsonRpc.blogSyncService['get' + blogType + 'BlogArticleArchiveDate']({
-            "blogSyncExternalBloggingSysUserName": userName,
-            "blogSyncExternalBloggingSysUserPassword": password
-        });
-        if (result['blogSync' + blogType + 'BlogArchiveDates'].length === 0) {
-            $("#tipMsg").text("${syncImportErrorLabel}").show();
+    var validateSync = function () {
+        if ($("#userName").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${nameEmptyLabel}").show();
+            $("#userName").focus().val("");
+        } else if ($("#password").val() === ""){
+            $("#tipMsg").text("${passwordEmptyLabel}").show();
+            $("#password").focus().val();
+        } else if (blogType === " ") {
+            $("#tipMsg").text("${blogTypeEmptyLabel}").show();
+            $("#blogType").focus();
         } else {
-            for (var i = 0; i < result['blogSync' + blogType + 'BlogArchiveDates'].length; i++) {
-                archveDates += "<option>" + result['blogSync' + blogType + 'BlogArchiveDates'][i] + "</option>";
+            return true;
+        }
+        return false;
+    }
+
+    var getBlogArticleArchiveDate = function () {
+        if (validateSync()) {
+            $("#tipMsg").text("${loadingLabel}").show();
+            $("#archiveDatePanel").hide(500);
+            userName = $("#userName").val();
+            password = $("#password").val();
+            var archveDates = "";
+            var result = jsonRpc.blogSyncService.getBlogArticleArchiveDate({
+                "blogSyncExternalBloggingSysUserName": userName,
+                "blogSyncExternalBloggingSysUserPassword": password,
+                "blogSyncExternalBloggingSys": blogType
+            });
+            if (result.blogSyncBlogArchiveDates.length === 0) {
+                $("#tipMsg").text("${syncImportErrorLabel}").show();
+            } else {
+                for (var i = 0; i < result.blogSyncBlogArchiveDates.length; i++) {
+                    archveDates += "<option>" + result.blogSyncBlogArchiveDates[i] + "</option>";
+                }
+                $("#archiveDate").html(archveDates);
+                $("#archiveDatePanel").show(500);
+                $("#tipMsg").text("").hide();
             }
-            $("#archiveDate").html(archveDates);
-            $("#archiveDatePanel").show(500);
-            $("#tipMsg").text("").hide();
         }
     }
 
@@ -254,6 +273,7 @@
         $("#articlesPanel").show();
 
         var requestJSONObject = {
+            "blogSyncExternalBloggingSys": blogType,
             "blogSyncExternalBloggingSysUserName": userName,
             "blogSyncExternalBloggingSysUserPassword": password,
             "blogSyncBlogArchiveDate": $("#archiveDate").val()
@@ -261,8 +281,8 @@
 
         while (true) {
             var result =
-                jsonRpc.blogSyncService['get' + blogType + 'BlogArticlesByArchiveDate'](requestJSONObject);
-            var articles = result['blogSync' + blogType + 'BlogArticles'];
+                jsonRpc.blogSyncService.getBlogArticlesByArchiveDate(requestJSONObject);
+            var articles = result.blogSyncBlogArticles;
             if (articles.length == $("#articleListTableMain tr").length) {
                 break;
             }
@@ -274,9 +294,9 @@
                         value: false,
                         disabled: articles[i].blogSyncImported
                     };
-                    articleData[i].title = articles[i]['blogSync' + blogType + 'BlogArticleTitle'];
-                    articleData[i].date = $.bowknot.getDate(articles[i]['blogSync' + blogType+ 'BlogArticleCreateDate'].time);
-                    articleData[i].tags = articles[i]['blogSync' + blogType + 'BlogArticleCategories'];
+                    articleData[i].title = articles[i].blogSyncBlogArticleTitle;
+                    articleData[i].date = $.bowknot.getDate(articles[i].blogSyncBlogArticleCreateDate.time);
+                    articleData[i].tags = articles[i].blogSyncBlogArticleCategories;
                     articleData[i].id = articles[i].oId;
                     articleData[i].imported = articles[i].blogSyncImported;
                 }
@@ -300,7 +320,7 @@
             $("#tipMsg").text("{choose article}").show();
         } else {
             $("#tipMsg").text("${loadingLabel}").show();
-            jsonRpc.blogSyncService['import' + blogType + 'BlogArticles']({
+            jsonRpc.blogSyncService.importBlogArticles({
                 "oIds": $("#articleList_selected").data("id")
             });
             $("#tipMsg").text("${importSuccLabel}").show();

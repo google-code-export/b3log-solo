@@ -74,56 +74,83 @@
 
     init();
     
-    var addArticle = function () {
+    var validataArticle = function () {
         $("#tipMsg").text("${loadingLabel}").show();
-        var tagArray = $("#tag").val().split(","),
-        tagsString = "";
-
-        for (var i = 0; i < tagArray.length; i++) {
-            tagsString += tagArray[i].replace(/(^\s*)|(\s*$)/g, "");
+        if ($("#title").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${titleEmptyLabel}").show();
+            $("#title").focus().val();
+        } else if (tinyMCE.get('articleContent').getContent().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${contentEmptyLabel}").show();
+        } else if($("#abstract").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${abstractEmptyLabel}").show();
+            $("#abstract").focus().val("");
+        }  else if ($("#tag").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${tagsEmptyLabel}").show();
+            $("#tag").focus().val("");
+        } else {
+            return true;
         }
+        return false;
+    }
+    
+    var addArticle = function () {
+        if (validataArticle()) {
+            var tagArray = $("#tag").val().split(","),
+            tagsString = "";
 
-        var requestJSONObject = {
-            "article": {
-                "articleTitle": $("#title").val(),
-                "articleContent": tinyMCE.get('articleContent').getContent(),
-                "articleAbstract": $("#abstract").val(),
-                "articleTags": $("#tag").val()
+            for (var i = 0; i < tagArray.length; i++) {
+                tagsString += tagArray[i].replace(/(^\s*)|(\s*$)/g, "");
             }
-        };
-        var result = jsonRpc.articleService.addArticle(requestJSONObject);
-        switch (result.sc) {
-            case "ADD_ARTICLE_SUCC":
-                $("#tipMsg").text("${addSuccLabel}").show();
-                setCurrentNaviStyle(1);
-                $("#content").load("admin-article-list.do");
-                break;
-            default:
-                break;
+
+            var requestJSONObject = {
+                "article": {
+                    "articleTitle": $("#title").val(),
+                    "articleContent": tinyMCE.get('articleContent').getContent(),
+                    "articleAbstract": $("#abstract").val(),
+                    "articleTags": $("#tag").val()
+                }
+            };
+            var result = jsonRpc.articleService.addArticle(requestJSONObject);
+            switch (result.sc) {
+                case "ADD_ARTICLE_SUCC":
+                    $("#tipMsg").text("${addSuccLabel}").show();
+                    $("#content").load("admin-article-list.do");
+                    setCurrentNaviStyle(1);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     var updateArticle = function () {
-        var requestJSONObject = {
-            "article": {
-                "oId": $("#title").data("oId"),
-                "articleTitle": $("#title").val(),
-                "articleContent": tinyMCE.get('articleContent').getContent(),
-                "articleAbstract": $("#abstract").val(),
-                "articleTags": $("#tag").val()
+        if (validateArticle()) {
+            var tagArray = $("#tag").val().split(","),
+            tagsString = "";
+
+            for (var i = 0; i < tagArray.length; i++) {
+                tagsString += tagArray[i].replace(/(^\s*)|(\s*$)/g, "");
             }
-        };
-        var result = jsonRpc.articleService.updateArticle(requestJSONObject);
-        switch (result.sc) {
-            case "UPDATE_ARTICLE_SUCC":
-                setCurrentNaviStyle(1);
-                $("#content").load("admin-article-list.do", function () {
-                    //KE.remove("articleContent");
-                });
-                $("#tipMsg").text("${updateSuccLabel}").show();
-                break;
-            default:
-                break;
+            
+            var requestJSONObject = {
+                "article": {
+                    "oId": $("#title").data("oId"),
+                    "articleTitle": $("#title").val(),
+                    "articleContent": tinyMCE.get('articleContent').getContent(),
+                    "articleAbstract": $("#abstract").val(),
+                    "articleTags": tagsString
+                }
+            };
+            var result = jsonRpc.articleService.updateArticle(requestJSONObject);
+            switch (result.sc) {
+                case "UPDATE_ARTICLE_SUCC":
+                    $("#tipMsg").text("${updateSuccLabel}").show();
+                    $("#content").load("admin-article-list.do");
+                    setCurrentNaviStyle(1);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 </script>
