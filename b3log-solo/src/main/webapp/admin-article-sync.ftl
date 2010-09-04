@@ -358,7 +358,7 @@
 
     var sync = function () {
         if ($("#articleList_selected").data("id").length === 0) {
-            $("#tipMsg").text("{choose article}").show();
+            $("#tipMsg").text("${blogArticleEmptyLabel}").show();
         } else {
             $("#tipMsg").text("${loadingLabel}").show();
             jsonRpc.blogSyncService.importExternalArticles({
