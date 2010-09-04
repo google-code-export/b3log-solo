@@ -534,7 +534,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 final List<HTTPHeader> headers = response.getHeaders();
                 boolean defaultFileLengthMatched = false;
                 for (final HTTPHeader httpHeader : headers) {
-                    if ("Content-Length".equals(httpHeader.getName())) {
+                    if ("Content-Length".equalsIgnoreCase(httpHeader.getName())) {
                         if (httpHeader.getValue().equals("2147")) {
                             defaultFileLengthMatched = true;
                         }
