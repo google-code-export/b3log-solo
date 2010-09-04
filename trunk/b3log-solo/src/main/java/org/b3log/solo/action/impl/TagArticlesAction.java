@@ -42,6 +42,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.model.Tag;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Statistics;
@@ -166,6 +167,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                                        windowSize);
 
             LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
+            final JSONObject tag = tagRepository.get(tagId);
 
             articleUtils.addTags(articles);
             ret.put(Article.ARTICLES, articles);
@@ -177,6 +179,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
             ret.put(Keys.OBJECT_ID, tagId);
+            ret.put(Tag.TAG_TITLE, tag.getString(Tag.TAG_TITLE));
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
