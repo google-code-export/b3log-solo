@@ -166,7 +166,7 @@
                     articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                     articleData[i].update = "update";
                     articleData[i].deleted = "delete";
-                    articleData[i].comments = "count(" + articles[i].articleCommentCount + ")";
+                    articleData[i].comments = articles[i].articleCommentCount;
                     articleData[i].id = articles[i].oId;
                 }
 
