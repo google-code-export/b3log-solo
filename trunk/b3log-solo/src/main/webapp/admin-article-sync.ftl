@@ -300,9 +300,9 @@
                         value: false,
                         disabled: articles[i].blogSyncImported
                     };
-                    articleData[i].title = articles[i].blogSyncBlogArticleTitle;
-                    articleData[i].date = $.bowknot.getDate(articles[i].blogSyncBlogArticleCreateDate.time);
-                    articleData[i].tags = articles[i].blogSyncBlogArticleCategories;
+                    articleData[i].title = articles[i].blogSyncExternalArticleTitle;
+                    articleData[i].date = $.bowknot.getDate(articles[i].blogSyncExternalArticleCreateDate.time);
+                    articleData[i].tags = articles[i].blogSyncExternalArticleCategories;
                     articleData[i].id = articles[i].oId;
                     articleData[i].imported = articles[i].blogSyncImported;
                 }
