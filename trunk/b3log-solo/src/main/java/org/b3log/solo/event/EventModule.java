@@ -16,10 +16,10 @@
 package org.b3log.solo.event;
 
 import java.util.logging.Logger;
-import org.b3log.solo.event.listener.impl.BlogSyncMgmtAddArticleProcessor;
+import org.b3log.solo.event.listener.sync.BlogSyncMgmtAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
-import org.b3log.solo.event.listener.impl.BlogSyncMgmtRemoveArticleProcessor;
-import org.b3log.solo.event.listener.impl.BlogSyncMgmtUpdateArticleProcessor;
+import org.b3log.solo.event.listener.sync.BlogSyncMgmtRemoveArticleProcessor;
+import org.b3log.solo.event.listener.sync.BlogSyncMgmtUpdateArticleProcessor;
 
 /**
  * Event module for IoC
