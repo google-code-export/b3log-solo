@@ -14,7 +14,7 @@
             <li class="form">
                 <span class="label">${chooseBlogType1Label}</span>
                 <select id="blogType" onchange="changeBlogType();">
-                    <option>&nbsp;</option>
+                    <option value="">&nbsp;</option>
                     <option value="blogSyncCSDNBlog">CSDN</option>
                     <option value="blogSyncBlogJava">BlogJava</option>
                     <option value="blogSyncCnBlogs">CnBlogs</option>
@@ -47,13 +47,13 @@
             <table class="form left" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
-                        <th width="96px">
+                        <th>
                             ${userName1Label}
                         </th>
                         <td>
                             <input id="userName"/>
                         </td>
-                        <th>
+                        <th width="96px">
                             ${userPassword1Label}
                         </th>
                         <td>
@@ -194,8 +194,8 @@
                 result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
                 $("#archiveDatePanel").hide();
                 $("#articlesPanel").hide();
-                $("#tipMsg").text("").hide();
             }
+            $("#tipMsg").text("").hide();
         }, {
             "blogSyncExternalBloggingSys": blogType
         });
@@ -242,7 +242,8 @@
         } else if ($("#password").val() === ""){
             $("#tipMsg").text("${passwordEmptyLabel}").show();
             $("#password").focus().val();
-        } else if (blogType === " ") {
+        } else if (blogType === "") {
+
             $("#tipMsg").text("${blogTypeEmptyLabel}").show();
             $("#blogType").focus();
         } else {
