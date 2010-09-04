@@ -20,6 +20,9 @@ import org.b3log.solo.event.listener.sync.impl.CSDNBlogAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
 import org.b3log.solo.event.listener.sync.impl.CSDNBlogRemoveArticleProcessor;
 import org.b3log.solo.event.listener.sync.impl.CSDNBlogUpdateArticleProcessor;
+import org.b3log.solo.event.listener.sync.impl.CnBlogsAddArticleProcessor;
+import org.b3log.solo.event.listener.sync.impl.CnBlogsRemoveArticleProcessor;
+import org.b3log.solo.event.listener.sync.impl.CnBlogsUpdateArticleProcessor;
 
 /**
  * Event module for IoC
@@ -53,5 +56,9 @@ public final class EventModule extends AbstractEventModule {
         bind(CSDNBlogAddArticleProcessor.class).asEagerSingleton();
         bind(CSDNBlogRemoveArticleProcessor.class).asEagerSingleton();
         bind(CSDNBlogUpdateArticleProcessor.class).asEagerSingleton();
+        
+        bind(CnBlogsAddArticleProcessor.class).asEagerSingleton();
+        bind(CnBlogsRemoveArticleProcessor.class).asEagerSingleton();
+        bind(CnBlogsUpdateArticleProcessor.class).asEagerSingleton();
     }
 }
