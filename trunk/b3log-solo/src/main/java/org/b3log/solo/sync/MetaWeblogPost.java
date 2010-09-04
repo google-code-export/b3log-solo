@@ -34,19 +34,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Abstract post(Article/Entry) of
+ * Post(Article/Entry) of
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 4, 2010
  */
-public abstract class AbstractMetaWeblogPost implements Post {
+public final class MetaWeblogPost implements Post {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(AbstractMetaWeblogPost.class.getName());
+            Logger.getLogger(MetaWeblogPost.class.getName());
     /**
      * Id.
      */
@@ -75,7 +75,7 @@ public abstract class AbstractMetaWeblogPost implements Post {
     /**
      * Constructs a {@link AbstractMetaWeblogPost} object.
      */
-    public AbstractMetaWeblogPost() {
+    public MetaWeblogPost() {
         categories = new HashSet<String>();
     }
 
@@ -94,7 +94,7 @@ public abstract class AbstractMetaWeblogPost implements Post {
      * </pre>
      * @throws JSONException json exception
      */
-    public AbstractMetaWeblogPost(final JSONObject jsonObject)
+    public MetaWeblogPost(final JSONObject jsonObject)
             throws JSONException {
         title = jsonObject.getString(Article.ARTICLE_TITLE);
         createDate = (Date) jsonObject.get(Article.ARTICLE_CREATE_DATE);

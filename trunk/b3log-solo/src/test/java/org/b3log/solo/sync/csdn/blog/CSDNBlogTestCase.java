@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.UUID;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.sync.MetaWeblogPost;
 import org.b3log.solo.sync.Post;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,7 +104,7 @@ public final class CSDNBlogTestCase {
     //@org.testng.annotations.Test
     public void newPost() throws Exception {
         final JSONObject article = getArticle();
-        final CSDNBlogArticle csdnBlogArticle = new CSDNBlogArticle(article);
+        final MetaWeblogPost csdnBlogArticle = new MetaWeblogPost(article);
 
         final String articleId = csdnBlog.newPost(csdnBlogArticle);
 

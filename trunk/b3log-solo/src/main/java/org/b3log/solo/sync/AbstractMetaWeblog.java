@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.solo.sync.csdn.blog.CSDNBlogArticle;
 
 /**
  * Abstract MetaWeblog.
@@ -132,7 +131,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             LOGGER.log(Level.INFO, "Got an article[id={0}] from [{1}]",
                        new String[]{postId, getBloggingServiceProvider()});
 
-            final CSDNBlogArticle ret = new CSDNBlogArticle();
+            final MetaWeblogPost ret = new MetaWeblogPost();
             ret.setId(postId);
             LOGGER.log(Level.FINEST, "Post[keys={0}]", result.keySet());
             final String title = (String) result.get("title");

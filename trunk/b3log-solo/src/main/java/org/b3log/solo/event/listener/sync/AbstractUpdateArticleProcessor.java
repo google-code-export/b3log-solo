@@ -29,8 +29,9 @@ import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.sync.BlogFactory;
+import org.b3log.solo.sync.MetaWeblog;
+import org.b3log.solo.sync.MetaWeblogPost;
 import org.b3log.solo.sync.Post;
-import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.json.JSONObject;
 
 /**
@@ -54,7 +55,7 @@ public abstract class AbstractUpdateArticleProcessor
     @Inject
     private BlogSyncManagementRepository blogSyncManagementRepository;
     /**
-     * CSDN blog article-Solo article repository.
+     * External blog article-Solo article repository.
      */
     @Inject
     private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository;
@@ -105,19 +106,20 @@ public abstract class AbstractUpdateArticleProcessor
                         BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
                 final String userPwd = blogSyncMgmt.getString(
                         BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
-                final Post externalArticle = BlogFactory.getPost(
-                        externalBloggingSys, article);
+                final Post externalArticle = new MetaWeblogPost(article);
 
                 final String articleId = article.getString(Keys.OBJECT_ID);
-                final JSONObject csdnArticleSoloArticleRelation =
+                final JSONObject externalArticleSoloArticleRelation =
                         externalArticleSoloArticleRepository.getBySoloArticleId(
                         articleId);
-                final String postId = csdnArticleSoloArticleRelation.getString(
+                final String postId = externalArticleSoloArticleRelation.
+                        getString(
                         BLOG_SYNC_EXTERNAL_ARTICLE_ID);
-                final CSDNBlog csdnBlog = new CSDNBlog();
-                csdnBlog.setUserName(userName);
-                csdnBlog.setUserPassword(userPwd);
-                csdnBlog.editPost(postId, externalArticle);
+                final MetaWeblog metaWeblog =
+                        BlogFactory.getMetaWeblog(externalBloggingSys);
+                metaWeblog.setUserName(userName);
+                metaWeblog.setUserPassword(userPwd);
+                metaWeblog.editPost(postId, externalArticle);
             }
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
