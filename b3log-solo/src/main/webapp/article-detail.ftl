@@ -41,7 +41,7 @@
                                     </#if>
                                 </h2>
                                 <div class="article-tags">
-                                    ${tag1Label}
+                                    ${tags1Label}
                                     <#list articleTags as articleTag>
                                     <span>
                                         <a href="tag-articles.do?oId=${articleTag.oId}">${articleTag.tagTitle}</a>

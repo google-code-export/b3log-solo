@@ -12,7 +12,7 @@
     <div>
         <textarea rows="15" id="articleContent" style="width: 99%;" name="articleContent"></textarea>
     </div>
-    <div class="left label">${tag1Label}</div>
+    <div class="left label">${tags1Label}</div>
     <div class="left input">
         <input id="tag" type="text"/>
     </div>
