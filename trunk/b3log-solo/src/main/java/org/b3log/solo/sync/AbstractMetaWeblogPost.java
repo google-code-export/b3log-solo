@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.sync;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 import org.b3log.solo.util.Htmls;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -151,6 +155,40 @@ public abstract class AbstractMetaWeblogPost implements MetaWeblogPost {
     @Override
     public void addCategory(final String category) {
         categories.add(category);
+    }
+
+    @Override
+    public Map<String, Object> toPost() {
+        final Map<String, Object> ret = new HashMap<String, Object>();
+
+        try {
+            ret.put("title", getTitle());
+            final StringBuilder descriptionBuilder =
+                    new StringBuilder(getContent());
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
+            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            descriptionBuilder.append("<p>");
+            descriptionBuilder.append(
+                    "本文是使用<a href='http://b3log-solo.googlecode.com/'>");
+            descriptionBuilder.append("B3log Solo</a>从<a href='http://");
+            descriptionBuilder.append(preference.getString(Preference.BLOG_HOST));
+            descriptionBuilder.append("'>");
+            descriptionBuilder.append(blogTitle);
+            descriptionBuilder.append("</a>进行同步发布的。");
+            descriptionBuilder.append("</p>");
+            ret.put("description", descriptionBuilder.toString());
+            ret.put("categories", getCategories().<String>toArray(new String[0]));
+
+            // FIXME: CSDN blog created date bug(time zone)
+            ret.put("dateCreated",
+                    CSDNBlog.CST_DATE_FORMAT.parse(
+                    CSDNBlog.UTC_DATE_FORMAT.format(getCreateDate())));
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+        }
+
+        return ret;
     }
 
     /**
