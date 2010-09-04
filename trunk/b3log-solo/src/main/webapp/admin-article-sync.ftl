@@ -13,7 +13,7 @@
             </li>
         </ul>
         <div class="clear"></div>
-        <div class="form maginTB12">
+        <div class="form magin12">
             <span class="label">${chooseBlogType1Label}</span>
             <select id="blogType" onchange="changeBlogType();">
                 <option value="">&nbsp;</option>
@@ -53,7 +53,7 @@
                         <td>
                             <input id="userName"/>
                         </td>
-                        <th width="96px">
+                        <th width="66px">
                             ${userPassword1Label}
                         </th>
                         <td>
@@ -208,24 +208,44 @@
         });
     }
 
+    var validateSyncSetting = function () {
+        if ($("#magName").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${nameEmptyLabel}").show();
+            $("#magName").focus().val("");
+        } else if ($("#magPassword").val() === ""){
+            $("#tipMsg").text("${passwordEmptyLabel}").show();
+            $("#magPassword").focus().val();
+        } else if (blogType === "") {
+            $("#tipMsg").text("${blogTypeEmptyLabel}").show();
+            $("#blogType").focus();
+        } else {
+            return true;
+        }
+        return false;
+    }
+    
     var syncSetting = function () {
-        var addSync = $("#addSync").attr("checked"),
-        updateSync = $("#updateSync").attr("checked"),
-        deleteSync =  $("#deleteSync").attr("checked");
-        var requestJSONObject = {
-            "blogSyncExternalBloggingSys": $("#blogType").val(),
-            "blogSyncExternalBloggingSysUserName": $("#magName").val(),
-            "blogSyncExternalBloggingSysUserPassword": $("#magPassword").val(),
-            "blogSyncMgmtAddEnabled": addSync,
-            "blogSyncMgmtUpdateEnabled": updateSync,
-            "blogSyncMgmtRemoveEnabled": deleteSync
-        };
+        if (validateSyncSetting()) {
+            var addSync = $("#addSync").attr("checked"),
+            updateSync = $("#updateSync").attr("checked"),
+            deleteSync =  $("#deleteSync").attr("checked");
+            var requestJSONObject = {
+                "blogSyncExternalBloggingSys": $("#blogType").val(),
+                "blogSyncExternalBloggingSysUserName": $("#magName").val(),
+                "blogSyncExternalBloggingSysUserPassword": $("#magPassword").val(),
+                "blogSyncMgmtAddEnabled": addSync,
+                "blogSyncMgmtUpdateEnabled": updateSync,
+                "blogSyncMgmtRemoveEnabled": deleteSync
+            };
 
-        var result =
-            jsonRpc.blogSyncService.setBlogSyncMgmt(requestJSONObject);
-       
-        if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
-            $("#tipMsg").html("${updateSuccLabel}").show();
+            var result =
+                jsonRpc.blogSyncService.setBlogSyncMgmt(requestJSONObject);
+
+            if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
+                $("#tipMsg").html("${updateSuccLabel}").show();
+            } else {
+                $("#tipMsg").html("${setFailLabel}").show();
+            }
         }
     }
 
@@ -250,7 +270,6 @@
             $("#tipMsg").text("${passwordEmptyLabel}").show();
             $("#password").focus().val();
         } else if (blogType === "") {
-
             $("#tipMsg").text("${blogTypeEmptyLabel}").show();
             $("#blogType").focus();
         } else {
