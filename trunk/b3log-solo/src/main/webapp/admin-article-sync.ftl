@@ -11,17 +11,17 @@
                     ${blogSyncMgmtLabel}
                 </span>
             </li>
-            <li class="form">
-                <span class="label">${chooseBlogType1Label}</span>
-                <select id="blogType" onchange="changeBlogType();">
-                    <option value="">&nbsp;</option>
-                    <option value="blogSyncCSDNBlog">CSDN</option>
-                    <option value="blogSyncBlogJava">BlogJava</option>
-                    <option value="blogSyncCnBlogs">CnBlogs</option>
-                </select>
-            </li>
         </ul>
         <div class="clear"></div>
+        <div class="form">
+            <span class="label">${chooseBlogType1Label}</span>
+            <select id="blogType" onchange="changeBlogType();">
+                <option value="">&nbsp;</option>
+                <option value="blogSyncCSDNBlog">CSDN</option>
+                <option value="blogSyncBlogJava">BlogJava</option>
+                <option value="blogSyncCnBlogs">CnBlogs</option>
+            </select>
+        </div>
     </div>
     <div class="tabPanels">
         <div id="syncPanel">
@@ -206,7 +206,7 @@
         updateSync = $("#updateSync").attr("checked"),
         deleteSync =  $("#deleteSync").attr("checked");
         var requestJSONObject = {
-            "blogSyncExternalBloggingSys": bolgType,
+            "blogSyncExternalBloggingSys": $("#blogType").val(),
             "blogSyncExternalBloggingSysUserName": $("#magName").val(),
             "blogSyncExternalBloggingSysUserPassword": $("#magPassword").val(),
             "blogSyncMgmtAddEnabled": addSync,
@@ -215,7 +215,7 @@
         };
 
         var result =
-            jsonRpc.blogSyncService.setBlogSyncMgmtFor(requestJSONObject);
+            jsonRpc.blogSyncService.setBlogSyncMgmt(requestJSONObject);
        
         if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
             $("#tipMsg").html("${updateSuccLabel}").show();
