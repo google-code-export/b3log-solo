@@ -67,7 +67,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     @Inject
     private ArticleRepository articleRepository;
     /**
-     * CSDN blog article repository.
+     * External blog article repository.
      */
     @Inject
     private ExternalArticleRepository externalArticleRepository;
@@ -107,8 +107,8 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     public static final int EXTERNAL_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 2;
 
     /**
-     * Gets blog sync management for CSDN blog with the specified http servlet
-     * request and http servlet response.
+     * Gets blog sync management for external blogging system with the specified
+     * http servlet request and http servlet response.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -152,8 +152,8 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Sets blog sync management for CSDN blog with the specified request json
-     * object, http servlet request and http servlet response.
+     * Sets blog sync management for external blogging system with the specified
+     * request json object, http servlet request and http servlet response.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -171,7 +171,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "sc": SET_BLOG_SYNC_MGMT_FOR_CSDN_BLOG_SUCC
+     *     "sc": SET_BLOG_SYNC_MGMT_SUCC
      * }
      * </pre>
      * @throws ActionException action exception
@@ -200,43 +200,43 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             final boolean removeEnabled = requestJSONObject.getBoolean(
                     BLOG_SYNC_MGMT_REMOVE_ENABLED);
 
-            JSONObject csdnBlogSyncMgmt = blogSyncManagementRepository.
+            JSONObject blogSyncMgmt = blogSyncManagementRepository.
                     getByExternalBloggingSystem(BLOG_SYNC_CSDN_BLOG);
-            if (null == csdnBlogSyncMgmt) {
-                csdnBlogSyncMgmt = new JSONObject();
+            if (null == blogSyncMgmt) {
+                blogSyncMgmt = new JSONObject();
             }
 
-            csdnBlogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
+            blogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
                                  externalBloggingSys);
-            csdnBlogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME,
+            blogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME,
                                  userName);
-            csdnBlogSyncMgmt.put(
+            blogSyncMgmt.put(
                     BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD, userPwd);
-            csdnBlogSyncMgmt.put(BLOG_SYNC_MGMT_ADD_ENABLED, addEnabled);
-            csdnBlogSyncMgmt.put(BLOG_SYNC_MGMT_UPDATE_ENABLED,
+            blogSyncMgmt.put(BLOG_SYNC_MGMT_ADD_ENABLED, addEnabled);
+            blogSyncMgmt.put(BLOG_SYNC_MGMT_UPDATE_ENABLED,
                                  updateEnabled);
-            csdnBlogSyncMgmt.put(BLOG_SYNC_MGMT_REMOVE_ENABLED,
+            blogSyncMgmt.put(BLOG_SYNC_MGMT_REMOVE_ENABLED,
                                  removeEnabled);
 
-            if (!csdnBlogSyncMgmt.has(Keys.OBJECT_ID)) {
-                blogSyncManagementRepository.add(csdnBlogSyncMgmt);
+            if (!blogSyncMgmt.has(Keys.OBJECT_ID)) {
+                blogSyncManagementRepository.add(blogSyncMgmt);
                 LOGGER.log(Level.FINER,
                            "Added blog sync management for [{0}] [{1}]",
                            new String[]{
                             externalBloggingSys,
-                            csdnBlogSyncMgmt.toString(
+                            blogSyncMgmt.toString(
                             SoloServletListener.JSON_PRINT_INDENT_FACTOR)
                         });
 
             } else {
                 blogSyncManagementRepository.update(
-                        csdnBlogSyncMgmt.getString(Keys.OBJECT_ID),
-                        csdnBlogSyncMgmt);
+                        blogSyncMgmt.getString(Keys.OBJECT_ID),
+                        blogSyncMgmt);
                 LOGGER.log(Level.FINER,
                            "Updated blog sync management for [{0}] [{1}]",
                            new String[]{
                             externalBloggingSys,
-                            csdnBlogSyncMgmt.toString(
+                            blogSyncMgmt.toString(
                             SoloServletListener.JSON_PRINT_INDENT_FACTOR)
                         });
             }
