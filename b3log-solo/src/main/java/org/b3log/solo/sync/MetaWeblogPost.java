@@ -240,8 +240,8 @@ public final class MetaWeblogPost implements Post {
 
             // FIXME: CSDN blog created date bug(time zone)
             ret.put("dateCreated",
-                    CSDNBlog.CST_DATE_FORMAT.parse(
-                    CSDNBlog.UTC_DATE_FORMAT.format(getCreateDate())));
+                    AbstractMetaWeblog.CST_DATE_FORMAT.parse(
+                    AbstractMetaWeblog.UTC_DATE_FORMAT.format(getCreateDate())));
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new RuntimeException(e);
