@@ -207,16 +207,16 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             }
 
             blogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
-                                 externalBloggingSys);
+                             externalBloggingSys);
             blogSyncMgmt.put(BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME,
-                                 userName);
+                             userName);
             blogSyncMgmt.put(
                     BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD, userPwd);
             blogSyncMgmt.put(BLOG_SYNC_MGMT_ADD_ENABLED, addEnabled);
             blogSyncMgmt.put(BLOG_SYNC_MGMT_UPDATE_ENABLED,
-                                 updateEnabled);
+                             updateEnabled);
             blogSyncMgmt.put(BLOG_SYNC_MGMT_REMOVE_ENABLED,
-                                 removeEnabled);
+                             removeEnabled);
 
             if (!blogSyncMgmt.has(Keys.OBJECT_ID)) {
                 blogSyncManagementRepository.add(blogSyncMgmt);
@@ -442,13 +442,14 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                    new String[]{externalArticleId, externalSys});
                         continue;
                     }
-                }
 
-                article.put(BLOG_SYNC_IMPORTED, imported);
-                articles.put(article);
+                    article.put(BLOG_SYNC_IMPORTED, imported);
+                    articles.put(article);
 
-                if (EXTERNAL_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL == retrievalCnt) {
-                    break;
+                    if (EXTERNAL_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL
+                        == retrievalCnt) {
+                        break;
+                    }
                 }
             }
 
