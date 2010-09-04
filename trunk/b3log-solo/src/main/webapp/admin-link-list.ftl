@@ -76,7 +76,6 @@
 <script type="text/javascript">
     var currentPage = 1,
     pageCount = 1,
-    linkDialog = undefined,
     linksLength = 1;
     $("#linkList").table({
         resizable: true,
@@ -125,27 +124,42 @@
         isGoTo: false
     });
 
-    var popUpdateLink = function (event) {
+    var validateLink = function () {
         $("#tipMsg").text("${loadingLabel}").show();
-        linkDialog = $("#updateLink").dialog({
-            width: 700,
-            height:200
-        });
-        var requestJSONObject = {
-            "oId": event.data.id[0]
-        };
+        if ($("#updateLinkTitle").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${titleEmptyLabel}").show();
+            $("#updateLinkTitle").focus().val("");
+        } else if ($("#updateLinkAddress").val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text("${addressEmptyLabel}").show();
+            $("#updateLinkAddress").focus().val("");
+        } else {
+            return true;
+        }
+        return false;
+    }
 
-        var result = jsonRpc.linkService.getLink(requestJSONObject);
-        switch (result.sc) {
-            case "GET_LINK_SUCC":
-                $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
-                $("#updateLinkAddress").val(result.link.linkAddress);
-                $("#tipMsg").text("${updateSuccLabel}").show();
-                break;
-            case "GET_LINK_FAIL_":
-                break;
-            default:
-                break;
+    var popUpdateLink = function (event) {
+        if (validateLink()) {
+            $("#updateLink").dialog({
+                width: 700,
+                height:200
+            });
+            var requestJSONObject = {
+                "oId": event.data.id[0]
+            };
+
+            var result = jsonRpc.linkService.getLink(requestJSONObject);
+            switch (result.sc) {
+                case "GET_LINK_SUCC":
+                    $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
+                    $("#updateLinkAddress").val(result.link.linkAddress);
+                    $("#tipMsg").text("${updateSuccLabel}").show();
+                    break;
+                case "GET_LINK_FAIL_":
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -225,23 +239,24 @@
     getLinkList(1);
 
     var updateLink = function () {
-        $("#tipMsg").text("").hide();
-        var requestJSONObject = {
-            "link": {
-                "linkTitle": $("#updateLinkTitle").val(),
-                "oId": $("#updateLinkTitle").data("oId"),
-                "linkAddress": $("#updateLinkAddress").val()
+        if (validateLink()) {
+            var requestJSONObject = {
+                "link": {
+                    "linkTitle": $("#updateLinkTitle").val(),
+                    "oId": $("#updateLinkTitle").data("oId"),
+                    "linkAddress": $("#updateLinkAddress").val()
+                }
+            };
+            var result = jsonRpc.linkService.updateLink(requestJSONObject);
+            switch (result.sc) {
+                case "UPDATE_LINK_SUCC":
+                    $("#updateLink").dialog("close");
+                    $("#tipMsg").text("${updateSuccLabel}").show();
+                    getLinkList(currentPage);
+                    break;
+                default:
+                    break;
             }
-        };
-        var result = jsonRpc.linkService.updateLink(requestJSONObject);
-        switch (result.sc) {
-            case "UPDATE_LINK_SUCC":
-                linkDialog.dialog("close");
-                $("#tipMsg").text("${updateSuccLabel}").show();
-                getLinkList(currentPage);
-                break;
-            default:
-                break;
         }
     }
 
