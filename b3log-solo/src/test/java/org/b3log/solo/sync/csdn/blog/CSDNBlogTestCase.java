@@ -85,7 +85,7 @@ public final class CSDNBlogTestCase {
      * Tests {@linkplain CSDNBlog#getPost(java.lang.String)} method.
      * @throws ServiceException service exception
      */
-    @Test
+    //@Test
     public void getPost() throws ServiceException {
         final MetaWeblogPost article = csdnBlog.getPost("5817062");
         assertNotNull(article);
