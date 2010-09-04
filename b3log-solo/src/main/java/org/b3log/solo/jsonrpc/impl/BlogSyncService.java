@@ -397,7 +397,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             int retrievalCnt = 0;
             for (final String externalArticleId : externalArticleIds) {
                 final String oId = externalArticleSoloArticleRepository.
-                        getSoloArticleId(externalArticleId);
+                        getSoloArticleId(externalArticleId, externalSys);
                 LOGGER.log(Level.FINEST,
                            "External[{0}] article[id={1}] Solo article[id={2}]",
                            new String[]{externalSys, externalArticleId, oId});

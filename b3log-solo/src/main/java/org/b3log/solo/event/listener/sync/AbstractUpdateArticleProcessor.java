@@ -74,7 +74,7 @@ public abstract class AbstractUpdateArticleProcessor
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject article = event.getData();
-        LOGGER.log(Level.FINEST,
+        LOGGER.log(Level.FINER,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 article,
@@ -107,11 +107,16 @@ public abstract class AbstractUpdateArticleProcessor
                 final String userPwd = blogSyncMgmt.getString(
                         BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD);
                 final Post externalArticle = new MetaWeblogPost(article);
-
                 final String articleId = article.getString(Keys.OBJECT_ID);
+                LOGGER.log(Level.FINEST,
+                           "Getting External article-Solo article relation....");
                 final JSONObject externalArticleSoloArticleRelation =
                         externalArticleSoloArticleRepository.getBySoloArticleId(
-                        articleId);
+                        articleId, externalBloggingSys);
+                LOGGER.log(Level.FINEST,
+                           "External article-Solo article relation[{0}]",
+                           externalArticleSoloArticleRelation.toString(
+                        SoloServletListener.JSON_PRINT_INDENT_FACTOR));
                 final String postId = externalArticleSoloArticleRelation.
                         getString(
                         BLOG_SYNC_EXTERNAL_ARTICLE_ID);

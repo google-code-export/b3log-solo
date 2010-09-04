@@ -51,12 +51,15 @@ public class ExternalArticleSoloArticleGAERepository
     }
 
     @Override
-    public String getSoloArticleId(final String externalArticleId)
+    public String getSoloArticleId(final String externalArticleId,
+                                   final String externalBloggingSys)
             throws RepositoryException {
         final Query query = new Query(getName());
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID,
                         Query.FilterOperator.EQUAL,
                         externalArticleId);
+        query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
+                        Query.FilterOperator.EQUAL, externalBloggingSys);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
@@ -70,30 +73,15 @@ public class ExternalArticleSoloArticleGAERepository
     }
 
     @Override
-    public String getExternalArticleId(final String soloArticleId)
-            throws RepositoryException {
-        final Query query = new Query(getName());
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        Query.FilterOperator.EQUAL, soloArticleId);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
-
-        if (null == entity) {
-            return null;
-        }
-
-        final Map<String, Object> properties = entity.getProperties();
-
-        return (String) properties.get(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID);
-    }
-
-    @Override
-    public JSONObject getByExternalArticleId(final String externalArticleId)
+    public JSONObject getByExternalArticleId(final String externalArticleId,
+                                             final String externalBloggingSys)
             throws RepositoryException {
         final Query query = new Query(getName());
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID,
                         Query.FilterOperator.EQUAL,
                         externalArticleId);
+        query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
+                        Query.FilterOperator.EQUAL, externalBloggingSys);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
@@ -105,11 +93,14 @@ public class ExternalArticleSoloArticleGAERepository
     }
 
     @Override
-    public JSONObject getBySoloArticleId(final String soloArticleId)
+    public JSONObject getBySoloArticleId(final String soloArticleId,
+                                         final String externalBloggingSys)
             throws RepositoryException {
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, soloArticleId);
+        query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
+                        Query.FilterOperator.EQUAL, externalBloggingSys);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
