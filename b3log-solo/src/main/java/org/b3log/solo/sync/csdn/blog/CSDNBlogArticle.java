@@ -118,38 +118,4 @@ public final class CSDNBlogArticle extends AbstractMetaWeblogPost {
 
         return ret;
     }
-
-    @Override
-    public Map<String, Object> toPost() {
-        final Map<String, Object> ret = new HashMap<String, Object>();
-
-        try {
-            ret.put("title", getTitle());
-            final StringBuilder descriptionBuilder =
-                    new StringBuilder(getContent());
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            descriptionBuilder.append("<p>");
-            descriptionBuilder.append(
-                    "本文是使用<a href='http://b3log-solo.googlecode.com/'>");
-            descriptionBuilder.append("B3log Solo</a>从<a href='http://");
-            descriptionBuilder.append(preference.getString(Preference.BLOG_HOST));
-            descriptionBuilder.append("'>");
-            descriptionBuilder.append(blogTitle);
-            descriptionBuilder.append("</a>进行同步发布的。");
-            descriptionBuilder.append("</p>");
-            ret.put("description", descriptionBuilder.toString());
-            ret.put("categories", getCategories().<String>toArray(new String[0]));
-
-            // FIXME: CSDN blog created date bug(time zone)
-            ret.put("dateCreated",
-                    CSDNBlog.CST_DATE_FORMAT.parse(
-                    CSDNBlog.UTC_DATE_FORMAT.format(getCreateDate())));
-        } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-        }
-
-        return ret;
-    }
 }
