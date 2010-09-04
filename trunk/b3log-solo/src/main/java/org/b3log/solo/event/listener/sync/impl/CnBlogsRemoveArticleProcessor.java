@@ -17,31 +17,31 @@ package org.b3log.solo.event.listener.sync.impl;
 
 import com.google.inject.Inject;
 import org.b3log.latke.event.EventManager;
-import org.b3log.solo.event.listener.sync.AbstractAddArticleProcessor;
+import org.b3log.solo.event.listener.sync.AbstractRemoveArticleProcessor;
 import org.b3log.solo.model.BlogSync;
 
 /**
- * This listener is responsible for blog sync add article to CSDN blog.
+ * This listener is responsible for blog sync remove article from CnBlogs.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 4, 2010
+ * @version 1.0.0.0, Sep 4, 2010
  */
-public final class CSDNBlogAddArticleProcessor
-        extends AbstractAddArticleProcessor {
+public final class CnBlogsRemoveArticleProcessor
+        extends AbstractRemoveArticleProcessor {
 
     /**
-     * Constructs a {@link CSDNBlogAddArticleProcessor} object with the
+     * Constructs a {@link CnBlogsRemoveArticleProcessor} object with the
      * specified event manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
-    public CSDNBlogAddArticleProcessor(final EventManager eventManager) {
+    public CnBlogsRemoveArticleProcessor(final EventManager eventManager) {
         super(eventManager);
     }
 
     @Override
     public String getExternalBloggingSys() {
-        return BlogSync.BLOG_SYNC_CSDN_BLOG;
+        return BlogSync.BLOG_SYNC_CNBLOGS;
     }
 }
