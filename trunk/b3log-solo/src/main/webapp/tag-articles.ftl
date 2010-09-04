@@ -21,7 +21,11 @@
                     <#include "article-side.ftl">
                 </div>
                 <div class="right main">
-                    <h2>${tag1Label}<span id="tagArticlesTag"></span></h2>
+                    <h2>${tag1Label}
+                        <span id="tagArticlesTag">
+                            ${tagTitle}
+                        </span>
+                    </h2>
                     <#include "common-articles.ftl">
                 </div>
                 <div class="clear"></div>
@@ -30,8 +34,5 @@
                 <#include "article-footer.ftl">
             </div>
         </div>
-        <script type="text/javascript">
-            $("#tagArticlesTag").text(localStorage.getItem("sideNaviName"));
-        </script>
     </body>
 </html>
