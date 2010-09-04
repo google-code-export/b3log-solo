@@ -192,6 +192,8 @@
                 result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
                 result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
                 result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
+                $("#archiveDatePanel").hide();
+                $("#articlesPanel").hide();
                 $("#tipMsg").text("").hide();
             }
         }, {
