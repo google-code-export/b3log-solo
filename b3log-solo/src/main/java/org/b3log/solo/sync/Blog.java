@@ -17,7 +17,6 @@ package org.b3log.solo.sync;
 
 import java.net.URL;
 import java.util.List;
-import org.b3log.solo.model.BlogSync;
 
 /**
  * Blog.
@@ -31,7 +30,7 @@ public interface Blog {
      * Gets blogging service provider.
      *
      * @return blogging service provider, such as 
-     * {@linkplain BlogSync#BLOG_SYNC_CSDN_BLOG}.
+     * {@linkplain org.b3log.solo.model.BlogSync#BLOG_SYNC_CSDN_BLOG}.
      */
     String getBloggingServiceProvider();
 
