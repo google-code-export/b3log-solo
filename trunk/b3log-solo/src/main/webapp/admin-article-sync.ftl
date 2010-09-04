@@ -261,11 +261,11 @@
                 "blogSyncExternalBloggingSysUserPassword": password,
                 "blogSyncExternalBloggingSys": blogType
             });
-            if (result.blogSyncBlogArchiveDates.length === 0) {
+            if (result.blogSyncExternalArchiveDates.length === 0) {
                 $("#tipMsg").text("${syncImportErrorLabel}").show();
             } else {
-                for (var i = 0; i < result.blogSyncBlogArchiveDates.length; i++) {
-                    archveDates += "<option>" + result.blogSyncBlogArchiveDates[i] + "</option>";
+                for (var i = 0; i < result.blogSyncExternalArchiveDates.length; i++) {
+                    archveDates += "<option>" + result.blogSyncExternalArchiveDates[i] + "</option>";
                 }
                 $("#archiveDate").html(archveDates);
                 $("#archiveDatePanel").show(500);
@@ -282,7 +282,7 @@
             "blogSyncExternalBloggingSys": blogType,
             "blogSyncExternalBloggingSysUserName": userName,
             "blogSyncExternalBloggingSysUserPassword": password,
-            "blogSyncBlogArchiveDate": $("#archiveDate").val()
+            "blogSyncExternalArchiveDate": $("#archiveDate").val()
         };
 
         while (true) {
