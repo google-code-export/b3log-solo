@@ -20,7 +20,7 @@
                 </#if>
             </h2>
             <div class="article-tags">
-                ${tag1Label}
+                ${tags1Label}
                 <#list article.articleTags as articleTag>
                 <span>
                     <a href="tag-articles.do?oId=${articleTag.oId}">
