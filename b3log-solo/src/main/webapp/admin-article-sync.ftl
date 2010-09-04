@@ -53,6 +53,9 @@
                         <td>
                             <input id="userName"/>
                         </td>
+                        <th>
+                            ${userPassword1Label}
+                        </th>
                         <td>
                             <input id="password" type="password"/>
                         </td>
@@ -180,16 +183,17 @@
     initSync();
 
     var changeBlogType = function () {
+        $("#tipMsg").text("${loadingLabel}").show();
         blogType = $("#blogType").val();
-        jsonRpc.blogSyncService.getBlogSyncMgmtForBlog(function (result, error) {
-            if (null === result) {
-                return;
-            }
+        jsonRpc.blogSyncService.getBlogSyncMgmt(function (result, error) {
             $("#magName").val(result.blogSyncExternalBloggingSysUserName);
             $("#magPassword").val(result.blogSyncExternalBloggingSysUserPassword);
             result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
             result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
             result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
+            $("#tipMsg").text("").hide();
+        }, {
+            "blogSyncExternalBloggingSys": blogType
         });
     }
 
@@ -250,7 +254,7 @@
             userName = $("#userName").val();
             password = $("#password").val();
             var archveDates = "";
-            var result = jsonRpc.blogSyncService.getBlogArticleArchiveDate({
+            var result = jsonRpc.blogSyncService.getExternalArticleArchiveDate({
                 "blogSyncExternalBloggingSysUserName": userName,
                 "blogSyncExternalBloggingSysUserPassword": password,
                 "blogSyncExternalBloggingSys": blogType
@@ -281,7 +285,7 @@
 
         while (true) {
             var result =
-                jsonRpc.blogSyncService.getBlogArticlesByArchiveDate(requestJSONObject);
+                jsonRpc.blogSyncService.getExternalArticlesByArchiveDate(requestJSONObject);
             var articles = result.blogSyncBlogArticles;
             if (articles.length == $("#articleListTableMain tr").length) {
                 break;
@@ -320,7 +324,7 @@
             $("#tipMsg").text("{choose article}").show();
         } else {
             $("#tipMsg").text("${loadingLabel}").show();
-            jsonRpc.blogSyncService.importBlogArticles({
+            jsonRpc.blogSyncService.importExternalArticles({
                 "oIds": $("#articleList_selected").data("id")
             });
             $("#tipMsg").text("${importSuccLabel}").show();

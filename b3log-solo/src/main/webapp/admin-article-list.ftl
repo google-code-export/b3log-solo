@@ -35,7 +35,7 @@
                         'eventName': 'click',
                         'functionName': 'updateArticle'
                     }],
-                style: "cursor:pointer;"
+                style: "cursor:pointer; margin-left:22px;"
             }, {
                 textAlign: "center",
                 name: "${removeLabel}",
@@ -45,7 +45,7 @@
                         'eventName': 'click',
                         'functionName': 'deleteArticle'
                     }],
-                style: "cursor:pointer;"
+                style: "cursor:pointer; margin-left:22px;"
             }, {
                 textAlign: "center",
                 name: "${commentLabel}",
@@ -164,8 +164,8 @@
                     articleData[i].title = "<a href='article-detail.do?oId=" + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle + "' class='noUnderline'>"
                         + articles[i].articleTitle + "</a>";
                     articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
-                    articleData[i].update = "update";
-                    articleData[i].deleted = "delete";
+                    articleData[i].update = "<div class='updateIcon'></div>";
+                    articleData[i].deleted = "<div class='deleteIcon'></div>";
                     articleData[i].comments = articles[i].articleCommentCount;
                     articleData[i].id = articles[i].oId;
                 }
