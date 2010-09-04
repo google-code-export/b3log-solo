@@ -41,7 +41,7 @@ public final class BlogSync {
     public static final String BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME =
             "blogSyncExternalBloggingSysUserName";
     /**
-     * Key of CSDN blog user password.
+     * Key of external blogging system user password.
      */
     public static final String BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_PASSWORD =
             "blogSyncExternalBloggingSysUserPassword";
@@ -51,17 +51,17 @@ public final class BlogSync {
     public static final String BLOG_SYNC_EXTERNAL_BLOGGING_SYS =
             "blogSyncExternalBloggingSys";
     /**
-     * Key of whether sync add CSDN blog article.
+     * Key of whether sync add external blogging system article.
      */
     public static final String BLOG_SYNC_MGMT_ADD_ENABLED =
             "blogSyncMgmtAddEnabled";
     /**
-     * Key of whether sync update CSDN blog article.
+     * Key of whether sync update external blogging system article.
      */
     public static final String BLOG_SYNC_MGMT_UPDATE_ENABLED =
             "blogSyncMgmtUpdateEnabled";
     /**
-     * Key of whether sync remove CSDN blog article.
+     * Key of whether sync remove external blogging system article.
      */
     public static final String BLOG_SYNC_MGMT_REMOVE_ENABLED =
             "blogSyncMgmtRemoveEnabled";
