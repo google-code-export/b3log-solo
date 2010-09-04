@@ -129,7 +129,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             client.setConfig(config);
             final Map<String, ?> result =
                     (Map<String, ?>) client.execute(GET_POST, params);
-            LOGGER.log(Level.INFO, "Got an article[id={0}] from [{from1}]",
+            LOGGER.log(Level.INFO, "Got an article[id={0}] from [{1}]",
                        new String[]{postId, getBloggingServiceProvider()});
 
             final CSDNBlogArticle ret = new CSDNBlogArticle();
