@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Sep 1, 2010
+ * @version 1.0.1.1, Sep 5, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -532,14 +532,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
             if (HttpServletResponse.SC_OK == statusCode) {
                 final List<HTTPHeader> headers = response.getHeaders();
-                boolean defaultFileNameMatched = false;
                 boolean defaultFileLengthMatched = false;
                 for (final HTTPHeader httpHeader : headers) {
-                    if ("Content-Disposition".equals(httpHeader.getName())) {
-                        if (httpHeader.getValue().contains("none.jpg")) {
-                            defaultFileNameMatched = true;
-                        }
-                    }
                     if ("Content-Length".equals(httpHeader.getName())) {
                         if (httpHeader.getValue().equals("2147")) {
                             defaultFileLengthMatched = true;
@@ -547,7 +541,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                     }
                 }
 
-                if (!defaultFileNameMatched && !defaultFileLengthMatched) {
+                if (!defaultFileLengthMatched) {
                     thumbnailURL = "http://www.gravatar.com/avatar/"
                                    + hashedEmail
                                    + "?s="
