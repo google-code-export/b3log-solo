@@ -22,17 +22,19 @@ import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
-import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.model.User;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.action.util.Filler;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.servlet.SoloServletListener;
-import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 /**
@@ -57,20 +59,14 @@ public final class ErrorAction extends AbstractAction {
      */
     private UserService userService = UserServiceFactory.getUserService();
     /**
-     * Language service.
-     */
-    @Inject
-    private LangPropsService langPropsService;
-    /**
-     * Statistic utilities.
-     */
-    @Inject
-    private Statistics statistics;
-    /**
      * Filler.
      */
     @Inject
     private Filler filler;
+    /**
+     * lang.properties.
+     */
+    private static ResourceBundle lang;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -82,20 +78,35 @@ public final class ErrorAction extends AbstractAction {
         try {
             final JSONObject preference =
                     SoloServletListener.getUserPreference();
+            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
+            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            final String blogSubtitle = preference.getString(
+                    Preference.BLOG_SUBTITLE);
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
+            final String adminGmail = preference.getString(
+                    Preference.ADMIN_GMAIL);
+            ret.put(User.USER_EMAIL, adminGmail);
+
             final Locale locale = new Locale(
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString));
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            ret.putAll(langs);
-            filler.fillBlogHeader(ret);
-            filler.fillSide(ret);
-            filler.fillBlogFooter(ret);
-            filler.fillArchiveDates(ret);
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
+            lang = ResourceBundle.getBundle(Keys.LANGUAGE, locale);
+            ret.put("allTagsLabel", lang.getString("allTagsLabel"));
+            ret.put("adminLabel", lang.getString("adminLabel"));
+            ret.put("clearAllCacheLabel", lang.getString("clearAllCacheLabel"));
+            ret.put("clearCacheLabel", lang.getString("clearCacheLabel"));
+            ret.put("logoutLabel", lang.getString("logoutLabel"));
+            ret.put("loginLabel", lang.getString("loginLabel"));
+            ret.put("viewCount1Label", lang.getString("viewCount1Label"));
+            ret.put("articleCount1Label", lang.getString("articleCount1Label"));
+            ret.put("commentCount1Label", lang.getString("commentCount1Label"));
+
+            ret.put(Preference.BLOG_TITLE, blogTitle);
+            ret.put(Preference.BLOG_SUBTITLE, blogSubtitle);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
-            statistics.incBlogViewCount();
+
+            ret.put(Common.VERSION, SoloServletListener.VERSION);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);

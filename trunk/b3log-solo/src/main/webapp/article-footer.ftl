@@ -35,8 +35,8 @@ Powered by
         jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
             if (result && !error) {
                 var loginHTML = "<a class='noUnderline' href='admin-index.do'>${adminLabel}</a>&nbsp;|&nbsp;"
-                    + "<span onclick='clearAllCache();'>${clearAllCache}</span>&nbsp;|&nbsp;"
-                    + "<span onclick='clearCache();'>${clearCache}</span>&nbsp;|&nbsp;"
+                    + "<span onclick='clearAllCache();'>${clearAllCacheLabel}</span>&nbsp;|&nbsp;"
+                    + "<span onclick='clearCache();'>${clearCacheLabel}</span>&nbsp;|&nbsp;"
                     + "<span onclick='adminLogout();'>${logoutLabel}</span>";
                 $("#admin").append(loginHTML);
             } else {

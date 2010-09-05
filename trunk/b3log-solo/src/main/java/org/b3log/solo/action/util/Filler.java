@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Sep 1, 2010
+ * @version 1.0.0.8, Sep 5, 2010
  */
 public final class Filler {
 
@@ -271,8 +271,15 @@ public final class Filler {
      * Fills article-footer.ftl.
      *
      * @param dataModel data model
+     * @throws Exception exception
      */
-    public void fillBlogFooter(final Map<String, Object> dataModel) {
+    public void fillBlogFooter(final Map<String, Object> dataModel)
+            throws Exception {
+        final JSONObject preference = SoloServletListener.getUserPreference();
+        final String adminGmail = preference.getString(Preference.ADMIN_GMAIL);
+        LOGGER.log(Level.FINER, "Current user[userId={0}]", adminGmail);
+        dataModel.put(User.USER_EMAIL, adminGmail);
+
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
     }
 
@@ -284,7 +291,6 @@ public final class Filler {
      */
     public void fillBlogHeader(final Map<String, Object> dataModel)
             throws Exception {
-        LOGGER.finest("Filling blog header....");
         final JSONObject preference = SoloServletListener.getUserPreference();
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         final String blogSubtitle = preference.getString(
@@ -308,10 +314,5 @@ public final class Filler {
         fillMostUsedTags(dataModel);
         fillMostCommentArticles(dataModel);
         fillMostViewCountArticles(dataModel);
-
-        final JSONObject preference = SoloServletListener.getUserPreference();
-        final String adminGmail = preference.getString(Preference.ADMIN_GMAIL);
-        LOGGER.log(Level.FINER, "Current user[userId={0}]", adminGmail);
-        dataModel.put(User.USER_EMAIL, adminGmail);
     }
 }

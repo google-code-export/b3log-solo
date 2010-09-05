@@ -30,12 +30,13 @@
     <sessions-enabled>true</sessions-enabled>
 
     <system-properties>
-        <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties"/>
+        <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties" />
     </system-properties>
     
     <static-files>
         <include path="/favicon.ico" />
-        <include path="/animated_favicon.ico" />
+        <include path="/animated_favicon1.gif" />
+<!--        <include path="/error.do" />-->
     </static-files>
 </appengine-web-app>
 
