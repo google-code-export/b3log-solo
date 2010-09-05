@@ -103,19 +103,25 @@
                                 <input type="checkbox" id="addSync" class="normalInput"/>
                             </th>
                             <td>
-                                ${syncPostLabel}
+                                <label for="addSync">
+                                    ${syncPostLabel}
+                                </label>
                             </td>
                             <th>
                                 <input type="checkbox" id="updateSync"
                             </th>
                             <td>
-                                ${syncUpdateLabel}
+                                <label for="updateSync">
+                                    ${syncUpdateLabel}
+                                </label>
                             </td>
                             <th>
                                 <input type="checkbox" id="deleteSync"/>
                             </th>
                             <td>
-                                ${syncRemoveLabel}
+                                <label for="deleteSync">
+                                    ${syncRemoveLabel}
+                                </label>
                             </td>
                         </tr>
                         <tr>
