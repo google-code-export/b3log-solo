@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -54,7 +55,6 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Buzzs;
-import org.b3log.solo.util.Htmls;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -310,7 +310,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                     requestJSONObject.optString(Comment.COMMENT_URL);
             String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT);
-            commentContent = Htmls.removeHtmlTags(commentContent);
+            commentContent = StringEscapeUtils.escapeHtml(commentContent);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
             comment.put(Comment.COMMENT_NAME, commentName);

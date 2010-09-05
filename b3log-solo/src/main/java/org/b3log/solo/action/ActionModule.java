@@ -28,7 +28,6 @@ import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.BlogArticlesFeedServlet;
 import org.b3log.solo.action.feed.TagArticlesFeedServlet;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
-import org.b3log.solo.action.impl.ErrorAction;
 import org.b3log.solo.auth.AuthFilter;
 
 /**
@@ -82,7 +81,7 @@ public final class ActionModule extends AbstractActionModule {
         bind(CaptchaServlet.class).in(Scopes.SINGLETON);
         serve("/captcha.do").with(CaptchaServlet.class);
 
-        bind(ErrorAction.class).in(Scopes.SINGLETON);
-        serve("error.do").with(ErrorAction.class);
+//        bind(ErrorAction.class).in(Scopes.SINGLETON);
+//        serve("/error.do").with(ErrorAction.class);
     }
 }

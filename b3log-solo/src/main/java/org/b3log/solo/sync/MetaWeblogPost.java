@@ -28,7 +28,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
-import org.b3log.solo.util.Htmls;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -257,7 +256,7 @@ public final class MetaWeblogPost implements Post {
      * {@linkplain #MAX_ABSTRACT_LENGTH}
      */
     protected String genAbstract(final String content) {
-        final String contentWithoutTags = Htmls.removeHtmlTags(content);
+        final String contentWithoutTags = content.replaceAll("\\<.*?\\>", "");
         if (contentWithoutTags.length() >= MAX_ABSTRACT_LENGTH) {
             return contentWithoutTags.substring(0, MAX_ABSTRACT_LENGTH)
                    + "....";

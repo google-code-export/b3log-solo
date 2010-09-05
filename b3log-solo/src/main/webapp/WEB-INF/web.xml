@@ -56,8 +56,17 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-<!--    <error-page>
+    <servlet>
+        <servlet-name>error</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.ErrorAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>error</servlet-name>
+        <url-pattern>/error.do</url-pattern>
+    </servlet-mapping>
+
+    <error-page>
         <error-code>404</error-code>
         <location>/error.do</location>
-    </error-page>-->
+    </error-page>
 </web-app>

@@ -26,13 +26,13 @@ import org.apache.abdera.Abdera;
 import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.servlet.SoloServletListener;
-import org.b3log.solo.util.Htmls;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 25, 2010
+ * @version 1.0.0.3, Sep 5, 2010
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -92,8 +92,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                 final Entry entry = feed.addEntry();
 
                 final String title = article.getString(Article.ARTICLE_TITLE);
-                final String summary = Htmls.removeHtmlTags(article.getString(
-                        Article.ARTICLE_ABSTRACT));
+                final String summary = StringEscapeUtils.escapeHtml(article.
+                        getString(Article.ARTICLE_ABSTRACT));
                 final Date updated = (Date) article.get(
                         Article.ARTICLE_UPDATE_DATE);
                 final String id = article.getString(Keys.OBJECT_ID);

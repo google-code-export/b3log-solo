@@ -19,11 +19,8 @@
                 <#include "article-header.ftl">
             </div>
             <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
-                </div>
                 <div class="right main">
-                    {error}
+                    Exception :-(
                 </div>
                 <div class="clear"></div>
             </div>
