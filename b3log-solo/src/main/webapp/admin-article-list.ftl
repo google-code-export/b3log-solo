@@ -55,7 +55,7 @@
                         'eventName': 'click',
                         'functionName': 'popComments'
                     }],
-                style: "cursor:pointer;"
+                style: "cursor:pointer; margin-left:16px;"
             }, {
                 visible: false,
                 index: "id"
@@ -166,7 +166,8 @@
                     articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                     articleData[i].update = "<div class='updateIcon'></div>";
                     articleData[i].deleted = "<div class='deleteIcon'></div>";
-                    articleData[i].comments = articles[i].articleCommentCount;
+                    articleData[i].comments = "<div class='commentIcon left'></div><div class='left'>"
+                        + articles[i].articleCommentCount + "</div>";
                     articleData[i].id = articles[i].oId;
                 }
 
