@@ -44,9 +44,13 @@
                 ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
             </span>
             &nbsp;
-            ${commentLabel}(${article.articleCommentCount})
+            <a href="article-detail.do?oId=${article.oId}#comments">
+                ${commentLabel}(${article.articleCommentCount})
+            </a>
             &nbsp;
-            ${viewLabel}(${article.articleViewCount})
+            <a href="article-detail.do?oId=${article.oId}">
+                ${viewLabel}(${article.articleViewCount})
+            </a>
         </div>
         <div class="clear"></div>
     </div>
