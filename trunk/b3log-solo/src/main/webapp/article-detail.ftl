@@ -74,7 +74,10 @@
                                     &nbsp;${commentLabel}(${article.articleCommentCount})
                                 </span>
                                 <span> 
-                                    &nbsp;${viewLabel}(<span id="articleViewCount"></span>)
+                                    &nbsp;
+                                    <a class="noUnderline" href="/article-detail.do?oId=${article.oId}">
+                                        ${viewLabel}(<span id="articleViewCount"></span>)
+                                    </a>
                                 </span>
                             </div>
                             <div class="clear"></div>
