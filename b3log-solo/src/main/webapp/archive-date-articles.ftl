@@ -9,6 +9,8 @@
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="skins/${skinDirName}/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link rel="icon" type="image/gif" href="animated_favicon1.gif"/>
     </head>
     <body>
         <#include "common-top.ftl">

@@ -13,6 +13,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Solo</title>
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link rel="icon" type="image/gif" href="animated_favicon1.gif"/>
     </head>
     <body>
         <%response.sendRedirect("index.do");%>
