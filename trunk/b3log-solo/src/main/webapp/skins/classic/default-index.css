@@ -69,7 +69,6 @@
 /* article detail */
 .article-body {
     margin: 0 12px 24px;
-    overflow: auto;
 }
 
 .article-footer {
