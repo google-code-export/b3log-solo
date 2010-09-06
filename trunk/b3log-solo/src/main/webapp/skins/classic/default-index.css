@@ -31,7 +31,7 @@
 /* header */
 #logoTitle {
     font-size:32px;
-    line-height:46px;
+    line-height:64px;
     text-decoration:none;
 }
 
@@ -72,7 +72,6 @@
 }
 
 .article-footer {
-    color: #008800;
     margin: 24px 12px 0 0;
 }
 

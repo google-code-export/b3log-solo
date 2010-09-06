@@ -67,18 +67,18 @@
                                 </#if>
                             </div>
                             <div class="right">
-                                <span class="article-create-date">
-                                    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+                                <div class="left calendarIcon"></div>
+                                <span class="article-create-date left">
+                                    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
                                 </span>
-                                <span>
-                                    &nbsp;${commentLabel}(${article.articleCommentCount})
+                                <span class="left commentIcon" title="${commentLabel}"></span>
+                                <span class="left">
+                                    &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
                                 </span>
-                                <span> 
-                                    &nbsp;
-                                    <a class="noUnderline" href="/article-detail.do?oId=${article.oId}">
-                                        ${viewLabel}(<span id="articleViewCount"></span>)
-                                    </a>
-                                </span>
+                                <a href="article-detail.do?oId=${article.oId}" class="left noUnderline">
+                                    <span class="left browserIcon" title="${viewLabel}"></span>
+                                    &nbsp;${article.articleViewCount}
+                                </a>
                             </div>
                             <div class="clear"></div>
                         </div>

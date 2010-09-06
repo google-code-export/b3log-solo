@@ -197,3 +197,47 @@ button:hover {
     text-align: center;
     padding: 12px;
 }
+
+/* icon */
+.deleteIcon, .updateIcon, .commentIcon, .homeIcon, .adminIcon, .loginIcon, .logoutIcon, .calendarIcon, .browserIcon {
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/icon.png");
+    cursor: pointer;
+}
+
+.updateIcon {
+    background-position:-16px -16px;
+}
+
+.deleteIcon {
+    background-position:0px -16px;
+}
+
+.commentIcon {
+    background-position: -32px -16px;
+}
+
+.homeIcon {
+    background-position:-64px -16px;
+}
+
+.adminIcon {
+    background-position:-80px -16px;
+}
+
+.logoutIcon {
+    background-position: -96px -16px;
+}
+
+.loginIcon {
+    background-position: -112px -16px;
+}
+
+.browserIcon {
+    background-position: -128px -16px;
+}
+
+.calendarIcon {
+    background-position: -146px -16px;
+}

@@ -40,16 +40,17 @@
     </div>
     <div class="article-footer">
         <div class="right">
-            <span class="article-create-date">
-                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+            <div class="left calendarIcon"></div>
+            <span class="article-create-date left">
+                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
             </span>
-            &nbsp;
-            <a href="article-detail.do?oId=${article.oId}#comments" class="noUnderline">
-                ${commentLabel}(${article.articleCommentCount})
+            <a href="article-detail.do?oId=${article.oId}#comments" class="left noUnderline">
+                <span class="left commentIcon" title="${commentLabel}"></span>
+                &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
             </a>
-            &nbsp;
-            <a href="article-detail.do?oId=${article.oId}" class="noUnderline">
-                ${viewLabel}(${article.articleViewCount})
+            <a href="article-detail.do?oId=${article.oId}" class="left noUnderline">
+                <span class="left browserIcon" title="${viewLabel}"></span>
+                &nbsp;${article.articleViewCount}
             </a>
         </div>
         <div class="clear"></div>
