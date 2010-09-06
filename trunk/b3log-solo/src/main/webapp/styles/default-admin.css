@@ -57,7 +57,7 @@
 }
 
 /* article list and link list*/
-#articlePanel, #linkPanel {
+#articlePanel, #linkPanel, #aticltPanel {
     height: 100%;
     background-color: #E3E9FF;
 }
@@ -83,13 +83,22 @@
 }
 
 /* sync */
+#syncBlogType {
+    background-color: #E3E9FF;
+    padding: 12px 0 0 12px;
+}
+
+#syncSettingPanel {
+    height:236px;
+    padding: 12px;
+}
+
 #syncSettingPanel fieldset{
     -moz-border-radius:12px;
     -webkit-border-radius:12px;
-    float:left;
+    border:1px solid #A0A0A0;
     padding:12px;
-    min-width: 420px;
-    border:2px solid #A0A0A0;
+    width: 350px;
 }
 
 #archiveDatePanel {
@@ -103,18 +112,19 @@
 }
 
 .skinPreview {
-    width: 150px;
+    width: 500px;
     margin: 6px;
     cursor: pointer;
+    height: 160px
 }
 
 .skinItem {
     text-align: center;
-    border: 1px solid #BBCCFF;
+    border: 1px solid #E3E9FF;
     -moz-border-radius:4px;
     -webkit-border-radius:4px;
-    margin: 6px;
-    width: 164px
+    margin: 12px;
+    width: 524px
 }
 
 .skinItem.selected {
@@ -128,17 +138,21 @@
 }
 
 /* tabs */
-.tabs li {
-    float: left;
+.tabs {
+    line-height: 26px;
 }
 
 .tabs span {
+    padding:6px 12px;
     cursor: pointer;
 }
 
 .tabPanels {
-    margin: 12px;
+    background-color: #E3E9FF;
+    padding: 12px;
 }
 .tabs span.selected {
-    color: red;
+    background-color:#E3E9FF;
+    font-weight:bold;
+    padding:6px 12px;
 }

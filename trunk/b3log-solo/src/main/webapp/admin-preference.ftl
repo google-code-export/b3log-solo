@@ -1,123 +1,113 @@
-<div>
-    <div class="tabs">
-        <ul>
-            <li>
-                <span class="selected" id="preferences" onclick="changeTab(this);">
-                    ${paramSettingsLabel}
-                </span>
-            </li>
-            <li>
-                <span id="skins" onclick="changeTab(this);">
-                    ${skinLabel}
-                </span>
-            </li>
-        </ul>
-        <div class="clear"></div>
+<div class="tabs">
+    <span class="selected" id="preferences" onclick="changeTab(this);">
+        ${paramSettingsLabel}
+    </span>
+    <span id="skins" onclick="changeTab(this);">
+        ${skinLabel}
+    </span>
+</div>
+<div class="tabPanels">
+    <div id="preferencesPanel">
+        <table class="form" width="99%" cellpadding="0" cellspacing="9px">
+            <tbody>
+                <tr>
+                    <th width="146px">
+                        ${indexTagDisplayCnt1Label}
+                    </th>
+                    <td>
+                        <input id="mostUsedTagDisplayCount"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${indexRecentCommentDisplayCnt1Label}
+                    </th>
+                    <td>
+                        <input id="recentCommentDisplayCount"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${indexMostCommentArticleDisplayCnt1Label}
+                    </th>
+                    <td>
+                        <input id="mostCommentArticleDisplayCount"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${pageSize1Label}
+                    </th>
+                    <td>
+                        <input id="articleListDisplayCount"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${windowSize1Label}
+                    </th>
+                    <td>
+                        <input id="articleListPaginationWindowSize"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${blogTitle1Label}
+                    </th>
+                    <td>
+                        <input id="blogTitle"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${blogSubtitle1Label}
+                    </th>
+                    <td>
+                        <input id="blogSubtitle"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${blogHost1Label}
+                    </th>
+                    <td>
+                        <input id="blogHost"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${adminGmail1Label}
+                    </th>
+                    <td>
+                        <input id="adminGmail"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${localeString1Label}
+                    </th>
+                    <td>
+                        <select id="localeString">
+                            <option value="zh_CN">简体中文</option>
+                            <option value="en_US">Englisth(US)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <button onclick="changePreference();">${updateLabel}</button>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="tabPanels">
-        <div id="preferencesPanel">
-            <table class="form" width="99%" cellpadding="0" cellspacing="9px">
-                <tbody>
-                    <tr>
-                        <th width="146px">
-                            ${indexTagDisplayCnt1Label}
-                        </th>
-                        <td>
-                            <input id="mostUsedTagDisplayCount"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${indexRecentCommentDisplayCnt1Label}
-                        </th>
-                        <td>
-                            <input id="recentCommentDisplayCount"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${indexMostCommentArticleDisplayCnt1Label}
-                        </th>
-                        <td>
-                            <input id="mostCommentArticleDisplayCount"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${pageSize1Label}
-                        </th>
-                        <td>
-                            <input id="articleListDisplayCount"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${windowSize1Label}
-                        </th>
-                        <td>
-                            <input id="articleListPaginationWindowSize"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${blogTitle1Label}
-                        </th>
-                        <td>
-                            <input id="blogTitle"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${blogSubtitle1Label}
-                        </th>
-                        <td>
-                            <input id="blogSubtitle"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${blogHost1Label}
-                        </th>
-                        <td>
-                            <input id="blogHost"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${adminGmail1Label}
-                        </th>
-                        <td>
-                            <input id="adminGmail"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${localeString1Label}
-                        </th>
-                        <td>
-                            <select id="localeString">
-                                <option value="zh_CN">简体中文</option>
-                                <option value="en_US">Englisth(US)</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colspan="2">
-                            <button onclick="changePreference();">${updateLabel}</button>
-                        </th>
-                    </tr>
-                </tbody>
-            </table>
+    <div id="skinsPanel" class="none">
+        <button onclick="changePreference();">${saveLabel}</button>
+        <div id="skinMain">
         </div>
-        <div id="skinsPanel" class="none">
-            <div id="skinMain">
-            </div>
-            <button onclick="changePreference();">${saveLabel}</button>
-        </div>
+        <button onclick="changePreference();">${saveLabel}</button>
     </div>
 </div>
-
-<div class="clear"></div>
 <script type="text/javascript">
     var localeString = "";
     var getPreference = function () {

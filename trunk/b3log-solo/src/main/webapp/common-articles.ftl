@@ -42,7 +42,7 @@
         <div class="right">
             <div class="left calendarIcon"></div>
             <span class="article-create-date left">
-                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
+                &nbsp;${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
             </span>
             <a href="article-detail.do?oId=${article.oId}#comments" class="left noUnderline">
                 <span class="left commentIcon" title="${commentLabel}"></span>

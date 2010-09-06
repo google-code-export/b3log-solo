@@ -97,7 +97,7 @@ Powered by
 
         // article-side.ftl ellipsis
         var sideEllipsis = function () {
-            var sideLength = parseInt(($("#sideNavi").width() - 24) / 7);
+            var sideLength = parseInt(($("#sideNavi").width() - 24) / 7 - 3);
             $("#mostCommentArticles a").each(function () {
                 var str = ellipsis(this.title, sideLength);
                 $(this).text(str.toString());
