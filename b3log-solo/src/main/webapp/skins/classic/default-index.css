@@ -35,8 +35,15 @@
     text-decoration:none;
 }
 
-.header-navi {
-    padding: 69px 12px 0 0;
+.header-right {
+    border-left:2px solid #FFFFFF;
+    min-width:766px;
+    padding-left:12px;
+    width:78%;
+}
+
+#statistic span {
+    font-size: 11px;
 }
 
 /* article list */

@@ -89,9 +89,9 @@ Powered by
         // article-side.ftl blogStatistic
         jsonRpc.statisticService.getBlogStatistic(function (result, error) {
             if (!error && result) {
-                var statisticHTML = "<li>${viewCount1Label} " + result.statisticBlogViewCount + "</li>"
-                    + "<li>${articleCount1Label} " + result.statisticBlogArticleCount + "</li>"
-                    + "<li>${commentCount1Label} "+ result.statisticBlogCommentCount + "</li>";
+                var statisticHTML = "<span>${viewCount1Label}" + result.statisticBlogViewCount + "&nbsp;|&nbsp;</span>"
+                    + "<span>${articleCount1Label}" + result.statisticBlogArticleCount + "&nbsp;|&nbsp;</span>"
+                    + "<span>${commentCount1Label}"+ result.statisticBlogCommentCount + "</span>";
                 $("#statistic").html(statisticHTML);
             }
         });

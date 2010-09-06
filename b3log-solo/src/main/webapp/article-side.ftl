@@ -10,15 +10,6 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h4>${statisticLabel}</h4>
-            <ul id="statistic">
-                <li></li>
-            </ul>
-        </li>
-    </ul>
-    <div class="line"></div>
-    <ul>
-        <li>
             <h4 id="recentComments">${recentCommentsLabel}</h4>
         </li>
     </ul>
