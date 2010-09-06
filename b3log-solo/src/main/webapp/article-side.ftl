@@ -21,7 +21,7 @@
                 <#list mostUsedTags as tag>
                 <li>
                     <a href="tag-articles-feed.do?oId=${tag.oId}" class="noUnderline">
-                        <img alt="${tag.tagTitle}" src="images/rss.gif"/>
+                        <img alt="${tag.tagTitle}" src="images/feed.png"/>
                     </a>
                     <a name="tags${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
                         ${tag.tagTitle}

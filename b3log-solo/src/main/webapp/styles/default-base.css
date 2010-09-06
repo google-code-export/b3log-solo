@@ -211,19 +211,40 @@ button:hover {
 }
 
 /* icon */
-.deleteIcon, .updateIcon, .commentIcon, .homeIcon, .adminIcon, .loginIcon, .logoutIcon, .calendarIcon, .browserIcon {
+.deleteIcon, .updateIcon, .commentIcon, .homeIcon, .adminIcon, .loginIcon, .logoutIcon, .calendarIcon, .browserIcon,
+.postIcon, .articlesIcon, .linkIcon, .preferenceIcon, .blogSyncIcon {
     width: 16px;
     height: 16px;
     background-image: url("../images/icon.png");
     cursor: pointer;
 }
 
-.updateIcon {
-    background-position:-16px -16px;
+.blogSyncIcon {
+    background-position: 0px 0px;
+}
+
+.postIcon {
+    background-position: -16px 0px;
+}
+
+.linkIcon {
+    background-position: -32px 0px;
+}
+
+.preferenceIcon {
+    background-position: -48px 0px;
+}
+
+.articlesIcon {
+    background-position: -64px 0px;
 }
 
 .deleteIcon {
     background-position:0px -16px;
+}
+
+.updateIcon {
+    background-position:-16px -16px;
 }
 
 .commentIcon {

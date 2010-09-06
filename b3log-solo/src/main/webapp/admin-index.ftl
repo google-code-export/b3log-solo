@@ -23,19 +23,24 @@
             <div class="left side">
                 <ul id="navi">
                     <li>
-                        <span>${postArticleLabel}</span>
+                        <div class="left postIcon"></div>
+                        <span>&nbsp;${postArticleLabel}</span>
                     </li>
                     <li>
-                        <span>${articleListLabel}</span>
+                        <div class="left articlesIcon"></div>
+                        <span>&nbsp;${articleListLabel}</span>
                     </li>
                     <li>
-                        <span>${linkManagementLabel}</span>
+                        <div class="left linkIcon"></div>
+                        <span>&nbsp;${linkManagementLabel}</span>
                     </li>
                     <li>
-                        <span>${preferenceLabel}</span>
+                        <div class="left preferenceIcon"></div>
+                        <span>&nbsp;${preferenceLabel}</span>
                     </li>
                     <li>
-                        <span>${blogSyncLabel}</span>
+                        <div class="left blogSyncIcon"></div>
+                        <span>&nbsp;{blogSyncLabel}</span>
                     </li>
                 </ul>
             </div>
