@@ -26,6 +26,7 @@ import org.apache.abdera.Abdera;
 import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
+import org.apache.abdera.model.Text;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.SortDirection;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 5, 2010
+ * @version 1.0.0.4, Sep 6, 2010
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -88,9 +89,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-
                 final Entry entry = feed.addEntry();
-
                 final String title = article.getString(Article.ARTICLE_TITLE);
                 final String summary = StringEscapeUtils.escapeHtml(article.
                         getString(Article.ARTICLE_ABSTRACT));
@@ -103,7 +102,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                 entry.addLink(link);
                 entry.setId(id);
                 entry.setUpdated(updated);
-                entry.setSummary(summary);
+                entry.setSummary(summary, Text.Type.HTML);
             }
 
             feed.getDocument().writeTo(response.getOutputStream());
