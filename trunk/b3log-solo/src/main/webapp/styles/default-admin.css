@@ -1,6 +1,6 @@
 /* 
     Document   : default-admin
-    Version    : 1.0.0.2, Aug 4, 2010
+    Version    : 1.0.0.7, Aug 4, 2010
     Author     : Vanessa
     Description:
         Purpose of the stylesheet follows.
@@ -71,15 +71,19 @@
 .deleteIcon, .updateIcon, .commentIcon {
     width: 16px;
     height: 16px;
-    background-image: url("../images/logo.png");
+    background-image: url("../images/icon.png");
+}
+
+.updateIcon {
+    background-position:-16px -16px;
 }
 
 .deleteIcon {
-    background-position:-21px 0;
+    background-position:0px -16px;
 }
 
 .commentIcon {
-    background-position: -69px 0;
+    background-position: -32px -16px;
     margin-right:6px;
 }
 .comment-title {
