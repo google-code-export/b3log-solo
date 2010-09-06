@@ -40,7 +40,6 @@
     </div>
     <div class="article-footer">
         <div class="right">
-            <div class="left calendarIcon"></div>
             <span class="article-create-date left">
                 &nbsp;${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
             </span>
