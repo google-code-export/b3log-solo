@@ -52,7 +52,7 @@ _细节_：<br/>
 博客前台展现的博主信息是从 Google profile 提取的。如果需要进行修改，请修改 <a href="http://www.google.com/accounts>Google accounts</a> 中的相应配置。
 <p>
 _注意_：<br/>
-在 Profile URL 一栏中，请确保该 URL 是使用 Gmail username 生成的，例如：
+在 Profile URL 一栏中，请确保该 URL 是使用 Gmail 用户名生成的，例如：
 `http://www.google.com/profiles/b3log.solo`
 </p>
   
