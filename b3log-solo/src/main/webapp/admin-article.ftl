@@ -1,4 +1,4 @@
-<div class="form" widdiv="99%" cellpadding="0px" cellspacing="9px">
+<div class="form paddingTop12" id="aticltPanel">
     <div class='left label'>
         ${title1Label}
     </div>
@@ -9,8 +9,8 @@
     <div class="label">
         ${content1Label}
     </div>
-    <div>
-        <textarea rows="15" id="articleContent" style="width: 99%;" name="articleContent"></textarea>
+    <div class="marginRBL12">
+        <textarea rows="15" id="articleContent" name="articleContent" style="width: 99%;"></textarea>
     </div>
     <div class="left label">${tags1Label}</div>
     <div class="left input">
@@ -25,6 +25,7 @@
     <div class="right label">
         <button id="submitArticle">${postLabel}</button>
     </div>
+    <div class="clear"></div>
 </div>
 <script type="text/javascript">
     var init = function () {

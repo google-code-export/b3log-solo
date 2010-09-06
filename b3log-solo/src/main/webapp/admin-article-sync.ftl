@@ -1,19 +1,13 @@
 <div>
     <div class="tabs">
-        <ul>
-            <li>
-                <span class="selected" id="sync" onclick="changeTab(this);">
-                    ${blogArticleImportLabel}
-                </span>
-            </li>
-            <li>
-                <span id="syncSetting" onclick="changeTab(this);">
-                    ${blogSyncMgmtLabel}
-                </span>
-            </li>
-        </ul>
+        <span class="selected" id="sync" onclick="changeTab(this);">
+            ${blogArticleImportLabel}
+        </span>
+        <span id="syncSetting" onclick="changeTab(this);">
+            ${blogSyncMgmtLabel}
+        </span>
         <div class="clear"></div>
-        <div class="form magin12">
+        <div id="syncBlogType">
             <span class="label">${chooseBlogType1Label}</span>
             <select id="blogType" onchange="changeBlogType();">
                 <option value="">&nbsp;</option>
@@ -68,10 +62,10 @@
             <div class="clear"></div>
             <div id="articlesPanel" class="none">
                 <button onclick="sync();" class="left">${importLabel}</button>
-                <div id="articlesCount" class="right error-msg maginTR12">
+                <div id="articlesCount" class="right error-msg marginTR12">
                 </div>
                 <div class="clear"></div>
-                <div id="articleList" class="maginTB12"></div>
+                <div id="articleList" class="paddingTop12 paddingBottom12"></div>
                 <button onclick="sync();">${importLabel}</button>
             </div>
         </div>
@@ -215,15 +209,15 @@
     }
 
     var validateSyncSetting = function () {
-        if ($("#magName").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${nameEmptyLabel}").show();
-            $("#magName").focus().val("");
-        } else if ($("#magPassword").val() === ""){
-            $("#tipMsg").text("${passwordEmptyLabel}").show();
-            $("#magPassword").focus().val();
-        } else if (blogType === "") {
+        if ("" === blogType) {
             $("#tipMsg").text("${blogTypeEmptyLabel}").show();
             $("#blogType").focus();
+        } else if ("" === $("#magName").val().replace(/\s/g, "")) {
+            $("#tipMsg").text("${nameEmptyLabel}").show();
+            $("#magName").focus().val("");
+        } else if ("" === $("#magPassword").val()){
+            $("#tipMsg").text("${passwordEmptyLabel}").show();
+            $("#magPassword").focus().val();
         } else {
             return true;
         }
@@ -269,15 +263,15 @@
     }
 
     var validateSync = function () {
-        if ($("#userName").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${nameEmptyLabel}").show();
-            $("#userName").focus().val("");
-        } else if ($("#password").val() === ""){
-            $("#tipMsg").text("${passwordEmptyLabel}").show();
-            $("#password").focus().val();
-        } else if (blogType === "") {
+        if ("" === blogType) {
             $("#tipMsg").text("${blogTypeEmptyLabel}").show();
             $("#blogType").focus();
+        } else if ("" === $("#userName").val().replace(/\s/g, "")) {
+            $("#tipMsg").text("${nameEmptyLabel}").show();
+            $("#userName").focus().val("");
+        } else if ("" === $("#password").val()){
+            $("#tipMsg").text("${passwordEmptyLabel}").show();
+            $("#password").focus().val();
         } else {
             return true;
         }
