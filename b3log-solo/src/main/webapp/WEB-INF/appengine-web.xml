@@ -35,7 +35,7 @@
     
     <static-files>
         <include path="/favicon.ico" />
-        <include path="/animated_favicon1.gif" />
+        <include path="/favicon.gif" />
 <!--        <include path="/error.do" />-->
     </static-files>
 </appengine-web-app>
