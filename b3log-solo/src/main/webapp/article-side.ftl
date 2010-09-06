@@ -19,6 +19,12 @@
     <div class="line"></div>
     <ul>
         <li>
+            <h4 id="recentComments">${recentCommentsLabel}</h4>
+        </li>
+    </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
             <h4>${popTagsLabel}</h4>
             <ul>
                 <#list mostUsedTags as tag>
@@ -32,12 +38,6 @@
                 </li>
                 </#list>
             </ul>
-        </li>
-    </ul>
-    <div class="line"></div>
-    <ul>
-        <li>
-            <h4 id="recentComments">${recentCommentsLabel}</h4>
         </li>
     </ul>
     <div class="line"></div>
