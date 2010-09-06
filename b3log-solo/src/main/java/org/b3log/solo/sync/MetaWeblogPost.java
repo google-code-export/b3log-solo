@@ -224,13 +224,13 @@ public final class MetaWeblogPost implements Post {
                         Preference.BLOG_TITLE);
                 descriptionBuilder.append("<p>");
                 descriptionBuilder.append(
-                        "本文是使用<a href='http://b3log-solo.googlecode.com/'>");
-                descriptionBuilder.append("B3log Solo</a>从<a href='http://");
+                        "本文是使用 <a href='http://b3log-solo.googlecode.com/'>");
+                descriptionBuilder.append("B3log Solo</a> 从 <a href='http://");
                 descriptionBuilder.append(preference.getString(
                         Preference.BLOG_HOST));
                 descriptionBuilder.append("'>");
                 descriptionBuilder.append(blogTitle);
-                descriptionBuilder.append("</a>进行同步发布的。");
+                descriptionBuilder.append("</a> 进行同步发布的。");
                 descriptionBuilder.append("</p>");
             }
             ret.put("description", descriptionBuilder.toString());

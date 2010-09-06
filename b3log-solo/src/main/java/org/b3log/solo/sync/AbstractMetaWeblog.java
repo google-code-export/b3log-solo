@@ -198,18 +198,12 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
 
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-
-
             throw new ServiceException("New post to ["
                                        + getBloggingServiceProvider()
                                        + "] error");
-
-
         }
 
         return ret;
-
-
     }
 
     @Override
