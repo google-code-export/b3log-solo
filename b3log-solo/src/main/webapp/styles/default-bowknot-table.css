@@ -18,7 +18,7 @@
     table-layout: fixed;
     word-break: break-all;
     word-wrap: break-word;
-    background: url(../images/logo.png) center bottom;
+    background: url(../images/icon.png) center bottom;
 }
 
 .table-main table:hover {
@@ -57,7 +57,6 @@
 }
 
 .table-sortASC {
-    background:url("../images/table-sort.jpg") no-repeat scroll 0px 0px transparent;
     cursor:pointer;
     height:8px;
     width:9px;
@@ -66,7 +65,6 @@
 }
 
 .table-sortDESC {
-    background:url("../images/table-sort.jpg") no-repeat scroll 0px -8px transparent;
     cursor:pointer;
     height:8px;
     width:9px;
@@ -75,11 +73,9 @@
 }
 
 .table-sortUnactiveDESC {
-    background:url("../images/table-sort.jpg") no-repeat scroll -10px -8px transparent;
 }
 
 .table-sortUnactiveASC {
-    background:url("../images/table-sort.jpg") no-repeat scroll -10px 0px transparent;
 }
 
 .table-sort {
@@ -91,7 +87,6 @@
 }
 
 .table-floatLayerIcon {
-    background: url(../images/table-icon.png) no-repeat -2px -193px;
     height:13px;
     width:13px;
     margin: 0 10px;
