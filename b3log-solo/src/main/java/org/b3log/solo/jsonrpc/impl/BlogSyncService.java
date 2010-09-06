@@ -444,7 +444,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                         retrievalCnt++;
                     } else {
                         LOGGER.log(Level.WARNING,
-                                   "Retrieve article[postId={0}] from external blogging system[{1}]is null",
+                                   "Retrieve article[postId={0}] from external blogging system[{1}] is null",
                                    new String[]{externalArticleId, externalSys});
                         continue;
                     }
