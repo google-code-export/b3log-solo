@@ -46,7 +46,7 @@
             <div class="clear"></div>
             <div class="footer">
                 Powered by
-                <a href="index.do">
+                <a href="http://b3log-solo.googlecode.com" target="_blank">
                     <span style="color: orange;">B</span>
                     <span style="color: blue;">3</span>
                     <span style="color: green;">L</span>
