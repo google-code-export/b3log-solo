@@ -16,6 +16,7 @@
 package org.b3log.solo.sync;
 
 import org.b3log.solo.model.BlogSync;
+import org.b3log.solo.sync.blogjava.BlogJavaBlog;
 import org.b3log.solo.sync.cnblogs.CnBlogsBlog;
 import org.b3log.solo.sync.csdn.blog.CSDNBlog;
 
@@ -23,7 +24,7 @@ import org.b3log.solo.sync.csdn.blog.CSDNBlog;
  * Blog factory.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 4, 2010
+ * @version 1.0.0.1, Sep 6, 2010
  */
 public final class BlogFactory {
 
@@ -38,6 +39,8 @@ public final class BlogFactory {
             return new CSDNBlog();
         } else if (BlogSync.BLOG_SYNC_CNBLOGS.equals(externalSysName)) {
             return new CnBlogsBlog();
+        } else if (BlogSync.BLOG_SYNC_BLOGJAVA.equals(externalSysName)) {
+            return new BlogJavaBlog();
         } else {
             throw new RuntimeException("Not supported external blogging system["
                                        + externalSysName + "]");

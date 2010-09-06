@@ -32,7 +32,7 @@ import org.b3log.solo.sync.util.PageReader;
  * CnBlogs blog.
  *
  * <p>
- *   API address::http://www.cnblogs.com/<b>userId</b>/services/metablogapi.aspx
+ *   API address: http://www.cnblogs.com/<b>userId</b>/services/metablogapi.aspx
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
