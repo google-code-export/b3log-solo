@@ -46,7 +46,8 @@ appcfg.cmd update ${solo.war}
  # 点击“更新”按钮
 _细节_：<br/>
 “博客地址”是用于在邮件、同步文章管理中添加你的 Solo 博客链接<br/>
-“管理员 Gmail”是用于发送评论提醒邮件
+“管理员 Gmail”是用于发送评论提醒邮件<br/><br/>
+
 ===用户信息编辑===
 博客前台展现的博主信息是从 Google profile 提取的。如果需要进行修改，请修改 <a href="http://www.google.com/accounts>Google accounts</a> 中的相应配置。<br/>
 在 Profile URL 一栏中，请确保该 URL 是使用 Gmail username 生成的，例如：
