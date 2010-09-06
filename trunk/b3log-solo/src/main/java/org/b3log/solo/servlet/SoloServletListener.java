@@ -408,7 +408,7 @@ public final class SoloServletListener extends AbstractServletListener {
         /**
          * Default blog title.
          */
-        private static final String DEFAULT_BLOG_TITLE = "Pig Gong & Pig Po";
+        private static final String DEFAULT_BLOG_TITLE = "Solo";
         /**
          * Default blog subtitle.
          */
