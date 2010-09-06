@@ -1,7 +1,6 @@
 #labels Featured
 =B3log Solo 用户向导=
 <wiki:toc max_depth="3" />
-
 ==安装==
 ===前提准备===
  # 正确安装 [http://www.oracle.com/technetwork/java/javase/downloads/index.html JDK]，在命令行下可以使用 `javac` 命令
@@ -44,13 +43,16 @@ appcfg.cmd update ${solo.war}
  # 修改“博客地址”为你使用的实际地址及端口（例如：`solo-demo.appspot.com:80`）
  # 修改“管理员 Gmail”为你当前登录用 Gmail
  # 点击“更新”按钮
+<p>
 _细节_：<br/>
 “博客地址”是用于在邮件、同步文章管理中添加你的 Solo 博客链接<br/>
 “管理员 Gmail”是用于发送评论提醒邮件<br/><br/>
-
+</p>
 ===用户信息编辑===
-博客前台展现的博主信息是从 Google profile 提取的。如果需要进行修改，请修改 <a href="http://www.google.com/accounts>Google accounts</a> 中的相应配置。<br/>
+博客前台展现的博主信息是从 Google profile 提取的。如果需要进行修改，请修改 <a href="http://www.google.com/accounts>Google accounts</a> 中的相应配置。
+<p>
+_注意_：<br/>
 在 Profile URL 一栏中，请确保该 URL 是使用 Gmail username 生成的，例如：
 `http://www.google.com/profiles/b3log.solo`
-
+</p>
   
