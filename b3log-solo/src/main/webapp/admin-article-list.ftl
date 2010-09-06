@@ -166,8 +166,8 @@
                     articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                     articleData[i].update = "<div class='updateIcon'></div>";
                     articleData[i].deleted = "<div class='deleteIcon'></div>";
-                    articleData[i].comments = "<div class='commentIcon left'></div><div class='left'>("
-                        + articles[i].articleCommentCount + ")</div>";
+                    articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
+                        + articles[i].articleCommentCount + "</div>";
                     articleData[i].id = articles[i].oId;
                 }
 
