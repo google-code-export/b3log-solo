@@ -103,7 +103,7 @@
                         </div>
                         </#list>
                         <div class="comment-title">
-                            发表评论
+                            ${postCommentsLabel}
                         </div>
                         <div class="comment-body">
                             <table class="form">
