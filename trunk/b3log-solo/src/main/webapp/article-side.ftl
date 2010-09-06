@@ -49,7 +49,7 @@
                 <li>
                     <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
-                    </a>
+                    </a>(${article.articleCommentCount})
                 </li>
                 </#list>
             </ul>
@@ -64,7 +64,7 @@
                 <li>
                     <a name="mostView${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
-                    </a>
+                    </a>(${article.articleViewCount})
                 </li>
                 </#list>
             </ul>
