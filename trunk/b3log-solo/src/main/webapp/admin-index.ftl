@@ -40,7 +40,7 @@
                     </li>
                     <li>
                         <div class="left blogSyncIcon"></div>
-                        <span>&nbsp;{blogSyncLabel}</span>
+                        <span>&nbsp;${blogSyncLabel}</span>
                     </li>
                 </ul>
             </div>
