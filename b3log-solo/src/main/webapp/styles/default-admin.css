@@ -67,25 +67,6 @@
     margin: 10px;
 }
 
-
-.deleteIcon, .updateIcon, .commentIcon {
-    width: 16px;
-    height: 16px;
-    background-image: url("../images/icon.png");
-}
-
-.updateIcon {
-    background-position:-16px -16px;
-}
-
-.deleteIcon {
-    background-position:0px -16px;
-}
-
-.commentIcon {
-    background-position: -32px -16px;
-    margin-right:6px;
-}
 .comment-title {
     background-color:#E3E9FF;
     border-top:1px solid #3366CC;
