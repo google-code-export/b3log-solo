@@ -69,7 +69,6 @@ public final class PageCacheFilter implements Filter {
 
         httpServletResponse.setHeader("Cache-Control", "no-cache");
         httpServletResponse.setHeader("Expires", "Mon, 25 Aug 1986 00:00:00 GMT");
-        httpServletResponse.setHeader("Connection", "keep-alive");
 
         final String requestURI = httpServletRequest.getRequestURI();
         if (requestURI.equals("/json-rpc.do")
