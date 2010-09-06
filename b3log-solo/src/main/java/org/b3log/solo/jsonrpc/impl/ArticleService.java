@@ -54,6 +54,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.0, Sep 1, 2010
  */
+// FIXME: add/update/remove article event handle rollback
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
     /**
