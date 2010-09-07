@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 4, 2010
+ * @version 1.0.0.1, Sep 7, 2010
  */
 public final class MetaWeblogPost implements Post {
 
@@ -219,10 +219,10 @@ public final class MetaWeblogPost implements Post {
                     new StringBuilder(getContent());
             final JSONObject preference =
                     SoloServletListener.getUserPreference();
-            if (null != preference) { // Preference is null under test env
+            if (null != preference) { // Preference is null in test env
                 final String blogTitle = preference.getString(
                         Preference.BLOG_TITLE);
-                descriptionBuilder.append("<p>");
+                descriptionBuilder.append("<p><span style='font: italic normal normal 11px Verdana'>");
                 descriptionBuilder.append(
                         "本文是使用 <a href='http://b3log-solo.googlecode.com/'>");
                 descriptionBuilder.append("B3log Solo</a> 从 <a href='http://");
@@ -231,7 +231,7 @@ public final class MetaWeblogPost implements Post {
                 descriptionBuilder.append("'>");
                 descriptionBuilder.append(blogTitle);
                 descriptionBuilder.append("</a> 进行同步发布的。");
-                descriptionBuilder.append("</p>");
+                descriptionBuilder.append("</span></p>");
             }
             ret.put("description", descriptionBuilder.toString());
             ret.put("categories", getCategories().<String>toArray(new String[0]));
