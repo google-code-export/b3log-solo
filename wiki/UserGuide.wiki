@@ -1,5 +1,5 @@
+#summary B3log Solo 用户向导
 #labels Featured
-#B3log Solo 用户向导
 
 =B3log Solo 用户向导=
 <wiki:toc max_depth="3" />
