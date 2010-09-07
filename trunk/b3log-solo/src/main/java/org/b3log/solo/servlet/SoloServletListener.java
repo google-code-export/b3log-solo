@@ -424,7 +424,7 @@ public final class SoloServletListener extends AbstractServletListener {
         /**
          * Default blog host.
          */
-        private static final String DEFAULT_BLOG_HOST = "localhost:8080";
+        private static final String DEFAULT_BLOG_HOST = "solo-demo.appspot.com:80";
         /**
          * Default language.
          */
