@@ -76,9 +76,9 @@ Powered by
                 var itemHTML = "<li><a href=" + comment.commentSharpURL + ">"
                     + comment.commentName + "</a>: ";
                 
-                // The comment.commentContent may contain HTML entities(such as &#27979;&#35797;), so convert
-                // these entities to HTML string for calculating the length of the
-                // comment content
+                // The comment.commentContent may contain HTML entities, such as
+                // &#27979;&#35797;. So convert these entities to HTML string
+                // for calculating the length of the comment content
                 var commentContentSpan = document.createElement("span");
                 commentContentSpan.innerHTML = comment.commentContent;
                 alert(commentContentSpan.innerHTML);
