@@ -159,6 +159,7 @@ button:hover {
 }
 .form input, .form textarea {
     width: 100%;
+    font-size: 12px;
 }
 
 .form input:focus, .form textarea:focus {
