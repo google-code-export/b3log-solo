@@ -62,8 +62,8 @@
             </div>
         </div>
         <script type="text/javascript">
-            var PAGE_SIZE = 18,
-            WINDOW_SIZE = 10;
+            var PAGE_SIZE = 2,//18,
+            WINDOW_SIZE = 5//10;
             var initAdmin = function () {
                 // tipMsg
                 setInterval(function () {

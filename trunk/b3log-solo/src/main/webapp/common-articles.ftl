@@ -59,15 +59,17 @@
 <#if 0 != paginationPageCount>
 <div class="pagination">
     <#if paginationFirstPageNum!=1>
-    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=1"><<</a>
+    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=1">${firstPageLabel}</a>
+    <a id="previousPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationFirstPageNum}">${previousPageLabel}</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
     <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
     </#list>
     <#if paginationLastPageNum!=paginationPageCount>
-    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}">>></a>
+    <a id="nextPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationLastPageNum}">${nextPagePabel}</a>
+    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}">${lastPageLabel}</a>
     </#if>
-    ${sumLabel} ${paginationPageCount} ${pageLabel}
+    &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
 </#if>
 <script type="text/javascript">
@@ -91,6 +93,13 @@
                 $it.addClass("selected");
             }
         });
+
+        if ($("#nextPage").length > 0) {
+            $("#nextPage").attr("href", $("#nextPage").attr("href").replace("{paginationLastPageNum}", parseInt(localStorage.getItem("currentPage")) + 1));
+        }
+        if ($("#previousPage").length > 0) {
+            $("#previousPage").attr("href", $("#previousPage").attr("href").replace("{paginationFirstPageNum}", parseInt(localStorage.getItem("currentPage")) - 1));
+        }
     })();
     
 </script>
