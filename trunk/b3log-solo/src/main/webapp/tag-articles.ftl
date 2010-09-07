@@ -25,8 +25,8 @@
                 <div class="right main">
                     <h2>${tag1Label}
                         <span id="tagArticlesTag">
-                            ${tagTitle}
-                        </span>
+                            ${tag.tagTitle}
+                        </span>(${tag.tagReferenceCount})
                     </h2>
                     <#include "common-articles.ftl">
                 </div>

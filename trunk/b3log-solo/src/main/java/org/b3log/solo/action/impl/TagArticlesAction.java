@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Sep 2, 2010
+ * @version 1.0.0.9, Sep 7, 2010
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -179,7 +179,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
             ret.put(Keys.OBJECT_ID, tagId);
-            ret.put(Tag.TAG_TITLE, tag.getString(Tag.TAG_TITLE));
+            ret.put(Tag.TAG, tag);
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
