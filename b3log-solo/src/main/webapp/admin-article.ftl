@@ -114,8 +114,9 @@
             var result = jsonRpc.articleService.addArticle(requestJSONObject);
             switch (result.sc) {
                 case "ADD_ARTICLE_SUCC":
-                    $("#tipMsg").text("${addSuccLabel}").show();
-                    $("#content").load("admin-article-list.do");
+                    $("#content").load("admin-article-list.do", function () {
+                        $("#tipMsg").text("${addSuccLabel}").show();
+                    });
                     setCurrentNaviStyle(1);
                     break;
                 default:
@@ -145,8 +146,9 @@
             var result = jsonRpc.articleService.updateArticle(requestJSONObject);
             switch (result.sc) {
                 case "UPDATE_ARTICLE_SUCC":
-                    $("#tipMsg").text("${updateSuccLabel}").show();
-                    $("#content").load("admin-article-list.do");
+                    $("#content").load("admin-article-list.do", function () {
+                        $("#tipMsg").text("${updateSuccLabel}").show();
+                    });
                     setCurrentNaviStyle(1);
                     break;
                 default:

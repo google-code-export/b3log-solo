@@ -191,8 +191,8 @@
             var result = jsonRpc.linkService.removeLink(requestJSONObject);
             switch (result.sc) {
                 case "REMOVE_LINK_SUCC":
-                    $("#tipMsg").text("${removeSuccLabel}").show();
                     getLinkList(1);
+                    $("#tipMsg").text("${removeSuccLabel}").show();
                     break;
                 case "REMOVE_LINK_FAIL_":
                     $("#tipMsg").text("${removeFailLabel}").show();
@@ -267,8 +267,8 @@
             switch (result.sc) {
                 case "UPDATE_LINK_SUCC":
                     $("#updateLink").dialog("close");
-                    $("#tipMsg").text("${updateSuccLabel}").show();
                     getLinkList(currentPage);
+                    $("#tipMsg").text("${updateSuccLabel}").show();
                     break;
                 default:
                     break;
@@ -292,8 +292,8 @@
                     if (linksLength === PAGE_SIZE) {
                         pageCount++;
                     }
-
                     getLinkList(pageCount);
+                    $("#tipMsg").text("${addSuccLabel}").show();
                     break;
                 default:
                     break;

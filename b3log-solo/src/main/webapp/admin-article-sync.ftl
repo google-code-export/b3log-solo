@@ -281,7 +281,7 @@
     var getBlogArticleArchiveDate = function () {
         if (validateSync()) {
             $("#tipMsg").text("${loadingLabel}").show();
-            $("#archiveDatePanel").hide(500);
+            $("#archiveDatePanel").hide();
             userName = $("#userName").val();
             password = $("#password").val();
             var archveDates = "";
@@ -297,7 +297,7 @@
                     archveDates += "<option>" + result.blogSyncExternalArchiveDates[i] + "</option>";
                 }
                 $("#archiveDate").html(archveDates);
-                $("#archiveDatePanel").show(500);
+                $("#archiveDatePanel").show();
                 $("#tipMsg").text("").hide();
             }
         }
@@ -308,7 +308,7 @@
         $("#articlesPanel").show();
         $("#articleList").table({
             update:{
-                data: articleData
+                data: []
             }
         });
 

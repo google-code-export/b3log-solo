@@ -125,16 +125,16 @@
             
             switch (result.sc) {
                 case "REMOVE_ARTICLE_SUCC":
-                    $("#tipMsg").text("${removeSuccLabel}").show();
                     getArticleList(1);
+                    $("#tipMsg").text("${removeSuccLabel}").show();
                     break;
                 case "REMOVE_ARTICLE_FAIL_":
                     $("#tipMsg").text("${removeFailLabel}").show();
                     break;
                 default:
+                    $("#tipMsg").text("").hide();
                     break;
             }
-            $("#tipMsg").text("").hide();
         }
     }
 
@@ -207,8 +207,8 @@
                 commentsHTML = '';
                 for (var i = 0; i < comments.length; i++) {
                     commentsHTML += "<div class='comment-title'><span class='left'>" + comments[i].commentDate
-                        + "</span><span class='right pointer' onclick=\"deleteComment('" + comments[i].oId
-                        + "')\">delete</span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
+                        + "</span><span class='right deleteIcon' onclick=\"deleteComment('" + comments[i].oId
+                        + "')\"></span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
                 }
                 if ("" === commentsHTML) {
                     commentsHTML = "${noCommentLabel}"
@@ -226,13 +226,14 @@
         var result = jsonRpc.commentService.removeComment({"oId": id});
         switch (result.sc) {
             case "REMOVE_COMMENT_SUCC":
-                $("#tipMsg").text("${removeSuccLabel}").show();
                 getComment();
+                $("#tipMsg").text("${removeSuccLabel}").show();
                 break;
             default:
+        $("#tipMsg").text("").hide();
                 break;
         }
-        getArticleList(currentPage);
-        $("#tipMsg").text("").hide();
+        // TODO: move close comment funciton
+        //getArticleList(currentPage);
     }
 </script>
