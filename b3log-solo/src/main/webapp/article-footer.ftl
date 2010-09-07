@@ -75,8 +75,15 @@ Powered by
                 var comment = result.recentComments[i];
                 var itemHTML = "<li><a href=" + comment.commentSharpURL + ">"
                     + comment.commentName + "</a>: ";
-                var commentContent = comment.commentContent.length > 20 ?
-                    comment.commentContent.substring(0, 20) : comment.commentContent;
+                
+                // The comment.commentContent may contain HTML entities(such as &#27979;&#35797;), so convert
+                // these entities to HTML string for calculating the length of the
+                // comment content
+                var commentContentSpan = $("<span>" + comment.commentContent + "</span>");
+                var commentContentSpanHTML = commentContentSpan.html();
+                
+                var commentContent = commentContentSpanHTML.length > 11 ?
+                    commentContentSpanHTML.substring(0, 11) + "...." : commentContentSpanHTML;
                 itemHTML += commentContent + "</li>";
 
                 recentCommentsHTML += itemHTML;
