@@ -22,7 +22,7 @@
                     </td>
                     <td>&nbsp;</td>
                     <th style="text-align: left;">
-                        ${note1Label}
+                        ${noticeBoard1Label}
                     </th>
                 </tr>
                 <tr>
