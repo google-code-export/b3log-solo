@@ -129,12 +129,12 @@
     });
 
     var validateUpdateLink = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         if ($("#updateLinkTitle").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${titleEmptyLabel}").show();
+            $("#tipMsg").text("${titleEmptyLabel}");
             $("#updateLinkTitle").focus().val("");
         } else if ($("#updateLinkAddress").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${addressEmptyLabel}").show();
+            $("#tipMsg").text("${addressEmptyLabel}");
             $("#updateLinkAddress").focus().val("");
         } else {
             return true;
@@ -143,12 +143,12 @@
     }
 
     var validateLink = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         if ($("#linkTitle").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${titleEmptyLabel}").show();
+            $("#tipMsg").text("${titleEmptyLabel}");
             $("#linkTitle").focus().val("");
         } else if ($("#linkAddress").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${addressEmptyLabel}").show();
+            $("#tipMsg").text("${addressEmptyLabel}");
             $("#linkAddress").focus().val("");
         } else {
             return true;
@@ -170,7 +170,7 @@
             case "GET_LINK_SUCC":
                 $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
                 $("#updateLinkAddress").val(result.link.linkAddress);
-                $("#tipMsg").text("${updateSuccLabel}").show();
+                $("#tipMsg").text("${updateSuccLabel}");
                 break;
             case "GET_LINK_FAIL_":
                 break;
@@ -183,7 +183,7 @@
         var isDelete = confirm("${confirmRemoveLabel}");
 
         if (isDelete) {
-            $("#tipMsg").text("${loadingLabel}").show();
+            $("#tipMsg").text("${loadingLabel}");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -192,10 +192,10 @@
             switch (result.sc) {
                 case "REMOVE_LINK_SUCC":
                     getLinkList(1);
-                    $("#tipMsg").text("${removeSuccLabel}").show();
+                    $("#tipMsg").text("${removeSuccLabel}");
                     break;
                 case "REMOVE_LINK_FAIL_":
-                    $("#tipMsg").text("${removeFailLabel}").show();
+                    $("#tipMsg").text("${removeFailLabel}");
                     break;
                 default:
                     break;
@@ -204,7 +204,7 @@
     }
 
     var getLinkList = function (pageNum) {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         currentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
@@ -250,7 +250,7 @@
             default:
                 break;
         }
-        $("#tipMsg").text("").hide();
+        $("#tipMsg").text("");
     }
     getLinkList(1);
 
@@ -268,7 +268,7 @@
                 case "UPDATE_LINK_SUCC":
                     $("#updateLink").dialog("close");
                     getLinkList(currentPage);
-                    $("#tipMsg").text("${updateSuccLabel}").show();
+                    $("#tipMsg").text("${updateSuccLabel}");
                     break;
                 default:
                     break;
@@ -293,7 +293,7 @@
                         pageCount++;
                     }
                     getLinkList(pageCount);
-                    $("#tipMsg").text("${addSuccLabel}").show();
+                    $("#tipMsg").text("${addSuccLabel}");
                     break;
                 default:
                     break;

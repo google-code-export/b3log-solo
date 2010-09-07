@@ -134,7 +134,7 @@
     password = "",
     blogType = "";
     var initSync = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         // Blog table
         $("#articleList").table({
             height: 357,
@@ -177,13 +177,13 @@
             }
         });
 
-        $("#tipMsg").text("").hide();
+        $("#tipMsg").text("");
     }
 
     initSync();
 
     var changeBlogType = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         blogType = $("#blogType").val();
         jsonRpc.blogSyncService.getBlogSyncMgmt(function (result, error) {
             if (result) {
@@ -202,7 +202,7 @@
             }
             $("#archiveDatePanel").hide();
             $("#articlesPanel").hide();
-            $("#tipMsg").text("${getSuccLabel}").show();
+            $("#tipMsg").text("${getSuccLabel}");
         }, {
             "blogSyncExternalBloggingSys": blogType
         });
@@ -210,13 +210,13 @@
 
     var validateSyncSetting = function () {
         if ("" === blogType) {
-            $("#tipMsg").text("${blogTypeEmptyLabel}").show();
+            $("#tipMsg").text("${blogTypeEmptyLabel}");
             $("#blogType").focus();
         } else if ("" === $("#magName").val().replace(/\s/g, "")) {
-            $("#tipMsg").text("${nameEmptyLabel}").show();
+            $("#tipMsg").text("${nameEmptyLabel}");
             $("#magName").focus().val("");
         } else if ("" === $("#magPassword").val()){
-            $("#tipMsg").text("${passwordEmptyLabel}").show();
+            $("#tipMsg").text("${passwordEmptyLabel}");
             $("#magPassword").focus().val();
         } else {
             return true;
@@ -242,9 +242,9 @@
                 jsonRpc.blogSyncService.setBlogSyncMgmt(requestJSONObject);
 
             if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
-                $("#tipMsg").html("${updateSuccLabel}").show();
+                $("#tipMsg").html("${updateSuccLabel}");
             } else {
-                $("#tipMsg").html("${setFailLabel}").show();
+                $("#tipMsg").html("${setFailLabel}");
             }
         }
     }
@@ -264,13 +264,13 @@
 
     var validateSync = function () {
         if ("" === blogType) {
-            $("#tipMsg").text("${blogTypeEmptyLabel}").show();
+            $("#tipMsg").text("${blogTypeEmptyLabel}");
             $("#blogType").focus();
         } else if ("" === $("#userName").val().replace(/\s/g, "")) {
-            $("#tipMsg").text("${nameEmptyLabel}").show();
+            $("#tipMsg").text("${nameEmptyLabel}");
             $("#userName").focus().val("");
         } else if ("" === $("#password").val()){
-            $("#tipMsg").text("${passwordEmptyLabel}").show();
+            $("#tipMsg").text("${passwordEmptyLabel}");
             $("#password").focus().val();
         } else {
             return true;
@@ -287,7 +287,7 @@
             jsonRpc.blogSyncService.getExternalArticleArchiveDate(function (result, error) {
                 var archveDates = "";
                 if (result.blogSyncExternalArchiveDates.length === 0) {
-                    $("#tipMsg").text("${syncImportErrorLabel}").show();
+                    $("#tipMsg").text("${syncImportErrorLabel}");
                 } else {
                     for (var i = 0; i < result.blogSyncExternalArchiveDates.length; i++) {
                         archveDates += "<option>" + result.blogSyncExternalArchiveDates[i] + "</option>";
@@ -295,7 +295,7 @@
                     $("#archiveDate").html(archveDates);
                     $("#archiveDatePanel").show();
                     $("#articlesPanel").hide();
-                    $("#tipMsg").text("${getSuccLabel}").show();
+                    $("#tipMsg").text("${getSuccLabel}");
                 }
             }, {
                 "blogSyncExternalBloggingSysUserName": userName,
@@ -307,7 +307,7 @@
 
     var getBlogArticlesByArchiveDate = function () {
         $("#articlesPanel").show();
-        $("#tipMsg").html("${loadingLabel}").show();
+        $("#tipMsg").html("${loadingLabel}");
         $("#articleList").table({
             update:{
                 data: []
@@ -360,13 +360,13 @@
 
     var sync = function () {
         if ($("#articleList_selected").data("id").length === 0) {
-            $("#tipMsg").text("${blogArticleEmptyLabel}").show();
+            $("#tipMsg").text("${blogArticleEmptyLabel}");
         } else {
-            $("#tipMsg").text("${loadingLabel}").show();
+            $("#tipMsg").text("${loadingLabel}");
             jsonRpc.blogSyncService.importExternalArticles({
                 "oIds": $("#articleList_selected").data("id")
             });
-            $("#tipMsg").text("${importSuccLabel}").show();
+            $("#tipMsg").text("${importSuccLabel}");
         }
     }
 </script>

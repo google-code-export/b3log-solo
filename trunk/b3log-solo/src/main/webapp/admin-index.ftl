@@ -17,7 +17,7 @@
     <body>
         <#include "common-top.ftl">
         <div class="topMsg">
-            <span id="tipMsg" class="none"></span>
+            <span id="tipMsg"></span>
         </div>
         <div id="allPanel">
             <div class="left side">
@@ -69,7 +69,7 @@
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
                         setTimeout(function () {
-                            $("#tipMsg").hide().text("");
+                            $("#tipMsg").text("");
                         }, 5000);
                     }
                 }, 6000);
