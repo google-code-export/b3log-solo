@@ -102,6 +102,26 @@ public final class SoloServletListener extends AbstractServletListener {
      * Preference.
      */
     private static JSONObject userPreference;
+    /**
+     * English month.
+     */
+    public static final Map<String, String> EN_MONTHS =
+            new HashMap<String, String>();
+
+    static {
+        EN_MONTHS.put("01", "January");
+        EN_MONTHS.put("02", "February");
+        EN_MONTHS.put("03", "March");
+        EN_MONTHS.put("04", "April");
+        EN_MONTHS.put("05", "May");
+        EN_MONTHS.put("06", "June");
+        EN_MONTHS.put("07", "Jule");
+        EN_MONTHS.put("08", "August");
+        EN_MONTHS.put("09", "September");
+        EN_MONTHS.put("10", "October");
+        EN_MONTHS.put("11", "November");
+        EN_MONTHS.put("12", "December");
+    }
 
     /**
      * Sets the user preference with the specified preference.

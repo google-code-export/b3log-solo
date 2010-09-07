@@ -33,6 +33,7 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
@@ -182,6 +183,12 @@ public final class Filler {
     public void fillArchiveDates(final Map<String, Object> dataModel)
             throws Exception {
         final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
+        final JSONObject preference =
+                SoloServletListener.getUserPreference();
+        final String localeString = preference.getString(
+                Preference.LOCALE_STRING);
+        final String language = Locales.getLanguage(localeString);
+
         for (final JSONObject archiveDate : archiveDates) {
             final Date date = (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
             final String dateString = ArchiveDate.DATE_FORMAT.format(date);
@@ -189,7 +196,13 @@ public final class Filler {
             final String year = dateStrings[0];
             final String month = dateStrings[1];
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
-            archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
+
+            if ("en".equals(language)) {
+                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
+                                SoloServletListener.EN_MONTHS.get(month));
+            } else {
+                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
+            }
         }
 
         dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates);
@@ -302,6 +315,8 @@ public final class Filler {
 
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
         dataModel.put(Preference.BLOG_SUBTITLE, blogSubtitle);
+        dataModel.put(Preference.LOCALE_STRING,
+                      preference.getString(Preference.LOCALE_STRING));
     }
 
     /**
@@ -318,5 +333,6 @@ public final class Filler {
         fillMostUsedTags(dataModel);
         fillMostCommentArticles(dataModel);
         fillMostViewCountArticles(dataModel);
+        fillArchiveDates(dataModel);
     }
 }
