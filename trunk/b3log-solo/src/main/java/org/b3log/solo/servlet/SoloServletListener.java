@@ -35,6 +35,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
+import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventManager;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.UtilModule;
@@ -42,6 +44,7 @@ import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
+import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.filter.FilterModule;
 import org.b3log.solo.repository.PreferenceRepository;
 import static org.b3log.solo.model.Preference.*;
@@ -337,8 +340,15 @@ public final class SoloServletListener extends AbstractServletListener {
             }
 
             initSkins(userPreference);
-            preferenceRepository.update(preferenceId, userPreference);
 
+            final EventManager eventManager =
+                    getInjector().getInstance(EventManager.class);
+            eventManager.fireEventSynchronously(// for upgrade extensions
+                    new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
+                                          userPreference));
+
+            preferenceRepository.update(preferenceId, userPreference);
+            
             LOGGER.log(Level.INFO, "Loaded preference[{0}]",
                        userPreference.toString(JSON_PRINT_INDENT_FACTOR));
         } catch (final Exception e) {
