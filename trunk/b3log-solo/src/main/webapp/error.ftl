@@ -19,7 +19,11 @@
                 <#include "article-header.ftl">
             </div>
             <div class="body">
-                    Exception :-(
+                <h1 class="error-title">${sorryLabel}</h1>
+                <div class="error-panel">
+                    <h1>${notFoundLabel}</h1>
+                    ${returnTo1Label}<a href="${blogHost}">${blogTitle}</a>
+                </div>
             </div>
             <div class="footer">
                 <#include "article-footer.ftl">
