@@ -202,7 +202,7 @@
                 $("#userName").val("");
                 $("#password").val("");
             }
-            $("#tipMsg").text("").hide();
+            $("#tipMsg").text("${setSuccLabel}").show();
         }, {
             "blogSyncExternalBloggingSys": blogType
         });
@@ -280,8 +280,8 @@
 
     var getBlogArticleArchiveDate = function () {
         if (validateSync()) {
-            $("#tipMsg").text("${loadingLabel}").show();
             $("#archiveDatePanel").hide();
+            $("#tipMsg").text("${loadingLabel}").show();
             userName = $("#userName").val();
             password = $("#password").val();
             var archveDates = "";
@@ -298,14 +298,15 @@
                 }
                 $("#archiveDate").html(archveDates);
                 $("#archiveDatePanel").show();
-                $("#tipMsg").text("").hide();
+                $("#articlesPanel").hide();
+                $("#tipMsg").text("${setSuccLabel}").show();
             }
         }
     }
 
     var getBlogArticlesByArchiveDate = function () {
-        $("#tipMsg").html("${loadingLabel}").show();
         $("#articlesPanel").show();
+        $("#tipMsg").html("${loadingLabel}").show();
         $("#articleList").table({
             update:{
                 data: []
@@ -353,7 +354,7 @@
                 $("#tipMsg").text("${getFailLabel}");
             }
         }
-        $("#tipMsg").hide();
+        $("#tipMsg").text("${getSuccLabel}");
     }
 
     var sync = function () {
