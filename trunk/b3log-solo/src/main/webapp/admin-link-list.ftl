@@ -83,7 +83,7 @@
                 style: "padding-left: 6px;",
                 name: "${linkTitleLabel}",
                 index: "linkTitle",
-                width: 130
+                width: 230
             }, {
                 style: "padding-left: 6px;",
                 name: "${urlLabel}",

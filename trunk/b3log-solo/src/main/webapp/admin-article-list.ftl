@@ -232,17 +232,21 @@
     }
 
     var deleteComment = function (id) {
-        $("#tipMsg").text("${loadingLabel}");
-        jsonRpc.commentService.removeComment(function (result, error) {
-            switch (result.sc) {
-                case "REMOVE_COMMENT_SUCC":
-                    getComment();
-                    $("#tipMsg").text("${removeSuccLabel}");
-                    break;
-                default:
-                    $("#tipMsg").text("");
-                    break;
-            }
-        }, {"oId": id});
+        var isDelete = confirm("${confirmRemoveLabel}");
+
+        if (isDelete) {
+            $("#tipMsg").text("${loadingLabel}");
+            jsonRpc.commentService.removeComment(function (result, error) {
+                switch (result.sc) {
+                    case "REMOVE_COMMENT_SUCC":
+                        getComment();
+                        $("#tipMsg").text("${removeSuccLabel}");
+                        break;
+                    default:
+                        $("#tipMsg").text("");
+                        break;
+                }
+            }, {"oId": id});
+        }
     }
 </script>

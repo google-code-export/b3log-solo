@@ -194,15 +194,16 @@
                 result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
                 result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
                 result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
+                $("#tipMsg").text("${getSuccLabel}");
             } else {
                 $("#magName").val("");
                 $("#magPassword").val("");
                 $("#userName").val("");
                 $("#password").val("");
+                $("#tipMsg").text("${getFailLabel}");
             }
             $("#archiveDatePanel").hide();
             $("#articlesPanel").hide();
-            $("#tipMsg").text("${getSuccLabel}");
         }, {
             "blogSyncExternalBloggingSys": blogType
         });
