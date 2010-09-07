@@ -9,7 +9,7 @@
 <div class="right header-right">
     <div class="left marginLeft12">
         <a href="tags.do">${allTagsLabel}</a> &nbsp;&nbsp;
-        <a href="blog-articles-feed.do">${AtomLabel}</a><a href="blog-articles-feed.do"><img src="images/feed.png" alt="Atom"/></a>
+        <a href="blog-articles-feed.do">${atomLabel}</a><a href="blog-articles-feed.do"><img src="images/feed.png" alt="Atom"/></a>
     </div>
     <div class="right" id="statistic">
     </div>
