@@ -212,7 +212,7 @@
                 var commentName = $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
                 commenterContent = $("#comment").val().replace(/(^\s*)|(\s*$)/g, "");
                 if (2 > commentName.length || commentName.length > 20) {
-                    $("#commentErrorTip").html("{nameTooLongLabel}");
+                    $("#commentErrorTip").html("${nameTooLongLabel}");
                     $("#commentName").focus();
                 } else if ($("#commentEmail").val().replace(/\s/g, "") === "") {
                     $("#commentErrorTip").html("${mailCannotEmptyLabel}");
@@ -234,6 +234,7 @@
 
             var submitComment = function () {
                 if (validateComment()) {
+                    $("#commentErrorTip").html("${loadingLabel}");
                     var requestJSONObject = {
                         "oId": "${article.oId}",
                         "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
