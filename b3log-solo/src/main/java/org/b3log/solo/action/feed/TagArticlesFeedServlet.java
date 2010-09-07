@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Tag articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 6, 2010
+ * @version 1.0.0.3, Sep 7, 2010
  */
 public final class TagArticlesFeedServlet extends HttpServlet {
 
@@ -82,6 +82,7 @@ public final class TagArticlesFeedServlet extends HttpServlet {
                          final HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/atom+xml");
+        response.setCharacterEncoding("UTF-8");
 
         final String queryString = request.getQueryString();
         final String oIdMap = queryString.split("&")[0];
