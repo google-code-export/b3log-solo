@@ -1,4 +1,6 @@
 #labels Featured
+#B3log Solo 用户向导
+
 =B3log Solo 用户向导=
 <wiki:toc max_depth="3" />
 ==安装==
@@ -13,6 +15,9 @@
 dev_appserver.cmd ${solo.war}
 }}}
 等启动完毕后，在浏览器中访问：[http://localhost:8080]
+
+_注_：
+本地测试可能无法正常发送评论邮件。
 
 ===部署至 GAE===
 <ol>
