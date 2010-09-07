@@ -95,6 +95,7 @@ public final class ErrorAction extends AbstractAction {
             ret.put("articleCount1Label", lang.getString("articleCount1Label"));
             ret.put("commentCount1Label", lang.getString("commentCount1Label"));
             ret.put("atomLabel", lang.getString("atomLabel"));
+            ret.put("sorryLabel", lang.getString("sorryLabel"));
 
             ret.put(User.USER_EMAIL,
                     preference.getString(Preference.ADMIN_GMAIL));
