@@ -17,13 +17,14 @@
                     <td>
                         <input id="mostUsedTagDisplayCount"/>
                     </td>
-                </tr>
-                <tr>
                     <th>
-                        ${indexRecentCommentDisplayCnt1Label}
+                        ${localeString1Label}
                     </th>
                     <td>
-                        <input id="recentCommentDisplayCount"/>
+                        <select id="localeString">
+                            <option value="zh_CN">简体中文</option>
+                            <option value="en_US">Englisth(US)</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -33,8 +34,6 @@
                     <td>
                         <input id="mostCommentArticleDisplayCount"/>
                     </td>
-                </tr>
-                <tr>
                     <th>
                         ${pageSize1Label}
                     </th>
@@ -49,12 +48,18 @@
                     <td>
                         <input id="articleListPaginationWindowSize"/>
                     </td>
+                    <th>
+                        ${indexRecentCommentDisplayCnt1Label}
+                    </th>
+                    <td>
+                        <input id="recentCommentDisplayCount"/>
+                    </td>
                 </tr>
                 <tr>
                     <th>
                         ${blogTitle1Label}
                     </th>
-                    <td>
+                    <td colspan="3">
                         <input id="blogTitle"/>
                     </td>
                 </tr>
@@ -62,7 +67,7 @@
                     <th>
                         ${blogSubtitle1Label}
                     </th>
-                    <td>
+                    <td colspan="3">
                         <input id="blogSubtitle"/>
                     </td>
                 </tr>
@@ -70,7 +75,7 @@
                     <th>
                         ${blogHost1Label}
                     </th>
-                    <td>
+                    <td colspan="3">
                         <input id="blogHost"/>
                     </td>
                 </tr>
@@ -78,23 +83,12 @@
                     <th>
                         ${adminGmail1Label}
                     </th>
-                    <td>
+                    <td colspan="3">
                         <input id="adminGmail"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>
-                        ${localeString1Label}
-                    </th>
-                    <td>
-                        <select id="localeString">
-                            <option value="zh_CN">简体中文</option>
-                            <option value="en_US">Englisth(US)</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="2">
+                    <th colspan="4">
                         <button onclick="changePreference();">${updateLabel}</button>
                     </th>
                 </tr>
