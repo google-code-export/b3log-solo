@@ -33,28 +33,28 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 7, 2010
  */
-public final class PreferenceLoadProcessor
+public final class NoticeBoardLoader
         extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PreferenceLoadProcessor.class.getName());
+            Logger.getLogger(NoticeBoardLoader.class.getName());
     /**
      * Default notice board.
      */
     private static final String DEFAULT_NOTICE_BOARD =
-            "Open Source, Open Mind, Open Sight, Open Future!";
+            "Open Source, Open Mind, <br/>Open Sight, Open Future!";
 
     /**
-     * Constructs a {@link BlogSyncMgmtAddArticleProcessor} object with the
-     * specified event manager.
+     * Constructs a {@link NoticeBoardLoader} object with the specified event
+     * manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
-    public PreferenceLoadProcessor(final EventManager eventManager) {
+    public NoticeBoardLoader(final EventManager eventManager) {
         super(eventManager);
     }
 
@@ -65,7 +65,7 @@ public final class PreferenceLoadProcessor
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 preference,
-                                PreferenceLoadProcessor.class.getName()});
+                                NoticeBoardLoader.class.getName()});
         try {
             if (!preference.has(Preference.NOTICE_BOARD)) {
                 preference.put(Preference.NOTICE_BOARD, DEFAULT_NOTICE_BOARD);
