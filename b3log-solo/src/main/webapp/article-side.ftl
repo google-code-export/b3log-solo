@@ -1,9 +1,17 @@
 <div id="sideNavi" class="side-navi">
     <ul>
         <li>
-            <h4></h4>
             <ul id="userIntro">
                 <li></li>
+            </ul>
+        </li>
+    </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
+             <h4>${noteLabel}</h4>
+            <ul id="userIntro">
+                <li>${noticeBoard}</li>
             </ul>
         </li>
     </ul>
@@ -54,8 +62,7 @@
                         <img alt="${tag.tagTitle}" src="images/feed.png"/>
                     </a>
                     <a name="tags${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
-                        ${tag.tagTitle}
-                    </a>(${tag.tagReferenceCount})
+                        ${tag.tagTitle}</a>(${tag.tagReferenceCount})
                 </li>
                 </#list>
             </ul>
@@ -85,8 +92,7 @@
                 <li>
                     <#if "en" == localeString?substring(0, 2)>
                     <a name="archiveDates${archiveDate.oId}" href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}">
-                        ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDateArticleCount})
-                    </a>
+                        ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDateArticleCount})
                     <#else>
                     <a name="archiveDates${archiveDate.oId}" href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
                         ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})

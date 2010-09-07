@@ -34,7 +34,7 @@
                     </td>
                     <td>&nbsp;</td>
                     <th rowspan="5">
-                        <textarea rows="9"></textarea>
+                        <textarea rows="9" id="noticeBoard"></textarea>
                     </th>
                 </tr>
                 <tr>
@@ -135,6 +135,7 @@
                 $("#blogHost").val(preference.blogHost);
                 $("#adminGmail").val(preference.adminGmail);
                 $("#localeString").val(preference.localeString);
+                $("#noticeBoard").val(preference.noticeBoard);
                 localeString = preference.localeString;
 
                 // skin
@@ -196,7 +197,8 @@
                 "skinDirName": $("#skinMain").data("skinDirName"),
                 "blogHost": $("#blogHost").val(),
                 "adminGmail": $("#adminGmail").val(),
-                "localeString": $("#localeString").val()
+                "localeString": $("#localeString").val(),
+                "noticeBoard": $("#noticeBoard").val()
             }
         }
 
