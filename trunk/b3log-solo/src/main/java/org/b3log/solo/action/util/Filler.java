@@ -334,5 +334,10 @@ public final class Filler {
         fillMostCommentArticles(dataModel);
         fillMostViewCountArticles(dataModel);
         fillArchiveDates(dataModel);
+
+        final JSONObject preference = SoloServletListener.getUserPreference();
+        final String noticeBoard =
+                preference.getString(Preference.NOTICE_BOARD);
+        dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
     }
 }
