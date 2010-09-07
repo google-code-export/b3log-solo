@@ -14,12 +14,12 @@
         colModel: [{
                 name: "${titleLabel}",
                 index: "title",
-                minWidth: 180,
+                width: 260,
                 style: "padding-left: 6px;"
             }, {
                 name: "${tagsLabel}",
                 index: "tags",
-                width: 380,
+                minWidth: 380,
                 style: "padding-left: 6px; white-space: nowrap; overflow: hidden; "
             }, {
                 textAlign: "center",
