@@ -194,15 +194,15 @@
                 result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
                 result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
                 result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
-                $("#archiveDatePanel").hide();
-                $("#articlesPanel").hide();
             } else {
                 $("#magName").val("");
                 $("#magPassword").val("");
                 $("#userName").val("");
                 $("#password").val("");
             }
-            $("#tipMsg").text("${setSuccLabel}").show();
+            $("#archiveDatePanel").hide();
+            $("#articlesPanel").hide();
+            $("#tipMsg").text("${getSuccLabel}").show();
         }, {
             "blogSyncExternalBloggingSys": blogType
         });
@@ -280,27 +280,28 @@
 
     var getBlogArticleArchiveDate = function () {
         if (validateSync()) {
+            $("#tipMsg").text("${loadingLabel}");
             $("#archiveDatePanel").hide();
-            $("#tipMsg").text("${loadingLabel}").show();
             userName = $("#userName").val();
             password = $("#password").val();
-            var archveDates = "";
-            var result = jsonRpc.blogSyncService.getExternalArticleArchiveDate({
+            jsonRpc.blogSyncService.getExternalArticleArchiveDate(function (result, error) {
+                var archveDates = "";
+                if (result.blogSyncExternalArchiveDates.length === 0) {
+                    $("#tipMsg").text("${syncImportErrorLabel}").show();
+                } else {
+                    for (var i = 0; i < result.blogSyncExternalArchiveDates.length; i++) {
+                        archveDates += "<option>" + result.blogSyncExternalArchiveDates[i] + "</option>";
+                    }
+                    $("#archiveDate").html(archveDates);
+                    $("#archiveDatePanel").show();
+                    $("#articlesPanel").hide();
+                    $("#tipMsg").text("${getSuccLabel}").show();
+                }
+            }, {
                 "blogSyncExternalBloggingSysUserName": userName,
                 "blogSyncExternalBloggingSysUserPassword": password,
                 "blogSyncExternalBloggingSys": blogType
             });
-            if (result.blogSyncExternalArchiveDates.length === 0) {
-                $("#tipMsg").text("${syncImportErrorLabel}").show();
-            } else {
-                for (var i = 0; i < result.blogSyncExternalArchiveDates.length; i++) {
-                    archveDates += "<option>" + result.blogSyncExternalArchiveDates[i] + "</option>";
-                }
-                $("#archiveDate").html(archveDates);
-                $("#archiveDatePanel").show();
-                $("#articlesPanel").hide();
-                $("#tipMsg").text("${setSuccLabel}").show();
-            }
         }
     }
 
