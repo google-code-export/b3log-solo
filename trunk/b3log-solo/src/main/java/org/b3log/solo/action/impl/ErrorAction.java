@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Error action. error.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 2, 2010
+ * @version 1.0.0.1, Sep 7, 2010
  */
 public final class ErrorAction extends AbstractAction {
 
@@ -78,16 +78,9 @@ public final class ErrorAction extends AbstractAction {
         try {
             final JSONObject preference =
                     SoloServletListener.getUserPreference();
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(
-                    Preference.BLOG_SUBTITLE);
+            final String blogHost = preference.getString(Preference.BLOG_HOST);
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
-            final String adminGmail = preference.getString(
-                    Preference.ADMIN_GMAIL);
-            ret.put(User.USER_EMAIL, adminGmail);
-
             final Locale locale = new Locale(
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString));
@@ -101,11 +94,16 @@ public final class ErrorAction extends AbstractAction {
             ret.put("viewCount1Label", lang.getString("viewCount1Label"));
             ret.put("articleCount1Label", lang.getString("articleCount1Label"));
             ret.put("commentCount1Label", lang.getString("commentCount1Label"));
+            ret.put("atomLabel", lang.getString("atomLabel"));
 
-            ret.put(Preference.BLOG_TITLE, blogTitle);
-            ret.put(Preference.BLOG_SUBTITLE, blogSubtitle);
-            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
-
+            ret.put(User.USER_EMAIL,
+                    preference.getString(Preference.ADMIN_GMAIL));
+            ret.put(Preference.BLOG_TITLE,
+                    preference.getString(Preference.BLOG_TITLE));
+            ret.put(Preference.BLOG_HOST, blogHost);
+            ret.put(Preference.BLOG_SUBTITLE,
+                    preference.getString(Preference.BLOG_SUBTITLE));
+            ret.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
             ret.put(Common.VERSION, SoloServletListener.VERSION);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
