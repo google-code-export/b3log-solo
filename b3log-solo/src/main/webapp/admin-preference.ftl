@@ -111,7 +111,7 @@
 <script type="text/javascript">
     var localeString = "";
     var getPreference = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         var result = jsonRpc.preferenceService.getPreference();
         switch (result.sc) {
             case "GET_PREFERENCE_SUCC":
@@ -156,7 +156,7 @@
             default:
                 break;
         }
-        $("#tipMsg").text("").hide();
+        $("#tipMsg").text("");
     }
     getPreference();
     
@@ -174,7 +174,7 @@
     }
     
     var changePreference = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         var requestJSONObject = {
             "preference": {
                 "blogTitle": $("#blogTitle").val(),
@@ -195,7 +195,7 @@
         var result = jsonRpc.preferenceService.updatePreference(requestJSONObject);
         switch (result.sc) {
             case "UPDATE_PREFERENCE_SUCC":
-                $("#tipMsg").text("${updateSuccLabel}").show();
+                $("#tipMsg").text("${updateSuccLabel}");
                 if ($("#localeString").val() !== localeString) {
                     window.location.reload();
                 }

@@ -29,7 +29,7 @@
 </div>
 <script type="text/javascript">
     var init = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         // submit action
         $("#submitArticle").click(function () {
             if ($("#title").data("oId")) {
@@ -70,21 +70,21 @@
 
             extended_valid_elements: "pre[name|class]"
         });
-        $("#tipMsg").text("").hide();
+        $("#tipMsg").text("");
     }
     init();
     
     var validateArticle = function () {
         if ($("#title").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${titleEmptyLabel}").show();
+            $("#tipMsg").text("${titleEmptyLabel}");
             $("#title").focus().val("");
         } else if (tinyMCE.get('articleContent').getContent().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${contentEmptyLabel}").show();
+            $("#tipMsg").text("${contentEmptyLabel}");
         } else if ($("#tag").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${tagsEmptyLabel}").show();
+            $("#tipMsg").text("${tagsEmptyLabel}");
             $("#tag").focus().val("");
         } else if($("#abstract").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${abstractEmptyLabel}").show();
+            $("#tipMsg").text("${abstractEmptyLabel}");
             $("#abstract").focus().val("");
         } else {
             return true;

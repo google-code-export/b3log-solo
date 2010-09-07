@@ -77,7 +77,7 @@
 
     var updateArticle = function (event) {
         $("#content").load("admin-article.do", '', function () {
-            $("#tipMsg").text("${loadingLabel}").show();
+            $("#tipMsg").text("${loadingLabel}");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -108,7 +108,7 @@
                     default:
                         break;
                 }
-                $("#tipMsg").text("").hide();
+                $("#tipMsg").text("");
             }, requestJSONObject);
         });
     }
@@ -117,7 +117,7 @@
         var isDelete = confirm("${confirmRemoveLabel}");
         
         if (isDelete) {
-            $("#tipMsg").text("${loadingLabel}").show();
+            $("#tipMsg").text("${loadingLabel}");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -126,13 +126,13 @@
                 switch (result.sc) {
                     case "REMOVE_ARTICLE_SUCC":
                         getArticleList(1);
-                        $("#tipMsg").text("${removeSuccLabel}").show();
+                        $("#tipMsg").text("${removeSuccLabel}");
                         break;
                     case "REMOVE_ARTICLE_FAIL_":
-                        $("#tipMsg").text("${removeFailLabel}").show();
+                        $("#tipMsg").text("${removeFailLabel}");
                         break;
                     default:
-                        $("#tipMsg").text("").hide();
+                        $("#tipMsg").text("");
                         break;
                 }
             }, requestJSONObject);
@@ -155,7 +155,7 @@
     }
     
     var getArticleList = function (pageNum) {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         currentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
@@ -201,13 +201,13 @@
                 default:
                     break;
             }
-            $("#tipMsg").text("").hide();
+            $("#tipMsg").text("");
         }, requestJSONObject);
     }
     getArticleList(1);
 
     var getComment = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         jsonRpc.commentService.getComments(function (result, error) {
             switch (result.sc) {
                 case "GET_COMMENTS_SUCC":
@@ -226,21 +226,21 @@
                 default:
                     break;
             };
-            $("#tipMsg").text("").hide();
+            $("#tipMsg").text("");
         }, {"oId": $("#comments").data("oId")});
         
     }
 
     var deleteComment = function (id) {
-        $("#tipMsg").text("${loadingLabel}").show();
+        $("#tipMsg").text("${loadingLabel}");
         jsonRpc.commentService.removeComment(function (result, error) {
             switch (result.sc) {
                 case "REMOVE_COMMENT_SUCC":
                     getComment();
-                    $("#tipMsg").text("${removeSuccLabel}").show();
+                    $("#tipMsg").text("${removeSuccLabel}");
                     break;
                 default:
-                    $("#tipMsg").text("").hide();
+                    $("#tipMsg").text("");
                     break;
             }
         }, {"oId": id});
