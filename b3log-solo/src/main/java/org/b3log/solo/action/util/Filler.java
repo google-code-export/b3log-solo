@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Sep 5, 2010
+ * @version 1.0.0.9, Sep 7, 2010
  */
 public final class Filler {
 
@@ -279,6 +279,10 @@ public final class Filler {
         final String adminGmail = preference.getString(Preference.ADMIN_GMAIL);
         LOGGER.log(Level.FINER, "Current user[userId={0}]", adminGmail);
         dataModel.put(User.USER_EMAIL, adminGmail);
+        final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+        dataModel.put(Preference.BLOG_TITLE, blogTitle);
+        final String blogHost = preference.getString(Preference.BLOG_HOST);
+        dataModel.put(Preference.BLOG_HOST, blogHost);
 
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
     }
