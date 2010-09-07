@@ -79,11 +79,11 @@ Powered by
                 // The comment.commentContent may contain HTML entities(such as &#27979;&#35797;), so convert
                 // these entities to HTML string for calculating the length of the
                 // comment content
-                var commentContentSpan = $("<span>" + comment.commentContent + "</span>");
-                var commentContentSpanHTML = commentContentSpan.html();
-                
-                var commentContent = commentContentSpanHTML.length > 11 ?
-                    commentContentSpanHTML.substring(0, 11) + "...." : commentContentSpanHTML;
+                var commentContentSpan = document.createElement("span");
+                commentContentSpan.innerHTML = comment.commentContent;
+                alert(commentContentSpan.innerHTML);
+                var commentContent = commentContentSpan.innerHTML.length > 11 ?
+                    commentContentSpan.innerHTML.substring(0, 11) + "...." : commentContentSpan.innerHTML;
                 itemHTML += commentContent + "</li>";
 
                 recentCommentsHTML += itemHTML;
