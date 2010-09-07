@@ -11,12 +11,6 @@
         <table class="form" width="99%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
-                    <th width="146px">
-                        ${indexTagDisplayCnt1Label}
-                    </th>
-                    <td>
-                        <input id="mostUsedTagDisplayCount"/>
-                    </td>
                     <th>
                         ${localeString1Label}
                     </th>
@@ -28,17 +22,35 @@
                     </td>
                 </tr>
                 <tr>
+                    <th width="146px">
+                        ${indexTagDisplayCnt1Label}
+                    </th>
+                    <td>
+                        <input id="mostUsedTagDisplayCount" class="normalInput"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${indexRecentCommentDisplayCnt1Label}
+                    </th>
+                    <td>
+                        <input id="recentCommentDisplayCount" class="normalInput"/>
+                    </td>
+                </tr>
+                <tr>
                     <th>
                         ${indexMostCommentArticleDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="mostCommentArticleDisplayCount"/>
+                        <input id="mostCommentArticleDisplayCount" class="normalInput"/>
                     </td>
+                </tr>
+                <tr>
                     <th>
                         ${pageSize1Label}
                     </th>
                     <td>
-                        <input id="articleListDisplayCount"/>
+                        <input id="articleListDisplayCount" class="normalInput"/>
                     </td>
                 </tr>
                 <tr>
@@ -46,20 +58,14 @@
                         ${windowSize1Label}
                     </th>
                     <td>
-                        <input id="articleListPaginationWindowSize"/>
-                    </td>
-                    <th>
-                        ${indexRecentCommentDisplayCnt1Label}
-                    </th>
-                    <td>
-                        <input id="recentCommentDisplayCount"/>
+                        <input id="articleListPaginationWindowSize" class="normalInput"/>
                     </td>
                 </tr>
                 <tr>
                     <th>
                         ${blogTitle1Label}
                     </th>
-                    <td colspan="3">
+                    <td>
                         <input id="blogTitle"/>
                     </td>
                 </tr>
@@ -67,7 +73,7 @@
                     <th>
                         ${blogSubtitle1Label}
                     </th>
-                    <td colspan="3">
+                    <td>
                         <input id="blogSubtitle"/>
                     </td>
                 </tr>
@@ -75,7 +81,7 @@
                     <th>
                         ${blogHost1Label}
                     </th>
-                    <td colspan="3">
+                    <td>
                         <input id="blogHost"/>
                     </td>
                 </tr>
@@ -83,12 +89,12 @@
                     <th>
                         ${adminGmail1Label}
                     </th>
-                    <td colspan="3">
+                    <td>
                         <input id="adminGmail"/>
                     </td>
                 </tr>
                 <tr>
-                    <th colspan="4">
+                    <th colspan="2">
                         <button onclick="changePreference();">${updateLabel}</button>
                     </th>
                 </tr>
