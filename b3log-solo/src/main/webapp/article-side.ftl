@@ -25,7 +25,7 @@
                     </a>
                     <a name="tags${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
                         ${tag.tagTitle}
-                    </a>
+                    </a>(${tag.tagReferenceCount})
                 </li>
                 </#list>
             </ul>
