@@ -116,8 +116,8 @@
                     case "ADD_ARTICLE_SUCC":
                         $("#content").load("admin-article-list.do", function () {
                             $("#tipMsg").text("${addSuccLabel}");
+                            setCurrentNaviStyle(1);
                         });
-                        setCurrentNaviStyle(1);
                         break;
                     default:
                         $("#tipMsg").text("${addFailLabel}");
@@ -152,8 +152,8 @@
                     case "UPDATE_ARTICLE_SUCC":
                         $("#content").load("admin-article-list.do", function () {
                             $("#tipMsg").text("${updateSuccLabel}");
+                            setCurrentNaviStyle(1);
                         });
-                        setCurrentNaviStyle(1);
                         break;
                     default:
                         $("#tipMsg").text("${updateFailLabel}");
