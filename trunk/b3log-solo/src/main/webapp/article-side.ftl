@@ -16,24 +16,6 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h4>${popTagsLabel}</h4>
-            <ul>
-                <#list mostUsedTags as tag>
-                <li>
-                    <a href="tag-articles-feed.do?oId=${tag.oId}" class="noUnderline">
-                        <img alt="${tag.tagTitle}" src="images/feed.png"/>
-                    </a>
-                    <a name="tags${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
-                        ${tag.tagTitle}
-                    </a>(${tag.tagReferenceCount})
-                </li>
-                </#list>
-            </ul>
-        </li>
-    </ul>
-    <div class="line"></div>
-    <ul>
-        <li>
             <h4>${mostCommentArticlesLabel}</h4>
             <ul id="mostCommentArticles">
                 <#list mostCommentArticles as article>
@@ -56,6 +38,24 @@
                     <a name="mostView${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
                     </a>(${article.articleViewCount})
+                </li>
+                </#list>
+            </ul>
+        </li>
+    </ul>
+    <div class="line"></div>
+    <ul>
+        <li>
+            <h4>${popTagsLabel}</h4>
+            <ul>
+                <#list mostUsedTags as tag>
+                <li>
+                    <a href="tag-articles-feed.do?oId=${tag.oId}" class="noUnderline">
+                        <img alt="${tag.tagTitle}" src="images/feed.png"/>
+                    </a>
+                    <a name="tags${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
+                        ${tag.tagTitle}
+                    </a>(${tag.tagReferenceCount})
                 </li>
                 </#list>
             </ul>
