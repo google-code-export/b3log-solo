@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Sep 2, 2010
+ * @version 1.0.0.7, Sep 7, 2010
  */
 public final class Preference {
 
@@ -78,6 +78,10 @@ public final class Preference {
      * Locale string.
      */
     public static final String LOCALE_STRING = "localeString";
+    /**
+     * Notice board.
+     */
+    public static final String NOTICE_BOARD = "noticeBoard";
 
     /**
      * Private default constructor.
