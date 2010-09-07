@@ -81,7 +81,6 @@ Powered by
                 // for calculating the length of the comment content
                 var commentContentSpan = document.createElement("span");
                 commentContentSpan.innerHTML = comment.commentContent;
-                alert(commentContentSpan.innerHTML);
                 var commentContent = commentContentSpan.innerHTML.length > 11 ?
                     commentContentSpan.innerHTML.substring(0, 11) + "...." : commentContentSpan.innerHTML;
                 itemHTML += commentContent + "</li>";
