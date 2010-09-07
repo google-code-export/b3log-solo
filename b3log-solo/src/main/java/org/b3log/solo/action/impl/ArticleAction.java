@@ -172,7 +172,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
-            filler.fillArchiveDates(ret);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);

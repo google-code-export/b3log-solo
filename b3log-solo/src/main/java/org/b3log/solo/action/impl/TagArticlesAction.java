@@ -186,7 +186,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
-            filler.fillArchiveDates(ret);
 
             statistics.incBlogViewCount();
         } catch (final Exception e) {

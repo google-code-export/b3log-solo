@@ -96,7 +96,6 @@ public final class IndexAction extends AbstractCacheablePageAction {
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
-            filler.fillArchiveDates(ret);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
