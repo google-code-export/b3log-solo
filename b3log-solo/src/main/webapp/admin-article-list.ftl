@@ -68,7 +68,11 @@
         windowSize: WINDOW_SIZE,
         currentPage: 1,
         style: "google",
-        isGoTo: false
+        isGoTo: false,
+        lastPage: "${lastPageLabel}",
+        nextPage: "${nextPagePabel}",
+        previousPage: "${previousPageLabel}",
+        firstPage: "${firstPageLabel}"
     });
 
     var updateArticle = function (event) {
