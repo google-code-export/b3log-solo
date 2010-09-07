@@ -165,3 +165,14 @@
 #tagsPanel .tagPanel {
     text-decoration: none;
 }
+
+/* error */
+.error-title {
+    background-color: #E5ECF9;
+    padding:6px 12px;
+}
+
+.error-panel {
+    border-bottom: 5px solid #E5ECF9;
+    padding: 24px;
+}
