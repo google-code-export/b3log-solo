@@ -9,7 +9,7 @@
     <div class="line"></div>
     <ul>
         <li>
-             <h4>${noteLabel}</h4>
+             <h4>${noticeBoardLabel}</h4>
             <ul id="userIntro">
                 <li>${noticeBoard}</li>
             </ul>
