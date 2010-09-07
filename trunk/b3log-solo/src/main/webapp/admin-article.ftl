@@ -72,11 +72,9 @@
         });
         $("#tipMsg").text("").hide();
     }
-
     init();
     
     var validateArticle = function () {
-        $("#tipMsg").text("${loadingLabel}").show();
         if ($("#title").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${titleEmptyLabel}").show();
             $("#title").focus().val("");
@@ -96,6 +94,7 @@
     
     var addArticle = function () {
         if (validateArticle()) {
+            $("#tipMsg").text("${loadingLabel}");
             var tagArray = $("#tag").val().split(","),
             tagsString = "";
 
@@ -111,22 +110,26 @@
                     "articleTags": $("#tag").val()
                 }
             };
-            var result = jsonRpc.articleService.addArticle(requestJSONObject);
-            switch (result.sc) {
-                case "ADD_ARTICLE_SUCC":
-                    $("#content").load("admin-article-list.do", function () {
-                        $("#tipMsg").text("${addSuccLabel}").show();
-                    });
-                    setCurrentNaviStyle(1);
-                    break;
-                default:
-                    break;
-            }
+
+            jsonRpc.articleService.addArticle(function (result, error) {
+                switch (result.sc) {
+                    case "ADD_ARTICLE_SUCC":
+                        $("#content").load("admin-article-list.do", function () {
+                            $("#tipMsg").text("${addSuccLabel}");
+                        });
+                        setCurrentNaviStyle(1);
+                        break;
+                    default:
+                        $("#tipMsg").text("${addFailLabel}");
+                        break;
+                }
+            }, requestJSONObject);
         }
     }
 
     var updateArticle = function () {
         if (validateArticle()) {
+            $("#tipMsg").text("${loadingLabel}");
             var tagArray = $("#tag").val().split(","),
             tagsString = "";
 
@@ -143,17 +146,20 @@
                     "articleTags": tagsString
                 }
             };
-            var result = jsonRpc.articleService.updateArticle(requestJSONObject);
-            switch (result.sc) {
-                case "UPDATE_ARTICLE_SUCC":
-                    $("#content").load("admin-article-list.do", function () {
-                        $("#tipMsg").text("${updateSuccLabel}").show();
-                    });
-                    setCurrentNaviStyle(1);
-                    break;
-                default:
-                    break;
-            }
+            
+            jsonRpc.articleService.updateArticle(function (result, error) {
+                switch (result.sc) {
+                    case "UPDATE_ARTICLE_SUCC":
+                        $("#content").load("admin-article-list.do", function () {
+                            $("#tipMsg").text("${updateSuccLabel}");
+                        });
+                        setCurrentNaviStyle(1);
+                        break;
+                    default:
+                        $("#tipMsg").text("${updateFailLabel}");
+                        break;
+                }
+            }, requestJSONObject);
         }
     }
 </script>

@@ -82,34 +82,34 @@
                 "oId": event.data.id[0]
             };
 
-            var result = jsonRpc.articleService.getArticle(requestJSONObject);
-            switch (result.sc) {
-                case "GET_ARTICLE_SUCC":
-                    setCurrentNaviStyle(0);
+            jsonRpc.articleService.getArticle(function (result, error) {
+                switch (result.sc) {
+                    case "GET_ARTICLE_SUCC":
+                        setCurrentNaviStyle(0);
+                        // set default value for article.
+                        $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
+                        $('#articleContent').val(result.article.articleContent);
+                        $("#abstract").val(result.article.articleAbstract);
 
-                    // set default value for article.
-                    $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
-                    $('#articleContent').val(result.article.articleContent);
-                    $("#abstract").val(result.article.articleAbstract);
-
-                    var tags = result.article.articleTags,
-                    tagsString = '';
-                    for (var i = 0; i < tags.length; i++) {
-                        if (0 === i) {
-                            tagsString = tags[i].tagTitle;
-                        } else {
-                            tagsString += "," + tags[i].tagTitle;
+                        var tags = result.article.articleTags,
+                        tagsString = '';
+                        for (var i = 0; i < tags.length; i++) {
+                            if (0 === i) {
+                                tagsString = tags[i].tagTitle;
+                            } else {
+                                tagsString += "," + tags[i].tagTitle;
+                            }
                         }
-                    }
-                    $("#tag").val(tagsString);
-                        
-                    break;
-                case "GET_ARTICLE_FAIL_":
-                    break;
-                default:
-                    break;
-            }
-            $("#tipMsg").text("").hide();
+                        $("#tag").val(tagsString);
+
+                        break;
+                    case "GET_ARTICLE_FAIL_":
+                        break;
+                    default:
+                        break;
+                }
+                $("#tipMsg").text("").hide();
+            }, requestJSONObject);
         });
     }
     
@@ -117,25 +117,31 @@
         var isDelete = confirm("${confirmRemoveLabel}");
         
         if (isDelete) {
+            $("#tipMsg").text("${loadingLabel}").show();
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
-            $("#tipMsg").text("${loadingLabel}").show();
-            var result = jsonRpc.articleService.removeArticle(requestJSONObject);
             
-            switch (result.sc) {
-                case "REMOVE_ARTICLE_SUCC":
-                    getArticleList(1);
-                    $("#tipMsg").text("${removeSuccLabel}").show();
-                    break;
-                case "REMOVE_ARTICLE_FAIL_":
-                    $("#tipMsg").text("${removeFailLabel}").show();
-                    break;
-                default:
-                    $("#tipMsg").text("").hide();
-                    break;
-            }
+            jsonRpc.articleService.removeArticle(function (result, error) {
+                switch (result.sc) {
+                    case "REMOVE_ARTICLE_SUCC":
+                        getArticleList(1);
+                        $("#tipMsg").text("${removeSuccLabel}").show();
+                        break;
+                    case "REMOVE_ARTICLE_FAIL_":
+                        $("#tipMsg").text("${removeFailLabel}").show();
+                        break;
+                    default:
+                        $("#tipMsg").text("").hide();
+                        break;
+                }
+            }, requestJSONObject);
         }
+    }
+
+    var closeDialog = function () {
+        getArticleList(currentPage);
+        $("#comments").dialog("close");
     }
 
     var popComments = function (event) {
@@ -143,7 +149,8 @@
         getComment();
         $("#comments").dialog({
             width: 700,
-            height:500
+            height:500,
+            closeEvent: "closeDialog()"
         });
     }
     
@@ -156,84 +163,86 @@
             "paginationWindowSize": WINDOW_SIZE
         };
         
-        var result = jsonRpc.articleService.getArticles(requestJSONObject);
-        switch (result.sc) {
-            case "GET_ARTICLES_SUCC":
-                var articles = result.articles,
-                articleData = [];
+        jsonRpc.articleService.getArticles(function (result, error) {
+            switch (result.sc) {
+                case "GET_ARTICLES_SUCC":
+                    var articles = result.articles,
+                    articleData = [];
 
-                for (var i = 0; i < articles.length; i++) {
-                    articleData[i] = {};
-                    articleData[i].tags = "<div title='" + articles[i].articleTags + "'>" + articles[i].articleTags + "</div>";
-                    articleData[i].title = "<a href='article-detail.do?oId=" + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle + "' class='noUnderline'>"
-                        + articles[i].articleTitle + "</a>";
-                    articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
-                    articleData[i].update = "<div class='updateIcon'></div>";
-                    articleData[i].deleted = "<div class='deleteIcon'></div>";
-                    articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
-                        + articles[i].articleCommentCount + "</div>";
-                    articleData[i].id = articles[i].oId;
-                }
-
-                $("#articleList").table({
-                    update:{
-                        data: articleData
+                    for (var i = 0; i < articles.length; i++) {
+                        articleData[i] = {};
+                        articleData[i].tags = "<div title='" + articles[i].articleTags + "'>" + articles[i].articleTags + "</div>";
+                        articleData[i].title = "<a href='article-detail.do?oId=" + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle + "' class='noUnderline'>"
+                            + articles[i].articleTitle + "</a>";
+                        articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
+                        articleData[i].update = "<div class='updateIcon'></div>";
+                        articleData[i].deleted = "<div class='deleteIcon'></div>";
+                        articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
+                            + articles[i].articleCommentCount + "</div>";
+                        articleData[i].id = articles[i].oId;
                     }
-                });
 
-                if (0 === result.pagination.paginationPageCount) {
-                    result.pagination.paginationPageCount = 1;
-                }
-                
-                $("#articlePagination").paginate({
-                    update: {
-                        pageCount: result.pagination.paginationPageCount
+                    $("#articleList").table({
+                        update:{
+                            data: articleData
+                        }
+                    });
+
+                    if (0 === result.pagination.paginationPageCount) {
+                        result.pagination.paginationPageCount = 1;
                     }
-                });
-                break;
-            default:
-                break;
-        }
-        $("#tipMsg").text("").hide();
+
+                    $("#articlePagination").paginate({
+                        update: {
+                            pageCount: result.pagination.paginationPageCount
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+            $("#tipMsg").text("").hide();
+        }, requestJSONObject);
     }
     getArticleList(1);
 
     var getComment = function () {
         $("#tipMsg").text("${loadingLabel}").show();
-        var result = jsonRpc.commentService.getComments({"oId": $("#comments").data("oId")});
-        switch (result.sc) {
-            case "GET_COMMENTS_SUCC":
-                var comments = result.comments,
-                commentsHTML = '';
-                for (var i = 0; i < comments.length; i++) {
-                    commentsHTML += "<div class='comment-title'><span class='left'>" + comments[i].commentDate
-                        + "</span><span class='right deleteIcon' onclick=\"deleteComment('" + comments[i].oId
-                        + "')\"></span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
-                }
-                if ("" === commentsHTML) {
-                    commentsHTML = "${noCommentLabel}"
-                }
-                $("#comments").html(commentsHTML);
-                break;
-            default:
-                break;
-        };
-        $("#tipMsg").text("").hide();
+        jsonRpc.commentService.getComments(function (result, error) {
+            switch (result.sc) {
+                case "GET_COMMENTS_SUCC":
+                    var comments = result.comments,
+                    commentsHTML = '';
+                    for (var i = 0; i < comments.length; i++) {
+                        commentsHTML += "<div class='comment-title'><span class='left'>" + comments[i].commentDate
+                            + "</span><span class='right deleteIcon' onclick=\"deleteComment('" + comments[i].oId
+                            + "')\"></span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
+                    }
+                    if ("" === commentsHTML) {
+                        commentsHTML = "${noCommentLabel}"
+                    }
+                    $("#comments").html(commentsHTML);
+                    break;
+                default:
+                    break;
+            };
+            $("#tipMsg").text("").hide();
+        }, {"oId": $("#comments").data("oId")});
+        
     }
 
     var deleteComment = function (id) {
         $("#tipMsg").text("${loadingLabel}").show();
-        var result = jsonRpc.commentService.removeComment({"oId": id});
-        switch (result.sc) {
-            case "REMOVE_COMMENT_SUCC":
-                getComment();
-                $("#tipMsg").text("${removeSuccLabel}").show();
-                break;
-            default:
-        $("#tipMsg").text("").hide();
-                break;
-        }
-        // TODO: move close comment funciton
-        //getArticleList(currentPage);
+        jsonRpc.commentService.removeComment(function (result, error) {
+            switch (result.sc) {
+                case "REMOVE_COMMENT_SUCC":
+                    getComment();
+                    $("#tipMsg").text("${removeSuccLabel}").show();
+                    break;
+                default:
+                    $("#tipMsg").text("").hide();
+                    break;
+            }
+        }, {"oId": id});
     }
 </script>
