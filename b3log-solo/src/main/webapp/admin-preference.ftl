@@ -20,21 +20,29 @@
                             <option value="en_US">Englisth(US)</option>
                         </select>
                     </td>
+                    <td>&nbsp;</td>
+                    <th style="text-align: left;">
+                        ${note1Label}
+                    </th>
                 </tr>
                 <tr>
                     <th width="146px">
                         ${indexTagDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="mostUsedTagDisplayCount" class="normalInput"/>
+                        <input id="mostUsedTagDisplayCount"/>
                     </td>
+                    <td>&nbsp;</td>
+                    <th rowspan="5">
+                        <textarea rows="9"></textarea>
+                    </th>
                 </tr>
                 <tr>
                     <th>
                         ${indexRecentCommentDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="recentCommentDisplayCount" class="normalInput"/>
+                        <input id="recentCommentDisplayCount"/>
                     </td>
                 </tr>
                 <tr>
@@ -42,7 +50,7 @@
                         ${indexMostCommentArticleDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="mostCommentArticleDisplayCount" class="normalInput"/>
+                        <input id="mostCommentArticleDisplayCount"/>
                     </td>
                 </tr>
                 <tr>
@@ -50,7 +58,7 @@
                         ${pageSize1Label}
                     </th>
                     <td>
-                        <input id="articleListDisplayCount" class="normalInput"/>
+                        <input id="articleListDisplayCount"/>
                     </td>
                 </tr>
                 <tr>
@@ -58,14 +66,14 @@
                         ${windowSize1Label}
                     </th>
                     <td>
-                        <input id="articleListPaginationWindowSize" class="normalInput"/>
+                        <input id="articleListPaginationWindowSize"/>
                     </td>
                 </tr>
                 <tr>
                     <th>
                         ${blogTitle1Label}
                     </th>
-                    <td>
+                    <td colspan="3">
                         <input id="blogTitle"/>
                     </td>
                 </tr>
@@ -73,7 +81,7 @@
                     <th>
                         ${blogSubtitle1Label}
                     </th>
-                    <td>
+                    <td colspan="3">
                         <input id="blogSubtitle"/>
                     </td>
                 </tr>
@@ -81,7 +89,7 @@
                     <th>
                         ${blogHost1Label}
                     </th>
-                    <td>
+                    <td colspan="3">
                         <input id="blogHost"/>
                     </td>
                 </tr>
@@ -89,12 +97,12 @@
                     <th>
                         ${adminGmail1Label}
                     </th>
-                    <td>
+                    <td colspan="3">
                         <input id="adminGmail"/>
                     </td>
                 </tr>
                 <tr>
-                    <th colspan="2">
+                    <th colspan="4">
                         <button onclick="changePreference();">${updateLabel}</button>
                     </th>
                 </tr>
