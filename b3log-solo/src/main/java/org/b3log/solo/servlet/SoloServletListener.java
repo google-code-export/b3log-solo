@@ -43,7 +43,6 @@ import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.filter.FilterModule;
-import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.PreferenceRepository;
 import static org.b3log.solo.model.Preference.*;
 import static org.b3log.solo.model.Skin.*;
@@ -60,7 +59,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Sep 2, 2010
+ * @version 1.0.1.2, Sep 7, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -77,13 +76,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
-    /**
-     * Supported blog sync management external blogging systems.
-     */
-    // XXX: remove this field?
-    public static final String[] SUPPORTED_BLOG_SYNC_MGMT_EXTERNAL_BLOGGING_SYSTEMS =
-            new String[]{BlogSync.BLOG_SYNC_CSDN_BLOG,
-                         BlogSync.BLOG_SYNC_CNBLOGS};
     /**
      * Maximum captcha row.
      */
