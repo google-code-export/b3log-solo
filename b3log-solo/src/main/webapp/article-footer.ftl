@@ -126,7 +126,7 @@ Powered by
 
     jsonRpc.statisticService.incBlogViewCount();
 
-    //article-side.ftl
+    // article-side.ftl
     function handleResponse (response) {
         var userIntroHTML = "<li><img src='" + response.data.thumbnailUrl + "'/></li>"
             + "<li>" + response.data.displayName + "</li>"
