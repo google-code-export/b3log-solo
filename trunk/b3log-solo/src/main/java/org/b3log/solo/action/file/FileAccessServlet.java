@@ -34,7 +34,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.solo.model.File;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
 
 /**
@@ -74,6 +76,11 @@ public final class FileAccessServlet extends HttpServlet {
      */
     private BlobstoreService blobstoreService =
             BlobstoreServiceFactory.getBlobstoreService();
+    /**
+     * User preference.
+     */
+    private JSONObject preference =
+            SoloServletListener.getUserPreference();
 
     @Override
     protected void doPost(final HttpServletRequest request,
@@ -99,7 +106,9 @@ public final class FileAccessServlet extends HttpServlet {
                 file.put(File.FILE_NAME, fileName);
                 final long fileSize = blobInfo.getSize();
                 file.put(File.FILE_SIZE, fileSize);
-                final String downloadURL = "/file-access.do?oId="
+                final String host = "http://" + preference.getString(
+                        Preference.BLOG_HOST);
+                final String downloadURL = host + "/file-access.do?oId="
                                            + blobKey.getKeyString();
                 file.put(File.FILE_DOWNLOAD_URL, downloadURL);
 
