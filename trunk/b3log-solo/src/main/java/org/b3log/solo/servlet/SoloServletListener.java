@@ -398,7 +398,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Aug 30, 2010
+     * @version 1.0.0.1, Sep 8, 2010
      */
     private static final class DefaultPreference {
 
@@ -430,11 +430,11 @@ public final class SoloServletListener extends AbstractServletListener {
         /**
          * Default blog title.
          */
-        private static final String DEFAULT_BLOG_TITLE = "Solo";
+        private static final String DEFAULT_BLOG_TITLE = "Solo 示例";
         /**
          * Default blog subtitle.
          */
-        private static final String DEFAULT_BLOG_SUBTITLE = "Java 4ever";
+        private static final String DEFAULT_BLOG_SUBTITLE = "GAE 上的个人博客";
         /**
          * Default skin directory name.
          */
