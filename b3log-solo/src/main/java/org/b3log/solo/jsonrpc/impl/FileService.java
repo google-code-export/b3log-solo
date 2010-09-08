@@ -148,6 +148,6 @@ public final class FileService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
-        return blobstoreService.createUploadUrl("/admin-index.do");
+        return blobstoreService.createUploadUrl("/admin-file-list.do");
     }
 }

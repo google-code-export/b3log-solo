@@ -86,6 +86,7 @@ public final class FileAccessServlet extends HttpServlet {
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws ServletException, IOException {
+        LOGGER.info("Uploading file....");
         final Map<String, BlobKey> blobs =
                 blobstoreService.getUploadedBlobs(request);
         final BlobKey blobKey = blobs.get("myFile");
@@ -115,7 +116,8 @@ public final class FileAccessServlet extends HttpServlet {
                 file.put(File.FILE_DOWNLOAD_URL, downloadURL);
 
                 fileRepository.add(file);
-
+                LOGGER.log(Level.INFO, "Uploaded file[name={0}, size={1}]",
+                           new Object[]{fileName, fileSize});
                 response.sendRedirect(downloadURL);
             } catch (final Exception e) {
                 LOGGER.log(Level.SEVERE, "File upload error");
@@ -128,6 +130,7 @@ public final class FileAccessServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
+        LOGGER.finer("Getting a file....");
         final BlobKey blobKey =
                 new BlobKey(request.getParameter(Keys.OBJECT_ID));
         final String blobId = blobKey.getKeyString();
