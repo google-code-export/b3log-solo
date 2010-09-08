@@ -19,12 +19,21 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
+import org.b3log.latke.action.util.Paginator;
+import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.model.File;
 import org.b3log.solo.repository.FileRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * File service for JavaScript client.
@@ -49,6 +58,80 @@ public final class FileService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private FileRepository fileRepository;
+
+    /**
+     * Gets the file with the specified request json object, http servlet
+     * request and response.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "paginationCurrentPageNum": 1,
+     *     "paginationPageSize": 20,
+     *     "paginationWindowSize": 10
+     * }
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": int,
+     *         "paginationPageNums": [1, 2, 3, 4, 5, int]
+     *     },
+     *     "files": [{
+     *         "fileName": "",
+     *         "fileSize": long,
+     *         "fileDownloadCount": int,
+     *         "fileUploadDate": java.util.Date,
+     *         "fileDownloadURL": ""
+     *     }, ....]
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject getFiles(final JSONObject requestJSONObject,
+                               final HttpServletRequest request,
+                               final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final JSONObject ret = new JSONObject();
+        try {
+            final int currentPageNum = requestJSONObject.getInt(
+                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
+            final int pageSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_PAGE_SIZE);
+            final int windowSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_WINDOW_SIZE);
+
+            final JSONObject result =
+                    fileRepository.get(currentPageNum, pageSize,
+                                          File.FILE_UPLOAD_DATE,
+                                          SortDirection.DESCENDING);
+            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
+                    getInt(Pagination.PAGINATION_PAGE_COUNT);
+
+            final JSONObject pagination = new JSONObject();
+            ret.put(Pagination.PAGINATION, pagination);
+            final List<Integer> pageNums =
+                    Paginator.paginate(currentPageNum, pageSize, pageCount,
+                                       windowSize);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+            final JSONArray files = result.getJSONArray(Keys.RESULTS);
+            ret.put(File.FILES, files);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLES_SUCC);
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets the upload URL.
