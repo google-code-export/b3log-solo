@@ -28,6 +28,10 @@ public final class File {
      */
     public static final String FILE = "file";
     /**
+     * Files.
+     */
+    public static final String FILES = "files";
+    /**
      * Key of file name.
      */
     public static final String FILE_NAME = "fileName";

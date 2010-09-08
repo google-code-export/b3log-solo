@@ -96,7 +96,9 @@ public final class FileAccessServlet extends HttpServlet {
         } else {
             try {
                 final BlobInfo blobInfo = blobInfoFactory.loadBlobInfo(blobKey);
+                final String blobId = blobKey.getKeyString();
                 final JSONObject file = new JSONObject();
+                file.put(Keys.OBJECT_ID, blobId);
                 file.put(File.FILE_DOWNLOAD_COUNT, 0);
 
                 final String contentType = blobInfo.getContentType();
@@ -109,8 +111,10 @@ public final class FileAccessServlet extends HttpServlet {
                 final String host = "http://" + preference.getString(
                         Preference.BLOG_HOST);
                 final String downloadURL = host + "/file-access.do?oId="
-                                           + blobKey.getKeyString();
+                                           + blobId;
                 file.put(File.FILE_DOWNLOAD_URL, downloadURL);
+
+                fileRepository.add(file);
 
                 response.sendRedirect(downloadURL);
             } catch (final Exception e) {
@@ -126,6 +130,16 @@ public final class FileAccessServlet extends HttpServlet {
             throws ServletException, IOException {
         final BlobKey blobKey =
                 new BlobKey(request.getParameter(Keys.OBJECT_ID));
+        final String blobId = blobKey.getKeyString();
+        try {
+            final JSONObject file = fileRepository.get(blobId);
+            final int cnt = file.getInt(File.FILE_DOWNLOAD_COUNT);
+            file.put(File.FILE_DOWNLOAD_COUNT, cnt + 1);
+            fileRepository.update(blobId, file);
+        } catch (final Exception e) {
+            LOGGER.warning("Inc file download count error!");
+        }
+
         blobstoreService.serve(blobKey, response);
     }
 }
