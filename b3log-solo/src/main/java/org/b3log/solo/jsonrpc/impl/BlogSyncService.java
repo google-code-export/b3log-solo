@@ -202,7 +202,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                     BLOG_SYNC_MGMT_REMOVE_ENABLED);
 
             JSONObject blogSyncMgmt = blogSyncManagementRepository.
-                    getByExternalBloggingSystem(BLOG_SYNC_CSDN_BLOG);
+                    getByExternalBloggingSystem(externalBloggingSys);
             if (null == blogSyncMgmt) {
                 blogSyncMgmt = new JSONObject();
             }
