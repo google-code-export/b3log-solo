@@ -10,7 +10,7 @@
         </div>
         <div class="article-title">
             <h2>
-                <a class="noUnderline" href="article-detail.do?oId=${article.oId}">
+                <a class="noUnderline" href="${article.articlePermalink}">
                     ${article.articleTitle}
                 </a>
                 <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>

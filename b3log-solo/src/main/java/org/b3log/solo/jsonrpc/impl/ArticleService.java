@@ -18,6 +18,8 @@ package org.b3log.solo.jsonrpc.impl;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.model.Article;
+import static org.b3log.solo.model.Article.*;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
@@ -60,7 +62,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = 
+    private static final Logger LOGGER =
             Logger.getLogger(ArticleService.class.getName());
     /**
      * Article repository.
@@ -102,6 +104,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private ArchiveDateUtils archiveDateUtils;
+    /**
+     * Permalink date format(yyyy/MM/dd).
+     */
+    public static final DateFormat PERMALINK_FORMAT =
+            new SimpleDateFormat("yyyy/MM/dd");
 
     /**
      * Adds an article from the specified request json object and http servlet
@@ -116,7 +123,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleContent": "",
      *         "articleTags": "tag1,tag2,tag3"
      *     },
-     * }, see {@link Article} for more details
+     * }
      * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
@@ -142,19 +149,19 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
             final JSONObject article =
-                    requestJSONObject.getJSONObject(Article.ARTICLE);
+                    requestJSONObject.getJSONObject(ARTICLE);
             // Step 1: Add tags
             final String tagsString =
-                    article.getString(Article.ARTICLE_TAGS_REF);
+                    article.getString(ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 2; Set comment/view count to 0
-            article.put(Article.ARTICLE_COMMENT_COUNT, 0);
-            article.put(Article.ARTICLE_VIEW_COUNT, 0);
+            article.put(ARTICLE_COMMENT_COUNT, 0);
+            article.put(ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
             final Date date = new Date();
-            article.put(Article.ARTICLE_UPDATE_DATE, date);
-            article.put(Article.ARTICLE_CREATE_DATE, date);
+            article.put(ARTICLE_UPDATE_DATE, date);
+            article.put(ARTICLE_CREATE_DATE, date);
             // Step 4: Add article
             final String articleId = articleRepository.add(article);
             ret.put(Keys.OBJECT_ID, articleId);
@@ -164,7 +171,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             statistics.incBlogArticleCount();
             // Step 7: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
-            // Step 8: Fire add article event
+            // Step 8: Set permalink(/articles/yyyy/MM/dd/articleId.html)
+            final String permalinkDate = PERMALINK_FORMAT.format(date);
+            final String permalink = "/articles/" + permalinkDate + "/"
+                                     + articleId + ".html";
+            article.put(ARTICLE_PERMALINK, permalink);
+            articleRepository.update(articleId, article); // XXX: Performance issue
+            // Step 9: Fire add article event
             eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.ADD_ARTICLE, article));
 
@@ -220,7 +233,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         try {
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject article = articleRepository.get(articleId);
-            ret.put(Article.ARTICLE, article);
+            ret.put(ARTICLE, article);
 
             final JSONArray tags = new JSONArray();
             final List<JSONObject> tagArticleRelations =
@@ -235,7 +248,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 tags.put(tag);
             }
 
-            article.put(Article.ARTICLE_TAGS_REF, tags);
+            article.put(ARTICLE_TAGS_REF, tags);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLE_SUCC);
 
             LOGGER.log(Level.FINER, "Got an article[oId={0}]", articleId);
@@ -302,7 +315,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             final JSONObject result =
                     articleRepository.get(currentPageNum, pageSize,
-                                          Article.ARTICLE_CREATE_DATE,
+                                          ARTICLE_CREATE_DATE,
                                           SortDirection.DESCENDING);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -319,10 +332,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Remove some details
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-                article.remove(Article.ARTICLE_CONTENT);
-                article.remove(Article.ARTICLE_UPDATE_DATE);
+                article.remove(ARTICLE_CONTENT);
+                article.remove(ARTICLE_UPDATE_DATE);
             }
-            ret.put(Article.ARTICLES, articles);
+            ret.put(ARTICLES, articles);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLES_SUCC);
         } catch (final Exception e) {
@@ -407,7 +420,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleContent": "",
      *         "articleTags": "tag1,tag2,tag3"
      *     }
-     * }, see {@link Article} for more details
+     * }
      * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
@@ -431,7 +444,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
         try {
             final JSONObject article =
-                    requestJSONObject.getJSONObject(Article.ARTICLE);
+                    requestJSONObject.getJSONObject(ARTICLE);
             final String articleId = article.getString(Keys.OBJECT_ID);
             // Step 1: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
@@ -441,19 +454,21 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             articleUtils.removeTagArticleRelations(articleId);
             // Step 4: Add tags
             final String tagsString =
-                    article.getString(Article.ARTICLE_TAGS_REF);
+                    article.getString(ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 5: Fill auto properties
             final JSONObject oldArticle = articleRepository.get(articleId);
-            article.put(Article.ARTICLE_CREATE_DATE, oldArticle.get(
-                    Article.ARTICLE_CREATE_DATE));
-            article.put(Article.ARTICLE_COMMENT_COUNT,
-                        oldArticle.getInt(Article.ARTICLE_COMMENT_COUNT));
-            article.put(Article.ARTICLE_VIEW_COUNT,
-                        oldArticle.getInt(Article.ARTICLE_VIEW_COUNT));
+            article.put(ARTICLE_CREATE_DATE, oldArticle.get(
+                    ARTICLE_CREATE_DATE));
+            article.put(ARTICLE_COMMENT_COUNT,
+                        oldArticle.getInt(ARTICLE_COMMENT_COUNT));
+            article.put(ARTICLE_VIEW_COUNT,
+                        oldArticle.getInt(ARTICLE_VIEW_COUNT));
+            article.put(ARTICLE_PERMALINK,
+                        oldArticle.getString(ARTICLE_PERMALINK));
             // Step 6: Set updat date
-            article.put(Article.ARTICLE_UPDATE_DATE, new Date());
+            article.put(ARTICLE_UPDATE_DATE, new Date());
             // Step 7: Update
             articleRepository.update(articleId, article);
             // Step 8: Add tag-article relations
