@@ -25,7 +25,7 @@
     var initFile = function () {
         // uploadFile
         jsonRpc.fileService.getUploadURL(function (result, error) {
-            $("#uploadForm").attr("action", result);
+            $("#uploadForm").attr("action", "http://localhost:8080" + result);
         });
 
         // init file list
@@ -35,21 +35,21 @@
                     style: "padding-left: 6px;",
                     name: "${titleLabel}",
                     index: "title",
-                    width: 30
+                    width: 260
                 }, {
                     name: "${downloadURLLabel}",
                     index: "url",
                     style: "padding-left: 6px;",
-                    width: 56
+                    minWidth: 256
                 }, {
                     textAlign: "center",
                     name: "${uploadDateLabel}",
                     index: "date",
-                    width: 56
+                    width: 90
                 }, {
                     name: "${sizeLabel}",
                     index: "size",
-                    minWidth: 50
+                    width: 50
                 }, {
                     name: "${downloadCountLabel}",
                     index: "count",

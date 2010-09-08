@@ -126,52 +126,53 @@
     var localeString = "";
     var getPreference = function () {
         $("#tipMsg").text("${loadingLabel}");
-        var result = jsonRpc.preferenceService.getPreference();
-        switch (result.sc) {
-            case "GET_PREFERENCE_SUCC":
-                var preference = result.preference;
-                // preference
-                $("#blogTitle").val(preference.blogTitle),
-                $("#blogSubtitle").val(preference.blogSubtitle),
-                $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
-                $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
-                $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
-                $("#articleListDisplayCount").val(preference.articleListDisplayCount);
-                $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
-                $("#blogHost").val(preference.blogHost);
-                $("#adminGmail").val(preference.adminGmail);
-                $("#localeString").val(preference.localeString);
-                $("#noticeBoard").val(preference.noticeBoard);
-                localeString = preference.localeString;
+        jsonRpc.preferenceService.getPreference(function (result, error) {
+            switch (result.sc) {
+                case "GET_PREFERENCE_SUCC":
+                    var preference = result.preference;
+                    // preference
+                    $("#blogTitle").val(preference.blogTitle),
+                    $("#blogSubtitle").val(preference.blogSubtitle),
+                    $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
+                    $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
+                    $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
+                    $("#articleListDisplayCount").val(preference.articleListDisplayCount);
+                    $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
+                    $("#blogHost").val(preference.blogHost);
+                    $("#adminGmail").val(preference.adminGmail);
+                    $("#localeString").val(preference.localeString);
+                    $("#noticeBoard").val(preference.noticeBoard);
+                    localeString = preference.localeString;
 
-                // skin
-                $("#skinMain").data("skinDirName", preference.skinDirName);
-                var skins = eval('(' + preference.skins + ')');
-                var skinsHTML = "";
-                for (var i = 0; i < skins.length; i++) {
-                    if (skins[i].skinName === preference.skinName
-                        && skins[i].skinDirName === preference.skinDirName ) {
-                        skinsHTML += "<div title='" + skins[i].skinDirName
-                            + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
-                            + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
-                    } else {
-                        skinsHTML += "<div title='" + skins[i].skinDirName
-                            + "' class='left skinItem'><img class='skinPreview' src='skins/"
-                            + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
+                    // skin
+                    $("#skinMain").data("skinDirName", preference.skinDirName);
+                    var skins = eval('(' + preference.skins + ')');
+                    var skinsHTML = "";
+                    for (var i = 0; i < skins.length; i++) {
+                        if (skins[i].skinName === preference.skinName
+                            && skins[i].skinDirName === preference.skinDirName ) {
+                            skinsHTML += "<div title='" + skins[i].skinDirName
+                                + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
+                                + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
+                        } else {
+                            skinsHTML += "<div title='" + skins[i].skinDirName
+                                + "' class='left skinItem'><img class='skinPreview' src='skins/"
+                                + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
+                        }
                     }
-                }
-                $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
+                    $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
 
-                $(".skinItem").click(function () {
-                    $(".skinItem").removeClass("selected");
-                    $(this).addClass("selected");
-                    $("#skinMain").data("skinDirName", this.title);
-                });
-                break;
-            default:
-                break;
-        }
-        $("#tipMsg").text("");
+                    $(".skinItem").click(function () {
+                        $(".skinItem").removeClass("selected");
+                        $(this).addClass("selected");
+                        $("#skinMain").data("skinDirName", this.title);
+                    });
+                    break;
+                default:
+                    break;
+            }
+            $("#tipMsg").text("");
+        });
     }
     getPreference();
     
@@ -208,18 +209,19 @@
             }
         }
 
-        var result = jsonRpc.preferenceService.updatePreference(requestJSONObject);
-        switch (result.sc) {
-            case "UPDATE_PREFERENCE_SUCC":
-                $("#tipMsg").text("${updateSuccLabel}");
-                if ($("#localeString").val() !== localeString) {
-                    window.location.reload();
-                }
-                break;
-            case "GET_ARTICLE_FAIL_":
-                break;
-            default:
-                break;
-        }
+        jsonRpc.preferenceService.updatePreference(function (result, error) {
+            switch (result.sc) {
+                case "UPDATE_PREFERENCE_SUCC":
+                    $("#tipMsg").text("${updateSuccLabel}");
+                    if ($("#localeString").val() !== localeString) {
+                        window.location.reload();
+                    }
+                    break;
+                case "GET_ARTICLE_FAIL_":
+                    break;
+                default:
+                    break;
+            }
+        }, requestJSONObject);
     }
 </script>
