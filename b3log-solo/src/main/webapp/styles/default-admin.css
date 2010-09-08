@@ -10,6 +10,13 @@
     width: 173px;
 }
 
+#adminMain {
+    height:100%;
+    overflow:auto;
+    position:absolute;
+    width:100%;
+    z-index:1;
+}
 #main {
     background-color: #BBCCFF;
     padding: 6px;
@@ -18,6 +25,7 @@
 
 #allPanel {
     min-width: 885px;
+    margin-top: 24px;
 }
 
 #content {
@@ -42,20 +50,19 @@
 }
 
 /* top */
-.topMsg {
-    height: 24px;
-    text-align: center;
-}
-
 #tipMsg {
     -moz-border-radius:6px;
     -webkit-border-radius:6px;
     background-color:#E5E7EB;
     font-weight:bold;
-    line-height:24px;
+    left:48%;
     margin:0 auto;
     padding:2px 0;
+    position:absolute;
     text-align:center;
+    top:1px;
+    overflow:hidden;
+    z-index:2;
 }
 
 /* navi */
