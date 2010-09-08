@@ -106,7 +106,8 @@ public interface ArticleRepository extends Repository {
      *     "articleTags": ["", "", ....],
      *     "articleContent": ""
      *     "articleCreateDate": java.util.Date,
-     *     "articleUpdateDate": java.util.Date
+     *     "articleUpdateDate": java.util.Date,
+     *     "articlePermalink": ""
      * }
      * </pre>
      * @throws RepositoryException repository exception
