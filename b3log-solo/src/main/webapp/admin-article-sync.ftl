@@ -1,130 +1,132 @@
-<div class="tabs">
-    <span class="selected" id="sync" onclick="changeTab(this);">
-        ${blogArticleImportLabel}
-    </span>
-    <span id="syncSetting" onclick="changeTab(this);">
-        ${blogSyncMgmtLabel}
-    </span>
-    <div class="clear"></div>
-    <div id="syncBlogType">
-        <span class="label">${chooseBlogType1Label}</span>
-        <select id="blogType" onchange="changeBlogType();">
-            <option value="">&nbsp;</option>
-            <option value="blogSyncCSDNBlog">${CSDNBlogLabel}</option>
-            <option value="blogSyncBlogJava">${BlogJavaLabel}</option>
-            <option value="blogSyncCnBlogs">${CnBlogsLabel}</option>
-        </select>
-    </div>
-</div>
-<div class="tabPanels">
-    <div id="syncPanel">
-        <table id="archiveDatePanel" class="form left none" cellpadding="0" cellspacing="9px">
-            <tbody>
-                <tr>
-                    <th>
-                        ${selectDate1Label}
-                    </th>
-                    <td>
-                        <select id="archiveDate">
-                            <option>${selectDateLabel}</option>
-                        </select>
-                    </td>
-                    <td>
-                        <button onclick="getBlogArticlesByArchiveDate();">
-                            ${getArticleLabel}
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="form left" cellpadding="0" cellspacing="9px">
-            <tbody>
-                <tr>
-                    <th>
-                        ${userName1Label}
-                    </th>
-                    <td>
-                        <input id="userName"/>
-                    </td>
-                    <th width="66px">
-                        ${userPassword1Label}
-                    </th>
-                    <td>
-                        <input id="password" type="password"/>
-                    </td>
-                    <td>
-                        <button onclick="getBlogArticleArchiveDate();">${getDateLabel}</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+<div class="tabPanel">
+    <div class="tabs">
+        <span class="selected" id="sync" onclick="changeTab(this);">
+            ${blogArticleImportLabel}
+        </span>
+        <span id="syncSetting" onclick="changeTab(this);">
+            ${blogSyncMgmtLabel}
+        </span>
         <div class="clear"></div>
-        <div id="articlesPanel" class="none">
-            <button onclick="sync();" class="left">${importLabel}</button>
-            <div id="articlesCount" class="right red marginTop12 marginRight12">
-            </div>
-            <div class="clear"></div>
-            <div id="articleList" class="paddingTop12 paddingBottom12"></div>
-            <button onclick="sync();">${importLabel}</button>
+        <div id="syncBlogType">
+            <span class="label">${chooseBlogType1Label}</span>
+            <select id="blogType" onchange="changeBlogType();">
+                <option value="">&nbsp;</option>
+                <option value="blogSyncCSDNBlog">${CSDNBlogLabel}</option>
+                <option value="blogSyncBlogJava">${BlogJavaLabel}</option>
+                <option value="blogSyncCnBlogs">${CnBlogsLabel}</option>
+            </select>
         </div>
     </div>
-    <div id="syncSettingPanel" class="none">
-        <fieldset>
-            <legend>
-                ${syncMgmtLabel}
-            </legend>
-            <table class="form" cellpadding="12px" cellspacing="12px;">
+    <div class="tabMain">
+        <div id="syncPanel">
+            <table id="archiveDatePanel" class="form left none" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
-                        <th width="58px">
-                            ${userName1Label}
-                        </th>
-                        <td colspan="5">
-                            <input id="magName"/>
-                        </td>
-                    </tr>
-                    <tr>
                         <th>
-                            ${userPassword1Label}
-                        </th>
-                        <td colspan="5">
-                            <input type="password" id="magPassword"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            <input type="checkbox" id="addSync" class="normalInput"/>
+                            ${selectDate1Label}
                         </th>
                         <td>
-                            <label for="addSync">
-                                ${syncPostLabel}
-                            </label>
+                            <select id="archiveDate">
+                                <option>${selectDateLabel}</option>
+                            </select>
                         </td>
-                        <th>
-                            <input type="checkbox" id="updateSync"
-                        </th>
                         <td>
-                            <label for="updateSync">
-                                ${syncUpdateLabel}
-                            </label>
+                            <button onclick="getBlogArticlesByArchiveDate();">
+                                ${getArticleLabel}
+                            </button>
                         </td>
-                        <th>
-                            <input type="checkbox" id="deleteSync"/>
-                        </th>
-                        <td>
-                            <label for="deleteSync">
-                                ${syncRemoveLabel}
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th colspan="6">
-                            <button onclick="syncSetting();">${updateLabel}</button>
-                        </th>
                     </tr>
                 </tbody>
             </table>
-        </fieldset>
+            <table class="form left" cellpadding="0" cellspacing="9px">
+                <tbody>
+                    <tr>
+                        <th>
+                            ${userName1Label}
+                        </th>
+                        <td>
+                            <input id="userName"/>
+                        </td>
+                        <th width="66px">
+                            ${userPassword1Label}
+                        </th>
+                        <td>
+                            <input id="password" type="password"/>
+                        </td>
+                        <td>
+                            <button onclick="getBlogArticleArchiveDate();">${getDateLabel}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="clear"></div>
+            <div id="articlesPanel" class="none">
+                <button onclick="sync();" class="left">${importLabel}</button>
+                <div id="articlesCount" class="right red marginTop12 marginRight12">
+                </div>
+                <div class="clear"></div>
+                <div id="articleList" class="paddingTop12 paddingBottom12"></div>
+                <button onclick="sync();">${importLabel}</button>
+            </div>
+        </div>
+        <div id="syncSettingPanel" class="none">
+            <fieldset>
+                <legend>
+                    ${syncMgmtLabel}
+                </legend>
+                <table class="form" cellpadding="12px" cellspacing="12px;">
+                    <tbody>
+                        <tr>
+                            <th width="58px">
+                                ${userName1Label}
+                            </th>
+                            <td colspan="5">
+                                <input id="magName"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                ${userPassword1Label}
+                            </th>
+                            <td colspan="5">
+                                <input type="password" id="magPassword"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="addSync" class="normalInput"/>
+                            </th>
+                            <td>
+                                <label for="addSync">
+                                    ${syncPostLabel}
+                                </label>
+                            </td>
+                            <th>
+                                <input type="checkbox" id="updateSync"
+                            </th>
+                            <td>
+                                <label for="updateSync">
+                                    ${syncUpdateLabel}
+                                </label>
+                            </td>
+                            <th>
+                                <input type="checkbox" id="deleteSync"/>
+                            </th>
+                            <td>
+                                <label for="deleteSync">
+                                    ${syncRemoveLabel}
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="6">
+                                <button onclick="syncSetting();">${updateLabel}</button>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
