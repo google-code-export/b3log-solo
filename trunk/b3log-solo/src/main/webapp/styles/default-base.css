@@ -67,7 +67,7 @@ li {
     margin-left: 12px;
 }
 
-button {
+button, .button {
     background: url(../images/icon.png) repeat center bottom;
     border:1px solid;
     border-color: #CCCCCC #BBBBBB #A0A0A0;
@@ -79,7 +79,7 @@ button {
     padding:0 6px;
 }
 
-button:hover {
+button:hover, .button:hover {
     border-color: #BBBBBB;
 }
 
