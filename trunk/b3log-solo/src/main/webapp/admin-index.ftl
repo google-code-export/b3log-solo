@@ -15,54 +15,54 @@
         <link rel="icon" type="image/gif" href="favicon.gif"/>
     </head>
     <body>
-        <#include "common-top.ftl">
-        <div class="topMsg">
-            <span id="tipMsg"></span>
-        </div>
-        <div id="allPanel">
-            <div class="left side">
-                <ul id="navi">
-                    <li>
-                        <div class="left postIcon"></div>
-                        <span>&nbsp;${postArticleLabel}</span>
-                    </li>
-                    <li>
-                        <div class="left articlesIcon"></div>
-                        <span>&nbsp;${articleListLabel}</span>
-                    </li>
-                    <li>
-                        <div class="left linkIcon"></div>
-                        <span>&nbsp;${linkManagementLabel}</span>
-                    </li>
-                    <li>
-                        <div class="left preferenceIcon"></div>
-                        <span>&nbsp;${preferenceLabel}</span>
-                    </li>
-                    <li>
-                        <div class="left blogSyncIcon"></div>
-                        <span>&nbsp;${blogSyncLabel}</span>
-                    </li>
-                    <!--li>
-                        <div class="left fileIcon"></div>
-                        <span>&nbsp;${fileListLabel}</span>
-                    </li-->
-                </ul>
-            </div>
-            <div class="left" id="main">
-                <div id="content">
+        <div id="tipMsg"></div>
+        <div id="adminMain">
+            <#include "common-top.ftl">
+            <div id="allPanel">
+                <div class="left side">
+                    <ul id="navi">
+                        <li>
+                            <div class="left postIcon"></div>
+                            <span>&nbsp;${postArticleLabel}</span>
+                        </li>
+                        <li>
+                            <div class="left articlesIcon"></div>
+                            <span>&nbsp;${articleListLabel}</span>
+                        </li>
+                        <li>
+                            <div class="left linkIcon"></div>
+                            <span>&nbsp;${linkManagementLabel}</span>
+                        </li>
+                        <li>
+                            <div class="left preferenceIcon"></div>
+                            <span>&nbsp;${preferenceLabel}</span>
+                        </li>
+                        <li>
+                            <div class="left blogSyncIcon"></div>
+                            <span>&nbsp;${blogSyncLabel}</span>
+                        </li>
+                        <!--li>
+                            <div class="left fileIcon"></div>
+                            <span>&nbsp;${fileListLabel}</span>
+                        </li-->
+                    </ul>
                 </div>
-            </div>
-            <div class="clear"></div>
-            <div class="footer">
-                Powered by
-                <a href="http://b3log-solo.googlecode.com" target="_blank">
-                    <span style="color: orange;">B</span>
-                    <span style="color: blue;">3</span>
-                    <span style="color: green;">L</span>
-                    <span style="color: red;">O</span>
-                    <span style="color: blue;">G</span>&nbsp;
-                    <span style="color: orangered; font-weight: bold;">Solo</span>,
-                </a>ver ${version}
+                <div class="left" id="main">
+                    <div id="content">
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <div class="footer">
+                    Powered by
+                    <a href="http://b3log-solo.googlecode.com" target="_blank">
+                        <span style="color: orange;">B</span>
+                        <span style="color: blue;">3</span>
+                        <span style="color: green;">L</span>
+                        <span style="color: red;">O</span>
+                        <span style="color: blue;">G</span>&nbsp;
+                        <span style="color: orangered; font-weight: bold;">Solo</span>,
+                    </a>ver ${version}
+                </div>
             </div>
         </div>
         <script type="text/javascript">
