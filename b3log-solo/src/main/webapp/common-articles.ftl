@@ -14,7 +14,7 @@
                     ${article.articleTitle}
                 </a>
                 <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-                <sup class="error-msg" style="font-size: 12px">
+                <sup class="red" style="font-size: 12px">
                     ${updatedLabel}
                 </sup>
                 </#if>

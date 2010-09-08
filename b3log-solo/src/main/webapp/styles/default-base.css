@@ -83,6 +83,10 @@ button:hover {
     border-color: #BBBBBB;
 }
 
+.padding12{
+    padding: 12px;
+}
+
 .paddingBottom12 {
     padding-bottom: 12px;
 }
@@ -91,28 +95,24 @@ button:hover {
     padding-top: 12px;
 }
 
-.padding12{
-    padding: 12px;
-}
-
-.marginRBL12 {
-    margin: 0 0 12px 12px;
-}
-
 .margin12 {
     margin: 12px;
 }
 
-.marginTB12 {
-    margin: 12px 0;
+.marginTop12 {
+    margin-top: 12px;
 }
 
 .marginBottom12 {
     margin-bottom: 12px;
 }
 
-.marginTR12 {
-    margin: 12px 12px 0 0;
+.marginLeft12 {
+    margin-left: 12px;
+}
+
+.marginRight12 {
+    margin-right: 12px;
 }
 
 .left {
@@ -142,7 +142,7 @@ button:hover {
     text-decoration: none;
 }
 
-.error-msg {
+.red {
     color: red;
 }
 

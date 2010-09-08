@@ -37,7 +37,7 @@
                                 <h2>
                                     <a class="noUnderline" href="/article-detail.do?oId=${article.oId}">${article.articleTitle}</a>
                                     <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-                                    <sup class="error-msg" style="font-size: 12px">
+                                    <sup class="red" style="font-size: 12px">
                                         ${updatedLabel}
                                     </sup>
                                     </#if>
@@ -140,7 +140,7 @@
                                             ${commentContent1Label}
                                         </th>
                                         <td colspan="2">
-                                            <textarea rows="10" cols="80" id="comment"></textarea>
+                                            <textarea rows="10" cols="96" id="comment"></textarea>
                                         </td>
                                     </tr>
                                     <tr>

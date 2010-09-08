@@ -62,7 +62,7 @@
             <div class="clear"></div>
             <div id="articlesPanel" class="none">
                 <button onclick="sync();" class="left">${importLabel}</button>
-                <div id="articlesCount" class="right error-msg marginTR12">
+                <div id="articlesCount" class="right red marginTop12 marginRight12">
                 </div>
                 <div class="clear"></div>
                 <div id="articleList" class="paddingTop12 paddingBottom12"></div>

@@ -101,6 +101,10 @@
     height: 60px;
 }
 
+.error-msg {
+    color: #3366CC;
+}
+
 /* side */
 .side-navi a.selected {
     text-decoration: none;
