@@ -98,7 +98,7 @@
 
                 // navi action
                 $("#navi li").each(function (i) {
-                    var naviURL = ['article', 'article-list', 'link-list', 'preference', 'article-sync'],
+                    var naviURL = ['article', 'article-list', 'link-list', 'preference', 'article-sync', 'file-list'],
                     $it = $(this);
                     $it.click(function () {
                         var loadURL = "admin-" + naviURL[i] + ".do";

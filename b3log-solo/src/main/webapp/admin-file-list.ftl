@@ -1,16 +1,63 @@
-<div class="indexPanel">
-    <div id="linkList">
-    </div>
-    <div id="linkPagination">
-    </div>
-    <div id="comments" class="none">
-    </div>
-    <div class="clear"></div>
+<form id="uploadForm" action="" method="post" enctype="multipart/form-data">
+    <table class="form" width="40%" cellpadding="0" cellspacing="9">
+        <tbody>
+            <tr>
+                <td>
+                    <input type="file" name="myFile" size="50">
+                </td>
+                <td>
+                    <input type="submit" value="Submit" class="button" style="height: 28px;">
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<div id="linkList">
+</div>
+<div id="linkPagination">
+</div>
+<div id="comments" class="none">
+</div>
+<div class="clear"></div>
+<table class="form" width="100%" cellpadding="0px" cellspacing="9px">
+    <thead>
+        <tr>
+            <th style="text-align: left" colspan="2">
+                ${addLinkLabel}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th width="48px">
+                ${linkTitle1Label}
+            </th>
+            <td>
+                <input id="linkTitle"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                ${url1Label}
+            </th>
+            <td>
+                <input id="linkAddress"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right">
+                <button onclick="submitLink();">${saveLabel}</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div id="updateLink" class="none">
     <table class="form" width="100%" cellpadding="0px" cellspacing="9px">
         <thead>
             <tr>
                 <th style="text-align: left" colspan="2">
-                    ${addLinkLabel}
+                    ${updateLinkLabel}
                 </th>
             </tr>
         </thead>
@@ -20,7 +67,7 @@
                     ${linkTitle1Label}
                 </th>
                 <td>
-                    <input id="linkTitle"/>
+                    <input id="updateLinkTitle"/>
                 </td>
             </tr>
             <tr>
@@ -28,52 +75,24 @@
                     ${url1Label}
                 </th>
                 <td>
-                    <input id="linkAddress"/>
+                    <input id="updateLinkAddress"/>
                 </td>
             </tr>
             <tr>
                 <td colspan="2" align="right">
-                    <button onclick="submitLink();">${saveLabel}</button>
+                    <button onclick="updateLink();">${updateLabel}</button>
                 </td>
             </tr>
         </tbody>
     </table>
-    <div id="updateLink" class="none">
-        <table class="form" width="100%" cellpadding="0px" cellspacing="9px">
-            <thead>
-                <tr>
-                    <th style="text-align: left" colspan="2">
-                        ${updateLinkLabel}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th width="48px">
-                        ${linkTitle1Label}
-                    </th>
-                    <td>
-                        <input id="updateLinkTitle"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        ${url1Label}
-                    </th>
-                    <td>
-                        <input id="updateLinkAddress"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="right">
-                        <button onclick="updateLink();">${updateLabel}</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 </div>
 <script type="text/javascript">
+    var uploadFile = function () {
+        jsonRpc.fileService.getUploadURL(function (result, error) {
+            $("#uploadForm").attr("action", result);
+        });
+    }
+uploadFile();
     var currentPage = 1,
     pageCount = 1,
     linksLength = 1;

@@ -1,6 +1,6 @@
 <div id="linkList">
 </div>
-<div id="linkPagination">
+<div id="linkPagination" class="margin12 right">
 </div>
 <div id="comments" class="none">
 </div>
