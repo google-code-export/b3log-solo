@@ -9,7 +9,7 @@
     <div class="label">
         ${content1Label}
     </div>
-    <div class="marginRBL12">
+    <div class="marginBottom12 marginLeft12">
         <textarea rows="15" id="articleContent" name="articleContent" style="width: 99%;"></textarea>
     </div>
     <div class="left label">${tags1Label}</div>
