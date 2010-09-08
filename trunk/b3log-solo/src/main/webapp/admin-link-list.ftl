@@ -155,6 +155,7 @@
     }
 
     var popUpdateLink = function (event) {
+        $("#tipMsg").text("${loadingLabel}");
         $("#updateLink").dialog({
             width: 700,
             height:200
@@ -163,18 +164,19 @@
             "oId": event.data.id[0]
         };
 
-        var result = jsonRpc.linkService.getLink(requestJSONObject);
-        switch (result.sc) {
-            case "GET_LINK_SUCC":
-                $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
-                $("#updateLinkAddress").val(result.link.linkAddress);
-                $("#tipMsg").text("${updateSuccLabel}");
-                break;
-            case "GET_LINK_FAIL_":
-                break;
-            default:
-                break;
-        }
+        jsonRpc.linkService.getLink(function (result, error) {
+            switch (result.sc) {
+                case "GET_LINK_SUCC":
+                    $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
+                    $("#updateLinkAddress").val(result.link.linkAddress);
+                    break;
+                case "GET_LINK_FAIL_":
+                    break;
+                default:
+                    break;
+            }
+            $("#tipMsg").text("");
+        }, requestJSONObject);
     }
 
     var deleteLink = function (event) {
@@ -186,18 +188,20 @@
                 "oId": event.data.id[0]
             };
 
-            var result = jsonRpc.linkService.removeLink(requestJSONObject);
-            switch (result.sc) {
-                case "REMOVE_LINK_SUCC":
-                    getLinkList(1);
-                    $("#tipMsg").text("${removeSuccLabel}");
-                    break;
-                case "REMOVE_LINK_FAIL_":
-                    $("#tipMsg").text("${removeFailLabel}");
-                    break;
-                default:
-                    break;
-            }
+            jsonRpc.linkService.removeLink(function (result, error) {
+                switch (result.sc) {
+                    case "REMOVE_LINK_SUCC":
+                        getLinkList(1);
+                        $("#tipMsg").text("${removeSuccLabel}");
+                        break;
+                    case "REMOVE_LINK_FAIL_":
+                        $("#tipMsg").text("${removeFailLabel}");
+                        break;
+                    default:
+                        break;
+                }
+            }, requestJSONObject);
+            
         }
     }
 
@@ -209,46 +213,47 @@
             "paginationPageSize": PAGE_SIZE,
             "paginationWindowSize": WINDOW_SIZE
         };
-        var result = jsonRpc.linkService.getLinks(requestJSONObject);
-        switch (result.sc) {
-            case "GET_LINKS_SUCC":
-                var links = result.links;
-                var linkData = [];
-                linksLength = links.length;
+        jsonRpc.linkService.getLinks(function (result, error) {
+            switch (result.sc) {
+                case "GET_LINKS_SUCC":
+                    var links = result.links;
+                    var linkData = [];
+                    linksLength = links.length;
 
-                for (var i = 0; i < links.length; i++) {
-                    linkData[i] = {};
-                    linkData[i].linkTitle = links[i].linkTitle;
-                    linkData[i].linkAddress = links[i].linkAddress;
-                    linkData[i].update = "<div class='updateIcon'></div>";
-                    linkData[i].deleted = "<div class='deleteIcon'></div>";
-                    linkData[i].id = links[i].oId;
-                }
-
-                $("#linkList").table({
-                    update:{
-                        data: linkData
+                    for (var i = 0; i < links.length; i++) {
+                        linkData[i] = {};
+                        linkData[i].linkTitle = links[i].linkTitle;
+                        linkData[i].linkAddress = links[i].linkAddress;
+                        linkData[i].update = "<div class='updateIcon'></div>";
+                        linkData[i].deleted = "<div class='deleteIcon'></div>";
+                        linkData[i].id = links[i].oId;
                     }
-                });
 
-                if (result.pagination.paginationPageCount === 0) {
-                    pageCount = 1;
-                } else {
-                    pageCount = result.pagination.paginationPageCount;
-                }
-                    
-                $("#linkPagination").paginate({
-                    update: {
-                        currentPage: pageNum,
-                        pageCount: pageCount
+                    $("#linkList").table({
+                        update:{
+                            data: linkData
+                        }
+                    });
+
+                    if (result.pagination.paginationPageCount === 0) {
+                        pageCount = 1;
+                    } else {
+                        pageCount = result.pagination.paginationPageCount;
                     }
-                });
-               
-                break;
-            default:
-                break;
-        }
-        $("#tipMsg").text("");
+
+                    $("#linkPagination").paginate({
+                        update: {
+                            currentPage: pageNum,
+                            pageCount: pageCount
+                        }
+                    });
+
+                    break;
+                default:
+                    break;
+            }
+            $("#tipMsg").text("");
+        }, requestJSONObject);
     }
     getLinkList(1);
 
@@ -261,16 +266,17 @@
                     "linkAddress": $("#updateLinkAddress").val()
                 }
             };
-            var result = jsonRpc.linkService.updateLink(requestJSONObject);
-            switch (result.sc) {
-                case "UPDATE_LINK_SUCC":
-                    $("#updateLink").dialog("close");
-                    getLinkList(currentPage);
-                    $("#tipMsg").text("${updateSuccLabel}");
-                    break;
-                default:
-                    break;
-            }
+            jsonRpc.linkService.updateLink(function (result, error) {
+                switch (result.sc) {
+                    case "UPDATE_LINK_SUCC":
+                        $("#updateLink").dialog("close");
+                        getLinkList(currentPage);
+                        $("#tipMsg").text("${updateSuccLabel}");
+                        break;
+                    default:
+                        break;
+                }
+            }, requestJSONObject);
         }
     }
 
@@ -282,20 +288,21 @@
                     "linkAddress": $("#linkAddress").val()
                 }
             };
-            var result = jsonRpc.linkService.addLink(requestJSONObject);
-            switch (result.sc) {
-                case "ADD_LINK_SUCC":
-                    $("#linkTitle").val("");
-                    $("#linkAddress").val("");
-                    if (linksLength === PAGE_SIZE) {
-                        pageCount++;
-                    }
-                    getLinkList(pageCount);
-                    $("#tipMsg").text("${addSuccLabel}");
-                    break;
-                default:
-                    break;
-            }
+            jsonRpc.linkService.addLink(function (result, error) {
+                switch (result.sc) {
+                    case "ADD_LINK_SUCC":
+                        $("#linkTitle").val("");
+                        $("#linkAddress").val("");
+                        if (linksLength === PAGE_SIZE) {
+                            pageCount++;
+                        }
+                        getLinkList(pageCount);
+                        $("#tipMsg").text("${addSuccLabel}");
+                        break;
+                    default:
+                        break;
+                }
+            }, requestJSONObject);
         }
     }
 </script>

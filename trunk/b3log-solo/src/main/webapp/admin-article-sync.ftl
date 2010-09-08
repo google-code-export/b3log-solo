@@ -177,10 +177,8 @@
                 getBlogArticleArchiveDate();
             }
         });
-
         $("#tipMsg").text("");
     }
-
     initSync();
 
     var changeBlogType = function () {
@@ -201,7 +199,7 @@
                 $("#magPassword").val("");
                 $("#userName").val("");
                 $("#password").val("");
-                $("#tipMsg").text("${getFailLabel}");
+                $("#tipMsg").text("${noSettingLabel}");
             }
             $("#archiveDatePanel").hide();
             $("#articlesPanel").hide();
@@ -343,9 +341,9 @@
                     articleData[i].tags = articles[i].blogSyncExternalArticleCategories;
                     articleData[i].id = articles[i].oId;
                     if (articles[i].blogSyncImported) {
-                        articleData[i].imported = "<div class='trueIcon'></div>";
-                    } else {
                         articleData[i].imported = "<div class='falseIcon'></div>";
+                    } else {
+                        articleData[i].imported = "<div class='trueIcon'></div>";
                     }
                 }
                 

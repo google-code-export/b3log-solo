@@ -42,10 +42,10 @@
                         <div class="left blogSyncIcon"></div>
                         <span>&nbsp;${blogSyncLabel}</span>
                     </li>
-                    <li>
+                    <!--li>
                         <div class="left fileIcon"></div>
                         <span>&nbsp;${fileListLabel}</span>
-                    </li>
+                    </li-->
                 </ul>
             </div>
             <div class="left" id="main">
@@ -98,7 +98,7 @@
 
                 // navi action
                 $("#navi li").each(function (i) {
-                    var naviURL = ['article', 'article-list', 'link-list', 'preference', 'article-sync', 'file-list'],
+                    var naviURL = ['article', 'article-list', 'link-list', 'preference', 'article-sync'],
                     $it = $(this);
                     $it.click(function () {
                         var loadURL = "admin-" + naviURL[i] + ".do";

@@ -226,7 +226,6 @@
             };
             $("#tipMsg").text("");
         }, {"oId": $("#comments").data("oId")});
-        
     }
 
     var deleteComment = function (id) {

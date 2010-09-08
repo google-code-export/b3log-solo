@@ -50,6 +50,7 @@
                     data: tags
                 });
             }
+            $("#tipMsg").text("");
         })
 
         // editor
@@ -70,7 +71,6 @@
 
             extended_valid_elements: "pre[name|class]"
         });
-        $("#tipMsg").text("");
     }
     init();
     
