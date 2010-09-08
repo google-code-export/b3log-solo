@@ -8,10 +8,54 @@
 </div>
 <div class="tabPanels">
     <div id="preferencesPanel">
-        <table class="form" width="99%" cellpadding="0" cellspacing="9px">
+        <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
+                    <th width="234px">
+                        ${blogTitle1Label}
+                    </th>
+                    <td>
+                        <input id="blogTitle"/>
+                    </td>
+                </tr>
+                <tr>
                     <th>
+                        ${blogSubtitle1Label}
+                    </th>
+                    <td>
+                        <input id="blogSubtitle"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${blogHost1Label}
+                    </th>
+                    <td>
+                        <input id="blogHost"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${adminGmail1Label}
+                    </th>
+                    <td>
+                        <input id="adminGmail"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        ${noticeBoard1Label}
+                    </th>
+                    <th>
+                        <textarea rows="9" id="noticeBoard"></textarea>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+        <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
+            <tbody>
+                <tr>
+                    <th width="234px">
                         ${localeString1Label}
                     </th>
                     <td>
@@ -20,29 +64,21 @@
                             <option value="en_US">Englisth(US)</option>
                         </select>
                     </td>
-                    <td>&nbsp;</td>
-                    <th style="text-align: left;">
-                        ${noticeBoard1Label}
-                    </th>
                 </tr>
                 <tr>
-                    <th width="146px">
+                    <th>
                         ${indexTagDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="mostUsedTagDisplayCount"/>
+                        <input id="mostUsedTagDisplayCount" class="normalInput"/>
                     </td>
-                    <td>&nbsp;</td>
-                    <th rowspan="5">
-                        <textarea rows="9" id="noticeBoard"></textarea>
-                    </th>
                 </tr>
                 <tr>
                     <th>
                         ${indexRecentCommentDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="recentCommentDisplayCount"/>
+                        <input id="recentCommentDisplayCount" class="normalInput"/>
                     </td>
                 </tr>
                 <tr>
@@ -50,7 +86,7 @@
                         ${indexMostCommentArticleDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="mostCommentArticleDisplayCount"/>
+                        <input id="mostCommentArticleDisplayCount" class="normalInput"/>
                     </td>
                 </tr>
                 <tr>
@@ -58,7 +94,7 @@
                         ${pageSize1Label}
                     </th>
                     <td>
-                        <input id="articleListDisplayCount"/>
+                        <input id="articleListDisplayCount" class="normalInput"/>
                     </td>
                 </tr>
                 <tr>
@@ -66,43 +102,11 @@
                         ${windowSize1Label}
                     </th>
                     <td>
-                        <input id="articleListPaginationWindowSize"/>
+                        <input id="articleListPaginationWindowSize" class="normalInput"/>
                     </td>
                 </tr>
                 <tr>
-                    <th>
-                        ${blogTitle1Label}
-                    </th>
-                    <td colspan="3">
-                        <input id="blogTitle"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        ${blogSubtitle1Label}
-                    </th>
-                    <td colspan="3">
-                        <input id="blogSubtitle"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        ${blogHost1Label}
-                    </th>
-                    <td colspan="3">
-                        <input id="blogHost"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        ${adminGmail1Label}
-                    </th>
-                    <td colspan="3">
-                        <input id="adminGmail"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="4">
+                    <th colspan="2">
                         <button onclick="changePreference();">${updateLabel}</button>
                     </th>
                 </tr>
