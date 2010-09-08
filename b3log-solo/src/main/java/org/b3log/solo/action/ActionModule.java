@@ -27,7 +27,7 @@ import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.BlogArticlesFeedServlet;
 import org.b3log.solo.action.feed.TagArticlesFeedServlet;
-import org.b3log.solo.action.file.FileUploadServlet;
+import org.b3log.solo.action.file.FileAccessServlet;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.auth.AuthFilter;
 
@@ -70,7 +70,8 @@ public final class ActionModule extends AbstractActionModule {
               "/admin-article-list.do",
               "/admin-link-list.do",
               "/admin-preference.do",
-              "/admin-article-sync.do").with(DoNothingAction.class);
+              "/admin-article-sync.do",
+              "/admin-file-list.do").with(DoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
@@ -85,7 +86,7 @@ public final class ActionModule extends AbstractActionModule {
 //        bind(ErrorAction.class).in(Scopes.SINGLETON);
 //        serve("/error.do").with(ErrorAction.class);
 
-        bind(FileUploadServlet.class).in(Scopes.SINGLETON);
-        serve("/file-upload.do").with(FileUploadServlet.class);
+        bind(FileAccessServlet.class).in(Scopes.SINGLETON);
+        serve("/file-access.do").with(FileAccessServlet.class);
     }
 }
