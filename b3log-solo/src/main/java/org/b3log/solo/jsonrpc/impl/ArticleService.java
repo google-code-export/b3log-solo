@@ -38,11 +38,13 @@ import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
@@ -54,7 +56,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Sep 1, 2010
+ * @version 1.0.1.1, Sep 9, 2010
  */
 // FIXME: add/update/remove article event handle rollback
 public final class ArticleService extends AbstractGAEJSONRpcService {
@@ -389,9 +391,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Step 5: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
             // Step 6: Fire remove article event
-            eventManager.fireEventSynchronously(
-                    new Event<String>(EventTypes.REMOVE_ARTICLE, articleId));
-
+            try {
+                eventManager.fireEventSynchronously(
+                        new Event<String>(EventTypes.REMOVE_ARTICLE, articleId));
+            } catch (final EventException e) {
+                LOGGER.severe(e.getMessage());
+            }
+            
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
@@ -476,8 +482,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Step 9: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
             // Step 10: Fire update article event
-            eventManager.fireEventSynchronously(
-                    new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, article));
+            try {
+                eventManager.fireEventSynchronously(
+                        new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, article));
+            } catch (final EventException e) {
+                LOGGER.severe(e.getMessage());
+            }
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
 
