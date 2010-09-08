@@ -70,6 +70,7 @@ public final class FileService extends AbstractGAEJSONRpcService {
      *     "paginationPageSize": 20,
      *     "paginationWindowSize": 10
      * }
+     * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
