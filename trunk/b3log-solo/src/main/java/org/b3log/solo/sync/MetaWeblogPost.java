@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 7, 2010
+ * @version 1.0.0.2, Sep 9, 2010
  */
 public final class MetaWeblogPost implements Post {
 
@@ -222,7 +222,8 @@ public final class MetaWeblogPost implements Post {
             if (null != preference) { // Preference is null in test env
                 final String blogTitle = preference.getString(
                         Preference.BLOG_TITLE);
-                descriptionBuilder.append("<p><span style='font: italic normal normal 11px Verdana'>");
+                descriptionBuilder.append(
+                        "<p><span style='font: italic normal normal 11px Verdana'>");
                 descriptionBuilder.append(
                         "本文是使用 <a href='http://b3log-solo.googlecode.com/'>");
                 descriptionBuilder.append("B3log Solo</a> 从 <a href='http://");
@@ -256,7 +257,9 @@ public final class MetaWeblogPost implements Post {
      * {@linkplain #MAX_ABSTRACT_LENGTH}
      */
     protected String genAbstract(final String content) {
-        final String contentWithoutTags = content.replaceAll("\\<.*?\\>", "");
+        final String contentWithoutTags = content.replaceAll(
+                "\\&[a-zA-Z]{1,10};", "").replaceAll(
+                "<[^>]*>", "").replaceAll("[(/>)<]", "");
         if (contentWithoutTags.length() >= MAX_ABSTRACT_LENGTH) {
             return contentWithoutTags.substring(0, MAX_ABSTRACT_LENGTH)
                    + "....";
