@@ -20,6 +20,27 @@
     min-width: 885px;
 }
 
+#content {
+    height: 100%;
+    background-color: #E3E9FF;
+}
+
+/* common */
+.comment-title {
+    background-color:#E3E9FF;
+    border-top:1px solid #3366CC;
+    padding:3px 0 3px 12px;
+}
+
+.comment-body {
+    margin: 12px;
+}
+
+#comments, #updateLink {
+    height: 462px;
+    overflow: auto;
+}
+
 /* top */
 .topMsg {
     height: 24px;
@@ -54,32 +75,6 @@
 #navi li.selected {
     background-color: #BBCCFF;
     font-weight: bold;
-}
-
-/* article list and link list*/
-#articlePanel, #linkPanel, #aticltPanel {
-    height: 100%;
-    background-color: #E3E9FF;
-}
-
-#articlePagination, #linkPagination {
-    float: right;
-    margin: 10px;
-}
-
-.comment-title {
-    background-color:#E3E9FF;
-    border-top:1px solid #3366CC;
-    padding:3px 0 3px 12px;
-}
-
-.comment-body {
-    margin: 12px;
-}
-
-#comments, #updateLink {
-    height: 462px;
-    overflow: auto;
 }
 
 /* sync */

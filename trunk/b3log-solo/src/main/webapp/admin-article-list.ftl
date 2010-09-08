@@ -1,12 +1,10 @@
-<div id="articlePanel">
-    <div id="articleList">
-    </div>
-    <div id="articlePagination">
-    </div>
-    <div id="comments" class="none">
-    </div>
-    <div class="clear"></div>
+<div id="articleList">
 </div>
+<div id="articlePagination" class="right margin12">
+</div>
+<div id="comments" class="none">
+</div>
+<div class="clear"></div>
 <script type="text/javascript">
     var currentPage = 1;
     $("#articleList").table({
@@ -14,7 +12,7 @@
         colModel: [{
                 name: "${titleLabel}",
                 index: "title",
-                width: 260,
+                width: 460,
                 style: "padding-left: 6px;"
             }, {
                 name: "${tagsLabel}",
