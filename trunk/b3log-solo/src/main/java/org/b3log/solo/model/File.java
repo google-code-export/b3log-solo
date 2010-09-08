@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all file model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep Aug 8, 2010
+ * @version 1.0.0.0, Sep 8, 2010
  */
 public final class File {
 
@@ -35,6 +35,18 @@ public final class File {
      * Key of file size.
      */
     public static final String FILE_SIZE = "fileSize";
+    /**
+     * Key of file download count.
+     */
+    public static final String FILE_DOWNLOAD_COUNT = "fileDownloadCount";
+    /**
+     * Key of file upload date.
+     */
+    public static final String FILE_UPLOAD_DATE = "fileUploadDate";
+    /**
+     * Key of file download URL.
+     */
+    public static final String FILE_DOWNLOAD_URL = "fileDownloadURL";
 
     /**
      * Private default constructor.
