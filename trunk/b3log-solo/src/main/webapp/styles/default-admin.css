@@ -106,6 +106,14 @@
 }
 
 /* preference */
+.subTable {
+    background-color: #BBCCFF;
+    -moz-border-radius:12px;
+    -webkit-border-radius:12px;
+    padding: 12px;
+    margin: 12px;
+}
+
 #skinsPanel {
     width: 99%;
     min-width: 328px;
