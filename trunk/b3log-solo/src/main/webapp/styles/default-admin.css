@@ -141,6 +141,10 @@
 }
 
 /* tabs */
+.tabPanel {
+    background-color: #BBCCFF;
+}
+
 .tabs {
     line-height: 26px;
 }
@@ -150,7 +154,7 @@
     cursor: pointer;
 }
 
-.tabPanels {
+.tabMain {
     background-color: #E3E9FF;
     padding: 12px;
 }

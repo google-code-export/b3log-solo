@@ -12,193 +12,75 @@
         </tbody>
     </table>
 </form>
-
-<div id="linkList">
+<div id="fileList">
 </div>
-<div id="linkPagination">
-</div>
-<div id="comments" class="none">
-</div>
-<div class="clear"></div>
-<table class="form" width="100%" cellpadding="0px" cellspacing="9px">
-    <thead>
-        <tr>
-            <th style="text-align: left" colspan="2">
-                ${addLinkLabel}
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th width="48px">
-                ${linkTitle1Label}
-            </th>
-            <td>
-                <input id="linkTitle"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                ${url1Label}
-            </th>
-            <td>
-                <input id="linkAddress"/>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
-                <button onclick="submitLink();">${saveLabel}</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<div id="updateLink" class="none">
-    <table class="form" width="100%" cellpadding="0px" cellspacing="9px">
-        <thead>
-            <tr>
-                <th style="text-align: left" colspan="2">
-                    ${updateLinkLabel}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th width="48px">
-                    ${linkTitle1Label}
-                </th>
-                <td>
-                    <input id="updateLinkTitle"/>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    ${url1Label}
-                </th>
-                <td>
-                    <input id="updateLinkAddress"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="right">
-                    <button onclick="updateLink();">${updateLabel}</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div id="filePagination" class="right margin12">
 </div>
 <script type="text/javascript">
-    var uploadFile = function () {
-        jsonRpc.fileService.getUploadURL(function (result, error) {
-            $("#uploadForm").attr("action", result);
-        });
-    }
-uploadFile();
+    // variable
     var currentPage = 1,
     pageCount = 1,
     linksLength = 1;
-    $("#linkList").table({
-        resizable: true,
-        colModel: [{
-                style: "padding-left: 6px;",
-                name: "${linkTitleLabel}",
-                index: "linkTitle",
-                width: 230
-            }, {
-                style: "padding-left: 6px;",
-                name: "${urlLabel}",
-                index: "linkAddress",
-                minWidth: 180
-            }, {
-                textAlign: "center",
-                name: "${updateLabel}",
-                index: "update",
-                width: 56,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'functionName': 'popUpdateLink'
-                    }],
-                style: "cursor:pointer; margin-left:22px;"
-            }, {
-                textAlign: "center",
-                name: "${removeLabel}",
-                index: "deleted",
-                width: 56,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'functionName': 'deleteLink'
-                    }],
-                style: "cursor:pointer; margin-left:22px;"
-            }, {
-                visible: false,
-                index: "id"
-            }]
-    });
 
-    $("#linkPagination").paginate({
-        bindEvent: "getLinkList",
-        pageCount: 10,
-        windowSize: 5,
-        currentPage: 1,
-        style: "google",
-        isGoTo: false,
-        lastPage: "${lastPageLabel}",
-        nextPage: "${nextPagePabel}",
-        previousPage: "${previousPageLabel}",
-        firstPage: "${firstPageLabel}"
-    });
-
-    var validateUpdateLink = function () {
-        $("#tipMsg").text("${loadingLabel}");
-        if ($("#updateLinkTitle").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${titleEmptyLabel}");
-            $("#updateLinkTitle").focus().val("");
-        } else if ($("#updateLinkAddress").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${addressEmptyLabel}");
-            $("#updateLinkAddress").focus().val("");
-        } else {
-            return true;
-        }
-        return false;
-    }
-
-    var validateLink = function () {
-        $("#tipMsg").text("${loadingLabel}");
-        if ($("#linkTitle").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${titleEmptyLabel}");
-            $("#linkTitle").focus().val("");
-        } else if ($("#linkAddress").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${addressEmptyLabel}");
-            $("#linkAddress").focus().val("");
-        } else {
-            return true;
-        }
-        return false;
-    }
-
-    var popUpdateLink = function (event) {
-        $("#updateLink").dialog({
-            width: 700,
-            height:200
+    var initFile = function () {
+        // uploadFile
+        jsonRpc.fileService.getUploadURL(function (result, error) {
+            $("#uploadForm").attr("action", result);
         });
-        var requestJSONObject = {
-            "oId": event.data.id[0]
-        };
 
-        var result = jsonRpc.linkService.getLink(requestJSONObject);
-        switch (result.sc) {
-            case "GET_LINK_SUCC":
-                $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
-                $("#updateLinkAddress").val(result.link.linkAddress);
-                $("#tipMsg").text("${updateSuccLabel}");
-                break;
-            case "GET_LINK_FAIL_":
-                break;
-            default:
-                break;
-        }
+        // init file list
+        $("#fileList").table({
+            resizable: true,
+            colModel: [{
+                    style: "padding-left: 6px;",
+                    name: "${titleLabel}",
+                    index: "title",
+                    width: 30
+                }, {
+                    name: "${downloadURLLabel}",
+                    index: "url",
+                    style: "padding-left: 6px;",
+                    width: 56
+                }, {
+                    textAlign: "center",
+                    name: "${uploadDateLabel}",
+                    index: "date",
+                    width: 56
+                }, {
+                    name: "${sizeLabel}",
+                    index: "size",
+                    minWidth: 50
+                }, {
+                    name: "${downloadCountLabel}",
+                    index: "count",
+                    width: 56
+                },{
+                    textAlign: "center",
+                    name: "${removeLabel}",
+                    index: "delete",
+                    width: 56
+                },{
+                    visible: false,
+                    index: "id"
+                }]
+        });
+
+        $("#filePagination").paginate({
+            bindEvent: "getfileList",
+            pageCount: 10,
+            windowSize: 5,
+            currentPage: 1,
+            style: "google",
+            isGoTo: false,
+            lastPage: "${lastPageLabel}",
+            nextPage: "${nextPagePabel}",
+            previousPage: "${previousPageLabel}",
+            firstPage: "${firstPageLabel}"
+        });
     }
+    initFile();
 
-    var deleteLink = function (event) {
+    var deleteFile = function (event) {
         var isDelete = confirm("${confirmRemoveLabel}");
 
         if (isDelete) {
@@ -210,7 +92,7 @@ uploadFile();
             var result = jsonRpc.linkService.removeLink(requestJSONObject);
             switch (result.sc) {
                 case "REMOVE_LINK_SUCC":
-                    getLinkList(1);
+                    getfileList(1);
                     $("#tipMsg").text("${removeSuccLabel}");
                     break;
                 case "REMOVE_LINK_FAIL_":
@@ -222,7 +104,7 @@ uploadFile();
         }
     }
 
-    var getLinkList = function (pageNum) {
+    var getfileList = function (pageNum) {
         $("#tipMsg").text("${loadingLabel}");
         currentPage = pageNum;
         var requestJSONObject = {
@@ -246,7 +128,7 @@ uploadFile();
                     linkData[i].id = links[i].oId;
                 }
 
-                $("#linkList").table({
+                $("#fileList").table({
                     update:{
                         data: linkData
                     }
@@ -258,7 +140,7 @@ uploadFile();
                     pageCount = result.pagination.paginationPageCount;
                 }
 
-                $("#linkPagination").paginate({
+                $("#filePagination").paginate({
                     update: {
                         currentPage: pageNum,
                         pageCount: pageCount
@@ -271,52 +153,5 @@ uploadFile();
         }
         $("#tipMsg").text("");
     }
-    getLinkList(1);
-
-    var updateLink = function () {
-        if (validateUpdateLink()) {
-            var requestJSONObject = {
-                "link": {
-                    "linkTitle": $("#updateLinkTitle").val(),
-                    "oId": $("#updateLinkTitle").data("oId"),
-                    "linkAddress": $("#updateLinkAddress").val()
-                }
-            };
-            var result = jsonRpc.linkService.updateLink(requestJSONObject);
-            switch (result.sc) {
-                case "UPDATE_LINK_SUCC":
-                    $("#updateLink").dialog("close");
-                    getLinkList(currentPage);
-                    $("#tipMsg").text("${updateSuccLabel}");
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    var submitLink = function () {
-        if (validateLink()) {
-            var requestJSONObject = {
-                "link": {
-                    "linkTitle": $("#linkTitle").val(),
-                    "linkAddress": $("#linkAddress").val()
-                }
-            };
-            var result = jsonRpc.linkService.addLink(requestJSONObject);
-            switch (result.sc) {
-                case "ADD_LINK_SUCC":
-                    $("#linkTitle").val("");
-                    $("#linkAddress").val("");
-                    if (linksLength === PAGE_SIZE) {
-                        pageCount++;
-                    }
-                    getLinkList(pageCount);
-                    $("#tipMsg").text("${addSuccLabel}");
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+    getfileList(1);
 </script>

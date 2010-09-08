@@ -213,7 +213,7 @@ button:hover, .button:hover {
 
 /* icon */
 .deleteIcon, .updateIcon, .commentIcon, .homeIcon, .adminIcon, .loginIcon, .logoutIcon, .calendarIcon, .browserIcon,
-.postIcon, .articlesIcon, .linkIcon, .preferenceIcon, .blogSyncIcon, .trueIcon, .falseIcon {
+.postIcon, .articlesIcon, .linkIcon, .preferenceIcon, .blogSyncIcon, .trueIcon, .falseIcon, .fileIcon {
     width: 16px;
     height: 16px;
     background-image: url("../images/icon.png");
@@ -246,6 +246,10 @@ button:hover, .button:hover {
 
 .falseIcon {
     background-position: -96px 0px;
+}
+
+.fileIcon {
+    background-position: -112px 0px;
 }
 
 .deleteIcon {
