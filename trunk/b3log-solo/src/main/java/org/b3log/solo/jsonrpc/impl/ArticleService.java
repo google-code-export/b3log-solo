@@ -44,7 +44,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
@@ -138,7 +137,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * </pre>
      * @throws ActionException action exception
      * @throws IOException io exception
-     * @see Article
      */
     public JSONObject addArticle(final JSONObject requestJSONObject,
                                  final HttpServletRequest request,
@@ -298,7 +296,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      * @see Pagination
-     * @see Article
      */
     public JSONObject getArticles(final JSONObject requestJSONObject,
                                   final HttpServletRequest request,
@@ -397,7 +394,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             } catch (final EventException e) {
                 LOGGER.severe(e.getMessage());
             }
-            
+
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
