@@ -27,6 +27,7 @@ import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.BlogSyncMgmtGAERepository;
 import org.b3log.solo.repository.impl.ExternalArticleGAERepository;
 import org.b3log.solo.repository.impl.ExternalArticleSoloArticleGAERepository;
+import org.b3log.solo.repository.impl.FileGAERepository;
 import org.b3log.solo.repository.impl.LinkGAERepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.repository.impl.SkinGAERepository;
@@ -38,7 +39,7 @@ import org.b3log.solo.repository.impl.UserGAERepository;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Aug 25, 2010
+ * @version 1.0.1.0, Sep 8, 2010
  */
 public final class RepositoryModule extends AbstractServiceModule {
 
@@ -78,5 +79,7 @@ public final class RepositoryModule extends AbstractServiceModule {
                 Scopes.SINGLETON);
         bind(BlogSyncManagementRepository.class).to(
                 BlogSyncMgmtGAERepository.class).in(Scopes.SINGLETON);
+        bind(FileRepository.class).to(
+                FileGAERepository.class).in(Scopes.SINGLETON);
     }
 }
