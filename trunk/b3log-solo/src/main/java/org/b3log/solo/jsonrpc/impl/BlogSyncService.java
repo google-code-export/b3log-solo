@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Sep 4, 2010
+ * @version 1.0.1.0, Sep 8, 2010
  */
 public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
@@ -452,7 +453,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
                 article.put(BLOG_SYNC_IMPORTED, imported);
                 articles.put(article);
-                
+
                 if (EXTERNAL_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL
                     == retrievalCnt) {
                     break;
@@ -530,21 +531,27 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     private JSONObject toSoloArticle(final JSONObject externalArticle)
             throws Exception {
         final JSONObject ret = new JSONObject();
-
-        ret.put(Keys.OBJECT_ID, externalArticle.getString(Keys.OBJECT_ID));
+        final String articleId = externalArticle.getString(Keys.OBJECT_ID);
+        ret.put(Keys.OBJECT_ID, articleId);
         ret.put(Article.ARTICLE_TITLE,
                 externalArticle.getString(BLOG_SYNC_EXTERNAL_ARTICLE_TITLE));
         ret.put(Article.ARTICLE_ABSTRACT,
                 externalArticle.getString(BLOG_SYNC_EXTERNAL_ARTICLE_ABSTRACT));
         ret.put(Article.ARTICLE_CONTENT,
                 externalArticle.getString(BLOG_SYNC_EXTERNAL_ARTICLE_CONTENT));
-        ret.put(Article.ARTICLE_CREATE_DATE,
-                externalArticle.get(BLOG_SYNC_EXTERNAL_ARTICLE_CREATE_DATE));
+        final Date createDate = (Date) externalArticle.get(
+                BLOG_SYNC_EXTERNAL_ARTICLE_CREATE_DATE);
+        ret.put(Article.ARTICLE_CREATE_DATE, createDate);
         ret.put(Article.ARTICLE_TAGS_REF,
                 externalArticle.getString(BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES));
 
         ret.put(Article.ARTICLE_VIEW_COUNT, 0);
         ret.put(Article.ARTICLE_COMMENT_COUNT, 0);
+        final String permalinkDate =
+                ArticleService.PERMALINK_FORMAT.format(createDate);
+        final String permalink = "/articles/" + permalinkDate + "/"
+                                 + articleId + ".html";
+        ret.put(Article.ARTICLE_PERMALINK, permalink);
 
         return ret;
     }

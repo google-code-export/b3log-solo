@@ -35,7 +35,7 @@
                             </div>
                             <div class="article-title">
                                 <h2>
-                                    <a class="noUnderline" href="/article-detail.do?oId=${article.oId}">${article.articleTitle}</a>
+                                    <a class="noUnderline" href="${article.articlePermalink}">${article.articleTitle}</a>
                                     <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
                                     <sup class="red" style="font-size: 12px">
                                         ${updatedLabel}
