@@ -86,7 +86,11 @@
                         <#list articleComments as comment>
                         <div>
                             <div class="comment-title">
+                                <#if comment.commentURL=="http://">
+                                <a name="${comment.oId}" class="left">${comment.commentName}</a>
+                                <#else>
                                 <a name="${comment.oId}" href="${comment.commentURL}" class="left">${comment.commentName}</a>
+                                </#if>
                                 <span class="right">${comment.commentDate}</span>
                                 <div class="clear"></div>
                             </div>
