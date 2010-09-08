@@ -194,8 +194,6 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
                        new String[]{getBloggingServiceProvider(), articleId});
 
             ret = articleId;
-
-
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ServiceException("New post to ["
