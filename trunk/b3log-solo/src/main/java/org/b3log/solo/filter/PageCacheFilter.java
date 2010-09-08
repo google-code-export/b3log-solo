@@ -34,7 +34,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 6, 2010
+ * @version 1.0.0.4, Sep 8, 2010
  */
 public final class PageCacheFilter implements Filter {
 
@@ -62,6 +62,7 @@ public final class PageCacheFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
+        LOGGER.finer("Doing page cache filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         final HttpServletResponse httpServletResponse =
@@ -75,7 +76,11 @@ public final class PageCacheFilter implements Filter {
             || requestURI.equals("/captcha.do")
             || requestURI.equals("/tag-articles-feed.do")
             || requestURI.equals("/blog-articles-feed.do")
-            || requestURI.equals("/admin-index.do")) {
+            || requestURI.equals("/admin-index.do")
+            || requestURI.equals("/admin-file-list.do")
+            || requestURI.equals("/file-access.do")
+            || requestURI.contains("/_ah/upload/")) {
+            LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 
             return;

@@ -61,6 +61,7 @@ public final class PermalinkFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
+        LOGGER.finer("Doing permalink filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         final HttpServletResponse httpServletResponse =

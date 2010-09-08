@@ -92,7 +92,7 @@
             var result = jsonRpc.linkService.removeLink(requestJSONObject);
             switch (result.sc) {
                 case "REMOVE_LINK_SUCC":
-                    getfileList(1);
+                    getFileList(1);
                     $("#tipMsg").text("${removeSuccLabel}");
                     break;
                 case "REMOVE_LINK_FAIL_":
@@ -104,7 +104,7 @@
         }
     }
 
-    var getfileList = function (pageNum) {
+    var getFileList = function (pageNum) {
         $("#tipMsg").text("${loadingLabel}");
         currentPage = pageNum;
         var requestJSONObject = {
