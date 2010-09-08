@@ -163,7 +163,8 @@
                     textAlign: "center",
                     name: "${importedLabel}",
                     index: "imported",
-                    width: 60
+                    width: 60,
+                    style: "margin-left:22px;"
                 }, {
                     visible: false,
                     index: "id"
@@ -341,7 +342,11 @@
                     articleData[i].date = $.bowknot.getDate(articles[i].blogSyncExternalArticleCreateDate.time);
                     articleData[i].tags = articles[i].blogSyncExternalArticleCategories;
                     articleData[i].id = articles[i].oId;
-                    articleData[i].imported = articles[i].blogSyncImported;
+                    if (articles[i].blogSyncImported) {
+                        articleData[i].imported = "<div class='trueIcon'></div>";
+                    } else {
+                        articleData[i].imported = "<div class='falseIcon'></div>";
+                    }
                 }
                 
                 $("#articleList").table({

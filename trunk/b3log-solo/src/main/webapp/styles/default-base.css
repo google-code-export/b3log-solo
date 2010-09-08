@@ -213,7 +213,7 @@ button:hover {
 
 /* icon */
 .deleteIcon, .updateIcon, .commentIcon, .homeIcon, .adminIcon, .loginIcon, .logoutIcon, .calendarIcon, .browserIcon,
-.postIcon, .articlesIcon, .linkIcon, .preferenceIcon, .blogSyncIcon {
+.postIcon, .articlesIcon, .linkIcon, .preferenceIcon, .blogSyncIcon, .trueIcon, .falseIcon {
     width: 16px;
     height: 16px;
     background-image: url("../images/icon.png");
@@ -238,6 +238,14 @@ button:hover {
 
 .articlesIcon {
     background-position: -64px 0px;
+}
+
+.trueIcon {
+    background-position: -80px 0px;
+}
+
+.falseIcon {
+    background-position: -96px 0px;
 }
 
 .deleteIcon {
