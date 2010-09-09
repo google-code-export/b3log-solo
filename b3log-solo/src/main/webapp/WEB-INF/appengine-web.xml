@@ -21,7 +21,7 @@
     Description: Web deployment descriptor for GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/appconfig.html
                  for more details.
-    Version: 1.0.0.6, Sep 4, 2010
+    Version: 1.0.0.7, Sep 9, 2010
     Author: Liang Ding
 -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
@@ -36,7 +36,9 @@
     <static-files>
         <include path="/favicon.ico" />
         <include path="/favicon.gif" />
-<!--        <include path="/error.do" />-->
+        <include path="/js/**.js" />
+        <include path="/styles/*.css" />
+        <include path="/images/*.png" />
     </static-files>
 </appengine-web-app>
 
