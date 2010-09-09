@@ -25,27 +25,27 @@
     Author: Liang Ding
 -->
 <datastore-indexes autoGenerate="true">
-    <datastore-index kind="tag">
-        <property name="oId"/>
-        <property name="tagReferenceCount"/>
-        <property name="tagTitle"/>
+    <datastore-index kind="tag" ancestor="false">
+        <property name="oId"  direction="desc" />
+        <property name="tagReferenceCount" direction="desc" />
+        <property name="tagTitle" direction="desc" />
     </datastore-index>
 
-    <datastore-index kind="statistic">
-        <property name="oId"/>
-        <property name="statisticBlogArticleCount"/>
-        <property name="statisticBlogCommentCount"/>
-        <property name="statisticBlogViewCount"/>
+    <datastore-index kind="statistic" ancestor="false">
+        <property name="oId" direction="desc" />
+        <property name="statisticBlogArticleCount" direction="desc" />
+        <property name="statisticBlogCommentCount" direction="desc" />
+        <property name="statisticBlogViewCount" direction="desc" />
     </datastore-index>
 
-    <datastore-index kind="comment">
-        <property name="oId"/>
-        <property name="commentContent"/>
-        <property name="commentDate"/>
-        <property name="commentEmail"/>
-        <property name="commentName"/>
-        <property name="commentSharpURL"/>
-        <property name="commentThumbnailURL"/>
-        <property name="commentURL"/>
+    <datastore-index kind="comment" ancestor="false">
+        <property name="oId" direction="desc" />
+        <property name="commentContent" direction="desc" />
+        <property name="commentDate" direction="desc" />
+        <property name="commentEmail" direction="desc" />
+        <property name="commentName" direction="desc" />
+        <property name="commentSharpURL" direction="desc" />
+        <property name="commentThumbnailURL" direction="desc" />
+        <property name="commentURL" direction="desc" />
     </datastore-index>
 </datastore-indexes>
