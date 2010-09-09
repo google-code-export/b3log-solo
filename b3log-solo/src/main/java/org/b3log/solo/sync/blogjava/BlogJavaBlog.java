@@ -35,7 +35,7 @@ import org.b3log.solo.sync.util.PageReader;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 6, 2010
+ * @version 1.0.0.1, Sep 9, 2010
  */
 public final class BlogJavaBlog extends AbstractMetaWeblog {
 
@@ -61,7 +61,7 @@ public final class BlogJavaBlog extends AbstractMetaWeblog {
         final List<String> ret = new ArrayList<String>();
 
         final String pageContent = PageReader.getContent(getIndexPageURL());
-        final String patternString = "http://www.blogjava.net" + getUserName()
+        final String patternString = "http://www.blogjava.net/" + getUserName()
                                      + "/archive/\\d{4}/\\d{2}.html";
         final Pattern pattern = Pattern.compile(patternString);
         final Matcher matcher = pattern.matcher(pageContent);
@@ -91,7 +91,7 @@ public final class BlogJavaBlog extends AbstractMetaWeblog {
     public List<String> getArticleIdsByArchiveDate(final String archiveDate) {
         final URL archivePageURL = getArchivePageURL(archiveDate);
         final String pageContent = PageReader.getContent(archivePageURL);
-        final String patternString = "http://www.blogjava.net" + getUserName()
+        final String patternString = "http://www.blogjava.net/" + getUserName()
                                      + "/archive/\\d{4}/\\d{2}/\\d{2}/\\d+.html";
         final Pattern pattern =
                 Pattern.compile(patternString);
@@ -113,7 +113,7 @@ public final class BlogJavaBlog extends AbstractMetaWeblog {
     @Override
     public URL getArchivePageURL(final String archiveDate) {
         try {
-            return new URL("http://www.cnblogs.com/" + getUserName()
+            return new URL("http://www.blogjava.net/" + getUserName()
                            + "/archive/" + archiveDate + ".aspx");
         } catch (final MalformedURLException e) {
             LOGGER.severe(e.getMessage());
@@ -124,7 +124,7 @@ public final class BlogJavaBlog extends AbstractMetaWeblog {
     @Override
     public URL getIndexPageURL() {
         try {
-            return new URL("http://www.cnblogs.com/" + getUserName());
+            return new URL("http://www.blogjava.net/" + getUserName());
         } catch (final MalformedURLException e) {
             LOGGER.severe(e.getMessage());
             return null;
