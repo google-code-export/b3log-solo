@@ -9,10 +9,8 @@
     <div class="line"></div>
     <ul>
         <li>
-             <h4>${noticeBoardLabel}</h4>
-            <ul id="userIntro">
-                <li>${noticeBoard}</li>
-            </ul>
+            <h4>${noticeBoardLabel}</h4>
+        <li>${noticeBoard}</li>
         </li>
     </ul>
     <div class="line"></div>
