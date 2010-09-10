@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="robots" content="none"/>
         <title>${blogTitle} - ${adminConsoleLabel}</title>
         <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>

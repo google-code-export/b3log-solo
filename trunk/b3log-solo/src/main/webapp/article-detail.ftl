@@ -2,6 +2,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="pragma" CONTENT="no-cache"/>
+        <meta name="author" content="b3log-solo.googlecode.com"/>
+        <meta HTTP-EQUIV="Window-target" CONTENT="_top"/>
         <title>${article.articleTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
