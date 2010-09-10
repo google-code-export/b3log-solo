@@ -104,7 +104,7 @@ Powered by
 
         // article-side.ftl ellipsis
         var sideEllipsis = function () {
-            var sideLength = parseInt(($("#sideNavi").width() - 24) / 7 - 3);
+            var sideLength = parseInt(($("#sideNavi").width() - 24) / 7 - 5);
             $("#mostCommentArticles a").each(function () {
                 var str = ellipsis(this.title, sideLength);
                 $(this).text(str.toString());
@@ -118,25 +118,33 @@ Powered by
                 $(this).text(str.toString());
             });
         }
-        
         sideEllipsis();
-        
         $(window).resize(function () {
             if ($("#sideNavi").width() > 195) {
                 sideEllipsis();
             }
         });
-    }
 
+        jsonRpc.statisticService.incBlogViewCount();
+    }
     initArticle();
 
-    jsonRpc.statisticService.incBlogViewCount();
-
-    // article-side.ftl
+    // article-side.ftl user introduction
     function handleResponse (response) {
-        var userIntroHTML = "<li><img src='" + response.data.thumbnailUrl + "'/></li>"
-            + "<li>" + response.data.displayName + "</li>"
-            + "<li class='aboutMe'>" + response.data.aboutMe + "</li>";
+        var userInfo = {};
+        if (response.error) {
+            userInfo.thumbnailUrl = localStorage.getItem("userInfoThumbnailUrl");
+            userInfo.displayName = localStorage.getItem("userInfoDisplayName");
+            userInfo.aboutMe = localStorage.getItem("userInfoAboutMe");
+        } else {
+            userInfo = response.data;
+            localStorage.setItem("userInfoThumbnailUrl", response.data.thumbnailUrl);
+            localStorage.setItem("userInfoDisplayName", response.data.displayName);
+            localStorage.setItem("userInfoAboutMe", response.data.aboutMe);
+        }
+        var userIntroHTML = "<li><img src='" + userInfo.thumbnailUrl + "'/></li>"
+            + "<li>" + userInfo.displayName + "</li>"
+            + "<li class='aboutMe'>" + userInfo.aboutMe + "</li>";
 
         $("#userIntro").html(userIntroHTML);
     }

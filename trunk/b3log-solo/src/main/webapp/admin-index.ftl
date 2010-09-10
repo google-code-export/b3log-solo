@@ -20,7 +20,7 @@
             <#include "common-top.ftl">
             <div id="allPanel">
                 <div class="left side">
-                    <ul id="navi">
+                    <ul id="sideNavi">
                         <li>
                             <div class="left postIcon"></div>
                             <span>&nbsp;${postArticleLabel}</span>
@@ -96,14 +96,14 @@
                     $("#main").css("width", windowWidth);
                 });
 
-                // navi action
-                $("#navi li").each(function (i) {
+                // sideNavi action
+                $("#sideNavi li").each(function (i) {
                     var naviURL = ['article', 'article-list', 'link-list', 'preference', 'article-sync'],
                     $it = $(this);
                     $it.click(function () {
                         var loadURL = "admin-" + naviURL[i] + ".do";
                         if (!$it.hasClass("selected")){
-                            $("#navi li").removeClass('selected');
+                            $("#sideNavi li").removeClass('selected');
                             $it.addClass('selected');
                         }
                         $("#content").load(loadURL);
@@ -129,8 +129,8 @@
 
             // util for admin
             var setCurrentNaviStyle = function (i) {
-                $("#navi li").removeClass('selected');
-                $($("#navi li").get(i)).addClass("selected");
+                $("#sideNavi li").removeClass('selected');
+                $($("#sideNavi li").get(i)).addClass("selected");
             }
         </script>
     </body>
