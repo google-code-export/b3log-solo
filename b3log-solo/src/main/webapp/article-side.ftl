@@ -1,17 +1,13 @@
 <div id="sideNavi" class="side-navi">
-    <ul>
-        <li>
-            <ul id="userIntro">
-                <li></li>
-            </ul>
-        </li>
+    <ul id="userIntro">
+        <li></li>
     </ul>
     <div class="line"></div>
     <ul>
         <li>
             <h4>${noticeBoardLabel}</h4>
-        <li>${noticeBoard}</li>
         </li>
+        <li>${noticeBoard}</li>
     </ul>
     <div class="line"></div>
     <ul>
@@ -23,6 +19,8 @@
     <ul>
         <li>
             <h4>${mostCommentArticlesLabel}</h4>
+        </li>
+        <li>
             <ul id="mostCommentArticles">
                 <#list mostCommentArticles as article>
                 <li>
@@ -38,6 +36,8 @@
     <ul>
         <li>
             <h4>${mostViewCountArticlesLabel}</h4>
+        </li>
+        <li>
             <ul id="mostViewCountArticles">
                 <#list mostViewCountArticles as article>
                 <li>
@@ -53,6 +53,8 @@
     <ul>
         <li>
             <h4>${popTagsLabel}</h4>
+        </li>
+        <li>
             <ul>
                 <#list mostUsedTags as tag>
                 <li>
@@ -70,6 +72,8 @@
     <ul>
         <li>
             <h4>${linkLabel}</h4>
+        </li>
+        <li>
             <ul id="sideLink">
                 <#list links as link>
                 <li>
@@ -85,6 +89,8 @@
     <ul>
         <li>
             <h4>${archiveLabel}</h4>
+        </li>
+        <li>
             <ul>
                 <#list archiveDates as archiveDate>
                 <li>
