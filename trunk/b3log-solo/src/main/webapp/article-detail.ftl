@@ -91,7 +91,7 @@
                     </div>
                     <div class="comments" id="comments" name="comments">
                         <#list articleComments as comment>
-                        <div>
+                        <div id="commentItem${comment.oId}">
                             <div class="comment-title">
                                 <#if comment.commentURL=="http://">
                                 <a name="${comment.oId}" class="left">${comment.commentName}</a>
@@ -106,7 +106,7 @@
                             </div>
                             <div class="comment-body">
                                 <div class="left comment-picture">
-                                    <img src="${comment.commentThumbnailURL}"/>
+                                    <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                                 </div>
                                 <div>
                                     ${comment.commentContent}
@@ -209,6 +209,18 @@
                     if (-1 === this.value.indexOf("http://")) {
                         this.value = "http://";
                     }
+                }).focus(function (event) {
+                    var pos = this.value.length;
+                    if (this.setSelectionRange) {
+                        // TODO:
+                        var iCaretPos = this.selectionStart;
+                    } else if (this.createTextRange) {
+                        var   e   =   event.srcElement;
+                        var   r   =e.createTextRange();
+                        r.moveStart('character',e.value.length);
+                        r.collapse(true);
+                        r.select();
+                    }
                 });
 
                 // article view count
@@ -222,24 +234,27 @@
             }
             loadAction();
 
-            var validateComment = function () {
-                var commentName = $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
-                commenterContent = $("#comment").val().replace(/(^\s*)|(\s*$)/g, "");
+            var validateComment = function (state) {
+                if (state === undefined) {
+                    state = '';
+                }
+                var commentName = $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
+                commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
                 if (2 > commentName.length || commentName.length > 20) {
-                    $("#commentErrorTip").html("${nameTooLongLabel}");
-                    $("#commentName").focus();
-                } else if ($("#commentEmail").val().replace(/\s/g, "") === "") {
-                    $("#commentErrorTip").html("${mailCannotEmptyLabel}");
-                    $("#commentEmail").focus();
-                } else if(!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#commentEmail").val())) {
-                    $("#commentErrorTip").html("${mailInvalidLabel}");
-                    $("#commentEmail").focus();
+                    $("#commentErrorTip" + state).html("${nameTooLongLabel}");
+                    $("#commentName" + state).focus();
+                } else if ($("#commentEmail" + state).val().replace(/\s/g, "") === "") {
+                    $("#commentErrorTip" + state).html("${mailCannotEmptyLabel}");
+                    $("#commentEmail" + state).focus();
+                } else if(!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#commentEmail" + state).val())) {
+                    $("#commentErrorTip" + state).html("${mailInvalidLabel}");
+                    $("#commentEmail" + state).focus();
                 }  else if (2 > commenterContent.length || commenterContent.length > 500) {
-                    $("#commentErrorTip").html("${commentContentCannotEmptyLabel}");
-                    $("#comment").focus();
-                } else if ($("#commentValidate").val().replace(/\s/g, "") === "") {
-                    $("#commentErrorTip").html("${captchaCannotEmptyLabel}");
-                    $("#commentValidate").focus();
+                    $("#commentErrorTip" + state).html("${commentContentCannotEmptyLabel}");
+                    $("#comment" + state).focus();
+                } else if ($("#commentValidate" + state).val().replace(/\s/g, "") === "") {
+                    $("#commentErrorTip" + state).html("${captchaCannotEmptyLabel}");
+                    $("#commentValidate" + state).focus();
                 } else {
                     return true;
                 }
@@ -247,14 +262,54 @@
             }
 
             var replyTo = function (id) {
-                var replyValue = '${reply1Label}' + id + '\n',
-                $comment = $("#comment");
-                if ("" === $comment.val()) {
-                    $("#comment").val(replyValue);
-                } else {
-                    $("#comment").val($("#comment").val() + "\n" + replyValue);
+                
+                var commentFormHTML = "<table class='form' id='replyForm'><tbody><tr><th>${commentName1Label}"
+                    + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
+                    + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
+                    + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
+                    + "<th>${commentURL1Label}</th><td colspan='2'><input value='http://' id='commentURLReply'/>"
+                    + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
+                    + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
+                    + "<th>${captcha1Label}</th><td><input class='normalInput' id='commentValidate'/>"
+                    + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
+                    + "<span class='error-msg' id='commentErrorTipReply'/>"
+                    + "</th></tr><tr><td colspan='3' align='right'>"
+                    + "<button onclick='submitCommentReply('" + id + "');'>${submmitCommentLabel}</button>"
+                    + "</td></tr></tbody></table>";
+                $("#commentItem" + id).append(commentFormHTML);
+            }
+
+            var submitCommentReply = function (id) {
+                if (validateComment("Reply")) {
+                    $("#commentErrorTipReply").html("${loadingLabel}");
+                    var requestJSONObject = {
+                        "oId": "${article.oId}",
+                        "commentContent": $("#commentReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentEmail": $("#commentEmailReply").val(),
+                        "commentURL": $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "captcha": $("#commentValidateReply").val(),
+                        "originalCommentId": id
+                    };
+
+                    jsonRpc.commentService.addComment(function (result, error) {
+                        if (result && !error) {
+                            switch (result.sc) {
+                                case "COMMENT_ARTICLE_SUCC":
+                                    $("#replyForm").remove();
+                                    window.location.reload();
+                                    break;
+                                case "CAPTCHA_ERROR":
+                                    $("#commentErrorTipReply").html("${captchaErrorLabel}");
+                                    $("#captchaReply").attr("src", "/captcha.do?code=" + Math.random());
+                                    $("#commentValidateReply").val("").focus();
+                                    break
+                                default:
+                                    break;
+                            }
+                        }
+                    }, requestJSONObject);
                 }
-                $("#comment").focus();
             }
 
             var submitComment = function () {
