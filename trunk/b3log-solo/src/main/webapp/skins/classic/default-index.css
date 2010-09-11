@@ -101,6 +101,10 @@
     height: 60px;
 }
 
+.comment-reply {
+    margin: 0 auto 24px auto;
+}
+
 .error-msg {
     color: #3366CC;
 }
