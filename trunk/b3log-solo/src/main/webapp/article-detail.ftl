@@ -103,7 +103,8 @@
                                 </#if>
                                 <div class="right">
                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                    <a name="${comment.oId}" onclick="replyTo('${comment.oId}');">${replyLabel}</a>
+                                    <a class="noUnderline" name="${comment.oId}"
+                                       href="javascript:void(0);" onclick="replyTo('${comment.oId}');">${replyLabel}</a>
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -194,15 +195,16 @@
             var currentCommentId = "";
             
             var moveCursor = function(event) {
-                if (this.setSelectionRange) {
-                    // TODO:
-                    var iCaretPos = this.selectionStart;
-                } else if (this.createTextRange) {
-                    var   e   =   event.srcElement;
-                    var   r   =e.createTextRange();
-                    r.moveStart('character',e.value.length);
+                if ($.browser.msie) {
+                    var e = event.srcElement;
+                    var r = e.createTextRange();
+                    r.moveStart('character', e.value.length);
                     r.collapse(true);
                     r.select();
+                } else {
+                    var iCaretPos = event.target.value.length;
+                    event.target.selectionStart = iCaretPos;
+                    event.target.selectionEnd = iCaretPos;
                 }
             }
 
@@ -221,12 +223,13 @@
                         submitComment();
                     }
                 });
-                
+
                 // comment url
-                $("#commentURL").keyup(function () {
+                $("#commentURL").keyup(function (event) {
                     if (-1 === this.value.indexOf("http://")) {
                         this.value = "http://";
                     }
+                    moveCursor(event);
                 }).focus(function (event) {
                     moveCursor(event);
                 });
@@ -271,7 +274,7 @@
 
             var replyTo = function (id) {
                 if (id === currentCommentId) {
-                     $("#commentNameReply").focus();
+                    $("#commentNameReply").focus();
                     return;
                 } else {
                     $("#replyForm").remove();
@@ -298,10 +301,11 @@
                         }
                     });
 
-                    $("#commentURLReply").keyup(function () {
+                    $("#commentURLReply").keyup(function (event) {
                         if (-1 === this.value.indexOf("http://")) {
                             this.value = "http://";
                         }
+                        moveCursor(event);
                     }).focus(function (event) {
                         moveCursor(event);
                     });
