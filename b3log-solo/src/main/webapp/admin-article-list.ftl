@@ -212,9 +212,21 @@
                     var comments = result.comments,
                     commentsHTML = '';
                     for (var i = 0; i < comments.length; i++) {
-                        commentsHTML += "<div class='comment-title'><span class='left'>" + comments[i].commentDate
-                            + "</span><span class='right deleteIcon' onclick=\"deleteComment('" + comments[i].oId
-                            + "')\"></span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
+                        var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>";
+
+                        if (comments[i].commentURL === "http://") {
+                            hrefHTML = "<a target='_blank'>";
+                        }
+
+                        commentsHTML += "<div class='comment-title'><span class='left'>"
+                            + hrefHTML + comments[i].commentName + "</a>";
+
+                        if (comments[i].commentOriginalCommentName) {
+                            commentsHTML += "@" + comments[i].commentOriginalCommentName;
+                        }
+                        commentsHTML += "</span><span class='right deleteIcon' onclick=\"deleteComment('" + comments[i].oId
+                            + "')\"></span><span class='right'>" + $.bowknot.getDate(comments[i].commentDate.time, 1)
+                            + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
                     }
                     if ("" === commentsHTML) {
                         commentsHTML = "${noCommentLabel}"
