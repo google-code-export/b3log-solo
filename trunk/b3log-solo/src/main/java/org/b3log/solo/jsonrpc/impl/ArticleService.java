@@ -44,6 +44,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Sep 9, 2010
+ * @version 1.0.1.2, Sep 12, 2010
  */
 // FIXME: add/update/remove article event handle rollback
 public final class ArticleService extends AbstractGAEJSONRpcService {
@@ -80,6 +81,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private TagArticleRepository tagArticleRepository;
+    /**
+     * Article-Comment repository.
+     */
+    @Inject
+    private ArticleCommentRepository articleCommentRepository;
     /**
      * Event manager.
      */
@@ -381,14 +387,16 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             tagUtils.decTagRefCount(articleId);
             // Step 2: Remove tag-article relations
             articleUtils.removeTagArticleRelations(articleId);
-            // Step 3: Remove article
+            // Step 3: Remove related comments, article-comment relations
+            articleUtils.removeArticleComments(articleId);
+
+            // Step 4: Remove article
             articleRepository.remove(articleId);
-            // Step 4: Dec blog article count statictis
+            // Step 5: Dec blog article count statictis
             statistics.decBlogArticleCount();
-            // Step 5: Un-archive date-article relations
+            // Step 6: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
-            // FIXME: remove related comments
-            // Step 6: Fire remove article event
+            // Step 7: Fire remove article event
             try {
                 eventManager.fireEventSynchronously(
                         new Event<String>(EventTypes.REMOVE_ARTICLE, articleId));
