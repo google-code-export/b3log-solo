@@ -565,10 +565,10 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         }
 
         if (null == thumbnailURL) {
-            thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
             LOGGER.log(Level.WARNING,
                        "Not supported yet for comment thumbnail for email[{0}]",
                        commentEmail);
+            thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }
     }
