@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -39,6 +40,7 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.util.UtilModule;
 import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
@@ -62,7 +64,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Sep 7, 2010
+ * @version 1.0.1.3, Sep 11, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -183,6 +185,13 @@ public final class SoloServletListener extends AbstractServletListener {
         initPreference();
         initStatistic();
         loadCaptchas();
+
+        final String localeString =
+                userPreference.optString(LOCALE_STRING, "zh_CN");
+        if ("zh_CN".equals(localeString)) {
+            Templates.CONFIGURATION.setTimeZone(
+                    TimeZone.getTimeZone("Asia/Shanghai"));
+        }
 
         registerRemoteJSServiceSerializers();
 
@@ -348,7 +357,7 @@ public final class SoloServletListener extends AbstractServletListener {
                                           userPreference));
 
             preferenceRepository.update(preferenceId, userPreference);
-            
+
             LOGGER.log(Level.INFO, "Loaded preference[{0}]",
                        userPreference.toString(JSON_PRINT_INDENT_FACTOR));
         } catch (final Exception e) {

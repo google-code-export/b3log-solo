@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +27,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
@@ -40,7 +42,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 7, 2010
+ * @version 1.0.0.3, Sep 11, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -168,6 +170,14 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             }
 
             preference.put(Skin.SKINS, skinArray.toString());
+
+
+            final String localeString = preference.getString(
+                    Preference.LOCALE_STRING);
+            if ("zh_CN".equals(localeString)) {
+                Templates.CONFIGURATION.setTimeZone(
+                        TimeZone.getTimeZone("Asia/Shanghai"));
+            }
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
             SoloServletListener.setUserPreference(preference);
