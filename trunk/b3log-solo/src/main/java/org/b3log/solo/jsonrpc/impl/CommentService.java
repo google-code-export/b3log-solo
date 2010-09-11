@@ -314,9 +314,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT);
             commentContent = StringEscapeUtils.escapeHtml(commentContent);
-            final String originalCommentId = requestJSONObject.getString(
-                    Comment.COMMENT_ORIGINAL_COMMENT_ID);
-
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
             comment.put(Comment.COMMENT_NAME, commentName);
