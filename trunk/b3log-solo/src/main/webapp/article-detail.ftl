@@ -98,6 +98,8 @@
                                 <#else>
                                 <a name="${comment.oId}" href="${comment.commentURL}" class="left">${comment.commentName}</a>
                                 </#if>
+                                <#if originalCommentId??>
+                                </#if>
                                 <div class="right">
                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
                                     <a name="${comment.oId}" onclick="replyTo('${comment.oId}');">${replyLabel}</a>
@@ -188,6 +190,8 @@
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
         <script type="text/javascript">
+            var currentCommentId = "";
+            
             var moveCursor = function(event) {
                 if (this.setSelectionRange) {
                     // TODO:
@@ -265,37 +269,45 @@
             }
 
             var replyTo = function (id) {
-                
-                var commentFormHTML = "<table class='form comment-reply' id='replyForm'><tbody><tr><th>${commentName1Label}"
-                    + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
-                    + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
-                    + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
-                    + "<th>${commentURL1Label}</th><td colspan='2'><input value='http://' id='commentURLReply'/>"
-                    + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
-                    + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                    + "<th>${captcha1Label}</th><td><input class='normalInput' id='commentValidateReply'/>"
-                    + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
-                    + "<span class='error-msg' id='commentErrorTipReply'/>"
-                    + "</th></tr><tr><td colspan='3' align='right'>"
-                    + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
-                    + "</td></tr></tbody></table>";
-                $("#commentItem" + id).append(commentFormHTML);
+                if (id === currentCommentId) {
+                     $("#commentNameReply").focus();
+                    return;
+                } else {
+                    $("#replyForm").remove();
 
-                $("#commentValidateReply").keypress(function (event) {
-                    if (event.keyCode === 13) {
-                        submitCommentReply();
-                    }
-                });
+                    var commentFormHTML = "<table class='form comment-reply' id='replyForm'><tbody><tr><th>${commentName1Label}"
+                        + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
+                        + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
+                        + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
+                        + "<th>${commentURL1Label}</th><td colspan='2'><input value='http://' id='commentURLReply'/>"
+                        + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
+                        + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
+                        + "<th>${captcha1Label}</th><td><input class='normalInput' id='commentValidateReply'/>"
+                        + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
+                        + "<span class='error-msg' id='commentErrorTipReply'/>"
+                        + "</th></tr><tr><td colspan='3' align='right'>"
+                        + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
+                        + "</td></tr></tbody></table>";
 
-                $("#commentURLReply").keyup(function () {
-                    if (-1 === this.value.indexOf("http://")) {
-                        this.value = "http://";
-                    }
-                }).focus(function (event) {
-                    moveCursor(event);
-                });
+                    $("#commentItem" + id).append(commentFormHTML);
 
-                $("#commentNameReply").focus();
+                    $("#commentValidateReply").keypress(function (event) {
+                        if (event.keyCode === 13) {
+                            submitCommentReply();
+                        }
+                    });
+
+                    $("#commentURLReply").keyup(function () {
+                        if (-1 === this.value.indexOf("http://")) {
+                            this.value = "http://";
+                        }
+                    }).focus(function (event) {
+                        moveCursor(event);
+                    });
+
+                    $("#commentNameReply").focus();
+                }
+                currentCommentId = id;
             }
 
             var submitCommentReply = function (id) {
