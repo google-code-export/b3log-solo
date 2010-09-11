@@ -124,7 +124,7 @@ public final class ReplyProcessor
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#ADD_COMMENT}.
      *
      * @return event type
      */
