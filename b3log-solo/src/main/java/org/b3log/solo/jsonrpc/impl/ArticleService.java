@@ -387,6 +387,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             statistics.decBlogArticleCount();
             // Step 5: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
+            // FIXME: remove related comments
             // Step 6: Fire remove article event
             try {
                 eventManager.fireEventSynchronously(
