@@ -21,6 +21,7 @@
     background: #FFFFFF;
     border:2px solid #3366CC;
     position:absolute;
+    z-index: 100;
 }
 
 .dialog-content {
