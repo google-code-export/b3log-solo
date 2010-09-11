@@ -64,14 +64,14 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Sep 11, 2010
+ * @version 1.0.1.4, Sep 12, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
     /**
      * B3log Solo version.
      */
-    public static final String VERSION = "0.1.0-preview1";
+    public static final String VERSION = "0.1.0-preview2";
     /**
      * Logger.
      */
