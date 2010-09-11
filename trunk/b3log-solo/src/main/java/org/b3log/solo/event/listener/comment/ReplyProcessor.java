@@ -81,7 +81,7 @@ public final class ReplyProcessor
         final String originalCommentId =
                 comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         if (Strings.isEmptyOrNull(originalCommentId)) {
-            LOGGER.log(Level.FINER, "This comment[id={0}] is not a reply",
+            LOGGER.log(Level.INFO, "This comment[id={0}] is not a reply",
                        comment.optString(Keys.OBJECT_ID));
             return;
         }

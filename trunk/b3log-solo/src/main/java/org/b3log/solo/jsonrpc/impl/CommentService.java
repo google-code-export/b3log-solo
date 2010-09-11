@@ -48,6 +48,7 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -314,6 +315,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT);
             commentContent = StringEscapeUtils.escapeHtml(commentContent);
+            final String originalCommentId = requestJSONObject.optString(
+                    Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
             comment.put(Comment.COMMENT_NAME, commentName);
@@ -321,6 +324,10 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_DATE, new Date());
+            if (!Strings.isEmptyOrNull(originalCommentId)) {
+                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
+                            originalCommentId);
+            }
             setCommentThumbnailURL(comment);
             commentId = commentRepository.add(comment);
             // Save comment sharp URL
