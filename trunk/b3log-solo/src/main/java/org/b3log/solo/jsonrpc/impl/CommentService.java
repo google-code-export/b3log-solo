@@ -324,9 +324,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_DATE, new Date());
-
             setCommentThumbnailURL(comment);
-
             commentId = commentRepository.add(comment);
             // Save comment sharp URL
             final String commentSharpURL = getCommentSharpURL(request,
