@@ -25,7 +25,9 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.CommentRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,10 +36,15 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 13, 2010
+ * @version 1.0.0.1, Sep 12, 2010
  */
 public final class ArticleUtils {
 
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
     /**
      * Article-Comment repository.
      */
@@ -106,7 +113,7 @@ public final class ArticleUtils {
         final JSONObject article = articleRepository.get(articleId);
         final JSONObject newArticle = new JSONObject(
                 article, JSONObject.getNames(article));
-        return  article.getInt(Article.ARTICLE_VIEW_COUNT);
+        return article.getInt(Article.ARTICLE_VIEW_COUNT);
     }
 
     /**
@@ -143,6 +150,30 @@ public final class ArticleUtils {
             final String relationId =
                     tagArticleRelation.getString(Keys.OBJECT_ID);
             tagArticleRepository.remove(relationId);
+        }
+    }
+
+    /**
+     * Removes article comments by the specified article id.
+     *
+     * @param articleId the specified article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void removeArticleComments(final String articleId)
+            throws JSONException, RepositoryException {
+        final List<JSONObject> articleCommentRelations =
+                articleCommentRepository.getByArticleId(articleId);
+        for (int i = 0; i < articleCommentRelations.size(); i++) {
+            final JSONObject articleCommentRelation =
+                    articleCommentRelations.get(i);
+            final String commentId =
+                    articleCommentRelation.getString(Comment.COMMENT + "_"
+                                                     + Keys.OBJECT_ID);
+            commentRepository.remove(commentId);
+            final String relationId =
+                    articleCommentRelation.getString(Keys.OBJECT_ID);
+            articleCommentRepository.remove(relationId);
         }
     }
 
