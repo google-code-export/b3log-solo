@@ -2,8 +2,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="${articleTags?first.tagTitle}"/>
+        <meta name="description" content="${article.articleTitle}"/>
         <meta http-equiv="pragma" CONTENT="no-cache"/>
-        <meta name="author" content="b3log-solo.googlecode.com"/>
+        <meta name="revised" content="${blogTitle}, ${article.articleCreateDate?string("MM/dd/yy")}"/>
+        <meta name="generator" content="b3log"/>
+        <meta name="author" content="${blogTitle}"/>
         <meta HTTP-EQUIV="Window-target" CONTENT="_top"/>
         <title>${article.articleTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
@@ -94,7 +98,7 @@
                                 <#else>
                                 <a name="${comment.oId}" href="${comment.commentURL}" class="left">${comment.commentName}</a>
                                 </#if>
-                                <span class="right">${comment.commentDate}</span>
+                                <span class="right">${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}</span>
                                 <div class="clear"></div>
                             </div>
                             <div class="comment-body">

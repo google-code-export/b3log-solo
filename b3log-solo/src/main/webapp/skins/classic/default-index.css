@@ -48,7 +48,7 @@
 
 /* article list */
 .article, .comments {
-    padding: 24px 0 24px 12px;
+    padding: 12px 0 24px 12px;
 }
 
 .article-title {
@@ -75,11 +75,11 @@
 
 /* article detail */
 .article-body {
-    margin: 0 12px 24px;
+    margin: 0 12px 12px;
 }
 
 .article-footer {
-    margin: 24px 12px 0 0;
+    margin-right: 12px;
 }
 
 .comment-title {
