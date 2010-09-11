@@ -99,7 +99,7 @@
                                 <a name="${comment.oId}" href="${comment.commentURL}" class="left">${comment.commentName}</a>
                                 </#if>
                                 <#if comment.isReply>
-                                @${comment.commentOriginalCommentName}
+                                &nbsp;@${comment.commentOriginalCommentName}
                                 </#if>
                                 <div class="right">
                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
