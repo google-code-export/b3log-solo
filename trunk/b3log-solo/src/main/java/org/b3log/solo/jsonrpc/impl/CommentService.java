@@ -27,6 +27,7 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,7 +64,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Sep 5, 2010
+ * @version 1.0.1.2, Sep 11, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -317,9 +318,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            comment.put(Comment.COMMENT_DATE,
-                        Keys.SIMPLE_DATE_FORMAT1.format(
-                    System.currentTimeMillis()));
+            comment.put(Comment.COMMENT_DATE, new Date());
 
             setCommentThumbnailURL(comment);
 
@@ -329,6 +328,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                                               articleId,
                                                               commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
+            comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.update(commentId, comment);
             // Step 2: Add article-comment relation
             final JSONObject articleCommentRelation = new JSONObject();
@@ -345,7 +345,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             sendNotificationMail(article, commentId, commentContent, request);
             // Step 6: Fire add comment event
             eventManager.fireEventSynchronously(
-                    new Event<String>(EventTypes.ADD_COMMENT, articleId));
+                    new Event<JSONObject>(EventTypes.ADD_COMMENT, comment));
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
