@@ -130,6 +130,6 @@ public final class ReplyProcessor
      */
     @Override
     public String getEventType() {
-        return EventTypes.PREFERENCE_LOAD;
+        return EventTypes.ADD_COMMENT;
     }
 }
