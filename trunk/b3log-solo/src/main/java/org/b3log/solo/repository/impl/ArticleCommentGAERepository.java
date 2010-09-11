@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Article-Comment relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 13, 2010
+ * @version 1.0.0.4, Sep 11, 2010
  */
 public class ArticleCommentGAERepository extends AbstractGAERepository
         implements ArticleCommentRepository {
@@ -56,6 +56,7 @@ public class ArticleCommentGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, articleId);
+        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
 
         final List<JSONObject> ret = new ArrayList<JSONObject>();
@@ -76,7 +77,7 @@ public class ArticleCommentGAERepository extends AbstractGAERepository
         query.addFilter(Comment.COMMENT + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, commentId);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
-        
+
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
             return null;

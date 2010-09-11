@@ -98,7 +98,7 @@
                                 <#else>
                                 <a name="${comment.oId}" href="${comment.commentURL}" class="left">${comment.commentName}</a>
                                 </#if>
-                                <#if originalCommentId??>
+                                <#if commentOriginalCommentId??>
                                 </#if>
                                 <div class="right">
                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -320,7 +320,7 @@
                         "commentURL": $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "captcha": $("#commentValidateReply").val(),
-                        "originalCommentId": id
+                        "commentOriginalCommentId": id
                     };
 
                     jsonRpc.commentService.addComment(function (result, error) {
