@@ -40,14 +40,14 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 11, 2010
  */
-public final class ReplyProcessor
+public final class ReplyNotifier
         extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ReplyProcessor.class.getName());
+            Logger.getLogger(ReplyNotifier.class.getName());
     /**
      * Comment repository.
      */
@@ -66,7 +66,7 @@ public final class ReplyProcessor
      * @param eventManager the specified event manager
      */
     @Inject
-    public ReplyProcessor(final EventManager eventManager) {
+    public ReplyNotifier(final EventManager eventManager) {
         super(eventManager);
     }
 
@@ -77,7 +77,7 @@ public final class ReplyProcessor
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 comment,
-                                ReplyProcessor.class.getName()});
+                                ReplyNotifier.class.getName()});
         final String originalCommentId =
                 comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         if (Strings.isEmptyOrNull(originalCommentId)) {

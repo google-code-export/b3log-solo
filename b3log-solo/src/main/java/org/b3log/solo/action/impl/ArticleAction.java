@@ -198,6 +198,17 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             final JSONObject comment = commentRepository.get(commentId);
             comment.remove(Comment.COMMENT_EMAIL); // Remove email
+
+            if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
+                comment.put(Common.IS_REPLY, true);
+                final String originalCommentUserName = comment.getString(
+                        Comment.COMMENT_ORIGINAL_COMMENT_NAME);
+                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                            originalCommentUserName);
+            } else {
+                comment.put(Common.IS_REPLY, false);
+            }
+
             ret.add(comment);
         }
 

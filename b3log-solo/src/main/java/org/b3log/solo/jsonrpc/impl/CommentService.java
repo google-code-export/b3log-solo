@@ -325,8 +325,19 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_DATE, new Date());
             if (!Strings.isEmptyOrNull(originalCommentId)) {
-                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
-                            originalCommentId);
+                final JSONObject originalComment =
+                        commentRepository.get(originalCommentId);
+                if (null != originalComment) {
+                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
+                                originalCommentId);
+                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                                originalComment.getString(Comment.COMMENT_NAME));
+                } else {
+                    LOGGER.log(Level.WARNING,
+                               "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                               new String[]{originalCommentId, commentName,
+                                            commentContent});
+                }
             }
             setCommentThumbnailURL(comment);
             commentId = commentRepository.add(comment);

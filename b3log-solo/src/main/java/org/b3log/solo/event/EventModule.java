@@ -18,7 +18,7 @@ package org.b3log.solo.event;
 import java.util.logging.Logger;
 import org.b3log.solo.event.listener.sync.impl.CSDNBlogAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
-import org.b3log.solo.event.listener.comment.ReplyProcessor;
+import org.b3log.solo.event.listener.comment.ReplyNotifier;
 import org.b3log.solo.event.listener.preference.NoticeBoardLoader;
 import org.b3log.solo.event.listener.sync.impl.BlogJavaAddArticleProcessor;
 import org.b3log.solo.event.listener.sync.impl.BlogJavaRemoveArticleProcessor;
@@ -72,6 +72,6 @@ public final class EventModule extends AbstractEventModule {
 
         bind(NoticeBoardLoader.class).asEagerSingleton();
 
-        bind(ReplyProcessor.class).asEagerSingleton();
+        bind(ReplyNotifier.class).asEagerSingleton();
     }
 }
