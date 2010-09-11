@@ -165,10 +165,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final List<JSONObject> articleComments = getComments(articleId);
             ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
 
-            // Remove cached page for this article
-            AbstractCacheablePageAction.PAGE_CACHE.remove("article-detail.dooId="
-                                                          + articleId);
-
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);

@@ -266,7 +266,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      *     "commentEmail": "",
      *     "commentURL": "",
      *     "commentContent": "",
-     *     "originalCommentId": "" // optional, if exists this key, the comment
+     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment
      *                             // is an reply comment
      * }
      * </pre>
