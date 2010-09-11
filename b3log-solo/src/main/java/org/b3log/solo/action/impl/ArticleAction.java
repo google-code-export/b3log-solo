@@ -201,11 +201,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
                 comment.put(Common.IS_REPLY, true);
-                    final String originalCommentName = comment.getString(
-                            Comment.COMMENT_ORIGINAL_COMMENT_NAME);
-                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
-                                originalCommentName);
-                } else {
+                final String originalCommentName = comment.getString(
+                        Comment.COMMENT_ORIGINAL_COMMENT_NAME);
+                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                            originalCommentName);
+            } else {
                 comment.put(Common.IS_REPLY, false);
             }
 
