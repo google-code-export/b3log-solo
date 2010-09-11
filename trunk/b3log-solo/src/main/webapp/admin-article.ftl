@@ -10,7 +10,7 @@
         ${content1Label}
     </div>
     <div class="marginBottom12 marginLeft12">
-        <textarea rows="15" id="articleContent" name="articleContent" style="width: 99%;"></textarea>
+        <textarea rows="30" id="articleContent" name="articleContent" style="width: 99%;"></textarea>
     </div>
     <div class="left label">${tags1Label}</div>
     <div class="left input">
@@ -19,7 +19,7 @@
     <div class="clear"></div>
     <div class="left label">${abstract1Label}</div>
     <div class="left input">
-        <textarea id="abstract" rows="3"></textarea>
+        <textarea id="abstract" rows="5" name="abstract"></textarea>
     </div>
     <div class="clear"></div>
     <div class="right label">
@@ -57,13 +57,13 @@
         tinyMCE.init({
             // General options
             mode : "exact",
-            elements : "articleContent",
+            elements : "articleContent, abstract",
             theme : "advanced",
             plugins : "style,advhr,advimage,advlink,preview,media,paste,fullscreen",
 
             // Theme options
             theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-            theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen",
+            theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen",
             theme_advanced_buttons3 : "",
             theme_advanced_toolbar_location : "top",
             theme_advanced_toolbar_align : "left",
@@ -83,9 +83,8 @@
         } else if ($("#tag").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${tagsEmptyLabel}");
             $("#tag").focus().val("");
-        } else if($("#abstract").val().replace(/\s/g, "") === "") {
+        } else if(tinyMCE.get('abstract').getContent().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${abstractEmptyLabel}");
-            $("#abstract").focus().val("");
         } else {
             return true;
         }
@@ -106,7 +105,7 @@
                 "article": {
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
-                    "articleAbstract": $("#abstract").val(),
+                    "articleAbstract": tinyMCE.get('abstract').getContent(),
                     "articleTags": $("#tag").val()
                 }
             };
@@ -142,7 +141,7 @@
                     "oId": $("#title").data("oId"),
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
-                    "articleAbstract": $("#abstract").val(),
+                    "articleAbstract": tinyMCE.get('abstract').getContent(),
                     "articleTags": tagsString
                 }
             };

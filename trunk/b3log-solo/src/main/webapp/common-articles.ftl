@@ -58,14 +58,14 @@
 </#list>
 <#if 0 != paginationPageCount>
 <div class="pagination">
-    <#if paginationFirstPageNum!=1>
+    <#if paginationPageNums?first != 1>
     <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=1">${firstPageLabel}</a>
     <a id="previousPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationFirstPageNum}">${previousPageLabel}</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
     <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
     </#list>
-    <#if paginationLastPageNum!=paginationPageCount>
+    <#if paginationPageNums?last!=paginationPageCount>
     <a id="nextPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationLastPageNum}">${nextPagePabel}</a>
     <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}">${lastPageLabel}</a>
     </#if>

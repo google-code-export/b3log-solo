@@ -86,8 +86,8 @@
                         setCurrentNaviStyle(0);
                         // set default value for article.
                         $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
-                        tinyMCE.get('articleContent').setContent(result.article.articleContent),
-                        $("#abstract").val(result.article.articleAbstract);
+                        tinyMCE.get('articleContent').setContent(result.article.articleContent);
+                        tinyMCE.get('abstract').setContent(result.article.articleAbstract);
 
                         var tags = result.article.articleTags,
                         tagsString = '';
