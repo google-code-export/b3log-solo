@@ -298,7 +298,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final HttpSession session = request.getSession();
             final String storedCaptcha = (String) session.getAttribute(
                     CaptchaServlet.CAPTCHA);
-            if (!storedCaptcha.equals(captcha)) {
+            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
                 ret.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
 
                 return ret;
