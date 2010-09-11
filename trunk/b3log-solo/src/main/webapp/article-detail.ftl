@@ -262,7 +262,6 @@
             }
 
             var replyTo = function (id) {
-                
                 var commentFormHTML = "<table class='form' id='replyForm'><tbody><tr><th>${commentName1Label}"
                     + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
                     + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
@@ -274,7 +273,7 @@
                     + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
                     + "<span class='error-msg' id='commentErrorTipReply'/>"
                     + "</th></tr><tr><td colspan='3' align='right'>"
-                    + "<button onclick='submitCommentReply('" + id + "');'>${submmitCommentLabel}</button>"
+                    + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
                     + "</td></tr></tbody></table>";
                 $("#commentItem" + id).append(commentFormHTML);
             }
