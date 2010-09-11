@@ -93,12 +93,13 @@
                         <#list articleComments as comment>
                         <div id="commentItem${comment.oId}">
                             <div class="comment-title">
-                                <#if comment.commentURL=="http://">
+                                <#if "http://" == comment.commentURL>
                                 <a name="${comment.oId}" class="left">${comment.commentName}</a>
                                 <#else>
                                 <a name="${comment.oId}" href="${comment.commentURL}" class="left">${comment.commentName}</a>
                                 </#if>
-                                <#if commentOriginalCommentId??>
+                                <#if comment.isReply>
+                                @${comment.commentOriginalCommentName}
                                 </#if>
                                 <div class="right">
                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -293,7 +294,7 @@
 
                     $("#commentValidateReply").keypress(function (event) {
                         if (event.keyCode === 13) {
-                            submitCommentReply();
+                            submitCommentReply(id);
                         }
                     });
 

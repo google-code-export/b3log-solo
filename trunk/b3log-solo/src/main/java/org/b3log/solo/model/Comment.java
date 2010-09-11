@@ -62,8 +62,13 @@ public final class Comment {
     /**
      * Key of original comment id.
      */
-    public static final String COMMENT_ORIGINAL_COMMENT_ID
-            = "commentOriginalCommentId";
+    public static final String COMMENT_ORIGINAL_COMMENT_ID =
+            "commentOriginalCommentId";
+    /**
+     * Key of original comment user name.
+     */
+    public static final String COMMENT_ORIGINAL_COMMENT_NAME =
+            "commentOriginalCommentName";
 
     /**
      * Private default constructor.
