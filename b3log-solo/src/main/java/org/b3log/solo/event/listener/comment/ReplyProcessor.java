@@ -21,6 +21,7 @@ import com.google.appengine.api.mail.MailServiceFactory;
 import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -35,11 +36,6 @@ import org.json.JSONObject;
 
 /**
  * This listener is responsible for processing comment reply.
- *
- * <ol>
- *   <li>Extracts original comment committers</li>
- *   <li>Sends mails to these committers</li>
- * </ol>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 11, 2010
@@ -77,17 +73,19 @@ public final class ReplyProcessor
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject comment = event.getData();
-        final String originalCommentId =
-                comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
-        if (Strings.isEmptyOrNull(originalCommentId)) {
-            return;
-        }
-
         LOGGER.log(Level.INFO,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 comment,
                                 ReplyProcessor.class.getName()});
+        final String originalCommentId =
+                comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+        if (Strings.isEmptyOrNull(originalCommentId)) {
+            LOGGER.log(Level.FINER, "This comment[id={0}] is not a reply",
+                       comment.optString(Keys.OBJECT_ID));
+            return;
+        }
+
         try {
             final JSONObject preference =
                     SoloServletListener.getUserPreference();
