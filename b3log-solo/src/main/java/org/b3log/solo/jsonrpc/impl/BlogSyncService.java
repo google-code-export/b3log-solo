@@ -420,35 +420,35 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                 } else { // Not retrieved yet, get the article from External blogging system
                     final Post externalPost =
                             metaWeblog.getPost(externalArticleId);
-                    if (null != externalPost) {
-                        article = externalPost.toJSONObject();
-                        externalArticleRepository.add(article);
-
-                        final JSONObject externalArticleSoloArticleRelation =
-                                new JSONObject();
-                        externalArticleSoloArticleRelation.put(
-                                BLOG_SYNC_EXTERNAL_ARTICLE_ID,
-                                externalArticleId);
-                        externalArticleSoloArticleRelation.put(
-                                Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                soloArticleId);
-                        externalArticleSoloArticleRelation.put(
-                                BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
-                                externalSys);
-                        externalArticleSoloArticleRepository.add(
-                                externalArticleSoloArticleRelation);
-                        LOGGER.log(Level.INFO,
-                                   "Added an external[{0}] blog article-solo article relation[{1}]",
-                                   new String[]{
-                                    externalSys,
-                                    externalArticleSoloArticleRelation.toString()});
-                        retrievalCnt++;
-                    } else {
+                    if (null == externalPost) {
                         LOGGER.log(Level.WARNING,
                                    "Retrieve article[postId={0}] from external blogging system[{1}] is null",
                                    new String[]{externalArticleId, externalSys});
                         continue;
                     }
+                    
+                    article = externalPost.toJSONObject();
+                    externalArticleRepository.add(article);
+
+                    final JSONObject externalArticleSoloArticleRelation =
+                            new JSONObject();
+                    externalArticleSoloArticleRelation.put(
+                            BLOG_SYNC_EXTERNAL_ARTICLE_ID,
+                            externalArticleId);
+                    externalArticleSoloArticleRelation.put(
+                            Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                            soloArticleId);
+                    externalArticleSoloArticleRelation.put(
+                            BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
+                            externalSys);
+                    externalArticleSoloArticleRepository.add(
+                            externalArticleSoloArticleRelation);
+                    LOGGER.log(Level.INFO,
+                               "Added an external[{0}] blog article-solo article relation[{1}]",
+                               new String[]{
+                                externalSys,
+                                externalArticleSoloArticleRelation.toString()});
+                    retrievalCnt++;
                 }
 
                 article.put(BLOG_SYNC_IMPORTED, imported);
