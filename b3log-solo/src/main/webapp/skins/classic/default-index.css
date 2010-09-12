@@ -73,9 +73,28 @@
     word-wrap:break-word;
 }
 
-/* article detail */
+/* article detail or common-articles */
 .article-body {
     margin: 0 12px 12px;
+}
+
+.article-body blockquote{
+    border:1px dotted #98A47F;
+    margin:12px;
+    padding:12px;
+     font-style: italic;
+}
+
+.article-body * {
+    margin: auto;
+}
+
+.article-body ol, .article-body ul {
+    padding: 0 0 0 24px;
+}
+
+.article-body p {
+    margin:1em 0 0.5em
 }
 
 .article-footer {
