@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 11, 2010
+ * @version 1.0.0.1, Sep 12, 2010
  */
 public final class ReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -100,6 +100,7 @@ public final class ReplyNotifier
                     comment.getString(Comment.COMMENT_SHARP_URL);
             final Message message = new Message();
             message.setSender(commentEmail);
+            message.setTo(originalCommentEmail);
             final String mailSubject = "New reply of your comment from Solo "
                                        + "blog[" + preference.getString(
                     Preference.BLOG_TITLE) + "]";
@@ -113,7 +114,7 @@ public final class ReplyNotifier
                        "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
                        new Object[]{mailSubject, mailBody,
                                     originalCommentEmail});
-            mailService.sendToAdmins(message);
+            mailService.send(message);
 
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
