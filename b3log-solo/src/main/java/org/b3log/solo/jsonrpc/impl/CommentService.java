@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Sep 11, 2010
+ * @version 1.0.1.3, Sep 12, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -411,7 +411,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                                           commentId);
         final Message message = new Message();
         message.setSender(preference.getString(Preference.ADMIN_GMAIL));
-        final String mailSubject = blogTitle + ": New comment on "
+        final String mailSubject = blogTitle + ": New comment about "
                                    + articleTitle;
         message.setSubject(mailSubject);
         final String articleURL = getArticleURL(request, articleId);
