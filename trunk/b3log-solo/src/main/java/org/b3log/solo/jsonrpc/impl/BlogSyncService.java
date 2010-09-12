@@ -422,8 +422,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                             metaWeblog.getPost(externalArticleId);
                     if (null != externalPost) {
                         article = externalPost.toJSONObject();
-                        final String externalArticleImportedId =
-                                externalArticleRepository.add(article);
+                        externalArticleRepository.add(article);
 
                         final JSONObject externalArticleSoloArticleRelation =
                                 new JSONObject();
@@ -432,7 +431,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                 externalArticleId);
                         externalArticleSoloArticleRelation.put(
                                 Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                externalArticleImportedId);
+                                soloArticleId);
                         externalArticleSoloArticleRelation.put(
                                 BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
                                 externalSys);
