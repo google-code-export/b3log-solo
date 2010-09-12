@@ -397,25 +397,26 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             ret.put(BLOG_SYNC_EXTERNAL_ARTICLES, articles);
             int retrievalCnt = 0;
             for (final String externalArticleId : externalArticleIds) {
-                final String oId = externalArticleSoloArticleRepository.
+                final String soloArticleId = externalArticleSoloArticleRepository.
                         getSoloArticleId(externalArticleId, externalSys);
                 LOGGER.log(Level.FINEST,
                            "External[{0}] article[id={1}] Solo article[id={2}]",
-                           new String[]{externalSys, externalArticleId, oId});
-                final boolean imported = articleRepository.has(oId);
+                           new String[]{externalSys, externalArticleId,
+                                        soloArticleId});
+                final boolean imported = articleRepository.has(soloArticleId);
                 final boolean tmpImported =
-                        externalArticleRepository.has(oId);
+                        externalArticleRepository.has(soloArticleId);
                 // assert imported == tmpImported for consistency
 
                 JSONObject article = null;
                 LOGGER.log(Level.FINER,
                            "External[{0}] blog article[oId={1}] status[tmpImported={2}, imported={3}]",
                            new String[]{externalSys,
-                                        oId,
+                                        soloArticleId,
                                         Boolean.toString(tmpImported),
                                         Boolean.toString(imported)});
                 if (tmpImported) {
-                    article = externalArticleRepository.get(oId);
+                    article = externalArticleRepository.get(soloArticleId);
                 } else { // Not retrieved yet, get the article from External blogging system
                     final Post externalPost =
                             metaWeblog.getPost(externalArticleId);
