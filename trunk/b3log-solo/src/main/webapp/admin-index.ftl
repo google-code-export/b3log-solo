@@ -14,6 +14,7 @@
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
         <link rel="shortcut icon" href="favicon.ico" />
         <link rel="icon" type="image/gif" href="favicon.gif"/>
+        ${htmlHead}
     </head>
     <body>
         <div id="tipMsg"></div>

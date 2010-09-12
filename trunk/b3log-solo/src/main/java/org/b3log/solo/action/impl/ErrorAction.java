@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Error action. error.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 7, 2010
+ * @version 1.0.0.2, Sep 12, 2010
  */
 public final class ErrorAction extends AbstractAction {
 
@@ -108,6 +108,8 @@ public final class ErrorAction extends AbstractAction {
                     preference.getString(Preference.BLOG_SUBTITLE));
             ret.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
             ret.put(Common.VERSION, SoloServletListener.VERSION);
+            ret.put(Preference.HTML_HEAD,
+                    preference.getString(Preference.HTML_HEAD));
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
