@@ -105,10 +105,9 @@ public final class ReplyNotifier
                                        + "blog[" + preference.getString(
                     Preference.BLOG_TITLE) + "]";
             message.setSubject(mailSubject);
-            final String mailBody = commentContent + "\r\n"
+            final String mailBody = commentContent + "<p>"
                                     + "See <a href=" + commentSharpURL
-                                    + ">here</a> for more"
-                                    + "for original post.";
+                                    + ">here</a> for original post.</p>";
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.FINER,
                        "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
