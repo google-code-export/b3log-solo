@@ -5,20 +5,21 @@
         <meta name="keywords" content="${articleTags?first.tagTitle}"/>
         <meta name="description" content="${article.articleTitle}"/>
         <meta http-equiv="pragma" CONTENT="no-cache"/>
-        <meta name="revised" content="${blogTitle}, ${article.articleCreateDate?string("MM/dd/yy")}"/>
-              <meta name="generator" content="b3log"/>
-            <meta name="author" content="${blogTitle}"/>
-            <meta HTTP-EQUIV="Window-target" CONTENT="_top"/>
-            <title>${article.articleTitle} - ${blogTitle}</title>
-            <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
-            <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
-            <script type="text/javascript" src="js/json-rpc.js"></script>
-            <link type="text/css" rel="stylesheet" href="js/lib/SyntaxHighlighter/styles/shCoreDefault.css"/>
-            <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
-            <link type="text/css" rel="stylesheet" href="skins/${skinDirName}/default-index.css"/>
-            <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
-            <link rel="shortcut icon" href="favicon.ico" />
-            <link rel="icon" type="image/gif" href="favicon.gif"/>
+        <meta name="revised" content="${blogTitle}, ${article.articleCreateDate?string('MM/dd/yy')}"/>
+        <meta name="generator" content="b3log"/>
+        <meta name="author" content="${blogTitle}"/>
+        <meta HTTP-EQUIV="Window-target" CONTENT="_top"/>
+        <title>${article.articleTitle} - ${blogTitle}</title>
+        <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
+        <script type="text/javascript" src="js/json-rpc.js"></script>
+        <link type="text/css" rel="stylesheet" href="js/lib/SyntaxHighlighter/styles/shCoreDefault.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
+        <link type="text/css" rel="stylesheet" href="skins/${skinDirName}/default-index.css"/>
+        <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link rel="icon" type="image/gif" href="favicon.gif"/>
+        ${htmlHead}
     </head>
     <body>
         <#include "common-top.ftl">

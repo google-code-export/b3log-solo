@@ -309,14 +309,14 @@ public final class Filler {
     public void fillBlogHeader(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = SoloServletListener.getUserPreference();
-        final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-        final String blogSubtitle = preference.getString(
-                Preference.BLOG_SUBTITLE);
-
-        dataModel.put(Preference.BLOG_TITLE, blogTitle);
-        dataModel.put(Preference.BLOG_SUBTITLE, blogSubtitle);
         dataModel.put(Preference.LOCALE_STRING,
                       preference.getString(Preference.LOCALE_STRING));
+        dataModel.put(Preference.BLOG_TITLE,
+                      preference.getString(Preference.BLOG_TITLE));
+        dataModel.put(Preference.BLOG_SUBTITLE,
+                      preference.getString(Preference.BLOG_SUBTITLE));
+        dataModel.put(Preference.HTML_HEAD,
+                      preference.getString(Preference.HTML_HEAD));
     }
 
     /**

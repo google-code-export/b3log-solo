@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 11, 2010
+ * @version 1.0.0.4, Sep 12, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -84,7 +84,9 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "skins: [{
      *             "skinName": "",
      *             "skinDirName": ""
-     *         }, ....]
+     *         }, ....],
+     *         "noticeBoard": "",
+     *         "htmlHead": ""
      *     }
      *     "sc": "GET_PREFERENCE_SUCC"
      * }
@@ -127,7 +129,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "blogHost": "",
      *         "adminGmail": "",
      *         "localeString": "",
-     *         "noticeBoard": ""
+     *         "noticeBoard": "",
+     *         "htmlHead": ""
      *     }
      * }, see {@link Preference} for more details
      * </pre>

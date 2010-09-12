@@ -51,6 +51,14 @@
                             <textarea rows="9" id="noticeBoard"></textarea>
                         </th>
                     </tr>
+                    <tr>
+                        <th>
+                            ${htmlhead1Label}
+                        </th>
+                        <th>
+                            <textarea rows="9" id="htmlHead"></textarea>
+                        </th>
+                    </tr>
                 </tbody>
             </table>
             <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
@@ -142,6 +150,7 @@
                     $("#adminGmail").val(preference.adminGmail);
                     $("#localeString").val(preference.localeString);
                     $("#noticeBoard").val(preference.noticeBoard);
+                    $("#htmlHead").val(preference.htmlHead);
                     localeString = preference.localeString;
 
                     // skin
@@ -205,7 +214,8 @@
                 "blogHost": $("#blogHost").val(),
                 "adminGmail": $("#adminGmail").val(),
                 "localeString": $("#localeString").val(),
-                "noticeBoard": $("#noticeBoard").val()
+                "noticeBoard": $("#noticeBoard").val(),
+                "htmlHead": $("#htmlHead").val()
             }
         }
 

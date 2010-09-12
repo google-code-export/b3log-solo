@@ -18,6 +18,7 @@
         <link href="tag-articles-feed.do?oId=${oId}" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="shortcut icon" href="favicon.ico" />
         <link rel="icon" type="image/gif" href="favicon.gif"/>
+        ${htmlHead}
     </head>
     <body>
         <#include "common-top.ftl">
