@@ -437,7 +437,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                 externalSys);
                         externalArticleSoloArticleRepository.add(
                                 externalArticleSoloArticleRelation);
-                        LOGGER.log(Level.FINER,
+                        LOGGER.log(Level.INFO,
                                    "Added an external[{0}] blog article-solo article relation[{1}]",
                                    new String[]{
                                     externalSys,
