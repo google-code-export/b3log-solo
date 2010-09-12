@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * blogging system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 4, 2010
+ * @version 1.0.0.1, Sep 13, 2010
  */
 public abstract class AbstractAddArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -118,30 +118,25 @@ public abstract class AbstractAddArticleProcessor
                 metaWeblog.setUserName(userName);
                 metaWeblog.setUserPassword(userPwd);
                 postId = metaWeblog.newPost(post);
+
+                final JSONObject postSoloArticleRelation = new JSONObject();
+                postSoloArticleRelation.put(
+                        BLOG_SYNC_EXTERNAL_ARTICLE_ID, postId);
+                postSoloArticleRelation.put(Article.ARTICLE + "_"
+                                            + Keys.OBJECT_ID, articleId);
+                postSoloArticleRelation.put(
+                        BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
+                        externalBloggingSys);
+                externalArticleSoloArticleRepository.add(
+                        postSoloArticleRelation);
+                LOGGER.log(Level.FINER,
+                           "Added external[{0}] blog article-solo article relation[{1}]",
+                           new String[]{getExternalBloggingSys(),
+                                        postSoloArticleRelation.toString()});
             }
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
 
-            throw new EventException("Can not handle event[" + getEventType()
-                                     + "]");
-        }
-
-        try {
-            final JSONObject postSoloArticleRelation = new JSONObject();
-            postSoloArticleRelation.put(
-                    BLOG_SYNC_EXTERNAL_ARTICLE_ID, postId);
-            postSoloArticleRelation.put(Article.ARTICLE + "_"
-                                        + Keys.OBJECT_ID, articleId);
-            postSoloArticleRelation.put(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
-                                        externalBloggingSys);
-            externalArticleSoloArticleRepository.add(
-                    postSoloArticleRelation);
-            LOGGER.log(Level.FINER,
-                       "Added external[{0}] blog article-solo article relation[{1}]",
-                       new String[]{getExternalBloggingSys(),
-                                    postSoloArticleRelation.toString()});
-        } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
             throw new EventException("Can not handle event[" + getEventType()
                                      + "]");
         }
