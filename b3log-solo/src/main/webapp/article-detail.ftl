@@ -101,8 +101,8 @@
                                 </#if>
                                 <#if comment.isReply>
                                 &nbsp;
-                                <a href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}">
-                                    @${comment.commentOriginalCommentName}
+                                @<a href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}">
+                                    ${comment.commentOriginalCommentName}
                                 </a>
                                 </#if>
                                 <div class="right">
