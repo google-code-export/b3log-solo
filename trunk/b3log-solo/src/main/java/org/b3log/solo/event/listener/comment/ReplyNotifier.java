@@ -89,6 +89,8 @@ public final class ReplyNotifier
         try {
             final JSONObject preference =
                     SoloServletListener.getUserPreference();
+            final String blogTitle =
+                    preference.getString(Preference.BLOG_TITLE);
             final String adminGamil =
                     preference.getString(Preference.ADMIN_GMAIL);
             final JSONObject originalComment =
@@ -102,9 +104,7 @@ public final class ReplyNotifier
             final Message message = new Message();
             message.setSender(adminGamil);
             message.setTo(originalCommentEmail);
-            final String mailSubject = "New reply of your comment from Solo "
-                                       + "blog[" + preference.getString(
-                    Preference.BLOG_TITLE) + "]";
+            final String mailSubject = blogTitle + ": New reply of your comment";
             message.setSubject(mailSubject);
             final String mailBody = commentContent + "<p>"
                                     + "See <a href=" + commentSharpURL
