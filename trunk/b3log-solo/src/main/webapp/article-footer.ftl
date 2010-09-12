@@ -134,7 +134,8 @@ Powered by
 
     // article-side.ftl user introduction
     function handleResponse (response) {
-        var userInfo = {};
+        var userInfo = {},
+        userIntroHTML = "";
         if (response.error) {
             userInfo.thumbnailUrl = localStorage.getItem("userInfoThumbnailUrl");
             userInfo.displayName = localStorage.getItem("userInfoDisplayName");
@@ -145,10 +146,14 @@ Powered by
             localStorage.setItem("userInfoDisplayName", response.data.displayName);
             localStorage.setItem("userInfoAboutMe", response.data.aboutMe);
         }
-        var userIntroHTML = "<li><img src='" + userInfo.thumbnailUrl + "'/></li>"
-            + "<li>" + userInfo.displayName + "</li>"
-            + "<li class='aboutMe'>" + userInfo.aboutMe + "</li>";
 
+        if (userInfo.thumbnailUrl === null || userInfo.thumbnailUrl === undefined || userInfo.thumbnailUrl === "") {
+            userIntroHTML = "";
+        } else {
+            userIntroHTML = "<li><img src='" + userInfo.thumbnailUrl + "'/></li>"
+                + "<li>" + userInfo.displayName + "</li>"
+                + "<li class='aboutMe'>" + userInfo.aboutMe + "</li>";
+        }
         $("#userIntro").html(userIntroHTML);
     }
 </script>
