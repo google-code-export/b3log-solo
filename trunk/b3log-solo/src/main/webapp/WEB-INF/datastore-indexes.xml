@@ -25,4 +25,8 @@
     Author: Liang Ding
 -->
 <datastore-indexes autoGenerate="true">
+    <datastore-index kind="article_comment" ancestor="false" source="auto">
+        <property name="article_oId" direction="asc"/>
+        <property name="oId" direction="desc"/>
+    </datastore-index>
 </datastore-indexes>
