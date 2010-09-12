@@ -118,7 +118,7 @@ public final class ReplyNotifier
 
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new EventException("Load notice board error!");
+            throw new EventException("Reply notifier error!");
         }
     }
 
