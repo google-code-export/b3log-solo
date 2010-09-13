@@ -23,7 +23,7 @@ import org.json.JSONObject;
  * External blogging system article(for sync)-Solo article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 4, 2010
+ * @version 1.0.0.3, Sep 13, 2010
  */
 public interface ExternalArticleSoloArticleRepository extends Repository {
 
@@ -38,6 +38,19 @@ public interface ExternalArticleSoloArticleRepository extends Repository {
      */
     String getSoloArticleId(final String externalArticleId,
                             final String externalBloggingSys)
+            throws RepositoryException;
+
+    /**
+     * Gets a Solo article by the specified external blogging system name and
+     * external article id.
+     *
+     * @param externalArticleId the specified external blog article id
+     * @param externalBloggingSys external blogging system name
+     * @return Solo article, returns {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    JSONObject getSoloArticle(final String externalArticleId,
+                          final String externalBloggingSys)
             throws RepositoryException;
 
     /**

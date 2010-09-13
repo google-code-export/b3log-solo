@@ -128,6 +128,8 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             client.setConfig(config);
             final Map<String, ?> result =
                     (Map<String, ?>) client.execute(GET_POST, params);
+            LOGGER.log(Level.FINEST, "metaWeblog.getPost result[{0}]",
+                       result);
             LOGGER.log(Level.INFO, "Got an article[id={0}] from [{1}]",
                        new String[]{postId, getBloggingServiceProvider()});
 
@@ -138,9 +140,14 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             ret.setTitle(title);
 
             final Object[] categoryObjects = (Object[]) result.get("categories");
+            // XXX: // BlogJava always empty
             if (null != categoryObjects) {
+                LOGGER.log(Level.FINEST, "Category length[{0}]",
+                           categoryObjects.length);
                 for (int i = 0; i < categoryObjects.length; i++) {
                     final Object category = categoryObjects[i];
+                    LOGGER.log(Level.FINEST, "Category[{0}]",
+                               category.toString());
                     ret.addCategory(category.toString());
                 }
             }
@@ -149,7 +156,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             ret.setCreateDate(createDate);
 
             final String description = (String) result.get("description");
-            // TODO: // Syntax highlighting for CSDN
+            // XXX: // Syntax highlighting for CSDN
             final String content = description.replaceAll(
                     "<textarea",
                     "<pre name='code' class='brush:java;'").

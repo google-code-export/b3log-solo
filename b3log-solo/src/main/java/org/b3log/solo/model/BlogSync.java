@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all blog sync model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Sep 4, 2010
+ * @version 1.0.0.5, Sep 13, 2010
  */
 public final class BlogSync {
 
@@ -39,7 +39,6 @@ public final class BlogSync {
      * Key of BlogJava.
      */
     public static final String BLOG_SYNC_BLOGJAVA = "blogSyncBlogJava";
-
     /**
      * Key of blog sync external blogging system user name.
      */
@@ -80,6 +79,11 @@ public final class BlogSync {
      */
     public static final String BLOG_SYNC_EXTERNAL_ARCHIVE_DATES =
             "blogSyncExternalArchiveDates";
+    /**
+     * Key of external blogging system article imported.
+     */
+    public static final String BLOG_SYNC_EXTERNAL_ARTICLE_IMPORTED =
+            "blogSyncExternalArticleImported";
     /**
      * Key of external blogging system article.
      */

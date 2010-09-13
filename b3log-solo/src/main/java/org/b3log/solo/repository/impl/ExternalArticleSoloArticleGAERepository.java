@@ -26,13 +26,14 @@ import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * External blog article-Solo article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 4, 2010
+ * @version 1.0.0.3, Sep 13, 2010
  */
 public class ExternalArticleSoloArticleGAERepository
         extends AbstractGAERepository
@@ -70,6 +71,33 @@ public class ExternalArticleSoloArticleGAERepository
         final Map<String, Object> properties = entity.getProperties();
 
         return (String) properties.get(Article.ARTICLE + "_" + Keys.OBJECT_ID);
+    }
+
+    @Override
+    public JSONObject getSoloArticle(final String externalArticleId,
+                                     final String externalBloggingSys)
+            throws RepositoryException {
+        final JSONObject relation =
+                getByExternalArticleId(externalArticleId, externalBloggingSys);
+        if (null == relation) {
+            return null;
+        }
+
+        try {
+            final JSONObject ret = relation;
+            final String articleId = relation.getString(Article.ARTICLE + "_"
+                                                        + Keys.OBJECT_ID);
+            // replace oId for article
+            ret.put(Keys.OBJECT_ID, articleId);
+            // remove relation properties
+            ret.remove(Article.ARTICLE + "_" + Keys.OBJECT_ID);
+            ret.remove(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS);
+            ret.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID);
+
+            return ret;
+        } catch (final JSONException e) {
+            throw new RepositoryException(e);
+        }
     }
 
     @Override

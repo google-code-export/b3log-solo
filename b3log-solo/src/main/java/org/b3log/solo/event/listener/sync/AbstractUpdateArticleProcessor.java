@@ -113,18 +113,16 @@ public abstract class AbstractUpdateArticleProcessor
                 final JSONObject externalArticleSoloArticleRelation =
                         externalArticleSoloArticleRepository.getBySoloArticleId(
                         articleId, externalBloggingSys);
-                LOGGER.log(Level.FINEST,
-                           "External article-Solo article relation[{0}]",
-                           externalArticleSoloArticleRelation.toString(
-                        SoloServletListener.JSON_PRINT_INDENT_FACTOR));
                 final String postId = externalArticleSoloArticleRelation.
-                        getString(
-                        BLOG_SYNC_EXTERNAL_ARTICLE_ID);
+                        getString(BLOG_SYNC_EXTERNAL_ARTICLE_ID);
                 final MetaWeblog metaWeblog =
                         BlogFactory.getMetaWeblog(externalBloggingSys);
                 metaWeblog.setUserName(userName);
                 metaWeblog.setUserPassword(userPwd);
                 metaWeblog.editPost(postId, externalArticle);
+                
+                // XXX: update relation article-related properties
+                
             }
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
