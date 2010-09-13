@@ -132,6 +132,7 @@ public abstract class AbstractAddArticleProcessor
                 externalArticleSoloArticleRelation.put(
                         BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
                         externalBloggingSys);
+
                 externalArticleSoloArticleRelation.put(
                         BLOG_SYNC_EXTERNAL_ARTICLE_ABSTRACT,
                         article.getString(Article.ARTICLE_ABSTRACT));

@@ -24,6 +24,7 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.model.Article;
 import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
@@ -120,9 +121,25 @@ public abstract class AbstractUpdateArticleProcessor
                 metaWeblog.setUserName(userName);
                 metaWeblog.setUserPassword(userPwd);
                 metaWeblog.editPost(postId, externalArticle);
-                
-                // XXX: update relation article-related properties
-                
+
+                externalArticleSoloArticleRelation.put(
+                        BLOG_SYNC_EXTERNAL_ARTICLE_ABSTRACT,
+                        article.getString(Article.ARTICLE_ABSTRACT));
+                externalArticleSoloArticleRelation.put(
+                        BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES,
+                        article.getString(Article.ARTICLE_TAGS_REF));
+                externalArticleSoloArticleRelation.put(
+                        BLOG_SYNC_EXTERNAL_ARTICLE_CONTENT,
+                        article.getString(Article.ARTICLE_CONTENT));
+                externalArticleSoloArticleRelation.put(
+                        BLOG_SYNC_EXTERNAL_ARTICLE_CREATE_DATE,
+                        article.get(Article.ARTICLE_CREATE_DATE));
+                externalArticleSoloArticleRelation.put(
+                        BLOG_SYNC_EXTERNAL_ARTICLE_TITLE,
+                        article.getString(Article.ARTICLE_TITLE));
+                externalArticleSoloArticleRepository.update(
+                        externalArticleSoloArticleRelation.getString(
+                        Keys.OBJECT_ID), externalArticleSoloArticleRelation);
             }
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
