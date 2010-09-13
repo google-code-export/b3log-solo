@@ -148,12 +148,12 @@
                 }, {
                     name: "${titleLabel}",
                     index: "title",
-                    minWidth: 180,
+                    width: 460,
                     style: "padding-left: 6px;"
                 },  {
                     name: "${categoryLabel}",
                     index: "tags",
-                    width: 160
+                    minWidth: 380
                 }, {
                     textAlign: "center",
                     name: "${createDateLabel}",
