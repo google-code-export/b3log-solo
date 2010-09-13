@@ -35,7 +35,7 @@
     
     <static-files>
         <include path="/favicon.ico" />
-        <include path="/favicon.gif" />
+        <include path="/favicon.png" />
         <include path="/robots.txt" />
         <include path="/js/**.js" />
         <include path="/styles/*.css" />
