@@ -20,8 +20,7 @@
         <meta name="generator" content="NetBeans, GAE"/>
         <meta HTTP-EQUIV="Window-target" CONTENT="_top"/>
         <title>Solo</title>
-        <link rel="shortcut icon" href="favicon.ico" />
-        <link rel="icon" type="image/gif" href="favicon.gif"/>
+        <link rel="icon" type="image/png" href="favicon.png"/>
     </head>
     <body>
         <%response.sendRedirect("index.do");%>
