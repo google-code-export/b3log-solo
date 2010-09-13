@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Sep 7, 2010
+ * @version 1.0.0.6, Sep 13, 2010
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -97,7 +97,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                 final Date updated = (Date) article.get(
                         Article.ARTICLE_UPDATE_DATE);
                 final String id = article.getString(Keys.OBJECT_ID);
-                final String link = "/article-detail.do?oId=" + id;
+                final String link = article.getString(Article.ARTICLE_PERMALINK);
 
                 entry.setTitle(title);
                 entry.addLink(link);
