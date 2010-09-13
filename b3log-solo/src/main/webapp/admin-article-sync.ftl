@@ -368,7 +368,8 @@
         } else {
             $("#tipMsg").text("${loadingLabel}");
             jsonRpc.blogSyncService.importExternalArticles({
-                "oIds": $("#articleList_selected").data("id")
+                "oIds": $("#articleList_selected").data("id"),
+                "blogSyncExternalBloggingSys": blogType
             });
             $("#tipMsg").text("${importSuccLabel}");
         }
