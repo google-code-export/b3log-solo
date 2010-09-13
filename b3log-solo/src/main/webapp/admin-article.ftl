@@ -94,19 +94,13 @@
     var addArticle = function () {
         if (validateArticle()) {
             $("#tipMsg").text("${loadingLabel}");
-            var tagArray = $("#tag").val().split(","),
-            tagsString = "";
-
-            for (var i = 0; i < tagArray.length; i++) {
-                tagsString += tagArray[i].replace(/(^\s*)|(\s*$)/g, "");
-            }
-
+            var tagArray = $("#tag").val().split(",");
             var requestJSONObject = {
                 "article": {
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
-                    "articleTags": $("#tag").val()
+                    "articleTags": $.bowknot.trimUnique(tagArray).toString()
                 }
             };
 
@@ -129,12 +123,7 @@
     var updateArticle = function () {
         if (validateArticle()) {
             $("#tipMsg").text("${loadingLabel}");
-            var tagArray = $("#tag").val().split(","),
-            tagsString = "";
-
-            for (var i = 0; i < tagArray.length; i++) {
-                tagsString += tagArray[i].replace(/(^\s*)|(\s*$)/g, "");
-            }
+            var tagArray = $("#tag").val().split(",");
             
             var requestJSONObject = {
                 "article": {
@@ -142,7 +131,7 @@
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
-                    "articleTags": tagsString
+                    "articleTags": $.bowknot.trimUnique(tagArray).toString()
                 }
             };
             
