@@ -47,6 +47,7 @@
                     tags.push(result[i].tagTitle);
                 }
                 $("#tag").completed({
+                    height: 160,
                     data: tags
                 });
             }
