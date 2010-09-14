@@ -27,12 +27,19 @@ a:visited {
     height: 120px;
 }
 
+.header-right {
+    border-left:2px hidden #E5ECF9;
+    min-width:766px;
+    padding-left:12px;
+    width:78%;
+}
+
 .side {
     min-width:188px;
     width:20%;
 }
 
-.main, .header-right {
+.main {
     border-left:2px solid #E5ECF9;
     min-width:766px;
     padding-left:12px;

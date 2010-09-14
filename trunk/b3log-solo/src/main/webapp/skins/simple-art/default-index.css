@@ -127,7 +127,10 @@ a:active {
 }
 
 #userIntro img {
-    margin: 16px 0 12px 24%;
+    border:1px solid #CCCCCC;
+    margin:12px;
+    padding:6px;
+    width:136px;
 }
 
 .article {
