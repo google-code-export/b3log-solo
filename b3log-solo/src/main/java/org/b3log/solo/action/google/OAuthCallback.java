@@ -16,13 +16,14 @@
 package org.b3log.solo.action.google;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.google.auth.OAuth;
 
 /**
  * OAuth callback.
@@ -41,6 +42,15 @@ public final class OAuthCallback extends HttpServlet {
      */
     private static final Logger LOGGER =
             Logger.getLogger(OAuthCallback.class.getName());
+    /**
+     * Verifiers.
+     */
+    private static final Map<String, String> VERIFIERS =
+            new HashMap<String, String>();
+    /**
+     * Sleep interval in milliseconds.
+     */
+    public static final long SLEEP_INTERVAL = 3000;
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -51,9 +61,29 @@ public final class OAuthCallback extends HttpServlet {
         LOGGER.log(Level.INFO,
                    "OAuth callback from Google[requestToken={0}, verifier={1}",
                    new String[]{requestToken, verifier});
-        synchronized (OAuth.VERIFIERS) {
-            OAuth.VERIFIERS.put(requestToken, verifier);
-            OAuth.VERIFIERS.notifyAll();
+        synchronized (VERIFIERS) {
+            VERIFIERS.put(requestToken, verifier);
+            VERIFIERS.notifyAll();
+        }
+    }
+
+    /**
+     * Gets verifier by the specified request token.
+     *
+     * @param requestToken the specified request token
+     * @return verifier
+     */
+    public static String getVerifier(final String requestToken) {
+        synchronized (VERIFIERS) {
+            while (!VERIFIERS.containsKey(requestToken)) {
+                try {
+                    VERIFIERS.wait(SLEEP_INTERVAL);
+                } catch (final InterruptedException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
+            }
+
+            return VERIFIERS.remove(requestToken);
         }
     }
 }

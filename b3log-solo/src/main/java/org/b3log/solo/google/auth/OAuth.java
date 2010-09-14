@@ -22,10 +22,9 @@ import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetAccessToken;
 import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetTemporaryToken;
 import com.google.api.client.http.HttpTransport;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.solo.action.google.OAuthCallback;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
@@ -51,15 +50,6 @@ public final class OAuth {
      */
     private static final Logger LOGGER =
             Logger.getLogger(OAuth.class.getName());
-    /**
-     * Verifiers.
-     */
-    public static final Map<String, String> VERIFIERS =
-            new HashMap<String, String>();
-    /**
-     * Sleep interval in milliseconds.
-     */
-    public static final long SLEEP_INTERVAL = 3000;
 
     /**
      * Authorizes with the specified http transport.
@@ -100,18 +90,7 @@ public final class OAuth {
         final String authorizationURL = authorizeURL.build();
         LOGGER.log(Level.INFO, "Authorization URL[{0}]", authorizationURL);
 
-        String verifier = null;
-        synchronized (VERIFIERS) {
-            while (!VERIFIERS.containsKey(tempToken)) {
-                try {
-                    VERIFIERS.wait(SLEEP_INTERVAL);
-                } catch (final InterruptedException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-            }
-
-            verifier = VERIFIERS.remove(tempToken);
-        }
+        final String verifier = OAuthCallback.getVerifier(tempToken);
 
         final GoogleOAuthGetAccessToken accessToken =
                 new GoogleOAuthGetAccessToken();
