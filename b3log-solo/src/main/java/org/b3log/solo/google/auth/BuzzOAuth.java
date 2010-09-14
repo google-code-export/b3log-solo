@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 14, 2010
  */
-public final class OAuth {
+public final class BuzzOAuth {
 
     /**
      * OAuth signer.
@@ -49,7 +49,7 @@ public final class OAuth {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(OAuth.class.getName());
+            Logger.getLogger(BuzzOAuth.class.getName());
 
     /**
      * Authorizes with the specified http transport.
@@ -139,6 +139,6 @@ public final class OAuth {
     /**
      * Private default constructor.
      */
-    private OAuth() {
+    private BuzzOAuth() {
     }
 }

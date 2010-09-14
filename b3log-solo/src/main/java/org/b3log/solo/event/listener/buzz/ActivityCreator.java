@@ -28,7 +28,7 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.google.auth.OAuth;
+import org.b3log.solo.google.auth.BuzzOAuth;
 import org.b3log.solo.google.buzz.BuzzActivity;
 import org.b3log.solo.google.buzz.BuzzObject;
 import org.b3log.solo.model.Preference;
@@ -83,9 +83,9 @@ public final class ActivityCreator
             final HttpTransport httpTransport = GoogleTransport.create();
             httpTransport.addParser(new JsonCParser());
             try {
-                OAuth.authorize(httpTransport);
+                BuzzOAuth.authorize(httpTransport);
                 final BuzzActivity activity = addActivity(httpTransport);
-                OAuth.revoke();
+                BuzzOAuth.revoke();
             } catch (final HttpResponseException e) {
                 LOGGER.log(Level.SEVERE, e.response.parseAsString(), e);
                 throw e;
