@@ -152,7 +152,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" align="right">
-                            <button>${saveLabel}</button>
+                            <button onclick="changePreference();">${saveLabel}</button>
                         </td>
                     </tr>
                 </tbody>
