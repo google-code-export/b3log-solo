@@ -5,6 +5,17 @@
     Description:
         user blog default style.
 */
+a, a:link {
+    color:#0000CC;
+}
+
+a:active {
+    color:red;
+}
+
+a:visited {
+    color:#551A8B;
+}
 /* framework */
 .content {
     margin:0 auto;
@@ -21,7 +32,7 @@
     width:20%;
 }
 
-.main {
+.main, .header-right {
     border-left:2px solid #E5ECF9;
     min-width:766px;
     padding-left:12px;
@@ -33,13 +44,6 @@
     font-size:32px;
     line-height:64px;
     text-decoration:none;
-}
-
-.header-right {
-    border-left:2px solid #FFFFFF;
-    min-width:766px;
-    padding-left:12px;
-    width:78%;
 }
 
 #statistic span {

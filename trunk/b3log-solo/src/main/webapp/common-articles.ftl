@@ -41,15 +41,16 @@
     <div class="article-footer">
         <div class="right">
             <span class="article-create-date left">
-                &nbsp;${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
+                &nbsp;${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp
             </span>
             <a href="article-detail.do?oId=${article.oId}#comments" class="left noUnderline">
                 <span class="left commentIcon" title="${commentLabel}"></span>
-                &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
+                ${article.articleCommentCount}
             </a>
+            <span class="left">&nbsp;&nbsp;</span>
             <a href="article-detail.do?oId=${article.oId}" class="left noUnderline">
                 <span class="left browserIcon" title="${viewLabel}"></span>
-                &nbsp;${article.articleViewCount}
+                ${article.articleViewCount}
             </a>
         </div>
         <div class="clear"></div>

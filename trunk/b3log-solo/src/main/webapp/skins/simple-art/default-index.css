@@ -9,15 +9,55 @@ body {
     background-color:#D9D6CB;
     font:75%/150% verdana,sans-serif;
 }
+
+a, a:link {
+    color:#336699;
+}
+
+a:visited {
+    color:#006BAD;
+}
+
+a:hover {
+    color: #D59139;
+}
+
+a:active {
+    color:#006BAD;
+}
+
 .content {
     min-width: 760px;
     width: 85%;
     margin: 0 auto;
 }
 
+.error-msg {
+    color: #FF0000;
+}
+
 .header {
     background-color:gray;
-    height:106px;
+    height:113px;
+}
+
+.header-right {
+    margin: 0px 0 5px 0px;
+    width: 78%;
+    padding: 5px;
+}
+
+.header-right a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.header-right a:hover {
+    color: #FF0000;
+}
+
+#statistic {
+    color: #FFFFFF;
 }
 
 .title {
@@ -30,10 +70,12 @@ body {
     font-size: 22px;
     text-decoration: none;
 }
+
 .sub-title {
     font-size:15px;
     padding:0.2em 1.6em;
     color: #FFFFFF;
+    font-weight: bold;
 }
 
 .header-navi {
@@ -81,15 +123,14 @@ body {
 }
 
 .side-navi a {
-    color: #336699;
     text-decoration: none;
 }
 
-.side-navi a:hover {
-    color: #D59139;
+#userIntro img {
+    margin: 16px 0 12px 24%;
 }
 
-.artiic {
+.article {
     margin: 5px 0;
 }
 
@@ -125,11 +166,34 @@ body {
     margin: 1em;
 }
 
+.article-body blockquote{
+    border:1px dotted #98A47F;
+    margin:12px;
+    padding:12px;
+    font-style: italic;
+}
+
+.article-body * {
+    margin: auto;
+}
+
+.article-body ol, .article-body ul {
+    padding: 0 0 0 24px;
+}
+
+.article-body p {
+    margin:1em 0 0.5em
+}
+
 .article-footer {
     margin: 1em;
     background-color: #F5F5F5;
     padding: 3px 6px;
     color: #336699;
+}
+
+.article-footer a {
+    text-decoration: underline;
 }
 
 .article-create-date {
@@ -165,4 +229,12 @@ body {
 
 .comment-body {
     margin:0 24px 12px;
+}
+
+#tagsPanel {
+    padding:24px;
+}
+
+#tagsPanel .tagPanel:hover {
+    text-decoration: none;
 }
