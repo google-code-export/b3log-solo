@@ -1,3 +1,5 @@
+#summary 外部博客文章导入
+
 目前为止支持从以下博客服务导入文章：
  * [http://blog.csdn.net/ CSDN 博客]
  * [http://www.cnblogs.com/ 博客园]
