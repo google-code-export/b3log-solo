@@ -23,6 +23,9 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.google.auth.BuzzOAuth;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
 
 /**
@@ -30,7 +33,7 @@ import org.json.JSONObject;
  * adding an article.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 13, 2010
+ * @version 1.0.0.1, Sep 14, 2010
  */
 public final class ActivityCreator
         extends AbstractEventListener<JSONObject> {
@@ -62,24 +65,15 @@ public final class ActivityCreator
                                 ActivityCreator.class.getName()});
 
         try {
-//            final JSONObject preference =
-//                    SoloServletListener.getUserPreference();
-//            final boolean postToBuzzEnabled =
-//                    preference.getBoolean(Preference.ENABLE_POST_TO_BUZZ);
-//            if (!postToBuzzEnabled) {
-//                return;
-//            }
-//
-//            final HttpTransport httpTransport = GoogleTransport.create();
-//            httpTransport.addParser(new JsonCParser());
-//            try {
-//                BuzzOAuth.authorize(httpTransport);
-//                final BuzzActivity activity = addActivity(httpTransport);
-//                BuzzOAuth.revoke();
-//            } catch (final HttpResponseException e) {
-//                LOGGER.log(Level.SEVERE, e.response.parseAsString(), e);
-//                throw e;
-//            }
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
+            final boolean postToBuzzEnabled =
+                    preference.getBoolean(Preference.ENABLE_POST_TO_BUZZ);
+            if (!postToBuzzEnabled) {
+                return;
+            }
+
+            BuzzOAuth.authorize();
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException(
