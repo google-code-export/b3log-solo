@@ -6,6 +6,9 @@
         <span id="skins" onclick="changeTab(this);">
             ${skinLabel}
         </span>
+         <span id="syncGoogle" onclick="changeTab(this);">
+            {syncGoogle}
+        </span>
     </div>
     <div class="tabMain">
         <div id="preferencesPanel">
@@ -128,6 +131,33 @@
             </div>
             <button onclick="changePreference();">${saveLabel}</button>
         </div>
+        <div id="syncGooglePanel">
+            <table class="form" width="99%" cellpadding="0" cellspacing="9px">
+                <tbody>
+                    <tr>
+                        <td width="90">
+                            {secret}
+                        </td>
+                        <td>
+                            <input/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Buzz
+                        </td>
+                        <td align="left">
+                            <input type="checkbox" class="normalInput"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="right">
+                            <button>${saveLabel}</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
@@ -186,7 +216,7 @@
     getPreference();
     
     var changeTab = function (it) {
-        var tabs = ['preferences', 'skins'];
+        var tabs = ['preferences', 'skins', 'syncGoogle'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i]) {
                 $("#" + tabs[i] + "Panel").show();
