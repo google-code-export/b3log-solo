@@ -1,4 +1,4 @@
-/* 
+/*
     Document   : default-completed
     Created on : Aug 28, 2010, 7:15:43 PM
     Author     : Vanessa
@@ -6,15 +6,15 @@
         Purpose of the stylesheet follows.
 */
 .completed-panel {
-    -moz-border-radius:4px;
-    -webkit-border-radius:4px;
-    background-color:#FFFFFF;
-    border:1px solid #639ECD;
+    background-color:#E3E9FF;
+    border:1px solid #555555;
     display:none;
-    overflow: auto;
+    padding: 2px;
     position: absolute;
+    color: #0000CC;
+    overflow: auto;
 }
 
 .completed-panel div.selected {
-    background-color: gray;
+    background-color: #BBCCFF;
 }
