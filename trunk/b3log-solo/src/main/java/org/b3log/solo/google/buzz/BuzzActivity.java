@@ -64,7 +64,7 @@ public final class BuzzActivity extends GenericJson {
      */
     public BuzzActivity post(final HttpTransport transport) throws IOException {
         final HttpRequest request = transport.buildPostRequest();
-        request.url = BuzzURL.forMyActivityFeed();
+        request.url = BuzzUrl.forMyActivityFeed();
         request.content = toContent();
 
         return request.execute().parseAs(BuzzActivity.class);
@@ -79,7 +79,7 @@ public final class BuzzActivity extends GenericJson {
      */
     public BuzzActivity update(final HttpTransport transport) throws IOException {
         final HttpRequest request = transport.buildPutRequest();
-        request.url = BuzzURL.forMyActivity(this.id);
+        request.url = BuzzUrl.forMyActivity(this.id);
         request.content = toContent();
 
         return request.execute().parseAs(BuzzActivity.class);
@@ -93,7 +93,7 @@ public final class BuzzActivity extends GenericJson {
      */
     public void delete(final HttpTransport transport) throws IOException {
         final HttpRequest request = transport.buildDeleteRequest();
-        request.url = BuzzURL.forMyActivity(this.id);
+        request.url = BuzzUrl.forMyActivity(this.id);
         request.execute().ignore();
     }
 

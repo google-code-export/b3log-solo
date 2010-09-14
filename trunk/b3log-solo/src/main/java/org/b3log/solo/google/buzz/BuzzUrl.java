@@ -24,14 +24,14 @@ import com.google.api.client.googleapis.GoogleUrl;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 14, 2010
  */
-public final class BuzzURL extends GoogleUrl {
+public final class BuzzUrl extends GoogleUrl {
 
     /** 
      * Constructs a new Buzz URL from the specified encoded URL.
      *
      * @param encodedURL the specified encoded URL
      */
-    public BuzzURL(final String encodedURL) {
+    public BuzzUrl(final String encodedURL) {
         super(encodedURL);
         alt = "json";
         prettyprint = true;
@@ -42,8 +42,8 @@ public final class BuzzURL extends GoogleUrl {
      *
      * @return feed URL
      */
-    public static BuzzURL forMyActivityFeed() {
-        return new BuzzURL(
+    public static BuzzUrl forMyActivityFeed() {
+        return new BuzzUrl(
                 "https://www.googleapis.com/buzz/v1/activities/@me/@self");
     }
 
@@ -53,8 +53,8 @@ public final class BuzzURL extends GoogleUrl {
      * @param activityId the specified activity id
      * @return activity URL
      */
-    public static BuzzURL forMyActivity(final String activityId) {
-        final BuzzURL result = forMyActivityFeed();
+    public static BuzzUrl forMyActivity(final String activityId) {
+        final BuzzUrl result = forMyActivityFeed();
         result.pathParts.add(activityId);
 
         return result;

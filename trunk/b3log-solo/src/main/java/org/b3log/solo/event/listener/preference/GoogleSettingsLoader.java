@@ -45,6 +45,10 @@ public final class GoogleSettingsLoader
      * Default OAuth consumer secret for Google.
      */
     private static final String DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET = "";
+    /**
+     * Default enable post to Buzz.
+     */
+    private static final boolean DEFAULT_ENABLE_POST_TO_BUZZ = false;
 
     /**
      * Constructs a {@link GoogleSettingsLoader} object with the specified event
@@ -69,6 +73,10 @@ public final class GoogleSettingsLoader
             if (!preference.has(Preference.GOOLE_OAUTH_CONSUMER_SECRET)) {
                 preference.put(Preference.GOOLE_OAUTH_CONSUMER_SECRET,
                                DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
+            }
+            if (!preference.has(Preference.ENABLE_POST_TO_BUZZ)) {
+                preference.put(Preference.ENABLE_POST_TO_BUZZ,
+                               DEFAULT_ENABLE_POST_TO_BUZZ);
             }
         } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());

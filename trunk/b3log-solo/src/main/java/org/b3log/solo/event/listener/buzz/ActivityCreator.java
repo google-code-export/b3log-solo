@@ -77,7 +77,7 @@ public final class ActivityCreator
             final String secret =
                     preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
             final boolean postToBuzzEnabled =
-                    preference.getBoolean(Preference.GOOGLE_ENABLE_POST_TO_BUZZ);
+                    preference.getBoolean(Preference.ENABLE_POST_TO_BUZZ);
             if (!postToBuzzEnabled) {
                 return;
             }

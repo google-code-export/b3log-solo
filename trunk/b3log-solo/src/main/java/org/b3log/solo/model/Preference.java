@@ -94,7 +94,7 @@ public final class Preference {
     /**
      * Key of enable post to Buzz.
      */
-    public static final String GOOGLE_ENABLE_POST_TO_BUZZ =
+    public static final String ENABLE_POST_TO_BUZZ =
             "enablePostToBuzz";
 
     /**
