@@ -139,7 +139,7 @@
                             {secret}
                         </td>
                         <td>
-                            <input/>
+                            <input id="secret"/>
                         </td>
                     </tr>
                     <tr>
@@ -147,7 +147,7 @@
                             Buzz
                         </td>
                         <td align="left">
-                            <input type="checkbox" class="normalInput"/>
+                            <input type="checkbox" class="normalInput" id="syncBuzz"/>
                         </td>
                     </tr>
                     <tr>
@@ -181,6 +181,8 @@
                     $("#localeString").val(preference.localeString);
                     $("#noticeBoard").val(preference.noticeBoard);
                     $("#htmlHead").val(preference.htmlHead);
+                    $("#secret").val(preference.googleOAuthConsumerSecret);
+                    preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
                     localeString = preference.localeString;
 
                     // skin
@@ -245,7 +247,9 @@
                 "adminGmail": $("#adminGmail").val(),
                 "localeString": $("#localeString").val(),
                 "noticeBoard": $("#noticeBoard").val(),
-                "htmlHead": $("#htmlHead").val()
+                "htmlHead": $("#htmlHead").val(),
+                "googleOAuthConsumerSecret": $("#secret").val(),
+                "enablePostToBuzz": $("#syncBuzz").attr("checked")
             }
         }
 
