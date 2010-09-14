@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * This listener is responsible for preference HTML head load process.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 12, 2010
+ * @version 1.0.0.1, Sep 14, 2010
  */
 public final class HTMLHeadLoader
         extends AbstractEventListener<JSONObject> {
@@ -76,7 +76,7 @@ public final class HTMLHeadLoader
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#PREFERENCE_LOAD}.
      *
      * @return event type
      */
