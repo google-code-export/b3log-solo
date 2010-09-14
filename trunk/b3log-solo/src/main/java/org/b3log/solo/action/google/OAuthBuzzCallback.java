@@ -73,15 +73,26 @@ public final class OAuthBuzzCallback extends HttpServlet {
      * Gets verifier by the specified request token.
      *
      * @param requestToken the specified request token
+     * @param waitMillis amount of time we're willing to wait, it millisecond.
      * @return verifier
      */
-    public static String getVerifier(final String requestToken) {
+    public static String getVerifier(final String requestToken,
+                                     final long waitMillis) {
+        final long startTime = System.currentTimeMillis();
+
         synchronized (VERIFIERS) {
             while (!VERIFIERS.containsKey(requestToken)) {
                 try {
                     VERIFIERS.wait(SLEEP_INTERVAL);
                 } catch (final InterruptedException e) {
                     LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    return null;
+                }
+
+                if (waitMillis != -1 && System.currentTimeMillis()
+                                        > startTime + waitMillis) {
+                    LOGGER.log(Level.WARNING, "Timeout while waiting for token");
+                    return null;
                 }
             }
 

@@ -15,12 +15,7 @@
  */
 package org.b3log.solo.event.listener.buzz;
 
-import com.google.api.client.googleapis.GoogleTransport;
-import com.google.api.client.googleapis.json.JsonCParser;
-import com.google.api.client.http.HttpResponseException;
-import com.google.api.client.http.HttpTransport;
 import com.google.inject.Inject;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.event.AbstractEventListener;
@@ -28,11 +23,6 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.google.auth.BuzzOAuth;
-import org.b3log.solo.google.buzz.BuzzActivity;
-import org.b3log.solo.google.buzz.BuzzObject;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
 
 /**
@@ -72,46 +62,29 @@ public final class ActivityCreator
                                 ActivityCreator.class.getName()});
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
-            final boolean postToBuzzEnabled =
-                    preference.getBoolean(Preference.ENABLE_POST_TO_BUZZ);
-            if (!postToBuzzEnabled) {
-                return;
-            }
-
-            final HttpTransport httpTransport = GoogleTransport.create();
-            httpTransport.addParser(new JsonCParser());
-            try {
-                BuzzOAuth.authorize(httpTransport);
-                final BuzzActivity activity = addActivity(httpTransport);
-                BuzzOAuth.revoke();
-            } catch (final HttpResponseException e) {
-                LOGGER.log(Level.SEVERE, e.response.parseAsString(), e);
-                throw e;
-            }
+//            final JSONObject preference =
+//                    SoloServletListener.getUserPreference();
+//            final boolean postToBuzzEnabled =
+//                    preference.getBoolean(Preference.ENABLE_POST_TO_BUZZ);
+//            if (!postToBuzzEnabled) {
+//                return;
+//            }
+//
+//            final HttpTransport httpTransport = GoogleTransport.create();
+//            httpTransport.addParser(new JsonCParser());
+//            try {
+//                BuzzOAuth.authorize(httpTransport);
+//                final BuzzActivity activity = addActivity(httpTransport);
+//                BuzzOAuth.revoke();
+//            } catch (final HttpResponseException e) {
+//                LOGGER.log(Level.SEVERE, e.response.parseAsString(), e);
+//                throw e;
+//            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException(
                     "Send article creation buzz activity to Google Buzz error");
         }
-    }
-
-    /**
-     * Adds a buzz activity with the specified http transport.
-     *
-     * @param httpTransport the specified http transport
-     * @return the activity added
-     * @throws IOException io exception
-     */
-    private BuzzActivity addActivity(final HttpTransport httpTransport)
-            throws IOException {
-        final BuzzActivity activity = new BuzzActivity();
-        activity.setBuzzObject(new BuzzObject());
-        activity.getBuzzObject().setContent("Posting using B3log Solo");
-        final BuzzActivity result = activity.post(httpTransport);
-
-        return result;
     }
 
     /**
