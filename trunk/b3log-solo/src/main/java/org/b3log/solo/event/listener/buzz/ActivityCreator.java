@@ -74,8 +74,6 @@ public final class ActivityCreator
         try {
             final JSONObject preference =
                     SoloServletListener.getUserPreference();
-            final String secret =
-                    preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
             final boolean postToBuzzEnabled =
                     preference.getBoolean(Preference.ENABLE_POST_TO_BUZZ);
             if (!postToBuzzEnabled) {
