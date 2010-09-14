@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Sep 12, 2010
+ * @version 1.0.0.9, Sep 14, 2010
  */
 public final class Preference {
 
@@ -86,6 +86,16 @@ public final class Preference {
      * HTML head.
      */
     public static final String HTML_HEAD = "htmlHead";
+    /**
+     * Key of OAuth consumer secret.
+     */
+    public static final String GOOLE_OAUTH_CONSUMER_SECRET =
+            "googleOAuthConsumerSecret";
+    /**
+     * Key of enable post to Buzz.
+     */
+    public static final String GOOGLE_ENABLE_POST_TO_BUZZ =
+            "enablePostToBuzz";
 
     /**
      * Private default constructor.

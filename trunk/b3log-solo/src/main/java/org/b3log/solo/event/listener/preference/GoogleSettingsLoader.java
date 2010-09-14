@@ -28,33 +28,32 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for preference notice board load process.
+ * This listener is responsible for Google settings load process.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 14, 2010
+ * @version 1.0.0.0, Sep 14, 2010
  */
-public final class NoticeBoardLoader
+public final class GoogleSettingsLoader
         extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(NoticeBoardLoader.class.getName());
+            Logger.getLogger(GoogleSettingsLoader.class.getName());
     /**
-     * Default notice board.
+     * Default OAuth consumer secret for Google.
      */
-    private static final String DEFAULT_NOTICE_BOARD =
-            "Open Source, Open Mind, <br/>Open Sight, Open Future!";
+    private static final String DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET = "";
 
     /**
-     * Constructs a {@link NoticeBoardLoader} object with the specified event
+     * Constructs a {@link GoogleSettingsLoader} object with the specified event
      * manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
-    public NoticeBoardLoader(final EventManager eventManager) {
+    public GoogleSettingsLoader(final EventManager eventManager) {
         super(eventManager);
     }
 
@@ -65,14 +64,15 @@ public final class NoticeBoardLoader
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 preference,
-                                NoticeBoardLoader.class.getName()});
+                                GoogleSettingsLoader.class.getName()});
         try {
-            if (!preference.has(Preference.NOTICE_BOARD)) {
-                preference.put(Preference.NOTICE_BOARD, DEFAULT_NOTICE_BOARD);
+            if (!preference.has(Preference.GOOLE_OAUTH_CONSUMER_SECRET)) {
+                preference.put(Preference.GOOLE_OAUTH_CONSUMER_SECRET,
+                               DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
             }
         } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());
-            throw new EventException("Load notice board error!");
+            throw new EventException("Load Google settings error!");
         }
     }
 
