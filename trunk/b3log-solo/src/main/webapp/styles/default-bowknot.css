@@ -1,17 +1,198 @@
 /*
-    Document   : default-pagination
+    Document   : default-bowknot
     Created on : Aug 3, 2010, 10:19:55 AM
     Author     : Vanessa
     Description:
         Default style for jquery.bowknot.min.js.
 */
+.completed-panel {
+    background-color:#E3E9FF;
+    border:1px solid #555555;
+    display:none;
+    padding: 2px;
+    position: absolute;
+    color: #0000CC;
+    overflow: auto;
+}
 
-@import "default-bowknot-dialog.css";
-@import "default-bowknot-table.css";
-@import "default-bowknot-paginate.css";
-@import "default-bowknot-completed.css";
+.completed-panel div.selected {
+    background-color: #BBCCFF;
+}
+.dialog-background {
+    background-color:gray;
+    height:100%;
+    left:0;
+    opacity:0.3;
+    position:absolute;
+    top:0;
+    width:100%;
+    filter:alpha(opacity=30);
+}
 
-.bowknot-nont {
+.dialog-panel {
+    -moz-border-radius:4px 4px 4px 4px;
+    background: #FFFFFF;
+    border:2px solid #3366CC;
+    position:absolute;
+    z-index: 100;
+}
+
+.dialog-content {
+    margin: 12px;
+}
+
+.dialog-close {
+    float: right;
+    cursor: pointer;
+    height: 12px;
+    width: 12px;
+    background: url("../images/icon.png") no-repeat -51px -16px;
+}
+
+.pagination-clear {
+    line-height: 0px;
+    clear: both;
+    font-size: 0px;
+}
+
+.pagination-pagination span{
+    margin: 0px 5px 0 4px;
+    display: block;
+    float: left;
+    cursor: pointer;
+}
+
+.pagination-page {
+    color: #4272DB;
+}
+
+.pagination-pageHover {
+}
+
+.pagination-pageCurrent {
+    color: #000000;
+    font-weight: bold;
+}
+
+.pagination-prePage {
+}
+
+.pagination-nextPage {
+}
+
+.pagination-prePageHover {
+    color: #000000;
+}
+
+.pagination-nextPageHover {
+    color: #000000;
+}
+
+.pagination-goInput {
+    width: 18px;
+}
+
+.pagination-submit {
+
+}
+
+.table-main {
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+    overflow: auto;
+}
+
+/* import: word break */
+.table-main table {
+    border-left: 1px solid #CCCCCC;
+    table-layout: fixed;
+    word-break: break-all;
+    word-wrap: break-word;
+    background: url(../images/icon.png) center bottom;
+}
+
+.table-main table:hover {
+    border-left: 1px solid #BBBBBB;
+}
+
+.table-verticalLine {
+    position: absolute;
+    width: 2px;
+    background-color: #247AC4;
+    display: none;
+    height: 100%;
+    cursor: col-resize;
+}
+
+.table-header, .table-body {
+    overflow: auto;
+}
+
+.table-header th {
+    border: 1px solid;
+    border-color: #CCCCCC #BBBBBB #A0A0A0;
+    border-left-style: none;
+    height: 28px;
+}
+
+.table-main td {
+    border-bottom: 1px solid #D0D0D0;
+    border-right: 1px solid #FFFFFF;
+    color: #333333;
+    padding: 3px 0;
+}
+
+.table-heiglight td, .table-lineHover td {
+    background-color: #FFFFCC;
+}
+
+.table-sortASC {
+    cursor:pointer;
+    height:8px;
+    width:9px;
+    font-size: 0px;
+    line-height: 0px;
+}
+
+.table-sortDESC {
+    cursor:pointer;
+    height:8px;
+    width:9px;
+    font-size: 0px;
+    line-height: 0px;
+}
+
+.table-sortUnactiveDESC {
+}
+
+.table-sortUnactiveASC {
+}
+
+.table-sort {
+    font-size: 0px;
+    line-height: 0px;
+    position: absolute;
+    margin-left: 5px;
+    float: left;
+}
+
+.table-floatLayerIcon {
+    height:13px;
+    width:13px;
+    margin: 0 10px;
+    float: left;
+}
+
+.table-oddRow {
+    background-color: #FFFFFF;
+}
+
+.table-evenRow {
+    background-color: #FFFFFF;
+}
+
+.bowknot-none {
     display: none;
 }
 
@@ -20,4 +201,8 @@
     height: 0px;
     font-size: 0px;
     line-height: 0px;
+}
+
+.bowknot-left {
+    float: left;
 }

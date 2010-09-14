@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="keywords" content="b3log, b3log solo, solo, GAE blog, 88250, vanessa"/>
+        <meta name="keywords" content="b3log, b3log solo, solo, GAE blog, 88250, vanessa, error"/>
         <meta name="description" content="b3log,a open sources blog base GAE.一个基于 GAE 的开源博客程序。"/>
         <meta http-equiv="pragma" CONTENT="no-cache"/>
         <meta name="author" content="b3log-solo.googlecode.com"/>
@@ -12,7 +12,6 @@
         <title>${blogTitle}</title>
         <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
-        <script type="text/javascript" src="js/json-rpc.js"></script>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="skins/${skinDirName}/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
