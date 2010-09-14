@@ -199,6 +199,9 @@
                 $("#magPassword").val("");
                 $("#userName").val("");
                 $("#password").val("");
+                $("#addSync").removeAttr("checked");
+                $("#updateSync").removeAttr("checked");
+                $("#deleteSync").removeAttr("checked");
                 $("#tipMsg").text("${noSettingLabel}");
             }
             $("#archiveDatePanel").hide();
@@ -243,6 +246,8 @@
 
             if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
                 $("#tipMsg").html("${updateSuccLabel}");
+                $("#userName").val($("#magName").val());
+                $("#password").val($("#magPassword").val());
             } else {
                 $("#tipMsg").html("${setFailLabel}");
             }
