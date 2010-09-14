@@ -6,7 +6,6 @@
         <title>${blogTitle} - ${adminConsoleLabel}</title>
         <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
-        <script type="text/javascript" src="js/json-rpc.js"></script>
         <script type="text/javascript" src="js/lib/jquery/jquery.bowknot.min.js"></script>
         <script type="text/javascript" src="js/lib/tiny_mce/tiny_mce.js"></script>
         <link type="text/css" rel="stylesheet" href="styles/default-admin.css"/>
