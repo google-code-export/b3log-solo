@@ -18,6 +18,7 @@ package org.b3log.solo.google.auth;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletResponse;
 import net.oauth.OAuth;
 import net.oauth.OAuthAccessor;
 import net.oauth.OAuthConsumer;
@@ -126,7 +127,7 @@ public final class BuzzOAuth {
                         HttpMessage.RESPONSE).toString());
 
             } catch (final OAuthProblemException e) {
-                if (400 == e.getHttpStatusCode()) {
+                if (HttpServletResponse.SC_BAD_REQUEST == e.getHttpStatusCode()) {
                     LOGGER.log(Level.WARNING, "Invalid token", e);
                 } else {
                     throw e;
