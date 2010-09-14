@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 14, 2010
  */
-public final class OAuthCallback extends HttpServlet {
+public final class OAuthBuzzCallback extends HttpServlet {
 
     /**
      * Default serial version uid.
@@ -41,7 +41,7 @@ public final class OAuthCallback extends HttpServlet {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(OAuthCallback.class.getName());
+            Logger.getLogger(OAuthBuzzCallback.class.getName());
     /**
      * Verifiers.
      */
@@ -65,6 +65,8 @@ public final class OAuthCallback extends HttpServlet {
             VERIFIERS.put(requestToken, verifier);
             VERIFIERS.notifyAll();
         }
+
+        response.sendRedirect("/admin-index.do");
     }
 
     /**
