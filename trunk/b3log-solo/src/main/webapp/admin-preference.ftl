@@ -131,7 +131,7 @@
             </div>
             <button onclick="changePreference();">${saveLabel}</button>
         </div>
-        <div id="syncGooglePanel">
+        <div id="syncGooglePanel" class="none">
             <table class="form" width="99%" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
