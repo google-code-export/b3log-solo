@@ -30,7 +30,7 @@ import org.b3log.solo.action.feed.TagArticlesFeedServlet;
 import org.b3log.solo.action.file.FileAccessServlet;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.auth.AuthFilter;
-import org.b3log.solo.action.google.OAuthCallback;
+import org.b3log.solo.action.google.OAuthBuzzCallback;
 
 /**
  * Action module for <a href="http://code.google.com/p/google-guice/">
@@ -90,8 +90,8 @@ public final class ActionModule extends AbstractActionModule {
         bind(FileAccessServlet.class).in(Scopes.SINGLETON);
         serve("/file-access.do").with(FileAccessServlet.class);
 
-        bind(OAuthCallback.class).in(Scopes.SINGLETON);
-        serve("/oauth-callback.do").with(OAuthCallback.class);
+        bind(OAuthBuzzCallback.class).in(Scopes.SINGLETON);
+        serve("/oauth-callback.do").with(OAuthBuzzCallback.class);
 
     }
 }

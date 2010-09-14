@@ -24,7 +24,7 @@ import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetTemporaryToken;
 import com.google.api.client.http.HttpTransport;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.solo.action.google.OAuthCallback;
+import org.b3log.solo.action.google.OAuthBuzzCallback;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
@@ -72,15 +72,18 @@ public final class OAuth {
                 preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
         temporaryToken.signer = signer;
         temporaryToken.consumerKey = domain;
-        temporaryToken.scope = "https://www.googleapis.com/auth/buzz";
+        //temporaryToken.scope = "https://www.googleapis.com/auth/buzz";
+        temporaryToken.scope = "http://www.google.com/calendar/feeds";
         temporaryToken.displayName = displayName;
         temporaryToken.callback = "http://" + host + "/oauth-callback.do";
         final OAuthCredentialsResponse tempCredentials =
                 temporaryToken.execute();
         signer.tokenSharedSecret = tempCredentials.tokenSecret;
         final OAuthAuthorizeTemporaryTokenUrl authorizeURL =
+                //new OAuthAuthorizeTemporaryTokenUrl(
+                //"https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
                 new OAuthAuthorizeTemporaryTokenUrl(
-                "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
+                "https://www.google.com/accounts/OAuthAuthorizeToken");
         authorizeURL.set("scope", temporaryToken.scope);
         authorizeURL.set("domain", domain);
         authorizeURL.set("iconUrl", "http://" + host + "/favicon.png");
@@ -90,7 +93,7 @@ public final class OAuth {
         final String authorizationURL = authorizeURL.build();
         LOGGER.log(Level.INFO, "Authorization URL[{0}]", authorizationURL);
 
-        final String verifier = OAuthCallback.getVerifier(tempToken);
+        final String verifier = OAuthBuzzCallback.getVerifier(tempToken);
 
         final GoogleOAuthGetAccessToken accessToken =
                 new GoogleOAuthGetAccessToken();
@@ -102,6 +105,7 @@ public final class OAuth {
         signer.tokenSharedSecret = credentials.tokenSecret;
         createOAuthParameters().signRequestsUsingAuthorizationHeader(
                 httpTransport);
+        // GoogleService googleService = new GoogleService("cl", "oauth-sample-app");
     }
 
     /**
