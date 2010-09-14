@@ -15,15 +15,18 @@
  */
 package org.b3log.solo.google.auth;
 
-import com.google.api.client.auth.oauth.OAuthAuthorizeTemporaryTokenUrl;
-import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
-import com.google.api.client.auth.oauth.OAuthHmacSigner;
-import com.google.api.client.auth.oauth.OAuthParameters;
-import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetAccessToken;
-import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetTemporaryToken;
-import com.google.api.client.http.HttpTransport;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.oauth.OAuth;
+import net.oauth.OAuthAccessor;
+import net.oauth.OAuthConsumer;
+import net.oauth.OAuthMessage;
+import net.oauth.OAuthProblemException;
+import net.oauth.OAuthServiceProvider;
+import net.oauth.client.OAuthClient;
+import net.oauth.client.httpclient4.HttpClient4;
+import net.oauth.http.HttpMessage;
 import org.b3log.solo.action.google.OAuthBuzzCallback;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
@@ -38,100 +41,140 @@ import org.json.JSONObject;
 public final class BuzzOAuth {
 
     /**
-     * OAuth signer.
-     */
-    private static OAuthHmacSigner signer;
-    /**
-     * OAuth credentials.
-     */
-    private static OAuthCredentialsResponse credentials;
-    /**
      * Logger.
      */
     private static final Logger LOGGER =
             Logger.getLogger(BuzzOAuth.class.getName());
+    /**
+     * Request token URL.
+     */
+    private static final String REQUEST_TOKEN_URL =
+            "https://www.google.com/accounts/OAuthGetRequestToken";
+    /**
+     * User authorization URL.
+     */
+    private static final String USER_AUTHORIZATION_URL =
+            "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken";
+    /**
+     * Access token URL.
+     */
+    private static final String ACCESS_TOKEN_URL =
+            "https://www.google.com/accounts/OAuthGetAccessToken";
+    /**
+     * Callback URL.
+     */
+    private static final String CALLBACK_URL = "/oauth-callback.do";
+    /**
+     * Buzz scope.
+     */
+    private static final String BUZZ_SCOPE =
+            "https://www.googleapis.com/auth/buzz";
 
     /**
-     * Authorizes with the specified http transport.
-     *
-     * @param httpTransport the specified http transport
-     * @throws Exception exception
+     * Authorizes.
      */
-    public static void authorize(final HttpTransport httpTransport)
-            throws Exception {
+    public static void authorize() {
         final JSONObject preference = SoloServletListener.getUserPreference();
-        final String host = preference.getString(Preference.BLOG_HOST);
-        final String domain = host.split(":")[0];
-        final String displayName = preference.getString(Preference.BLOG_TITLE);
 
-        String tempToken = null;
-        final GoogleOAuthGetTemporaryToken temporaryToken =
-                new GoogleOAuthGetTemporaryToken();
-        signer = new OAuthHmacSigner();
-        signer.clientSharedSecret =
-                preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
-        temporaryToken.signer = signer;
-        temporaryToken.consumerKey = domain;
-        temporaryToken.scope = "https://www.googleapis.com/auth/buzz";
-        temporaryToken.displayName = displayName;
-        temporaryToken.callback = "http://" + host + "/oauth-callback.do";
-        final OAuthCredentialsResponse tempCredentials =
-                temporaryToken.execute();
-        signer.tokenSharedSecret = tempCredentials.tokenSecret;
-        final OAuthAuthorizeTemporaryTokenUrl authorizeURL =
-                new OAuthAuthorizeTemporaryTokenUrl(
-                "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
+        try {
+            final String consumerKey =
+                    preference.getString(Preference.BLOG_HOST);
+            final String consumerSecret =
+                    preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
 
-        authorizeURL.set("scope", temporaryToken.scope);
-        authorizeURL.set("domain", domain);
-        authorizeURL.set("iconUrl", "http://" + host + "/favicon.png");
-        authorizeURL.set("xoauth_displayname", displayName);
-        tempToken = tempCredentials.token;
-        authorizeURL.temporaryToken = tempToken;
-        final String authorizationURL = authorizeURL.build();
-        LOGGER.log(Level.INFO, "Authorization URL[{0}]", authorizationURL);
+            final OAuthServiceProvider serviceProvider =
+                    new OAuthServiceProvider(REQUEST_TOKEN_URL,
+                                             USER_AUTHORIZATION_URL,
+                                             ACCESS_TOKEN_URL);
+            final OAuthConsumer consumer =
+                    new OAuthConsumer(CALLBACK_URL,
+                                      consumerKey,
+                                      consumerSecret,
+                                      serviceProvider);
+            final OAuthAccessor accessor = new OAuthAccessor(consumer);
+            final OAuthClient client = new OAuthClient(new HttpClient4());
 
-        final String verifier = OAuthBuzzCallback.getVerifier(tempToken);
-
-        final GoogleOAuthGetAccessToken accessToken =
-                new GoogleOAuthGetAccessToken();
-        accessToken.temporaryToken = tempToken;
-        accessToken.signer = signer;
-        accessToken.consumerKey = domain;
-        accessToken.verifier = verifier;
-        credentials = accessToken.execute();
-        signer.tokenSharedSecret = credentials.tokenSecret;
-        createOAuthParameters().signRequestsUsingAuthorizationHeader(
-                httpTransport);
-        // GoogleService googleService = new GoogleService("cl", "oauth-sample-app");
-    }
-
-    /**
-     * Revokes.
-     */
-    public static void revoke() {
-        if (credentials != null) {
-            try {
-                GoogleOAuthGetAccessToken.revokeAccessToken(
-                        createOAuthParameters());
-            } catch (final Exception e) {
-                e.printStackTrace(System.err);
+            final String authorizationUrl =
+                    getAuthorizationUrl(client,
+                                        accessor,
+                                        CALLBACK_URL);
+            LOGGER.log(Level.INFO, "Authorization URL[{0}]", authorizationUrl);
+            // TODO: redirect to authorization URL
+            accessor.accessToken = null;
+            LOGGER.log(Level.INFO, "Waiting for verification token...");
+            final String verifier = OAuthBuzzCallback.getVerifier(
+                    accessor.requestToken, -1);
+            if (verifier == null) {
+                return;
             }
+
+            LOGGER.log(Level.INFO, "Verification token received: {0}",
+                       verifier);
+
+            final List<OAuth.Parameter> accessTokenParams = OAuth.newList(
+                    OAuth.OAUTH_TOKEN, accessor.requestToken,
+                    OAuth.OAUTH_VERIFIER, verifier);
+            LOGGER.log(Level.INFO,
+                       "Fetching access token with parameters: {0}",
+                       accessTokenParams);
+            try {
+                final OAuthMessage accessTokenResponse = client.getAccessToken(
+                        accessor, OAuthMessage.GET, accessTokenParams);
+                LOGGER.log(Level.INFO, "Access token received: {0}", accessTokenResponse.
+                        getParameters());
+                LOGGER.log(Level.FINE, accessTokenResponse.getDump().get(
+                        HttpMessage.RESPONSE).toString());
+
+            } catch (final OAuthProblemException e) {
+                if (400 == e.getHttpStatusCode()) {
+                    LOGGER.log(Level.WARNING, "Invalid token", e);
+                } else {
+                    throw e;
+                }
+            }
+
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
     /**
-     * Creates OAuth parameters.
+     * Gets authorization URL with the specified parameters.
      *
-     * @return OAuth parameters
+     * @param client the specified OAuth client
+     * @param accessor the specified OAuth accessor
+     * @param callbackURL the specified callback URL
+     * @return authorization URL
+     * @throws Exception exception
      */
-    private static OAuthParameters createOAuthParameters() {
-        final OAuthParameters ret = new OAuthParameters();
-        ret.consumerKey = "anonymous";
-        ret.signer = signer;
-        ret.token = credentials.token;
+    private static String getAuthorizationUrl(final OAuthClient client,
+                                              final OAuthAccessor accessor,
+                                              final String callbackURL)
+            throws Exception {
+        final List<OAuth.Parameter> requestTokenParams = OAuth.newList();
+        requestTokenParams.add(new OAuth.Parameter(OAuth.OAUTH_CALLBACK,
+                                                   callbackURL));
+        requestTokenParams.add(
+                new OAuth.Parameter("scope", BUZZ_SCOPE));
+        requestTokenParams.add(new OAuth.Parameter("xoauth_displayname",
+                                                   "B3log Solo"));
+        client.getRequestTokenResponse(accessor, OAuthMessage.POST,
+                                       requestTokenParams);
+        String authorizationUrl =
+                accessor.consumer.serviceProvider.userAuthorizationURL;
+        authorizationUrl =
+                OAuth.addParameters(authorizationUrl,
+                                    "scope", BUZZ_SCOPE,
+                                    "domain", accessor.consumer.consumerKey);
 
-        return ret;
+        authorizationUrl = OAuth.addParameters(authorizationUrl,
+                                               "xoauth_displayname",
+                                               "B3log Solo");
+        authorizationUrl = OAuth.addParameters(authorizationUrl,
+                                               OAuth.OAUTH_TOKEN,
+                                               accessor.requestToken);
+
+        return authorizationUrl;
     }
 
     /**
