@@ -72,18 +72,16 @@ public final class BuzzOAuth {
                 preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
         temporaryToken.signer = signer;
         temporaryToken.consumerKey = domain;
-        //temporaryToken.scope = "https://www.googleapis.com/auth/buzz";
-        temporaryToken.scope = "http://www.google.com/calendar/feeds";
+        temporaryToken.scope = "https://www.googleapis.com/auth/buzz";
         temporaryToken.displayName = displayName;
         temporaryToken.callback = "http://" + host + "/oauth-callback.do";
         final OAuthCredentialsResponse tempCredentials =
                 temporaryToken.execute();
         signer.tokenSharedSecret = tempCredentials.tokenSecret;
         final OAuthAuthorizeTemporaryTokenUrl authorizeURL =
-                //new OAuthAuthorizeTemporaryTokenUrl(
-                //"https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
                 new OAuthAuthorizeTemporaryTokenUrl(
-                "https://www.google.com/accounts/OAuthAuthorizeToken");
+                "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
+
         authorizeURL.set("scope", temporaryToken.scope);
         authorizeURL.set("domain", domain);
         authorizeURL.set("iconUrl", "http://" + host + "/favicon.png");
