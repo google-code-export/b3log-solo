@@ -1,14 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="${articleTags?first.tagTitle}"/>
         <meta name="description" content="${article.articleTitle}"/>
-        <meta http-equiv="pragma" CONTENT="no-cache"/>
+        <meta http-equiv="pragma" content="no-cache"/>
         <meta name="revised" content="${blogTitle}, ${article.articleCreateDate?string('MM/dd/yy')}"/>
         <meta name="generator" content="b3log"/>
         <meta name="author" content="${blogTitle}"/>
-        <meta HTTP-EQUIV="Window-target" CONTENT="_top"/>
+        <meta http-equiv="Window-target" content="_top"/>
         <title>${article.articleTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
