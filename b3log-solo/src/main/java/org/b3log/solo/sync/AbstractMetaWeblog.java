@@ -31,7 +31,7 @@ import org.b3log.latke.service.ServiceException;
  * Abstract MetaWeblog.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 4, 2010
+ * @version 1.0.0.1, Sep 14, 2010
  */
 public abstract class AbstractMetaWeblog extends AbstractBlog
         implements MetaWeblog {
@@ -109,7 +109,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             LOGGER.log(Level.INFO, "Deleted article[id={0}] from [{1}]",
                        new String[]{postId, getBloggingServiceProvider()});
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServiceException("Delete post to ["
                                        + getBloggingServiceProvider() + "]error");
         }
@@ -175,7 +175,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.warning(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             return null;
         }
     }
@@ -202,7 +202,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
 
             ret = articleId;
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServiceException("New post to ["
                                        + getBloggingServiceProvider()
                                        + "] error");
