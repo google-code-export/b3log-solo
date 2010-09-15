@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Sep 14, 2010
+ * @version 1.0.0.6, Sep 15, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -61,6 +61,68 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Skins skins;
+    /**
+     * Buzz scope.
+     */
+    private static final String BUZZ_SCOPE =
+            "https://www.googleapis.com/auth/buzz";
+
+    /**
+     * Enables Google Buzz sync by the specified request json object.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public void enableBuzzSync(final HttpServletRequest request,
+                               final HttpServletResponse response)
+            throws ActionException, IOException {
+        final JSONObject preference = SoloServletListener.getUserPreference();
+        final String blogHost = preference.optString(Preference.BLOG_HOST);
+
+        final String base = "https://www.google.com/accounts/o8/id?";
+        final StringBuilder params =
+                new StringBuilder("openid.ax.mode=fetch_reuest");
+        params.append(
+                "&openid.ax.type.email=http://axschema.org/contact/email");
+        params.append("&openid.ax.required=firstname,fullname,lastname,email");
+        params.append(
+                "&openid.ax.type.firstname=http://axschema.org/namePerson/first");
+        params.append(
+                "&openid.ax.type.fullname=http://axschema.org/namePerson");
+        params.append(
+                "&openid.ax.type.lastname=http://axschema.org/namePerson/last");
+        params.append(
+                "&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select");
+        params.append(
+                "&openid.identity=http://specs.openid.net/auth/2.0/identifier_select");
+        params.append("&openid.mode=checkid_setup");
+        params.append("&openid.ns=http://specs.openid.net/auth/2.0");
+        params.append("&openid.ns.ax=http://openid.net/srv/ax/1.0");
+        params.append(
+                "&openid.ns.oauth=http://specs.openid.net/extensions/oauth/1.0");
+        params.append("&openid.oauth.consumer=");
+        params.append(blogHost);
+        params.append("&openid.oauth.scope=");
+        params.append(BUZZ_SCOPE);
+        params.append("&openid.realm=http://");
+        params.append(blogHost);
+        params.append("&openid.return_to=http://");
+        params.append(blogHost);
+        params.append("/admin-index.do");
+        params.append("&openid.ns.ui=http://specs.openid.net/extensions/ui/1.0");
+        params.append("&openid.ns.ext1=http://openid.net/srv/ax/1.0");
+
+
+        LOGGER.info("Redirct to Google....");
+
+        final String queryString =
+                params.toString().replaceAll(":", "%3A").replaceAll("/", "%2F").
+                replaceAll(",", "%2C");
+
+        response.sendRedirect(base + queryString);
+    }
 
     /**
      * Gets preference.
