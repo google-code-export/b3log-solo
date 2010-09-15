@@ -6,7 +6,7 @@
         <span id="skins" onclick="changeTab(this);">
             ${skinLabel}
         </span>
-         <span id="syncGoogle" onclick="changeTab(this);">
+        <span id="syncGoogle" onclick="changeTab(this);">
             {syncGoogle}
         </span>
     </div>
@@ -144,7 +144,7 @@
                     </tr>
                     <tr>
                         <td>
-                            Buzz
+                            <a href="#" onclick="enableBuzzSync();" id="buzz">Buzz</a>
                         </td>
                         <td align="left">
                             <input type="checkbox" class="normalInput" id="syncBuzz"/>
@@ -267,5 +267,9 @@
                     break;
             }
         }, requestJSONObject);
+    }
+
+    var enableBuzzSync = function () {
+        jsonRpc.preferenceService.enableBuzzSync(function (result, error) { });
     }
 </script>
