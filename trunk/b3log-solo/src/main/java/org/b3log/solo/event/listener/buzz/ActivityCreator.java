@@ -19,14 +19,20 @@ import com.google.inject.Inject;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import oauth.signpost.OAuthConsumer;
+import oauth.signpost.OAuthProvider;
+import oauth.signpost.basic.DefaultOAuthConsumer;
+import oauth.signpost.basic.DefaultOAuthProvider;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.solo.action.google.OAuthBuzzCallback;
 import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.google.auth.BuzzOAuth;
 import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
@@ -82,13 +88,48 @@ public final class ActivityCreator
                 return;
             }
 
-//            BuzzOAuth.authorize();
             final URL url =
                     new URL(
                     "https://www.googleapis.com/buzz/v1/activities/@me/@self?alt=json");
 
             final HttpURLConnection httpURLConnection =
                     (HttpURLConnection) url.openConnection();
+
+            final String blogHost = preference.optString(Preference.BLOG_HOST);
+            final String consumerKey = blogHost.split(":")[0];
+            final String consumerSecret =
+                    preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
+            final OAuthConsumer buzzOAuthConsumer = new DefaultOAuthConsumer(
+                    consumerKey, consumerSecret);
+            final OAuthProvider provider =
+                    new DefaultOAuthProvider(
+                    "https://www.google.com/accounts/OAuthGetRequestToken?scope="
+                    + URLEncoder.encode(PreferenceService.BUZZ_SCOPE, "UTF-8"),
+                    "https://www.google.com/accounts/OAuthGetAccessToken",
+                    "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken?domain="
+                    + consumerKey + "&scope=" + PreferenceService.BUZZ_SCOPE
+                    + "&iconUrl=" + "http://" + blogHost + "/favicon.png");
+
+            LOGGER.log(Level.INFO, "Fetching request token...");
+            final String authUrl = provider.retrieveRequestToken(
+                    buzzOAuthConsumer, "http://" + blogHost
+                                       + BuzzOAuth.CALLBACK_URL);
+            LOGGER.log(Level.INFO, "Authorization URL[{0}]", authUrl);
+//            System.out.println("Request token: " + consumer.getToken());
+//            System.out.println("Token secret: " + consumer.getTokenSecret());
+            final String verifier =
+                    OAuthBuzzCallback.getVerifier(buzzOAuthConsumer.getToken(),
+                                                  -1);
+            LOGGER.log(Level.INFO, "Fetching access token...");
+            LOGGER.log(Level.INFO, "Verifier[{0}]", verifier);
+            provider.retrieveAccessToken(buzzOAuthConsumer, verifier);
+
+            System.out.println("Access token: " + buzzOAuthConsumer.getToken());
+            System.out.println("Token secret: " + buzzOAuthConsumer.
+                    getTokenSecret());
+
+            buzzOAuthConsumer.sign(httpURLConnection);
+
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoOutput(true);
 
@@ -100,19 +141,16 @@ public final class ActivityCreator
             object.put("type", "note");
             object.put("content", "测试 sync of B3log Solo 2 Google Buzz");
 
-            final OAuthConsumer buzzOAuthConsumer =
-                    preferenceService.getBuzzOAuthConsumer();
-            buzzOAuthConsumer.sign(httpURLConnection);
-
             final OutputStream outputStream =
                     httpURLConnection.getOutputStream();
             outputStream.write(post.toString().getBytes());
             outputStream.close();
 
+            LOGGER.log(Level.INFO, "Posting to Buzz....");
+            httpURLConnection.connect();
             LOGGER.log(Level.INFO, "Response: {0} {1}",
                        new Object[]{httpURLConnection.getResponseCode(),
                                     httpURLConnection.getResponseMessage()});
-            httpURLConnection.disconnect();
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException(
