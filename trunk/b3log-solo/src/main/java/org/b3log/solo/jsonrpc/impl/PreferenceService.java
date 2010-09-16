@@ -119,7 +119,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
             LOGGER.log(Level.INFO, "Fetching request token...");
 
-            provider
+            
             final String authUrl = provider.retrieveRequestToken(
                     buzzOAuthConsumer, "http://" + blogHost
                                        + BuzzOAuth.CALLBACK_URL);
