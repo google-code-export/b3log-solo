@@ -72,7 +72,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
     /**
      * Buzz scope.
      */
-    private static final String BUZZ_SCOPE =
+    public static final String BUZZ_SCOPE =
             "https://www.googleapis.com/auth/buzz";
     /**
      * Buzz OAuth consumer.
@@ -113,13 +113,12 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                     "https://www.google.com/accounts/OAuthGetRequestToken?scope="
                     + URLEncoder.encode(BUZZ_SCOPE, "UTF-8"),
                     "https://www.google.com/accounts/OAuthGetAccessToken",
-                    "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken?domain"
+                    "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken?domain="
                     + consumerKey + "&scope=" + BUZZ_SCOPE + "&iconUrl="
                     + "http://" + blogHost + "/favicon.png");
 
             LOGGER.log(Level.INFO, "Fetching request token...");
 
-            
             final String authUrl = provider.retrieveRequestToken(
                     buzzOAuthConsumer, "http://" + blogHost
                                        + BuzzOAuth.CALLBACK_URL);
@@ -131,6 +130,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                                                   -1);
             LOGGER.log(Level.INFO, "Fetching access token...");
 
+            LOGGER.log(Level.INFO, "Verifier[{0}]", verifier);
             provider.retrieveAccessToken(buzzOAuthConsumer, verifier);
 
             System.out.println("Access token: " + buzzOAuthConsumer.getToken());
