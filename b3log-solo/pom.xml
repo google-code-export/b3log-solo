@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo version.
-    Version: 1.0.1.7, Sep 15, 2010
+    Version: 1.0.1.8, Sep 16, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -28,7 +28,7 @@
 <!--        <commons-fileupload.version>1.2.2</commons-fileupload.version>-->
         <commons-lang.version>2.5</commons-lang.version>
         <gae.version>1.3.7</gae.version>
-        <org.openid4java.version>0.9.6-SNAPSHOT</org.openid4java.version>
+        <oauth.signpost.version>1.2.1.1</oauth.signpost.version>
         <!-- maven plugin -->
         <maven-license-plugin.version>1.6.0</maven-license-plugin.version>
         <maven-checkstyle-plugin.version>2.5</maven-checkstyle-plugin.version>
@@ -165,9 +165,9 @@
             </dependency>-->
             
             <dependency>
-                <groupId>org.openid4java</groupId>
-                <artifactId>openid4java-consumer</artifactId>
-                <version>${org.openid4java.version}</version>
+                <groupId>oauth.signpost</groupId>
+                <artifactId>signpost-core</artifactId>
+                <version>${oauth.signpost.version}</version>
             </dependency>
 
         </dependencies>
@@ -225,8 +225,8 @@
         </dependency>-->
 
         <dependency>
-            <groupId>org.openid4java</groupId>
-            <artifactId>openid4java-consumer</artifactId>
+            <groupId>oauth.signpost</groupId>
+            <artifactId>signpost-core</artifactId>
         </dependency>
 
     </dependencies>
@@ -378,16 +378,11 @@
             <layout>default</layout>
         </repository>
 
-        <repository>
-            <id>maven-gae-plugin-repo</id>
-            <name>Maven Google App Engine Repository</name>
-            <url>http://maven-gae-plugin.googlecode.com/svn/repository</url>
-        </repository>
 
         <repository>
-            <id>OpenID4J</id>
-            <name>OpenID4J Repository</name>
-            <url>http://oss.sonatype.org/content/repositories/openid4java</url>
+            <id>Signpost</id>
+            <name>Signpost Repository</name>
+            <url>http://oss.sonatype.org/content/repositories/signpost-releases</url>
         </repository>
 
     </repositories>
