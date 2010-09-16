@@ -19,7 +19,7 @@
     <div class="clear"></div>
     <div class="left label">${abstract1Label}</div>
     <div class="left input">
-        <textarea id="abstract" rows="5" name="abstract"></textarea>
+        <textarea id="abstract" rows="12" name="abstract"></textarea>
     </div>
     <div class="clear"></div>
     <div class="right label">
