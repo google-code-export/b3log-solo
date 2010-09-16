@@ -16,14 +16,18 @@
 package org.b3log.solo.event.listener.buzz;
 
 import com.google.inject.Inject;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import oauth.signpost.OAuthConsumer;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.google.auth.BuzzOAuth;
+import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
@@ -43,6 +47,11 @@ public final class ActivityCreator
      */
     private static final Logger LOGGER =
             Logger.getLogger(ActivityCreator.class.getName());
+    /**
+     * Preference service.
+     */
+    @Inject
+    private PreferenceService preferenceService;
 
     /**
      * Constructs a {@link ActivityCreator} object with the specified event
@@ -73,7 +82,37 @@ public final class ActivityCreator
                 return;
             }
 
-            BuzzOAuth.authorize();
+//            BuzzOAuth.authorize();
+            final URL url =
+                    new URL(
+                    "https://www.googleapis.com/buzz/v1/activities/@me/@self?alt=json");
+
+            final HttpURLConnection httpURLConnection =
+                    (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setDoOutput(true);
+
+            final JSONObject post = new JSONObject();
+            final JSONObject data = new JSONObject();
+            post.put("data", data);
+            final JSONObject object = new JSONObject();
+            data.put("object", object);
+            object.put("type", "note");
+            object.put("content", "测试 sync of B3log Solo 2 Google Buzz");
+
+            final OAuthConsumer buzzOAuthConsumer =
+                    preferenceService.getBuzzOAuthConsumer();
+            buzzOAuthConsumer.sign(httpURLConnection);
+
+            final OutputStream outputStream =
+                    httpURLConnection.getOutputStream();
+            outputStream.write(post.toString().getBytes());
+            outputStream.close();
+
+            LOGGER.log(Level.INFO, "Response: {0} {1}",
+                       new Object[]{httpURLConnection.getResponseCode(),
+                                    httpURLConnection.getResponseMessage()});
+            httpURLConnection.disconnect();
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException(

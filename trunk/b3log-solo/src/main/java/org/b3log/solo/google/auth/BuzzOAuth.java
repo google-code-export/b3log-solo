@@ -35,7 +35,7 @@ public final class BuzzOAuth {
     /**
      * Callback URL.
      */
-    private static final String CALLBACK_URL = "/oauth-callback.do";
+    public static final String CALLBACK_URL = "/oauth-callback.do";
     /**
      * Buzz scope.
      */
