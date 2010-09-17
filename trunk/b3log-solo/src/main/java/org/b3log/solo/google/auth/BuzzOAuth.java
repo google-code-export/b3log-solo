@@ -15,7 +15,17 @@
  */
 package org.b3log.solo.google.auth;
 
+import com.google.api.client.auth.oauth.OAuthAuthorizeTemporaryTokenUrl;
+import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
+import com.google.api.client.auth.oauth.OAuthHmacSigner;
+import com.google.api.client.auth.oauth.OAuthParameters;
+import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetAccessToken;
+import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetTemporaryToken;
+import com.google.api.client.http.HttpTransport;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.solo.action.google.OAuthBuzzCallback;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
 
@@ -41,12 +51,81 @@ public final class BuzzOAuth {
      */
     private static final String BUZZ_SCOPE =
             "https://www.googleapis.com/auth/buzz";
+    /**
+     * Signer.
+     */
+    private static OAuthHmacSigner signer;
+    /**
+     * Credentials.
+     */
+    private static OAuthCredentialsResponse credentials;
 
     /**
-     * Authorizes.
+     * Authorizes the specified http transport.
+     * 
+     * @param transport the specified http transport
      */
-    public static void authorize() {
+    public static void authorize(final HttpTransport transport) {
         final JSONObject preference = SoloServletListener.getUserPreference();
+        try {
+            final String blogHost = preference.getString(Preference.BLOG_HOST);
+            final String consumerKey = blogHost.split(":")[0];
+            final String consumerSecret =
+                    preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
+
+            final GoogleOAuthGetTemporaryToken temporaryToken =
+                    new GoogleOAuthGetTemporaryToken();
+            signer = new OAuthHmacSigner();
+            signer.clientSharedSecret = consumerSecret;
+            temporaryToken.signer = signer;
+            temporaryToken.consumerKey = consumerKey;
+            temporaryToken.scope = BUZZ_SCOPE;
+            temporaryToken.displayName = consumerKey;
+            temporaryToken.callback = "http://" + blogHost + CALLBACK_URL;
+            final OAuthCredentialsResponse tempCredentials =
+                    temporaryToken.execute();
+            signer.tokenSharedSecret = tempCredentials.tokenSecret;
+            final OAuthAuthorizeTemporaryTokenUrl authorizeUrl =
+                    new OAuthAuthorizeTemporaryTokenUrl(
+                    "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
+            authorizeUrl.set("scope", temporaryToken.scope);
+            authorizeUrl.set("domain", consumerKey);
+            authorizeUrl.set("xoauth_displayname", consumerKey);
+            final String tempToken = tempCredentials.token;
+            authorizeUrl.temporaryToken = tempToken;
+            final String authorizationUrl = authorizeUrl.build();
+            LOGGER.log(Level.INFO, "Authorization URL[{0}]", authorizationUrl);
+
+            final String verifier =
+                    OAuthBuzzCallback.getVerifier(tempToken, -1);
+            final GoogleOAuthGetAccessToken accessToken =
+                    new GoogleOAuthGetAccessToken();
+            accessToken.temporaryToken = tempToken;
+            accessToken.signer = signer;
+            accessToken.consumerKey = consumerKey;
+            accessToken.verifier = verifier;
+            credentials = accessToken.execute();
+            signer.tokenSharedSecret = credentials.tokenSecret;
+            createOAuthParameters().signRequestsUsingAuthorizationHeader(
+                    transport);
+
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+    }
+
+    /**
+     * Creates OAuth parameters.
+     *
+     * @return OAuth parameters
+     */
+    private static OAuthParameters createOAuthParameters() {
+        final OAuthParameters ret = new OAuthParameters();
+        ret.consumerKey = "anonymous";
+        ret.signer = signer;
+        ret.token = credentials.token;
+        return ret;
     }
 
     /**
