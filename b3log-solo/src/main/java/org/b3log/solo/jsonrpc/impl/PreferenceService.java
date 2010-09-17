@@ -15,10 +15,13 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.api.client.googleapis.GoogleTransport;
+import com.google.api.client.googleapis.json.JsonCParser;
+import com.google.api.client.http.HttpTransport;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
-import java.net.URLEncoder;
+import java.rmi.AccessException;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -26,16 +29,12 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import oauth.signpost.OAuthConsumer;
-import oauth.signpost.OAuthProvider;
-import oauth.signpost.basic.DefaultOAuthConsumer;
-import oauth.signpost.basic.DefaultOAuthProvider;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
-import org.b3log.solo.action.google.OAuthBuzzCallback;
 import org.b3log.solo.google.auth.BuzzOAuth;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
@@ -78,6 +77,19 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      * Buzz OAuth consumer.
      */
     private OAuthConsumer buzzOAuthConsumer;
+    /**
+     * Http transport.
+     */
+    private HttpTransport transport;
+
+    /**
+     * Gets http transport.
+     *
+     * @return http transport
+     */
+    public HttpTransport getHttpTransport() {
+        return transport;
+    }
 
     /**
      * Gets Buzz OAuth consumer.
@@ -100,44 +112,12 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                                final HttpServletResponse response)
             throws ActionException, IOException {
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
-            final String blogHost = preference.optString(Preference.BLOG_HOST);
-            final String consumerKey = blogHost.split(":")[0];
-            final String consumerSecret =
-                    preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
-            buzzOAuthConsumer = new DefaultOAuthConsumer(
-                    consumerKey, consumerSecret);
-            final OAuthProvider provider =
-                    new DefaultOAuthProvider(
-                    "https://www.google.com/accounts/OAuthGetRequestToken?scope="
-                    + URLEncoder.encode(BUZZ_SCOPE, "UTF-8"),
-                    "https://www.google.com/accounts/OAuthGetAccessToken",
-                    "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken?domain="
-                    + consumerKey + "&scope=" + BUZZ_SCOPE + "&iconUrl="
-                    + "http://" + blogHost + "/favicon.png");
-
-            LOGGER.log(Level.INFO, "Fetching request token...");
-
-            final String authUrl = provider.retrieveRequestToken(
-                    buzzOAuthConsumer, "http://" + blogHost
-                                       + BuzzOAuth.CALLBACK_URL);
-            LOGGER.log(Level.INFO, "Authorization URL[{0}]", authUrl);
-//            System.out.println("Request token: " + consumer.getToken());
-//            System.out.println("Token secret: " + consumer.getTokenSecret());
-            final String verifier =
-                    OAuthBuzzCallback.getVerifier(buzzOAuthConsumer.getToken(),
-                                                  -1);
-            LOGGER.log(Level.INFO, "Fetching access token...");
-
-            LOGGER.log(Level.INFO, "Verifier[{0}]", verifier);
-            provider.retrieveAccessToken(buzzOAuthConsumer, verifier);
-
-            System.out.println("Access token: " + buzzOAuthConsumer.getToken());
-            System.out.println("Token secret: " + buzzOAuthConsumer.
-                    getTokenSecret());
+            transport = GoogleTransport.create();
+            transport.addParser(new JsonCParser());
+            BuzzOAuth.authorize(transport);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new AccessException(e.getMessage());
         }
     }
 
