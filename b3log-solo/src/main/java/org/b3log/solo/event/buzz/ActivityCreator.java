@@ -65,15 +65,9 @@ public final class ActivityCreator
     private static final GoogleUrl MY_BUZZ_FEED_URL;
 
     static {
-        try {
-            MY_BUZZ_FEED_URL =
-                    new GoogleUrl(URLEncoder.encode(
-                    "https://www.googleapis.com/buzz/v1/activities/@me/@self",
-                    "UTF-8"));
-        } catch (final UnsupportedEncodingException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
+        MY_BUZZ_FEED_URL = new GoogleUrl(
+                "https://www.googleapis.com/buzz/v1/activities/@me/@self",
+                "UTF-8");
     }
 
     /**
