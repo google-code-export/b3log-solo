@@ -30,6 +30,7 @@ import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.solo.action.google.BuzzOAuth;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Article;
@@ -96,8 +97,7 @@ public final class ActivityCreator
                 return;
             }
 
-            final HttpTransport httpTransport = preferenceService.
-                    getHttpTransport();
+            final HttpTransport httpTransport = BuzzOAuth.getHttpTransport();
 
             if (null == httpTransport) {
                 LOGGER.log(Level.SEVERE, "Http transport is null");
