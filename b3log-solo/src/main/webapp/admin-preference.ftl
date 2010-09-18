@@ -144,7 +144,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a href="#" onclick="enableBuzzSync();" id="buzz">Buzz</a>
+                            <a href="/buzz-oauth.do" id="buzz">Buzz</a>
                         </td>
                         <td align="left">
                             <input type="checkbox" class="normalInput" id="syncBuzz"/>
@@ -267,9 +267,5 @@
                     break;
             }
         }, requestJSONObject);
-    }
-
-    var enableBuzzSync = function () {
-        jsonRpc.preferenceService.enableBuzzSync(function (result, error) { });
     }
 </script>

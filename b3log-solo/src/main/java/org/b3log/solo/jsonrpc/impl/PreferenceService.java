@@ -15,27 +15,20 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.api.client.googleapis.GoogleTransport;
-import com.google.api.client.googleapis.json.JsonCParser;
-import com.google.api.client.http.HttpTransport;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
-import java.rmi.AccessException;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import oauth.signpost.OAuthConsumer;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
-import org.b3log.solo.google.auth.BuzzOAuth;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
@@ -68,58 +61,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Skins skins;
-    /**
-     * Buzz scope.
-     */
-    public static final String BUZZ_SCOPE =
-            "https://www.googleapis.com/auth/buzz";
-    /**
-     * Buzz OAuth consumer.
-     */
-    private OAuthConsumer buzzOAuthConsumer;
-    /**
-     * Http transport.
-     */
-    private HttpTransport httpTransport;
-
-    /**
-     * Gets http transport.
-     *
-     * @return http transport
-     */
-    public HttpTransport getHttpTransport() {
-        return httpTransport;
-    }
-
-    /**
-     * Gets Buzz OAuth consumer.
-     *
-     * @return Buzz OAuth consumer
-     */
-    public OAuthConsumer getBuzzOAuthConsumer() {
-        return buzzOAuthConsumer;
-    }
-
-    /**
-     * Enables Google Buzz sync by the specified request json object.
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public void enableBuzzSync(final HttpServletRequest request,
-                               final HttpServletResponse response)
-            throws ActionException, IOException {
-        try {
-            httpTransport = GoogleTransport.create();
-            httpTransport.addParser(new JsonCParser());
-            BuzzOAuth.authorize(httpTransport);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new AccessException(e.getMessage());
-        }
-    }
 
     /**
      * Gets preference.

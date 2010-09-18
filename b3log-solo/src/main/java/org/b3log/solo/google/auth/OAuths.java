@@ -24,28 +24,27 @@ import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetTemporaryToken;
 import com.google.api.client.http.HttpTransport;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.solo.action.google.OAuthBuzzCallback;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
 
 /**
- * Google oauth.
+ * Google oauth utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 14, 2010
+ * @version 1.0.0.1, Sep 18, 2010
  */
-public final class BuzzOAuth {
+public final class OAuths {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(BuzzOAuth.class.getName());
+            Logger.getLogger(OAuths.class.getName());
     /**
-     * Callback URL.
+     * Buzz OAuth callback URL.
      */
-    public static final String CALLBACK_URL = "/oauth-callback.do";
+    public static final String BUZZ_CALLBACK_URL = "/buzz-oauth-callback.do";
     /**
      * Buzz scope.
      */
@@ -61,11 +60,13 @@ public final class BuzzOAuth {
     private static OAuthCredentialsResponse credentials;
 
     /**
-     * Authorizes the specified http transport.
+     * Gets the Buzz authorization URL for the specified http transport.
      * 
-     * @param transport the specified http transport
+     * @param httpTransport the specified http transport
+     * @return Buzz authorization URL, returns {@code null} if error
      */
-    public static void authorize(final HttpTransport transport) {
+    public static String getBuzzAuthorizationURL(
+            final HttpTransport httpTransport) {
         final JSONObject preference = SoloServletListener.getUserPreference();
         try {
             final String blogHost = preference.getString(Preference.BLOG_HOST);
@@ -80,38 +81,57 @@ public final class BuzzOAuth {
             temporaryToken.signer = signer;
             temporaryToken.consumerKey = consumerKey;
             temporaryToken.scope = BUZZ_SCOPE;
-            temporaryToken.displayName = consumerKey;
-            temporaryToken.callback = "http://" + blogHost + CALLBACK_URL;
+            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            temporaryToken.displayName = blogTitle;
+            temporaryToken.callback = "http://" + blogHost + BUZZ_CALLBACK_URL;
             final OAuthCredentialsResponse tempCredentials =
                     temporaryToken.execute();
             signer.tokenSharedSecret = tempCredentials.tokenSecret;
-            final OAuthAuthorizeTemporaryTokenUrl authorizeUrl =
+            final OAuthAuthorizeTemporaryTokenUrl authorizeURL =
                     new OAuthAuthorizeTemporaryTokenUrl(
                     "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
-            authorizeUrl.set("scope", temporaryToken.scope);
-            authorizeUrl.set("domain", consumerKey);
-            authorizeUrl.set("xoauth_displayname", consumerKey);
+            authorizeURL.set("scope", temporaryToken.scope);
+            authorizeURL.set("domain", consumerKey);
+            authorizeURL.set("iconUrl",
+                    "http://code.google.com/p/b3log-solo/logo?cct=1283958195");
             final String tempToken = tempCredentials.token;
-            authorizeUrl.temporaryToken = tempToken;
-            final String authorizationUrl = authorizeUrl.build();
-            LOGGER.log(Level.INFO, "Authorization URL[{0}]", authorizationUrl);
+            authorizeURL.temporaryToken = tempToken;
 
-            final String verifier =
-                    OAuthBuzzCallback.getVerifier(tempToken, -1);
-            final GoogleOAuthGetAccessToken accessToken =
-                    new GoogleOAuthGetAccessToken();
-            accessToken.temporaryToken = tempToken;
-            accessToken.signer = signer;
-            accessToken.consumerKey = consumerKey;
-            accessToken.verifier = verifier;
-            credentials = accessToken.execute();
-            signer.tokenSharedSecret = credentials.tokenSecret;
-            createOAuthParameters().signRequestsUsingAuthorizationHeader(
-                    transport);
+            final String ret = authorizeURL.build();
+            LOGGER.log(Level.FINE, "Authorization URL[{0}]", ret);
 
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            return null;
         }
+    }
+
+    /**
+     * Signs the specified request token, verifier and http transport.
+     *
+     * @param requestToken the specified request token
+     * @param verifier the specified verifier
+     * @param httpTransport the specified http transport
+     * @throws Exception exception
+     */
+    public static void sign(final String requestToken,
+                            final String verifier,
+                            final HttpTransport httpTransport)
+            throws Exception {
+        final JSONObject preference = SoloServletListener.getUserPreference();
+        final String consumerKey = preference.getString(Preference.BLOG_HOST).
+                split(":")[0];
+        final GoogleOAuthGetAccessToken accessToken =
+                new GoogleOAuthGetAccessToken();
+        accessToken.temporaryToken = requestToken;
+        accessToken.signer = signer;
+        accessToken.consumerKey = consumerKey;
+        accessToken.verifier = verifier;
+        credentials = accessToken.execute();
+        signer.tokenSharedSecret = credentials.tokenSecret;
+        createOAuthParameters().signRequestsUsingAuthorizationHeader(
+                httpTransport);
 
     }
 
@@ -131,6 +151,6 @@ public final class BuzzOAuth {
     /**
      * Private default constructor.
      */
-    private BuzzOAuth() {
+    private OAuths() {
     }
 }

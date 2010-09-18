@@ -24,14 +24,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.solo.google.auth.OAuths;
 
 /**
- * OAuth callback.
+ * Buzz OAuth callback.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 14, 2010
+ * @version 1.0.0.1, Sep 18, 2010
  */
-public final class OAuthBuzzCallback extends HttpServlet {
+public final class BuzzOAuthCallback extends HttpServlet {
 
     /**
      * Default serial version uid.
@@ -41,7 +42,7 @@ public final class OAuthBuzzCallback extends HttpServlet {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(OAuthBuzzCallback.class.getName());
+            Logger.getLogger(BuzzOAuthCallback.class.getName());
     /**
      * Verifiers.
      */
@@ -58,12 +59,19 @@ public final class OAuthBuzzCallback extends HttpServlet {
             throws ServletException, IOException {
         final String requestToken = request.getParameter("oauth_token");
         final String verifier = request.getParameter("oauth_verifier");
-        LOGGER.log(Level.INFO,
+        LOGGER.log(Level.FINE,
                    "OAuth callback from Google[requestToken={0}, verifier={1}",
                    new String[]{requestToken, verifier});
         synchronized (VERIFIERS) {
             VERIFIERS.put(requestToken, verifier);
             VERIFIERS.notifyAll();
+        }
+
+        try {
+            OAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ServletException(e);
         }
 
         response.sendRedirect("/admin-index.do");
