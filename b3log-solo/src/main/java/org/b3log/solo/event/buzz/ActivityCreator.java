@@ -15,8 +15,14 @@
  */
 package org.b3log.solo.event.buzz;
 
+import com.google.api.client.googleapis.json.JsonCContent;
+import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpTransport;
 import com.google.inject.Inject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.event.AbstractEventListener;
@@ -24,9 +30,9 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.google.buzz.BuzzActivity;
-import org.b3log.solo.google.buzz.BuzzObject;
+import org.b3log.solo.google.buzz.BuzzUrl;
 import org.b3log.solo.jsonrpc.impl.PreferenceService;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.servlet.SoloServletListener;
 import org.json.JSONObject;
@@ -88,16 +94,82 @@ public final class ActivityCreator
                 LOGGER.log(Level.SEVERE, "Http transport is null");
                 throw new Exception("Http transport is null");
             }
-            final BuzzActivity activity = new BuzzActivity();
-            activity.setBuzzObject(new BuzzObject());
-            activity.getBuzzObject().setContent("Posting test");
-            final BuzzActivity result = activity.post(httpTransport);
 
+            post(httpTransport, article);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException(
                     "Send article creation buzz activity to Google Buzz error");
         }
+    }
+
+    /**
+     * Posts the specified article via the specified http transport.
+     *
+     * @param httpTransport the specified http transport
+     * @param article the specified article
+     * @throws Exception exception
+     */
+    public void post(final HttpTransport httpTransport,
+                     final JSONObject article)
+            throws Exception {
+        final HttpRequest request = httpTransport.buildPostRequest();
+        request.url = BuzzUrl.forMyActivityFeed();
+        request.content = toContent(article);
+
+        request.execute().parseAsString();
+    }
+
+    /**
+     * Returns a new JSON-C content serializer for the specified article.
+     *
+     * @param article the specified article
+     * @return JSON-C content
+     * @throws Exception exception
+     */
+    private JsonCContent toContent(final JSONObject article) throws Exception {
+        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JsonCContent ret = new JsonCContent();
+        final Map<String, Object> data = new HashMap<String, Object>();
+        data.put("title", preference.getString(Preference.BLOG_TITLE));
+        final Map<String, Object> dataLinks = new HashMap<String, Object>();
+        data.put("links", dataLinks);
+        final List<Map<String, Object>> dataLinksAlts =
+                new ArrayList<Map<String, Object>>();
+        dataLinks.put("alternate", dataLinksAlts);
+        final Map<String, Object> dataLinksAlt = new HashMap<String, Object>();
+        dataLinksAlts.add(dataLinksAlt);
+        dataLinksAlt.put("href", preference.getString(Preference.BLOG_HOST));
+        dataLinksAlt.put("type", "text/html");
+
+        final Map<String, Object> object = new HashMap<String, Object>();
+        data.put("object", object);
+        object.put("type", "note");
+        object.put("title", article.getString(Article.ARTICLE_TITLE));
+        object.put("content", "TEST");
+        final List<Map<String, Object>> objectAttachments =
+                new ArrayList<Map<String, Object>>();
+        object.put("attachments", objectAttachments);
+        final Map<String, Object> objectAttachment =
+                new HashMap<String, Object>();
+        objectAttachments.add(objectAttachment);
+        objectAttachment.put("type", "article");
+        objectAttachment.put("title", article.getString(Article.ARTICLE_TITLE));
+        objectAttachment.put("content", article.getString(Article.ARTICLE_TITLE));
+        final Map<String, Object> objectAttachmentsLinks =
+                new HashMap<String, Object>();
+        objectAttachment.put("links", objectAttachmentsLinks);
+        final List<Map<String, Object>> objectLinksAlts =
+                new ArrayList<Map<String, Object>>();
+        objectAttachmentsLinks.put("alternate", objectLinksAlts);
+        final Map<String, Object> objectLinksAlt = new HashMap<String, Object>();
+        objectLinksAlts.add(objectLinksAlt);
+        objectLinksAlt.put("href", article.getString(Article.ARTICLE_PERMALINK));
+        objectLinksAlt.put("type", "text/html");
+
+        ret.data = data;
+
+        return ret;
     }
 
     /**

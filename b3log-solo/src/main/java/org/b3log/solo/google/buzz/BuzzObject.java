@@ -17,6 +17,8 @@ package org.b3log.solo.google.buzz;
 
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.util.Key;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Buzz Object.
@@ -41,6 +43,11 @@ public class BuzzObject extends GenericJson {
      */
     @Key
     private String content;
+    /**
+     * Attachments.
+     */
+    @Key
+    private List<GenericJson> attachments = new ArrayList<GenericJson>();
 
     /**
      * Gets the content.
@@ -58,5 +65,14 @@ public class BuzzObject extends GenericJson {
      */
     public void setContent(final String content) {
         this.content = content;
+    }
+
+    /**
+     * Adds the specified attachment.
+     *
+     * @param attachment the specified attachment
+     */
+    public void addAttachments(final GenericJson attachment) {
+        attachments.add(attachment);
     }
 }
