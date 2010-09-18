@@ -145,7 +145,7 @@ public final class ActivityCreator
         final Map<String, Object> object = new HashMap<String, Object>();
         data.put("object", object);
         object.put("type", "note");
-        object.put("content", article.getString(Article.ARTICLE_TITLE));
+        object.put("content", preference.getString(Preference.BLOG_TITLE));
         final List<Map<String, Object>> objectAttachments =
                 new ArrayList<Map<String, Object>>();
         object.put("attachments", objectAttachments);
