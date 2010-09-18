@@ -7,7 +7,7 @@
             ${skinLabel}
         </span>
         <span id="syncGoogle" onclick="changeTab(this);">
-            {syncGoogle}
+            ${googleLabel}
         </span>
     </div>
     <div class="tabMain">
@@ -136,7 +136,7 @@
                 <tbody>
                     <tr>
                         <td width="90">
-                            {secret}
+                            ${OAuthConsumerSecret1Label}
                         </td>
                         <td>
                             <input id="secret"/>
