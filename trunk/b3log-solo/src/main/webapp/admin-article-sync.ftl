@@ -1,10 +1,10 @@
 <div class="tabPanel">
     <div class="tabs">
-        <span class="selected" id="sync" onclick="changeTab(this);">
-            ${blogArticleImportLabel}
-        </span>
-        <span id="syncSetting" onclick="changeTab(this);">
+        <span id="syncSetting" class="selected" onclick="changeTab(this);">
             ${blogSyncMgmtLabel}
+        </span>
+        <span id="sync" onclick="changeTab(this);">
+            ${blogArticleImportLabel}
         </span>
         <div class="clear"></div>
         <div id="syncBlogType">
@@ -15,41 +15,13 @@
                 <option value="blogSyncBlogJava">${BlogJavaLabel}</option>
                 <option value="blogSyncCnBlogs">${CnBlogsLabel}</option>
             </select>
+            <span class="error-msg" id="blogSyncTip">
+                ${blogTypeEmptyLabel}
+            </span>
         </div>
     </div>
     <div class="tabMain">
-        <div id="syncPanel">
-            <table id="archiveDatePanel" class="form left none" cellpadding="0" cellspacing="9px">
-                <tbody>
-                    <tr>
-                        <th>
-                            ${selectDate1Label}
-                        </th>
-                        <td>
-                            <select id="archiveDate">
-                                <option>${selectDateLabel}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button onclick="getBlogArticlesByArchiveDate();">
-                                ${getArticleLabel}
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button id="getDateButton" class="left" onclick="getBlogArticleArchiveDate();">${getDateLabel}</button>
-            <div class="clear"></div>
-            <div id="articlesPanel" class="none">
-                <button onclick="sync();" class="left">${importLabel}</button>
-                <div id="articlesCount" class="right red marginTop12 marginRight12">
-                </div>
-                <div class="clear"></div>
-                <div id="articleList" class="paddingTop12 paddingBottom12"></div>
-                <button onclick="sync();">${importLabel}</button>
-            </div>
-        </div>
-        <div id="syncSettingPanel" class="none">
+        <div id="syncSettingPanel">
             <fieldset>
                 <legend>
                     ${syncMgmtLabel}
@@ -106,6 +78,37 @@
                     </tbody>
                 </table>
             </fieldset>
+        </div>
+        <div id="syncPanel" class="none">
+            <table id="archiveDatePanel" class="form left none" cellpadding="0" cellspacing="9px">
+                <tbody>
+                    <tr>
+                        <th>
+                            ${selectDate1Label}
+                        </th>
+                        <td>
+                            <select id="archiveDate">
+                                <option>${selectDateLabel}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button onclick="getBlogArticlesByArchiveDate();">
+                                ${getArticleLabel}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="getDateButton" class="left none" onclick="getBlogArticleArchiveDate();">${getDateLabel}</button>
+            <div class="clear"></div>
+            <div id="articlesPanel" class="none">
+                <button onclick="sync();" class="left">${importLabel}</button>
+                <div id="articlesCount" class="right red marginTop12 marginRight12">
+                </div>
+                <div class="clear"></div>
+                <div id="articleList" class="paddingTop12 paddingBottom12"></div>
+                <button onclick="sync();">${importLabel}</button>
+            </div>
         </div>
     </div>
 </div>
@@ -169,6 +172,8 @@
                     result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
                     result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
                     $("#tipMsg").text("${getSuccLabel}");
+                    $("#blogSyncTip").text("");
+                    $("#getDateButton").show();
                 } else {
                     $("#magName").val("");
                     $("#magPassword").val("");
@@ -176,8 +181,9 @@
                     $("#updateSync").removeAttr("checked");
                     $("#deleteSync").removeAttr("checked");
                     $("#tipMsg").text("${noSettingLabel}");
+                    $("#blogSyncTip").text("");
+                    $("#getDateButton").hide();
                 }
-                $("#getDateButton").show();
                 $("#archiveDatePanel").hide();
                 $("#articlesPanel").hide();
             }, {
@@ -185,6 +191,8 @@
             });
         } else {
             $("#tipMsg").text("${blogTypeEmptyLabel}");
+            $("#blogSyncTip").text("${blogTypeEmptyLabel}");
+            $("#getDateButton").hide();
         }
     }
 
@@ -223,6 +231,7 @@
 
             if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
                 $("#tipMsg").html("${updateSuccLabel}");
+                $("#getDateButton").show();
             } else {
                 $("#tipMsg").html("${setFailLabel}");
             }
