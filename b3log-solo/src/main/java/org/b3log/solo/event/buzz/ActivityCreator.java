@@ -20,8 +20,6 @@ import com.google.api.client.googleapis.json.JsonCContent;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpTransport;
 import com.google.inject.Inject;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,8 +64,7 @@ public final class ActivityCreator
 
     static {
         MY_BUZZ_FEED_URL = new GoogleUrl(
-                "https://www.googleapis.com/buzz/v1/activities/@me/@self",
-                "UTF-8");
+                "https://www.googleapis.com/buzz/v1/activities/@me/@self");
     }
 
     /**
