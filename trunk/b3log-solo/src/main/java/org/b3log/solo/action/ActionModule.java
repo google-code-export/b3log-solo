@@ -37,9 +37,16 @@ import org.b3log.solo.action.google.OAuthBuzzCallback;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Sep 14, 2010
+ * @version 1.0.0.9, Sep 18, 2010
  */
 public final class ActionModule extends AbstractActionModule {
+
+    /**
+     * Public default constructor.
+     */
+    public ActionModule() {
+        putJabsorbInitParam("gzip_threshold", "-1");
+    }
 
     @Override
     protected void configureServlets() {
