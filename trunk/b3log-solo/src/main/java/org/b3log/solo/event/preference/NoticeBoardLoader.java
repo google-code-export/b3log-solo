@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.event.listener.preference;
+package org.b3log.solo.event.preference;
 
 import com.google.inject.Inject;
 import java.util.logging.Level;
@@ -28,36 +28,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for Google settings load process.
+ * This listener is responsible for preference notice board load process.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 14, 2010
+ * @version 1.0.0.1, Sep 14, 2010
  */
-public final class GoogleSettingsLoader
+public final class NoticeBoardLoader
         extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(GoogleSettingsLoader.class.getName());
+            Logger.getLogger(NoticeBoardLoader.class.getName());
     /**
-     * Default OAuth consumer secret for Google.
+     * Default notice board.
      */
-    private static final String DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET = "";
-    /**
-     * Default enable post to Buzz.
-     */
-    private static final boolean DEFAULT_ENABLE_POST_TO_BUZZ = false;
+    private static final String DEFAULT_NOTICE_BOARD =
+            "Open Source, Open Mind, <br/>Open Sight, Open Future!";
 
     /**
-     * Constructs a {@link GoogleSettingsLoader} object with the specified event
+     * Constructs a {@link NoticeBoardLoader} object with the specified event
      * manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
-    public GoogleSettingsLoader(final EventManager eventManager) {
+    public NoticeBoardLoader(final EventManager eventManager) {
         super(eventManager);
     }
 
@@ -68,19 +65,14 @@ public final class GoogleSettingsLoader
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 preference,
-                                GoogleSettingsLoader.class.getName()});
+                                NoticeBoardLoader.class.getName()});
         try {
-            if (!preference.has(Preference.GOOLE_OAUTH_CONSUMER_SECRET)) {
-                preference.put(Preference.GOOLE_OAUTH_CONSUMER_SECRET,
-                               DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
-            }
-            if (!preference.has(Preference.ENABLE_POST_TO_BUZZ)) {
-                preference.put(Preference.ENABLE_POST_TO_BUZZ,
-                               DEFAULT_ENABLE_POST_TO_BUZZ);
+            if (!preference.has(Preference.NOTICE_BOARD)) {
+                preference.put(Preference.NOTICE_BOARD, DEFAULT_NOTICE_BOARD);
             }
         } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());
-            throw new EventException("Load Google settings error!");
+            throw new EventException("Load notice board error!");
         }
     }
 

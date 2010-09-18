@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.event.listener.sync.impl;
+package org.b3log.solo.event.sync.impl;
 
 import com.google.inject.Inject;
 import org.b3log.latke.event.EventManager;
-import org.b3log.solo.event.listener.sync.AbstractUpdateArticleProcessor;
+import org.b3log.solo.event.sync.AbstractRemoveArticleProcessor;
 import org.b3log.solo.model.BlogSync;
 
 /**
- * This listener is responsible for blog sync update article to CnBlogs.
+ * This listener is responsible for blog sync remove article from CnBlogs.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 4, 2010
  */
-public final class CnBlogsUpdateArticleProcessor
-        extends AbstractUpdateArticleProcessor {
+public final class CnBlogsRemoveArticleProcessor
+        extends AbstractRemoveArticleProcessor {
 
     /**
-     * Constructs a {@link CnBlogsUpdateArticleProcessor} object with the
+     * Constructs a {@link CnBlogsRemoveArticleProcessor} object with the
      * specified event manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
-    public CnBlogsUpdateArticleProcessor(final EventManager eventManager) {
+    public CnBlogsRemoveArticleProcessor(final EventManager eventManager) {
         super(eventManager);
     }
 

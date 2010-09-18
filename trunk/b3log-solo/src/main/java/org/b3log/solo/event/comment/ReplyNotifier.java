@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.event.listener.comment;
+package org.b3log.solo.event.comment;
 
 import com.google.appengine.api.mail.MailService;
 import com.google.appengine.api.mail.MailService.Message;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.event.listener.preference;
+package org.b3log.solo.event.preference;
 
 import com.google.inject.Inject;
 import java.util.logging.Level;
@@ -28,33 +28,32 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for preference notice board load process.
+ * This listener is responsible for preference HTML head load process.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Sep 14, 2010
  */
-public final class NoticeBoardLoader
+public final class HTMLHeadLoader
         extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(NoticeBoardLoader.class.getName());
+            Logger.getLogger(HTMLHeadLoader.class.getName());
     /**
-     * Default notice board.
+     * Default HTML head to append.
      */
-    private static final String DEFAULT_NOTICE_BOARD =
-            "Open Source, Open Mind, <br/>Open Sight, Open Future!";
+    private static final String DEFAULT_HTML_HEAD = "";
 
     /**
-     * Constructs a {@link NoticeBoardLoader} object with the specified event
+     * Constructs a {@link HTMLHeadLoader} object with the specified event
      * manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
-    public NoticeBoardLoader(final EventManager eventManager) {
+    public HTMLHeadLoader(final EventManager eventManager) {
         super(eventManager);
     }
 
@@ -65,14 +64,14 @@ public final class NoticeBoardLoader
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 preference,
-                                NoticeBoardLoader.class.getName()});
+                                HTMLHeadLoader.class.getName()});
         try {
-            if (!preference.has(Preference.NOTICE_BOARD)) {
-                preference.put(Preference.NOTICE_BOARD, DEFAULT_NOTICE_BOARD);
+            if (!preference.has(Preference.HTML_HEAD)) {
+                preference.put(Preference.HTML_HEAD, DEFAULT_HTML_HEAD);
             }
         } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());
-            throw new EventException("Load notice board error!");
+            throw new EventException("Load HTML head error!");
         }
     }
 
