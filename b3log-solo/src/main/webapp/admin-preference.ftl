@@ -138,7 +138,7 @@
                         <td width="160">
                             ${OAuthConsumerSecret1Label}
                         </td>
-                        <td>
+                        <td colspan="2">
                             <input id="secret"/>
                         </td>
                     </tr>
@@ -148,11 +148,13 @@
                         </td>
                         <td align="left">
                             <input type="checkbox" class="normalInput" id="syncBuzz"/>
+                        </td>
+                        <td>
                             ${postToBuzzWhilePublishArticleLabel}
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="right">
+                        <td colspan="3" align="right">
                             <button onclick="changePreference();">${saveLabel}</button>
                         </td>
                     </tr>
@@ -233,6 +235,13 @@
     
     var changePreference = function () {
         $("#tipMsg").text("${loadingLabel}");
+
+        if ($("#syncGoogle").hasClass("selected")) {
+            if ("" === $("#secret").val().replace(/\s/g, "")) {
+                $("#tipMsg").text("${contentEmptyLabel}");
+                return;
+            }
+        }
         var requestJSONObject = {
             "preference": {
                 "blogTitle": $("#blogTitle").val(),
