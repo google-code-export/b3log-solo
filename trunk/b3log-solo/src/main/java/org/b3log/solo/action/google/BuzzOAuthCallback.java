@@ -16,8 +16,6 @@
 package org.b3log.solo.action.google;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -44,11 +42,6 @@ public final class BuzzOAuthCallback extends HttpServlet {
     private static final Logger LOGGER =
             Logger.getLogger(BuzzOAuthCallback.class.getName());
     /**
-     * Verifiers.
-     */
-    private static final Map<String, String> VERIFIERS =
-            new HashMap<String, String>();
-    /**
      * Sleep interval in milliseconds.
      */
     public static final long SLEEP_INTERVAL = 3000;
@@ -62,10 +55,6 @@ public final class BuzzOAuthCallback extends HttpServlet {
         LOGGER.log(Level.FINE,
                    "OAuth callback from Google[requestToken={0}, verifier={1}",
                    new String[]{requestToken, verifier});
-        synchronized (VERIFIERS) {
-            VERIFIERS.put(requestToken, verifier);
-            VERIFIERS.notifyAll();
-        }
 
         try {
             OAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
@@ -75,36 +64,5 @@ public final class BuzzOAuthCallback extends HttpServlet {
         }
 
         response.sendRedirect("/admin-index.do");
-    }
-
-    /**
-     * Gets verifier by the specified request token.
-     *
-     * @param requestToken the specified request token
-     * @param waitMillis amount of time we're willing to wait, it millisecond.
-     * @return verifier
-     */
-    public static String getVerifier(final String requestToken,
-                                     final long waitMillis) {
-        final long startTime = System.currentTimeMillis();
-
-        synchronized (VERIFIERS) {
-            while (!VERIFIERS.containsKey(requestToken)) {
-                try {
-                    VERIFIERS.wait(SLEEP_INTERVAL);
-                } catch (final InterruptedException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                    return null;
-                }
-
-                if (waitMillis != -1 && System.currentTimeMillis()
-                                        > startTime + waitMillis) {
-                    LOGGER.log(Level.WARNING, "Timeout while waiting for token");
-                    return null;
-                }
-            }
-
-            return VERIFIERS.remove(requestToken);
-        }
     }
 }
