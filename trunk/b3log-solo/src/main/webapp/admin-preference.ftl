@@ -135,7 +135,7 @@
             <table class="form" width="99%" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
-                        <td width="90">
+                        <td width="160">
                             ${OAuthConsumerSecret1Label}
                         </td>
                         <td>
@@ -144,10 +144,11 @@
                     </tr>
                     <tr>
                         <td>
-                            <a href="/buzz-oauth.do" id="buzz">Buzz</a>
+                            <a href="/buzz-oauth.do" id="buzz">Google Buzz</a>
                         </td>
                         <td align="left">
                             <input type="checkbox" class="normalInput" id="syncBuzz"/>
+                            {postToBuzzWhilePublishArticleLabel}
                         </td>
                     </tr>
                     <tr>
