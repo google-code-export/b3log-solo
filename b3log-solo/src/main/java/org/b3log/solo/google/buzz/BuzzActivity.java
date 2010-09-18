@@ -40,7 +40,7 @@ import java.io.IOException;
  * 
  * @author Yaniv Inbar
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 14, 2010
+ * @version 1.0.0.1, Sep 18, 2010
  */
 public final class BuzzActivity extends GenericJson {
 
@@ -58,12 +58,13 @@ public final class BuzzActivity extends GenericJson {
     /**
      * Post this Buzz Activity.
      *
-     * @param transport Google transport
+     * @param httpTransport Google http transport
      * @return posted Buzz Activity response from the Buzz server
      * @throws IOException any I/O exception
      */
-    public BuzzActivity post(final HttpTransport transport) throws IOException {
-        final HttpRequest request = transport.buildPostRequest();
+    public BuzzActivity post(final HttpTransport httpTransport)
+            throws IOException {
+        final HttpRequest request = httpTransport.buildPostRequest();
         request.url = BuzzUrl.forMyActivityFeed();
         request.content = toContent();
 

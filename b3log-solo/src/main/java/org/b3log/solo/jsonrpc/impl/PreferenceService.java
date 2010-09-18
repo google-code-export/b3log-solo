@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Sep 15, 2010
+ * @version 1.0.0.7, Sep 18, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -80,7 +80,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
     /**
      * Http transport.
      */
-    private HttpTransport transport;
+    private HttpTransport httpTransport;
 
     /**
      * Gets http transport.
@@ -88,7 +88,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      * @return http transport
      */
     public HttpTransport getHttpTransport() {
-        return transport;
+        return httpTransport;
     }
 
     /**
@@ -112,9 +112,9 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                                final HttpServletResponse response)
             throws ActionException, IOException {
         try {
-            transport = GoogleTransport.create();
-            transport.addParser(new JsonCParser());
-            BuzzOAuth.authorize(transport);
+            httpTransport = GoogleTransport.create();
+            httpTransport.addParser(new JsonCParser());
+            BuzzOAuth.authorize(httpTransport);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new AccessException(e.getMessage());
