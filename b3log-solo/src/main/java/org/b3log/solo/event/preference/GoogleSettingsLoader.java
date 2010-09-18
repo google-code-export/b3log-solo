@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.event.listener.preference;
+package org.b3log.solo.event.preference;
 
 import com.google.inject.Inject;
 import java.util.logging.Level;
@@ -28,32 +28,36 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for preference HTML head load process.
+ * This listener is responsible for Google settings load process.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 14, 2010
+ * @version 1.0.0.0, Sep 14, 2010
  */
-public final class HTMLHeadLoader
+public final class GoogleSettingsLoader
         extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(HTMLHeadLoader.class.getName());
+            Logger.getLogger(GoogleSettingsLoader.class.getName());
     /**
-     * Default HTML head to append.
+     * Default OAuth consumer secret for Google.
      */
-    private static final String DEFAULT_HTML_HEAD = "";
+    private static final String DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET = "";
+    /**
+     * Default enable post to Buzz.
+     */
+    private static final boolean DEFAULT_ENABLE_POST_TO_BUZZ = false;
 
     /**
-     * Constructs a {@link HTMLHeadLoader} object with the specified event
+     * Constructs a {@link GoogleSettingsLoader} object with the specified event
      * manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
-    public HTMLHeadLoader(final EventManager eventManager) {
+    public GoogleSettingsLoader(final EventManager eventManager) {
         super(eventManager);
     }
 
@@ -64,14 +68,19 @@ public final class HTMLHeadLoader
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 preference,
-                                HTMLHeadLoader.class.getName()});
+                                GoogleSettingsLoader.class.getName()});
         try {
-            if (!preference.has(Preference.HTML_HEAD)) {
-                preference.put(Preference.HTML_HEAD, DEFAULT_HTML_HEAD);
+            if (!preference.has(Preference.GOOLE_OAUTH_CONSUMER_SECRET)) {
+                preference.put(Preference.GOOLE_OAUTH_CONSUMER_SECRET,
+                               DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
+            }
+            if (!preference.has(Preference.ENABLE_POST_TO_BUZZ)) {
+                preference.put(Preference.ENABLE_POST_TO_BUZZ,
+                               DEFAULT_ENABLE_POST_TO_BUZZ);
             }
         } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());
-            throw new EventException("Load HTML head error!");
+            throw new EventException("Load Google settings error!");
         }
     }
 

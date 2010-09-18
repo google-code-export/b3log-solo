@@ -16,21 +16,21 @@
 package org.b3log.solo.event;
 
 import java.util.logging.Logger;
-import org.b3log.solo.event.listener.sync.impl.CSDNBlogAddArticleProcessor;
+import org.b3log.solo.event.sync.impl.CSDNBlogAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
-import org.b3log.solo.event.listener.buzz.ActivityCreator;
-import org.b3log.solo.event.listener.comment.ReplyNotifier;
-import org.b3log.solo.event.listener.preference.GoogleSettingsLoader;
-import org.b3log.solo.event.listener.preference.HTMLHeadLoader;
-import org.b3log.solo.event.listener.preference.NoticeBoardLoader;
-import org.b3log.solo.event.listener.sync.impl.BlogJavaAddArticleProcessor;
-import org.b3log.solo.event.listener.sync.impl.BlogJavaRemoveArticleProcessor;
-import org.b3log.solo.event.listener.sync.impl.BlogJavaUpdateArticleProcessor;
-import org.b3log.solo.event.listener.sync.impl.CSDNBlogRemoveArticleProcessor;
-import org.b3log.solo.event.listener.sync.impl.CSDNBlogUpdateArticleProcessor;
-import org.b3log.solo.event.listener.sync.impl.CnBlogsAddArticleProcessor;
-import org.b3log.solo.event.listener.sync.impl.CnBlogsRemoveArticleProcessor;
-import org.b3log.solo.event.listener.sync.impl.CnBlogsUpdateArticleProcessor;
+import org.b3log.solo.event.buzz.ActivityCreator;
+import org.b3log.solo.event.comment.ReplyNotifier;
+import org.b3log.solo.event.preference.GoogleSettingsLoader;
+import org.b3log.solo.event.preference.HTMLHeadLoader;
+import org.b3log.solo.event.preference.NoticeBoardLoader;
+import org.b3log.solo.event.sync.impl.BlogJavaAddArticleProcessor;
+import org.b3log.solo.event.sync.impl.BlogJavaRemoveArticleProcessor;
+import org.b3log.solo.event.sync.impl.BlogJavaUpdateArticleProcessor;
+import org.b3log.solo.event.sync.impl.CSDNBlogRemoveArticleProcessor;
+import org.b3log.solo.event.sync.impl.CSDNBlogUpdateArticleProcessor;
+import org.b3log.solo.event.sync.impl.CnBlogsAddArticleProcessor;
+import org.b3log.solo.event.sync.impl.CnBlogsRemoveArticleProcessor;
+import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
 
 /**
  * Event module for IoC

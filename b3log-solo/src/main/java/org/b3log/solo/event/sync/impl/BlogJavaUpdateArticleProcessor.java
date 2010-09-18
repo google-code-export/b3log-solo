@@ -13,35 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.event.listener.sync.impl;
+package org.b3log.solo.event.sync.impl;
 
 import com.google.inject.Inject;
 import org.b3log.latke.event.EventManager;
-import org.b3log.solo.event.listener.sync.AbstractAddArticleProcessor;
+import org.b3log.solo.event.sync.AbstractUpdateArticleProcessor;
 import org.b3log.solo.model.BlogSync;
 
 /**
- * This listener is responsible for blog sync add article to CSDN blog.
+ * This listener is responsible for blog sync update article to BlogJava.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 4, 2010
+ * @version 1.0.0.0, Sep 6, 2010
  */
-public final class CSDNBlogAddArticleProcessor
-        extends AbstractAddArticleProcessor {
+public final class BlogJavaUpdateArticleProcessor
+        extends AbstractUpdateArticleProcessor {
 
     /**
-     * Constructs a {@link CSDNBlogAddArticleProcessor} object with the
+     * Constructs a {@link BlogJavaUpdateArticleProcessor} object with the
      * specified event manager.
      *
      * @param eventManager the specified event manager
      */
     @Inject
-    public CSDNBlogAddArticleProcessor(final EventManager eventManager) {
+    public BlogJavaUpdateArticleProcessor(final EventManager eventManager) {
         super(eventManager);
     }
 
     @Override
     public String getExternalBloggingSys() {
-        return BlogSync.BLOG_SYNC_CSDN_BLOG;
+        return BlogSync.BLOG_SYNC_BLOGJAVA;
     }
 }
