@@ -187,6 +187,16 @@
             <div class="footer">
                 <#include "article-footer.ftl">
             </div>
+            <div class="stack addthis_toolbox">
+                <img src="images/stack.png" alt="stack"/>
+                <ul id="stack" class="custom_images">
+                    <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="images/buzz.png" alt="Share to Buzz" /></a></li>
+                    <li><a class="addthis_button_twitter"><span>Twitter</span><img src="images/twitter.png" alt="Share to Twitter" /></a></li>
+                    <li><a class="addthis_button_facebook"><span>Facebook</span><img src="images/facebook.png" alt="Share to Facebook" /></a></li>
+                    <li><a class="addthis_button_delicious"><span>Delicious</span><img src="images/delicious.png" alt="Share to Delicious" /></a></li>
+                    <li><a class="addthis_button_more"><span>More...</span><img src="images/addthis.png" alt="More..." /></a></li>
+                </ul>
+            </div>
         </div>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>
@@ -367,25 +377,62 @@
                             switch (result.sc) {
                                 case "COMMENT_ARTICLE_SUCC":
                                     $("#commentErrorTip").html("");
-                                    $("#comment").val("");
-                                    $("#commentEmail").val("");
-                                    $("#commentURL").val("http://");
-                                    $("#commentName").val("");
-                                    $("#commentValidate").val("");
-                                    window.location.reload();
-                                    break;
-                                case "CAPTCHA_ERROR":
-                                    $("#commentErrorTip").html("${captchaErrorLabel}");
-                                    $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
-                                    $("#commentValidate").val("").focus();
-                                    break
-                                default:
-                                    break;
+                                $("#comment").val("");
+                                $("#commentEmail").val("");
+                                $("#commentURL").val("http://");
+                                $("#commentName").val("");
+                                $("#commentValidate").val("");
+                                window.location.reload();
+                                break;
+                            case "CAPTCHA_ERROR":
+                                $("#commentErrorTip").html("${captchaErrorLabel}");
+                                $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
+                                $("#commentValidate").val("").focus();
+                                break
+                            default:
+                                break;
                             }
                         }
                     }, requestJSONObject);
                 }
             }
+        </script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                // Stack initialize
+                var openspeed = 300;
+                var closespeed = 300;
+                $('.stack>img').toggle(function(){
+                    var vertical = 0;
+                    var horizontal = 0;
+                    var $el=$(this);
+                    $el.next().children().each(function(){
+                        $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
+                        vertical = vertical + 36;
+                        horizontal = (horizontal+.42)*2;
+                    });
+                    $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
+                    .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
+                    $el.animate({paddingTop: '0'});
+                }, function(){
+                    //reverse above
+                    var $el=$(this);
+                    $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
+                    $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
+                    $el.animate({paddingTop: '9px'});
+                });
+
+                // Stacks additional animation
+                $('.stack li a').hover(function(){
+                    $("img",this).animate({width: '32px'}, 100);
+                    $("span",this).animate({marginRight: '12px'});
+                },function(){
+                    $("img",this).animate({width: '28px'}, 100);
+                    $("span",this).animate({marginRight: '0'});
+                });
+            });
         </script>
     </body>
 </html>
