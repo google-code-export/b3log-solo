@@ -148,7 +148,7 @@
                         </td>
                         <td align="left">
                             <input type="checkbox" class="normalInput" id="syncBuzz"/>
-                            {postToBuzzWhilePublishArticleLabel}
+                            ${postToBuzzWhilePublishArticleLabel}
                         </td>
                     </tr>
                     <tr>
