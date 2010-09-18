@@ -15,10 +15,13 @@
  */
 package org.b3log.solo.event.buzz;
 
+import com.google.api.client.googleapis.GoogleUrl;
 import com.google.api.client.googleapis.json.JsonCContent;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpTransport;
 import com.google.inject.Inject;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +33,6 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.google.buzz.BuzzUrl;
 import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -57,6 +59,22 @@ public final class ActivityCreator
      */
     @Inject
     private PreferenceService preferenceService;
+    /**
+     * My Buzz feed URL.
+     */
+    private static final GoogleUrl MY_BUZZ_FEED_URL;
+
+    static {
+        try {
+            MY_BUZZ_FEED_URL =
+                    new GoogleUrl(URLEncoder.encode(
+                    "https://www.googleapis.com/buzz/v1/activities/@me/@self",
+                    "UTF-8"));
+        } catch (final UnsupportedEncodingException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Constructs a {@link ActivityCreator} object with the specified event
@@ -114,7 +132,7 @@ public final class ActivityCreator
                      final JSONObject article)
             throws Exception {
         final HttpRequest request = httpTransport.buildPostRequest();
-        request.url = BuzzUrl.forMyActivityFeed();
+        request.url = MY_BUZZ_FEED_URL;
         request.content = toContent(article);
 
         request.execute().parseAsString();
