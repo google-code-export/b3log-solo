@@ -192,8 +192,8 @@
                 <ul id="stack" class="custom_images">
                     <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="images/buzz.png" alt="Share to Buzz" /></a></li>
                     <li><a class="addthis_button_twitter"><span>Twitter</span><img src="images/twitter.png" alt="Share to Twitter" /></a></li>
-                    <li><a class="addthis_button_facebook"><span>Facebook</span><img src="images/facebook.png" alt="Share to Facebook" /></a></li>
                     <li><a class="addthis_button_delicious"><span>Delicious</span><img src="images/delicious.png" alt="Share to Delicious" /></a></li>
+                    <li><a class="addthis_button_facebook"><span>Facebook</span><img src="images/facebook.png" alt="Share to Facebook" /></a></li>
                     <li><a class="addthis_button_more"><span>More...</span><img src="images/addthis.png" alt="More..." /></a></li>
                 </ul>
             </div>
