@@ -145,8 +145,7 @@ public final class ActivityCreator
         final Map<String, Object> object = new HashMap<String, Object>();
         data.put("object", object);
         object.put("type", "note");
-        object.put("title", article.getString(Article.ARTICLE_TITLE));
-        object.put("content", "TEST");
+        object.put("content", article.getString(Article.ARTICLE_TITLE));
         final List<Map<String, Object>> objectAttachments =
                 new ArrayList<Map<String, Object>>();
         object.put("attachments", objectAttachments);
@@ -155,7 +154,8 @@ public final class ActivityCreator
         objectAttachments.add(objectAttachment);
         objectAttachment.put("type", "article");
         objectAttachment.put("title", article.getString(Article.ARTICLE_TITLE));
-        objectAttachment.put("content", article.getString(Article.ARTICLE_TITLE));
+        objectAttachment.put("content", article.getString(
+                Article.ARTICLE_CONTENT));
         final Map<String, Object> objectAttachmentsLinks =
                 new HashMap<String, Object>();
         objectAttachment.put("links", objectAttachmentsLinks);
@@ -164,7 +164,10 @@ public final class ActivityCreator
         objectAttachmentsLinks.put("alternate", objectLinksAlts);
         final Map<String, Object> objectLinksAlt = new HashMap<String, Object>();
         objectLinksAlts.add(objectLinksAlt);
-        objectLinksAlt.put("href", article.getString(Article.ARTICLE_PERMALINK));
+        objectLinksAlt.put("href",
+                           "http://"
+                           + preference.getString(Preference.BLOG_HOST)
+                           + article.getString(Article.ARTICLE_PERMALINK));
         objectLinksAlt.put("type", "text/html");
 
         ret.data = data;
