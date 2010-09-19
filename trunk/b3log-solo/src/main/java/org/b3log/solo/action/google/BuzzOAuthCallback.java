@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.action.google;
 
+import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,12 +24,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.google.auth.OAuths;
+import org.b3log.solo.jsonrpc.impl.PreferenceService;
+import org.b3log.solo.model.Preference;
+import org.json.JSONObject;
 
 /**
  * Buzz OAuth callback.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 18, 2010
+ * @version 1.0.0.2, Sep 19, 2010
  */
 public final class BuzzOAuthCallback extends HttpServlet {
 
@@ -45,6 +49,11 @@ public final class BuzzOAuthCallback extends HttpServlet {
      * Sleep interval in milliseconds.
      */
     public static final long SLEEP_INTERVAL = 3000;
+    /**
+     * Preference service.
+     */
+    @Inject
+    private PreferenceService preferenceService;
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -58,6 +67,20 @@ public final class BuzzOAuthCallback extends HttpServlet {
 
         try {
             OAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ServletException(e);
+        }
+
+        try {
+            final JSONObject preference = preferenceService.getPreference();
+            preference.put(Preference.GOOGLE_BUZZ_TOKEN, requestToken);
+            preference.put(Preference.GOOGLE_BUZZ_VERIFIER, verifier);
+
+            final JSONObject requestJSONObject = new JSONObject();
+            requestJSONObject.put(Preference.PREFERENCE, preference);
+
+            preferenceService.updatePreference(preference, request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException(e);
