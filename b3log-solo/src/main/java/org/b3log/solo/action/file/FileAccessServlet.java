@@ -36,7 +36,7 @@ import org.b3log.latke.Keys;
 import org.b3log.solo.model.File;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
-import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
 /**

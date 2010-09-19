@@ -31,7 +31,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static org.b3log.solo.servlet.SoloServletListener.*;
+import static org.b3log.solo.SoloServletListener.*;
 
 /**
  * Captcha servlet..

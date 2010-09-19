@@ -54,7 +54,7 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Buzzs;
 import org.b3log.solo.util.Statistics;
