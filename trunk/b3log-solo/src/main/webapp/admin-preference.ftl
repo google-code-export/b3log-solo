@@ -144,7 +144,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <a href="/buzz-oauth.do" id="buzz">Google Buzz</a>
+                            <a href="javascript:oauthBuzz();" id="buzz">Google Buzz</a>
                         </td>
                         <td align="left">
                             <input type="checkbox" class="normalInput" id="syncBuzz"/>
@@ -277,5 +277,14 @@
                     break;
             }
         }, requestJSONObject);
+    }
+
+    var oauthBuzz = function () {
+        if ("" === $("#secret").val().replace(/\s/g, "")) {
+            $("#tipMsg").text("${contentEmptyLabel}");
+            return;
+        }
+       // window.
+        window.location = "buzz-oauth.do?googleOAuthConsumerSecret=" + $("#secret").val();
     }
 </script>

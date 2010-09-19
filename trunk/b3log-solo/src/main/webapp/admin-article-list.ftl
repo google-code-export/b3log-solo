@@ -55,6 +55,11 @@
                     }],
                 style: "cursor:pointer; margin-left:16px;"
             }, {
+               name: "${viewLabel}",
+               width: 66,
+               index: "articleViewCount",
+               style: "margin-left:16px;"
+            }, {
                 visible: false,
                 index: "id"
             }]
@@ -177,6 +182,8 @@
                         articleData[i].deleted = "<div class='deleteIcon'></div>";
                         articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
                             + articles[i].articleCommentCount + "</div>";
+                        articleData[i].articleViewCount = "<div class='left browserIcon'></div><div class='left' style='margin-left:6px;'>"
+                            + articles[i].articleViewCount + "</div>";;
                         articleData[i].id = articles[i].oId;
                     }
 
