@@ -25,7 +25,7 @@ import com.google.api.client.http.HttpTransport;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
 /**

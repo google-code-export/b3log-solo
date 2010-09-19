@@ -27,7 +27,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.SoloServletListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 

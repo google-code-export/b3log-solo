@@ -39,7 +39,7 @@ import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
-import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;

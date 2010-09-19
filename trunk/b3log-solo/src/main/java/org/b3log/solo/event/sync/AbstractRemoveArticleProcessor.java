@@ -27,7 +27,7 @@ import org.b3log.solo.event.EventTypes;
 import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
-import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
 import org.json.JSONObject;

@@ -35,7 +35,7 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
 /**

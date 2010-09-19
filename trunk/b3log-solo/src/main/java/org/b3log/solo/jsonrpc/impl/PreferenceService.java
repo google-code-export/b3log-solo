@@ -33,7 +33,7 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.servlet.SoloServletListener;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONObject;
