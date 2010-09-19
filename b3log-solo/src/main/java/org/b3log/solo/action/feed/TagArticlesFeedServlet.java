@@ -133,7 +133,7 @@ public final class TagArticlesFeedServlet extends HttpServlet {
                 entry.addLink(link);
                 entry.setId(id);
                 entry.setUpdated(updated);
-                entry.setSummary(summary, Text.Type.HTML);
+                entry.setSummary(summary);
             }
 
             feed.getDocument().writeTo(response.getOutputStream());
