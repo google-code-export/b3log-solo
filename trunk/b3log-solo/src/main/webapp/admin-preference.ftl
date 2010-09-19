@@ -171,7 +171,6 @@
             switch (result.sc) {
                 case "GET_PREFERENCE_SUCC":
                     var preference = result.preference;
-                    // preference
                     $("#blogTitle").val(preference.blogTitle),
                     $("#blogSubtitle").val(preference.blogSubtitle),
                     $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
@@ -188,7 +187,6 @@
                     preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
                     localeString = preference.localeString;
 
-                    // skin
                     $("#skinMain").data("skinDirName", preference.skinDirName);
                     var skins = eval('(' + preference.skins + ')');
                     var skinsHTML = "";
@@ -218,6 +216,7 @@
             $("#tipMsg").text("");
         });
     }
+    
     getPreference();
     
     var changeTab = function (it) {
@@ -242,6 +241,7 @@
                 return;
             }
         }
+        
         var requestJSONObject = {
             "preference": {
                 "blogTitle": $("#blogTitle").val(),
