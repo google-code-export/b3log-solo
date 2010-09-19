@@ -26,7 +26,6 @@ import org.apache.abdera.Abdera;
 import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
-import org.apache.abdera.model.Text;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.SortDirection;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Sep 13, 2010
+ * @version 1.0.0.7, Sep 19, 2010
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -103,7 +102,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                 entry.addLink(link);
                 entry.setId(id);
                 entry.setUpdated(updated);
-                entry.setSummary(summary, Text.Type.HTML);
+                entry.setSummary(summary);
             }
 
             feed.getDocument().writeTo(response.getOutputStream());
