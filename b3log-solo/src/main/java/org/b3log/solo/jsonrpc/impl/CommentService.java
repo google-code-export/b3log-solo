@@ -170,7 +170,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
-
             final int fetchSize = preference.getInt(
                     Preference.RECENT_COMMENT_DISPLAY_CNT);
             final List<JSONObject> recentComments =
