@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Tag articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Sep 13, 2010
+ * @version 1.0.0.5, Sep 19, 2010
  */
 public final class TagArticlesFeedServlet extends HttpServlet {
 
