@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Sep 14, 2010
+ * @version 1.0.1.0, Sep 18, 2010
  */
 public final class Preference {
 
@@ -38,7 +38,6 @@ public final class Preference {
     /**
      * Recent article display count.
      */
-    // XXX: recentArticleDisplayCount
     public static final String RECENT_ARTICLE_DISPLAY_CNT =
             "recentArticleDisplayCount";
     /**
@@ -91,6 +90,16 @@ public final class Preference {
      */
     public static final String GOOLE_OAUTH_CONSUMER_SECRET =
             "googleOAuthConsumerSecret";
+    /**
+     * Key of Google Buzz token.
+     */
+    public static final String GOOGLE_BUZZ_TOKEN =
+            "googleBuzzToken";
+    /**
+     * Key of Google Buzz verifier.
+     */
+    public static final String GOOGLE_BUZZ_VERIFIER =
+            "googleBuzzVerifier";
     /**
      * Key of enable post to Buzz.
      */
