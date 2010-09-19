@@ -26,6 +26,7 @@ import org.apache.abdera.Abdera;
 import org.apache.abdera.factory.Factory;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.model.Feed;
+import org.apache.abdera.model.Text.Type;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.SortDirection;
@@ -102,7 +103,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                 entry.addLink(link);
                 entry.setId(id);
                 entry.setUpdated(updated);
-                entry.setSummary(summary);
+                entry.setSummary(StringEscapeUtils.unescapeHtml(summary),
+                                 Type.HTML);
             }
 
             feed.getDocument().writeTo(response.getOutputStream());
