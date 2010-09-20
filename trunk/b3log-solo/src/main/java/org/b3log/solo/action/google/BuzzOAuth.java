@@ -18,13 +18,20 @@ package org.b3log.solo.action.google;
 import com.google.api.client.googleapis.GoogleTransport;
 import com.google.api.client.googleapis.json.JsonCParser;
 import com.google.api.client.http.HttpTransport;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.google.auth.OAuths;
@@ -62,6 +69,10 @@ public final class BuzzOAuth extends HttpServlet {
      */
     public static final String BUZZ_SCOPE =
             "https://www.googleapis.com/auth/buzz";
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Gets http transport.
@@ -76,6 +87,8 @@ public final class BuzzOAuth extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
+        checkAuthorized(request, response);
+
         String googleOAuthConsumerSecret =
                 request.getParameter(Preference.GOOGLE_OAUTH_CONSUMER_SECRET);
         if (Strings.isEmptyOrNull(googleOAuthConsumerSecret)) {
@@ -90,12 +103,82 @@ public final class BuzzOAuth extends HttpServlet {
             }
         }
 
+        LOGGER.log(Level.FINE, "Google OAuth consumer secret[{0}]",
+                   googleOAuthConsumerSecret);
         httpTransport = GoogleTransport.create();
         httpTransport.addParser(new JsonCParser());
         final String buzzAuthorizationURL =
                 OAuths.getBuzzAuthorizationURL(httpTransport,
                                                googleOAuthConsumerSecret);
+        if (null == buzzAuthorizationURL) {
+            LOGGER.log(Level.WARNING,
+                       "Can not retrieve Google Buzz authorization URL");
+            response.setContentType("text/html");
+            response.setCharacterEncoding("UTF-8");
+
+            final PrintWriter writer = response.getWriter();
+            writer.write(genErrorPageHTMLContent());
+            writer.close();
+
+            return;
+        }
 
         response.sendRedirect(buzzAuthorizationURL);
+    }
+
+    /**
+     * Checks the specified request authorized or not(Http Status Code:
+     * Forbidden 403).
+     * <p>
+     * If the specified request is not send from the logged in administrator,
+     * sends an error with status code 403.
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws IOException io exception
+     */
+    private void checkAuthorized(final HttpServletRequest request,
+                                 final HttpServletResponse response)
+            throws IOException {
+        if (!userService.isUserLoggedIn() || !userService.isUserAdmin()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+        }
+    }
+
+    /**
+     * Generates error page HTML content.
+     *
+     * @return error page HTML contente
+     */
+    private String genErrorPageHTMLContent() {
+        final JSONObject preference =
+                SoloServletListener.getUserPreference();
+        final String localeString = preference.optString(
+                Preference.LOCALE_STRING);
+        final Locale locale = new Locale(
+                Locales.getLanguage(localeString),
+                Locales.getCountry(localeString));
+        final ResourceBundle lang =
+                ResourceBundle.getBundle(Keys.LANGUAGE, locale);
+        final String blogTitle = preference.optString(Preference.BLOG_TITLE);
+
+        final StringBuilder htmlContentBuilder = new StringBuilder();
+
+        htmlContentBuilder.append(
+                "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" ");
+        htmlContentBuilder.append(
+                "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+        htmlContentBuilder.append(
+                "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><title>");
+        htmlContentBuilder.append(blogTitle);
+        htmlContentBuilder.append("</title>");
+        htmlContentBuilder.append(
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+        htmlContentBuilder.append("</head><body>");
+        htmlContentBuilder.append(lang.getString("noAuthorizationURLLabel"));
+        htmlContentBuilder.append("</body></html>");
+
+        return htmlContentBuilder.toString();
     }
 }
