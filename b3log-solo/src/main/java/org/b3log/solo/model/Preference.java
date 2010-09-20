@@ -88,7 +88,7 @@ public final class Preference {
     /**
      * Key of OAuth consumer secret.
      */
-    public static final String GOOLE_OAUTH_CONSUMER_SECRET =
+    public static final String GOOGLE_OAUTH_CONSUMER_SECRET =
             "googleOAuthConsumerSecret";
     /**
      * Key of Google Buzz token.
