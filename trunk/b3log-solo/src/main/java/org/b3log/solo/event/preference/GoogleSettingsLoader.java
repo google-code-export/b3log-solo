@@ -70,8 +70,8 @@ public final class GoogleSettingsLoader
                                 preference,
                                 GoogleSettingsLoader.class.getName()});
         try {
-            if (!preference.has(Preference.GOOLE_OAUTH_CONSUMER_SECRET)) {
-                preference.put(Preference.GOOLE_OAUTH_CONSUMER_SECRET,
+            if (!preference.has(Preference.GOOGLE_OAUTH_CONSUMER_SECRET)) {
+                preference.put(Preference.GOOGLE_OAUTH_CONSUMER_SECRET,
                                DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
             }
             if (!preference.has(Preference.ENABLE_POST_TO_BUZZ)) {

@@ -19,20 +19,24 @@ import com.google.api.client.googleapis.GoogleTransport;
 import com.google.api.client.googleapis.json.JsonCParser;
 import com.google.api.client.http.HttpTransport;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.util.Strings;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.google.auth.OAuths;
+import org.b3log.solo.model.Preference;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Buzz OAuth.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 18, 2010
+ * @version 1.0.0.1, Sep 20, 2010
  */
 public final class BuzzOAuth extends HttpServlet {
 
@@ -45,11 +49,6 @@ public final class BuzzOAuth extends HttpServlet {
      */
     private static final Logger LOGGER =
             Logger.getLogger(BuzzOAuth.class.getName());
-    /**
-     * Verifiers.
-     */
-    private static final Map<String, String> VERIFIERS =
-            new HashMap<String, String>();
     /**
      * Sleep interval in milliseconds.
      */
@@ -75,12 +74,27 @@ public final class BuzzOAuth extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request,
-                          final HttpServletResponse response)
+                         final HttpServletResponse response)
             throws ServletException, IOException {
+        String googleOAuthConsumerSecret =
+                request.getParameter(Preference.GOOGLE_OAUTH_CONSUMER_SECRET);
+        if (Strings.isEmptyOrNull(googleOAuthConsumerSecret)) {
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
+            try {
+                googleOAuthConsumerSecret = preference.getString(
+                        Preference.GOOGLE_OAUTH_CONSUMER_SECRET);
+            } catch (final JSONException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                throw new ServletException(e);
+            }
+        }
+
         httpTransport = GoogleTransport.create();
         httpTransport.addParser(new JsonCParser());
         final String buzzAuthorizationURL =
-                OAuths.getBuzzAuthorizationURL(httpTransport);
+                OAuths.getBuzzAuthorizationURL(httpTransport,
+                                               googleOAuthConsumerSecret);
 
         response.sendRedirect(buzzAuthorizationURL);
     }

@@ -29,10 +29,10 @@ import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
 /**
- * Google oauth utilities.
+ * Google OAuth utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 18, 2010
+ * @version 1.0.0.2, Sep 20, 2010
  */
 public final class OAuths {
 
@@ -63,16 +63,16 @@ public final class OAuths {
      * Gets the Buzz authorization URL for the specified http transport.
      * 
      * @param httpTransport the specified http transport
+     * @param consumerSecret the specified Google OAuth consumer secret
      * @return Buzz authorization URL, returns {@code null} if error
      */
     public static String getBuzzAuthorizationURL(
-            final HttpTransport httpTransport) {
+            final HttpTransport httpTransport,
+            final String consumerSecret) {
         final JSONObject preference = SoloServletListener.getUserPreference();
         try {
             final String blogHost = preference.getString(Preference.BLOG_HOST);
             final String consumerKey = blogHost.split(":")[0];
-            final String consumerSecret =
-                    preference.getString(Preference.GOOLE_OAUTH_CONSUMER_SECRET);
 
             final GoogleOAuthGetTemporaryToken temporaryToken =
                     new GoogleOAuthGetTemporaryToken();
@@ -93,7 +93,7 @@ public final class OAuths {
             authorizeURL.set("scope", temporaryToken.scope);
             authorizeURL.set("domain", consumerKey);
             authorizeURL.set("iconUrl",
-                    "http://code.google.com/p/b3log-solo/logo?cct=1283958195");
+                             "http://code.google.com/p/b3log-solo/logo?cct=1283958195");
             final String tempToken = tempCredentials.token;
             authorizeURL.temporaryToken = tempToken;
 
