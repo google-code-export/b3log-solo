@@ -18,7 +18,6 @@ package org.b3log.solo.action.impl;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import org.b3log.latke.action.ActionException;
-import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -30,7 +29,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Locales;
-import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
@@ -41,7 +39,7 @@ import org.json.JSONObject;
  * Error action. error.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 12, 2010
+ * @version 1.0.0.3, Sep 20, 2010
  */
 public final class ErrorAction extends AbstractAction {
 
@@ -58,15 +56,6 @@ public final class ErrorAction extends AbstractAction {
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
-    /**
-     * Filler.
-     */
-    @Inject
-    private Filler filler;
-    /**
-     * lang.properties.
-     */
-    private static ResourceBundle lang;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -84,7 +73,8 @@ public final class ErrorAction extends AbstractAction {
             final Locale locale = new Locale(
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString));
-            lang = ResourceBundle.getBundle(Keys.LANGUAGE, locale);
+            final ResourceBundle lang =
+                    ResourceBundle.getBundle(Keys.LANGUAGE, locale);
             ret.put("allTagsLabel", lang.getString("allTagsLabel"));
             ret.put("adminLabel", lang.getString("adminLabel"));
             ret.put("clearAllCacheLabel", lang.getString("clearAllCacheLabel"));
