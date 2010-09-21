@@ -30,6 +30,7 @@ import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -37,10 +38,10 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 4, 2010
+ * @version 1.0.0.3, Sep 21, 2010
  */
 public abstract class AbstractRemoveArticleProcessor
-        extends AbstractEventListener<String> {
+        extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
@@ -70,13 +71,23 @@ public abstract class AbstractRemoveArticleProcessor
     }
 
     @Override
-    public void action(final Event<String> event) throws EventException {
-        final String articleId = event.getData();
-        LOGGER.log(Level.FINER,
-                   "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(),
-                                articleId,
-                                AbstractRemoveArticleProcessor.class.getName()});
+    public void action(final Event<JSONObject> event) throws EventException {
+        final JSONObject eventData = event.getData();
+
+        String articleId = null;
+        try {
+            articleId = eventData.getString(Keys.OBJECT_ID);
+
+            LOGGER.log(Level.FINER,
+                       "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                       new Object[]{event.getType(),
+                                    articleId,
+                                    AbstractAddArticleProcessor.class.getName()});
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new EventException(e);
+        }
+
         try {
             final String externalBloggingSys = getExternalBloggingSys();
             final JSONObject blogSyncMgmt =
@@ -123,8 +134,8 @@ public abstract class AbstractRemoveArticleProcessor
                 }
             }
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-
+            LOGGER.log(Level.SEVERE, "Can not handle event[{0}], error msg[{1}]",
+                       new String[]{getEventType(), e.getMessage()});
             throw new EventException("Can not handle event[" + getEventType()
                                      + "]");
         }

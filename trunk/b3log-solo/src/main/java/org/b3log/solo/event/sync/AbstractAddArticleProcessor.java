@@ -34,6 +34,7 @@ import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.MetaWeblogPost;
 import org.b3log.solo.sync.Post;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -41,7 +42,7 @@ import org.json.JSONObject;
  * blogging system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 13, 2010
+ * @version 1.0.0.3, Sep 21, 2010
  */
 public abstract class AbstractAddArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -75,12 +76,22 @@ public abstract class AbstractAddArticleProcessor
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
-        final JSONObject article = event.getData();
-        LOGGER.log(Level.FINER,
-                   "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(),
-                                article,
-                                AbstractAddArticleProcessor.class.getName()});
+        final JSONObject eventData = event.getData();
+
+        JSONObject article = null;
+
+        try {
+            article = eventData.getJSONObject(Article.ARTICLE);
+
+            LOGGER.log(Level.FINER,
+                       "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                       new Object[]{event.getType(),
+                                    article,
+                                    AbstractAddArticleProcessor.class.getName()});
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new EventException(e);
+        }
 
         String postId = null;
         String articleId = null;
@@ -158,8 +169,8 @@ public abstract class AbstractAddArticleProcessor
                             toString()});
             }
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-
+            LOGGER.log(Level.SEVERE, "Can not handle event[{0}], error msg[{1}]",
+                       new String[]{getEventType(), e.getMessage()});
             throw new EventException("Can not handle event[" + getEventType()
                                      + "]");
         }
