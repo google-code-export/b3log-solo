@@ -135,26 +135,32 @@
             <table class="form" width="99%" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
-                        <td width="160">
+                        <th width="260">
                             ${OAuthConsumerSecret1Label}
-                        </td>
-                        <td colspan="2">
+                        </th>
+                        <td>
                             <input id="secret"/>
                         </td>
                     </tr>
                     <tr>
+                        <th>
+                            ${authorizeGoogleBuzz1Label}
+                        </th>
                         <td>
-                            <a href="javascript:oauthBuzz();" id="buzz">Google Buzz</a>
-                        </td>
-                        <td align="left">
-                            <input type="checkbox" class="normalInput" id="syncBuzz"/>
-                        </td>
-                        <td>
-                            ${postToBuzzWhilePublishArticleLabel}
+                            <img class="pointer" src="images/buzz.png" 
+                                 onclick="oauthBuzz();" alt="${authorizeGoogleBuzz1Label}"/>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" align="right">
+                        <th>
+                            ${postToBuzzWhilePublishArticleLabel}
+                        </th>
+                        <td align="left">
+                            <input type="checkbox" class="normalInput" id="syncBuzz"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="right">
                             <button onclick="changePreference();">${saveLabel}</button>
                         </td>
                     </tr>
@@ -284,7 +290,8 @@
             $("#tipMsg").text("${contentEmptyLabel}");
             return;
         }
+        alert(encodeURIComponent($("#secret").val()));
        // window.
-        window.location = "buzz-oauth.do?googleOAuthConsumerSecret=" + $("#secret").val();
+        //window.location = "buzz-oauth.do?googleOAuthConsumerSecret=" + encodeURIComponent($("#secret").val());
     }
 </script>
