@@ -138,7 +138,16 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * <pre>
      * {
      *     "oId": generatedArticleId
-     *     "sc": "ADD_ARTICLE_SUCC"
+     *     "status": {
+     *         "code": "ADD_ARTICLE_SUCC",
+     *         "events": { // optional
+     *             "blogSyncCSDNBlog": {
+     *                 "code": "",
+     *                 "msg": "" // optional
+     *             },
+     *             ....
+     *         }
+     *     }
      * }
      * </pre>
      * @throws ActionException action exception
@@ -184,11 +193,21 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_PERMALINK, permalink);
             articleRepository.update(articleId, article); // XXX: Performance issue
             // Step 9: Fire add article event
+            final JSONObject eventData = new JSONObject();
+            eventData.put(ARTICLE, article);
+            eventData.put(Keys.RESULTS, ret);
             eventManager.fireEventSynchronously(
-                    new Event<JSONObject>(EventTypes.ADD_ARTICLE, article));
+                    new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
 
             transaction.commit();
-            ret.put(Keys.STATUS_CODE, StatusCodes.ADD_ARTICLE_SUCC);
+
+            JSONObject status = ret.optJSONObject(Keys.STATUS);
+            if (null == status) {
+                status = new JSONObject();
+            }
+
+            status.put(Keys.CODE, StatusCodes.ADD_ARTICLE_SUCC);
+            ret.put(Keys.STATUS, status);
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
@@ -365,7 +384,16 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "sc": "REMOVE_ARTICLE_SUCC"
+     *     "status": {
+     *         "code": "REMOVE_ARTICLE_SUCC",
+     *         "events": { // optional
+     *             "blogSyncCSDNBlog": {
+     *                 "code": "",
+     *                 "msg": "" // optional
+     *             },
+     *             ....
+     *         }
+     *     }
      * }
      * </pre>
      * @throws ActionException action exception
@@ -389,7 +417,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             articleUtils.removeTagArticleRelations(articleId);
             // Step 3: Remove related comments, article-comment relations
             articleUtils.removeArticleComments(articleId);
-
             // Step 4: Remove article
             articleRepository.remove(articleId);
             // Step 5: Dec blog article count statictis
@@ -397,16 +424,26 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Step 6: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
             // Step 7: Fire remove article event
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Keys.OBJECT_ID, articleId);
+            eventData.put(Keys.RESULTS, ret);
             try {
                 eventManager.fireEventSynchronously(
-                        new Event<String>(EventTypes.REMOVE_ARTICLE, articleId));
+                        new Event<JSONObject>(EventTypes.REMOVE_ARTICLE,
+                                              eventData));
             } catch (final EventException e) {
                 LOGGER.severe(e.getMessage());
             }
 
             transaction.commit();
 
-            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
+            JSONObject status = ret.optJSONObject(Keys.STATUS);
+            if (null == status) {
+                status = new JSONObject();
+            }
+
+            status.put(Keys.CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
+            ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Removed an article[oId={0}]", articleId);
         } catch (final Exception e) {
             transaction.rollback();
@@ -439,7 +476,16 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "sc": "UPDATE_ARTICLE_SUCC"
+     *     "status": {
+     *         "code": "UPDATE_ARTICLE_SUCC",
+     *         "events": { // optional
+     *             "blogSyncCSDNBlog": {
+     *                 "code": "",
+     *                 "msg": "" // optional
+     *             },
+     *             ....
+     *         }
+     *     }
      * }
      * </pre>
      * @throws ActionException action exception
@@ -488,16 +534,25 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Step 9: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
             // Step 10: Fire update article event
+            final JSONObject eventData = new JSONObject();
+            eventData.put(ARTICLE, article);
+            eventData.put(Keys.RESULTS, ret);
             try {
                 eventManager.fireEventSynchronously(
-                        new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, article));
+                        new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
+                                              eventData));
             } catch (final EventException e) {
                 LOGGER.severe(e.getMessage());
             }
 
-            ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
-
             transaction.commit();
+            JSONObject status = ret.optJSONObject(Keys.STATUS);
+            if (null == status) {
+                status = new JSONObject();
+            }
+
+            status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
+            ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
         } catch (final Exception e) {
             transaction.rollback();

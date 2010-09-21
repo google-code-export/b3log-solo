@@ -16,18 +16,32 @@
 package org.b3log.solo.event.sync.impl;
 
 import com.google.inject.Inject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.sync.AbstractRemoveArticleProcessor;
+import org.b3log.solo.event.sync.BlogSyncStatusCodes;
 import org.b3log.solo.model.BlogSync;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * This listener is responsible for blog sync remove article from CSDN blog.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 4, 2010
+ * @version 1.0.0.1, Sep 21, 2010
  */
 public final class CSDNBlogRemoveArticleProcessor
         extends AbstractRemoveArticleProcessor {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(CSDNBlogAddArticleProcessor.class.getName());
 
     /**
      * Constructs a {@link CSDNBlogRemoveArticleProcessor} object with the
@@ -43,5 +57,48 @@ public final class CSDNBlogRemoveArticleProcessor
     @Override
     public String getExternalBloggingSys() {
         return BlogSync.BLOG_SYNC_CSDN_BLOG;
+    }
+
+    @Override
+    public void action(final Event<JSONObject> event) throws EventException {
+        final JSONObject eventData = event.getData();
+        JSONObject result = null;
+        try {
+            result = eventData.getJSONObject(Keys.RESULTS);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new EventException(e);
+        }
+
+        try {
+            super.action(event);
+        } catch (final EventException e) {
+            try {
+                JSONObject status = result.optJSONObject(Keys.STATUS);
+                if (null == status) {
+                    status = new JSONObject();
+                    result.put(Keys.STATUS, status);
+                }
+
+                JSONObject events = status.optJSONObject(Keys.EVENTS);
+                if (null == events) {
+                    events = new JSONObject();
+                    status.put(Keys.EVENTS, events);
+                }
+
+                JSONObject blogSyncCSDNBlog =
+                        events.optJSONObject(BlogSync.BLOG_SYNC_CSDN_BLOG);
+                if (null == blogSyncCSDNBlog) {
+                    blogSyncCSDNBlog = new JSONObject();
+                    events.put(BlogSync.BLOG_SYNC_CSDN_BLOG, blogSyncCSDNBlog);
+                }
+
+                blogSyncCSDNBlog.put(Keys.CODE,
+                                     BlogSyncStatusCodes.BLOG_SYNC_REMOVE_CSDN_BLOG_FAIL);
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                throw new EventException(ex);
+            }
+        }
     }
 }
