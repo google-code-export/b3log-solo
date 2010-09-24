@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 21, 2010
+ * @version 1.0.0.4, Sep 24, 2010
  */
 public abstract class AbstractRemoveArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -117,21 +117,19 @@ public abstract class AbstractRemoveArticleProcessor
                 final JSONObject externalArticleSoloArticleRelation =
                         externalArticleSoloArticleRepository.getBySoloArticleId(
                         articleId, externalBloggingSys);
-                if (null != externalArticleSoloArticleRelation) {
-                    final String externalArticleId =
-                            externalArticleSoloArticleRelation.getString(
-                            BLOG_SYNC_EXTERNAL_ARTICLE_ID);
-                    final MetaWeblog metaWeblog = BlogFactory.getMetaWeblog(
-                            externalBloggingSys);
-                    metaWeblog.setUserName(userName);
-                    metaWeblog.setUserPassword(userPwd);
-                    metaWeblog.deletePost(externalArticleId);
+                final String externalArticleId =
+                        externalArticleSoloArticleRelation.getString(
+                        BLOG_SYNC_EXTERNAL_ARTICLE_ID);
+                final MetaWeblog metaWeblog = BlogFactory.getMetaWeblog(
+                        externalBloggingSys);
+                metaWeblog.setUserName(userName);
+                metaWeblog.setUserPassword(userPwd);
+                metaWeblog.deletePost(externalArticleId);
 
-                    final String relationId =
-                            externalArticleSoloArticleRelation.getString(
-                            Keys.OBJECT_ID);
-                    externalArticleSoloArticleRepository.remove(relationId);
-                }
+                final String relationId =
+                        externalArticleSoloArticleRelation.getString(
+                        Keys.OBJECT_ID);
+                externalArticleSoloArticleRepository.remove(relationId);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Can not handle event[{0}], error msg[{1}]",
