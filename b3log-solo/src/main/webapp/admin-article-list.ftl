@@ -126,7 +126,7 @@
             };
             
             jsonRpc.articleService.removeArticle(function (result, error) {
-                switch (result.sc) {
+                switch (result.status.code) {
                     case "REMOVE_ARTICLE_SUCC":
                         var events = result.status.events;
                         if (events) {
