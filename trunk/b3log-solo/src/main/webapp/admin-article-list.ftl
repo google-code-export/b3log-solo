@@ -55,10 +55,10 @@
                     }],
                 style: "cursor:pointer; margin-left:16px;"
             }, {
-               name: "${viewLabel}",
-               width: 66,
-               index: "articleViewCount",
-               style: "margin-left:16px;"
+                name: "${viewLabel}",
+                width: 66,
+                index: "articleViewCount",
+                style: "margin-left:16px;"
             }, {
                 visible: false,
                 index: "id"
@@ -128,6 +128,31 @@
             jsonRpc.articleService.removeArticle(function (result, error) {
                 switch (result.sc) {
                     case "REMOVE_ARTICLE_SUCC":
+                        var events = result.status.events;
+                        if (events) {
+                            var msg = "${removeSuccLabel}";
+                            if ("BLOG_SYNC_REMOVE_CSDN_BLOG_FAIL" === events.blogSyncCSDNBlog.code) {
+                                msg += ", ${syncCSDNBlogFailLabel}";
+                            }
+
+                            if ("BLOG_SYNC_REMOVE_CNBLOGS_FAIL" === events.blogSyncCnBlogs.code) {
+                                msg += ", ${syncCnBlogsFailLabel}";
+                            }
+
+                            if ("BLOG_SYNC_REMOVE_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
+                                msg += ", ${syncBlogJavaFailLabel}";
+                            }
+
+                            $("#tipMsg").text(msg);
+
+                            if ("BLOG_SYNC_REMOVE_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
+                                && "BLOG_SYNC_REMOVE_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
+                                && "BLOG_SYNC_REMOVE_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code) {
+                                getArticleList(1);
+                                $("#tipMsg").text("${removeSuccLabel}");
+                            }
+                            return;
+                        }
                         getArticleList(1);
                         $("#tipMsg").text("${removeSuccLabel}");
                         break;
