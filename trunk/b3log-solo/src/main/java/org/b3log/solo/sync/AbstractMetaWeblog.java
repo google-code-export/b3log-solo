@@ -111,7 +111,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServiceException("Delete post to ["
-                                       + getBloggingServiceProvider() + "]error");
+                                       + getBloggingServiceProvider() + "] error");
         }
     }
 
