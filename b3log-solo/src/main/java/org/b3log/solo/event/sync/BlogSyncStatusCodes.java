@@ -57,32 +57,32 @@ public final class BlogSyncStatusCodes {
      * Indicates sync add an article to CnBlogs successfully.
      */
     public static final String BLOG_SYNC_ADD_CNBLOGS_SUCC =
-            "BLOG_SYNC_ADD_BLOG_SYNC_CNBLOGS_SUCC";
+            "BLOG_SYNC_ADD_CNBLOGS_SUCC";
     /**
      * Indicates sync add an article to CnBlogs fail.
      */
     public static final String BLOG_SYNC_ADD_CNBLOGS_FAIL =
-            "BLOG_SYNC_ADD_BLOG_SYNC_CNBLOGS_FAIL";
+            "BLOG_SYNC_ADD_CNBLOGS_FAIL";
     /**
      * Indicates sync update an article to CnBlogs successfully.
      */
     public static final String BLOG_SYNC_UPDATE_CNBLOGS_SUCC =
-            "BLOG_SYNC_UPDATE_BLOG_SYNC_CNBLOGS_SUCC";
+            "BLOG_SYNC_UPDATE_CNBLOGS_SUCC";
     /**
      * Indicates sync update an article to CnBlogs fail.
      */
     public static final String BLOG_SYNC_UPDATE_CNBLOGS_FAIL =
-            "BLOG_SYNC_UPDATE_BLOG_SYNC_CNBLOGS_FAIL";
+            "BLOG_SYNC_UPDATE_CNBLOGS_FAIL";
     /**
      * Indicates sync remove an article from CnBlogs successfully.
      */
     public static final String BLOG_SYNC_REMOVE_CNBLOGS_SUCC =
-            "BLOG_SYNC_REMOVE_BLOG_SYNC_CNBLOGS_SUCC";
+            "BLOG_SYNC_REMOVE_CNBLOGS_SUCC";
     /**
      * Indicates sync remove an article from CnBlogs fail.
      */
     public static final String BLOG_SYNC_REMOVE_CNBLOGS_FAIL =
-            "BLOG_SYNC_REMOVE_BLOG_SYNC_CNBLOGS_FAIL";
+            "BLOG_SYNC_REMOVE_CNBLOGS_FAIL";
     /**
      * Indicates sync add an article to BlogJava successfully.
      */
