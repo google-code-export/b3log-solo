@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * This listener is responsible for blog sync remove article from CnBlogs.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 21, 2010
+ * @version 1.0.0.2, Sep 24, 2010
  */
 public final class CnBlogsRemoveArticleProcessor
         extends AbstractRemoveArticleProcessor {
@@ -63,8 +63,28 @@ public final class CnBlogsRemoveArticleProcessor
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject eventData = event.getData();
         JSONObject result = null;
+        JSONObject events = null;
+        JSONObject blogSyncCnBlogs = null;
         try {
             result = eventData.getJSONObject(Keys.RESULTS);
+            JSONObject status = result.optJSONObject(Keys.STATUS);
+            if (null == status) {
+                status = new JSONObject();
+                result.put(Keys.STATUS, status);
+            }
+
+            events = status.optJSONObject(Keys.EVENTS);
+            if (null == events) {
+                events = new JSONObject();
+                status.put(Keys.EVENTS, events);
+            }
+
+            blogSyncCnBlogs =
+                    events.optJSONObject(BlogSync.BLOG_SYNC_CNBLOGS);
+            if (null == blogSyncCnBlogs) {
+                blogSyncCnBlogs = new JSONObject();
+                events.put(BlogSync.BLOG_SYNC_CNBLOGS, blogSyncCnBlogs);
+            }
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException(e);
@@ -72,29 +92,17 @@ public final class CnBlogsRemoveArticleProcessor
 
         try {
             super.action(event);
+            try {
+                blogSyncCnBlogs.put(Keys.CODE,
+                                    BlogSyncStatusCodes.BLOG_SYNC_REMOVE_CNBLOGS_SUCC);
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                throw new EventException(ex);
+            }
         } catch (final EventException e) {
             try {
-                JSONObject status = result.optJSONObject(Keys.STATUS);
-                if (null == status) {
-                    status = new JSONObject();
-                    result.put(Keys.STATUS, status);
-                }
-
-                JSONObject events = status.optJSONObject(Keys.EVENTS);
-                if (null == events) {
-                    events = new JSONObject();
-                    status.put(Keys.EVENTS, events);
-                }
-
-                JSONObject blogSyncCnBlogs =
-                        events.optJSONObject(BlogSync.BLOG_SYNC_CNBLOGS);
-                if (null == blogSyncCnBlogs) {
-                    blogSyncCnBlogs = new JSONObject();
-                    events.put(BlogSync.BLOG_SYNC_CNBLOGS, blogSyncCnBlogs);
-                }
-
                 blogSyncCnBlogs.put(Keys.CODE,
-                                     BlogSyncStatusCodes.BLOG_SYNC_REMOVE_CNBLOGS_FAIL);
+                                    BlogSyncStatusCodes.BLOG_SYNC_REMOVE_CNBLOGS_FAIL);
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 throw new EventException(ex);
