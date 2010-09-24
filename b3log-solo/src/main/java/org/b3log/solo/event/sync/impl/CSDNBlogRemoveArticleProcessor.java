@@ -63,8 +63,29 @@ public final class CSDNBlogRemoveArticleProcessor
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject eventData = event.getData();
         JSONObject result = null;
+        JSONObject events = null;
+        JSONObject blogSyncCSDNBlog = null;
         try {
             result = eventData.getJSONObject(Keys.RESULTS);
+            JSONObject status = result.optJSONObject(Keys.STATUS);
+            if (null == status) {
+                status = new JSONObject();
+                result.put(Keys.STATUS, status);
+            }
+
+            events = status.optJSONObject(Keys.EVENTS);
+            if (null == events) {
+                events = new JSONObject();
+                status.put(Keys.EVENTS, events);
+            }
+
+            blogSyncCSDNBlog =
+                    events.optJSONObject(BlogSync.BLOG_SYNC_CSDN_BLOG);
+            if (null == blogSyncCSDNBlog) {
+                blogSyncCSDNBlog = new JSONObject();
+                events.put(BlogSync.BLOG_SYNC_CSDN_BLOG, blogSyncCSDNBlog);
+            }
+
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException(e);
@@ -72,27 +93,15 @@ public final class CSDNBlogRemoveArticleProcessor
 
         try {
             super.action(event);
+            try {
+                blogSyncCSDNBlog.put(Keys.CODE,
+                                     BlogSyncStatusCodes.BLOG_SYNC_REMOVE_CSDN_BLOG_SUCC);
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                throw new EventException(ex);
+            }
         } catch (final EventException e) {
             try {
-                JSONObject status = result.optJSONObject(Keys.STATUS);
-                if (null == status) {
-                    status = new JSONObject();
-                    result.put(Keys.STATUS, status);
-                }
-
-                JSONObject events = status.optJSONObject(Keys.EVENTS);
-                if (null == events) {
-                    events = new JSONObject();
-                    status.put(Keys.EVENTS, events);
-                }
-
-                JSONObject blogSyncCSDNBlog =
-                        events.optJSONObject(BlogSync.BLOG_SYNC_CSDN_BLOG);
-                if (null == blogSyncCSDNBlog) {
-                    blogSyncCSDNBlog = new JSONObject();
-                    events.put(BlogSync.BLOG_SYNC_CSDN_BLOG, blogSyncCSDNBlog);
-                }
-
                 blogSyncCSDNBlog.put(Keys.CODE,
                                      BlogSyncStatusCodes.BLOG_SYNC_REMOVE_CSDN_BLOG_FAIL);
             } catch (final JSONException ex) {
