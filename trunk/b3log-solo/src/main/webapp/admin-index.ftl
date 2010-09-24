@@ -15,6 +15,7 @@
         ${htmlHead}
     </head>
     <body>
+        <div id="loadMsg"></div>
         <div id="tipMsg"></div>
         <div id="adminMain">
             <#include "common-top.ftl">
@@ -74,6 +75,11 @@
                     if($("#tipMsg").text() !== "") {
                         setTimeout(function () {
                             $("#tipMsg").text("");
+                        }, 8000);
+                    }
+                    if($("#loadMsg").text() !== "") {
+                        setTimeout(function () {
+                            $("#loadMsg").text("");
                         }, 5000);
                     }
                 }, 6000);
