@@ -106,8 +106,35 @@
             };
 
             jsonRpc.articleService.addArticle(function (result, error) {
-                switch (result.sc) {
+                switch (result.status.code) {
                     case "ADD_ARTICLE_SUCC":
+                        var events = result.status.events;
+                        if (events) {
+                            var msg = "${addSuccLabel}";
+                            if ("BLOG_SYNC_ADD_CSDN_BLOG_FAIL" === events.blogSyncCSDNBlog.code) {
+                                msg += ", ${syncCSDNBlogFailLabel}";
+                            }
+
+                            if ("BLOG_SYNC_ADD_CNBLOGS_FAIL" === events.blogSyncCnBlogs.code) {
+                                msg += ", ${syncCnBlogsFailLabel}";
+                            }
+
+                            if ("BLOG_SYNC_ADD_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
+                                msg += ", ${syncBlogJavaFailLabel}";
+                            }
+
+                            $("#tipMsg").text(msg);
+
+                            if ("BLOG_SYNC_ADD_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
+                                && "BLOG_SYNC_ADD_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
+                                && "BLOG_SYNC_ADD_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code) {
+                                $("#content").load("admin-article-list.do", function () {
+                                    $("#tipMsg").text("${addSuccLabel}");
+                                    setCurrentNaviStyle(1);
+                                });
+                            }
+                            return;
+                        }
                         $("#content").load("admin-article-list.do", function () {
                             $("#tipMsg").text("${addSuccLabel}");
                             setCurrentNaviStyle(1);
