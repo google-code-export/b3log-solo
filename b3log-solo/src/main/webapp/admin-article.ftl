@@ -166,6 +166,33 @@
             jsonRpc.articleService.updateArticle(function (result, error) {
                 switch (result.sc) {
                     case "UPDATE_ARTICLE_SUCC":
+                        var events = result.status.events;
+                        if (events) {
+                            var msg = "${updateSuccLabel}";
+                            if ("BLOG_SYNC_UPDATE_CSDN_BLOG_FAIL" === events.blogSyncCSDNBlog.code) {
+                                msg += ", ${syncCSDNBlogFailLabel}";
+                            }
+
+                            if ("BLOG_SYNC_UPDATE_CNBLOGS_FAIL" === events.blogSyncCnBlogs.code) {
+                                msg += ", ${syncCnBlogsFailLabel}";
+                            }
+
+                            if ("BLOG_SYNC_UPDATE_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
+                                msg += ", ${syncBlogJavaFailLabel}";
+                            }
+
+                            $("#tipMsg").text(msg);
+
+                            if ("BLOG_SYNC_UPDATE_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
+                                && "BLOG_SYNC_UPDATE_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
+                                && "BLOG_SYNC_UPDATE_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code) {
+                                $("#content").load("admin-article-list.do", function () {
+                                    $("#tipMsg").text("${updateSuccLabel}");
+                                    setCurrentNaviStyle(1);
+                                });
+                            }
+                            return;
+                        }
                         $("#content").load("admin-article-list.do", function () {
                             $("#tipMsg").text("${updateSuccLabel}");
                             setCurrentNaviStyle(1);
