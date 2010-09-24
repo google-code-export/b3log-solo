@@ -80,7 +80,7 @@
 
     var updateArticle = function (event) {
         $("#content").load("admin-article.do", '', function () {
-            $("#tipMsg").text("${loadingLabel}");
+            $("#loadMsg").text("${loadingLabel}");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -111,7 +111,7 @@
                     default:
                         break;
                 }
-                $("#tipMsg").text("");
+                $("#loadMsg").text("");
             }, requestJSONObject);
         });
     }
@@ -120,7 +120,7 @@
         var isDelete = confirm("${confirmRemoveLabel}");
         
         if (isDelete) {
-            $("#tipMsg").text("${loadingLabel}");
+            $("#loadMsg").text("${loadingLabel}");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -142,7 +142,7 @@
                             if ("BLOG_SYNC_REMOVE_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
                                 msg += ", ${syncBlogJavaFailLabel}";
                             }
-
+                            getArticleList(1);
                             $("#tipMsg").text(msg);
 
                             if ("BLOG_SYNC_REMOVE_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
@@ -183,7 +183,7 @@
     }
     
     var getArticleList = function (pageNum) {
-        $("#tipMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
         currentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
@@ -231,13 +231,13 @@
                 default:
                     break;
             }
-            $("#tipMsg").text("");
+            $("#loadMsg").text("");
         }, requestJSONObject);
     }
     getArticleList(1);
 
     var getComment = function () {
-        $("#tipMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
         jsonRpc.commentService.getComments(function (result, error) {
             switch (result.sc) {
                 case "GET_COMMENTS_SUCC":
@@ -268,7 +268,7 @@
                 default:
                     break;
             };
-            $("#tipMsg").text("");
+            $("#loadMsg").text("");
         }, {"oId": $("#comments").data("oId")});
     }
 
@@ -276,7 +276,7 @@
         var isDelete = confirm("${confirmRemoveLabel}");
 
         if (isDelete) {
-            $("#tipMsg").text("${loadingLabel}");
+            $("#loadMsg").text("${loadingLabel}");
             jsonRpc.commentService.removeComment(function (result, error) {
                 switch (result.sc) {
                     case "REMOVE_COMMENT_SUCC":
@@ -287,6 +287,7 @@
                         $("#tipMsg").text("");
                         break;
                 }
+                $("#loadMsg").text("");
             }, {"oId": id});
         }
     }

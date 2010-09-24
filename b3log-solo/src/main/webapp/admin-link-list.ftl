@@ -127,7 +127,6 @@
     });
 
     var validateUpdateLink = function () {
-        $("#tipMsg").text("${loadingLabel}");
         if ($("#updateLinkTitle").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${titleEmptyLabel}");
             $("#updateLinkTitle").focus().val("");
@@ -141,7 +140,6 @@
     }
 
     var validateLink = function () {
-        $("#tipMsg").text("${loadingLabel}");
         if ($("#linkTitle").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${titleEmptyLabel}");
             $("#linkTitle").focus().val("");
@@ -155,7 +153,7 @@
     }
 
     var popUpdateLink = function (event) {
-        $("#tipMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
         $("#updateLink").dialog({
             width: 700,
             height:200
@@ -175,15 +173,14 @@
                 default:
                     break;
             }
-            $("#tipMsg").text("");
+            $("#loadMsg").text("");
         }, requestJSONObject);
     }
 
     var deleteLink = function (event) {
         var isDelete = confirm("${confirmRemoveLabel}");
-
         if (isDelete) {
-            $("#tipMsg").text("${loadingLabel}");
+            $("#loadMsg").text("${loadingLabel}");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -200,13 +197,13 @@
                     default:
                         break;
                 }
+                $("#loadMsg").text("");
             }, requestJSONObject);
-            
         }
     }
 
     var getLinkList = function (pageNum) {
-        $("#tipMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
         currentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
@@ -247,18 +244,18 @@
                             pageCount: pageCount
                         }
                     });
-
                     break;
                 default:
                     break;
             }
-            $("#tipMsg").text("");
+            $("#loadMsg").text("");
         }, requestJSONObject);
     }
     getLinkList(1);
 
     var updateLink = function () {
         if (validateUpdateLink()) {
+            $("#loadMsg").text("${loadingLabel}");
             var requestJSONObject = {
                 "link": {
                     "linkTitle": $("#updateLinkTitle").val(),
@@ -276,12 +273,14 @@
                     default:
                         break;
                 }
+                $("#loadMsg").text("");
             }, requestJSONObject);
         }
     }
 
     var submitLink = function () {
         if (validateLink()) {
+            $("#loadMsg").text("${loadingLabel}");
             var requestJSONObject = {
                 "link": {
                     "linkTitle": $("#linkTitle").val(),
@@ -302,6 +301,7 @@
                     default:
                         break;
                 }
+                $("#loadMsg").text("");
             }, requestJSONObject);
         }
     }

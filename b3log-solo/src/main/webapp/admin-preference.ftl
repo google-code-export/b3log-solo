@@ -172,7 +172,7 @@
 <script type="text/javascript">
     var localeString = "";
     var getPreference = function () {
-        $("#tipMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
         jsonRpc.preferenceService.getPreference(function (result, error) {
             switch (result.sc) {
                 case "GET_PREFERENCE_SUCC":
@@ -219,7 +219,7 @@
                 default:
                     break;
             }
-            $("#tipMsg").text("");
+            $("#loadMsg").text("");
         });
     }
     
@@ -239,7 +239,7 @@
     }
     
     var changePreference = function () {
-        $("#tipMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
 
         if ($("#syncGoogle").hasClass("selected")) {
             if ("" === $("#secret").val().replace(/\s/g, "")) {
@@ -282,6 +282,7 @@
                 default:
                     break;
             }
+            $("#loadMsg").text("");
         }, requestJSONObject);
     }
 
@@ -290,8 +291,7 @@
             $("#tipMsg").text("${contentEmptyLabel}");
             return;
         }
-        alert(encodeURIComponent($("#secret").val()));
-       // window.
-        //window.location = "buzz-oauth.do?googleOAuthConsumerSecret=" + encodeURIComponent($("#secret").val());
+        $("#loadMsg").text("${loadingLabel}");
+        window.location = "buzz-oauth.do?googleOAuthConsumerSecret=" + encodeURIComponent($("#secret").val());
     }
 </script>

@@ -29,7 +29,7 @@
 </div>
 <script type="text/javascript">
     var init = function () {
-        $("#tipMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
         // submit action
         $("#submitArticle").click(function () {
             if ($("#title").data("oId")) {
@@ -51,7 +51,7 @@
                     data: tags
                 });
             }
-            $("#tipMsg").text("");
+            $("#loadMsg").text("");
         })
 
         // editor
@@ -94,7 +94,7 @@
     
     var addArticle = function () {
         if (validateArticle()) {
-            $("#tipMsg").text("${loadingLabel}");
+            $("#loadMsg").text("${loadingLabel}");
             var tagArray = $("#tag").val().split(",");
             var requestJSONObject = {
                 "article": {
@@ -122,8 +122,10 @@
                             if ("BLOG_SYNC_ADD_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
                                 msg += ", ${syncBlogJavaFailLabel}";
                             }
-
-                            $("#tipMsg").text(msg);
+                            $("#content").load("admin-article-list.do", function () {
+                                $("#tipMsg").text(msg);
+                                setCurrentNaviStyle(1);
+                            });
 
                             if ("BLOG_SYNC_ADD_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
                                 && "BLOG_SYNC_ADD_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
@@ -144,13 +146,14 @@
                         $("#tipMsg").text("${addFailLabel}");
                         break;
                 }
+                $("loadMsg").text("");
             }, requestJSONObject);
         }
     }
 
     var updateArticle = function () {
         if (validateArticle()) {
-            $("#tipMsg").text("${loadingLabel}");
+            $("#loadMsg").text("${loadingLabel}");
             var tagArray = $("#tag").val().split(",");
             
             var requestJSONObject = {
@@ -180,8 +183,10 @@
                             if ("BLOG_SYNC_UPDATE_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
                                 msg += ", ${syncBlogJavaFailLabel}";
                             }
-
-                            $("#tipMsg").text(msg);
+                            $("#content").load("admin-article-list.do", function () {
+                                $("#tipMsg").text(msg);
+                                setCurrentNaviStyle(1);
+                            });
 
                             if ("BLOG_SYNC_UPDATE_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
                                 && "BLOG_SYNC_UPDATE_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code

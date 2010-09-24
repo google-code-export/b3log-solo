@@ -114,7 +114,7 @@
 </div>
 <script type="text/javascript">
     var initSync = function () {
-        $("#tipMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
         // Blog table
         $("#articleList").table({
             height: 357,
@@ -157,13 +157,13 @@
                 getBlogArticleArchiveDate();
             }
         });
-        $("#tipMsg").text("");
+        $("#loadMsg").text("");
     }
     initSync();
 
     var changeBlogType = function () {
-        $("#tipMsg").text("${loadingLabel}");
         if ("" !== $("#blogType").val()) {
+            $("#loadMsg").text("${loadingLabel}");
             jsonRpc.blogSyncService.getBlogSyncMgmt(function (result, error) {
                 if (result) {
                     $("#magName").val(result.blogSyncExternalBloggingSysUserName);
@@ -186,6 +186,7 @@
                 }
                 $("#archiveDatePanel").hide();
                 $("#articlesPanel").hide();
+                $("#loadMsg").text("");
             }, {
                 "blogSyncExternalBloggingSys": $("#blogType").val()
             });
@@ -214,6 +215,7 @@
     
     var syncSetting = function () {
         if (validateSyncSetting()) {
+            $("#loadMsg").text("${loadingLabel}");
             var addSync = $("#addSync").attr("checked"),
             updateSync = $("#updateSync").attr("checked"),
             deleteSync =  $("#deleteSync").attr("checked");
@@ -226,15 +228,15 @@
                 "blogSyncMgmtRemoveEnabled": deleteSync
             };
 
-            var result =
-                jsonRpc.blogSyncService.setBlogSyncMgmt(requestJSONObject);
-
-            if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
-                $("#tipMsg").html("${updateSuccLabel}");
-                $("#getDateButton").show();
-            } else {
-                $("#tipMsg").html("${setFailLabel}");
-            }
+            jsonRpc.blogSyncService.setBlogSyncMgmt(function (result, error) {
+                if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
+                    $("#tipMsg").html("${updateSuccLabel}");
+                    $("#getDateButton").show();
+                } else {
+                    $("#tipMsg").html("${setFailLabel}");
+                }
+                $("#loadMsg").text("");
+            }, requestJSONObject);
         }
     }
 
@@ -253,7 +255,7 @@
 
     var getBlogArticleArchiveDate = function () {
         if (validateSyncSetting()) {
-            $("#tipMsg").text("${loadingLabel}");
+            $("#loadMsg").text("${loadingLabel}");
             $("#archiveDatePanel").hide();
             jsonRpc.blogSyncService.getExternalArticleArchiveDate(function (result, error) {
                 var archveDates = "";
@@ -269,6 +271,7 @@
                     $("#getDateButton").hide();
                     $("#tipMsg").text("${getSuccLabel}");
                 }
+                $("#loadMsg").text("");
             }, {
                 "blogSyncExternalBloggingSysUserName": $("#magName").val(),
                 "blogSyncExternalBloggingSysUserPassword": $("#magPassword").val(),
@@ -278,8 +281,9 @@
     }
 
     var getBlogArticlesByArchiveDate = function () {
+        $("#tipMsg").html("");
+        $("#loadMsg").html("${loadingLabel}");
         $("#articlesPanel").show();
-        $("#tipMsg").html("${loadingLabel}");
         $("#articleList").table({
             update:{
                 data: []
@@ -326,24 +330,27 @@
                 });
                 
                 $("#articlesCount").html("${sumLabel} " + articleData.length + " ${countLabel}");
-                $("#tipMsg").text("${loadingLabel}");
+                $("#loadMsg").text("${loadingLabel}");
             } else {
                 $("#tipMsg").text("${getFailLabel}");
             }
         }
         $("#tipMsg").text("${getSuccLabel}");
+        $("#loadMsg").text("");
     }
 
     var sync = function () {
         if ($("#articleList_selected").data("id").length === 0) {
             $("#tipMsg").text("${blogArticleEmptyLabel}");
         } else {
-            $("#tipMsg").text("${loadingLabel}");
-            jsonRpc.blogSyncService.importExternalArticles({
+            $("#loadMsg").text("${loadingLabel}");
+            jsonRpc.blogSyncService.importExternalArticles(function (result, error) {
+                $("#loadMsg").text("");
+                $("#tipMsg").text("${importSuccLabel}");
+            }, {
                 "oIds": $("#articleList_selected").data("id"),
                 "blogSyncExternalBloggingSys": $("#blogType").val()
             });
-            $("#tipMsg").text("${importSuccLabel}");
         }
     }
 </script>
