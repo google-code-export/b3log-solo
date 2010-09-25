@@ -43,12 +43,12 @@
             <span class="article-create-date left">
                 &nbsp;${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp
             </span>
-            <a href="article-detail.do?oId=${article.oId}#comments" class="left noUnderline">
+            <a href="article-detail.do?oId=${article.oId}#comments" class="left">
                 <span class="left commentIcon" title="${commentLabel}"></span>
                 ${article.articleCommentCount}
             </a>
             <span class="left">&nbsp;&nbsp;</span>
-            <a href="article-detail.do?oId=${article.oId}" class="left noUnderline">
+            <a href="article-detail.do?oId=${article.oId}" class="left">
                 <span class="left browserIcon" title="${viewLabel}"></span>
                 ${article.articleViewCount}
             </a>

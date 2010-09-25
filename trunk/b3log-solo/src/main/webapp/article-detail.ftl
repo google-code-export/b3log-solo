@@ -62,7 +62,7 @@
                         <div class="article-body">
                             ${article.articleContent}
                         </div>
-                        <div class="article-footer">
+                        <div class="article-details-footer">
                             <div class="left">
                                 <#if nextArticleId??>
                                 <a href="article-detail.do?oId=${nextArticleId}">${nextArticle1Label}${nextArticleTitle}</a>
@@ -80,9 +80,9 @@
                                 <span class="left">
                                     &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
                                 </span>
-                                <a href="article-detail.do?oId=${article.oId}" class="left noUnderline">
+                                <a href="article-detail.do?oId=${article.oId}" class="left">
                                     <span class="left browserIcon" title="${viewLabel}"></span>
-                                    &nbsp;${article.articleViewCount}
+                                    ${article.articleViewCount}
                                 </a>
                             </div>
                             <div class="clear"></div>
@@ -95,13 +95,11 @@
                                 <#if "http://" == comment.commentURL>
                                 <a name="${comment.oId}" class="left">${comment.commentName}</a>
                                 <#else>
-                                <a name="${comment.oId}" href="${comment.commentURL}" class="left">${comment.commentName}</a>
+                                <a name="${comment.oId}" href="${comment.commentURL}"
+                                   target="_blank" class="left">${comment.commentName}</a>
                                 </#if>
                                 <#if comment.isReply>
-                                &nbsp;
-                                @<a href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}">
-                                    ${comment.commentOriginalCommentName}
-                                </a>
+                                &nbsp;@&nbsp;<a href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}">${comment.commentOriginalCommentName}</a>
                                 </#if>
                                 <div class="right">
                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
