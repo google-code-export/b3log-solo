@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Sep 12, 2010
+ * @version 1.0.1.4, Sep 25, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -512,7 +512,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final URL googleProfileURL =
                     new URL(Buzzs.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
                                                                    id));
-            // XXX: use async url fetch instead????
             final HTTPResponse response =
                     urlFetchService.fetch(googleProfileURL);
             final int statusCode = response.getResponseCode();
