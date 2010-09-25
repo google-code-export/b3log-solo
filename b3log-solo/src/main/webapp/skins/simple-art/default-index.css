@@ -195,8 +195,12 @@ a:active {
     color: #336699;
 }
 
-.article-footer a {
-    text-decoration: underline;
+.article-details-footer {
+    margin: 2em 1em;
+}
+
+.article-details-footer .left a {
+    text-decoration: none;
 }
 
 .article-create-date {
@@ -240,4 +244,13 @@ a:active {
 
 #tagsPanel .tagPanel:hover {
     text-decoration: none;
+}
+
+/* icon */
+.commentIcon, .browserIcon {width:16px;height:16px;background-image:url("../../images/icon.png");cursor:pointer;margin-right: 3px;}
+.commentIcon {
+    background-position: -32px -16px;
+}
+.browserIcon {
+    background-position: -128px -16px;
 }
