@@ -28,6 +28,7 @@ import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.BlogArticlesFeedServlet;
 import org.b3log.solo.action.feed.TagArticlesFeedServlet;
 import org.b3log.solo.action.file.FileAccessServlet;
+import org.b3log.solo.action.gae.LiveServlet;
 import org.b3log.solo.action.google.BuzzOAuth;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.auth.AuthFilter;
@@ -39,7 +40,7 @@ import org.b3log.solo.google.auth.OAuths;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Sep 18, 2010
+ * @version 1.0.1.0, Sep 25, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -104,5 +105,8 @@ public final class ActionModule extends AbstractActionModule {
         serve("/buzz-oauth.do").with(BuzzOAuth.class);
         bind(BuzzOAuthCallback.class).in(Scopes.SINGLETON);
         serve(OAuths.BUZZ_CALLBACK_URL).with(BuzzOAuthCallback.class);
+
+        bind(LiveServlet.class).in(Scopes.SINGLETON);
+        serve("/live.do").with(LiveServlet.class);
     }
 }
