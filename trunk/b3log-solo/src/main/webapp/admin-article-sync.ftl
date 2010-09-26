@@ -1,9 +1,9 @@
 <div class="tabPanel">
     <div class="tabs">
-        <span id="syncSetting" class="selected" onclick="changeTab(this);">
+        <span id="syncSetting" class="selected" onclick="changeSyncTab(this);">
             ${blogSyncMgmtLabel}
         </span>
-        <span id="sync" onclick="changeTab(this);">
+        <span id="sync" onclick="changeSyncTab(this);">
             ${blogArticleImportLabel}
         </span>
         <div class="clear"></div>
@@ -240,7 +240,7 @@
         }
     }
 
-    var changeTab = function (it) {
+    var changeSyncTab = function (it) {
         var tabs = ['sync', 'syncSetting'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i]) {

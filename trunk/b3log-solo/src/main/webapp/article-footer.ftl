@@ -30,7 +30,7 @@ Powered by
         return resultStr;
     }
     
-    var initArticle = function () {
+    var initIndex = function () {
         // common-top.ftl use state
         jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
             if (result && !error) {
@@ -133,8 +133,22 @@ Powered by
 
         jsonRpc.statisticService.incBlogViewCount();
     }
-    initArticle();
+    initIndex();
+    
+    var clearCache = function () {
+        var locationString = window.location.toString();
+        var indexOfSharp = locationString.indexOf("#");
+        var cachedPageKey = locationString.substring(locationString.lastIndexOf("/"),
+        (-1 == indexOfSharp)? locationString.length : indexOfSharp);
+        jsonRpc.adminService.clearPageCache(cachedPageKey);
+        window.location.reload();
+    }
 
+    var clearAllCache = function () {
+        jsonRpc.adminService.clearAllPageCache();
+        window.location.reload();
+    }
+    
     // article-side.ftl user introduction
     function handleResponse (response) {
         if ($("#sideNavi").length > 0) {

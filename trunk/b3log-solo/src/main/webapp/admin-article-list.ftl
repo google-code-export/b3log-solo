@@ -31,7 +31,7 @@
                 width: 56,
                 bindEvent: [{
                         'eventName': 'click',
-                        'functionName': 'updateArticle'
+                        'functionName': 'getUpdateArticle'
                     }],
                 style: "cursor:pointer; margin-left:22px;"
             }, {
@@ -78,42 +78,40 @@
         firstPage: "${firstPageLabel}"
     });
 
-    var updateArticle = function (event) {
-        $("#content").load("admin-article.do", '', function () {
-            $("#loadMsg").text("${loadingLabel}");
-            var requestJSONObject = {
-                "oId": event.data.id[0]
-            };
+    var getUpdateArticle = function (event) {
+        $("#articleTab").click();
+        $("#loadMsg").text("${loadingLabel}");
+        var requestJSONObject = {
+            "oId": event.data.id[0]
+        };
 
-            jsonRpc.articleService.getArticle(function (result, error) {
-                switch (result.sc) {
-                    case "GET_ARTICLE_SUCC":
-                        setCurrentNaviStyle(0);
-                        // set default value for article.
-                        $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
-                        tinyMCE.get('articleContent').setContent(result.article.articleContent);
-                        tinyMCE.get('abstract').setContent(result.article.articleAbstract);
+        jsonRpc.articleService.getArticle(function (result, error) {
+            switch (result.sc) {
+                case "GET_ARTICLE_SUCC":
+                    // set default value for article.
+                    $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
+                    tinyMCE.get('articleContent').setContent(result.article.articleContent);
+                    tinyMCE.get('abstract').setContent(result.article.articleAbstract);
 
-                        var tags = result.article.articleTags,
-                        tagsString = '';
-                        for (var i = 0; i < tags.length; i++) {
-                            if (0 === i) {
-                                tagsString = tags[i].tagTitle;
-                            } else {
-                                tagsString += "," + tags[i].tagTitle;
-                            }
+                    var tags = result.article.articleTags,
+                    tagsString = '';
+                    for (var i = 0; i < tags.length; i++) {
+                        if (0 === i) {
+                            tagsString = tags[i].tagTitle;
+                        } else {
+                            tagsString += "," + tags[i].tagTitle;
                         }
-                        $("#tag").val(tagsString);
+                    }
+                    $("#tag").val(tagsString);
 
-                        break;
-                    case "GET_ARTICLE_FAIL_":
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
-            }, requestJSONObject);
-        });
+                    break;
+                case "GET_ARTICLE_FAIL_":
+                    break;
+                default:
+                    break;
+            }
+            $("#loadMsg").text("");
+        }, requestJSONObject);
     }
     
     var deleteArticle = function (event) {

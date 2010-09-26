@@ -13,20 +13,6 @@
     <div class="clear"></div>
 </div>
 <script type="text/javascript">
-    var clearCache = function () {
-        var locationString = window.location.toString();
-        var indexOfSharp = locationString.indexOf("#");
-        var cachedPageKey = locationString.substring(locationString.lastIndexOf("/"), 
-        (-1 == indexOfSharp)? locationString.length : indexOfSharp);
-        jsonRpc.adminService.clearPageCache(cachedPageKey);
-        window.location.reload();
-    }
-
-    var clearAllCache = function () {
-        jsonRpc.adminService.clearAllPageCache();
-        window.location.reload();
-    }
-
     var adminLogin = function () {
         var loginURL = jsonRpc.adminService.getLoginURL();
         window.location.href = loginURL;

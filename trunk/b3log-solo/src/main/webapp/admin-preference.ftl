@@ -1,12 +1,12 @@
 <div class="tabPanel">
     <div class="tabs">
-        <span class="selected" id="preferences" onclick="changeTab(this);">
+        <span class="selected" id="preferences" onclick="changePreferenceTab(this);">
             ${paramSettingsLabel}
         </span>
-        <span id="skins" onclick="changeTab(this);">
+        <span id="skins" onclick="changePreferenceTab(this);">
             ${skinLabel}
         </span>
-        <span id="syncGoogle" onclick="changeTab(this);">
+        <span id="syncGoogle" onclick="changePreferenceTab(this);">
             ${googleLabel}
         </span>
     </div>
@@ -225,7 +225,7 @@
     
     getPreference();
     
-    var changeTab = function (it) {
+    var changePreferenceTab = function (it) {
         var tabs = ['preferences', 'skins', 'syncGoogle'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i]) {
