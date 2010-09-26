@@ -106,7 +106,7 @@
                 <div id="articlesCount" class="right red marginTop12 marginRight12">
                 </div>
                 <div class="clear"></div>
-                <div id="articleList" class="paddingTop12 paddingBottom12"></div>
+                <div id="articleSyncList" class="paddingTop12 paddingBottom12"></div>
                 <button onclick="sync();">${importLabel}</button>
             </div>
         </div>
@@ -116,7 +116,7 @@
     var initSync = function () {
         $("#loadMsg").text("${loadingLabel}");
         // Blog table
-        $("#articleList").table({
+        $("#articleSyncList").table({
             height: 357,
             colModel: [{
                     name: "选择",
@@ -284,7 +284,7 @@
         $("#tipMsg").html("");
         $("#loadMsg").html("${loadingLabel}");
         $("#articlesPanel").show();
-        $("#articleList").table({
+        $("#articleSyncList").table({
             update:{
                 data: []
             }
@@ -301,7 +301,7 @@
             var result =
                 jsonRpc.blogSyncService.getExternalArticlesByArchiveDate(requestJSONObject);
             var articles = result.blogSyncExternalArticles;
-            if (articles.length === $("#articleListTableMain tr").length) {
+            if (articles.length === $("#articleSyncListTableMain tr").length) {
                 break;
             }
             if (articles.length > 0) {
@@ -323,7 +323,7 @@
                     }
                 }
                 
-                $("#articleList").table({
+                $("#articleSyncList").table({
                     update:{
                         data: articleData
                     }
@@ -340,7 +340,7 @@
     }
 
     var sync = function () {
-        if ($("#articleList_selected").data("id").length === 0) {
+        if ($("#articleSyncList_selected").data("id").length === 0) {
             $("#tipMsg").text("${blogArticleEmptyLabel}");
         } else {
             $("#loadMsg").text("${loadingLabel}");
@@ -348,7 +348,7 @@
                 $("#loadMsg").text("");
                 $("#tipMsg").text("${importSuccLabel}");
             }, {
-                "oIds": $("#articleList_selected").data("id"),
+                "oIds": $("#articleSyncList_selected").data("id"),
                 "blogSyncExternalBloggingSys": $("#blogType").val()
             });
         }
