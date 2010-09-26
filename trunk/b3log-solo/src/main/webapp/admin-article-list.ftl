@@ -79,8 +79,8 @@
     });
 
     var getUpdateArticle = function (event) {
-        $("#articleTab").click();
         $("#loadMsg").text("${loadingLabel}");
+        $("#articleTab").click();
         var requestJSONObject = {
             "oId": event.data.id[0]
         };
@@ -161,6 +161,7 @@
                         $("#tipMsg").text("");
                         break;
                 }
+                $("#loadMsg").text("");
             }, requestJSONObject);
         }
     }

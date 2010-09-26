@@ -207,7 +207,6 @@
                             data: tags
                         });
                     }
-                    $("#loadMsg").text("");
                 })
 
                 // editor
@@ -232,6 +231,7 @@
                     remove_script_host: false
                 });
                 clearAtricle();
+                $("#loadMsg").text("");
             }
             initAdmin();
 
@@ -367,6 +367,7 @@
                                 $("#tipMsg").text("${updateFailLabel}");
                                 break;
                         }
+                        $("loadMsg").text("");
                     }, requestJSONObject);
                 }
             }
