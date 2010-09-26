@@ -191,15 +191,15 @@
                 "blogSyncExternalBloggingSys": $("#blogType").val()
             });
         } else {
-            $("#tipMsg").text("${blogTypeEmptyLabel}");
-            $("#blogSyncTip").text("${blogTypeEmptyLabel}");
+            $("#tipMsg").text("${blogEmptyLabel}");
+            $("#blogSyncTip").text("${blogEmptyLabel}");
             $("#getDateButton").hide();
         }
     }
 
     var validateSyncSetting = function () {
         if ("" === $("#blogType").val()) {
-            $("#tipMsg").text("${blogTypeEmptyLabel}");
+            $("#tipMsg").text("${blogEmptyLabel}");
             $("#blogType").focus();
         } else if ("" === $("#magName").val().replace(/\s/g, "")) {
             $("#tipMsg").text("${nameEmptyLabel}");
@@ -330,7 +330,6 @@
                 });
                 
                 $("#articlesCount").html("${sumLabel} " + articleData.length + " ${countLabel}");
-                $("#loadMsg").text("${loadingLabel}");
             } else {
                 $("#tipMsg").text("${getFailLabel}");
             }
@@ -345,8 +344,8 @@
         } else {
             $("#loadMsg").text("${loadingLabel}");
             jsonRpc.blogSyncService.importExternalArticles(function (result, error) {
-                $("#loadMsg").text("");
                 $("#tipMsg").text("${importSuccLabel}");
+                $("#loadMsg").text("");
             }, {
                 "oIds": $("#articleSyncList_selected").data("id"),
                 "blogSyncExternalBloggingSys": $("#blogType").val()
