@@ -70,7 +70,10 @@
             theme_advanced_toolbar_align : "left",
             theme_advanced_resizing : true,
 
-            extended_valid_elements: "pre[name|class]"
+            extended_valid_elements: "pre[name|class]",
+
+            relative_urls: false,
+            remove_script_host: false
         });
     }
     init();
