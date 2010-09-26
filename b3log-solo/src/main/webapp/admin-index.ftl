@@ -22,23 +22,23 @@
             <div id="allPanel">
                 <div class="left side">
                     <ul id="sideNavi">
-                        <li>
+                        <li id="articleTab" onclick="changeList(this);clearAtricle();" class="selected">
                             <div class="left postIcon"></div>
                             <span>&nbsp;${postArticleLabel}</span>
                         </li>
-                        <li>
+                        <li id="article-listTab" onclick="changeList(this);">
                             <div class="left articlesIcon"></div>
                             <span>&nbsp;${articleListLabel}</span>
                         </li>
-                        <li>
+                        <li id="link-listTab" onclick="changeList(this);">
                             <div class="left linkIcon"></div>
                             <span>&nbsp;${linkManagementLabel}</span>
                         </li>
-                        <li>
+                        <li id="preferenceTab" onclick="changeList(this);">
                             <div class="left preferenceIcon"></div>
                             <span>&nbsp;${preferenceLabel}</span>
                         </li>
-                        <li>
+                        <li id="article-syncTab" onclick="changeList(this);">
                             <div class="left blogSyncIcon"></div>
                             <span>&nbsp;${blogSyncLabel}</span>
                         </li>
@@ -49,7 +49,46 @@
                     </ul>
                 </div>
                 <div class="left" id="main">
-                    <div id="content">
+                    <div class="content">
+                        <div id="articlePanel">
+                            <div class="form paddingTop12">
+                                <div class='left label'>
+                                    ${title1Label}
+                                </div>
+                                <div class="left input">
+                                    <input id="title" type="text"/>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="label">
+                                    ${content1Label}
+                                </div>
+                                <div class="marginBottom12 marginLeft12">
+                                    <textarea rows="30" id="articleContent" name="articleContent" style="width: 99%;"></textarea>
+                                </div>
+                                <div class="left label">${tags1Label}</div>
+                                <div class="left input">
+                                    <input id="tag" type="text"/>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="left label">${abstract1Label}</div>
+                                <div class="left input">
+                                    <textarea id="abstract" rows="12" name="abstract"></textarea>
+                                </div>
+                                <div class="clear"></div>
+                                <div class="right label">
+                                    <button id="submitArticle">${postLabel}</button>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                        <div id="article-listPanel" class="none">
+                        </div>
+                        <div id="link-listPanel" class="none">
+                        </div>
+                        <div id="preferencePanel" class="none">
+                        </div>
+                        <div id="article-syncPanel" class="none">
+                        </div>
                     </div>
                 </div>
                 <div class="clear"></div>
@@ -67,20 +106,47 @@
             </div>
         </div>
         <script type="text/javascript">
+            var changeList = function (it) {
+                var tabs = ['article', 'article-list', 'link-list', 'preference', 'article-sync'];
+                for (var i = 0; i < tabs.length; i++) {
+                    if (it.id === tabs[i] + "Tab") {
+                        if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
+                            $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
+                        }
+                        $("#" + tabs[i] + "Panel").show();
+                        $("#" + tabs[i] + "Tab").addClass("selected");
+                    } else {
+                        $("#" + tabs[i] + "Panel").hide();
+                        $("#" + tabs[i] + "Tab").removeClass("selected");
+                    }
+                }
+            }
+
+            var clearAtricle = function () {
+                $("#title").removeData("oId").val("");
+                if (tinyMCE.get("articleContent")) {
+                    tinyMCE.get('articleContent').setContent("");
+                } else {
+                    $("#articleContent").val("");
+                }
+                if (tinyMCE.get('abstract')) {
+                    tinyMCE.get('abstract').setContent("");
+                } else {
+                    $("#abstract").val("");
+                }
+                $("#tag").val("");
+            }
+
             var PAGE_SIZE = 18,
             WINDOW_SIZE = 10;
             var initAdmin = function () {
+                $("#loadMsg").text("${loadingLabel}");
                 // tipMsg
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
                         setTimeout(function () {
                             $("#tipMsg").text("");
                         }, 8000);
-                    }
-                    if($("#loadMsg").text() !== "") {
-                        setTimeout(function () {
-                            $("#loadMsg").text("");
-                        }, 5000);
                     }
                 }, 6000);
 
@@ -103,18 +169,7 @@
                 });
 
                 // sideNavi action
-                $("#sideNavi li").each(function (i) {
-                    var naviURL = ['article', 'article-list', 'link-list', 'preference', 'article-sync'],
-                    $it = $(this);
-                    $it.click(function () {
-                        var loadURL = "admin-" + naviURL[i] + ".do";
-                        if (!$it.hasClass("selected")){
-                            $("#sideNavi li").removeClass('selected');
-                            $it.addClass('selected');
-                        }
-                        $("#content").load(loadURL);
-                    });
-                }).mouseover(function () {
+                $("#sideNavi li").mouseover(function () {
                     $(this).addClass('hover');
                 }).mouseout(function () {
                     $(this).removeClass('hover');
@@ -130,13 +185,190 @@
                 } else {
                     $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
                 }
+
+                // submit action
+                $("#submitArticle").click(function () {
+                    if ($("#title").data("oId")) {
+                        updateArticle();
+                    } else {
+                        addArticle();
+                    }
+                });
+
+                // tag auto completed
+                jsonRpc.tagService.getTags(function (result, error) {
+                    if (result.length > 0) {
+                        var tags = [];
+                        for (var i = 0; i < result.length; i++) {
+                            tags.push(result[i].tagTitle);
+                        }
+                        $("#tag").completed({
+                            height: 160,
+                            data: tags
+                        });
+                    }
+                    $("#loadMsg").text("");
+                })
+
+                // editor
+                tinyMCE.init({
+                    // General options
+                    mode : "exact",
+                    elements : "articleContent, abstract",
+                    theme : "advanced",
+                    plugins : "style,advhr,advimage,advlink,preview,media,paste,fullscreen",
+
+                    // Theme options
+                    theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
+                    theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen",
+                    theme_advanced_buttons3 : "",
+                    theme_advanced_toolbar_location : "top",
+                    theme_advanced_toolbar_align : "left",
+                    theme_advanced_resizing : true,
+
+                    extended_valid_elements: "pre[name|class]",
+
+                    relative_urls: false,
+                    remove_script_host: false
+                });
+                clearAtricle();
             }
             initAdmin();
 
-            // util for admin
-            var setCurrentNaviStyle = function (i) {
-                $("#sideNavi li").removeClass('selected');
-                $($("#sideNavi li").get(i)).addClass("selected");
+            var validateArticle = function () {
+                if ($("#title").val().replace(/\s/g, "") === "") {
+                    $("#tipMsg").text("${titleEmptyLabel}");
+                    $("#title").focus().val("");
+                } else if (tinyMCE.get('articleContent').getContent().replace(/\s/g, "") === "") {
+                    $("#tipMsg").text("${contentEmptyLabel}");
+                } else if ($("#tag").val().replace(/\s/g, "") === "") {
+                    $("#tipMsg").text("${tagsEmptyLabel}");
+                    $("#tag").focus().val("");
+                } else if(tinyMCE.get('abstract').getContent().replace(/\s/g, "") === "") {
+                    $("#tipMsg").text("${abstractEmptyLabel}");
+                } else {
+                    return true;
+                }
+                return false;
+            }
+
+            var addArticle = function () {
+                if (validateArticle()) {
+                    $("#loadMsg").text("${loadingLabel}");
+                    var tagArray = $("#tag").val().split(",");
+                    var requestJSONObject = {
+                        "article": {
+                            "articleTitle": $("#title").val(),
+                            "articleContent": tinyMCE.get('articleContent').getContent(),
+                            "articleAbstract": tinyMCE.get('abstract').getContent(),
+                            "articleTags": $.bowknot.trimUnique(tagArray).toString()
+                        }
+                    };
+
+                    jsonRpc.articleService.addArticle(function (result, error) {
+                        switch (result.status.code) {
+                            case "ADD_ARTICLE_SUCC":
+                                var events = result.status.events;
+                                if (events) {
+                                    var msg = "${addSuccLabel}";
+                                    if ("BLOG_SYNC_ADD_CSDN_BLOG_FAIL" === events.blogSyncCSDNBlog.code) {
+                                        msg += ", ${syncCSDNBlogFailLabel}";
+                                    }
+
+                                    if ("BLOG_SYNC_ADD_CNBLOGS_FAIL" === events.blogSyncCnBlogs.code) {
+                                        msg += ", ${syncCnBlogsFailLabel}";
+                                    }
+
+                                    if ("BLOG_SYNC_ADD_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
+                                        msg += ", ${syncBlogJavaFailLabel}";
+                                    }
+                                    $("#article-listPanel").load("admin-article-list.do", function () {
+                                        $("#tipMsg").text(msg);
+                                        $("#article-listTab").click();
+                                    });
+
+                                    if ("BLOG_SYNC_ADD_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
+                                        && "BLOG_SYNC_ADD_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
+                                        && "BLOG_SYNC_ADD_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code) {
+                                        $("#article-listPanel").load("admin-article-list.do", function () {
+                                            $("#tipMsg").text("${addSuccLabel}");
+                                            $("#article-listTab").click();
+                                        });
+                                    }
+                                    return;
+                                }
+                                $("#article-listPanel").load("admin-article-list.do", function () {
+                                    $("#tipMsg").text("${addSuccLabel}");
+                                    $("#article-listTab").click();
+                                });
+                                break;
+                            default:
+                                $("#tipMsg").text("${addFailLabel}");
+                                break;
+                        }
+                        $("loadMsg").text("");
+                    }, requestJSONObject);
+                }
+            }
+
+            var updateArticle = function () {
+                if (validateArticle()) {
+                    $("#loadMsg").text("${loadingLabel}");
+                    var tagArray = $("#tag").val().split(",");
+
+                    var requestJSONObject = {
+                        "article": {
+                            "oId": $("#title").data("oId"),
+                            "articleTitle": $("#title").val(),
+                            "articleContent": tinyMCE.get('articleContent').getContent(),
+                            "articleAbstract": tinyMCE.get('abstract').getContent(),
+                            "articleTags": $.bowknot.trimUnique(tagArray).toString()
+                        }
+                    };
+
+                    jsonRpc.articleService.updateArticle(function (result, error) {
+                        switch (result.status.code) {
+                            case "UPDATE_ARTICLE_SUCC":
+                                var events = result.status.events;
+                                if (events) {
+                                    var msg = "${updateSuccLabel}";
+                                    if ("BLOG_SYNC_UPDATE_CSDN_BLOG_FAIL" === events.blogSyncCSDNBlog.code) {
+                                        msg += ", ${syncCSDNBlogFailLabel}";
+                                    }
+
+                                    if ("BLOG_SYNC_UPDATE_CNBLOGS_FAIL" === events.blogSyncCnBlogs.code) {
+                                        msg += ", ${syncCnBlogsFailLabel}";
+                                    }
+
+                                    if ("BLOG_SYNC_UPDATE_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
+                                        msg += ", ${syncBlogJavaFailLabel}";
+                                    }
+                                    $("#article-listPanel").load("admin-article-list.do", function () {
+                                        $("#tipMsg").text(msg);
+                                        $("#article-listTab").click();
+                                    });
+
+                                    if ("BLOG_SYNC_UPDATE_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
+                                        && "BLOG_SYNC_UPDATE_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
+                                        && "BLOG_SYNC_UPDATE_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code) {
+                                        $("#article-listPanel").load("admin-article-list.do", function () {
+                                            $("#tipMsg").text("${updateSuccLabel}");
+                                            $("#article-listTab").click();
+                                        });
+                                    }
+                                    return;
+                                }
+                                $("#article-listPanel").load("admin-article-list.do", function () {
+                                    $("#tipMsg").text("${updateSuccLabel}");
+                                    $("#article-listTab").click();
+                                });
+                                break;
+                            default:
+                                $("#tipMsg").text("${updateFailLabel}");
+                                break;
+                        }
+                    }, requestJSONObject);
+                }
             }
         </script>
     </body>
