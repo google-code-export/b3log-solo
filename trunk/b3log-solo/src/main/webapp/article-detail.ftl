@@ -52,7 +52,10 @@
                                     ${tags1Label}
                                     <#list articleTags as articleTag>
                                     <span>
-                                        <a href="tag-articles.do?oId=${articleTag.oId}">${articleTag.tagTitle}</a>
+                                        <a href="tag-articles.do?oId=${articleTag.oId}">
+                                            ${articleTag.tagTitle}
+                                        </a>
+                                        <#if articleTag_has_next>,</#if>
                                     </span>
                                     </#list>
                                 </div>
