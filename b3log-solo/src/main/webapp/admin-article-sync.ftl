@@ -344,6 +344,9 @@
         } else {
             $("#loadMsg").text("${loadingLabel}");
             jsonRpc.blogSyncService.importExternalArticles(function (result, error) {
+                if (typeof(getArticleList) === "function") {
+                    getArticleList(1);
+                }
                 $("#tipMsg").text("${importSuccLabel}");
                 $("#loadMsg").text("");
             }, {
