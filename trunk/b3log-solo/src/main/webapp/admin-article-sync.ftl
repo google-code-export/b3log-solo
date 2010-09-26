@@ -8,7 +8,7 @@
         </span>
         <div class="clear"></div>
         <div id="syncBlogType">
-            <span class="label">${chooseBlogType1Label}</span>
+            <span class="label">${chooseBlog1Label}</span>
             <select id="blogType" onchange="changeBlogType();">
                 <option value="">&nbsp;</option>
                 <option value="blogSyncCSDNBlog">${CSDNBlogLabel}</option>
@@ -16,7 +16,7 @@
                 <option value="blogSyncCnBlogs">${CnBlogsLabel}</option>
             </select>
             <span class="error-msg" id="blogSyncTip">
-                ${blogTypeEmptyLabel}
+                ${blogEmptyLabel}
             </span>
         </div>
     </div>
