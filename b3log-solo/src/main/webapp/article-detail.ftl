@@ -10,7 +10,7 @@
         <meta name="author" content="${blogTitle}"/>
         <meta http-equiv="Window-target" content="_top"/>
         <title>${article.articleTitle} - ${blogTitle}</title>
-        <script type="text/javascript" src="js/lib/jquery/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <link type="text/css" rel="stylesheet" href="js/lib/SyntaxHighlighter/styles/shCoreDefault.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
