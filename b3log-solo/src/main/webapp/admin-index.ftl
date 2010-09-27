@@ -46,7 +46,7 @@
                             <div class="left blogSyncIcon"></div>
                             <span>&nbsp;{pageLabel}</span>
                         </li>
-                        <!--li>
+                        <li>
                             <div class="left fileIcon"></div>
                             <span>&nbsp;${fileListLabel}</span>
                         </li-->
