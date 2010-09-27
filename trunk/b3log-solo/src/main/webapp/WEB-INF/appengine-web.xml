@@ -38,8 +38,13 @@
         <include path="/favicon.png" />
         <include path="/robots.txt" />
         <include path="/js/**.js" />
-        <include path="/styles/*.css" />
-        <include path="/images/*.png" />
+        <include path="/js/**.css" />
+        <include path="/js/**.htm" />
+        <include path="/js/**.html" />
+        <include path="/js/**.gif" />
+        <include path="/skin/**.css" />
+        <include path="/styles/**.css" />
+        <include path="/images/**.png" />
     </static-files>
 </appengine-web-app>
 
