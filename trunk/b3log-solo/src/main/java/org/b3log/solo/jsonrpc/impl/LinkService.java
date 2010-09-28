@@ -67,9 +67,11 @@ public final class LinkService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "oId": "",
-     *     "linkTitle": "",
-     *     "linkAddress": ""
+     *     "link": {
+     *         "oId": "",
+     *         "linkTitle": "",
+     *         "linkAddress": ""
+     *     },
      *     "sc": "GET_LINK_SUCC"
      * }
      * </pre>
@@ -86,7 +88,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINK_SUCC);
 
-            LOGGER.log(Level.FINER, "Got an link[oId={0}]", linkId);
+            LOGGER.log(Level.FINER, "Got a link[oId={0}]", linkId);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
@@ -123,7 +125,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
      * </pre>
      * @throws ActionException action exception
      * @see Pagination
-     * @see LINK
      */
     public JSONObject getLinks(final JSONObject requestJSONObject)
             throws ActionException {
