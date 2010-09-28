@@ -163,7 +163,7 @@ button:hover,.button:hover {
     text-align: center;
     padding: 12px;
 }
-.deleteIcon,.updateIcon,.commentIcon,.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,.postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon,.trueIcon,.falseIcon,.fileIcon {
+.deleteIcon,.updateIcon,.commentIcon,.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,.postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon, .pageIcon, .trueIcon,.falseIcon,.fileIcon {
     width: 16px;
     height: 16px;
     background-image: url("../images/icon.png");
@@ -171,6 +171,9 @@ button:hover,.button:hover {
 }
 .blogSyncIcon {
     background-position: 0 0;
+}
+.pageIcon {
+    background-position: 0 144px;
 }
 .postIcon {
     background-position: -16px 0;
