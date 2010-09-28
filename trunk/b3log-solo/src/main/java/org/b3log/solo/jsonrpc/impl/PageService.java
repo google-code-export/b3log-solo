@@ -31,32 +31,32 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
-import org.b3log.solo.model.Link;
-import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.PageRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Link service for JavaScript client.
+ * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 21, 2010
+ * @version 1.0.0.0, Sep 28, 2010
  */
-public final class LinkService extends AbstractGAEJSONRpcService {
+public final class PageService extends AbstractGAEJSONRpcService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = 
-            Logger.getLogger(LinkService.class.getName());
+            Logger.getLogger(PageService.class.getName());
     /**
-     * Link repository.
+     * Page repository.
      */
     @Inject
-    private LinkRepository linkRepository;
+    private PageRepository pageRepository;
 
     /**
-     * Gets a link by the specified request json object.
+     * Gets a page by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -67,28 +67,28 @@ public final class LinkService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "link": {
+     *     "page": {
      *         "oId": "",
-     *         "linkTitle": "",
-     *         "linkAddress": ""
+     *         "pageTitle": "",
+     *         "pageContent": ""
      *     },
-     *     "sc": "GET_LINK_SUCC"
+     *     "sc": "GET_PAGE_SUCC"
      * }
      * </pre>
      * @throws ActionException action exception
      */
-    public JSONObject getLink(final JSONObject requestJSONObject)
+    public JSONObject getPage(final JSONObject requestJSONObject)
             throws ActionException {
         final JSONObject ret = new JSONObject();
 
         try {
-            final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final JSONObject link = linkRepository.get(linkId);
-            ret.put(Link.LINK, link);
+            final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final JSONObject page = pageRepository.get(pageId);
+            ret.put(Page.PAGE, page);
 
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINK_SUCC);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_PAGE_SUCC);
 
-            LOGGER.log(Level.FINER, "Got a link[oId={0}]", linkId);
+            LOGGER.log(Level.FINER, "Got page [oId={0}]", pageId);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
@@ -98,7 +98,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Gets links by the specified request json object.
+     * Gets pages by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -115,18 +115,18 @@ public final class LinkService extends AbstractGAEJSONRpcService {
      *         "paginationPageCount": 100,
      *         "paginationPageNums": [1, 2, 3, 4, 5]
      *     },
-     *     "links": [{
+     *     "pages": [{
      *         "oId": "",
-     *         "linkTitle": "",
-     *         "linkAddress": "",
+     *         "pageTitle": "",
+     *         "pageContent": "",
      *      }, ....]
-     *     "sc": "GET_LINKS_SUCC"
+     *     "sc": "GET_PAGES_SUCC"
      * }
      * </pre>
      * @throws ActionException action exception
      * @see Pagination
      */
-    public JSONObject getLinks(final JSONObject requestJSONObject)
+    public JSONObject getPages(final JSONObject requestJSONObject)
             throws ActionException {
         final JSONObject ret = new JSONObject();
         try {
@@ -138,7 +138,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                     Pagination.PAGINATION_WINDOW_SIZE);
 
             final JSONObject result =
-                    linkRepository.get(currentPageNum, pageSize);
+                    pageRepository.get(currentPageNum, pageSize);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
 
@@ -149,11 +149,11 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-            final JSONArray links = result.getJSONArray(Keys.RESULTS);
+            final JSONArray pages = result.getJSONArray(Keys.RESULTS);
 
             ret.put(Pagination.PAGINATION, pagination);
-            ret.put(Link.LINKS, links);
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINKS_SUCC);
+            ret.put(Page.PAGES, pages);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_PAGES_SUCC);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
@@ -163,30 +163,30 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Updates a link by the specified request json object.
+     * Updates a page by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
-     *     "link": {
+     *     "page": {
      *         "oId": "",
-     *         "linkTitle": "",
-     *         "linkAddress": ""
+     *         "pageTitle": "",
+     *         "pageContent": ""
      *     }
-     * }, see {@link Link} for more details
+     * }, see {@link Page} for more details
      * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
-     *     "sc": "UPDATE_LINK_SUCC"
+     *     "sc": "UPDATE_PAGE_SUCC"
      * }
      * </pre>
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject updateLink(final JSONObject requestJSONObject,
+    public JSONObject updatePage(final JSONObject requestJSONObject,
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
@@ -196,18 +196,18 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject link =
-                    requestJSONObject.getJSONObject(Link.LINK);
-            final String linkId = link.getString(Keys.OBJECT_ID);
-            linkRepository.update(linkId, link);
+            final JSONObject page =
+                    requestJSONObject.getJSONObject(Page.PAGE);
+            final String pageId = page.getString(Keys.OBJECT_ID);
+            pageRepository.update(pageId, page);
 
             // Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
             transaction.commit();
-            ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_SUCC);
+            ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PAGE_SUCC);
 
-            LOGGER.log(Level.FINER, "Updated a link[oId={0}]", linkId);
+            LOGGER.log(Level.FINER, "Updated a page[oId={0}]", pageId);
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
@@ -218,7 +218,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Removes a link by the specified request json object.
+     * Removes a page by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -231,13 +231,13 @@ public final class LinkService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "sc": "REMOVE_LINK_SUCC"
+     *     "sc": "REMOVE_PAGE_SUCC"
      * }
      * </pre>
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject removeLink(final JSONObject requestJSONObject,
+    public JSONObject removePage(final JSONObject requestJSONObject,
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
@@ -247,17 +247,17 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
-            final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
-            LOGGER.log(Level.FINER, "Removing a link[oId={0}]", linkId);
-            linkRepository.remove(linkId);
+            final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
+            LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
+            pageRepository.remove(pageId);
 
             // Clear page cache
             AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
             transaction.commit();
-            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_LINK_SUCC);
+            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_PAGE_SUCC);
 
-            LOGGER.log(Level.FINER, "Removed a link[oId={0}]", linkId);
+            LOGGER.log(Level.FINER, "Removed a page[oId={0}]", pageId);
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
@@ -268,30 +268,30 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Adds a link with the specified request json object.
+     * Adds a page with the specified request json object.
      * 
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
-     *     "link": {
-     *         "linkTitle": "",
-     *         "linkAddress": ""
+     *     "page": {
+     *         "pageTitle": "",
+     *         "pageContent": ""
      *     }
-     * }, see {@link Link} for more details
+     * }, see {@link Page} for more details
      * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
-     *     "oId": generatedLinkId,
-     *     "sc": ADD_LINK_SUCC
+     *     "oId": generatedPageId,
+     *     "sc": ADD_PAGE_SUCC
      * }
      * </pre>
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject addLink(final JSONObject requestJSONObject,
+    public JSONObject addPage(final JSONObject requestJSONObject,
                               final HttpServletRequest request,
                               final HttpServletResponse response)
             throws ActionException, IOException {
@@ -301,14 +301,14 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject link =
-                    requestJSONObject.getJSONObject(Link.LINK);
-            final String pageId = linkRepository.add(link);
+            final JSONObject page =
+                    requestJSONObject.getJSONObject(Page.PAGE);
+            final String pageId = pageRepository.add(page);
 
             transaction.commit();
             ret.put(Keys.OBJECT_ID, pageId);
 
-            ret.put(Keys.STATUS_CODE, StatusCodes.ADD_LINK_SUCC);
+            ret.put(Keys.STATUS_CODE, StatusCodes.ADD_PAGE_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
