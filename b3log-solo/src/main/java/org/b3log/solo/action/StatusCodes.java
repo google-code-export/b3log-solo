@@ -19,7 +19,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Sep 4, 2010
+ * @version 1.0.0.9, Sep 28, 2010
  */
 public enum StatusCodes {
 
@@ -91,4 +91,24 @@ public enum StatusCodes {
      * Indicates captcha error.
      */
     CAPTCHA_ERROR,
+    /**
+     * Indicates add a page successfully.
+     */
+    ADD_PAGE_SUCC,
+    /**
+     * Indicates remove a page successfully.
+     */
+    REMOVE_PAGE_SUCC,
+    /**
+     * Indicates update a page successfully.
+     */
+    UPDATE_PAGE_SUCC,
+    /**
+     * Indicates get a page successfully.
+     */
+    GET_PAGE_SUCC,
+    /**
+     * Indicates get pages successfully.
+     */
+    GET_PAGES_SUCC,
 }
