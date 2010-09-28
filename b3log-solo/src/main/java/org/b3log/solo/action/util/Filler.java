@@ -40,6 +40,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,6 +83,11 @@ public final class Filler {
      */
     @Inject
     private LinkRepository linkRepository;
+    /**
+     * Page repository.
+     */
+    @Inject
+    private PageRepository pageRepository;
     /**
      * Archive date utilities.
      */
@@ -339,5 +345,22 @@ public final class Filler {
         final String noticeBoard =
                 preference.getString(Preference.NOTICE_BOARD);
         dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
+    }
+
+    /**
+     * Fills page navigations.
+     *
+     * @param dataModel data model
+     * @throws Exception exception
+     */
+    public void fillPageNavigations(final Map<String, Object> dataModel)
+            throws Exception {
+        final JSONObject result = linkRepository.get(1,
+                                                     Integer.MAX_VALUE);
+        final List<JSONObject> pageNavigations =
+                org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
+                getJSONArray(Keys.RESULTS));
+        
+        dataModel.put(Common.PAGE_NAVIGATIONS, pageNavigations);
     }
 }

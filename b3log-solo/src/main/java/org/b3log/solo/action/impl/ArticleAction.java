@@ -36,7 +36,6 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
@@ -44,6 +43,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,7 +69,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
      * Article repository.
      */
     @Inject
-    private ArticleGAERepository articleRepository;
+    private ArticleRepository articleRepository;
     /**
      * Tag repository.
      */
