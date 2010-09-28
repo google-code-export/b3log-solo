@@ -10,6 +10,13 @@
 </div>
 <div class="right header-right">
     <div class="left marginLeft12">
+        <#list pageNavigations as page>
+        <span>
+            <a href="tag-articles.do?oId=${articleTag.oId}">
+                ${page.pageTitle}
+            </a>
+        </span>
+        </#list>
         <a href="tags.do">${allTagsLabel}</a> &nbsp;&nbsp;
         <a href="blog-articles-feed.do">${atomLabel}</a><a href="blog-articles-feed.do"><img src="images/feed.png" alt="Atom"/></a>
     </div>
