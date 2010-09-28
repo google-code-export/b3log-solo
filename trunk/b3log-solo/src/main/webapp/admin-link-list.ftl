@@ -113,8 +113,8 @@
 
     $("#linkPagination").paginate({
         bindEvent: "getLinkList",
-        pageCount: 10,
-        windowSize: 5,
+        pageCount: 1,
+        windowSize: 1,
         currentPage: 1,
         style: "google",
         isGoTo: false,
