@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Sep 11, 2010
+ * @version 1.0.1.2, Sep 28, 2010
  */
 public final class Common {
 
@@ -85,6 +85,10 @@ public final class Common {
      * Key of flag a comment is an reply or not.
      */
     public static final String IS_REPLY = "isReply";
+    /**
+     * Key of page navigations.
+     */
+    public static final String PAGE_NAVIGATIONS = "pageNavigations";
 
     /**
      * Private default constructor.

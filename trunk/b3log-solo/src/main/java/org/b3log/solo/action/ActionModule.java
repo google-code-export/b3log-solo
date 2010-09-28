@@ -33,6 +33,7 @@ import org.b3log.solo.action.google.BuzzOAuth;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.auth.AuthFilter;
 import org.b3log.solo.action.google.BuzzOAuthCallback;
+import org.b3log.solo.action.impl.PageAction;
 import org.b3log.solo.google.auth.OAuths;
 
 /**
@@ -76,13 +77,17 @@ public final class ActionModule extends AbstractActionModule {
         bind(TagsAction.class).in(Scopes.SINGLETON);
         serve("/tags.do").with(TagsAction.class);
 
+        bind(PageAction.class).in(Scopes.SINGLETON);
+        serve("/page.do").with(PageAction.class);
+
         bind(DoNothingAction.class).in(Scopes.SINGLETON);
         serve("/admin-article.do",
               "/admin-article-list.do",
               "/admin-link-list.do",
               "/admin-preference.do",
               "/admin-article-sync.do",
-              "/admin-file-list.do").with(DoNothingAction.class);
+              "/admin-file-list.do",
+              "/admin-page.do").with(DoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
