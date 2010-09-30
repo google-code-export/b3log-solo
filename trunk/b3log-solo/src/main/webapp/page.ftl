@@ -29,6 +29,7 @@
                     <#include "article-side.ftl">
                 </div>
                 <div class="right main">
+                    ${page.pageContent}
                 </div>
                 <div class="clear"></div>
             </div>
