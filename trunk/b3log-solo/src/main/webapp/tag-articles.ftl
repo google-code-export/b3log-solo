@@ -9,7 +9,7 @@
         <meta name="revised" content="b3log, 9/10/10"/>
         <meta name="generator" content="NetBeans, GAE"/>
         <meta http-equiv="Window-target" content="_top"/>
-        <title>${blogTitle}</title>
+        <title>${tag.tagTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
