@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
-import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
@@ -79,8 +78,6 @@ public final class PageAction extends AbstractCacheablePageAction {
         try {
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
-            final int currentPageNum = queryStringJSONObject.optInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
             final JSONObject preference =
                     SoloServletListener.getUserPreference();
