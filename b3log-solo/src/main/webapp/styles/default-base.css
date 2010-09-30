@@ -173,7 +173,7 @@ button:hover,.button:hover {
     background-position: 0 0;
 }
 .pageIcon {
-    background-position: 0 144px;
+    background-position: -144px 0px;
 }
 .postIcon {
     background-position: -16px 0;
