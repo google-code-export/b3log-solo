@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Sep 7, 2010
+ * @version 1.0.1.0, Sep 30, 2010
  */
 public final class Filler {
 
@@ -323,6 +323,8 @@ public final class Filler {
                       preference.getString(Preference.BLOG_SUBTITLE));
         dataModel.put(Preference.HTML_HEAD,
                       preference.getString(Preference.HTML_HEAD));
+
+        fillPageNavigations(dataModel);
     }
 
     /**
@@ -353,7 +355,7 @@ public final class Filler {
      * @param dataModel data model
      * @throws Exception exception
      */
-    public void fillPageNavigations(final Map<String, Object> dataModel)
+    private void fillPageNavigations(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject result = linkRepository.get(1,
                                                      Integer.MAX_VALUE);
