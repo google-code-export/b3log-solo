@@ -357,12 +357,12 @@ public final class Filler {
      */
     private void fillPageNavigations(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject result = linkRepository.get(1,
+        final JSONObject result = pageRepository.get(1,
                                                      Integer.MAX_VALUE);
         final List<JSONObject> pageNavigations =
                 org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                 getJSONArray(Keys.RESULTS));
-        
+
         dataModel.put(Common.PAGE_NAVIGATIONS, pageNavigations);
     }
 }
