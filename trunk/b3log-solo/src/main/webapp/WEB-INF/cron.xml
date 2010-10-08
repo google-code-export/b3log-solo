@@ -27,7 +27,7 @@
 <cronentries>
     <cron>
         <url>/live.do</url>
-        <description>Repopulate the cache every 1 minutes</description>
+        <description>Avoiding Solo to shutdown on GAE.</description>
         <schedule>every 1 minutes</schedule>
     </cron>
 </cronentries>
