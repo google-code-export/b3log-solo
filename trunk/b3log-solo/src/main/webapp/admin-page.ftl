@@ -224,7 +224,8 @@
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
                     "oId": $("#pageTitle").data("oId"),
-                    "pageContent": tinyMCE.get('pageContent').getContent()
+                    "pageContent": tinyMCE.get('pageContent').getContent(),
+                    "pageOrder": 0 // TODO: vanessa
                 }
             };
             jsonRpc.pageService.updatePage(function (result, error) {
@@ -249,7 +250,8 @@
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
-                    "pageContent": tinyMCE.get('pageContent').getContent()
+                    "pageContent": tinyMCE.get('pageContent').getContent(),
+                    "pageOrder": 0 // TODO: vanessa
                 }
             };
             jsonRpc.pageService.addPage(function (result, error) {
