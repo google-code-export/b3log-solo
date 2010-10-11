@@ -361,7 +361,7 @@ public final class Filler {
         final JSONObject result = pageRepository.get(1,
                                                      Integer.MAX_VALUE,
                                                      Page.PAGE_ORDER,
-                                                     SortDirection.DESCENDING);
+                                                     SortDirection.ASCENDING);
         final List<JSONObject> pageNavigations =
                 org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                 getJSONArray(Keys.RESULTS));
