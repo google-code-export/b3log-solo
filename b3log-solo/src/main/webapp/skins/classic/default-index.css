@@ -124,6 +124,19 @@ a:visited {
     background-color:#E3E9FF;
     border-top:1px solid #3366CC;
     padding:3px 12px 3px 12px;
+    position: relative;
+}
+
+.comment-body-ref {
+    background-color:#FFFFFF;
+    border:1px solid #E3E9FF;
+    left:97px;
+    opacity:0.9;
+    position:absolute;
+    top:27px;
+    width:87%;
+    z-index:10;
+    filter:alpha(opacity=90);
 }
 
 .comment-body {
