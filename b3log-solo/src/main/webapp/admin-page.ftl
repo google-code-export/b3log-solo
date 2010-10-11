@@ -61,6 +61,7 @@
                     for (var i = 0; i < pages.length; i++) {
                         pageData[i] = {};
                         pageData[i].pageTitle = pages[i].pageTitle;
+                        pageData[i].pageOrder = pages[i].pageOrder;
                         pageData[i].update = "<div class='updateIcon'></div>";
                         pageData[i].deleted = "<div class='deleteIcon'></div>";
                         pageData[i].id = pages[i].oId;
@@ -100,6 +101,11 @@
                     name: "${titleLabel}",
                     index: "pageTitle",
                     width: 124
+                }, {
+                    style: "padding-left: 6px;",
+                    name: "${orderLabel}",
+                    index: "pageOrder",
+                    width: 56
                 }, {
                     textAlign: "center",
                     name: "${updateLabel}",
