@@ -100,17 +100,17 @@
                     style: "padding-left: 6px;",
                     name: "${titleLabel}",
                     index: "pageTitle",
-                    width: 124
+                    width: 100 
                 }, {
                     style: "padding-left: 6px;",
                     name: "${orderLabel}",
                     index: "pageOrder",
-                    width: 56
+                    width: 48
                 }, {
                     textAlign: "center",
                     name: "${updateLabel}",
                     index: "update",
-                    width: 56,
+                    width: 48,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'getUpdatePage'
@@ -120,7 +120,7 @@
                     textAlign: "center",
                     name: "${removeLabel}",
                     index: "deleted",
-                    width: 56,
+                    width: 48,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'deletePage'
