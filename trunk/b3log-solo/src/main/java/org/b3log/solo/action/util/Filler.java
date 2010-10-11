@@ -231,9 +231,6 @@ public final class Filler {
                 articleRepository.getMostViewCountArticles(
                 mostCommentArticleDisplayCnt);
 
-        Collections.sort(mostViewCountArticles,
-                         new ArticleUpdateDateComparator());
-
         dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
     }
 
@@ -251,8 +248,6 @@ public final class Filler {
         final List<JSONObject> mostCommentArticles =
                 articleRepository.getMostCommentArticles(
                 mostCommentArticleDisplayCnt);
-
-        Collections.sort(mostCommentArticles, new ArticleUpdateDateComparator());
 
         dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
     }
