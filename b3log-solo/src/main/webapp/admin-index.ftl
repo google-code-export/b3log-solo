@@ -44,7 +44,7 @@
                         </li>
                         <li id="pageTab" onclick="changeList(this);">
                             <div class="left pageIcon"></div>
-                            <span>&nbsp;${pageLabel}</span>
+                            <span>&nbsp;${pageMgmtLabel}</span>
                         </li>
                         <!--li>
                             <div class="left fileIcon"></div>
