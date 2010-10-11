@@ -40,6 +40,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.json.JSONException;
@@ -358,7 +359,9 @@ public final class Filler {
     private void fillPageNavigations(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject result = pageRepository.get(1,
-                                                     Integer.MAX_VALUE);
+                                                     Integer.MAX_VALUE,
+                                                     Page.PAGE_ORDER,
+                                                     SortDirection.DESCENDING);
         final List<JSONObject> pageNavigations =
                 org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                 getJSONArray(Keys.RESULTS));

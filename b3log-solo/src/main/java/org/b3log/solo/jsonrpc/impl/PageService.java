@@ -40,14 +40,14 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2010
+ * @version 1.0.0.1, Oct 11, 2010
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = 
+    private static final Logger LOGGER =
             Logger.getLogger(PageService.class.getName());
     /**
      * Page repository.
@@ -71,6 +71,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
      *         "oId": "",
      *         "pageTitle": "",
      *         "pageContent": ""
+     *         "pageOrder": int
      *     },
      *     "sc": "GET_PAGE_SUCC"
      * }
@@ -119,6 +120,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
      *         "oId": "",
      *         "pageTitle": "",
      *         "pageContent": "",
+     *         "pageOrder": int
      *      }, ....]
      *     "sc": "GET_PAGES_SUCC"
      * }
@@ -171,7 +173,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
      *     "page": {
      *         "oId": "",
      *         "pageTitle": "",
-     *         "pageContent": ""
+     *         "pageContent": "",
+     *         "pageOrder": int
      *     }
      * }, see {@link Page} for more details
      * </pre>
@@ -201,9 +204,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
             final String pageId = page.getString(Keys.OBJECT_ID);
             pageRepository.update(pageId, page);
 
-            // Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
-
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PAGE_SUCC);
 
@@ -213,6 +213,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
+
+        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
         return ret;
     }
@@ -251,9 +253,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
             pageRepository.remove(pageId);
 
-            // Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
-
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_PAGE_SUCC);
 
@@ -263,6 +262,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
+
+        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
         return ret;
     }
@@ -275,7 +276,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
      * {
      *     "page": {
      *         "pageTitle": "",
-     *         "pageContent": ""
+     *         "pageContent": "",
+     *         "pageOrder": int
      *     }
      * }, see {@link Page} for more details
      * </pre>
@@ -314,6 +316,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
+
+        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
 
         return ret;
     }
