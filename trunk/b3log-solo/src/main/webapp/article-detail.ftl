@@ -102,12 +102,15 @@
                                    target="_blank" class="left">${comment.commentName}</a>
                                 </#if>
                                 <#if comment.isReply>
-                                &nbsp;@&nbsp;<a href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}">${comment.commentOriginalCommentName}</a>
+                                &nbsp;@&nbsp;<a 
+                                    href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}"
+                                    onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
+                                    onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                 </#if>
                                 <div class="right">
                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                    <a class="noUnderline" name="${comment.oId}"
-                                       href="javascript:void(0);" onclick="replyTo('${comment.oId}');">${replyLabel}</a>
+                                    <a class="noUnderline" 
+                                       href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -204,6 +207,7 @@
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJava.js"></script>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             var currentCommentId = "";
             
@@ -255,6 +259,38 @@
                     }
                     $("#articleViewCount").html(result);
                 },"${article.oId}");
+
+                // Stack initialize
+                var openspeed = 300;
+                var closespeed = 300;
+                $('.stack>img').toggle(function(){
+                    var vertical = 0;
+                    var horizontal = 0;
+                    var $el=$(this);
+                    $el.next().children().each(function(){
+                        $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
+                        vertical = vertical + 36;
+                        horizontal = (horizontal+.42)*2;
+                    });
+                    $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
+                    .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
+                    $el.animate({paddingTop: '0'});
+                }, function(){
+                    //reverse above
+                    var $el=$(this);
+                    $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
+                    $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
+                    $el.animate({paddingTop: '9px'});
+                });
+
+                // Stacks additional animation
+                $('.stack li a').hover(function(){
+                    $("img",this).animate({width: '32px'}, 100);
+                    $("span",this).animate({marginRight: '12px'});
+                },function(){
+                    $("img",this).animate({width: '28px'}, 100);
+                    $("span",this).animate({marginRight: '0'});
+                });
             }
             loadAction();
 
@@ -378,62 +414,41 @@
                             switch (result.sc) {
                                 case "COMMENT_ARTICLE_SUCC":
                                     $("#commentErrorTip").html("");
-                                $("#comment").val("");
-                                $("#commentEmail").val("");
-                                $("#commentURL").val("http://");
-                                $("#commentName").val("");
-                                $("#commentValidate").val("");
-                                window.location.reload();
-                                break;
-                            case "CAPTCHA_ERROR":
-                                $("#commentErrorTip").html("${captchaErrorLabel}");
-                                $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
-                                $("#commentValidate").val("").focus();
-                                break
-                            default:
-                                break;
+                                    $("#comment").val("");
+                                    $("#commentEmail").val("");
+                                    $("#commentURL").val("http://");
+                                    $("#commentName").val("");
+                                    $("#commentValidate").val("");
+                                    window.location.reload();
+                                    break;
+                                case "CAPTCHA_ERROR":
+                                    $("#commentErrorTip").html("${captchaErrorLabel}");
+                                    $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
+                                    $("#commentValidate").val("").focus();
+                                    break
+                                default:
+                                    break;
                             }
                         }
                     }, requestJSONObject);
                 }
             }
-        </script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
-        <script type="text/javascript">
-            $(function () {
-                // Stack initialize
-                var openspeed = 300;
-                var closespeed = 300;
-                $('.stack>img').toggle(function(){
-                    var vertical = 0;
-                    var horizontal = 0;
-                    var $el=$(this);
-                    $el.next().children().each(function(){
-                        $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
-                        vertical = vertical + 36;
-                        horizontal = (horizontal+.42)*2;
-                    });
-                    $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
-                    .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
-                    $el.animate({paddingTop: '0'});
-                }, function(){
-                    //reverse above
-                    var $el=$(this);
-                    $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
-                    $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
-                    $el.animate({paddingTop: '9px'});
-                });
 
-                // Stacks additional animation
-                $('.stack li a').hover(function(){
-                    $("img",this).animate({width: '32px'}, 100);
-                    $("span",this).animate({marginRight: '12px'});
-                },function(){
-                    $("img",this).animate({width: '28px'}, 100);
-                    $("span",this).animate({marginRight: '0'});
-                });
-            });
+            var showComment = function (id, oId) {
+                if ($("#commentItemRef" + id).length > 0) {
+                    $("#commentItemRef" + id).show();
+                } else {
+                    var refComment = $("#commentItem" + id).clone();
+                    refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
+                    $("#commentItem" + oId + " .comment-title").append(refComment);
+                    $("#commentItemRef" + id + " .comment-title").css("border-top-style", "hidden");
+                    $("#commentItemRef" + id + " .comment-title .right a").remove();
+                }
+            }
+
+            var hideComment = function (id) {
+                $("#commentItemRef" + id).hide();
+            }
         </script>
     </body>
 </html>

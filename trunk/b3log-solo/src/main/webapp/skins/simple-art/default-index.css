@@ -232,10 +232,27 @@ a:active {
     border-top:1px solid #336699;
     margin:5px 0 6px;
     padding:3px 10px;
+    position: relative;
 }
 
 .comment-body {
     margin:0 24px 12px;
+}
+
+.comment-body-ref {
+    background-color:#FFFFFF;
+    border:1px solid #FBF9F9;
+    left:97px;
+    opacity:0.9;
+    position:absolute;
+    top:27px;
+    width:87%;
+    z-index:10;
+    filter:alpha(opacity=90);
+}
+
+.comment-body-ref .comment-title {
+    margin-top: 0px;
 }
 
 #tagsPanel {
