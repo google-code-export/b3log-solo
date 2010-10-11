@@ -436,18 +436,19 @@
 
             var showComment = function (id, oId) {
                 if ($("#commentItemRef" + id).length > 0) {
-                    $("#commentItemRef" + id).show();
+                    $("#commentItemRef" + id).fadeIn("normal");
                 } else {
                     var refComment = $("#commentItem" + id).clone();
                     refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
                     $("#commentItem" + oId + " .comment-title").append(refComment);
                     $("#commentItemRef" + id + " .comment-title").css("border-top-style", "hidden");
                     $("#commentItemRef" + id + " .comment-title .right a").remove();
+                    $("#commentItemRef" + id).fadeTo("normal", 0.9);
                 }
             }
 
             var hideComment = function (id) {
-                $("#commentItemRef" + id).hide();
+                $("#commentItemRef" + id).fadeOut("normal");
             }
         </script>
     </body>
