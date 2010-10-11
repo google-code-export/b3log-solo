@@ -17,7 +17,6 @@ package org.b3log.solo.action.util;
 
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +42,6 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
-import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
