@@ -28,6 +28,7 @@ import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -140,7 +141,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     Pagination.PAGINATION_WINDOW_SIZE);
 
             final JSONObject result =
-                    pageRepository.get(currentPageNum, pageSize);
+                    pageRepository.get(currentPageNum, pageSize,
+                                       Page.PAGE_ORDER, SortDirection.ASCENDING);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
 
