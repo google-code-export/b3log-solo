@@ -17,6 +17,7 @@ package org.b3log.solo.action.util;
 
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
+import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,7 +51,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Sep 30, 2010
+ * @version 1.0.1.1, Oct 11, 2010
  */
 public final class Filler {
 
@@ -229,6 +231,9 @@ public final class Filler {
                 articleRepository.getMostViewCountArticles(
                 mostCommentArticleDisplayCnt);
 
+        Collections.sort(mostViewCountArticles,
+                         new ArticleUpdateDateComparator());
+
         dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
     }
 
@@ -246,6 +251,8 @@ public final class Filler {
         final List<JSONObject> mostCommentArticles =
                 articleRepository.getMostCommentArticles(
                 mostCommentArticleDisplayCnt);
+
+        Collections.sort(mostCommentArticles, new ArticleUpdateDateComparator());
 
         dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
     }
