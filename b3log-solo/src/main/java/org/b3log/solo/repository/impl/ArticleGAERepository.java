@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Sep 1, 2010
+ * @version 1.0.1.3, Oct 11, 2010
  */
 public class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -75,7 +75,9 @@ public class ArticleGAERepository extends AbstractGAERepository
     public List<JSONObject> getMostCommentArticles(final int num) {
         final Query query = new Query(getName());
         query.addSort(Article.ARTICLE_COMMENT_COUNT,
-                      Query.SortDirection.DESCENDING);
+                      Query.SortDirection.DESCENDING).
+                addSort(Article.ARTICLE_UPDATE_DATE,
+                        Query.SortDirection.DESCENDING);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
@@ -94,7 +96,9 @@ public class ArticleGAERepository extends AbstractGAERepository
     public List<JSONObject> getMostViewCountArticles(final int num) {
         final Query query = new Query(getName());
         query.addSort(Article.ARTICLE_VIEW_COUNT,
-                      Query.SortDirection.DESCENDING);
+                      Query.SortDirection.DESCENDING).
+                addSort(Article.ARTICLE_UPDATE_DATE,
+                        Query.SortDirection.DESCENDING);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
