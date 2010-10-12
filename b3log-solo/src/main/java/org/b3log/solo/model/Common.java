@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Sep 28, 2010
+ * @version 1.0.1.3, Oct 12, 2010
  */
 public final class Common {
 
@@ -89,6 +89,14 @@ public final class Common {
      * Key of page navigations.
      */
     public static final String PAGE_NAVIGATIONS = "pageNavigations";
+    /**
+     * Relevant articles.
+     */
+    public static final String RELEVANT_ARTICLES = "relevantArticles";
+    /**
+     * Random articles.
+     */
+    public static final String RANDOM_ARTICLES = "randomArticles";
 
     /**
      * Private default constructor.

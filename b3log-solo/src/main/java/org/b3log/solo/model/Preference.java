@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Sep 19, 2010
+ * @version 1.0.1.1, Oct 12, 2010
  */
 public final class Preference {
 
@@ -35,6 +35,16 @@ public final class Preference {
      * Blog subtitle.
      */
     public static final String BLOG_SUBTITLE = "blogSubtitle";
+    /**
+     * Relevant articles display count.
+     */
+    public static final String RELEVANT_ARTICLES_DISPLAY_CNT =
+            "relevantArticlesDisplayCount";
+    /**
+     * Random articles display count.
+     */
+    public static final String RANDOM_ARTICLES_DISPLAY_CNT =
+            "randomArticlesDisplayCount";
     /**
      * Recent article display count.
      */
