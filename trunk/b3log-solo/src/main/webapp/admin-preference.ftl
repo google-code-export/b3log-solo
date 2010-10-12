@@ -118,6 +118,22 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>
+                            ${randomArticlesDisplayCnt1Label}
+                        </th>
+                        <td>
+                            <input id="randomArticlesDisplayCount" class="normalInput"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            ${relevantArticlesDisplayCnt1Label}
+                        </th>
+                        <td>
+                            <input id="relevantArticlesDisplayCount" class="normalInput"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <th colspan="2">
                             <button onclick="changePreference();">${updateLabel}</button>
                         </th>
@@ -190,6 +206,8 @@
                     $("#noticeBoard").val(preference.noticeBoard);
                     $("#htmlHead").val(preference.htmlHead);
                     $("#secret").val(preference.googleOAuthConsumerSecret);
+                    $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
+                    $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                     preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
                     localeString = preference.localeString;
 
@@ -265,6 +283,8 @@
                 "noticeBoard": $("#noticeBoard").val(),
                 "htmlHead": $("#htmlHead").val(),
                 "googleOAuthConsumerSecret": $("#secret").val(),
+                "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
+                "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
                 "enablePostToBuzz": $("#syncBuzz").attr("checked")
             }
         }
