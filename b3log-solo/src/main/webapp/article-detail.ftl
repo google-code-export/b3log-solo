@@ -91,28 +91,32 @@
                             <div class="clear"></div>
                         </div>
                         <#if 0 != relevantArticles?size>
-                        <div style="font-weight: bold">${relevantArticles1Label}</div>
-                        <ul>
-                            <#list relevantArticles as relevantArticle>
-                            <li>
-                                <a href="article-detail.do?oId=${relevantArticle.oId}">
-                                    ${relevantArticle.articleTitle}
-                                </a>
-                            </li>
-                            </#list>
-                        </ul>
+                        <div class="marginTop12">
+                            <h5>${relevantArticles1Label}</h5>
+                            <ul class="marginLeft12">
+                                <#list relevantArticles as relevantArticle>
+                                <li>
+                                    <a href="article-detail.do?oId=${relevantArticle.oId}">
+                                        ${relevantArticle.articleTitle}
+                                    </a>
+                                </li>
+                                </#list>
+                            </ul>
+                        </div>
                         </#if>
                         <#if 0 != randomArticles?size>
-                        <div style="font-weight: bold">${randomArticles1Label}</div>
-                        <ul>
-                            <#list randomArticles as randomArticle>
-                            <li>
-                                <a href="article-detail.do?oId=${randomArticle.oId}">
-                                    ${randomArticle.articleTitle}
-                                </a>
-                            </li>
-                            </#list>
-                        </ul>
+                        <div class="marginTop12">
+                            <h5>${randomArticles1Label}</h5>
+                            <ul class="marginLeft12">
+                                <#list randomArticles as randomArticle>
+                                <li>
+                                    <a href="article-detail.do?oId=${randomArticle.oId}">
+                                        ${randomArticle.articleTitle}
+                                    </a>
+                                </li>
+                                </#list>
+                            </ul>
+                        </div>
                         </#if>
                     </div>
                     <div class="comments" id="comments" name="comments">
