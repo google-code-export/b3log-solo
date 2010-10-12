@@ -38,6 +38,7 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
@@ -45,6 +46,7 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.util.Statistics;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -165,6 +167,13 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final List<JSONObject> articleComments = getComments(articleId);
             ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
 
+            final List<JSONObject> relevantArticles =
+                    getRelevantArticles(articleId, articleTags);
+            ret.put(Common.RELEVANT_ARTICLES, relevantArticles);
+
+            final List<JSONObject> randomArticles = getRandomArticles();
+            ret.put(Common.RANDOM_ARTICLES, randomArticles);
+
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
@@ -174,6 +183,81 @@ public final class ArticleAction extends AbstractCacheablePageAction {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the relevant articles by the specified article tags excludes the
+     * specified article id.
+     *
+     * @param articleId the specified article id
+     * @param articleTags the specified article tags
+     * @return a list of articles, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    private List<JSONObject> getRelevantArticles(
+            final String articleId, final List<JSONObject> articleTags)
+            throws JSONException, RepositoryException {
+        final JSONObject preference =
+                SoloServletListener.getUserPreference();
+        final int displayCnt =
+                preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
+
+        final List<JSONObject> articles = new ArrayList<JSONObject>();
+        for (final JSONObject articleTag : articleTags) {
+            final String tagId = articleTag.getString(Keys.OBJECT_ID);
+            final JSONObject result =
+                    tagArticleRepository.getByTagId(tagId, 1, displayCnt);
+            final JSONArray tagArticleRelations =
+                    result.getJSONArray(Keys.RESULTS);
+
+            final int relationSize = displayCnt < tagArticleRelations.length()
+                                     ? displayCnt : tagArticleRelations.length();
+            for (int i = 0; i < relationSize; i++) {
+                final JSONObject tagArticleRelation =
+                        tagArticleRelations.getJSONObject(i);
+                final String foundArticleId =
+                        tagArticleRelation.getString(Article.ARTICLE + "_"
+                                                     + Keys.OBJECT_ID);
+                if (!articleId.equals(foundArticleId)) {
+                    final JSONObject article =
+                            articleRepository.get(foundArticleId);
+                    articles.add(article);
+                }
+            }
+        }
+
+        if (displayCnt > articles.size()) {
+            return articles;
+        }
+
+        final List<Integer> randomIntegers =
+                CollectionUtils.getRandomIntegers(0,
+                                                  articles.size() - 1,
+                                                  displayCnt);
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        for (final int index : randomIntegers) {
+            ret.add(articles.get(index));
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets the random articles.
+     *
+     * @return a list of articles, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    private List<JSONObject> getRandomArticles()
+            throws JSONException, RepositoryException {
+        final JSONObject preference =
+                SoloServletListener.getUserPreference();
+        final int displayCnt =
+                preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
+
+        return articleRepository.getRandomly(displayCnt);
     }
 
     /**
