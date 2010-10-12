@@ -219,9 +219,22 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                 final String foundArticleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
-                if (!articleId.equals(foundArticleId)) {
-                    final JSONObject article =
-                            articleRepository.get(foundArticleId);
+                if (articleId.equals(foundArticleId)) {
+                    continue;
+                }
+
+                final JSONObject article =
+                        articleRepository.get(foundArticleId);
+
+                boolean existed = false;
+                for (final JSONObject relevantArticle : articles) {
+                    if (relevantArticle.getString(Keys.OBJECT_ID).
+                            equals(article.getString(Keys.OBJECT_ID))) {
+                        existed = true;
+                    }
+                }
+
+                if (!existed) {
                     articles.add(article);
                 }
             }
