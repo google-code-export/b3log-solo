@@ -16,11 +16,16 @@ a:active {
 a:visited {
     color:#551A8B;
 }
+
+h5 {
+    font-size: 12px;
+}
+
 /* framework */
 .content {
     margin:0 auto;
     min-width:980px;
-    width:90%;
+    width:82%;
 }
 
 .header {
