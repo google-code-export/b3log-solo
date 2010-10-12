@@ -9,40 +9,43 @@ Powered by
     <span style="color: orangered; font-weight: bold;">Solo</span>,
 </a>ver ${version}
 <script type="text/javascript">
-    var ellipsis = function (str, strLength) {
-        var length = 0,
-        strTrim = str.replace(/(^\s*)|(\s*$)/g, ""),
-        strArray = strTrim.split(""),
-        resultStr = "";
-        for (var i = 0; i < strArray.length; i++) {
-            if (length < strLength) {
-                if(strArray[i]&& strArray[i].match(/[^u4E00-u9FA5]/)) {
-                    length += 2;
-                } else {
-                    length++;
-                }
-                resultStr += strArray[i];
-            }
+    var strEllipsis = function (it, length) {
+        var $it = $(it);
+        if (it.offsetWidth > length) {
+            var str = $it.text().replace(/(^\s*)|(\s*$)/g, "");
+            $it.text(str.substr(0, str.length - 2));
+            strEllipsis(it, length);
+        } else {
+            return {
+                value:$it.text(),
+                change: false
+            };
         }
-        if (strTrim !== resultStr) {
-            resultStr += "...";
-        }
-        return resultStr;
+        return {
+            value:$it.text(),
+            change: true
+        };
     }
 
     var sideEllipsis = function () {
-        var sideLength = parseInt(($("#sideNavi").width() - 24) / 7 - 5);
+        var sideLength = $("#sideNavi").width() - 50;
         $("#mostCommentArticles a").each(function () {
-            var str = ellipsis(this.title, sideLength);
-            $(this).text(str.toString());
+            var result = strEllipsis(this, sideLength);
+            if (result.change) {
+                $(this).text(result.value + "...");
+            }
         });
         $("#mostViewCountArticles a").each(function () {
-            var str = ellipsis(this.title, sideLength);
-            $(this).text(str.toString());
+            var result = strEllipsis(this, sideLength);
+            if (result.change) {
+                $(this).text(result.value + "...");
+            }
         });
         $("#sideLink a").each(function () {
-            var str = ellipsis(this.title, sideLength);
-            $(this).text(str.toString());
+            var result = strEllipsis(this, sideLength);
+            if (result.change) {
+                $(this).text(result.value + "...");
+            }
         });
     }
     
