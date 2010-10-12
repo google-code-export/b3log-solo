@@ -29,6 +29,22 @@ Powered by
         }
         return resultStr;
     }
+
+    var sideEllipsis = function () {
+        var sideLength = parseInt(($("#sideNavi").width() - 24) / 7 - 5);
+        $("#mostCommentArticles a").each(function () {
+            var str = ellipsis(this.title, sideLength);
+            $(this).text(str.toString());
+        });
+        $("#mostViewCountArticles a").each(function () {
+            var str = ellipsis(this.title, sideLength);
+            $(this).text(str.toString());
+        });
+        $("#sideLink a").each(function () {
+            var str = ellipsis(this.title, sideLength);
+            $(this).text(str.toString());
+        });
+    }
     
     var initIndex = function () {
         // common-top.ftl use state
@@ -107,21 +123,6 @@ Powered by
             });
         
             // article-side.ftl ellipsis
-            var sideEllipsis = function () {
-                var sideLength = parseInt(($("#sideNavi").width() - 24) / 7 - 5);
-                $("#mostCommentArticles a").each(function () {
-                    var str = ellipsis(this.title, sideLength);
-                    $(this).text(str.toString());
-                });
-                $("#mostViewCountArticles a").each(function () {
-                    var str = ellipsis(this.title, sideLength);
-                    $(this).text(str.toString());
-                });
-                $("#sideLink a").each(function () {
-                    var str = ellipsis(this.title, sideLength);
-                    $(this).text(str.toString());
-                });
-            }
             sideEllipsis();
             
             $(window).resize(function () {
