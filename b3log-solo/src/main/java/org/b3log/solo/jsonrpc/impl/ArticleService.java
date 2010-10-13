@@ -43,7 +43,9 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
@@ -115,6 +117,38 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     public static final DateFormat PERMALINK_FORMAT =
             new SimpleDateFormat("yyyy/MM/dd");
+
+    /**
+     * Gets the random articles.
+     *
+     * @return a list of articles, returns an empty list if not found
+     * @throws ActionException action exception
+     */
+    public List<JSONObject> getRandomArticles() throws ActionException {
+        try {
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
+            final int displayCnt =
+                    preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
+            final List<JSONObject> ret =
+                    articleRepository.getRandomly(displayCnt);
+            for (final JSONObject article : ret) {
+                article.remove(Keys.OBJECT_ID);
+                article.remove(ARTICLE_ABSTRACT);
+                article.remove(ARTICLE_COMMENT_COUNT);
+                article.remove(ARTICLE_CONTENT);
+                article.remove(ARTICLE_CREATE_DATE);
+                article.remove(ARTICLE_TAGS_REF);
+                article.remove(ARTICLE_UPDATE_DATE);
+                article.remove(ARTICLE_VIEW_COUNT);
+            }
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new ActionException(e);
+        }
+    }
 
     /**
      * Adds an article from the specified request json object and http servlet
