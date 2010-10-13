@@ -85,6 +85,7 @@
         $("#article-listPanel").hide();
         $("#article-listTab").removeClass("selected");
         $("#articlePanel").load("admin-article.do", function () {
+            $("#loadMsg").text("${loadingLabel}");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -114,7 +115,6 @@
                             }
                         }
                         $("#tag").val(tagsString);
-
                         break;
                     case "GET_ARTICLE_FAIL_":
                         break;
