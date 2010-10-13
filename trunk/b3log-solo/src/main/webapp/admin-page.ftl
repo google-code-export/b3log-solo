@@ -96,16 +96,16 @@
     var initPage = function () {
         $("#pageList").table({
             resizable: true,
-            colModel: [{
+            colModel: [ {
+                    name: "${orderLabel}",
+                    index: "pageOrder",
+                    width: 48,
+                    textAlign: "center"
+                }, {
                     style: "padding-left: 6px;",
                     name: "${titleLabel}",
                     index: "pageTitle",
                     width: 100 
-                }, {
-                    style: "padding-left: 6px;",
-                    name: "${orderLabel}",
-                    index: "pageOrder",
-                    width: 48
                 }, {
                     textAlign: "center",
                     name: "${updateLabel}",
