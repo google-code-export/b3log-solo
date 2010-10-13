@@ -80,7 +80,7 @@
 
     var getUpdateArticle = function (event) {
         $("#loadMsg").text("${loadingLabel}");
-        $("#articleTab").click();
+        changeList({id: "articleTab"});
         var requestJSONObject = {
             "oId": event.data.id[0]
         };
@@ -90,8 +90,10 @@
                 case "GET_ARTICLE_SUCC":
                     // set default value for article.
                     $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
-                    tinyMCE.get('articleContent').setContent(result.article.articleContent);
-                    tinyMCE.get('abstract').setContent(result.article.articleAbstract);
+                    $("#articleContent").val(result.article.articleContent);
+                    $("#abstract").val(result.article.articleAbstract);
+                    //tinyMCE.get('articleContent').setContent(result.article.articleContent);
+                    //tinyMCE.get('abstract').setContent(result.article.articleAbstract);
 
                     var tags = result.article.articleTags,
                     tagsString = '';

@@ -75,6 +75,7 @@
             relative_urls: false,
             remove_script_host: false
         });
+
         $("#loadMsg").text("");
     }
     initArticle();
