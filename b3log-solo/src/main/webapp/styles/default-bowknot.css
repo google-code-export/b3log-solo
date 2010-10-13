@@ -55,19 +55,15 @@
     float: left;
     cursor: pointer;
 }
-.pagination-page {
+.pagination-page, .pagination-nextPage, .pagination-lastPage,
+.pagination-firstPage, .pagination-prePage, .pagination-prePageHover,  .pagination-nextPageHover{
     color: #4272DB;
 }
 .pagination-pageCurrent {
     color: #000;
     font-weight: bold;
 }
-.pagination-prePageHover {
-    color: #000;
-}
-.pagination-nextPageHover {
-    color: #000;
-}
+
 .pagination-goInput {
     width: 18px;
 }
