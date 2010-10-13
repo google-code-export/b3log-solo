@@ -98,7 +98,7 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final int HEIGHT_CAPTCHA_CHAR = 20;
     /**
-     * Captchs &lt;"imageName", Image&gt;.
+     * Captcha &lt;"imageName", Image&gt;.
      * For example &lt;"0/5.png", Image&gt;.
      */
     public static final Map<String, Image> CAPTCHAS =
