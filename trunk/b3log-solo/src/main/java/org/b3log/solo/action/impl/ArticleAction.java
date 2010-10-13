@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 31, 2010
+ * @version 1.0.0.7, Oct 13, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -173,9 +173,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     getRelevantArticles(articleId, articleTags);
             ret.put(Common.RELEVANT_ARTICLES, relevantArticles);
 
-            final List<JSONObject> randomArticles = getRandomArticles();
-            ret.put(Common.RANDOM_ARTICLES, randomArticles);
-
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
@@ -258,23 +255,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
         Collections.sort(ret, new ArticleUpdateDateComparator());
 
         return ret;
-    }
-
-    /**
-     * Gets the random articles.
-     *
-     * @return a list of articles, returns an empty list if not found
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
-     */
-    private List<JSONObject> getRandomArticles()
-            throws JSONException, RepositoryException {
-        final JSONObject preference =
-                SoloServletListener.getUserPreference();
-        final int displayCnt =
-                preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
-
-        return articleRepository.getRandomly(displayCnt);
     }
 
     /**
