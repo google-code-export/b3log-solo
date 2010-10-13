@@ -91,7 +91,7 @@
                             <div class="clear"></div>
                         </div>
                         <#if 0 != relevantArticles?size>
-                        <div class="marginTop12">
+                        <div class="article-relative">
                             <h5>${relevantArticles1Label}</h5>
                             <ul class="marginLeft12">
                                 <#list relevantArticles as relevantArticle>
@@ -105,7 +105,7 @@
                         </div>
                         </#if>
                         <#if 0 != randomArticles?size>
-                        <div class="marginTop12">
+                        <div class="article-relative">
                             <h5>${randomArticles1Label}</h5>
                             <ul class="marginLeft12">
                                 <#list randomArticles as randomArticle>
