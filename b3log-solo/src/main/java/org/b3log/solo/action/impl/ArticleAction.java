@@ -20,6 +20,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +46,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -216,15 +218,15 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             for (int i = 0; i < relationSize; i++) {
                 final JSONObject tagArticleRelation =
                         tagArticleRelations.getJSONObject(i);
-                final String foundArticleId =
+                final String relatedArticleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
-                if (articleId.equals(foundArticleId)) {
+                if (articleId.equals(relatedArticleId)) {
                     continue;
                 }
 
                 final JSONObject article =
-                        articleRepository.get(foundArticleId);
+                        articleRepository.get(relatedArticleId);
 
                 boolean existed = false;
                 for (final JSONObject relevantArticle : articles) {
@@ -252,6 +254,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
         for (final int index : randomIntegers) {
             ret.add(articles.get(index));
         }
+
+        Collections.sort(ret, new ArticleUpdateDateComparator());
 
         return ret;
     }

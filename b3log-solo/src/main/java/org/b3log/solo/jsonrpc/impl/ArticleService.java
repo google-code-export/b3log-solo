@@ -56,9 +56,8 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Sep 12, 2010
+ * @version 1.0.1.3, Oct 13, 2010
  */
-// FIXME: add/update/remove article event handle rollback
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
     /**
@@ -498,6 +497,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         checkAuthorized(request, response);
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        Transaction nestedTransaction = null;
+
         final JSONObject ret = new JSONObject();
 
         try {
@@ -506,6 +507,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String articleId = article.getString(Keys.OBJECT_ID);
             // Step 1: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
+            transaction.commit();
+            nestedTransaction =
+                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
             // Step 2: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
             // Step 3: Remove tag-article relations
@@ -545,7 +549,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 LOGGER.severe(e.getMessage());
             }
 
-            transaction.commit();
+            nestedTransaction.commit();
             JSONObject status = ret.optJSONObject(Keys.STATUS);
             if (null == status) {
                 status = new JSONObject();
@@ -555,6 +559,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
         } catch (final Exception e) {
+            nestedTransaction.rollback();
             transaction.rollback();
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);

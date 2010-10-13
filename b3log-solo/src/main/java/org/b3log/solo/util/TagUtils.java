@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Tag utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 17, 2010
+ * @version 1.0.0.1, Oct 13, 2010
  */
 public final class TagUtils {
 
@@ -126,9 +126,14 @@ public final class TagUtils {
             tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
 
             tagRepository.update(tagId, tag);
+            LOGGER.log(Level.FINEST,
+                       "Deced tag[tagTitle={0}] reference count[{1}] of article[oId={2}]",
+                       new Object[]{tag.getString(Tag.TAG_TITLE),
+                                    tag.getInt(Tag.TAG_REFERENCE_COUNT),
+                                    articleId});
         }
 
-        LOGGER.log(Level.FINEST,
+        LOGGER.log(Level.FINER,
                    "Deced all tag reference count of article[oId={0}]",
                    articleId);
     }
