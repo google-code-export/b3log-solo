@@ -104,9 +104,7 @@
                             </ul>
                         </div>
                         </#if>
-                        <div id="randomArticles">
-
-                        </div>
+                        <div id="randomArticles"></div>
                     </div>
                     <div class="comments" id="comments" name="comments">
                         <#list articleComments as comment>
@@ -226,6 +224,35 @@
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
+             var getRandomArticles = function () {
+                jsonRpc.articleService.getRandomArticles(function (result, error) {
+                    if (result && !error) {
+                        var randomArticles = result.list;
+                        if (0 === randomArticles.length) {
+                            return;
+                        }
+
+                        var listHtml = "";
+                        for (var i = 0; i < randomArticles.length; i++) {
+                            var article = randomArticles[i];
+                            var title = article.articleTitle;
+                            var randomArticleLiHtml = "<li>"
+                                + "<a href='" + article.articlePermalink +"'>"
+                                +  title + "</a></li>"
+                            listHtml += randomArticleLiHtml
+                        }
+
+                        var randomArticlesDiv = $("#randomArticles");
+                        randomArticlesDiv.attr("class", "article-relative");
+                        var randomArticleListHtml = "<h5>${randomArticles1Label}</h5>"
+                            + "<ul class='marginLeft12'>"
+                            + listHtml + "</ul>";
+                         randomArticlesDiv.append(randomArticleListHtml);
+                    }
+                });
+            }
+            getRandomArticles();
+            
             var currentCommentId = "";
             
             var moveCursor = function(event) {
@@ -467,35 +494,6 @@
             var hideComment = function (id) {
                 $("#commentItemRef" + id).fadeOut("normal");
             }
-
-            var getRandomArticles = function () {
-                jsonRpc.articleService.getRandomArticles(function (result, error) {
-                    if (result && !error) {
-                        var randomArticles = result.list;
-                        if (0 === randomArticles.length) {
-                            return;
-                        }
-
-                        var listHtml = "";
-                        for (var i = 0; i < randomArticles.length; i++) {
-                            var article = randomArticles[i];
-                            var title = article.articleTitle;
-                            var randomArticleLiHtml = "<li>"
-                                + "<a href='" + article.articlePermalink +"'>"
-                                +  title + "</a></li>"
-                            listHtml += randomArticleLiHtml
-                        }
-
-                        var randomArticlesDiv = $("#randomArticles");
-                        randomArticlesDiv.attr("class", "article-relative");
-                        var randomArticleListHtml = "<h5>${randomArticles1Label}</h5>"
-                            + "<ul class='marginLeft12'>"
-                            + listHtml + "</ul>";
-                         randomArticlesDiv.append(randomArticleListHtml);
-                    }
-                });
-            }
-            getRandomArticles();
         </script>
     </body>
 </html>
