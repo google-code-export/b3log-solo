@@ -183,9 +183,8 @@ public final class MetaWeblogPost implements Post {
         // XXX: the article_oId may be duplicated, its
         // dependens on article created date of external
         // blogging system. Such as CSDN, its article created
-        // date ignored the minute and second, so if an blogger
-        // publish two articles in one minute to CSDN blog,
-        // we will get the same article_oId....
+        // date ignored the second, so if an blogger publishes two articles in
+        // one minute to CSDN blog, we will get the same article_oId....
         ret.put(Keys.OBJECT_ID, String.valueOf(getCreateDate().getTime()));
         ret.put(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID, getId());
         ret.put(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_TITLE, getTitle());
