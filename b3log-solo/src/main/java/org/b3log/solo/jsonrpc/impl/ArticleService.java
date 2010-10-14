@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Oct 13, 2010
+ * @version 1.0.1.4, Oct 14, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -541,13 +541,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String articleId = article.getString(Keys.OBJECT_ID);
             // Step 1: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
-            transaction.commit();
-            nestedTransaction =
-                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
             // Step 2: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
             // Step 3: Remove tag-article relations
             articleUtils.removeTagArticleRelations(articleId);
+            transaction.commit();
+            nestedTransaction =
+                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
             // Step 4: Add tags
             final String tagsString =
                     article.getString(ARTICLE_TAGS_REF);
