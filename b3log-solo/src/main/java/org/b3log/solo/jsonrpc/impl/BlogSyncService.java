@@ -427,12 +427,6 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                             BLOG_SYNC_EXTERNAL_ARTICLE_ID,
                             externalArticleId);
                     externalArticleSoloArticleRelation.put(
-                            // XXX: the article_oId may be duplicated, its
-                            // dependens on article created date of external
-                            // blogging system. Such as CSDN, its article created
-                            // date ignored the minute and second, so if an blogger
-                            // publish two articles in one minute to CSDN blog,
-                            // we will get the same article_oId....
                             Article.ARTICLE + "_" + Keys.OBJECT_ID,
                             article.getString(Keys.OBJECT_ID));
                     externalArticleSoloArticleRelation.put(
