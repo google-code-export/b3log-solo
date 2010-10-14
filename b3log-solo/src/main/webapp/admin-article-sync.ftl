@@ -113,6 +113,7 @@
     </div>
 </div>
 <script type="text/javascript">
+    var articleDataTemp = [];
     var initSync = function () {
         $("#loadMsg").text("${loadingLabel}");
         // Blog table
@@ -284,6 +285,7 @@
         $("#tipMsg").html("");
         $("#loadMsg").html("${loadingLabel}");
         $("#articlesPanel").show();
+        $("#articlesCount").html("${sumLabel} 0 ${countLabel}");
         $("#articleSyncList").table({
             update:{
                 data: []
@@ -328,7 +330,8 @@
                         data: articleData
                     }
                 });
-                
+
+                articleDataTemp = articleData;
                 $("#articlesCount").html("${sumLabel} " + articleData.length + " ${countLabel}");
             } else {
                 $("#tipMsg").text("${getFailLabel}");
@@ -339,7 +342,8 @@
     }
 
     var sync = function () {
-        if ($("#articleSyncList_selected").data("id").length === 0) {
+        var selectedOIds = $("#articleSyncList_selected").data("id");
+        if (selectedOIds.length === 0) {
             $("#tipMsg").text("${blogArticleEmptyLabel}");
         } else {
             $("#loadMsg").text("${loadingLabel}");
@@ -347,10 +351,35 @@
                 if (typeof(getArticleList) === "function") {
                     getArticleList(1);
                 }
-                $("#tipMsg").text("${importSuccLabel}");
+                var oIds = result.oIds;
+                
+                for (var i = 0; i < articleDataTemp.length; i++) {
+                    for (var j = 0; j < oIds.length; j++) {
+                        if (oIds[j] === articleDataTemp[i].id) {
+                            articleDataTemp[i].selected = {
+                                value: false,
+                                disabled: true
+                            };
+                            articleDataTemp[i].imported = "<div class='falseIcon'></div>";
+                        }
+                    }
+                }
+
+                $("#articleSyncList").table({
+                    update:{
+                        data: articleDataTemp
+                    }
+                });
+
+                if (selectedOIds.length !== oIds.length) {
+                    $("#tipMsg").text("${importFailLabel}");
+                } else {
+                    $("#tipMsg").text("${importSuccLabel}");
+                }
+                
                 $("#loadMsg").text("");
             }, {
-                "oIds": $("#articleSyncList_selected").data("id"),
+                "oIds": selectedOIds,
                 "blogSyncExternalBloggingSys": $("#blogType").val()
             });
         }
