@@ -88,7 +88,7 @@
 
     <issueManagement>
         <system>Google Code Issues</system>
-        <url>http://code.google.com/p/latke/issues/list</url>
+        <url>http://code.google.com/p/b3log-solo/issues/list</url>
     </issueManagement>
 
     <mailingLists>
@@ -385,14 +385,6 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-
-        <repository>
-            <id>oracleReleases</id>
-            <name>Oracle Released Java Packages</name>
-            <url>http://download.oracle.com/maven</url>
-            <layout>default</layout>
-        </repository>
-
 
         <repository>
             <id>Signpost</id>
