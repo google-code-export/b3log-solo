@@ -32,14 +32,13 @@ import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.repository.impl.SkinGAERepository;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
-import org.b3log.solo.repository.impl.UserGAERepository;
 
 /**
  * Repository module for <a href="http://code.google.com/p/google-guice/">
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Sep 28, 2010
+ * @version 1.0.1.3, Oct 15, 2010
  */
 public final class RepositoryModule extends AbstractServiceModule {
 
@@ -61,8 +60,6 @@ public final class RepositoryModule extends AbstractServiceModule {
         bind(LinkRepository.class).to(LinkGAERepository.class).
                 in(Scopes.SINGLETON);
         bind(PreferenceRepository.class).to(PreferenceGAERepository.class).
-                in(Scopes.SINGLETON);
-        bind(UserRepository.class).to(UserGAERepository.class).
                 in(Scopes.SINGLETON);
         bind(StatisticRepository.class).to(StatisticGAERepository.class).
                 in(Scopes.SINGLETON);
