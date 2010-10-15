@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="b3log, b3log solo, solo, GAE blog, 88250, vanessa"/>
-        <meta name="description" content="b3log,a open sources blog base GAE.一个基于 GAE 的开源博客程序。"/>
+        <meta name="description" content="b3log,an open source blog based on GAE.一个基于 GAE 的开源博客程序。"/>
         <meta http-equiv="pragma" content="no-cache"/>
         <meta name="author" content="b3log-solo.googlecode.com"/>
         <meta name="revised" content="b3log, 9/10/10"/>
