@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Oct 13, 2010
+ * @version 1.0.1.6, Oct 15, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -107,6 +107,11 @@ public final class SoloServletListener extends AbstractServletListener {
      * Preference.
      */
     private static JSONObject userPreference;
+    /**
+     * B3log Rhythm address.
+     */
+    public static final String B3LOG_RHYTHM_ADDRESS =
+            "http://b3log-rhythm.appspot.com";
     /**
      * English month.
      */
