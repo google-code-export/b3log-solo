@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Description: B3log Solo version.
+    Description: B3log Solo
     Version: 1.0.2.0, Oct 13, 2010
     Author: Liang Ding
 -->
@@ -14,7 +14,10 @@
     <version>0.1.0</version>
     <name>B3log Solo</name>
     <url>http://b3log-solo.googlecode.com</url>
-    <description>B3log Solo version.</description>
+    <description>
+        B3log Solo is a single-user blogging program based on Google App Engine
+        Java Edition.
+    </description>
     <inceptionYear>2010</inceptionYear>
 
     <!-- Version -->
