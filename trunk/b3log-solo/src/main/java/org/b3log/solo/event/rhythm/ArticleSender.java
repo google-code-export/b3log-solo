@@ -15,9 +15,14 @@
  */
 package org.b3log.solo.event.rhythm;
 
+import com.google.appengine.api.urlfetch.HTTPMethod;
+import com.google.appengine.api.urlfetch.HTTPRequest;
+import com.google.appengine.api.urlfetch.HTTPResponse;
+import com.google.appengine.api.urlfetch.URLFetchService;
+import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.inject.Inject;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.event.AbstractEventListener;
@@ -32,7 +37,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending articles to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 15, 2010
+ * @version 1.0.0.1, Oct 16, 2010
  */
 public final class ArticleSender
         extends AbstractEventListener<JSONObject> {
@@ -42,6 +47,15 @@ public final class ArticleSender
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArticleSender.class.getName());
+    /**
+     * URL fetch service.
+     */
+    private final URLFetchService urlFetchService =
+            URLFetchServiceFactory.getURLFetchService();
+    /**
+     * Timeout.
+     */
+    private static final long TIMEOUT = 5000;
 
     /**
      * Constructs a {@link ArticleSender} object with the specified event
@@ -63,22 +77,17 @@ public final class ArticleSender
                                 article,
                                 ArticleSender.class.getName()});
         try {
-            // TODO: send to Rhythm asych
-            final HttpURLConnection httpURLConnection =
-                    (HttpURLConnection) SoloServletListener.B3LOG_RHYTHM_URL.
-                    openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setDoOutput(true);
-            final OutputStream os = httpURLConnection.getOutputStream();
-            os.write(article.toString().getBytes());
-            os.close();
-
-            final int statusCode = httpURLConnection.getResponseCode();
-
+            final HTTPRequest httpRequest =
+                    new HTTPRequest(SoloServletListener.B3LOG_RHYTHM_URL,
+                                    HTTPMethod.POST);
+            httpRequest.setPayload(article.toString().getBytes());
+            final Future<HTTPResponse> futureResponse =
+                    urlFetchService.fetchAsync(httpRequest);
+            final HTTPResponse httpResponse =
+                    futureResponse.get(TIMEOUT, TimeUnit.MILLISECONDS);
+            final int statusCode = httpResponse.getResponseCode();
             LOGGER.log(Level.FINEST, "Response from Rhythm[statusCode={0}]",
                        statusCode);
-
-            httpURLConnection.disconnect();
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new EventException("Sends article to Rhythm error!");
