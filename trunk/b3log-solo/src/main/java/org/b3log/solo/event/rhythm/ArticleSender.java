@@ -83,6 +83,7 @@ public final class ArticleSender
             httpRequest.setPayload(article.toString().getBytes());
             final Future<HTTPResponse> futureResponse =
                     urlFetchService.fetchAsync(httpRequest);
+            
             final HTTPResponse httpResponse =
                     futureResponse.get(TIMEOUT, TimeUnit.MILLISECONDS);
             final int statusCode = httpResponse.getResponseCode();
