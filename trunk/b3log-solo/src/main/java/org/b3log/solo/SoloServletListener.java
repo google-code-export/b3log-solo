@@ -115,8 +115,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
     static {
         try {
-            B3LOG_RHYTHM_URL =
-                    new URL("http://b3log-rhythm.appspot.com:80");
+            B3LOG_RHYTHM_URL = // TODO: change rhythm port in production
+                    new URL("http://b3log-rhythm.appspot.com:8080");
         } catch (final MalformedURLException e) {
             throw new RuntimeException(e);
         }
