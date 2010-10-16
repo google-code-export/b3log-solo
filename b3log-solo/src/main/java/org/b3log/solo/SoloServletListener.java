@@ -21,6 +21,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
 import java.io.BufferedInputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -110,8 +111,16 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * B3log Rhythm address.
      */
-    public static final String B3LOG_RHYTHM_ADDRESS =
-            "http://b3log-rhythm.appspot.com";
+    public static final URL B3LOG_RHYTHM_URL;
+
+    static {
+        try {
+            B3LOG_RHYTHM_URL =
+                    new URL("http://b3log-rhythm.appspot.com:80");
+        } catch (final MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     /**
      * English month.
      */
