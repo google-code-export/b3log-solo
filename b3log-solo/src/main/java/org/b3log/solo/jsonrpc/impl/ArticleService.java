@@ -224,7 +224,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String permalink = "/articles/" + permalinkDate + "/"
                                      + articleId + ".html";
             article.put(ARTICLE_PERMALINK, permalink);
-            articleRepository.update(articleId, article); // XXX: Performance issue
+            articleRepository.update(articleId, article);
             // Step 9: Fire add article event
             final JSONObject eventData = new JSONObject();
             eventData.put(ARTICLE, article);
