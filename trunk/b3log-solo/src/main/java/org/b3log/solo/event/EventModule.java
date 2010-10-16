@@ -24,6 +24,7 @@ import org.b3log.solo.event.preference.DisplayCntLoader;
 import org.b3log.solo.event.preference.GoogleSettingsLoader;
 import org.b3log.solo.event.preference.HTMLHeadLoader;
 import org.b3log.solo.event.preference.NoticeBoardLoader;
+import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.event.sync.impl.BlogJavaAddArticleProcessor;
 import org.b3log.solo.event.sync.impl.BlogJavaRemoveArticleProcessor;
 import org.b3log.solo.event.sync.impl.BlogJavaUpdateArticleProcessor;
@@ -39,7 +40,7 @@ import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
  * configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Oct 12, 2010
+ * @version 1.0.1.1, Oct 15, 2010
  */
 public final class EventModule extends AbstractEventModule {
 
@@ -81,5 +82,6 @@ public final class EventModule extends AbstractEventModule {
 
         bind(ReplyNotifier.class).asEagerSingleton();
         bind(ActivityCreator.class).asEagerSingleton();
+        bind(ArticleSender.class).asEagerSingleton();
     }
 }
