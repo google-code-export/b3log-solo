@@ -542,7 +542,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         final URL gravatarURL =
                 new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
                         + size + "&r=G");
-        // XXX: use async url fetch instead????
+
         try {
             final HTTPResponse response = urlFetchService.fetch(gravatarURL);
             final int statusCode = response.getResponseCode();
