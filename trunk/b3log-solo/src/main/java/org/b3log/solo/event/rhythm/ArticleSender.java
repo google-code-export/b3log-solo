@@ -21,6 +21,8 @@ import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.inject.Inject;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -56,6 +58,20 @@ public final class ArticleSender
      * Timeout.
      */
     private static final long TIMEOUT = 5000;
+    /**
+     * URL of adding article to Rhythm.
+     */
+    private static final URL ADD_ARTICLE_URL;
+
+    static {
+        try {
+            ADD_ARTICLE_URL =
+                    new URL(SoloServletListener.B3LOG_RHYTHM_ADDRESS
+                            + "/add-article.do");
+        } catch (final MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Constructs a {@link ArticleSender} object with the specified event
@@ -78,12 +94,11 @@ public final class ArticleSender
                                 ArticleSender.class.getName()});
         try {
             final HTTPRequest httpRequest =
-                    new HTTPRequest(SoloServletListener.B3LOG_RHYTHM_URL,
-                                    HTTPMethod.POST);
+                    new HTTPRequest(ADD_ARTICLE_URL, HTTPMethod.POST);
             httpRequest.setPayload(article.toString().getBytes());
             final Future<HTTPResponse> futureResponse =
                     urlFetchService.fetchAsync(httpRequest);
-            
+
             final HTTPResponse httpResponse =
                     futureResponse.get(TIMEOUT, TimeUnit.MILLISECONDS);
             final int statusCode = httpResponse.getResponseCode();
