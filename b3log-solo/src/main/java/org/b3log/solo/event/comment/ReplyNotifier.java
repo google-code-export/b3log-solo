@@ -73,7 +73,7 @@ public final class ReplyNotifier
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject comment = event.getData();
-        LOGGER.log(Level.INFO,
+        LOGGER.log(Level.FINER,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 comment,
@@ -81,7 +81,7 @@ public final class ReplyNotifier
         final String originalCommentId =
                 comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         if (Strings.isEmptyOrNull(originalCommentId)) {
-            LOGGER.log(Level.INFO, "This comment[id={0}] is not a reply",
+            LOGGER.log(Level.FINER, "This comment[id={0}] is not a reply",
                        comment.optString(Keys.OBJECT_ID));
             return;
         }

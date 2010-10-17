@@ -60,7 +60,7 @@ public final class HTMLHeadLoader
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject preference = event.getData();
-        LOGGER.log(Level.INFO,
+        LOGGER.log(Level.FINER,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 preference,
