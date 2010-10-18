@@ -235,9 +235,12 @@
                 getRandomArticles();
 
                     <#if 0 != externalRelevantArticlesDisplayCount>
-                    var getExternalArticles = function () {
+                    var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
+
+                var getExternalArticles = function () {
+
                     $.ajax({
-                        url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=test1,2",
+                        url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
                         type: "GET",
                         dataType:"jsonp",
                         jsonp: "callback",
