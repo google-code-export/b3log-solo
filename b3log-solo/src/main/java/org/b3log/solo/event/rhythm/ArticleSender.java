@@ -104,7 +104,7 @@ public final class ArticleSender
             requestJSONObject.put(Article.ARTICLE,
                                   data.getJSONObject(Article.ARTICLE));
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
-            httpRequest.setPayload(requestJSONObject.toString().getBytes());
+            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
             final Future<HTTPResponse> futureResponse =
                     urlFetchService.fetchAsync(httpRequest);
             final HTTPResponse httpResponse =
