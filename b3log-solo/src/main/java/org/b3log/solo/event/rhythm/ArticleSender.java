@@ -33,13 +33,15 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Preference;
 import org.json.JSONObject;
 
 /**
  * This listener is responsible for sending articles to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 16, 2010
+ * @version 1.0.0.2, Oct 18, 2010
  */
 public final class ArticleSender
         extends AbstractEventListener<JSONObject> {
@@ -86,27 +88,33 @@ public final class ArticleSender
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
-        final JSONObject article = event.getData();
+        final JSONObject data = event.getData();
         LOGGER.log(Level.FINER,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
-                                article,
+                                data,
                                 ArticleSender.class.getName()});
         try {
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
+            final String blogHost = preference.getString(Preference.BLOG_HOST);
             final HTTPRequest httpRequest =
                     new HTTPRequest(ADD_ARTICLE_URL, HTTPMethod.POST);
-            httpRequest.setPayload(article.toString().getBytes());
+            final JSONObject requestJSONObject = new JSONObject();
+            requestJSONObject.put(Article.ARTICLE,
+                                  data.getJSONObject(Article.ARTICLE));
+            requestJSONObject.put(Preference.BLOG_HOST, blogHost);
+            httpRequest.setPayload(requestJSONObject.toString().getBytes());
             final Future<HTTPResponse> futureResponse =
                     urlFetchService.fetchAsync(httpRequest);
-
             final HTTPResponse httpResponse =
                     futureResponse.get(TIMEOUT, TimeUnit.MILLISECONDS);
             final int statusCode = httpResponse.getResponseCode();
             LOGGER.log(Level.FINEST, "Response from Rhythm[statusCode={0}]",
                        statusCode);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-            throw new EventException("Sends article to Rhythm error!");
+            LOGGER.log(Level.SEVERE, "Sends article to Rhythm error: {0}",
+                       e.getMessage());
         }
     }
 
