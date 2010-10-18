@@ -17,9 +17,11 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -175,9 +177,13 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 skin.put(Skin.SKIN_NAME, name);
                 skin.put(Skin.SKIN_DIR_NAME, dirName);
             }
+            final String webRootPath = SoloServletListener.getWebRoot();
+            final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
+            LOGGER.log(Level.INFO, "Skin path[{0}]", skinPath);
+            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
+                    new File(skinPath));
 
             preference.put(Skin.SKINS, skinArray.toString());
-
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);

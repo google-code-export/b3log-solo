@@ -22,7 +22,6 @@ import org.b3log.solo.action.impl.IndexAction;
 import org.b3log.solo.action.impl.TagsAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.action.AbstractActionModule;
-import org.b3log.latke.action.DoNothingAction;
 import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.BlogArticlesFeedServlet;
@@ -33,6 +32,7 @@ import org.b3log.solo.action.google.BuzzOAuth;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.auth.AuthFilter;
 import org.b3log.solo.action.google.BuzzOAuthCallback;
+import org.b3log.solo.action.impl.AdminDoNothingAction;
 import org.b3log.solo.action.impl.PageAction;
 import org.b3log.solo.google.auth.OAuths;
 
@@ -41,7 +41,7 @@ import org.b3log.solo.google.auth.OAuths;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Sep 25, 2010
+ * @version 1.0.1.1, Oct 18, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -80,14 +80,14 @@ public final class ActionModule extends AbstractActionModule {
         bind(PageAction.class).in(Scopes.SINGLETON);
         serve("/page.do").with(PageAction.class);
 
-        bind(DoNothingAction.class).in(Scopes.SINGLETON);
+        bind(AdminDoNothingAction.class).in(Scopes.SINGLETON);
         serve("/admin-article.do",
               "/admin-article-list.do",
               "/admin-link-list.do",
               "/admin-preference.do",
               "/admin-article-sync.do",
               "/admin-file-list.do",
-              "/admin-page.do").with(DoNothingAction.class);
+              "/admin-page.do").with(AdminDoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 

@@ -15,29 +15,33 @@
  */
 package org.b3log.solo.action.impl;
 
-import java.util.logging.Level;
-import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.action.util.Filler;
+import org.b3log.latke.action.AbstractAction;
+import org.b3log.latke.action.ActionException;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
 /**
- * Admin index action. admin-index.ftl.
+ * Abstract admin action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 21, 2010
+ * @version 1.0.0.0, Oct 18, 2010
  */
-public final class AdminIndexAction extends AbstractAdminAction {
+public abstract class AbstractAdminAction extends AbstractAction {
 
     /**
      * Default serial version uid.
@@ -47,17 +51,29 @@ public final class AdminIndexAction extends AbstractAdminAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(AdminIndexAction.class.getName());
+            Logger.getLogger(AbstractAdminAction.class.getName());
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
     /**
-     * Filler.
+     * FreeMarker configuration.
      */
-    @Inject
-    private Filler filler;
+    private Configuration configuration;
+
+    @Override
+    public void init() throws ServletException {
+        configuration = new Configuration();
+        configuration.setDefaultEncoding("UTF-8");
+        try {
+            final String webRootPath = SoloServletListener.getWebRoot();
+
+            configuration.setDirectoryForTemplateLoading(new File(webRootPath));
+        } catch (final IOException e) {
+            LOGGER.severe(e.getMessage());
+        }
+    }
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -67,25 +83,14 @@ public final class AdminIndexAction extends AbstractAdminAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
-
-            Locales.setLocale(request, locale); // For other admin DoNothing actions
+            final Locale locale = Locales.getLocale(request);
+            Locales.setLocale(request, locale);
 
             final Map<String, String> langs = langPropsService.getAll(locale);
-            LOGGER.log(Level.FINEST, "Langs[values={0}]", langs.values());
             ret.putAll(langs);
-
-            filler.fillBlogHeader(ret);
-            filler.fillBlogFooter(ret);
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+            throw new ActionException("Language model fill error");
         }
 
         return ret;
@@ -96,6 +101,20 @@ public final class AdminIndexAction extends AbstractAdminAction {
                                       final HttpServletRequest request,
                                       final HttpServletResponse response)
             throws ActionException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    protected Template beforeDoFreeMarkerAction(
+            final HttpServletRequest request, final HttpServletResponse response)
+            throws ActionException {
+        final String pageName = getPageName(request.getRequestURI());
+
+        try {
+            return configuration.getTemplate(pageName);
+        } catch (final IOException e) {
+            LOGGER.severe(e.getMessage());
+            throw new ActionException(e);
+        }
     }
 }

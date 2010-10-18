@@ -21,6 +21,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,6 +52,7 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.filter.FilterModule;
 import org.b3log.solo.repository.PreferenceRepository;
 import static org.b3log.solo.model.Preference.*;
+import org.b3log.solo.model.Skin;
 import static org.b3log.solo.model.Skin.*;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
@@ -233,6 +236,15 @@ public final class SoloServletListener extends AbstractServletListener {
         }
 
         preference.put(SKINS, skinArray.toString());
+
+        try {
+            final String webRootPath = SoloServletListener.getWebRoot();
+            final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
+            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
+                    new File(skinPath));
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
