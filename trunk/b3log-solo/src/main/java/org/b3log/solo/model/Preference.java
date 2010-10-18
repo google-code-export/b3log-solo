@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Oct 12, 2010
+ * @version 1.0.1.2, Oct 18, 2010
  */
 public final class Preference {
 
@@ -45,6 +45,11 @@ public final class Preference {
      */
     public static final String RANDOM_ARTICLES_DISPLAY_CNT =
             "randomArticlesDisplayCount";
+    /**
+     * External relevant articles display count.
+     */
+    public static final String EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT =
+            "externalRelevantArticlesDisplayCount";
     /**
      * Recent article display count.
      */

@@ -134,6 +134,14 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>
+                            ${externalRelevantArticlesDisplayCnt1Label}
+                        </th>
+                        <td>
+                            <input id="externalRelevantArticlesDisplayCount" class="normalInput"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <th colspan="2">
                             <button onclick="changePreference();">${updateLabel}</button>
                         </th>
@@ -206,6 +214,7 @@
                     $("#noticeBoard").val(preference.noticeBoard);
                     $("#htmlHead").val(preference.htmlHead);
                     $("#secret").val(preference.googleOAuthConsumerSecret);
+                    $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
                     $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
                     $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                     preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
@@ -283,6 +292,7 @@
                 "noticeBoard": $("#noticeBoard").val(),
                 "htmlHead": $("#htmlHead").val(),
                 "googleOAuthConsumerSecret": $("#secret").val(),
+                "externalRelevantArticlesDisplayCount": $("#externalRelevantArticlesDisplayCount").val(),
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
                 "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
                 "enablePostToBuzz": $("#syncBuzz").attr("checked")
