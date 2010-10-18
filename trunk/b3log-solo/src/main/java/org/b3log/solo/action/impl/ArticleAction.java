@@ -202,6 +202,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
         final int displayCnt =
                 preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
 
+        // XXX: should average by tag?
         final List<JSONObject> articles = new ArrayList<JSONObject>();
         for (final JSONObject articleTag : articleTags) {
             final String tagId = articleTag.getString(Keys.OBJECT_ID);

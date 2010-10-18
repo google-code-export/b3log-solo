@@ -112,7 +112,7 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     // TODO: change Rhythm port in production
     public static final String B3LOG_RHYTHM_ADDRESS =
-            "http://b3log-rhythm.appspot.com:8080";
+            "http://b3log-rhythm.appspot.com:80";
     /**
      * English month.
      */
