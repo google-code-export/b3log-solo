@@ -271,7 +271,7 @@
 
                 }
                 getExternalArticles();
-                    <#/if>
+                    </#if>
             </script>
             <div class="footer">
                 <#include "article-footer.ftl">
