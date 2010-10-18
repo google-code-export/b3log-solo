@@ -173,6 +173,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     getRelevantArticles(articleId, articleTags);
             ret.put(Common.RELEVANT_ARTICLES, relevantArticles);
 
+
+            ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
+                    preference.getInt(
+                    Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);

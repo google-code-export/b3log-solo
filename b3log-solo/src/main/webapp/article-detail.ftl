@@ -234,7 +234,8 @@
                 }
                 getRandomArticles();
 
-                var getExternalArticles = function () {
+                    <#if 0 != externalRelevantArticlesDisplayCount>
+                    var getExternalArticles = function () {
                     $.ajax({
                         url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=test1,2",
                         type: "GET",
@@ -270,6 +271,7 @@
 
                 }
                 getExternalArticles();
+                    <#/if>
             </script>
             <div class="footer">
                 <#include "article-footer.ftl">
