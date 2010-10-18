@@ -105,6 +105,7 @@
                         </div>
                         </#if>
                         <div id="randomArticles"></div>
+                        <div id="externalRelevantArticles"></div>
                     </div>
                     <div class="comments" id="comments" name="comments">
                         <#list articleComments as comment>
@@ -232,6 +233,43 @@
                     });
                 }
                 getRandomArticles();
+
+                var getExternalArticles = function () {
+                    $.ajax({
+                        url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=test1,2",
+                        type: "GET",
+                        dataType:"jsonp",
+                        jsonp: "callback",
+                        error: function(){
+                            alert("Error loading article from Rhythm");
+                        },
+                        success: function(data, textStatus){
+                            var articles = data.articles;
+                            if (0 === articles.length) {
+                                return;
+                            }
+
+                            var listHtml = "";
+                            for (var i = 0; i < articles.length; i++) {
+                                var article = articles[i];
+                                var title = article.articleTitle;
+                                var articleLiHtml = "<li>"
+                                    + "<a href='http://" + article.articlePermalink +"'>"
+                                    +  title + "</a></li>"
+                                listHtml += articleLiHtml
+                            }
+
+                            var externalRelevantArticlesDiv = $("#externalRelevantArticles");
+                            externalRelevantArticlesDiv.attr("class", "article-relative");
+                            var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
+                                + "<ul class='marginLeft12'>"
+                                + listHtml + "</ul>";
+                            externalRelevantArticlesDiv.append(randomArticleListHtml);
+                        }
+                    });
+
+                }
+                getExternalArticles();
             </script>
             <div class="footer">
                 <#include "article-footer.ftl">
