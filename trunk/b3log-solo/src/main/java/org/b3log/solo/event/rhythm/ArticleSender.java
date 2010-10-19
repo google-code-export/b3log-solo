@@ -17,14 +17,11 @@ package org.b3log.solo.event.rhythm;
 
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
-import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.inject.Inject;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.event.AbstractEventListener;
@@ -41,7 +38,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending articles to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 18, 2010
+ * @version 1.0.0.3, Oct 19, 2010
  */
 public final class ArticleSender
         extends AbstractEventListener<JSONObject> {
@@ -105,13 +102,13 @@ public final class ArticleSender
                                   data.getJSONObject(Article.ARTICLE));
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-            final Future<HTTPResponse> futureResponse =
+//            final Future<HTTPResponse> futureResponse =
                     urlFetchService.fetchAsync(httpRequest);
-            final HTTPResponse httpResponse =
-                    futureResponse.get(TIMEOUT, TimeUnit.MILLISECONDS);
-            final int statusCode = httpResponse.getResponseCode();
-            LOGGER.log(Level.FINEST, "Response from Rhythm[statusCode={0}]",
-                       statusCode);
+//            final HTTPResponse httpResponse =
+//                    futureResponse.get(TIMEOUT, TimeUnit.MILLISECONDS);
+//            final int statusCode = httpResponse.getResponseCode();
+//            LOGGER.log(Level.FINEST, "Response from Rhythm[statusCode={0}]",
+//                       statusCode);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Sends article to Rhythm error: {0}",
                        e.getMessage());
