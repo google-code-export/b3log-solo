@@ -250,8 +250,7 @@ public final class MetaWeblogPost implements Post {
                 descriptionBuilder.append(blogHost);
                 descriptionBuilder.append("'>");
                 descriptionBuilder.append(blogTitle);
-                descriptionBuilder.append("</a> 进行同步发布的");
-                descriptionBuilder.append("<br/>");
+                descriptionBuilder.append("</a> 进行同步发布的<br/>");
                 descriptionBuilder.append("原文地址：<a href='http://");
                 descriptionBuilder.append(blogDomain);
                 descriptionBuilder.append(getPermalink());
