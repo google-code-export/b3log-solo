@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Sep 25, 2010
+ * @version 1.0.1.5, Oct 19, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -518,8 +518,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
             if (HttpServletResponse.SC_OK == statusCode) {
                 final byte[] content = response.getContent();
-                final String profileJSONString = new String(content);
-                LOGGER.log(Level.FINEST, "Google profile[jsonString={0}]",
+                final String profileJSONString = "{" + content + "}";
+                LOGGER.log(Level.FINEST, "Google profile[jsonString=0]",
                            profileJSONString);
                 final JSONObject profile = new JSONObject(profileJSONString);
                 final JSONObject profileData = profile.getJSONObject("data");
