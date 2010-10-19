@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 14, 2010
+ * @version 1.0.0.4, Oct 19, 2010
  */
 public final class MetaWeblogPost implements Post {
 
@@ -66,6 +66,10 @@ public final class MetaWeblogPost implements Post {
      */
     private Set<String> categories;
     /**
+     * Permalink.
+     */
+    private String permalink;
+    /**
      * Maximum length of an article abstract.
      */
     private static final int MAX_ABSTRACT_LENGTH = 300;
@@ -87,7 +91,8 @@ public final class MetaWeblogPost implements Post {
      *     "articleTitle": "",
      *     "articleCreateDate": java.util.Date,
      *     "articleContent": "",
-     *     "articleTags": "" // splitted by ","
+     *     "articleTags": "" // splitted by ",",
+     *     "articlePermalink": ""
      * }
      * </pre>
      * @throws JSONException json exception
@@ -100,6 +105,12 @@ public final class MetaWeblogPost implements Post {
         final String tagsString = jsonObject.getString(Article.ARTICLE_TAGS_REF);
         final String[] tagStrings = tagsString.split(",");
         categories = CollectionUtils.<String>arrayToSet(tagStrings);
+        permalink = jsonObject.getString(Article.ARTICLE_PERMALINK);
+    }
+
+    @Override
+    public String getPermalink() {
+        return permalink;
     }
 
     @Override
@@ -226,17 +237,29 @@ public final class MetaWeblogPost implements Post {
             if (null != preference) { // Preference is null in test env
                 final String blogTitle = preference.getString(
                         Preference.BLOG_TITLE);
+                final String blogHost = preference.getString(
+                        Preference.BLOG_HOST);
+                final String blogDomain = blogHost.split(":")[0];
+                // TODO: i18N
+                descriptionBuilder.append("<br/>");
                 descriptionBuilder.append(
                         "<p><span style='font: italic normal normal 11px Verdana'>");
                 descriptionBuilder.append(
                         "本文是使用 <a href='http://b3log-solo.googlecode.com/'>");
                 descriptionBuilder.append("B3log Solo</a> 从 <a href='http://");
-                descriptionBuilder.append(preference.getString(
-                        Preference.BLOG_HOST));
+                descriptionBuilder.append(blogHost);
                 descriptionBuilder.append("'>");
                 descriptionBuilder.append(blogTitle);
-                descriptionBuilder.append("</a> 进行同步发布的。");
-                descriptionBuilder.append("</span></p>");
+                descriptionBuilder.append("</a> 进行同步发布的");
+                descriptionBuilder.append("<br/>");
+                descriptionBuilder.append("原文地址：<a href='http://");
+                descriptionBuilder.append(blogDomain);
+                descriptionBuilder.append(getPermalink());
+                descriptionBuilder.append("'>");
+                descriptionBuilder.append("http://");
+                descriptionBuilder.append(blogDomain);
+                descriptionBuilder.append(getPermalink());
+                descriptionBuilder.append("</a></span></p>");
             }
             ret.put("description", descriptionBuilder.toString());
             ret.put("categories", getCategories().<String>toArray(new String[0]));
