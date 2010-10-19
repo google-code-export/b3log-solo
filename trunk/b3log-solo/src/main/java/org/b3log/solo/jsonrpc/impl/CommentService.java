@@ -517,9 +517,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final int statusCode = response.getResponseCode();
 
             if (HttpServletResponse.SC_OK == statusCode) {
-                final String content = new String(response.getContent());
-                final String profileJSONString = "{" + content + "}";
-                LOGGER.log(Level.FINEST, "Google profile[jsonString=0]",
+                final byte[] content = response.getContent();
+                final String profileJSONString = new String(content, "UTF-8");
+                LOGGER.log(Level.FINEST, "Google profile[jsonString={0}]",
                            profileJSONString);
                 final JSONObject profile = new JSONObject(profileJSONString);
                 final JSONObject profileData = profile.getJSONObject("data");
