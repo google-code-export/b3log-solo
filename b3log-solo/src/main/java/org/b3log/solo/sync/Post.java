@@ -25,10 +25,15 @@ import org.json.JSONObject;
  * Post(Article/Entry).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 4, 2010
+ * @version 1.0.0.2, Oct 19, 2010
  */
 public interface Post {
-
+    /**
+     * Gets the permalink.
+     * 
+     * @return permalink
+     */
+    String getPermalink();
     /**
      * Gets the create date.
      *
