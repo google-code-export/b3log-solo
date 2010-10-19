@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="keywords" content="${articleTags?first.tagTitle}"/>
-        <meta name="description" content="${article.articleTitle}"/>
+        <meta name="keywords" content="GAE 博客,GAE blog,b3log solo,b3log rhythm,b3log"/>
+        <meta name="description" content="b3log,a open sources blog base GAE. 基于 GAE 的开源博客。"/>
         <meta http-equiv="pragma" content="no-cache"/>
         <meta name="revised" content="${blogTitle}, ${article.articleCreateDate?string('MM/dd/yy')}"/>
         <meta name="generator" content="b3log"/>
