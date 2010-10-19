@@ -245,7 +245,7 @@
                         dataType:"jsonp",
                         jsonp: "callback",
                         error: function(){
-                            alert("Error loading article from Rhythm");
+                            alert("Error loading articles from Rhythm");
                         },
                         success: function(data, textStatus){
                             var articles = data.articles;
