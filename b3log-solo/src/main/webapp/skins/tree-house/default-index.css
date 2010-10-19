@@ -1,0 +1,312 @@
+/* 
+    Document   : default-index
+    Version    : 1.0.0.0, Oct 19, 2010
+    Author     : Liyuan Li
+    Description:
+        user blog for tree house style.
+*/
+body {
+    background: url("images/bg-tree.jpg") repeat-y scroll 50% 0 #7BCCFF;
+}
+
+a, a:link {
+    color:#0000CC;
+}
+
+a:active {
+    color:red;
+}
+
+a:visited {
+    color:#551A8B;
+}
+
+h5 {
+    font-size: 12px;
+}
+
+/* framework */
+.wrapper{
+    background: url("images/bg-header.jpg") no-repeat scroll 50% 0 transparent;
+}
+
+.bg-bottom {
+    background:url("images/bg-footer2.jpg") no-repeat scroll 50% 100% transparent;
+}
+
+.content {
+    margin:0 auto;
+    width: 948px;
+}
+
+.header {
+    height:450px;
+    width:100%;
+}
+
+.header-right {
+    border-left:2px hidden #E5ECF9;
+    min-width:766px;
+    padding-left:12px;
+    width:78%;
+}
+
+.side {
+    width: 256px;
+    margin: 0 0 0 -21px;
+}
+
+.body {
+    padding-bottom: 682px;
+}
+
+.main {
+    width: 634px;
+}
+
+/* header */
+#logoTitle {
+    font-size:32px;
+    line-height:64px;
+    text-decoration:none;
+}
+
+#statistic span {
+    font-size: 11px;
+}
+
+/* article list */
+.article, .comments {
+    padding: 12px 0 24px 12px;
+}
+
+.article-title {
+    background-color:#E3E9FF;
+    border-top:1px solid #3366CC;
+    margin-left:91px;
+    padding:3px 0 3px 12px;
+}
+
+.article-date {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    background-color:#E3E9FF;
+    border:1px solid #BBCCFF;
+    margin:0 12px 12px 0;
+    padding:6px;
+    width:65px;
+    float: left;
+}
+
+.article-abstract {
+    word-wrap:break-word;
+}
+
+/* article detail or common-articles */
+.article-body {
+    margin: 0 12px 12px;
+}
+
+.article-body blockquote{
+    border:1px dotted #98A47F;
+    margin:12px;
+    padding:12px;
+    font-style: italic;
+}
+
+.article-body * {
+    margin: auto;
+}
+
+.article-body ol, .article-body ul {
+    padding: 0 0 0 24px;
+}
+
+.article-body p {
+    margin:1em 0 0.5em
+}
+
+.article-footer {
+    margin-right: 12px;
+}
+
+.article-footer a, .article-details-footer a{
+    text-decoration: none;
+}
+
+.article-details-footer {
+    margin: 36px 12px 0 0;
+}
+
+.article-relative {
+    line-height: 22px;
+    margin-top: 24px;
+}
+
+.comment-title {
+    background-color:#E3E9FF;
+    border-top:1px solid #3366CC;
+    padding:3px 12px 3px 12px;
+    position: relative;
+}
+
+.comment-body-ref {
+    background-color:#FFFFFF;
+    border:1px solid #E3E9FF;
+    left:97px;
+    opacity:0.9;
+    position:absolute;
+    top:27px;
+    width:87%;
+    z-index:10;
+    filter:alpha(opacity=90);
+}
+
+.comment-body {
+    padding: 9px 12px 12px;
+}
+
+.comment-picture {
+    margin-right: 12px;
+}
+
+.comment-picture img {
+    width: 60px;
+    height: 60px;
+}
+
+.comment-reply {
+    margin: 0 auto 24px auto;
+}
+
+.error-msg {
+    color: #3366CC;
+}
+
+/* side */
+#sideNavi .line {
+    background: url("images/bg-branch-small.png") no-repeat;
+    height:69px;
+}
+
+#sideNavi .block {
+    margin-left: 64px;
+}
+
+#sideNavi h3 {
+    background:url("images/bg-heading.png") no-repeat scroll 0 -25px transparent;
+    height:27px;
+    padding:14px 0 0 12px;
+    color:#EC0A8B;
+    font-size:15px;
+}
+
+#sideNavi .notice h3{
+    background-image: url("images/bg-heading-about-us.png");
+    margin-bottom:6px;
+}
+
+#sideNavi .notice li {
+    border-bottom-style: none;
+}
+
+#sideNavi ul {
+    margin-left:5px;
+    width:182px;
+}
+
+#sideNavi li {
+    font-size:12px;
+    height:1%;
+    line-height:15px;
+    vertical-align:top;
+    margin-left: 0px;
+}
+
+#sideNavi li a {
+    color:#42423D;
+    float:left;
+    height:14px;
+    margin:0;
+    padding:7px 0 8px 16px;
+    text-decoration:none;
+    width:167px;
+    border-bottom: 1px dotted #FFFFFF;
+}
+
+#sideNavi li.selected, #sideNavi li a:hover {
+    background:url("images/bg-menu-active.png") repeat scroll -8px -8px transparent;
+    color: #EC0A8B;
+    font-weight: bold;
+    padding-left:24px;
+    width:159px;
+}
+
+#userIntro {
+    height: 192px;
+    margin: 12px 0 0 73px;
+}
+
+#userIntro img {
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border:1px solid #FFFFFF;
+    margin-top:9px;
+    padding:6px;
+}
+
+/* pagination */
+.pagination {
+    text-align: center;
+    margin: 16px;
+}
+
+.pagination a, .pagination a:visited {
+    color: #4272DB;
+    padding: 0 3px;
+    text-decoration: none;
+}
+
+.pagination a.selected {
+    color: #000000;
+    font-weight: bold;
+}
+
+/* tags.html */
+#tagsPanel .tagPanel {
+    float: left;
+    border: 2px solid;
+    margin: 3px;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    cursor: pointer;
+}
+
+#tagsPanel .tagPanel:hover {
+    background-color: #EEEEEE;
+    border: 2px dashed;
+}
+
+#tagsPanel .tagPanel {
+    text-decoration: none;
+}
+
+/* error */
+.error-title {
+    background-color: #E5ECF9;
+    padding:6px 12px;
+}
+
+.error-panel {
+    border-bottom: 5px solid #E5ECF9;
+    padding: 24px;
+}
+
+/* icon */
+.commentIcon, .browserIcon {width:16px;height:16px;background-image:url("../../images/icon.png");cursor:pointer;margin-right: 3px;}
+.commentIcon {
+    background-position: -32px -16px;
+}
+.browserIcon {
+    background-position: -128px -16px;
+}
