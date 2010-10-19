@@ -16,6 +16,7 @@
 package org.b3log.solo.repository.impl;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
@@ -63,7 +64,8 @@ public class ArchiveDateArticleGAERepository extends AbstractGAERepository
                         Query.FilterOperator.EQUAL, archiveDateId);
 
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
-        final int count = preparedQuery.countEntities();
+        final int count = preparedQuery.countEntities(
+                FetchOptions.Builder.withDefaults());
         final int pageCount =
                 (int) Math.ceil((double) count / (double) pageSize);
 
