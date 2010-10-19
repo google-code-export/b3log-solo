@@ -340,7 +340,7 @@
                 });
 
                 // article view count
-                jsonRpc.statisticService.incArticleViewCount("${article.oId}");
+                jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
                 jsonRpc.statisticService.getArticleViewCount(function (result, error) {
                     if (!result || error) {
                         return;

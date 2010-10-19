@@ -135,7 +135,7 @@ Powered by
             });
         }
 
-        jsonRpc.statisticService.incBlogViewCount();
+        jsonRpc.statisticService.incBlogViewCount(function (result, error) {});
     }
     initIndex();
     
