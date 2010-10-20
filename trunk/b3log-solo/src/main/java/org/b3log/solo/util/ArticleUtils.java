@@ -25,9 +25,11 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.TopArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +38,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 12, 2010
+ * @version 1.0.0.2, Oct 20, 2010
  */
 public final class ArticleUtils {
 
@@ -65,6 +67,11 @@ public final class ArticleUtils {
      */
     @Inject
     private ArticleRepository articleRepository;
+    /**
+     * Top article repository.
+     */
+    @Inject
+    private TopArticleRepository topArticleRepository;
 
     /**
      * Article comment count +1 for an article specified by the given article id.
@@ -231,5 +238,49 @@ public final class ArticleUtils {
                          * process in <#list/> */
                         (Object) tags);
         }
+    }
+
+    /**
+     * Gets top articles.
+     *
+     * @return top articles, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    public List<JSONObject> getTopArticles() throws RepositoryException,
+                                                    JSONException {
+        final List<String> topArticleIds = getTopArticleIds();
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        for (final String articleId : topArticleIds) {
+            final JSONObject article = articleRepository.get(articleId);
+            ret.add(article);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets top article ids order by oId descending.
+     *
+     * @return top article ids
+     * @throws RepositoryException reposition exception
+     * @throws JSONException json exception
+     */
+    public List<String> getTopArticleIds() throws RepositoryException,
+                                                  JSONException {
+        final List<String> ret = new ArrayList<String>();
+        final JSONObject topArticleResults =
+                topArticleRepository.get(1, Integer.MAX_VALUE, Keys.OBJECT_ID,
+                                         SortDirection.DESCENDING);
+        if (topArticleResults.has(Keys.RESULTS)) {
+            final JSONArray ids = topArticleResults.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < ids.length(); i++) {
+                final String id = ids.getJSONObject(i).getString(
+                        Article.ARTICLE + "_" + Keys.OBJECT_ID);
+                ret.add(id);
+            }
+        }
+
+        return ret;
     }
 }

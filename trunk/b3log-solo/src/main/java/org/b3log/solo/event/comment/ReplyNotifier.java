@@ -32,13 +32,14 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Article;
 import org.json.JSONObject;
 
 /**
  * This listener is responsible for processing comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 12, 2010
+ * @version 1.0.0.2, Oct 20, 2010
  */
 public final class ReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -72,11 +73,13 @@ public final class ReplyNotifier
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
-        final JSONObject comment = event.getData();
+        final JSONObject eventData = event.getData();
+        final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
+        final JSONObject article = eventData.optJSONObject(Article.ARTICLE);
         LOGGER.log(Level.FINER,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
-                                comment,
+                                eventData,
                                 ReplyNotifier.class.getName()});
         final String originalCommentId =
                 comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
@@ -106,7 +109,10 @@ public final class ReplyNotifier
             message.setTo(originalCommentEmail);
             final String mailSubject = blogTitle + ": New reply of your comment";
             message.setSubject(mailSubject);
-            final String mailBody = commentContent + "<p>"
+            final String articleTitle = article.getString(Article.ARTICLE_TITLE);
+            final String mailBody = "Your comment on article[" + articleTitle
+                                    + "] received an reply: <p>"
+                                    + commentContent + "</p><p>"
                                     + "See <a href=" + commentSharpURL
                                     + ">here</a> for original post.</p>";
             message.setHtmlBody(mailBody);

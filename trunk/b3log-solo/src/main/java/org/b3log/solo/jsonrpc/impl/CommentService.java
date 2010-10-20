@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Oct 19, 2010
+ * @version 1.0.1.6, Oct 20, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -362,8 +362,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             // Step 5: Send an email to admin
             sendNotificationMail(article, commentId, commentContent, request);
             // Step 6: Fire add comment event
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Comment.COMMENT, comment);
+            eventData.put(Article.ARTICLE, article);
             eventManager.fireEventSynchronously(
-                    new Event<JSONObject>(EventTypes.ADD_COMMENT, comment));
+                    new Event<JSONObject>(EventTypes.ADD_COMMENT, eventData));
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);

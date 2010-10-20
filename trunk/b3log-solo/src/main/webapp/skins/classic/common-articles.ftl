@@ -18,6 +18,8 @@
                     ${updatedLabel}
                 </sup>
                 </#if>
+
+          
             </h2>
             <div class="article-tags">
                 ${tags1Label}

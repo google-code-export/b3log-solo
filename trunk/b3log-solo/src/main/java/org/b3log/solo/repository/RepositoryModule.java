@@ -32,13 +32,14 @@ import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.repository.impl.SkinGAERepository;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.impl.TopArticleGAERepository;
 
 /**
  * Repository module for <a href="http://code.google.com/p/google-guice/">
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Oct 15, 2010
+ * @version 1.0.1.4, Oct 20, 2010
  */
 public final class RepositoryModule extends AbstractServiceModule {
 
@@ -76,7 +77,9 @@ public final class RepositoryModule extends AbstractServiceModule {
                 BlogSyncMgmtGAERepository.class).in(Scopes.SINGLETON);
         bind(FileRepository.class).to(
                 FileGAERepository.class).in(Scopes.SINGLETON);
-         bind(PageRepository.class).to(
+        bind(PageRepository.class).to(
                 PageGAERepository.class).in(Scopes.SINGLETON);
+        bind(TopArticleRepository.class).to(
+                TopArticleGAERepository.class).in(Scopes.SINGLETON);
     }
 }
