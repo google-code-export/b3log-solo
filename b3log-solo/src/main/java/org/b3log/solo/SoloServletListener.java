@@ -218,9 +218,8 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final EventManager eventManager = getInjector().
                     getInstance(EventManager.class);
-            eventManager.fireEventAsynchronously(
+            eventManager.fireEventSynchronously(
                     new Event<JSONObject>(EventTypes.UPGRADE, null));
-            // TODO: upgrade via cron job?
         } catch (final EventException e) {
             LOGGER.severe(e.getMessage());
             throw new RuntimeException(
