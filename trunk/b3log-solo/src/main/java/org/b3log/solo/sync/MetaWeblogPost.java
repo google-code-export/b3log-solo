@@ -243,14 +243,15 @@ public final class MetaWeblogPost implements Post {
                 // TODO: i18N
                 descriptionBuilder.append("<br/>");
                 descriptionBuilder.append(
-                        "<p><span style='font: italic normal normal 11px Verdana'>");
+                        "<div style='font: italic normal normal 11px Verdana'>");
                 descriptionBuilder.append(
                         "本文是使用 <a href='http://b3log-solo.googlecode.com/'>");
                 descriptionBuilder.append("B3log Solo</a> 从 <a href='http://");
                 descriptionBuilder.append(blogHost);
                 descriptionBuilder.append("'>");
                 descriptionBuilder.append(blogTitle);
-                descriptionBuilder.append("</a> 进行同步发布的<br/>");
+                descriptionBuilder.append("</a> 进行同步发布的</div>");
+                descriptionBuilder.append("<div style='font: italic normal normal 11px Verdana'>");
                 descriptionBuilder.append("原文地址：<a href='http://");
                 descriptionBuilder.append(blogDomain);
                 descriptionBuilder.append(getPermalink());
@@ -258,7 +259,7 @@ public final class MetaWeblogPost implements Post {
                 descriptionBuilder.append("http://");
                 descriptionBuilder.append(blogDomain);
                 descriptionBuilder.append(getPermalink());
-                descriptionBuilder.append("</a></span></p>");
+                descriptionBuilder.append("</a></div>");
             }
             ret.put("description", descriptionBuilder.toString());
             ret.put("categories", getCategories().<String>toArray(new String[0]));
