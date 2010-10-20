@@ -18,6 +18,8 @@ package org.b3log.solo.action.feed;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +43,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Sep 19, 2010
+ * @version 1.0.0.8, Oct 20, 2010
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -83,10 +85,11 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
             feed.setUpdated(new Date());
             feed.addAuthor(blogTitle);
 
+            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+            sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
             final JSONObject articleResult =
                     articleRepository.get(1, ENTRY_OUTPUT_CNT,
-                                          Article.ARTICLE_CREATE_DATE,
-                                          SortDirection.DESCENDING);
+                                          sorts);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);

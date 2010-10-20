@@ -19,7 +19,9 @@ import com.google.inject.Inject;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
@@ -37,14 +39,14 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 1, 2010
+ * @version 1.0.0.2, Oct 20, 2010
  */
 public final class ArchiveDateUtils {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = 
+    private static final Logger LOGGER =
             Logger.getLogger(ArchiveDateUtils.class.getName());
     /**
      * Archive date repository.
@@ -105,9 +107,11 @@ public final class ArchiveDateUtils {
 
         final JSONObject archiveDateArticleRelation = new JSONObject();
         archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_"
-                + Keys.OBJECT_ID, archiveDate.getString(Keys.OBJECT_ID));
+                                       + Keys.OBJECT_ID, archiveDate.getString(
+                Keys.OBJECT_ID));
         archiveDateArticleRelation.put(Article.ARTICLE + "_"
-                + Keys.OBJECT_ID, article.getString(Keys.OBJECT_ID));
+                                       + Keys.OBJECT_ID, article.getString(
+                Keys.OBJECT_ID));
 
         archiveDateArticleRepository.add(archiveDateArticleRelation);
     }
@@ -125,7 +129,7 @@ public final class ArchiveDateUtils {
                 archiveDateArticleRepository.getByArticleId(articleId);
         final String archiveDateId =
                 archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
-                + "_" + Keys.OBJECT_ID);
+                                                     + "_" + Keys.OBJECT_ID);
         final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
         int archiveDateArticleCnt =
                 archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT);
@@ -157,9 +161,10 @@ public final class ArchiveDateUtils {
     public List<JSONObject> getArchiveDates()
             throws JSONException, RepositoryException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+        sorts.put(ArchiveDate.ARCHIVE_DATE, SortDirection.DESCENDING);
         final JSONObject result = archiveDateRepository.get(
-                1, Integer.MAX_VALUE, ArchiveDate.ARCHIVE_DATE,
-                SortDirection.DESCENDING);
+                1, Integer.MAX_VALUE, sorts);
 
         try {
             final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);

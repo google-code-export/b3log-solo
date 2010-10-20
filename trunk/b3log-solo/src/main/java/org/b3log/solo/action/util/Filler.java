@@ -17,6 +17,7 @@ package org.b3log.solo.action.util;
 
 import com.google.inject.Inject;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -112,11 +113,11 @@ public final class Filler {
         final int windowSize =
                 preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
+        final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+        sorts.put(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
         final JSONObject result = articleRepository.get(
                 currentPageNum,
-                pageSize,
-                Article.ARTICLE_UPDATE_DATE,
-                SortDirection.DESCENDING);
+                pageSize, sorts);
 
         final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                 getInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -354,10 +355,10 @@ public final class Filler {
      */
     private void fillPageNavigations(final Map<String, Object> dataModel)
             throws Exception {
+        final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+        sorts.put(Page.PAGE_ORDER, SortDirection.ASCENDING);
         final JSONObject result = pageRepository.get(1,
-                                                     Integer.MAX_VALUE,
-                                                     Page.PAGE_ORDER,
-                                                     SortDirection.ASCENDING);
+                                                     Integer.MAX_VALUE, sorts);
         final List<JSONObject> pageNavigations =
                 org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                 getJSONArray(Keys.RESULTS));

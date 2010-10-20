@@ -21,7 +21,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +60,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Oct 14, 2010
+ * @version 1.0.1.5, Oct 20, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -368,10 +370,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
+            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+            sorts.put(ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
             final JSONObject result =
-                    articleRepository.get(currentPageNum, pageSize,
-                                          ARTICLE_CREATE_DATE,
-                                          SortDirection.DESCENDING);
+                    articleRepository.get(currentPageNum, pageSize, sorts);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
 
