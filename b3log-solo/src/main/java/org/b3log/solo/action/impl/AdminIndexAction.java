@@ -75,8 +75,6 @@ public final class AdminIndexAction extends AbstractAdminAction {
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString));
 
-            Locales.setLocale(request, locale); // For other admin DoNothing actions
-
             final Map<String, String> langs = langPropsService.getAll(locale);
             LOGGER.log(Level.FINEST, "Langs[values={0}]", langs.values());
             ret.putAll(langs);
