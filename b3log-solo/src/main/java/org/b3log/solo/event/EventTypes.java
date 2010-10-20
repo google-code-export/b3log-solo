@@ -19,7 +19,7 @@ package org.b3log.solo.event;
  * Event types.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 7, 2010
+ * @version 1.0.0.4, Oct 20, 2010
  */
 public final class EventTypes {
 
@@ -47,6 +47,10 @@ public final class EventTypes {
      * Indicates the preference load event.
      */
     public static final String PREFERENCE_LOAD = "Preference Load";
+    /**
+     * Indicates the upgrade event.
+     */
+    public static final String UPGRADE = "Upgrade";
 
     /**
      * Private default constructor.
