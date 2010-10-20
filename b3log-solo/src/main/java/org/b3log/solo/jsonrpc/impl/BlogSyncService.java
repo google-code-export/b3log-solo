@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Sep 8, 2010
+ * @version 1.0.1.1, Oct 20, 2010
  */
 public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
@@ -567,6 +567,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
         final String permalink = "/articles/" + permalinkDate + "/"
                                  + articleId + ".html";
         ret.put(Article.ARTICLE_PERMALINK, permalink);
+        ret.put(Article.ARTICLE_PUT_TOP, false);
 
         return ret;
     }

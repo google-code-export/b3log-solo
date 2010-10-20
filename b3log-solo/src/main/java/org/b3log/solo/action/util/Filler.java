@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.action.util;
 
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +40,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.model.TopArticle;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.json.JSONException;
@@ -51,7 +49,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Oct 11, 2010
+ * @version 1.0.1.2, Oct 20, 2010
  */
 public final class Filler {
 
@@ -95,11 +93,6 @@ public final class Filler {
      */
     @Inject
     private ArchiveDateUtils archiveDateUtils;
-    /**
-     * User service.
-     */
-    private com.google.appengine.api.users.UserService userService =
-            UserServiceFactory.getUserService();
 
     /**
      * Fills articles in index.ftl.
@@ -119,25 +112,16 @@ public final class Filler {
         final int windowSize =
                 preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-        final List<JSONObject> topArticles = articleUtils.getTopArticles();
-        final int topArticleCount = topArticles.size();
-        final int passedArticleCount = (currentPageNum - 1) * pageSize;
-        final List<String> topArticleIds = articleUtils.getTopArticleIds();
-
-        final int curPageNum = currentPageNum;
-        // FIXME: Put top article will cause a bug while pagination
-
         final JSONObject result = articleRepository.get(
-                curPageNum,
+                currentPageNum,
                 pageSize,
                 Article.ARTICLE_UPDATE_DATE,
-                SortDirection.DESCENDING,
-                topArticleIds.toArray(new String[0]));
+                SortDirection.DESCENDING);
 
         final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                 getInt(Pagination.PAGINATION_PAGE_COUNT);
 
-        final List<Integer> pageNums = Paginator.paginate(curPageNum,
+        final List<Integer> pageNums = Paginator.paginate(currentPageNum,
                                                           pageSize,
                                                           pageCount,
                                                           windowSize);
@@ -152,18 +136,6 @@ public final class Filler {
 
         final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
                 jsonArrayToList(result.getJSONArray(Keys.RESULTS));
-
-        LOGGER.log(Level.FINEST, "Top article count[{0}]", topArticleCount);
-        if (topArticleCount > passedArticleCount) {
-            final List<JSONObject> remainsTopArticles =
-                    topArticles.subList(passedArticleCount, topArticleCount);
-            for (int i = 0; i < remainsTopArticles.size(); i++) {
-                articles.remove(articles.size() - 1);
-                final JSONObject topArticle = topArticles.get(i);
-                topArticle.put(TopArticle.TOP_ARTICLE, true);
-                articles.add(0, topArticle);
-            }
-        }
 
         articleUtils.addTags(articles);
 
