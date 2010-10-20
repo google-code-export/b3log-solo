@@ -46,8 +46,6 @@ import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.TopArticle;
-import org.b3log.solo.repository.TopArticleRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
@@ -84,11 +82,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private TagArticleRepository tagArticleRepository;
-    /**
-     * Top article repository.
-     */
-    @Inject
-    private TopArticleRepository topArticleRepository;
     /**
      * Event manager.
      */
@@ -212,22 +205,24 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final Date date = new Date();
             article.put(ARTICLE_UPDATE_DATE, date);
             article.put(ARTICLE_CREATE_DATE, date);
-            // Step 4: Add article
+            // Step 4: Set put top to false
+            article.put(ARTICLE_PUT_TOP, false);
+            // Step 5: Add article
             final String articleId = articleRepository.add(article);
             ret.put(Keys.OBJECT_ID, articleId);
-            // Step 5: Add tag-article relations
+            // Step 6: Add tag-article relations
             articleUtils.addTagArticleRelation(tags, article);
-            // Step 6: Inc blog article count statictis
+            // Step 7: Inc blog article count statictis
             statistics.incBlogArticleCount();
-            // Step 7: Add archive date-article relations
+            // Step 8: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
-            // Step 8: Set permalink(/articles/yyyy/MM/dd/articleId.html)
+            // Step 9: Set permalink(/articles/yyyy/MM/dd/articleId.html)
             final String permalinkDate = PERMALINK_FORMAT.format(date);
             final String permalink = "/articles/" + permalinkDate + "/"
                                      + articleId + ".html";
             article.put(ARTICLE_PERMALINK, permalink);
             articleRepository.update(articleId, article);
-            // Step 9: Fire add article event
+            // Step 10: Fire add article event
             final JSONObject eventData = new JSONObject();
             eventData.put(ARTICLE, article);
             eventData.put(Keys.RESULTS, ret);
@@ -389,18 +384,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
-            final List<String> topArticleIds = articleUtils.getTopArticleIds();
 
-            LOGGER.log(Level.FINEST, "Top article ids[{0}]", topArticleIds);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
                 // Remove unused properties
                 article.remove(ARTICLE_CONTENT);
                 article.remove(ARTICLE_UPDATE_DATE);
-                // handle put top articles
-                article.put(TopArticle.TOP_ARTICLE,
-                            topArticleIds.contains(
-                        article.getString(Keys.OBJECT_ID)));
             }
             ret.put(ARTICLES, articles);
 
@@ -530,9 +519,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         String articleId = null;
         try {
             articleId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final JSONObject topArticle = new JSONObject();
-            topArticle.put(ARTICLE + "_" + Keys.OBJECT_ID, articleId);
-            topArticleRepository.add(topArticle);
+            final JSONObject topArticle = articleRepository.get(articleId);
+            topArticle.put(ARTICLE_PUT_TOP, true);
+            articleRepository.update(articleId, topArticle);
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.PUT_TOP_ARTICLE_SUCC);
@@ -584,12 +573,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         String articleId = null;
         try {
             articleId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final JSONObject topArticle =
-                    topArticleRepository.getByArticleId(articleId);
-            if (null != topArticle) {
-                topArticleRepository.remove(topArticle.getString(Keys.OBJECT_ID));
-            }
-            
+            final JSONObject topArticle = articleRepository.get(articleId);
+            topArticle.put(ARTICLE_PUT_TOP, false);
+            articleRepository.update(articleId, topArticle);
+            transaction.commit();
+
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_TOP_ARTICLE_SUCC);

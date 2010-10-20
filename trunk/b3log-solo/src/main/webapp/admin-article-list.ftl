@@ -268,7 +268,7 @@
                         articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                         articleData[i].update = "<div class='updateIcon'></div>";
                         articleData[i].remove = "<div class='deleteIcon'></div>";
-                        articleData[i].topArticle = articles[i].topArticle // TODO: top article icon class
+                        articleData[i].topArticle = articles[i].articlePutTop; // TODO: top article icon class
                         articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
                             + articles[i].articleCommentCount + "</div>";
                         articleData[i].articleViewCount = "<a href='article-detail.do?oId="
