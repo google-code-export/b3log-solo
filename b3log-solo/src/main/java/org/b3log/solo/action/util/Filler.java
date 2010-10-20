@@ -115,6 +115,7 @@ public final class Filler {
 
         final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
         sorts.put(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+        sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
         final JSONObject result = articleRepository.get(
                 currentPageNum,
                 pageSize, sorts);
