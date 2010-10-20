@@ -18,7 +18,9 @@ package org.b3log.solo.jsonrpc.impl;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +43,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 11, 2010
+ * @version 1.0.0.2, Oct 20, 2010
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
@@ -140,9 +142,11 @@ public final class PageService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
+
+            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+            sorts.put(Page.PAGE_ORDER, SortDirection.ASCENDING);
             final JSONObject result =
-                    pageRepository.get(currentPageNum, pageSize,
-                                       Page.PAGE_ORDER, SortDirection.ASCENDING);
+                    pageRepository.get(currentPageNum, pageSize, sorts);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
 

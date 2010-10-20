@@ -19,7 +19,9 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +41,7 @@ import org.json.JSONObject;
  * File service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 8, 2010
+ * @version 1.0.0.1, Oct 20, 2010
  */
 public final class FileService extends AbstractGAEJSONRpcService {
 
@@ -107,10 +109,10 @@ public final class FileService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
+            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+            sorts.put(File.FILE_UPLOAD_DATE, SortDirection.DESCENDING);
             final JSONObject result =
-                    fileRepository.get(currentPageNum, pageSize,
-                                          File.FILE_UPLOAD_DATE,
-                                          SortDirection.DESCENDING);
+                    fileRepository.get(currentPageNum, pageSize, sorts);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
 
