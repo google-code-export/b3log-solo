@@ -1,27 +1,25 @@
-<div class="marginBottom12">
-    <h1 class="title">
+<div class="header-navi right">
+    <ul>
+        <#list pageNavigations as page>
+        <li>
+            <a href="page.do?oId=${page.oId}">
+                ${page.pageTitle}
+            </a>&nbsp;&nbsp;
+        </li>
+        </#list>
+        <li>
+            <a href="tags.do">${allTagsLabel}</a>&nbsp;&nbsp;
+        </li>
+        <li>
+            <a href="blog-articles-feed.do">${atomLabel}</a><a href="blog-articles-feed.do"><img src="images/feed.png" alt="Atom"/></a>
+        </li>
+    </ul>
+</div>
+<div class="header-title">
+    <h1>
         <a href="index.do" id="logoTitle" >
             ${blogTitle}
         </a>
     </h1>
-    <span class="sub-title">${blogSubtitle}</span>
+    <div>${blogSubtitle}</div>
 </div>
-<div class="side left">
-</div>
-<div class="right header-right">
-    <div class="left marginLeft12">
-        <#list pageNavigations as page>
-        <span>
-            <a href="page.do?oId=${page.oId}">
-                ${page.pageTitle}
-            </a>&nbsp;&nbsp;
-        </span>
-        </#list>
-        <a href="tags.do">${allTagsLabel}</a>&nbsp;&nbsp;
-        <a href="blog-articles-feed.do">${atomLabel}</a><a href="blog-articles-feed.do"><img src="images/feed.png" alt="Atom"/></a>
-    </div>
-    <div class="right" id="statistic">
-    </div>
-    <div class="clear"></div>
-</div>
-<div class="clear"></div>
