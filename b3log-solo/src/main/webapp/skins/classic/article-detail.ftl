@@ -47,6 +47,11 @@
                                         ${updatedLabel}
                                     </sup>
                                     </#if>
+                                    <#if article.articlePutTop>
+                                    <sup class="red" style="font-size: 12px">
+                                        ${topArticleLabel}
+                                    </sup>
+                                    </#if>
                                 </h2>
                                 <div class="article-tags">
                                     ${tags1Label}
