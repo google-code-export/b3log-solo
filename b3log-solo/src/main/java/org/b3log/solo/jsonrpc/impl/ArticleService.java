@@ -527,7 +527,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.PUT_TOP_ARTICLE_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.log(Level.WARNING, "Can't put the article[oId{0}] to top",
+            LOGGER.log(Level.SEVERE, "Can't put the article[oId{0}] to top",
                        articleId);
             try {
                 ret.put(Keys.STATUS_CODE, StatusCodes.PUT_TOP_ARTICLE_FAIL_);
@@ -581,7 +581,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_TOP_ARTICLE_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.log(Level.WARNING,
+            LOGGER.log(Level.SEVERE,
                        "Can't cancel the article[oId{0}] from top",
                        articleId);
             try {
