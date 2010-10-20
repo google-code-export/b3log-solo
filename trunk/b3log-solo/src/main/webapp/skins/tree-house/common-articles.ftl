@@ -1,6 +1,16 @@
 <#list articles as article>
 <div class="article">
-    <div class="article-header">
+    <h2>
+        <a class="noUnderline" href="${article.articlePermalink}">
+            ${article.articleTitle}
+            <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+            <sup>
+                ${updatedLabel}
+            </sup>
+            </#if>
+        </a>
+    </h2>
+    <div class="left article-info">
         <div class="article-date">
             <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
             ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -8,54 +18,29 @@
             ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
             </#if>
         </div>
-        <div class="article-title">
-            <h2>
-                <a class="noUnderline" href="${article.articlePermalink}">
-                    ${article.articleTitle}
-                </a>
-                <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-                <sup class="red" style="font-size: 12px">
-                    ${updatedLabel}
-                </sup>
-                </#if>
-            </h2>
-            <div class="article-tags">
-                ${tags1Label}
-                <#list article.articleTags as articleTag>
-                <span>
-                    <a href="tag-articles.do?oId=${articleTag.oId}">
-                        ${articleTag.tagTitle}
-                    </a>
-                    <#if articleTag_has_next>,</#if>
-                </span>
-                </#list>
-            </div>
+        <div class="article-comment">
+            <a href="article-detail.do?oId=${article.oId}#comments" class="left">
+                ${commentLabel}（${article.articleCommentCount}）
+            </a>
         </div>
-        <div class="clear"></div>
     </div>
-    <div class="article-body">
+    <div class="right article-main">
+        <em class="article-tags">
+            <#list article.articleTags as articleTag>
+            <a href="tag-articles.do?oId=${articleTag.oId}">
+                ${articleTag.tagTitle}
+            </a>
+            <#if articleTag_has_next>,</#if>
+            </#list>
+        </em>
         <div class="article-abstract">
             ${article.articleAbstract}
         </div>
     </div>
-    <div class="article-footer">
-        <div class="right">
-            <span class="article-create-date left">
-                &nbsp;${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp
-            </span>
-            <a href="article-detail.do?oId=${article.oId}#comments" class="left">
-                <span class="left commentIcon" title="${commentLabel}"></span>
-                ${article.articleCommentCount}
-            </a>
-            <span class="left">&nbsp;&nbsp;</span>
-            <a href="article-detail.do?oId=${article.oId}" class="left">
-                <span class="left browserIcon" title="${viewLabel}"></span>
-                ${article.articleViewCount}
-            </a>
-        </div>
-        <div class="clear"></div>
-    </div>
+    <div class="clear"></div>
 </div>
+<div class="line right"></div>
+<div class="clear"></div>
 </#list>
 <#if 0 != paginationPageCount>
 <div class="pagination">

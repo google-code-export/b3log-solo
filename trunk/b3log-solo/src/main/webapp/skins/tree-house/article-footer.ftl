@@ -67,12 +67,12 @@ Powered by
         // article-header.ftl blogStatistic
         jsonRpc.statisticService.getBlogStatistic(function (result, error) {
             if (!error && result) {
-                var statisticHTML = "<span>${viewCount1Label}<span class='error-msg'>"
-                    + result.statisticBlogViewCount + "</span>&nbsp;&nbsp;</span>"
-                    + "<span>${articleCount1Label}<span class='error-msg'>"
-                    + result.statisticBlogArticleCount + "</span>&nbsp;&nbsp;</span>"
-                    + "<span>${commentCount1Label}<span class='error-msg'>"
-                    + result.statisticBlogCommentCount + "</span></span>";
+                var statisticHTML = "<div>${viewCount1Label}&nbsp;&nbsp;<span class='error-msg'>"
+                    + result.statisticBlogViewCount + "</span></div>"
+                    + "<div>${articleCount1Label}&nbsp;&nbsp;<span class='error-msg'>"
+                    + result.statisticBlogArticleCount + "</span></div>"
+                    + "<div>${commentCount1Label}&nbsp;&nbsp;<span class='error-msg'>"
+                    + result.statisticBlogCommentCount + "</span></div>";
                 $("#statistic").html(statisticHTML);
             }
         });
@@ -140,30 +140,4 @@ Powered by
         jsonRpc.adminService.clearAllPageCache();
         window.location.reload();
     }
-    
-    // article-side.ftl user introduction
-    function handleResponse (response) {
-        if ($("#sideNavi").length > 0) {
-            var userInfo = {},
-            userIntroHTML = "";
-            if (response.error) {
-                userInfo.thumbnailUrl = localStorage.getItem("userInfoThumbnailUrl");
-                userInfo.displayName = localStorage.getItem("userInfoDisplayName");
-                userInfo.aboutMe = localStorage.getItem("userInfoAboutMe");
-            } else {
-                userInfo = response.data;
-                localStorage.setItem("userInfoThumbnailUrl", response.data.thumbnailUrl);
-                localStorage.setItem("userInfoDisplayName", response.data.displayName);
-                localStorage.setItem("userInfoAboutMe", response.data.aboutMe);
-            }
-
-            if (userInfo.thumbnailUrl === null || userInfo.thumbnailUrl === undefined || userInfo.thumbnailUrl === "") {
-                userIntroHTML = "";
-            } else {
-                userIntroHTML = "<img src='" + userInfo.thumbnailUrl + "'/>";
-            }
-            $("#userIntro").html(userIntroHTML);
-        }
-    }
 </script>
-<script type="text/javascript" src="http://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>

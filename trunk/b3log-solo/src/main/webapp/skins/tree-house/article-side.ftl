@@ -1,5 +1,5 @@
 <div id="sideNavi">
-    <div id="userIntro">
+    <div id="statistic">
     </div>
     <div class="block notice">
         <h3>${noticeBoardLabel}</h3>
@@ -12,7 +12,7 @@
         <h3 id="recentComments">${recentCommentsLabel}</h3>
     </div>
     <div class="line"></div>
-    <div class="block">
+    <div class="block mostCommentArticles">
         <h3>${mostCommentArticlesLabel}</h3>
         <ul id="mostCommentArticles">
             <#list mostCommentArticles as article>
@@ -29,7 +29,7 @@
         <div class='clear'></div>
     </div>
     <div class="line"></div>
-    <div class="block">
+    <div class="block mostViewCountArticles">
         <h3>${mostViewCountArticlesLabel}</h3>
         <ul id="mostViewCountArticles">
             <#list mostViewCountArticles as article>
@@ -46,16 +46,19 @@
         <div class='clear'></div>
     </div>
     <div class="line"></div>
-    <div class="block">
+    <div class="block popTags">
         <h3>${popTagsLabel}</h3>
         <ul>
             <#list mostUsedTags as tag>
             <li>
-                <a href="tag-articles-feed.do?oId=${tag.oId}" class="noUnderline">
-                    <img alt="${tag.tagTitle}" src="images/feed.png"/>
-                </a>
                 <a name="tags${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
-                    ${tag.tagTitle}</a>(${tag.tagReferenceCount})
+                    ${tag.tagTitle}
+                    <span>
+                        (${tag.tagReferenceCount})
+                    </span>
+                </a>
+                <img onclick="window.location='tag-articles-feed.do?oId=${tag.oId}'"
+                     alt="${tag.tagTitle}" src="images/feed.png"/>
             </li>
             </#list>
         </ul>
@@ -83,10 +86,17 @@
             <li>
                 <#if "en" == localeString?substring(0, 2)>
                 <a name="archiveDates${archiveDate.oId}" href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}">
-                    ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDateArticleCount})
+                    ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}
+                    <span>
+                        (${archiveDate.archiveDateArticleCount})
+                    </span>
+                </a>
                 <#else>
                 <a name="archiveDates${archiveDate.oId}" href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
-                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
+                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}
+                    <span>
+                        (${archiveDate.archiveDateArticleCount})
+                    </span>
                 </a>
                 </#if>
             </li>
