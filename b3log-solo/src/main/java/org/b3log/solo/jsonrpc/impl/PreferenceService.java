@@ -109,7 +109,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
             ret.put(Preference.PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_PREFERENCE_SUCC);
-
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
