@@ -30,9 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Preference;
 import org.json.JSONObject;
 
 /**
@@ -83,12 +83,17 @@ public abstract class AbstractAdminAction extends AbstractAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final Locale locale = Locales.getLocale(request);
-            Locales.setLocale(request, locale);
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
+            final String localeString = preference.getString(
+                    Preference.LOCALE_STRING);
+            final Locale locale = new Locale(
+                    Locales.getLanguage(localeString),
+                    Locales.getCountry(localeString));
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
-        } catch (final ServiceException e) {
+        } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException("Language model fill error");
         }
