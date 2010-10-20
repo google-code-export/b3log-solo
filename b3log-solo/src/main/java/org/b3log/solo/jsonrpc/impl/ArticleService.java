@@ -578,8 +578,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             articleRepository.update(articleId, topArticle);
             transaction.commit();
 
-            transaction.commit();
-
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_TOP_ARTICLE_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
