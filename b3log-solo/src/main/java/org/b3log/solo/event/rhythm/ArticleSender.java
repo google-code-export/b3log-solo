@@ -101,9 +101,10 @@ public final class ArticleSender
             requestJSONObject.put(Article.ARTICLE,
                                   data.getJSONObject(Article.ARTICLE));
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
-            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
+            httpRequest.setPayload(
+                    requestJSONObject.toString().getBytes("UTF-8"));
 //            final Future<HTTPResponse> futureResponse =
-                    urlFetchService.fetchAsync(httpRequest);
+            urlFetchService.fetchAsync(httpRequest);
 //            final HTTPResponse httpResponse =
 //                    futureResponse.get(TIMEOUT, TimeUnit.MILLISECONDS);
 //            final int statusCode = httpResponse.getResponseCode();
