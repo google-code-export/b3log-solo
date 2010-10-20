@@ -18,6 +18,7 @@ package org.b3log.solo.event;
 import java.util.logging.Logger;
 import org.b3log.solo.event.sync.impl.CSDNBlogAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
+import org.b3log.solo.event.article.TopArticleRemover;
 import org.b3log.solo.event.buzz.ActivityCreator;
 import org.b3log.solo.event.comment.ReplyNotifier;
 import org.b3log.solo.event.preference.DisplayCntLoader;
@@ -40,7 +41,7 @@ import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
  * configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Oct 15, 2010
+ * @version 1.0.1.2, Oct 20, 2010
  */
 public final class EventModule extends AbstractEventModule {
 
@@ -66,11 +67,9 @@ public final class EventModule extends AbstractEventModule {
         bind(CSDNBlogAddArticleProcessor.class).asEagerSingleton();
         bind(CSDNBlogRemoveArticleProcessor.class).asEagerSingleton();
         bind(CSDNBlogUpdateArticleProcessor.class).asEagerSingleton();
-
         bind(CnBlogsAddArticleProcessor.class).asEagerSingleton();
         bind(CnBlogsRemoveArticleProcessor.class).asEagerSingleton();
         bind(CnBlogsUpdateArticleProcessor.class).asEagerSingleton();
-
         bind(BlogJavaAddArticleProcessor.class).asEagerSingleton();
         bind(BlogJavaRemoveArticleProcessor.class).asEagerSingleton();
         bind(BlogJavaUpdateArticleProcessor.class).asEagerSingleton();
@@ -79,9 +78,9 @@ public final class EventModule extends AbstractEventModule {
         bind(HTMLHeadLoader.class).asEagerSingleton();
         bind(GoogleSettingsLoader.class).asEagerSingleton();
         bind(DisplayCntLoader.class).asEagerSingleton();
-
         bind(ReplyNotifier.class).asEagerSingleton();
         bind(ActivityCreator.class).asEagerSingleton();
         bind(ArticleSender.class).asEagerSingleton();
+        bind(TopArticleRemover.class).asEagerSingleton();
     }
 }

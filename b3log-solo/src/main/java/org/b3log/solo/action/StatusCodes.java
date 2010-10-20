@@ -19,7 +19,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Sep 28, 2010
+ * @version 1.0.1.0, Oct 20, 2010
  */
 public enum StatusCodes {
 
@@ -39,6 +39,22 @@ public enum StatusCodes {
      * Indicates remove an article successfully.
      */
     REMOVE_ARTICLE_SUCC,
+    /**
+     * Indicates put top an article successfully.
+     */
+    PUT_TOP_ARTICLE_SUCC,
+    /**
+     * Indicates put top an article fails.
+     */
+    PUT_TOP_ARTICLE_FAIL_,
+    /**
+     * Indicates cancel top an article successfully.
+     */
+    CANCEL_TOP_ARTICLE_SUCC,
+    /**
+     * Indicates cancel top an article fails.
+     */
+    CANCEL_TOP_ARTICLE_FAIL_,
     /**
      * Indicates update an article successfully.
      */

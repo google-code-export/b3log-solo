@@ -37,13 +37,23 @@
             }, {
                 textAlign: "center",
                 name: "${removeLabel}",
-                index: "deleted",
+                index: "remove",
                 width: 56,
                 bindEvent: [{
                         'eventName': 'click',
                         'functionName': 'deleteArticle'
                     }],
                 style: "cursor:pointer; margin-left:22px;"
+            },  {
+                textAlign: "center",
+                name: "${putTopLabel}",
+                index: "topArticle",
+                width: 56,
+                bindEvent: [{
+                        'eventName': 'click',
+                        'functionName': 'topArticle'
+                    }],
+                style: "cursor:pointer;"
             }, {
                 textAlign: "center",
                 name: "${commentLabel}",
@@ -178,6 +188,48 @@
         }
     }
 
+    var topArticle = function (event) {
+        var topArticle = $(this).text();
+        $("#loadMsg").text("${loadingLabel}");
+        var requestJSONObject = {
+            "oId": event.data.id[0]
+        };
+
+        if ("false" === topArticle) {
+            jsonRpc.articleService.putTopArticle(function (result, error) {
+                switch (result.sc) {
+                    case "PUT_TOP_ARTICLE_SUCC":
+                        getArticleList(1);
+                        $("#tipMsg").text("${putTopSuccLabel}");
+                        break;
+                    case "PUT_TOP_ARTICLE_FAIL_":
+                        $("#tipMsg").text("${putTopFailLabel}");
+                        break;
+                    default:
+                        $("#tipMsg").text("");
+                        break;
+                }
+                $("#loadMsg").text("");
+            }, requestJSONObject);
+        } else {
+            jsonRpc.articleService.cancelTopArticle(function (result, error) {
+                switch (result.sc) {
+                    case "CANCEL_TOP_ARTICLE_SUCC":
+                        getArticleList(1);
+                        $("#tipMsg").text("${cancelTopSuccLabel}");
+                        break;
+                    case "CANCEL_TOP_ARTICLE_FAIL_":
+                        $("#tipMsg").text("${cancelTopFailLabel}");
+                        break;
+                    default:
+                        $("#tipMsg").text("");
+                        break;
+                }
+                $("#loadMsg").text("");
+            }, requestJSONObject);
+        }
+    }
+
     var closeDialog = function () {
         getArticleList(currentPage);
         $("#comments").dialog("close");
@@ -215,7 +267,8 @@
                             + articles[i].articleTitle + "</a>";
                         articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                         articleData[i].update = "<div class='updateIcon'></div>";
-                        articleData[i].deleted = "<div class='deleteIcon'></div>";
+                        articleData[i].remove = "<div class='deleteIcon'></div>";
+                        articleData[i].topArticle = articles[i].topArticle // TODO: top article icon class
                         articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
                             + articles[i].articleCommentCount + "</div>";
                         articleData[i].articleViewCount = "<a href='article-detail.do?oId="

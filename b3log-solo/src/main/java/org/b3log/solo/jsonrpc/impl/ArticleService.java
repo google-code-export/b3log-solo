@@ -46,12 +46,14 @@ import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.ArticleCommentRepository;
+import org.b3log.solo.model.TopArticle;
+import org.b3log.solo.repository.TopArticleRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TagUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -83,10 +85,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     @Inject
     private TagArticleRepository tagArticleRepository;
     /**
-     * Article-Comment repository.
+     * Top article repository.
      */
     @Inject
-    private ArticleCommentRepository articleCommentRepository;
+    private TopArticleRepository topArticleRepository;
     /**
      * Event manager.
      */
@@ -346,7 +348,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleCommentCount": int,
      *         "articleCreateDate"; java.util.Date,
      *         "articleViewCount": int,
-     *         "articleTags": "tag1, tag2, ...."
+     *         "articleTags": "tag1, tag2, ....",
+     *         "topArticle": boolean
      *      }, ....]
      *     "sc": "GET_ARTICLES_SUCC"
      * }
@@ -386,11 +389,18 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
-            // Remove some details
+            final List<String> topArticleIds = articleUtils.getTopArticleIds();
+
+            LOGGER.log(Level.FINEST, "Top article ids[{0}]", topArticleIds);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
+                // Remove unused properties
                 article.remove(ARTICLE_CONTENT);
                 article.remove(ARTICLE_UPDATE_DATE);
+                // handle put top articles
+                article.put(TopArticle.TOP_ARTICLE,
+                            topArticleIds.contains(
+                        article.getString(Keys.OBJECT_ID)));
             }
             ret.put(ARTICLES, articles);
 
@@ -482,6 +492,118 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
+        }
+
+        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+
+        return ret;
+    }
+
+    /**
+     * Puts an article to top by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "PUT_TOP_ARTICLE_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject putTopArticle(final JSONObject requestJSONObject,
+                                    final HttpServletRequest request,
+                                    final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+        String articleId = null;
+        try {
+            articleId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final JSONObject topArticle = new JSONObject();
+            topArticle.put(ARTICLE + "_" + Keys.OBJECT_ID, articleId);
+            topArticleRepository.add(topArticle);
+            transaction.commit();
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.PUT_TOP_ARTICLE_SUCC);
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.WARNING, "Can't put the article[oId{0}] to top",
+                       articleId);
+            try {
+                ret.put(Keys.STATUS_CODE, StatusCodes.PUT_TOP_ARTICLE_FAIL_);
+            } catch (final JSONException ex) {
+                LOGGER.severe(ex.getMessage());
+                throw new ActionException(e);
+            }
+        }
+
+        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+
+        return ret;
+    }
+
+    /**
+     * Cancels an article from top by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "CANCEL_TOP_ARTICLE_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject cancelTopArticle(final JSONObject requestJSONObject,
+                                       final HttpServletRequest request,
+                                       final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+        String articleId = null;
+        try {
+            articleId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final JSONObject topArticle =
+                    topArticleRepository.getByArticleId(articleId);
+            if (null != topArticle) {
+                topArticleRepository.remove(topArticle.getString(Keys.OBJECT_ID));
+            }
+            
+            transaction.commit();
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_TOP_ARTICLE_SUCC);
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.WARNING,
+                       "Can't cancel the article[oId{0}] from top",
+                       articleId);
+            try {
+                ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_TOP_ARTICLE_FAIL_);
+            } catch (final JSONException ex) {
+                LOGGER.severe(ex.getMessage());
+                throw new ActionException(e);
+            }
         }
 
         AbstractCacheablePageAction.PAGE_CACHE.removeAll();
