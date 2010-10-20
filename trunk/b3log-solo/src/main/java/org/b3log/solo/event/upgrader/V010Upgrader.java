@@ -97,6 +97,8 @@ public final class V010Upgrader
                     articleRepository.update(articleId, article);
                     LOGGER.log(Level.INFO, "Updated article[oId={0}]", articleId);
                 }
+            } else {
+                LOGGER.log(Level.INFO, "No upgrade need");
             }
 
             transaction.commit();
