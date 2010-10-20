@@ -218,7 +218,7 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final EventManager eventManager = getInjector().
                     getInstance(EventManager.class);
-            eventManager.fireEventSynchronously(
+            eventManager.fireEventAsynchronously(
                     new Event<JSONObject>(EventTypes.UPGRADE, null));
         } catch (final EventException e) {
             LOGGER.severe(e.getMessage());
