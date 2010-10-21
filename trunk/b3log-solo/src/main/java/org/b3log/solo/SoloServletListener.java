@@ -57,6 +57,7 @@ import static org.b3log.solo.model.Skin.*;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.sync.SyncModule;
+import org.b3log.solo.upgrade.UpgradeModule;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONArray;
@@ -181,7 +182,8 @@ public final class SoloServletListener extends AbstractServletListener {
                                              new RepositoryModule(),
                                              new EventModule(),
                                              new SyncModule(),
-                                             new UtilModule()));
+                                             new UtilModule(),
+                                             new UpgradeModule()));
         }
 
         return ret;
