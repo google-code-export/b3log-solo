@@ -1,9 +1,8 @@
 /*
     Document   : default-base
-    Version    : 1.0.0.9, Aug 4, 2010
+    Version    : 1.0.1.0, Oct 21, 2010
     Author     : Vanessa
-    Description:
-        Basci css.
+    Description: Basic CSS.
 */
 *,html,body {
     height: auto;
@@ -163,7 +162,7 @@ button:hover,.button:hover {
     text-align: center;
     padding: 12px;
 }
-.deleteIcon,.updateIcon,.commentIcon,.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,.postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon, .pageIcon, .trueIcon,.falseIcon,.fileIcon {
+.putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon,.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,.postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon, .pageIcon, .trueIcon,.falseIcon,.fileIcon {
     width: 16px;
     height: 16px;
     background-image: url("../images/icon.png");
@@ -223,6 +222,13 @@ button:hover,.button:hover {
 .calendarIcon {
     background-position: -144px -16px;
 }
+.putTopIcon {
+    background-position: -16px -32px;
+}
+.notPutTopIcon {
+    background-position: -32px -32px;
+}
+
 .stack { position: fixed; bottom: 9px; right: 18px; font: 13px "Trebuchet MS", Verdana, Helvetica, sans-serif; color: #666; }
 .stack * { margin: 0; padding: 0; }
 .stack > img { position: relative; cursor: pointer;z-index: 2; width:38px;}

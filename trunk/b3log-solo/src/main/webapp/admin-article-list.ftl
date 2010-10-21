@@ -53,7 +53,7 @@
                         'eventName': 'click',
                         'functionName': 'topArticle'
                     }],
-                style: "cursor:pointer;"
+                style: "cursor:pointer; margin-left:22px;"
             }, {
                 textAlign: "center",
                 name: "${commentLabel}",
@@ -189,13 +189,12 @@
     }
 
     var topArticle = function (event) {
-        var topArticle = $(this).text();
         $("#loadMsg").text("${loadingLabel}");
         var requestJSONObject = {
             "oId": event.data.id[0]
         };
 
-        if ("false" === topArticle) {
+        if ($(this).find("div").hasClass("notPutTopIcon")) {
             jsonRpc.articleService.putTopArticle(function (result, error) {
                 switch (result.sc) {
                     case "PUT_TOP_ARTICLE_SUCC":
@@ -268,7 +267,9 @@
                         articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                         articleData[i].update = "<div class='updateIcon'></div>";
                         articleData[i].remove = "<div class='deleteIcon'></div>";
-                        articleData[i].topArticle = articles[i].articlePutTop; // TODO: top article icon class
+                        var topArticleHtml = articles[i].articlePutTop ?
+                            "<div class='putTopIcon'></div>" : "<div class='notPutTopIcon'></div>"
+                        articleData[i].topArticle = topArticleHtml;
                         articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
                             + articles[i].articleCommentCount + "</div>";
                         articleData[i].articleViewCount = "<a href='article-detail.do?oId="
