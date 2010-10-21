@@ -15,10 +15,14 @@
  */
 package org.b3log.solo.upgrade;
 
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.QueryResultList;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -29,7 +33,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -55,9 +58,9 @@ public final class V010ToV011 extends HttpServlet {
     @Inject
     private ArticleRepository articleRepository;
     /**
-     * Fetch limit.
+     * Fetch size.
      */
-    private static final int FETCH_LIMIT = 100;
+    private static final int FETCH_SIZE = 100;
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -65,33 +68,25 @@ public final class V010ToV011 extends HttpServlet {
             throws ServletException, IOException {
         LOGGER.info("Upgrading....");
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = AbstractGAERepository.DATASTORE_SERVICE.
+                beginTransaction();
         try {
-            final JSONObject result = articleRepository.get(1, 1);
+            final Query query = new Query(Article.ARTICLE);
+            query.addFilter(Article.ARTICLE_PUT_TOP,
+                            Query.FilterOperator.NOT_EQUAL, true);
+            final PreparedQuery preparedQuery =
+                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+            final QueryResultList<Entity> queryResultList =
+                    preparedQuery.asQueryResultList(FetchOptions.Builder.
+                    withLimit(FETCH_SIZE));
 
-            boolean articleHasPutTopProperty = false;
-            if (result.has(Keys.RESULTS)) {
-                final JSONArray articles = result.getJSONArray(Keys.RESULTS);
-                final JSONObject article = articles.getJSONObject(0);
-                if (article.has(Article.ARTICLE_PUT_TOP)) {
-                    articleHasPutTopProperty = true;
-                }
-            }
 
-            if (!articleHasPutTopProperty) {
-                final long count = articleRepository.count();
-                final List<JSONObject> articles =
-                        articleRepository.getRecentArticles((int) count);
-
-                for (final JSONObject article : articles) {
-                    article.put(Article.ARTICLE_PUT_TOP, false);
-                    final String articleId = article.getString(Keys.OBJECT_ID);
-                    articleRepository.update(articleId, article);
-                    LOGGER.log(Level.INFO, "Updated article[oId={0}]", articleId);
-                }
-            } else {
-                LOGGER.log(Level.INFO, "No upgrade need");
+            for (final Entity entity : queryResultList) {
+                final JSONObject article =
+                        AbstractGAERepository.entity2JSONObject(entity);
+                final String articleId = article.getString(Keys.OBJECT_ID);
+                articleRepository.update(articleId, article);
+                LOGGER.log(Level.INFO, "Updated article[oId={0}]", articleId);
             }
 
             transaction.commit();
