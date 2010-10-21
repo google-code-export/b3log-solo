@@ -109,7 +109,9 @@ public final class V010ToV011 extends HttpServlet {
                     transaction.commit();
                 }
             } catch (final Exception e) {
-                transaction.rollback();
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
                 LOGGER.severe(e.getMessage());
                 throw new ServletException("Upgrade fail from v010 to v011");
             }
