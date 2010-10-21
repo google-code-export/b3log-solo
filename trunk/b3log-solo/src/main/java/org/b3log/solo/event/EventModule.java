@@ -33,7 +33,6 @@ import org.b3log.solo.event.sync.impl.CSDNBlogUpdateArticleProcessor;
 import org.b3log.solo.event.sync.impl.CnBlogsAddArticleProcessor;
 import org.b3log.solo.event.sync.impl.CnBlogsRemoveArticleProcessor;
 import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
-import org.b3log.solo.upgrade.V010ToV011;
 
 /**
  * Event module for IoC
@@ -41,7 +40,7 @@ import org.b3log.solo.upgrade.V010ToV011;
  * configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Oct 20, 2010
+ * @version 1.0.1.4, Oct 21, 2010
  */
 public final class EventModule extends AbstractEventModule {
 
@@ -81,7 +80,5 @@ public final class EventModule extends AbstractEventModule {
         bind(ReplyNotifier.class).asEagerSingleton();
         bind(ActivityCreator.class).asEagerSingleton();
         bind(ArticleSender.class).asEagerSingleton();
-
-        bind(V010ToV011.class).asEagerSingleton();
     }
 }
