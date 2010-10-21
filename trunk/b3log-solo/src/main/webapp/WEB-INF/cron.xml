@@ -32,8 +32,8 @@
     </cron>
 
     <cron>
-        <url>/v010-v011.do</url>
+        <url>/upgrade/v010-v011.do</url>
         <description>Upgrade from v010 to v011.</description>
-        <schedule>every 1 minutes</schedule>
+        <schedule>every 10 minutes</schedule>
     </cron>
 </cronentries>
