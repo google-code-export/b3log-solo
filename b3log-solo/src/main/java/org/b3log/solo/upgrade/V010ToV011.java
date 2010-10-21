@@ -13,64 +13,57 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.upgrader;
+package org.b3log.solo.upgrade;
 
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.event.AbstractEventListener;
-import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
-import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for upgrade from v010.
+ * Upgrader for <b>v010</b> to <b>v011</b>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 20, 2010
+ * @version 1.0.0.1, Oct 21, 2010
  */
-public final class V010Upgrader
-        extends AbstractEventListener<JSONObject> {
+public final class V010ToV011 extends HttpServlet {
 
+    /**
+     * Default serial version uid.
+     */
+    private static final long serialVersionUID = 1L;
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(V010Upgrader.class.getName());
+            Logger.getLogger(V010ToV011.class.getName());
     /**
      * Article repository.
      */
     @Inject
     private ArticleRepository articleRepository;
-
     /**
-     * Constructs a {@link V010Upgrader} object with the specified event
-     * manager.
-     *
-     * @param eventManager the specified event manager
+     * Fetch limit.
      */
-    @Inject
-    public V010Upgrader(final EventManager eventManager) {
-        super(eventManager);
-    }
+    private static final int FETCH_LIMIT = 100;
 
     @Override
-    public void action(final Event<JSONObject> event) throws EventException {
-        final JSONObject data = event.getData();
-        LOGGER.log(Level.FINER,
-                   "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(),
-                                data,
-                                V010Upgrader.class.getName()});
+    protected void doGet(final HttpServletRequest request,
+                         final HttpServletResponse response)
+            throws ServletException, IOException {
+        LOGGER.info("Upgrading....");
 
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -105,17 +98,9 @@ public final class V010Upgrader
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
-            throw new EventException("Upgrade fail from v010 to v011");
+            throw new ServletException("Upgrade fail from v010 to v011");
         }
-    }
 
-    /**
-     * Gets the event type {@linkplain EventTypes#UPGRADE}.
-     *
-     * @return event type
-     */
-    @Override
-    public String getEventType() {
-        return EventTypes.UPGRADE;
+        LOGGER.info("Upgrade from v010 to v011 successfully :-)");
     }
 }

@@ -39,7 +39,6 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
 import org.b3log.latke.servlet.AbstractServletListener;
@@ -68,7 +67,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Oct 20, 2010
+ * @version 1.0.1.9, Oct 21, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -192,8 +191,6 @@ public final class SoloServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         super.contextInitialized(servletContextEvent);
 
-        upgrade();
-
         initPreference();
         initStatistic();
         loadCaptchas();
@@ -208,25 +205,6 @@ public final class SoloServletListener extends AbstractServletListener {
         registerRemoteJSServiceSerializers();
 
         LOGGER.info("Initialized the context");
-    }
-
-    /**
-     * Upgrade.
-     */
-    private void upgrade() {
-        LOGGER.info("Upgrading....");
-        try {
-            final EventManager eventManager = getInjector().
-                    getInstance(EventManager.class);
-            eventManager.fireEventSynchronously(
-                    new Event<JSONObject>(EventTypes.UPGRADE, null));
-        } catch (final EventException e) {
-            LOGGER.severe(e.getMessage());
-            throw new RuntimeException(
-                    "Upgrade fail, please contact with developer");
-        }
-
-        LOGGER.info("Upgraded");
     }
 
     /**

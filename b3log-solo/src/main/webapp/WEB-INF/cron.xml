@@ -21,7 +21,7 @@
     Description: Cron job for GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.0.0.0, Sep 25, 2010
+    Version: 1.0.0.1, Oct 21, 2010
     Author: Liang Ding
 -->
 <cronentries>
@@ -29,5 +29,11 @@
         <url>/live.do</url>
         <description>Avoiding Solo to shutdown on GAE.</description>
         <schedule>every 1 minutes</schedule>
+    </cron>
+
+    <cron>
+        <url>/v010-v011.do</url>
+        <description>Upgrade from v010 to v011.</description>
+        <schedule>every 10 minutes</schedule>
     </cron>
 </cronentries>
