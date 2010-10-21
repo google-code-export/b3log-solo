@@ -33,7 +33,7 @@ import org.b3log.solo.event.sync.impl.CSDNBlogUpdateArticleProcessor;
 import org.b3log.solo.event.sync.impl.CnBlogsAddArticleProcessor;
 import org.b3log.solo.event.sync.impl.CnBlogsRemoveArticleProcessor;
 import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
-import org.b3log.solo.event.upgrader.V010Upgrader;
+import org.b3log.solo.upgrader.V010Upgrader;
 
 /**
  * Event module for IoC
