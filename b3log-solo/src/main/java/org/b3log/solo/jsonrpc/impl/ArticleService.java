@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Oct 20, 2010
+ * @version 1.0.1.6, Oct 21, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -350,7 +350,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *      }, ....]
      *     "sc": "GET_ARTICLES_SUCC"
      * }
-     * </pre>
+     * </pre>, order by article update date and sticky(put top).
      * @throws ActionException action exception
      * @throws IOException io exception
      * @see Pagination
@@ -372,6 +372,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
             sorts.put(ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+            sorts.put(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
             final JSONObject result =
                     articleRepository.get(currentPageNum, pageSize, sorts);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
