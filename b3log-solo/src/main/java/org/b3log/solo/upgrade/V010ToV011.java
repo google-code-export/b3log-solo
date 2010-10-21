@@ -23,6 +23,7 @@ import com.google.appengine.api.datastore.QueryResultList;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -71,7 +72,7 @@ public final class V010ToV011 extends HttpServlet {
             LOGGER.info("Checking for consistency....");
             Transaction transaction = AbstractGAERepository.DATASTORE_SERVICE.
                     beginTransaction();
-            boolean upgraded = false;
+            boolean isConsistent = true;
             try {
                 final Query query = new Query(Article.ARTICLE);
                 final PreparedQuery preparedQuery =
@@ -93,7 +94,7 @@ public final class V010ToV011 extends HttpServlet {
 
                         LOGGER.log(Level.INFO, "Updated article[oId={0}]",
                                    articleId);
-                        upgraded = true;
+                        isConsistent = false;
                         cnt++;
                     }
 
@@ -116,9 +117,20 @@ public final class V010ToV011 extends HttpServlet {
                 throw new ServletException("Upgrade fail from v010 to v011");
             }
 
-            if (upgraded) {
-                LOGGER.info("Upgrade from v010 to v011 successfully :-)");
+            final PrintWriter writer = response.getWriter();
+            final String partialUpgrade = "Upgrade from v010 to v011 partially, "
+                                          + "please run this upgrader(visit this"
+                                          + " URL) again.";
+            final String upgraded = "Upgraded from v010 to v011 successfully :-)";
+            if (!isConsistent) {
+                LOGGER.info(partialUpgrade);
+                writer.print(partialUpgrade);
+            } else {
+                LOGGER.info(upgraded);
+                writer.print(upgraded);
             }
+
+            writer.close();
 
             LOGGER.info("Checked for consistency");
         }
