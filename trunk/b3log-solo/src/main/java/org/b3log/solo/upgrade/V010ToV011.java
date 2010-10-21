@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONObject;
@@ -58,44 +59,66 @@ public final class V010ToV011 extends HttpServlet {
     @Inject
     private ArticleRepository articleRepository;
     /**
-     * Fetch size.
+     * Update size in an request.
      */
-    private static final int FETCH_SIZE = 100;
+    private static final int UPDATE_SIZE = 100;
 
     @Override
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
-        LOGGER.info("Upgrading....");
+        if ("0.1.1".equals(SoloServletListener.VERSION)) {
+            LOGGER.info("Checking for consistency....");
+            Transaction transaction = AbstractGAERepository.DATASTORE_SERVICE.
+                    beginTransaction();
+            boolean upgraded = false;
+            try {
+                final Query query = new Query(Article.ARTICLE);
+                final PreparedQuery preparedQuery =
+                        AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+                final QueryResultList<Entity> queryResultList =
+                        preparedQuery.asQueryResultList(FetchOptions.Builder.
+                        withDefaults());
 
-        final Transaction transaction = AbstractGAERepository.DATASTORE_SERVICE.
-                beginTransaction();
-        try {
-            final Query query = new Query(Article.ARTICLE);
-            query.addFilter(Article.ARTICLE_PUT_TOP,
-                            Query.FilterOperator.NOT_EQUAL, true);
-            final PreparedQuery preparedQuery =
-                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
-            final QueryResultList<Entity> queryResultList =
-                    preparedQuery.asQueryResultList(FetchOptions.Builder.
-                    withLimit(FETCH_SIZE));
+                int cnt = 0;
 
+                for (final Entity entity : queryResultList) {
+                    if (!entity.hasProperty(Article.ARTICLE_PUT_TOP)) {
+                        final JSONObject article =
+                                AbstractGAERepository.entity2JSONObject(entity);
+                        final String articleId = article.getString(
+                                Keys.OBJECT_ID);
+                        article.put(Article.ARTICLE_PUT_TOP, false);
+                        articleRepository.update(articleId, article);
 
-            for (final Entity entity : queryResultList) {
-                final JSONObject article =
-                        AbstractGAERepository.entity2JSONObject(entity);
-                final String articleId = article.getString(Keys.OBJECT_ID);
-                articleRepository.update(articleId, article);
-                LOGGER.log(Level.INFO, "Updated article[oId={0}]", articleId);
+                        LOGGER.log(Level.INFO, "Updated article[oId={0}]",
+                                   articleId);
+                        upgraded = true;
+                        cnt++;
+                    }
+
+                    if (0 == cnt % UPDATE_SIZE) {
+                        transaction.commit();
+                        transaction = AbstractGAERepository.DATASTORE_SERVICE.
+                                beginTransaction();
+                    }
+
+                }
+
+                if (transaction.isActive()) {
+                    transaction.commit();
+                }
+            } catch (final Exception e) {
+                transaction.rollback();
+                LOGGER.severe(e.getMessage());
+                throw new ServletException("Upgrade fail from v010 to v011");
             }
 
-            transaction.commit();
-        } catch (final Exception e) {
-            transaction.rollback();
-            LOGGER.severe(e.getMessage());
-            throw new ServletException("Upgrade fail from v010 to v011");
-        }
+            if (upgraded) {
+                LOGGER.info("Upgrade from v010 to v011 successfully :-)");
+            }
 
-        LOGGER.info("Upgrade from v010 to v011 successfully :-)");
+            LOGGER.info("Checked for consistency");
+        }
     }
 }
