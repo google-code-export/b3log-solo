@@ -19,20 +19,25 @@
         ${htmlHead}
     </head>
     <body>
-        <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <h1 class="error-title">${sorryLabel}</h1>
-                <div class="error-panel">
-                    <h1>${notFoundLabel}</h1>
-                    ${returnTo1Label}<a href="http://${blogHost}">${blogTitle}</a>
+        <div class="wrapper">
+            <div class="bg-bottom">
+                <#include "common-top.ftl">
+                <div class="content">
+                    <div class="header">
+                        <#include "article-header.ftl">
+                    </div>
+                    <div class="body">
+                        <h1 class="error-title">${sorryLabel}</h1>
+                        <div class="error-panel">
+                            <h2>${notFoundLabel}</h2>
+                            ${returnTo1Label}<a href="http://${blogHost}">${blogTitle}</a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="footer">
+                        <#include "article-footer.ftl">
+                    </div>
                 </div>
-            </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
             </div>
         </div>
     </body>

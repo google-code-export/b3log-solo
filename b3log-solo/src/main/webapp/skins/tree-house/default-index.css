@@ -1,6 +1,6 @@
 /* 
     Document   : default-index
-    Version    : 1.0.0.0, Oct 19, 2010
+    Version    : 1.0.0.5, Oct 22, 2010
     Author     : Liyuan Li
     Description:
         user blog for tree house style.
@@ -74,6 +74,7 @@ h5 {
 
 .body {
     padding-bottom: 682px;
+    min-height:643px;
 }
 
 .main {
@@ -81,7 +82,7 @@ h5 {
 }
 
 /* article list */
-.article {
+.article, .comments {
     overflow:hidden;
     width:553px;
 }
@@ -91,7 +92,7 @@ h5 {
     font-size: 12px;
 }
 
-.article h2{
+.article h2 {
     color:#242323;
     font-weight:bold;
     position:relative;
@@ -184,6 +185,20 @@ h5 {
 }
 
 /* article detail or common-articles */
+.main h2.title {
+    color: #FF9000;
+    text-align: center;
+    margin: -34px 0 12px
+}
+
+.main h2 span {
+    font-size: 12px;
+    float: right;
+    color: DimGray;
+    padding-right: 10px;
+    margin-top: 7px;
+}
+
 .article-body {
     margin: 0 12px 12px;
 }
@@ -211,8 +226,8 @@ h5 {
     margin-right: 12px;
 }
 
-.article-footer a, .article-details-footer a{
-    text-decoration: none;
+.article-details-footer a{
+    line-height: 20px;
 }
 
 .article-details-footer {
@@ -220,19 +235,15 @@ h5 {
 }
 
 .article-relative {
-    line-height: 22px;
-    margin-top: 24px;
+    line-height: 20px;
+    margin: 12px 0;
 }
 
-.comments {
-    padding: 12px 0 24px 12px;
-}
-
-.comment-title {
-    background-color:#E3E9FF;
-    border-top:1px solid #3366CC;
-    padding:3px 12px 3px 12px;
-    position: relative;
+.comment-title, .error-title {
+    background-color: #242323;
+    color: #EC0A8B;
+    display:block;
+    padding:3px 10px 4px 10px;
 }
 
 .comment-body-ref {
@@ -391,6 +402,10 @@ h5 {
 }
 
 /* tags.html */
+#tagsPanel {
+    width: 553px;
+}
+
 #tagsPanel .tagPanel {
     float: left;
     border: 2px solid;
@@ -411,12 +426,10 @@ h5 {
 
 /* error */
 .error-title {
-    background-color: #E5ECF9;
-    padding:6px 12px;
+    width:553px;
 }
 
 .error-panel {
-    border-bottom: 5px solid #E5ECF9;
     padding: 24px;
 }
 
