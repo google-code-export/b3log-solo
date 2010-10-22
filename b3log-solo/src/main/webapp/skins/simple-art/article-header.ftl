@@ -1,6 +1,6 @@
 <div class="marginBottom12">
     <h1 class="title">
-        <a href="index.do" id="logoTitle" >
+        <a href="/" id="logoTitle" >
             ${blogTitle}
         </a>
     </h1>

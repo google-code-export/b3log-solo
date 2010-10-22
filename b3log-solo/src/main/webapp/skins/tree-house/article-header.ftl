@@ -17,7 +17,7 @@
 </div>
 <div class="header-title">
     <h1>
-        <a href="index.do" id="logoTitle" >
+        <a href="/" id="logoTitle" >
             ${blogTitle}
         </a>
     </h1>
