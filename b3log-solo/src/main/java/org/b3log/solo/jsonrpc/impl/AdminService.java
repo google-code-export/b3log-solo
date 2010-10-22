@@ -66,7 +66,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
-        return userService.createLogoutURL("/index.do");
+        return userService.createLogoutURL("/");
     }
 
     /**
