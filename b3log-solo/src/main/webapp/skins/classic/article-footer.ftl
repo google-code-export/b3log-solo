@@ -80,12 +80,10 @@ Powered by
         if ($("#sideNavi").length > 0) {
             // article-side.ftl selected style
             if (window.location.search === "") {
-                localStorage.setItem("sideNaviName", "");
                 localStorage.setItem("sideNaviId", "");
             }
 
             $("#sideNavi a").click(function () {
-                localStorage.setItem("sideNaviName", $(this).text());
                 localStorage.setItem("sideNaviId", $(this).attr("name"));
             });
 

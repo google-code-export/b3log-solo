@@ -29,7 +29,13 @@
                     <#include "article-side.ftl">
                 </div>
                 <div class="right main">
-                    <h2>${archive1Label}<span id="archiveDateId"></span></h2>
+                    <h2>${archive1Label}
+                        <#if "en" == localeString?substring(0, 2)>
+                        ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDateArticleCount})
+                        <#else>
+                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
+                        </#if>
+                    </h2>
                     <#include "common-articles.ftl">
                 </div>
                 <div class="clear"></div>
@@ -38,8 +44,5 @@
                 <#include "article-footer.ftl">
             </div>
         </div>
-        <script type="text/javascript">
-            $("#archiveDateId").text(localStorage.getItem("sideNaviName"));
-        </script>
     </body>
 </html>

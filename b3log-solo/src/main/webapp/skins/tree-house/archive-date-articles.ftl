@@ -29,7 +29,12 @@
                     <div class="body">
                         <div class="left main">
                             <h2 class="title">
-                                ${archive1Label}&nbsp;TODO
+                                ${archive1Label}
+                                <#if "en" == localeString?substring(0, 2)>
+                                ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDateArticleCount})
+                                <#else>
+                                ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
+                                </#if>
                             </h2>
                             <#include "common-articles.ftl">
                         </div>
