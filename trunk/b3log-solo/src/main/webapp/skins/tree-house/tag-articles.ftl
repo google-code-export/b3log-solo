@@ -19,27 +19,30 @@
         ${htmlHead}
     </head>
     <body>
-        <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
+
+        <div class="wrapper">
+            <div class="bg-bottom">
+                <#include "common-top.ftl">
+                <div class="content">
+                    <div class="header">
+                        <#include "article-header.ftl">
+                    </div>
+                    <div class="body">
+                        <div class="left main">
+                             <h2 class="title">
+                                ${tag1Label}&nbsp;${tag.tagTitle}(${tag.tagReferenceCount})
+                            </h2>
+                            <#include "common-articles.ftl">
+                        </div>
+                        <div class="left side">
+                            <#include "article-side.ftl">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="footer">
+                        <#include "article-footer.ftl">
+                    </div>
                 </div>
-                <div class="right main">
-                    <h2>${tag1Label}
-                        <span id="tagArticlesTag">
-                            ${tag.tagTitle}
-                        </span>(${tag.tagReferenceCount})
-                    </h2>
-                    <#include "common-articles.ftl">
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
             </div>
         </div>
     </body>

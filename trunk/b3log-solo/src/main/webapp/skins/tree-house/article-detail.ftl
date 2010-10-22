@@ -20,275 +20,283 @@
         ${htmlHead}
     </head>
     <body>
-        <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
-                </div>
-                <div class="right main">
-                    <div class="article">
-                        <div class="article-header">
-                            <div class="article-date">
-                                <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-                                ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
-                                <#else>
-                                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
-                                </#if>
-                            </div>
-                            <div class="article-title">
-                                <h2>
-                                    <a class="noUnderline" href="${article.articlePermalink}">${article.articleTitle}</a>
-                                    <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-                                    <sup class="red" style="font-size: 12px">
-                                        ${updatedLabel}
-                                    </sup>
-                                    </#if>
-                                </h2>
-                                <div class="article-tags">
-                                    ${tags1Label}
-                                    <#list articleTags as articleTag>
-                                    <span>
+        <div class="wrapper">
+            <div class="bg-bottom">
+                <#include "common-top.ftl">
+                <div class="content">
+                    <div class="header">
+                        <#include "article-header.ftl">
+                    </div>
+                    <div class="body">
+                        <div class="left main">
+                            <div class="article">
+                                <div class="article-header">
+                                    <h2>
+                                        <a class="noUnderline" href="${article.articlePermalink}">
+                                            ${article.articleTitle}
+                                            <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+                                            <sup>
+                                                ${updatedLabel}
+                                            </sup>
+                                            </#if>
+                                            <#if article.articlePutTop>
+                                            <sup>
+                                                ${topArticleLabel}
+                                            </sup>
+                                            </#if>
+                                            <span>
+                                                <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+                                                ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
+                                                <#else>
+                                                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+                                                </#if>
+                                            </span>
+                                        </a>
+                                    </h2>
+                                    <em class="article-tags left marginTop12 marginLeft6">
+                                        <#list articleTags as articleTag>
                                         <a href="tag-articles.do?oId=${articleTag.oId}">
                                             ${articleTag.tagTitle}
                                         </a>
                                         <#if articleTag_has_next>,</#if>
-                                    </span>
-                                    </#list>
+                                        </#list>
+                                    </em>
+                                    <div class="clear"></div>
                                 </div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                        <div class="article-body">
-                            ${article.articleContent}
-                        </div>
-                        <div class="article-details-footer">
-                            <div class="left">
-                                <#if nextArticleId??>
-                                <a href="article-detail.do?oId=${nextArticleId}">${nextArticle1Label}${nextArticleTitle}</a>
+                                <div class="article-body">
+                                    ${article.articleContent}
+                                </div>
+                                <div class="article-details-footer">
+                                    <div class="left">
+                                        <#if nextArticleId??>
+                                        <a href="article-detail.do?oId=${nextArticleId}">${nextArticle1Label}${nextArticleTitle}</a>
+                                        </#if>
+                                        <#if previousArticleId??>
+                                        <br/>
+                                        <a href="article-detail.do?oId=${previousArticleId}">${previousArticle1Label}${previousArticleTitle}</a>
+                                        </#if>
+                                    </div>
+                                    <div class="right">
+                                        <span class="article-create-date left">
+                                            ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
+                                        </span>
+                                        <span class="left commentIcon" title="${commentLabel}"></span>
+                                        <span class="left">
+                                            &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
+                                        </span>
+                                        <a href="article-detail.do?oId=${article.oId}" class="left">
+                                            <span class="left browserIcon" title="${viewLabel}"></span>
+                                            ${article.articleViewCount}
+                                        </a>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                                <#if 0 != relevantArticles?size>
+                                <div class="article-relative">
+                                    <h5>${relevantArticles1Label}</h5>
+                                    <ul class="marginLeft12">
+                                        <#list relevantArticles as relevantArticle>
+                                        <li>
+                                            <a href="article-detail.do?oId=${relevantArticle.oId}">
+                                                ${relevantArticle.articleTitle}
+                                            </a>
+                                        </li>
+                                        </#list>
+                                    </ul>
+                                </div>
                                 </#if>
-                                <#if previousArticleId??>
-                                <br/>
-                                <a href="article-detail.do?oId=${previousArticleId}">${previousArticle1Label}${previousArticleTitle}</a>
-                                </#if>
+                                <div id="randomArticles"></div>
+                                <div id="externalRelevantArticles"></div>
                             </div>
-                            <div class="right">
-                                <span class="article-create-date left">
-                                    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
-                                </span>
-                                <span class="left commentIcon" title="${commentLabel}"></span>
-                                <span class="left">
-                                    &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
-                                </span>
-                                <a href="article-detail.do?oId=${article.oId}" class="left">
-                                    <span class="left browserIcon" title="${viewLabel}"></span>
-                                    ${article.articleViewCount}
-                                </a>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                        <#if 0 != relevantArticles?size>
-                        <div class="article-relative">
-                            <h5>${relevantArticles1Label}</h5>
-                            <ul class="marginLeft12">
-                                <#list relevantArticles as relevantArticle>
-                                <li>
-                                    <a href="article-detail.do?oId=${relevantArticle.oId}">
-                                        ${relevantArticle.articleTitle}
-                                    </a>
-                                </li>
+                            <div class="comments marginTop12" id="comments" name="comments">
+                                <#list articleComments as comment>
+                                <div id="commentItem${comment.oId}">
+                                    <div class="comment-title">
+                                        <#if "http://" == comment.commentURL>
+                                        <a name="${comment.oId}" class="left">${comment.commentName}</a>
+                                        <#else>
+                                        <a name="${comment.oId}" href="${comment.commentURL}"
+                                           target="_blank" class="left">${comment.commentName}</a>
+                                        </#if>
+                                        <#if comment.isReply>
+                                        &nbsp;@&nbsp;<a
+                                            href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}"
+                                            onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
+                                            onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                        </#if>
+                                        <div class="right">
+                                            ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
+                                            <a class="noUnderline"
+                                               href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="comment-body">
+                                        <div class="left comment-picture">
+                                            <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                                        </div>
+                                        <div>
+                                            ${comment.commentContent}
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
                                 </#list>
-                            </ul>
-                        </div>
-                        </#if>
-                        <div id="randomArticles"></div>
-                        <div id="externalRelevantArticles"></div>
-                    </div>
-                    <div class="comments" id="comments" name="comments">
-                        <#list articleComments as comment>
-                        <div id="commentItem${comment.oId}">
-                            <div class="comment-title">
-                                <#if "http://" == comment.commentURL>
-                                <a name="${comment.oId}" class="left">${comment.commentName}</a>
-                                <#else>
-                                <a name="${comment.oId}" href="${comment.commentURL}"
-                                   target="_blank" class="left">${comment.commentName}</a>
-                                </#if>
-                                <#if comment.isReply>
-                                &nbsp;@&nbsp;<a 
-                                    href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}"
-                                    onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
-                                    onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
-                                </#if>
-                                <div class="right">
-                                    ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                    <a class="noUnderline" 
-                                       href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                                <div class="comment-title">
+                                    ${postCommentsLabel}
                                 </div>
-                                <div class="clear"></div>
+                                <div class="comment-body">
+                                    <table class="form">
+                                        <tbody>
+                                            <tr>
+                                                <th>
+                                                    ${commentName1Label}
+                                                </th>
+                                                <td colspan="2">
+                                                    <input class="normalInput" id="commentName"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    ${commentEmail1Label}
+                                                </th>
+                                                <td colspan="2">
+                                                    <input class="normalInput" id="commentEmail"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    ${commentURL1Label}
+                                                </th>
+                                                <td colspan="2">
+                                                    <input value="http://" id="commentURL"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th valign="top">
+                                                    ${commentContent1Label}
+                                                </th>
+                                                <td colspan="2">
+                                                    <textarea rows="10" cols="96" id="comment"></textarea>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>
+                                                    ${captcha1Label}
+                                                </th>
+                                                <td>
+                                                    <input class="normalInput" id="commentValidate"/>
+                                                    <img id="captcha" alt="validate" src="/captcha.do"></img>
+                                                </td>
+                                                <th>
+                                                    <span class="error-msg" id="commentErrorTip"/>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" align="right">
+                                                    <button onclick="submitComment();">${submmitCommentLabel}</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="comment-body">
-                                <div class="left comment-picture">
-                                    <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
-                                </div>
-                                <div>
-                                    ${comment.commentContent}
-                                </div>
-                                <div class="clear"></div>
-                            </div>
+                            <div class="clear"></div>
                         </div>
-                        </#list>
-                        <div class="comment-title">
-                            ${postCommentsLabel}
+                        <div class="left side">
+                            <#include "article-side.ftl">
                         </div>
-                        <div class="comment-body">
-                            <table class="form">
-                                <tbody>
-                                    <tr>
-                                        <th>
-                                            ${commentName1Label}
-                                        </th>
-                                        <td colspan="2">
-                                            <input class="normalInput" id="commentName"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            ${commentEmail1Label}
-                                        </th>
-                                        <td colspan="2">
-                                            <input class="normalInput" id="commentEmail"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            ${commentURL1Label}
-                                        </th>
-                                        <td colspan="2">
-                                            <input value="http://" id="commentURL"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th valign="top">
-                                            ${commentContent1Label}
-                                        </th>
-                                        <td colspan="2">
-                                            <textarea rows="10" cols="96" id="comment"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            ${captcha1Label}
-                                        </th>
-                                        <td>
-                                            <input class="normalInput" id="commentValidate"/>
-                                            <img id="captcha" alt="validate" src="/captcha.do"></img>
-                                        </td>
-                                        <th>
-                                            <span class="error-msg" id="commentErrorTip"/>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" align="right">
-                                            <button onclick="submitComment();">${submmitCommentLabel}</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <div class="clear"></div>
                     </div>
-                    <div class="clear"></div>
                 </div>
-                <div class="clear"></div>
+                <div class="footer">
+                    <#include "article-footer.ftl">
+                </div>
             </div>
-            <script type="text/javascript">
-                var getRandomArticles = function () {
-                    jsonRpc.articleService.getRandomArticles(function (result, error) {
-                        if (result && !error) {
-                            var randomArticles = result.list;
-                            if (0 === randomArticles.length) {
-                                return;
-                            }
+        </div>
+        </div>
 
-                            var listHtml = "";
-                            for (var i = 0; i < randomArticles.length; i++) {
-                                var article = randomArticles[i];
-                                var title = article.articleTitle;
-                                var randomArticleLiHtml = "<li>"
-                                    + "<a href='" + article.articlePermalink +"'>"
-                                    +  title + "</a></li>"
-                                listHtml += randomArticleLiHtml
-                            }
-
-                            var randomArticlesDiv = $("#randomArticles");
-                            randomArticlesDiv.attr("class", "article-relative");
-                            var randomArticleListHtml = "<h5>${randomArticles1Label}</h5>"
-                                + "<ul class='marginLeft12'>"
-                                + listHtml + "</ul>";
-                            randomArticlesDiv.append(randomArticleListHtml);
+        <script type="text/javascript">
+            var getRandomArticles = function () {
+                jsonRpc.articleService.getRandomArticles(function (result, error) {
+                    if (result && !error) {
+                        var randomArticles = result.list;
+                        if (0 === randomArticles.length) {
+                            return;
                         }
-                    });
-                }
-                getRandomArticles();
 
-                    <#if 0 != externalRelevantArticlesDisplayCount>
-                    var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
-
-                var getExternalArticles = function () {
-
-                    $.ajax({
-                        url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
-                        type: "GET",
-                        dataType:"jsonp",
-                        jsonp: "callback",
-                        error: function(){
-                            alert("Error loading article from Rhythm");
-                        },
-                        success: function(data, textStatus){
-                            var articles = data.articles;
-                            if (0 === articles.length) {
-                                return;
-                            }
-
-                            var listHtml = "";
-                            for (var i = 0; i < articles.length; i++) {
-                                var article = articles[i];
-                                var title = article.articleTitle;
-                                var articleLiHtml = "<li>"
-                                    + "<a href='http://" + article.articlePermalink +"'>"
-                                    +  title + "</a></li>"
-                                listHtml += articleLiHtml
-                            }
-
-                            var externalRelevantArticlesDiv = $("#externalRelevantArticles");
-                            externalRelevantArticlesDiv.attr("class", "article-relative");
-                            var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
-                                + "<ul class='marginLeft12'>"
-                                + listHtml + "</ul>";
-                            externalRelevantArticlesDiv.append(randomArticleListHtml);
+                        var listHtml = "";
+                        for (var i = 0; i < randomArticles.length; i++) {
+                            var article = randomArticles[i];
+                            var title = article.articleTitle;
+                            var randomArticleLiHtml = "<li>"
+                                + "<a href='" + article.articlePermalink +"'>"
+                                +  title + "</a></li>"
+                            listHtml += randomArticleLiHtml
                         }
-                    });
 
-                }
-                getExternalArticles();
-                    </#if>
-            </script>
-            <div class="footer">
-                <#include "article-footer.ftl">
-            </div>
-            <div class="stack addthis_toolbox">
-                <img src="images/stack.png" alt="stack"/>
-                <ul id="stack" class="custom_images">
-                    <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="images/buzz.png" alt="Share to Buzz" /></a></li>
-                    <li><a class="addthis_button_twitter"><span>Twitter</span><img src="images/twitter.png" alt="Share to Twitter" /></a></li>
-                    <li><a class="addthis_button_delicious"><span>Delicious</span><img src="images/delicious.png" alt="Share to Delicious" /></a></li>
-                    <li><a class="addthis_button_facebook"><span>Facebook</span><img src="images/facebook.png" alt="Share to Facebook" /></a></li>
-                    <li><a class="addthis_button_more"><span>More...</span><img src="images/addthis.png" alt="More..." /></a></li>
-                </ul>
-            </div>
+                        var randomArticlesDiv = $("#randomArticles");
+                        randomArticlesDiv.attr("class", "article-relative");
+                        var randomArticleListHtml = "<h5>${randomArticles1Label}</h5>"
+                            + "<ul class='marginLeft12'>"
+                            + listHtml + "</ul>";
+                        randomArticlesDiv.append(randomArticleListHtml);
+                    }
+                });
+            }
+            getRandomArticles();
+
+                <#if 0 != externalRelevantArticlesDisplayCount>
+                var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
+
+            var getExternalArticles = function () {
+
+                $.ajax({
+                    url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
+                    type: "GET",
+                    dataType:"jsonp",
+                    jsonp: "callback",
+                    error: function(){
+                        alert("Error loading article from Rhythm");
+                    },
+                    success: function(data, textStatus){
+                        var articles = data.articles;
+                        if (0 === articles.length) {
+                            return;
+                        }
+
+                        var listHtml = "";
+                        for (var i = 0; i < articles.length; i++) {
+                            var article = articles[i];
+                            var title = article.articleTitle;
+                            var articleLiHtml = "<li>"
+                                + "<a href='http://" + article.articlePermalink +"'>"
+                                +  title + "</a></li>"
+                            listHtml += articleLiHtml
+                        }
+
+                        var externalRelevantArticlesDiv = $("#externalRelevantArticles");
+                        externalRelevantArticlesDiv.attr("class", "article-relative");
+                        var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
+                            + "<ul class='marginLeft12'>"
+                            + listHtml + "</ul>";
+                        externalRelevantArticlesDiv.append(randomArticleListHtml);
+                    }
+                });
+
+            }
+            getExternalArticles();
+                </#if>
+        </script>
+        <div class="stack addthis_toolbox">
+            <img src="images/stack.png" alt="stack"/>
+            <ul id="stack" class="custom_images">
+                <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="images/buzz.png" alt="Share to Buzz" /></a></li>
+                <li><a class="addthis_button_twitter"><span>Twitter</span><img src="images/twitter.png" alt="Share to Twitter" /></a></li>
+                <li><a class="addthis_button_delicious"><span>Delicious</span><img src="images/delicious.png" alt="Share to Delicious" /></a></li>
+                <li><a class="addthis_button_facebook"><span>Facebook</span><img src="images/facebook.png" alt="Share to Facebook" /></a></li>
+                <li><a class="addthis_button_more"><span>More...</span><img src="images/addthis.png" alt="More..." /></a></li>
+            </ul>
         </div>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>

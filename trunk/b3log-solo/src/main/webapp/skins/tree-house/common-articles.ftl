@@ -8,6 +8,11 @@
                 ${updatedLabel}
             </sup>
             </#if>
+            <#if article.articlePutTop>
+            <sup>
+                ${topArticleLabel}
+            </sup>
+            </#if>
         </a>
     </h2>
     <div class="left article-info">

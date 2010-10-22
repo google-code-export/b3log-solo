@@ -18,23 +18,26 @@
         <link rel="icon" type="image/png" href="favicon.png"/>
         ${htmlHead}
     </head>
-    <body>
-        <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
+    <body><div class="wrapper">
+            <div class="bg-bottom">
+                <#include "common-top.ftl">
+                <div class="content">
+                    <div class="header">
+                        <#include "article-header.ftl">
+                    </div>
+                    <div class="body">
+                        <div class="left main">
+                            ${page.pageContent}
+                        </div>
+                        <div class="left side">
+                            <#include "article-side.ftl">
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="footer">
+                        <#include "article-footer.ftl">
+                    </div>
                 </div>
-                <div class="right main">
-                    ${page.pageContent}
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
             </div>
         </div>
     </body>
