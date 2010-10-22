@@ -22,7 +22,7 @@
                  1. DO NOT configure servlets in this file, using Guice-Servlet
                     extension instead, see class org.b3log.solo.action.ActionModule
                     for details.
-    Version: 1.0.0.8, Oct 21, 2010
+    Version: 1.0.0.9, Oct 22, 2010
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -51,9 +51,6 @@
             30
         </session-timeout>
     </session-config>
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
     <servlet>
         <servlet-name>error</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.ErrorAction</servlet-class>

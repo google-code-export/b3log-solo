@@ -41,7 +41,7 @@ import org.b3log.solo.google.auth.OAuths;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Oct 18, 2010
+ * @version 1.0.1.2, Oct 22, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -63,7 +63,7 @@ public final class ActionModule extends AbstractActionModule {
         serve("/admin-index.do").with(AdminIndexAction.class);
 
         bind(IndexAction.class).in(Scopes.SINGLETON);
-        serve("/index.do").with(IndexAction.class);
+        serve("/").with(IndexAction.class);
 
         bind(ArticleAction.class).in(Scopes.SINGLETON);
         serve("/article-detail.do").with(ArticleAction.class);
