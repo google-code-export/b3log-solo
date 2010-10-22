@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Oct 21, 2010
+ * @version 1.0.2.0, Oct 22, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -216,9 +216,10 @@ public final class SoloServletListener extends AbstractServletListener {
      * @param preference the specified preference
      * @throws JSONException json exception
      */
-    private void initSkins(final JSONObject preference)
-            throws JSONException {
-        final String skinDirName = DefaultPreference.DEFAULT_SKIN_DIR_NAME;
+    private void initSkins(final JSONObject preference) throws JSONException {
+        final String skinDirName =
+                preference.optString(SKIN_DIR_NAME,
+                                     DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         preference.put(SKIN_DIR_NAME, skinDirName);
 
         final Skins skins = getInjector().getInstance(Skins.class);
