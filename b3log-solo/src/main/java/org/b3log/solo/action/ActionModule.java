@@ -63,7 +63,7 @@ public final class ActionModule extends AbstractActionModule {
         serve("/admin-index.do").with(AdminIndexAction.class);
 
         bind(IndexAction.class).in(Scopes.SINGLETON);
-        serve("/").with(IndexAction.class);
+        serve("/", "/index.do").with(IndexAction.class);
 
         bind(ArticleAction.class).in(Scopes.SINGLETON);
         serve("/article-detail.do").with(ArticleAction.class);
