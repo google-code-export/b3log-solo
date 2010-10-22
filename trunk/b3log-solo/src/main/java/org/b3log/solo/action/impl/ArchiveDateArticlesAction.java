@@ -20,6 +20,7 @@ import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -41,6 +42,8 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.ArchiveDate;
+import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
@@ -50,7 +53,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 2, 2010
+ * @version 1.0.0.3, Oct 22, 2010
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -63,6 +66,11 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArchiveDateArticlesAction.class.getName());
+    /**
+     * Archive date repository.
+     */
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
     /**
      * Article repository.
      */
@@ -125,7 +133,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final int windowSize = preference.getInt(
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-
             final JSONObject result =
                     archiveDateArticleRepository.getByArchiveDateId(
                     archiveDateId, currentPageNum, pageSize);
@@ -169,6 +176,23 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             filler.fillBlogFooter(ret);
 
             statistics.incBlogViewCount();
+
+            final JSONObject archiveDate =
+                    archiveDateRepository.get(archiveDateId);
+            final Date date = (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
+            final String dateString = ArchiveDate.DATE_FORMAT.format(date);
+            final String[] dateStrings = dateString.split("/");
+            final String year = dateStrings[0];
+            final String month = dateStrings[1];
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
+            final String language = Locales.getLanguage(localeString);
+            if ("en".equals(language)) {
+                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
+                                SoloServletListener.EN_MONTHS.get(month));
+            } else {
+                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
+            }
+            ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
