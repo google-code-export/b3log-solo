@@ -105,103 +105,112 @@
                                     </ul>
                                 </div>
                                 </#if>
-                                <div id="randomArticles"></div>
-                                <div id="externalRelevantArticles"></div>
+                                <div id="randomArticles" class="article-relative"></div>
+                                <div id="externalRelevantArticles" class="article-relative"></div>
                             </div>
+                            <div class="line right"></div>
                             <div class="comments marginTop12" id="comments" name="comments">
+                                <div class="comments-header"></div>
                                 <#list articleComments as comment>
-                                <div id="commentItem${comment.oId}">
-                                    <div class="comment-title">
-                                        <#if "http://" == comment.commentURL>
-                                        <a name="${comment.oId}" class="left">${comment.commentName}</a>
-                                        <#else>
-                                        <a name="${comment.oId}" href="${comment.commentURL}"
-                                           target="_blank" class="left">${comment.commentName}</a>
-                                        </#if>
-                                        <#if comment.isReply>
-                                        &nbsp;@&nbsp;<a
-                                            href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}"
-                                            onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
-                                            onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
-                                        </#if>
-                                        <div class="right">
-                                            ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                            <a class="noUnderline"
-                                               href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
-                                        </div>
-                                        <div class="clear"></div>
-                                    </div>
+                                <div id="commentItem${comment.oId}" class="comment">
+                                    <div class="comment-top"></div>
                                     <div class="comment-body">
-                                        <div class="left comment-picture">
-                                            <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                                        <div class="comment-title">
+                                            <#if "http://" == comment.commentURL>
+                                            <a name="${comment.oId}" class="left">${comment.commentName}</a>
+                                            <#else>
+                                            <a name="${comment.oId}" href="${comment.commentURL}"
+                                               target="_blank" class="left">${comment.commentName}</a>
+                                            </#if>
+                                            <#if comment.isReply>
+                                            &nbsp;@&nbsp;<a
+                                                href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}"
+                                                onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
+                                                onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                            </#if>
+                                            <div class="right">
+                                                ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
+                                                <a class="noUnderline"
+                                                   href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                                            </div>
+                                            <div class="clear"></div>
                                         </div>
                                         <div>
-                                            ${comment.commentContent}
+                                            <div class="left comment-picture">
+                                                <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                                            </div>
+                                            <div>
+                                                ${comment.commentContent}
+                                            </div>
+                                            <div class="clear"></div>
                                         </div>
-                                        <div class="clear"></div>
                                     </div>
+                                    <div class="comment-bottom"></div>
                                 </div>
                                 </#list>
-                                <div class="comment-title">
-                                    ${postCommentsLabel}
-                                </div>
-                                <div class="comment-body">
-                                    <table class="form">
-                                        <tbody>
-                                            <tr>
-                                                <th>
-                                                    ${commentName1Label}
-                                                </th>
-                                                <td colspan="2">
-                                                    <input class="normalInput" id="commentName"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    ${commentEmail1Label}
-                                                </th>
-                                                <td colspan="2">
-                                                    <input class="normalInput" id="commentEmail"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    ${commentURL1Label}
-                                                </th>
-                                                <td colspan="2">
-                                                    <input value="http://" id="commentURL"/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th valign="top">
-                                                    ${commentContent1Label}
-                                                </th>
-                                                <td colspan="2">
-                                                    <textarea rows="10" cols="96" id="comment"></textarea>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>
-                                                    ${captcha1Label}
-                                                </th>
-                                                <td>
-                                                    <input class="normalInput" id="commentValidate"/>
-                                                    <img id="captcha" alt="validate" src="/captcha.do"></img>
-                                                </td>
-                                                <th>
-                                                    <span class="error-msg" id="commentErrorTip"/>
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="3" align="right">
-                                                    <button onclick="submitComment();">${submmitCommentLabel}</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="comment">
+                                    <div class="comment-top"></div>
+                                    <div class="comment-body">
+                                        <div>
+                                            ${postCommentsLabel}
+                                        </div>
+                                        <table class="form">
+                                            <tbody>
+                                                <tr>
+                                                    <th>
+                                                        ${commentName1Label}
+                                                    </th>
+                                                    <td colspan="2">
+                                                        <input class="normalInput" id="commentName"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        ${commentEmail1Label}
+                                                    </th>
+                                                    <td colspan="2">
+                                                        <input class="normalInput" id="commentEmail"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        ${commentURL1Label}
+                                                    </th>
+                                                    <td colspan="2">
+                                                        <input value="http://" id="commentURL"/>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th valign="top">
+                                                        ${commentContent1Label}
+                                                    </th>
+                                                    <td colspan="2">
+                                                        <textarea rows="10" cols="96" id="comment"></textarea>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>
+                                                        ${captcha1Label}
+                                                    </th>
+                                                    <td>
+                                                        <input class="normalInput" id="commentValidate"/>
+                                                        <img id="captcha" alt="validate" src="/captcha.do"></img>
+                                                    </td>
+                                                    <th>
+                                                        <span class="error-msg" id="commentErrorTip"/>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" align="right">
+                                                        <button onclick="submitComment();">${submmitCommentLabel}</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="comment-bottom"></div>
                                 </div>
                             </div>
-                            <div class="clear"></div>
                         </div>
                         <div class="left side">
                             <#include "article-side.ftl">
@@ -214,99 +223,9 @@
                 </div>
             </div>
         </div>
-        </div>
-
-        <script type="text/javascript">
-            var getRandomArticles = function () {
-                jsonRpc.articleService.getRandomArticles(function (result, error) {
-                    if (result && !error) {
-                        var randomArticles = result.list;
-                        if (0 === randomArticles.length) {
-                            return;
-                        }
-
-                        var listHtml = "";
-                        for (var i = 0; i < randomArticles.length; i++) {
-                            var article = randomArticles[i];
-                            var title = article.articleTitle;
-                            var randomArticleLiHtml = "<li>"
-                                + "<a href='" + article.articlePermalink +"'>"
-                                +  title + "</a></li>"
-                            listHtml += randomArticleLiHtml
-                        }
-
-                        var randomArticlesDiv = $("#randomArticles");
-                        randomArticlesDiv.attr("class", "article-relative");
-                        var randomArticleListHtml = "<h5>${randomArticles1Label}</h5>"
-                            + "<ul class='marginLeft12'>"
-                            + listHtml + "</ul>";
-                        randomArticlesDiv.append(randomArticleListHtml);
-                    }
-                });
-            }
-            getRandomArticles();
-
-                <#if 0 != externalRelevantArticlesDisplayCount>
-                var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
-
-            var getExternalArticles = function () {
-
-                $.ajax({
-                    url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
-                    type: "GET",
-                    dataType:"jsonp",
-                    jsonp: "callback",
-                    error: function(){
-                        alert("Error loading article from Rhythm");
-                    },
-                    success: function(data, textStatus){
-                        var articles = data.articles;
-                        if (0 === articles.length) {
-                            return;
-                        }
-
-                        var listHtml = "";
-                        for (var i = 0; i < articles.length; i++) {
-                            var article = articles[i];
-                            var title = article.articleTitle;
-                            var articleLiHtml = "<li>"
-                                + "<a href='http://" + article.articlePermalink +"'>"
-                                +  title + "</a></li>"
-                            listHtml += articleLiHtml
-                        }
-
-                        var externalRelevantArticlesDiv = $("#externalRelevantArticles");
-                        externalRelevantArticlesDiv.attr("class", "article-relative");
-                        var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
-                            + "<ul class='marginLeft12'>"
-                            + listHtml + "</ul>";
-                        externalRelevantArticlesDiv.append(randomArticleListHtml);
-                    }
-                });
-
-            }
-            getExternalArticles();
-                </#if>
-        </script>
-        <div class="stack addthis_toolbox">
-            <img src="images/stack.png" alt="stack"/>
-            <ul id="stack" class="custom_images">
-                <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="images/buzz.png" alt="Share to Buzz" /></a></li>
-                <li><a class="addthis_button_twitter"><span>Twitter</span><img src="images/twitter.png" alt="Share to Twitter" /></a></li>
-                <li><a class="addthis_button_delicious"><span>Delicious</span><img src="images/delicious.png" alt="Share to Delicious" /></a></li>
-                <li><a class="addthis_button_facebook"><span>Facebook</span><img src="images/facebook.png" alt="Share to Facebook" /></a></li>
-                <li><a class="addthis_button_more"><span>More...</span><img src="images/addthis.png" alt="More..." /></a></li>
-            </ul>
-        </div>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJava.js"></script>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             var currentCommentId = "";
-            
+
             var moveCursor = function(event) {
                 if ($.browser.msie) {
                     var e = event.srcElement;
@@ -322,14 +241,6 @@
             }
 
             var loadAction = function () {
-                // code high lighter
-                $(".article-body textarea").addClass("brush: js;");
-                SyntaxHighlighter.config.tagName = "textarea";
-                SyntaxHighlighter.config.tagName = "pre";
-                SyntaxHighlighter.config.stripBrs = true;
-                SyntaxHighlighter.defaults["gutter"] = true;
-                SyntaxHighlighter.all();
-
                 // submit comment
                 $("#commentValidate").keypress(function (event) {
                     if (event.keyCode === 13) {
@@ -356,36 +267,30 @@
                     $("#articleViewCount").html(result);
                 },"${article.oId}");
 
-                // Stack initialize
-                var openspeed = 300;
-                var closespeed = 300;
-                $('.stack>img').toggle(function(){
-                    var vertical = 0;
-                    var horizontal = 0;
-                    var $el=$(this);
-                    $el.next().children().each(function(){
-                        $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
-                        vertical = vertical + 36;
-                        horizontal = (horizontal+.42)*2;
-                    });
-                    $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
-                    .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
-                    $el.animate({paddingTop: '0'});
-                }, function(){
-                    //reverse above
-                    var $el=$(this);
-                    $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
-                    $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
-                    $el.animate({paddingTop: '9px'});
-                });
+                //getRandomArticles
+                jsonRpc.articleService.getRandomArticles(function (result, error) {
+                    if (result && !error) {
+                        var randomArticles = result.list;
+                        if (0 === randomArticles.length) {
+                            return;
+                        }
 
-                // Stacks additional animation
-                $('.stack li a').hover(function(){
-                    $("img",this).animate({width: '32px'}, 100);
-                    $("span",this).animate({marginRight: '12px'});
-                },function(){
-                    $("img",this).animate({width: '28px'}, 100);
-                    $("span",this).animate({marginRight: '0'});
+                        var listHtml = "";
+                        for (var i = 0; i < randomArticles.length; i++) {
+                            var article = randomArticles[i];
+                            var title = article.articleTitle;
+                            var randomArticleLiHtml = "<li>"
+                                + "<a href='" + article.articlePermalink +"'>"
+                                +  title + "</a></li>"
+                            listHtml += randomArticleLiHtml
+                        }
+
+                        var randomArticlesDiv = $("#randomArticles");
+                        var randomArticleListHtml = "<h5>${randomArticles1Label}</h5>"
+                            + "<ul class='marginLeft12'>"
+                            + listHtml + "</ul>";
+                        randomArticlesDiv.append(randomArticleListHtml);
+                    }
                 });
             }
             loadAction();
@@ -423,7 +328,6 @@
                     return;
                 } else {
                     $("#replyForm").remove();
-
                     var commentFormHTML = "<table class='form comment-reply' id='replyForm'><tbody><tr><th>${commentName1Label}"
                         + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
                         + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
@@ -438,7 +342,7 @@
                         + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
                         + "</td></tr></tbody></table>";
 
-                    $("#commentItem" + id).append(commentFormHTML);
+                    $("#commentItem" + id  + " .comment-body").append(commentFormHTML);
 
                     $("#commentValidateReply").keypress(function (event) {
                         if (event.keyCode === 13) {
@@ -537,6 +441,7 @@
                     var refComment = $("#commentItem" + id).clone();
                     refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
                     $("#commentItem" + oId + " .comment-title").append(refComment);
+                    $("#commentItemRef" + id + " #replyForm").remove();
                     $("#commentItemRef" + id + " .comment-title").css("border-top-style", "hidden");
                     $("#commentItemRef" + id + " .comment-title .right a").remove();
                 }
@@ -545,6 +450,102 @@
             var hideComment = function (id) {
                 $("#commentItemRef" + id).fadeOut("normal");
             }
+
+                <#if 0 != externalRelevantArticlesDisplayCount>
+                var getExternalArticles = function () {
+                var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
+                $.ajax({
+                    url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
+                    type: "GET",
+                    dataType:"jsonp",
+                    jsonp: "callback",
+                    error: function(){
+                        alert("Error loading article from Rhythm");
+                    },
+                    success: function(data, textStatus){
+                        var articles = data.articles;
+                        if (0 === articles.length) {
+                            return;
+                        }
+
+                        var listHtml = "";
+                        for (var i = 0; i < articles.length; i++) {
+                            var article = articles[i];
+                            var title = article.articleTitle;
+                            var articleLiHtml = "<li>"
+                                + "<a href='http://" + article.articlePermalink +"'>"
+                                +  title + "</a></li>"
+                            listHtml += articleLiHtml
+                        }
+
+                        var externalRelevantArticlesDiv = $("#externalRelevantArticles");
+                        var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
+                            + "<ul class='marginLeft12'>"
+                            + listHtml + "</ul>";
+                        externalRelevantArticlesDiv.append(randomArticleListHtml);
+                    }
+                });
+
+            }
+            getExternalArticles();
+                </#if>
+        </script>
+        <div class="stack addthis_toolbox">
+            <img src="images/stack.png" alt="stack"/>
+            <ul id="stack" class="custom_images">
+                <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="images/buzz.png" alt="Share to Buzz" /></a></li>
+                <li><a class="addthis_button_twitter"><span>Twitter</span><img src="images/twitter.png" alt="Share to Twitter" /></a></li>
+                <li><a class="addthis_button_delicious"><span>Delicious</span><img src="images/delicious.png" alt="Share to Delicious" /></a></li>
+                <li><a class="addthis_button_facebook"><span>Facebook</span><img src="images/facebook.png" alt="Share to Facebook" /></a></li>
+                <li><a class="addthis_button_more"><span>More...</span><img src="images/addthis.png" alt="More..." /></a></li>
+            </ul>
+        </div>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
+        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
+        <script type="text/javascript">
+            // code high lighter
+            $(".article-body textarea").addClass("brush: js;");
+            SyntaxHighlighter.config.tagName = "textarea";
+            SyntaxHighlighter.config.tagName = "pre";
+            SyntaxHighlighter.config.stripBrs = true;
+            SyntaxHighlighter.defaults["gutter"] = true;
+            SyntaxHighlighter.all();
+            
+            // Stack initialize
+            var openspeed = 300;
+            var closespeed = 300;
+            $('.stack>img').toggle(function(){
+                var vertical = 0;
+                var horizontal = 0;
+                var $el=$(this);
+                $el.next().children().each(function(){
+                    $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
+                    vertical = vertical + 36;
+                    horizontal = (horizontal+.42)*2;
+                });
+                $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
+                .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
+                $el.animate({paddingTop: '0'});
+            }, function(){
+                //reverse above
+                var $el=$(this);
+                $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
+                $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
+                $el.animate({paddingTop: '9px'});
+            });
+
+            // Stacks additional animation
+            $('.stack li a').hover(function(){
+                $("img",this).animate({width: '32px'}, 100);
+                $("span",this).animate({marginRight: '12px'});
+            },function(){
+                $("img",this).animate({width: '28px'}, 100);
+                $("span",this).animate({marginRight: '0'});
+            });
         </script>
     </body>
 </html>
