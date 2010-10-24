@@ -1,6 +1,7 @@
 <#list articles as article>
 <div class="article">
-    <h2>
+    <div class="article-header">
+        <h2>
         <a class="noUnderline" href="${article.articlePermalink}">
             ${article.articleTitle}
             <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
@@ -15,6 +16,7 @@
             </#if>
         </a>
     </h2>
+    </div>
     <div class="left article-info">
         <div class="article-date">
             <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
