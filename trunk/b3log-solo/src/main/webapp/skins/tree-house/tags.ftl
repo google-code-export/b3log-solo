@@ -96,6 +96,10 @@
                         </#list>],
                 tagsHTML = "";
 
+                if (tags.length === 0) {
+                     $("#tagsPanel").append("&nbsp;");
+                }
+
                 var maxCount = getMaxCount(tags);
 
                 for (var i = 0; i < tags.length; i++) {

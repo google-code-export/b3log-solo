@@ -6,8 +6,8 @@ Powered by
     <span style="color: green;">L</span>
     <span style="color: red;">O</span>
     <span style="color: blue;">G</span>&nbsp;
-    <span style="color: orangered; font-weight: bold;">Solo</span>,
-</a>ver ${version}
+    <span style="color: orangered; font-weight: bold;">Solo</span></a>,
+    ver ${version}
 <script type="text/javascript">
     var strEllipsis = function (it, length) {
         var $it = $(it);

@@ -12,6 +12,7 @@ html {
 body {
     background: url("images/bg-tree.jpg") repeat-y scroll 50% 0 #7BCCFF;
     min-width: 948px;
+    color: #42423D;
 }
 
 a, a:link, a:visited {
@@ -90,6 +91,10 @@ h5 {
 
 .main {
     width: 634px;
+}
+
+.footer {
+    color: Lavender;
 }
 
 /* article list */
@@ -298,7 +303,7 @@ img.comment-picture {
 }
 
 .error-msg {
-    color: #01ACED;
+    color: #EC0A8B;
 }
 
 /* side */
@@ -398,12 +403,9 @@ img.comment-picture {
 }
 
 #statistic {
-    color:#FF9000;
-    font-size:14px;
-    font-weight:bold;
-    height:133px;
+    height:138px;
     line-height:24px;
-    margin:36px 0 0 73px;
+    margin:28px 0 0 80px;
 }
 
 /* pagination */
