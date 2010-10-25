@@ -136,9 +136,7 @@
                                             <div class="clear"></div>
                                         </div>
                                         <div>
-                                            <div class="left comment-picture">
-                                                <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
-                                            </div>
+                                            <img class="comment-picture left" alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                                             <div>
                                                 ${comment.commentContent}
                                             </div>
@@ -151,8 +149,8 @@
                                 <div class="comment">
                                     <div class="comment-top"></div>
                                     <div class="comment-body">
-                                        <div>
-                                            ${postCommentsLabel}
+                                        <div class="comment-title">
+                                            <a>${postCommentsLabel}</a>
                                         </div>
                                         <table class="form">
                                             <tbody>
@@ -189,10 +187,10 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <th>
+                                                    <th valign="top">
                                                         ${captcha1Label}
                                                     </th>
-                                                    <td>
+                                                    <td valign="top">
                                                         <input class="normalInput" id="commentValidate"/>
                                                         <img id="captcha" alt="validate" src="/captcha.do"></img>
                                                     </td>
@@ -328,22 +326,23 @@
                     return;
                 } else {
                     $("#replyForm").remove();
-                    var commentFormHTML = "<table class='form comment-reply' id='replyForm'><tbody><tr><th>${commentName1Label}"
+                    var commentFormHTML = "<tr><th>${commentName1Label}"
                         + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
                         + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
                         + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
                         + "<th>${commentURL1Label}</th><td colspan='2'><input value='http://' id='commentURLReply'/>"
                         + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
                         + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                        + "<th>${captcha1Label}</th><td><input class='normalInput' id='commentValidateReply'/>"
+                        + "<th valign='top'>${captcha1Label}</th><td valign='top'>"
+                        + "<input class='normalInput' id='commentValidateReply'/>"
                         + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
                         + "<span class='error-msg' id='commentErrorTipReply'/>"
                         + "</th></tr><tr><td colspan='3' align='right'>"
                         + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
-                        + "</td></tr></tbody></table>";
+                        + "</td></tr>";
 
-                    $("#commentItem" + id  + " .comment-body").append(commentFormHTML);
-
+                    $("#commentItem" + id  + ">.comment-body").append("<table class='form comment-reply' id='replyForm'></table>");
+                    $("#replyForm").append(commentFormHTML);
                     $("#commentValidateReply").keypress(function (event) {
                         if (event.keyCode === 13) {
                             submitCommentReply(id);
@@ -439,10 +438,10 @@
                     $("#commentItemRef" + id).fadeIn("normal");
                 } else {
                     var refComment = $("#commentItem" + id).clone();
+                    refComment.find(".comment-body-ref").remove();
                     refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
                     $("#commentItem" + oId + " .comment-title").append(refComment);
                     $("#commentItemRef" + id + " #replyForm").remove();
-                    $("#commentItemRef" + id + " .comment-title").css("border-top-style", "hidden");
                     $("#commentItemRef" + id + " .comment-title .right a").remove();
                 }
             }
