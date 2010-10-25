@@ -103,7 +103,6 @@ public final class V010ToV011 extends HttpServlet {
                         transaction = AbstractGAERepository.DATASTORE_SERVICE.
                                 beginTransaction();
                     }
-
                 }
 
                 if (transaction.isActive()) {
