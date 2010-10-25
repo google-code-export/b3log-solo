@@ -24,7 +24,7 @@
             <ul id="mostCommentArticles">
                 <#list mostCommentArticles as article>
                 <li>
-                    <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                    <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="/article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
                     </a>(${article.articleCommentCount})
                 </li>
@@ -41,7 +41,7 @@
             <ul id="mostViewCountArticles">
                 <#list mostViewCountArticles as article>
                 <li>
-                    <a name="mostView${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                    <a name="mostView${article.oId}" title="${article.articleTitle}" href="/article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
                     </a>(${article.articleViewCount})
                 </li>
@@ -95,10 +95,10 @@
                 <#list archiveDates as archiveDate>
                 <li>
                     <#if "en" == localeString?substring(0, 2)>
-                    <a name="archiveDates${archiveDate.oId}" href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}">
+                    <a name="archiveDates${archiveDate.oId}" href="/archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}">
                         ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDateArticleCount})
                     <#else>
-                    <a name="archiveDates${archiveDate.oId}" href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
+                    <a name="archiveDates${archiveDate.oId}" href="/archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
                         ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
                     </a>
                     </#if>

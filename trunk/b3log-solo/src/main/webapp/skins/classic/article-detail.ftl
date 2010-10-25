@@ -57,7 +57,7 @@
                                     ${tags1Label}
                                     <#list articleTags as articleTag>
                                     <span>
-                                        <a href="tag-articles.do?oId=${articleTag.oId}">
+                                        <a href="/tag-articles.do?oId=${articleTag.oId}">
                                             ${articleTag.tagTitle}
                                         </a>
                                         <#if articleTag_has_next>,</#if>
@@ -73,11 +73,11 @@
                         <div class="article-details-footer">
                             <div class="left">
                                 <#if nextArticleId??>
-                                <a href="article-detail.do?oId=${nextArticleId}">${nextArticle1Label}${nextArticleTitle}</a>
+                                <a href="/article-detail.do?oId=${nextArticleId}">${nextArticle1Label}${nextArticleTitle}</a>
                                 </#if>
                                 <#if previousArticleId??>
                                 <br/>
-                                <a href="article-detail.do?oId=${previousArticleId}">${previousArticle1Label}${previousArticleTitle}</a>
+                                <a href="/article-detail.do?oId=${previousArticleId}">${previousArticle1Label}${previousArticleTitle}</a>
                                 </#if>
                             </div>
                             <div class="right">
@@ -88,7 +88,7 @@
                                 <span class="left">
                                     &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
                                 </span>
-                                <a href="article-detail.do?oId=${article.oId}" class="left">
+                                <a href="/article-detail.do?oId=${article.oId}" class="left">
                                     <span class="left browserIcon" title="${viewLabel}"></span>
                                     ${article.articleViewCount}
                                 </a>
@@ -101,7 +101,7 @@
                             <ul class="marginLeft12">
                                 <#list relevantArticles as relevantArticle>
                                 <li>
-                                    <a href="article-detail.do?oId=${relevantArticle.oId}">
+                                    <a href="/article-detail.do?oId=${relevantArticle.oId}">
                                         ${relevantArticle.articleTitle}
                                     </a>
                                 </li>
