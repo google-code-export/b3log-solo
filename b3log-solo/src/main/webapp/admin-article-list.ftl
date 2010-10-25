@@ -18,7 +18,7 @@
                 name: "${tagsLabel}",
                 index: "tags",
                 minWidth: 380,
-                style: "padding-left: 6px; white-space: nowrap; overflow: hidden; "
+                style: "padding-left: 6px; overflow: hidden; "
             }, {
                 textAlign: "center",
                 name: "${createDateLabel}",
