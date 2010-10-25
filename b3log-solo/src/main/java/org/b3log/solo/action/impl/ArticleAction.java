@@ -41,6 +41,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
@@ -56,7 +57,7 @@ import org.json.JSONObject;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 13, 2010
+ * @version 1.0.0.8, Oct 25, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -131,8 +132,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
-            final String articleId =
-                    queryStringJSONObject.getString(Keys.OBJECT_ID);
+            String articleId =
+                    queryStringJSONObject.optString(Keys.OBJECT_ID);
+            if (Strings.isEmptyOrNull(articleId)) {
+                articleId = (String) request.getAttribute(Keys.OBJECT_ID);
+            }
             final JSONObject article = articleRepository.get(articleId);
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
