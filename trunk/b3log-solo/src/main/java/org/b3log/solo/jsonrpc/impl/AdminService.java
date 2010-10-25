@@ -103,8 +103,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *     "cacheMissCount": int
      * }
      * </pre>
-     * @throws ActionException
-     * @throws IOException
+     * @throws ActionException action exception
+     * @throws IOException io exception
      */
     public JSONObject getPageCache(final HttpServletRequest request,
                                    final HttpServletResponse response)
