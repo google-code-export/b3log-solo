@@ -55,7 +55,7 @@ Powered by
             if (result && !error) {
                 var loginHTML = "<span class='left' onclick='clearAllCache();'>${clearAllCacheLabel}&nbsp;|&nbsp;</span>"
                     + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<div class='left adminIcon' onclick=\"window.location='admin-index.do';\" title='${adminLabel}'></div>"
+                    + "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='${adminLabel}'></div>"
                     + "<div class='left'>&nbsp;|&nbsp;</div>"
                     + "<div onclick='adminLogout();' class='left logoutIcon' title='${logoutLabel}'></div>";
                 $("#admin").append(loginHTML);
