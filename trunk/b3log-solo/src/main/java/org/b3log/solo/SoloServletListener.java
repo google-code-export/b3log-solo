@@ -339,6 +339,7 @@ public final class SoloServletListener extends AbstractServletListener {
                     injector.getInstance(PreferenceRepository.class);
             userPreference = preferenceRepository.get(preferenceId);
             if (null == userPreference) {
+                // FIXME: null == userPreference sometimes?
                 // Try to load preference from configuration file and then
                 // persist it.
                 userPreference = new JSONObject();
