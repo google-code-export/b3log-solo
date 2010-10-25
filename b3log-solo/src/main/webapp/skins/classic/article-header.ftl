@@ -12,7 +12,7 @@
     <div class="left marginLeft12">
         <#list pageNavigations as page>
         <span>
-            <a href="page.do?oId=${page.oId}">
+            <a href="/page.do?oId=${page.oId}">
                 ${page.pageTitle}
             </a>&nbsp;&nbsp;
         </span>
