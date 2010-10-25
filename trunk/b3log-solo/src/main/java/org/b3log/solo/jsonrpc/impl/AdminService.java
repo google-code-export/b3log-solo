@@ -17,12 +17,16 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.model.Cache;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Administrator service for JavaScript client.
@@ -35,7 +39,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = 
+    private static final Logger LOGGER =
             Logger.getLogger(AdminService.class.getName());
     /**
      * User service.
@@ -62,7 +66,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public String getLogoutURL(final HttpServletRequest request,
-                            final HttpServletResponse response)
+                               final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -82,6 +86,55 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                               final HttpServletResponse response)
             throws ActionException, IOException {
         return userService.createLoginURL("/admin-index.do");
+    }
+
+    /**
+     * Gets page cache states with the specified http servlet request and http
+     * servlet response.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "cacheCachedCount": int,
+     *     "cacheHitCount": int,
+     *     "cacheMaxCount": int,
+     *     "cacheMissCount": int
+     * }
+     * </pre>
+     * @throws ActionException
+     * @throws IOException
+     */
+    public JSONObject getPageCache(final HttpServletRequest request,
+                                   final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final int cachedCount =
+                AbstractCacheablePageAction.PAGE_CACHE.getCachedCount();
+        final int hitCount =
+                AbstractCacheablePageAction.PAGE_CACHE.getHitCount();
+        final int maxCount =
+                AbstractCacheablePageAction.PAGE_CACHE.getMaxCount();
+        final int missCount =
+                AbstractCacheablePageAction.PAGE_CACHE.getMissCount();
+        LOGGER.log(Level.INFO,
+                   "Cache[cachedCount={0}, hitCount={1}, maxCount={2}, missCount={3}",
+                   new Object[]{cachedCount, hitCount, maxCount, missCount});
+
+        final JSONObject ret = new JSONObject();
+        try {
+            ret.put(Cache.CACHE_CACHED_COUNT, cachedCount);
+            ret.put(Cache.CACHE_HIT_COUNT, hitCount);
+            ret.put(Cache.CACHE_MAX_COUNT, hitCount);
+            ret.put(Cache.CACHE_MISS_COUNT, hitCount);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Get page cache error: {0}", e.getMessage());
+            throw new ActionException(e);
+        }
+
+        return ret;
     }
 
     /**
