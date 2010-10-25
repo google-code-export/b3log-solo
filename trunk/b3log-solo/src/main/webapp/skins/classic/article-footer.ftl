@@ -7,7 +7,7 @@ Powered by
     <span style="color: red;">O</span>
     <span style="color: blue;">G</span>&nbsp;
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-    ver ${version}
+ver ${version}
 <script type="text/javascript">
     var strEllipsis = function (it, length) {
         var $it = $(it);
@@ -154,8 +154,9 @@ Powered by
     // article-side.ftl user introduction
     function handleResponse (response) {
         if ($("#sideNavi").length > 0) {
-            var userInfo = {},
-            userIntroHTML = "";
+            var userInfo = {};
+            var userIntroHTML = "";
+            
             if (response.error) {
                 userInfo.thumbnailUrl = localStorage.getItem("userInfoThumbnailUrl");
                 userInfo.displayName = localStorage.getItem("userInfoDisplayName");
@@ -167,13 +168,14 @@ Powered by
                 localStorage.setItem("userInfoAboutMe", response.data.aboutMe);
             }
 
-            if (userInfo.thumbnailUrl === null || userInfo.thumbnailUrl === undefined || userInfo.thumbnailUrl === "") {
-                userIntroHTML = "";
-            } else {
+            if (null !== userInfo.thumbnailUrl
+                &&  undefined !== userInfo.thumbnailUrl
+                && "" !== userInfo.thumbnailUrl) {
                 userIntroHTML = "<li><img src='" + userInfo.thumbnailUrl + "'/></li>"
                     + "<li>" + userInfo.displayName + "</li>"
                     + "<li class='aboutMe'>" + userInfo.aboutMe + "</li>";
             }
+            
             $("#userIntro").html(userIntroHTML);
         }
     }
