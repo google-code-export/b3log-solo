@@ -46,6 +46,11 @@ h5 {
     width:100%;
 }
 
+.header-navi {
+    position: relative;
+    z-index: 10;
+}
+
 .header-navi ul {
     list-style:none outside none;
     margin-top:20px;
