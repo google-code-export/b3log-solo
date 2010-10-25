@@ -11,12 +11,12 @@
         <meta http-equiv="Window-target" content="_top"/>
         <title>${article.articleTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="js/lib/SyntaxHighlighter/styles/shCoreDefault.css"/>
-        <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="skins/${skinDirName}/default-index.css"/>
-        <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
-        <link rel="icon" type="image/png" href="favicon.png"/>
+        <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreDefault.css"/>
+        <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
+        <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
+        <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
     </head>
     <body>
@@ -285,21 +285,21 @@
                 <#include "article-footer.ftl">
             </div>
             <div class="stack addthis_toolbox">
-                <img src="images/stack.png" alt="stack"/>
+                <img src="/images/stack.png" alt="stack"/>
                 <ul id="stack" class="custom_images">
-                    <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="images/buzz.png" alt="Share to Buzz" /></a></li>
-                    <li><a class="addthis_button_twitter"><span>Twitter</span><img src="images/twitter.png" alt="Share to Twitter" /></a></li>
-                    <li><a class="addthis_button_delicious"><span>Delicious</span><img src="images/delicious.png" alt="Share to Delicious" /></a></li>
-                    <li><a class="addthis_button_facebook"><span>Facebook</span><img src="images/facebook.png" alt="Share to Facebook" /></a></li>
-                    <li><a class="addthis_button_more"><span>More...</span><img src="images/addthis.png" alt="More..." /></a></li>
+                    <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="/images/buzz.png" alt="Share to Buzz" /></a></li>
+                    <li><a class="addthis_button_twitter"><span>Twitter</span><img src="/images/twitter.png" alt="Share to Twitter" /></a></li>
+                    <li><a class="addthis_button_delicious"><span>Delicious</span><img src="/images/delicious.png" alt="Share to Delicious" /></a></li>
+                    <li><a class="addthis_button_facebook"><span>Facebook</span><img src="/images/facebook.png" alt="Share to Facebook" /></a></li>
+                    <li><a class="addthis_button_more"><span>More...</span><img src="/images/addthis.png" alt="More..." /></a></li>
                 </ul>
             </div>
         </div>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushJava.js"></script>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
-        <script type="text/javascript" src="js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushJava.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             var currentCommentId = "";
