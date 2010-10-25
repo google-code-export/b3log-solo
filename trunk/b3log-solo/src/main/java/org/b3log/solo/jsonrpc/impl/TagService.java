@@ -17,35 +17,88 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Tag service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 31, 2010
+ * @version 1.0.0.3, Oct 25, 2010
  */
 public final class TagService extends AbstractGAEJSONRpcService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = 
+    private static final Logger LOGGER =
             Logger.getLogger(TagService.class.getName());
     /**
      * Tag repository.
      */
     @Inject
     private TagRepository tagRepository;
+
+    /**
+     * Removes all unused tags.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "REMOVE_UNUSED_TAGS_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject removeUnusedTags(final HttpServletRequest request,
+                                       final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+        final JSONArray tags = getTags(request, response);
+
+        final JSONObject ret = new JSONObject();
+        try {
+            for (int i = 0; i < tags.length(); i++) {
+                final JSONObject tag = tags.getJSONObject(i);
+                final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+                if (0 == tagRefCnt) {
+                    final String tagId = tag.getString(Keys.OBJECT_ID);
+                    tagRepository.remove(tagId);
+                }
+            }
+
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_UNUSED_TAGS_SUCC);
+
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Remove unused tags fail: {0}",
+                       e.getMessage());
+
+            try {
+                ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_UNUSED_TAGS_FAIL_);
+            } catch (final JSONException ex) {
+                LOGGER.severe(ex.getMessage());
+                throw new ActionException(e);
+            }
+        }
+
+        return ret;
+    }
 
     /**
      * Gets all tags.
