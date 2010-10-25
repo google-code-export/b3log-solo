@@ -19,7 +19,6 @@
         ${htmlHead}
     </head>
     <body>
-
         <div class="wrapper">
             <div class="bg-bottom">
                 <#include "common-top.ftl">

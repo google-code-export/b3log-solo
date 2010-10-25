@@ -64,7 +64,6 @@
     </#if>
     &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
-</#if>
 <script type="text/javascript">
     (function () {
         var local = window.location.search.substring(1);
@@ -95,3 +94,6 @@
         }
     })();
 </script>
+<#else>
+&nbsp;
+</#if>
