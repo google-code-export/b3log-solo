@@ -11,11 +11,11 @@
         <meta http-equiv="Window-target" content="_top"/>
         <title>${allTagsLabel} - ${blogTitle}</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="skins/${skinDirName}/default-index.css"/>
-        <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
-        <link rel="icon" type="image/png" href="favicon.png"/>
+        <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
+        <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
+        <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
     </head>
     <body>
@@ -101,7 +101,7 @@
                 for (var i = 0; i < tags.length; i++) {
                     var style = getStyle(maxCount, tags[i].tagCount);
                     tagsHTML += "<a title='" + tags[i].tagCount + "' class='tagPanel' style='"
-                        + style.font + style.color + style.padding + "' href='tag-articles.do?oId="
+                        + style.font + style.color + style.padding + "' href='/tag-articles.do?oId="
                         + tags[i].tagId + "&paginationCurrentPageNum=1'>" + tags[i].tagName + "</a> ";
                 }
                 $("#tagsPanel").append(tagsHTML + "<div class='clear'></div>");
