@@ -57,7 +57,7 @@
                         (${tag.tagReferenceCount})
                     </span>
                 </a>
-                <img onclick="window.location='tag-articles-feed.do?oId=${tag.oId}'"
+                <img onclick="window.location='/tag-articles-feed.do?oId=${tag.oId}'"
                      alt="${tag.tagTitle}" src="/images/feed.png"/>
             </li>
             </#list>
