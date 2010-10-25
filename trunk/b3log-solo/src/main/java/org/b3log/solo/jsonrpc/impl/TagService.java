@@ -17,6 +17,8 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +52,44 @@ public final class TagService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private TagRepository tagRepository;
+
+    /**
+     * Gets all unused tags.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * [
+     *     {"tagTitle": "tag1", "tagReferenceCount": 0},
+     *     {"tagTitle": "tag2", "tagReferenceCount": 0},
+     *     ....
+     * ]
+     * </pre>, returns an empty if not found
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public List<JSONObject> getUnusedTags(final HttpServletRequest request,
+                                          final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+        final JSONArray tags = getTags(request, response);
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        try {
+            for (int i = 0; i < tags.length(); i++) {
+                final JSONObject tag = tags.getJSONObject(i);
+                final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+                if (0 == tagRefCnt) {
+                    ret.add(tag);
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Remove unused tags fail: {0}",
+                       e.getMessage());
+        }
+
+        return ret;
+    }
 
     /**
      * Removes all unused tags.
