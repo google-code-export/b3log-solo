@@ -22,17 +22,19 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 
 /**
  * Article permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 8, 2010
+ * @version 1.0.0.1, Oct 25, 2010
  */
 public final class PermalinkFilter implements Filter {
 
@@ -74,7 +76,11 @@ public final class PermalinkFilter implements Filter {
         LOGGER.log(Level.FINER,
                    "Article permalink request[URI={0}, oId={1}]",
                    new String[]{requestURI, articleId});
-        httpServletResponse.sendRedirect("/article-detail.do?oId=" + articleId);
+
+        final RequestDispatcher requestDispatcher =
+                httpServletRequest.getRequestDispatcher("/article-detail.do");
+        request.setAttribute(Keys.OBJECT_ID, articleId);
+        requestDispatcher.forward(request, response);
     }
 
     @Override
