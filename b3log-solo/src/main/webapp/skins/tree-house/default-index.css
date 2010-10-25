@@ -1,12 +1,17 @@
 /* 
     Document   : default-index
-    Version    : 1.0.0.5, Oct 22, 2010
+    Version    : 1.0.0.7, Oct 25, 2010
     Author     : Liyuan Li
     Description:
         user blog for tree house style.
 */
+html {
+    min-width: 948px;
+}
+
 body {
     background: url("images/bg-tree.jpg") repeat-y scroll 50% 0 #7BCCFF;
+    min-width: 948px;
 }
 
 a, a:link, a:visited {
@@ -53,6 +58,7 @@ h5 {
 .header-title {
     margin-left:146px;
     padding-top:222px;
+    position: relative;
     color: #FFFFFF;
 }
 
@@ -244,6 +250,10 @@ h5 {
     color: #42423D;
 }
 
+.comment-body td {
+    white-space: nowrap;
+}
+
 .comment-bottom {
     background:url("images/bg-comments-bottom.png") no-repeat scroll 0 0 transparent;
     height:23px;
@@ -251,6 +261,7 @@ h5 {
 
 .comment-title {
     position: relative;
+    padding-bottom: 6px;
 }
 
 .comment-title a {
@@ -262,13 +273,19 @@ h5 {
     left:54px;
     opacity:0.9;
     position:absolute;
-    top:9px;
+    top:16px;
     filter:alpha(opacity=90);
+    z-index: 16;
 }
 
-.comment-picture img {
+img.comment-picture {
     width: 60px;
     height: 60px;
+    padding: 0px 6px 4px 0;
+}
+
+#replyForm {
+    margin: 12px auto 0 auto;
 }
 
 .comment-reply {
