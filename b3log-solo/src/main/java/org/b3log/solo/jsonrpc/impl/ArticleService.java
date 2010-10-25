@@ -642,7 +642,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         checkAuthorized(request, response);
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        Transaction nestedTransaction = null;
+        Transaction transaction2 = null;
 
         final JSONObject ret = new JSONObject();
 
@@ -657,7 +657,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Step 3: Remove tag-article relations
             articleUtils.removeTagArticleRelations(articleId);
             transaction.commit();
-            nestedTransaction =
+            transaction2 =
                     AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
             // Step 4: Add tags
             final String tagsString =
@@ -696,7 +696,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 LOGGER.severe(e.getMessage());
             }
 
-            nestedTransaction.commit();
+            transaction2.commit();
             JSONObject status = ret.optJSONObject(Keys.STATUS);
             if (null == status) {
                 status = new JSONObject();
@@ -706,7 +706,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
         } catch (final Exception e) {
-            nestedTransaction.rollback();
+            transaction2.rollback();
             transaction.rollback();
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
