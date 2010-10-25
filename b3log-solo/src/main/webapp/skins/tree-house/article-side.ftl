@@ -17,7 +17,7 @@
         <ul id="mostCommentArticles">
             <#list mostCommentArticles as article>
             <li>
-                <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="/article-detail.do?oId=${article.oId}">
                     ${article.articleTitle}
                     <span>
                         (${article.articleCommentCount})
@@ -34,7 +34,7 @@
         <ul id="mostViewCountArticles">
             <#list mostViewCountArticles as article>
             <li>
-                <a name="mostView${article.oId}" title="${article.articleTitle}" href="article-detail.do?oId=${article.oId}">
+                <a name="mostView${article.oId}" title="${article.articleTitle}" href="/article-detail.do?oId=${article.oId}">
                     ${article.articleTitle}
                     <span>
                         (${article.articleViewCount})
@@ -51,14 +51,14 @@
         <ul>
             <#list mostUsedTags as tag>
             <li>
-                <a name="tags${tag.oId}" title="${tag.tagTitle}" href="tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
+                <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
                     ${tag.tagTitle}
                     <span>
                         (${tag.tagReferenceCount})
                     </span>
                 </a>
                 <img onclick="window.location='tag-articles-feed.do?oId=${tag.oId}'"
-                     alt="${tag.tagTitle}" src="images/feed.png"/>
+                     alt="${tag.tagTitle}" src="/images/feed.png"/>
             </li>
             </#list>
         </ul>
@@ -85,14 +85,14 @@
             <#list archiveDates as archiveDate>
             <li>
                 <#if "en" == localeString?substring(0, 2)>
-                <a name="archiveDates${archiveDate.oId}" href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}">
+                <a name="archiveDates${archiveDate.oId}" href="/archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}">
                     ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}
                     <span>
                         (${archiveDate.archiveDateArticleCount})
                     </span>
                 </a>
                 <#else>
-                <a name="archiveDates${archiveDate.oId}" href="archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
+                <a name="archiveDates${archiveDate.oId}" href="/archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
                     ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}
                     <span>
                         (${archiveDate.archiveDateArticleCount})

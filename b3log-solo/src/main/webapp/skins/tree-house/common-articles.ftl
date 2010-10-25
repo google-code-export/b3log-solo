@@ -26,7 +26,7 @@
             </#if>
         </div>
         <div class="article-comment">
-            <a href="article-detail.do?oId=${article.oId}#comments" class="left">
+            <a href="/article-detail.do?oId=${article.oId}#comments" class="left">
                 ${commentLabel}（${article.articleCommentCount}）
             </a>
         </div>
@@ -34,7 +34,7 @@
     <div class="right article-main">
         <em class="article-tags">
             <#list article.articleTags as articleTag>
-            <a href="tag-articles.do?oId=${articleTag.oId}">
+            <a href="/tag-articles.do?oId=${articleTag.oId}">
                 ${articleTag.tagTitle}
             </a>
             <#if articleTag_has_next>,</#if>
@@ -52,15 +52,15 @@
 <#if 0 != paginationPageCount>
 <div class="pagination">
     <#if paginationPageNums?first != 1>
-    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=1">${firstPageLabel}</a>
-    <a id="previousPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationFirstPageNum}">${previousPageLabel}</a>
+    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=1">${firstPageLabel}</a>
+    <a id="previousPage" href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationFirstPageNum}">${previousPageLabel}</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
-    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
+    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
     </#list>
     <#if paginationPageNums?last!=paginationPageCount>
-    <a id="nextPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationLastPageNum}">${nextPagePabel}</a>
-    <a href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}">${lastPageLabel}</a>
+    <a id="nextPage" href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationLastPageNum}">${nextPagePabel}</a>
+    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}">${lastPageLabel}</a>
     </#if>
     &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
@@ -94,5 +94,4 @@
             $("#previousPage").attr("href", $("#previousPage").attr("href").replace("{paginationFirstPageNum}", parseInt(localStorage.getItem("currentPage")) - 1));
         }
     })();
-    
 </script>

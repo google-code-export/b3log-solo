@@ -11,11 +11,11 @@
         <meta http-equiv="Window-target" content="_top"/>
         <title>${tag.tagTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="skins/${skinDirName}/default-index.css"/>
-        <link href="tag-articles-feed.do?oId=${oId}" title="ATOM" type="application/atom+xml" rel="alternate" />
-        <link rel="icon" type="image/png" href="favicon.png"/>
+        <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
+        <link href="/tag-articles-feed.do?oId=${oId}" title="ATOM" type="application/atom+xml" rel="alternate" />
+        <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
     </head>
     <body>
