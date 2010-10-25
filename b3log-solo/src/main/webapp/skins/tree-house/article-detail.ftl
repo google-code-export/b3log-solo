@@ -190,7 +190,7 @@
                                                     <th valign="top">
                                                         ${captcha1Label}
                                                     </th>
-                                                    <td valign="top">
+                                                    <td valign="top" style="min-width: 190px;">
                                                         <input class="normalInput" id="commentValidate"/>
                                                         <img id="captcha" alt="validate" src="/captcha.do"></img>
                                                     </td>
@@ -278,7 +278,7 @@
                             var article = randomArticles[i];
                             var title = article.articleTitle;
                             var randomArticleLiHtml = "<li>"
-                                + "<a href='http://" + article.articlePermalink +"'>"
+                                + "<a href='" + article.articlePermalink +"'>"
                                 +  title + "</a></li>"
                             listHtml += randomArticleLiHtml
                         }

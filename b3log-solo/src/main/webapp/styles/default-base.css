@@ -117,24 +117,30 @@ button:hover,.button:hover {
     padding: 3px 12px;
     margin-bottom: 12px;
 }
+
 .form th {
     text-align: right;
-    word-wrap: break-word;
+    white-space: nowrap;
 }
+
 .form input,.form textarea {
     width: 100%;
     font-size: 12px;
 }
+
 .form input:focus,.form textarea:focus {
     border: 2px solid #73A6FF;
 }
+
 .form input {
     height: 24px;
     line-height: 24px;
 }
+
 .form .normalInput {
     width: auto;
 }
+
 .form .label {
     width: 6%;
     font-weight: bold;
@@ -142,58 +148,74 @@ button:hover,.button:hover {
     line-height: 26px;
     margin: 6px;
 }
+
 .form .input {
     width: 92%;
     margin: 6px 0;
 }
+
 #admin span {
     cursor: pointer;
 }
+
 #top {
     border-bottom: 1px solid #C9D7F1;
     padding: 3px;
     background-color: #FFF;
 }
+
 #top a span,.footer span {
     margin: 0 -2px;
 }
+
 #top a.logo,.footer a {
     text-decoration: none;
 }
+
 .footer {
     text-align: center;
     padding: 12px;
 }
+
 .putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon,.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,.postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon, .pageIcon, .trueIcon,.falseIcon,.fileIcon {
     width: 16px;
     height: 16px;
     background-image: url("../images/icon.png");
     cursor: pointer;
 }
+
 .blogSyncIcon {
     background-position: 0 0;
 }
+
 .pageIcon {
     background-position: -144px 0px;
 }
+
 .postIcon {
     background-position: -16px 0;
 }
+
 .linkIcon {
     background-position: -32px 0;
 }
+
 .preferenceIcon {
     background-position: -48px 0;
 }
+
 .articlesIcon {
     background-position: -64px 0;
 }
+
 .trueIcon {
     background-position: -80px 0;
 }
+
 .falseIcon {
     background-position: -96px 0;
 }
+
 .fileIcon {
     background-position: -112px 0;
 }
@@ -203,30 +225,37 @@ button:hover,.button:hover {
 .updateIcon {
     background-position: -16px -16px;
 }
+
 .commentIcon {
     background-position: -32px -16px;
 }
+
 .homeIcon {
     background-position: -64px -16px;
 }
 .adminIcon {
     background-position: -80px -16px;
 }
+
 .logoutIcon {
     background-position: -96px -16px;
 }
 .loginIcon {
     background-position: -112px -16px;
 }
+
 .browserIcon {
     background-position: -128px -16px;
 }
+
 .calendarIcon {
     background-position: -144px -16px;
 }
+
 .putTopIcon {
     background-position: -16px -32px;
 }
+
 .notPutTopIcon {
     background-position: -32px -32px;
 }
