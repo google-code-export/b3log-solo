@@ -260,6 +260,27 @@ button:hover,.button:hover {
     background-position: -32px -32px;
 }
 
+/* article default css */
+.article-body blockquote{
+    border:1px dotted #98A47F;
+    margin:12px;
+    padding:12px;
+    font-style: italic;
+}
+
+.article-body h1 { font-size: 2em; margin: .67em 0 }
+.article-body h2 { font-size: 1.5em; margin: .75em 0 }
+.article-body h3 { font-size: 1.17em; margin: .83em 0 }
+.article-body h4, .article-body p, .article-body blockquote,
+.article-body ul, .article-body fieldset, .article-body form,
+.article-body ol, .article-body dl, .article-body dir,
+.article-body menu { margin: 1.12em 0 }
+.article-body h5 { font-size: .83em; margin: 1.5em 0 }
+.article-body h6 { font-size: .75em; margin: 1.67em 0 }
+.article-body blockquote { margin-left: 40px; margin-right: 40px }
+.article-body ol, .article-body ul, .article-body dir,
+.article-body menu, .article-body dd { margin-left: 40px }
+
 .stack { position: fixed; bottom: 9px; right: 18px; font: 13px "Trebuchet MS", Verdana, Helvetica, sans-serif; color: #666; }
 .stack * { margin: 0; padding: 0; }
 .stack > img { position: relative; cursor: pointer;z-index: 2; width:38px;}
