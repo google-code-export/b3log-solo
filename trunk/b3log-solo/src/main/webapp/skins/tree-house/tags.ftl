@@ -30,6 +30,7 @@
                     <div class="body">
                         <div class="left main">
                             <div id="tagsPanel">
+                                &nbsp;
                             </div>
                         </div>
                         <div class="left side">
@@ -97,7 +98,7 @@
                 tagsHTML = "";
 
                 if (tags.length === 0) {
-                     $("#tagsPanel").append("&nbsp;");
+                     return;
                 }
 
                 var maxCount = getMaxCount(tags);
@@ -108,7 +109,7 @@
                         + style.font + style.color + style.padding + "' href='/tag-articles.do?oId="
                         + tags[i].tagId + "&paginationCurrentPageNum=1'>" + tags[i].tagName + "</a> ";
                 }
-                $("#tagsPanel").append(tagsHTML + "<div class='clear'></div>");
+                $("#tagsPanel").html(tagsHTML + "<div class='clear'></div>");
             }
             setTagsPanel();
         </script>
