@@ -119,8 +119,12 @@ public final class ReplyNotifier
             final String mailSubject = blogTitle + ": New reply of your comment";
             message.setSubject(mailSubject);
             final String articleTitle = article.getString(Article.ARTICLE_TITLE);
-            final String mailBody = "Your comment on article[" + articleTitle
-                                    + "] received an reply: <p>"
+            final String blogHost = preference.getString(Preference.BLOG_HOST);
+            final String articleLink = "http://" + blogHost + article.getString(
+                    Article.ARTICLE_PERMALINK);
+            final String mailBody = "Your comment on article[<a href='"
+                                    + articleLink + "'>" + articleTitle
+                                    + "</a>] received an reply: <p>"
                                     + commentContent + "</p><p>"
                                     + "See <a href=" + commentSharpURL
                                     + ">here</a> for original post.</p>";
