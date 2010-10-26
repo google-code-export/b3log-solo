@@ -96,7 +96,7 @@ public final class ReplyNotifier
             final String originalCommentEmail =
                     originalComment.getString(Comment.COMMENT_EMAIL);
             if (originalCommentEmail.equalsIgnoreCase(commentEmail)) {
-                LOGGER.log(Level.INFO,
+                LOGGER.log(Level.FINE,
                            "Do not send reply notification mail to itself[{0}]",
                            originalCommentEmail);
                 return;
