@@ -26,7 +26,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 18, 2010
+ * @version 1.0.0.1, Oct 26, 2010
  */
 public final class Statistics {
 
@@ -35,6 +35,67 @@ public final class Statistics {
      */
     @Inject
     private StatisticRepository statisticRepository;
+
+    /**
+     * Get blog comment count.
+     *
+     * @return blog comment count
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public int getBlogCommentCount()
+            throws JSONException, RepositoryException {
+        final JSONObject statistic =
+                statisticRepository.get(Statistic.STATISTIC);
+        return statistic.getInt(
+                Statistic.STATISTIC_BLOG_COMMENT_COUNT);
+    }
+
+    /**
+     * Sets blog comment count with the specified count.
+     *
+     * @param count the specified count
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void setBlogCommentCount(final int count)
+            throws JSONException, RepositoryException {
+        final JSONObject statistic =
+                statisticRepository.get(Statistic.STATISTIC);
+        statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
+                      count);
+        statisticRepository.update(Statistic.STATISTIC, statistic);
+    }
+
+    /**
+     * Gets blog statistic article count.
+     *
+     * @return blog article count
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public int getBlogArticleCount()
+            throws JSONException, RepositoryException {
+        final JSONObject statistic =
+                statisticRepository.get(Statistic.STATISTIC);
+        return statistic.getInt(Statistic.STATISTIC_BLOG_ARTICLE_COUNT);
+    }
+
+    /**
+     * Sets blog statistic article count with the specified count.
+     *
+     * @param count the specified blog article count
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void setBlogArticleCount(final int count)
+            throws JSONException, RepositoryException {
+        final JSONObject statistic =
+                statisticRepository.get(Statistic.STATISTIC);
+        statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
+                      count);
+        statisticRepository.update(Statistic.STATISTIC, statistic);
+    }
 
     /**
      * Blog statistic view count +1.

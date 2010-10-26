@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 20, 2010
+ * @version 1.0.0.3, Oct 26, 2010
  */
 public final class ReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -90,22 +90,31 @@ public final class ReplyNotifier
         }
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
-            final String blogTitle =
-                    preference.getString(Preference.BLOG_TITLE);
-            final String adminGamil =
-                    preference.getString(Preference.ADMIN_GMAIL);
+            final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
             final JSONObject originalComment =
                     commentRepository.get(originalCommentId);
             final String originalCommentEmail =
                     originalComment.getString(Comment.COMMENT_EMAIL);
+            if (originalCommentEmail.equalsIgnoreCase(commentEmail)) {
+                LOGGER.log(Level.INFO,
+                           "Do not send reply notification mail to itself[{0}]",
+                           originalCommentEmail);
+                return;
+            }
+
+            final JSONObject preference =
+                    SoloServletListener.getUserPreference();
+            final String blogTitle =
+                    preference.getString(Preference.BLOG_TITLE);
+            final String adminGmail =
+                    preference.getString(Preference.ADMIN_GMAIL);
+
             final String commentContent =
                     comment.getString(Comment.COMMENT_CONTENT);
             final String commentSharpURL =
                     comment.getString(Comment.COMMENT_SHARP_URL);
             final Message message = new Message();
-            message.setSender(adminGamil);
+            message.setSender(adminGmail);
             message.setTo(originalCommentEmail);
             final String mailSubject = blogTitle + ": New reply of your comment";
             message.setSubject(mailSubject);

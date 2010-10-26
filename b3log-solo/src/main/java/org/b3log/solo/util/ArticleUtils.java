@@ -18,6 +18,7 @@ package org.b3log.solo.util;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleCommentRepository;
@@ -36,10 +37,15 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 20, 2010
+ * @version 1.0.0.4, Oct 26, 2010
  */
 public final class ArticleUtils {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(ArticleUtils.class.getName());
     /**
      * Comment repository.
      */
@@ -65,6 +71,11 @@ public final class ArticleUtils {
      */
     @Inject
     private ArticleRepository articleRepository;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
 
     /**
      * Article comment count +1 for an article specified by the given article id.
@@ -156,6 +167,11 @@ public final class ArticleUtils {
     /**
      * Removes article comments by the specified article id.
      *
+     * <p>
+     * Removes related comments, article-comment relations, sets article/blog
+     * comment statistic count.
+     * </p>
+     *
      * @param articleId the specified article id
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
@@ -175,6 +191,11 @@ public final class ArticleUtils {
                     articleCommentRelation.getString(Keys.OBJECT_ID);
             articleCommentRepository.remove(relationId);
         }
+
+        int blogCommentCount = statistics.getBlogCommentCount();
+        final int articleCommentCount = articleCommentRelations.size();
+        blogCommentCount -= articleCommentCount;
+        statistics.setBlogCommentCount(blogCommentCount);
     }
 
     /**
