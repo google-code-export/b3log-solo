@@ -319,13 +319,14 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                     Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
+            JSONObject originalComment = null;
             comment.put(Comment.COMMENT_NAME, commentName);
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_DATE, new Date());
             if (!Strings.isEmptyOrNull(originalCommentId)) {
-                final JSONObject originalComment =
+                originalComment =
                         commentRepository.get(originalCommentId);
                 if (null != originalComment) {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
@@ -359,7 +360,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             // Step 4: Update blog statistic comment count
             statistics.incBlogCommentCount();
             // Step 5: Send an email to admin
-            sendNotificationMail(article, comment, request);
+            sendNotificationMail(article, comment, originalComment);
             // Step 6: Fire add comment event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
@@ -390,26 +391,37 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      *
      * @param article the specified article
      * @param comment the specified comment
-     * @param request the specified http servlet request
+     * @param originalComment original comment, if not exists, set it as
+     * {@code null}
      * @throws IOException io exception
      * @throws JSONException json exception
      */
     private void sendNotificationMail(final JSONObject article,
                                       final JSONObject comment,
-                                      final HttpServletRequest request)
+                                      final JSONObject originalComment)
             throws IOException, JSONException {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String commentId = comment.getString(Keys.OBJECT_ID);
         final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
-        final String articleId = article.getString(Keys.OBJECT_ID);
         final JSONObject preference =
                 SoloServletListener.getUserPreference();
         final String adminEmail = preference.getString(Preference.ADMIN_GMAIL);
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
-            LOGGER.log(Level.INFO,
+            LOGGER.log(Level.FINE,
                        "Do not send comment notification mail to admin itself[{0}]",
                        adminEmail);
             return;
+        }
+
+        if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
+            final String originalEmail =
+                    originalComment.getString(Comment.COMMENT_EMAIL);
+            if (originalEmail.equalsIgnoreCase(adminEmail)) {
+                LOGGER.log(Level.FINE,
+                           "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
+                           commentId);
+                return;
+            }
         }
 
         final String blogTitle =
