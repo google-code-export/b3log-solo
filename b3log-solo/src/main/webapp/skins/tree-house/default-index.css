@@ -415,13 +415,11 @@ img.comment-picture {
 }
 
 .pagination a, .pagination a:visited {
-    color: #4272DB;
     padding: 0 3px;
-    text-decoration: none;
 }
 
 .pagination a.selected {
-    color: #000000;
+    color: #42423D;
     font-weight: bold;
 }
 
@@ -437,10 +435,11 @@ img.comment-picture {
     -moz-border-radius:6px;
     -webkit-border-radius:6px;
     cursor: pointer;
+    background-color: #EEEEEE;
 }
 
 #tagsPanel .tagPanel:hover {
-    background-color: #EEEEEE;
+    background-color: transparent;
     border: 2px dashed;
 }
 

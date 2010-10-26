@@ -77,8 +77,8 @@
                 styleHTML.color = "color:" + randomColor() + ";";
 
                 fontSize = parseInt(36 * currentCount / maxCount);
-                if (fontSize < 10) {
-                    fontSize = 10;
+                if (fontSize < 12) {
+                    fontSize = 12;
                 }
                 styleHTML.font = "font-size:" + fontSize + "px;";
                 if (maxCount === currentCount) {
