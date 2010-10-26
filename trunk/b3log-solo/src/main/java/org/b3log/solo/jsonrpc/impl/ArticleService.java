@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Oct 21, 2010
+ * @version 1.0.1.7, Oct 26, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -370,7 +370,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+            final Map<String, SortDirection> sorts =
+                    new HashMap<String, SortDirection>();
             sorts.put(ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
             sorts.put(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
             final JSONObject result =
@@ -441,6 +442,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         checkAuthorized(request, response);
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        Transaction transaction2 = null;
         final JSONObject ret = new JSONObject();
 
         try {
@@ -450,8 +452,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             tagUtils.decTagRefCount(articleId);
             // Step 2: Remove tag-article relations
             articleUtils.removeTagArticleRelations(articleId);
-            // Step 3: Remove related comments, article-comment relations
+            // Step 3: Remove related comments, article-comment relations,
+            // set article/blog comment statistic count
             articleUtils.removeArticleComments(articleId);
+            transaction.commit();
+
+            transaction2 =
+                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
             // Step 4: Remove article
             articleRepository.remove(articleId);
             // Step 5: Dec blog article count statictis
@@ -470,7 +477,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 LOGGER.severe(e.getMessage());
             }
 
-            transaction.commit();
+            transaction2.commit();
 
             JSONObject status = ret.optJSONObject(Keys.STATUS);
             if (null == status) {
@@ -481,7 +488,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Removed an article[oId={0}]", articleId);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (null != transaction2 && transaction2.isActive()) {
+                transaction2.rollback();
+            }
+
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
@@ -706,8 +719,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
         } catch (final Exception e) {
-            transaction2.rollback();
-            transaction.rollback();
+            if (null != transaction2 && transaction2.isActive()) {
+                transaction2.rollback();
+            }
+
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }

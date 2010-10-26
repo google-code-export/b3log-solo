@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Oct 20, 2010
+ * @version 1.0.1.7, Oct 26, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -283,9 +283,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject addComment(final JSONObject requestJSONObject,
-                                 final HttpServletRequest request,
-                                 final HttpServletResponse response)
+    public synchronized JSONObject addComment(final JSONObject requestJSONObject,
+                                              final HttpServletRequest request,
+                                              final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         final Transaction transaction =
@@ -360,7 +360,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             // Step 4: Update blog statistic comment count
             statistics.incBlogCommentCount();
             // Step 5: Send an email to admin
-            sendNotificationMail(article, commentId, commentContent, request);
+            sendNotificationMail(article, comment, request);
             // Step 6: Fire add comment event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
@@ -387,24 +387,32 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
     /**
      * Sends a notification mail to administrator for notifying the specified
-     * article received a comment which specified by the given comment id and
-     * comment content.
+     * article received the specified comment.
      *
      * @param article the specified article
-     * @param commentId the given comment id
-     * @param commentContent the given comment content
+     * @param comment the specified comment
      * @param request the specified http servlet request
      * @throws IOException io exception
      * @throws JSONException json exception
      */
     private void sendNotificationMail(final JSONObject article,
-                                      final String commentId,
-                                      final String commentContent,
+                                      final JSONObject comment,
                                       final HttpServletRequest request)
             throws IOException, JSONException {
+        final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
+        final String commentId = comment.getString(Keys.OBJECT_ID);
+        final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
         final String articleId = article.getString(Keys.OBJECT_ID);
         final JSONObject preference =
                 SoloServletListener.getUserPreference();
+        final String adminEmail = preference.getString(Preference.ADMIN_GMAIL);
+        if (adminEmail.equalsIgnoreCase(commentEmail)) {
+            LOGGER.log(Level.INFO,
+                       "Do not send comment notification mail to admin itself[{0}]",
+                       adminEmail);
+            return;
+        }
+
         final String blogTitle =
                 preference.getString(Preference.BLOG_TITLE);
         final String articleTitle =
@@ -413,7 +421,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                                           articleId,
                                                           commentId);
         final Message message = new Message();
-        message.setSender(preference.getString(Preference.ADMIN_GMAIL));
+        message.setSender(adminEmail);
         final String mailSubject = blogTitle + ": New comment about "
                                    + articleTitle;
         message.setSubject(mailSubject);
