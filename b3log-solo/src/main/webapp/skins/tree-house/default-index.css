@@ -178,6 +178,19 @@ h5 {
     margin-left:16px;
 }
 
+.article-comment {
+    background:url("images/bg-comments.png") no-repeat scroll 0 0 transparent;
+    font-size:12px;
+    height:22px;
+    margin:24px 0 0;
+    padding:29px 0 0;
+    text-align:center;
+}
+
+.article-comment a {
+    color: #42423D;
+}
+
 /* article detail */
 .main h2.title {
     color: #FF9000;
