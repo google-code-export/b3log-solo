@@ -342,8 +342,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             setCommentThumbnailURL(comment);
             commentId = commentRepository.add(comment);
             // Save comment sharp URL
-            final String commentSharpURL = getCommentSharpURL(request,
-                                                              articleId,
+            final String commentSharpURL = getCommentSharpURL(article,
                                                               commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
@@ -415,17 +414,19 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
         final String blogTitle =
                 preference.getString(Preference.BLOG_TITLE);
+        final String blogHost =
+                preference.getString(Preference.BLOG_HOST);
         final String articleTitle =
                 article.getString(Article.ARTICLE_TITLE);
-        final String commentSharpURL = getCommentSharpURL(request,
-                                                          articleId,
+        final String commentSharpURL = getCommentSharpURL(article,
                                                           commentId);
         final Message message = new Message();
         message.setSender(adminEmail);
         final String mailSubject = blogTitle + ": New comment about "
                                    + articleTitle;
         message.setSubject(mailSubject);
-        final String articleURL = getArticleURL(request, articleId);
+        final String articleURL = "http://" + blogHost + article.getString(
+                Article.ARTICLE_PERMALINK);
         final String mailBody =
                 COMMENT_MAIL_HTML_BODY.replace("{articleURL}", articleURL).
                 replace("{articleTitle}", articleTitle).
@@ -571,9 +572,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
                 if (!defaultFileLengthMatched) {
                     thumbnailURL = "http://www.gravatar.com/avatar/"
-                                   + hashedEmail
-                                   + "?s="
-                                   + size + "&r=G";
+                                   + hashedEmail + "?s=" + size + "&r=G";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
                     LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
                                thumbnailURL);
@@ -602,31 +601,21 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Gets comment sharp URL with the specified http servlet request, article
-     * id and comment id.
+     * Gets comment sharp URL with the specified article and comment id.
      *
-     * @param request the specified http servlet request
-     * @param articleId the specified article id
+     * @param article the specified article
      * @param commentId the specified comment id
      * @return comment sharp URL
+     * @throws JSONException json exception
      */
-    private String getCommentSharpURL(final HttpServletRequest request,
-                                      final String articleId,
-                                      final String commentId) {
-        return getArticleURL(request, articleId) + "#" + commentId;
-    }
-
-    /**
-     * Gets article URL with the specified http servlet request and article id.
-     *
-     * @param request the specified http servlet request
-     * @param articleId the specified article id
-     * @return article URL
-     */
-    private String getArticleURL(final HttpServletRequest request,
-                                 final String articleId) {
-        return request.getScheme() + "://" + request.getServerName() + ":"
-               + request.getServerPort() + "/article-detail.do?oId="
-               + articleId;
+    private String getCommentSharpURL(final JSONObject article,
+                                      final String commentId)
+            throws JSONException {
+        final JSONObject preference =
+                SoloServletListener.getUserPreference();
+        final String blogHost = preference.getString(Preference.BLOG_HOST);
+        final String articleLink = "http://" + blogHost + article.getString(
+                Article.ARTICLE_PERMALINK);
+        return articleLink + "#" + commentId;
     }
 }
