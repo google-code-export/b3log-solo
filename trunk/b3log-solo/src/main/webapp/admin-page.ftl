@@ -151,11 +151,11 @@
             mode : "exact",
             elements : "pageContent",
             theme : "advanced",
-            plugins : "style,advhr,advimage,advlink,preview,media,paste,fullscreen",
+            plugins : "style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl",
 
             // Theme options
             theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-            theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen",
+            theme_advanced_buttons2 : "bullist,numlist,outdent,indent,|,undo,redo,|,sub,sup,blockquote,charmap,image,iespell,media,|,advhr,link,unlink,anchor,cleanup,|,pastetext,pasteword,code,preview,fullscreen,syntaxhl",
             theme_advanced_buttons3 : "",
             theme_advanced_toolbar_location : "top",
             theme_advanced_toolbar_align : "left",
