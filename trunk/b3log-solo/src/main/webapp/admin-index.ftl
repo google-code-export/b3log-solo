@@ -32,18 +32,6 @@
                 </span>
                 <div class="clear"></div>
             </div>
-            <script type="text/javascript">
-                var adminLogin = function () {
-                    var loginURL = jsonRpc.adminService.getLoginURL();
-                    window.location.href = loginURL;
-                }
-
-                var adminLogout = function () {
-                    var logoutURL = jsonRpc.adminService.getLogoutURL();
-                    window.location.href = logoutURL;
-                }
-            </script>
-
             <div id="allPanel">
                 <div class="left side">
                     <ul id="sideNavi">
@@ -114,6 +102,16 @@
             </div>
         </div>
         <script type="text/javascript">
+            var adminLogin = function () {
+                var loginURL = jsonRpc.adminService.getLoginURL();
+                window.location.href = loginURL;
+            }
+
+            var adminLogout = function () {
+                var logoutURL = jsonRpc.adminService.getLogoutURL();
+                window.location.href = logoutURL;
+            }
+            
             var changeList = function (it) {
                 var tabs = ['article', 'article-list', 'link-list', 'preference',
                     'article-sync', 'page', 'cache'];
@@ -148,7 +146,7 @@
                 $("#tag").val("");
             }
 
-            var PAGE_SIZE = 18,
+            var PAGE_SIZE = 2,
             WINDOW_SIZE = 10;
             var initAdmin = function () {
                 $("#loadMsg").text("${loadingLabel}");
