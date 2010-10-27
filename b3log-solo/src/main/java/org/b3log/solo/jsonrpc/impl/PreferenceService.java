@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Oct 20, 2010
+ * @version 1.0.0.9, Oct 26, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -141,7 +141,9 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "externalRelevantArticlesDisplayCount": int,
      *         "relevantArticlesDisplayCount": int,
      *         "randomArticlesDisplayCount": int,
-     *         "enablePostToBuzz": boolean
+     *         "enablePostToBuzz": boolean,
+     *         "metaKeywords": "",
+     *         "metaDescription": ""
      *     }
      * }, see {@link Preference} for more details
      * </pre>
