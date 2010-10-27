@@ -180,7 +180,7 @@ button:hover,.button:hover {
 .putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon,
 .homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,
 .postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon,
-.pageIcon, .trueIcon,.falseIcon,.fileIcon, .cacheIcon {
+.pageIcon, .trueIcon,.falseIcon,.fileIcon, .cacheIcon, .goTopIcon {
     width: 16px;
     height: 16px;
     background-image: url("../images/icon.png");
@@ -265,6 +265,10 @@ button:hover,.button:hover {
 
 .cacheIcon {
     background-position: -48px -32px;
+}
+
+.goTopIcon {
+    background-position: -64px -32px;
 }
 
 /* article default css */
