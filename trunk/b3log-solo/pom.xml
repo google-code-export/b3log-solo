@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.2.2, Oct 19, 2010
+    Version: 1.0.2.3, Oct 26, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -22,7 +22,7 @@
 
     <!-- Version -->
     <properties>
-        <org.b3log.latke.version>0.2.4</org.b3log.latke.version>
+        <org.b3log.latke.version>0.2.5</org.b3log.latke.version>
         <org.b3log.latke-repository-gae.version>
             0.1.1
         </org.b3log.latke-repository-gae.version>
