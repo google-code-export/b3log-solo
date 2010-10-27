@@ -177,7 +177,10 @@ button:hover,.button:hover {
     padding: 12px;
 }
 
-.putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon,.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,.postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon, .pageIcon, .trueIcon,.falseIcon,.fileIcon {
+.putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon,
+.homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,
+.postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon,
+.pageIcon, .trueIcon,.falseIcon,.fileIcon, .cacheIcon {
     width: 16px;
     height: 16px;
     background-image: url("../images/icon.png");
@@ -258,6 +261,10 @@ button:hover,.button:hover {
 
 .notPutTopIcon {
     background-position: -32px -32px;
+}
+
+.cacheIcon {
+    background-position: -48px -32px;
 }
 
 /* article default css */
