@@ -428,50 +428,43 @@
                             randomArticlesDiv.append(randomArticleListHtml);
                         }
                     });
-                }
-                loadAction();
 
                     <#if 0 != externalRelevantArticlesDisplayCount>
                     var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
+                        $.ajax({
+                            url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
+                            type: "GET",
+                            dataType:"jsonp",
+                            jsonp: "callback",
+                            error: function(){
+                                alert("Error loading articles from Rhythm");
+                            },
+                            success: function(data, textStatus){
+                                var articles = data.articles;
+                                if (0 === articles.length) {
+                                    return;
+                                }
+                                var listHtml = "";
+                                for (var i = 0; i < articles.length; i++) {
+                                    var article = articles[i];
+                                    var title = article.articleTitle;
+                                    var articleLiHtml = "<li>"
+                                        + "<a href='http://" + article.articlePermalink +"'>"
+                                        +  title + "</a></li>"
+                                    listHtml += articleLiHtml
+                                }
 
-                var getExternalArticles = function () {
-
-                    $.ajax({
-                        url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
-                        type: "GET",
-                        dataType:"jsonp",
-                        jsonp: "callback",
-                        error: function(){
-                            alert("Error loading articles from Rhythm");
-                        },
-                        success: function(data, textStatus){
-                            var articles = data.articles;
-                            if (0 === articles.length) {
-                                return;
+                                var externalRelevantArticlesDiv = $("#externalRelevantArticles");
+                                externalRelevantArticlesDiv.attr("class", "article-relative");
+                                var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
+                                    + "<ul class='marginLeft12'>"
+                                    + listHtml + "</ul>";
+                                externalRelevantArticlesDiv.append(randomArticleListHtml);
                             }
-
-                            var listHtml = "";
-                            for (var i = 0; i < articles.length; i++) {
-                                var article = articles[i];
-                                var title = article.articleTitle;
-                                var articleLiHtml = "<li>"
-                                    + "<a href='http://" + article.articlePermalink +"'>"
-                                    +  title + "</a></li>"
-                                listHtml += articleLiHtml
-                            }
-
-                            var externalRelevantArticlesDiv = $("#externalRelevantArticles");
-                            externalRelevantArticlesDiv.attr("class", "article-relative");
-                            var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
-                                + "<ul class='marginLeft12'>"
-                                + listHtml + "</ul>";
-                            externalRelevantArticlesDiv.append(randomArticleListHtml);
-                        }
-                    });
-
-                }
-                getExternalArticles();
-                    </#if>
+                        });
+                        </#if>
+                    }
+                loadAction();
             </script>
             <div class="footer">
                 <#include "article-footer.ftl">
@@ -494,50 +487,53 @@
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
-            // code high lighter
-            SyntaxHighlighter.config.stripBrs = false;
-            SyntaxHighlighter.all();
+            var loadTool = function () {
+                // code high lighter
+                SyntaxHighlighter.config.stripBrs = false;
+                SyntaxHighlighter.all();
 
-            // article view count
-            jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
-            jsonRpc.statisticService.getArticleViewCount(function (result, error) {
-                if (!result || error) {
-                    return;
-                }
-                $("#articleViewCount").html(result);
-            },"${article.oId}");
+                // article view count
+                jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
+                jsonRpc.statisticService.getArticleViewCount(function (result, error) {
+                    if (!result || error) {
+                        return;
+                    }
+                    $("#articleViewCount").html(result);
+                },"${article.oId}");
 
-            // Stack initialize
-            var openspeed = 300;
-            var closespeed = 300;
-            $('.stack>img').toggle(function(){
-                var vertical = 0;
-                var horizontal = 0;
-                var $el=$(this);
-                $el.next().children().each(function(){
-                    $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
-                    vertical = vertical + 36;
-                    horizontal = (horizontal+.42)*2;
+                // Stack initialize
+                var openspeed = 300;
+                var closespeed = 300;
+                $('.stack>img').toggle(function(){
+                    var vertical = 0;
+                    var horizontal = 0;
+                    var $el=$(this);
+                    $el.next().children().each(function(){
+                        $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
+                        vertical = vertical + 36;
+                        horizontal = (horizontal+.42)*2;
+                    });
+                    $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
+                    .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
+                    $el.animate({paddingTop: '0'});
+                }, function(){
+                    //reverse above
+                    var $el=$(this);
+                    $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
+                    $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
+                    $el.animate({paddingTop: '9px'});
                 });
-                $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
-                .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
-                $el.animate({paddingTop: '0'});
-            }, function(){
-                //reverse above
-                var $el=$(this);
-                $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
-                $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
-                $el.animate({paddingTop: '9px'});
-            });
 
-            // Stacks additional animation
-            $('.stack li a').hover(function(){
-                $("img",this).animate({width: '32px'}, 100);
-                $("span",this).animate({marginRight: '12px'});
-            },function(){
-                $("img",this).animate({width: '28px'}, 100);
-                $("span",this).animate({marginRight: '0'});
-            });
+                // Stacks additional animation
+                $('.stack li a').hover(function(){
+                    $("img",this).animate({width: '32px'}, 100);
+                    $("span",this).animate({marginRight: '12px'});
+                },function(){
+                    $("img",this).animate({width: '28px'}, 100);
+                    $("span",this).animate({marginRight: '0'});
+                });
+            }
+            loadTool();
         </script>
     </body>
 </html>
