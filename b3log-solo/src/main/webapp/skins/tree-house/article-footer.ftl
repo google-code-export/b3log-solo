@@ -122,6 +122,7 @@ Powered by
         }
 
         jsonRpc.statisticService.incBlogViewCount();
+        $("body").append("<a href='javascript:$.bowknot.goTop();'>go top</a>");
     }
     initIndex();
     

@@ -19,7 +19,7 @@
                 ${content1Label}
             </th>
             <td>
-                <input id="pageContent" style="height: 400px;width: 100%;" name="pageContent"/>
+                <textarea id="pageContent" style="height: 400px;width: 100%;" name="pageContent"></textarea>
             </td>
         </tr>
         <tr>
