@@ -213,18 +213,6 @@
                 <div class="clear"></div>
             </div>
             <script type="text/javascript">
-                // code high lighter
-                SyntaxHighlighter.autoloader(
-                'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
-                'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
-                'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
-            );
-
-                SyntaxHighlighter.config.tagName = "pre";
-                SyntaxHighlighter.config.stripBrs = true;
-                SyntaxHighlighter.defaults['toolbar'] = false;
-                SyntaxHighlighter.all();
-            
                 var currentCommentId = "";
 
                 var moveCursor = function(event) {
@@ -400,6 +388,18 @@
                 }
 
                 var loadAction = function () {
+                    // code high lighter
+                    SyntaxHighlighter.autoloader(
+                    'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
+                    'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
+                    'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
+                    );
+
+                    SyntaxHighlighter.config.tagName = "pre";
+                    SyntaxHighlighter.config.stripBrs = true;
+                    SyntaxHighlighter.defaults['toolbar'] = false;
+                    SyntaxHighlighter.all();
+                    
                     // submit comment
                     $("#commentValidate").keypress(function (event) {
                         if (event.keyCode === 13) {
@@ -444,39 +444,39 @@
                         }
                     });
 
-                    <#if 0 != externalRelevantArticlesDisplayCount>
-                    var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
-                        $.ajax({
-                            url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
-                            type: "GET",
-                            dataType:"jsonp",
-                            jsonp: "callback",
-                            error: function(){
-                                alert("Error loading articles from Rhythm");
-                            },
-                            success: function(data, textStatus){
-                                var articles = data.articles;
-                                if (0 === articles.length) {
-                                    return;
-                                }
-                                var listHtml = "";
-                                for (var i = 0; i < articles.length; i++) {
-                                    var article = articles[i];
-                                    var title = article.articleTitle;
-                                    var articleLiHtml = "<li>"
-                                        + "<a href='http://" + article.articlePermalink +"'>"
-                                        +  title + "</a></li>"
-                                    listHtml += articleLiHtml
-                                }
-
-                                var externalRelevantArticlesDiv = $("#externalRelevantArticles");
-                                externalRelevantArticlesDiv.attr("class", "article-relative");
-                                var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
-                                    + "<ul class='marginLeft12'>"
-                                    + listHtml + "</ul>";
-                                externalRelevantArticlesDiv.append(randomArticleListHtml);
+                        <#if 0 != externalRelevantArticlesDisplayCount>
+                        var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
+                    $.ajax({
+                        url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
+                        type: "GET",
+                        dataType:"jsonp",
+                        jsonp: "callback",
+                        error: function(){
+                            alert("Error loading articles from Rhythm");
+                        },
+                        success: function(data, textStatus){
+                            var articles = data.articles;
+                            if (0 === articles.length) {
+                                return;
                             }
-                        });
+                            var listHtml = "";
+                            for (var i = 0; i < articles.length; i++) {
+                                var article = articles[i];
+                                var title = article.articleTitle;
+                                var articleLiHtml = "<li>"
+                                    + "<a href='http://" + article.articlePermalink +"'>"
+                                    +  title + "</a></li>"
+                                listHtml += articleLiHtml
+                            }
+
+                            var externalRelevantArticlesDiv = $("#externalRelevantArticles");
+                            externalRelevantArticlesDiv.attr("class", "article-relative");
+                            var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
+                                + "<ul class='marginLeft12'>"
+                                + listHtml + "</ul>";
+                            externalRelevantArticlesDiv.append(randomArticleListHtml);
+                        }
+                    });
                         </#if>
                     }
                 loadAction();
@@ -497,6 +497,7 @@
         </div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
+            var loadTool = function () {
                 // article view count
                 jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
                 jsonRpc.statisticService.getArticleViewCount(function (result, error) {

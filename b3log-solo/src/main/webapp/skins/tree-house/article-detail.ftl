@@ -224,18 +224,6 @@
             </div>
         </div>
         <script type="text/javascript">
-            // code high lighter
-            SyntaxHighlighter.autoloader(
-            'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
-            'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
-            'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
-        );
-
-            SyntaxHighlighter.config.tagName = "pre";
-            SyntaxHighlighter.config.stripBrs = true;
-            SyntaxHighlighter.defaults['toolbar'] = false;
-            SyntaxHighlighter.all();
-                
             var currentCommentId = "";
 
             var moveCursor = function(event) {
@@ -253,6 +241,18 @@
             }
 
             var loadAction = function () {
+                // code high lighter
+                SyntaxHighlighter.autoloader(
+                'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
+                'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
+                'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
+                );
+
+                SyntaxHighlighter.config.tagName = "pre";
+                SyntaxHighlighter.config.stripBrs = true;
+                SyntaxHighlighter.defaults['toolbar'] = false;
+                SyntaxHighlighter.all();
+
                 // submit comment
                 $("#commentValidate").keypress(function (event) {
                     if (event.keyCode === 13) {
@@ -512,17 +512,37 @@
         </div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
-            // Stack initialize
-            var openspeed = 300;
-            var closespeed = 300;
-            $('.stack>img').toggle(function(){
-                var vertical = 0;
-                var horizontal = 0;
-                var $el=$(this);
-                $el.next().children().each(function(){
-                    $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
-                    vertical = vertical + 36;
-                    horizontal = (horizontal+.42)*2;
+            var loadTool = function () {
+                // article view count
+                jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
+                jsonRpc.statisticService.getArticleViewCount(function (result, error) {
+                    if (!result || error) {
+                        return;
+                    }
+                    $("#articleViewCount").html(result);
+                },"${article.oId}");
+
+                // Stack initialize
+                var openspeed = 300;
+                var closespeed = 300;
+                $('.stack>img').toggle(function(){
+                    var vertical = 0;
+                    var horizontal = 0;
+                    var $el=$(this);
+                    $el.next().children().each(function(){
+                        $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
+                        vertical = vertical + 36;
+                        horizontal = (horizontal+.42)*2;
+                    });
+                    $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
+                    .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
+                    $el.animate({paddingTop: '0'});
+                }, function(){
+                    //reverse above
+                    var $el=$(this);
+                    $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
+                    $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
+                    $el.animate({paddingTop: '9px'});
                 });
 
                 // Stacks additional animation
