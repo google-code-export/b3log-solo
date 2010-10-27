@@ -34,7 +34,7 @@ import org.b3log.latke.Keys;
  * Article permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 25, 2010
+ * @version 1.0.0.2, Oct 26, 2010
  */
 public final class PermalinkFilter implements Filter {
 
@@ -80,6 +80,7 @@ public final class PermalinkFilter implements Filter {
         final RequestDispatcher requestDispatcher =
                 httpServletRequest.getRequestDispatcher("/article-detail.do");
         request.setAttribute(Keys.OBJECT_ID, articleId);
+        request.setAttribute(Keys.REQUEST_URI, requestURI);
         requestDispatcher.forward(request, response);
     }
 
