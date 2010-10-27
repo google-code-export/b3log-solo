@@ -27,7 +27,6 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 
 /**
@@ -66,8 +65,6 @@ public final class PermalinkFilter implements Filter {
         LOGGER.finer("Doing permalink filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
-        final HttpServletResponse httpServletResponse =
-                (HttpServletResponse) response;
         final String requestURI = httpServletRequest.getRequestURI();
 
         final String articleId = StringUtils.substring(
@@ -80,7 +77,7 @@ public final class PermalinkFilter implements Filter {
         final RequestDispatcher requestDispatcher =
                 httpServletRequest.getRequestDispatcher("/article-detail.do");
         request.setAttribute(Keys.OBJECT_ID, articleId);
-        request.setAttribute(Keys.REQUEST_URI, "/article-detail.do?oId="
+        request.setAttribute(Keys.PAGE_CACHE_KEY, "/article-detail.do?oId="
                                                + articleId);
         requestDispatcher.forward(request, response);
     }

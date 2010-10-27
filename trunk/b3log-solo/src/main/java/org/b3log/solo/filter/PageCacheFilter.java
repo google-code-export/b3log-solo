@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.filter;
 
+import org.apache.commons.lang.StringUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.util.Strings;
@@ -86,11 +87,8 @@ public final class PageCacheFilter implements Filter {
             return;
         }
 
-        String cachedPageKey = requestURI;
         final String queryString = httpServletRequest.getQueryString();
-        if (!Strings.isEmptyOrNull(queryString)) {
-            cachedPageKey += "?" + queryString;
-        }
+        final String cachedPageKey = getPageCacheKey(requestURI, queryString);
 
         LOGGER.log(Level.FINER, "Request[cachedPageKey={0}]", cachedPageKey);
         LOGGER.log(Level.FINEST, "Page cache[cachedCount={0}, maxCount={1}]",
@@ -112,6 +110,32 @@ public final class PageCacheFilter implements Filter {
             writer.write(cachedPageContent);
             writer.close();
         }
+    }
+
+    /**
+     * Gets page cache key by the specified URI and query string.
+     *
+     * @param uri the specified URI
+     * @param queryString the specified query string
+     * @return cache key
+     */
+    // XXX: more generally?
+    public static String getPageCacheKey(final String uri,
+                                         final String queryString) {
+        String ret = null;
+        if (uri.endsWith(".html")) { // article permalink
+            final String articleId = StringUtils.substring(
+                    uri,
+                    uri.lastIndexOf("/") + 1, uri.lastIndexOf("."));
+            ret = "/article-detail.do?oId=" + articleId;
+        } else {
+            ret = uri;
+            if (!Strings.isEmptyOrNull(queryString)) {
+                ret += "?" + queryString;
+            }
+        }
+
+        return ret;
     }
 
     @Override
