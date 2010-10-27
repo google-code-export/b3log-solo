@@ -495,11 +495,7 @@
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             // code high lighter
-            $(".article-body textarea").addClass("brush: js;");
-            SyntaxHighlighter.config.tagName = "textarea";
-            SyntaxHighlighter.config.tagName = "pre";
-            SyntaxHighlighter.config.stripBrs = true;
-            SyntaxHighlighter.defaults["gutter"] = true;
+            SyntaxHighlighter.config.stripBrs = false;
             SyntaxHighlighter.all();
 
             // article view count
