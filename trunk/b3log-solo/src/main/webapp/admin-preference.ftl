@@ -62,6 +62,22 @@
                             <textarea rows="9" id="htmlHead"></textarea>
                         </th>
                     </tr>
+                    <tr>
+                        <th>
+                            ${metaKeywords1Label}
+                        </th>
+                        <th>
+                            <textarea rows="9" id="metaKeywords"></textarea>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            ${metaDescription1Label}
+                        </th>
+                        <th>
+                            <textarea rows="9" id="metaDescription"></textarea>
+                        </th>
+                    </tr>
                 </tbody>
             </table>
             <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
@@ -201,6 +217,8 @@
             switch (result.sc) {
                 case "GET_PREFERENCE_SUCC":
                     var preference = result.preference;
+                    $("#metaKeywords").val(preference.metaKeywords),
+                    $("#metaDescription").val(preference.metaDescription),
                     $("#blogTitle").val(preference.blogTitle),
                     $("#blogSubtitle").val(preference.blogSubtitle),
                     $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
@@ -277,6 +295,8 @@
         
         var requestJSONObject = {
             "preference": {
+                "metaKeywords": $("#metaKeywords").val(),
+                "metaDescription": $("#metaDescription").val(),
                 "blogTitle": $("#blogTitle").val(),
                 "blogSubtitle": $("#blogSubtitle").val(),
                 "mostCommentArticleDisplayCount": $("#mostCommentArticleDisplayCount").val(),

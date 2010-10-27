@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Oct 18, 2010
+ * @version 1.0.1.3, Oct 26, 2010
  */
 public final class Preference {
 
@@ -120,6 +120,16 @@ public final class Preference {
      */
     public static final String ENABLE_POST_TO_BUZZ =
             "enablePostToBuzz";
+    /**
+     * Key of meta keywords.
+     */
+    public static final String META_KEYWORDS =
+            "metaKeywords";
+    /**
+     * Key of meta description.
+     */
+    public static final String META_DESCRIPTION =
+            "metaDescription";
 
     /**
      * Private default constructor.
