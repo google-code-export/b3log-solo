@@ -71,6 +71,10 @@
                             <div class="left pageIcon"></div>
                             <span>&nbsp;${pageMgmtLabel}</span>
                         </li>
+                        <li id="cacheTab" onclick="changeList(this);">
+                            <div class="left cacheIcon"></div>
+                            <span>&nbsp;${cacheStateLabel}</span>
+                        </li>
                         <!--li>
                             <div class="left fileIcon"></div>
                             <span>&nbsp;${fileListLabel}</span>
@@ -91,6 +95,8 @@
                         </div>
                         <div id="pagePanel" class="none">
                         </div>
+                        <div id="cachePanel" class="none">
+                        </div>
                     </div>
                 </div>
                 <div class="clear"></div>
@@ -109,10 +115,13 @@
         </div>
         <script type="text/javascript">
             var changeList = function (it) {
-                var tabs = ['article', 'article-list', 'link-list', 'preference', 'article-sync', 'page'];
+                var tabs = ['article', 'article-list', 'link-list', 'preference',
+                    'article-sync', 'page', 'cache'];
                 for (var i = 0; i < tabs.length; i++) {
                     if (it.id === tabs[i] + "Tab") {
                         if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
+                            $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
+                        } else if (tabs[i] === 'cache') {
                             $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
                         }
                         $("#" + tabs[i] + "Panel").show();
