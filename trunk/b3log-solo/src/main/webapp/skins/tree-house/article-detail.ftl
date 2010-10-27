@@ -12,6 +12,8 @@
         <title>${article.articleTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
+         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreDefault.css"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
@@ -222,6 +224,18 @@
             </div>
         </div>
         <script type="text/javascript">
+            // code high lighter
+            SyntaxHighlighter.autoloader(
+            'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
+            'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
+            'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
+        );
+
+            SyntaxHighlighter.config.tagName = "pre";
+            SyntaxHighlighter.config.stripBrs = true;
+            SyntaxHighlighter.defaults['toolbar'] = false;
+            SyntaxHighlighter.all();
+                
             var currentCommentId = "";
 
             var moveCursor = function(event) {
@@ -496,43 +510,19 @@
                 <li><a class="addthis_button_more"><span>More...</span><img src="/images/addthis.png" alt="More..." /></a></li>
             </ul>
         </div>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushJava.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
-            var loadTool = function () {
-                // code high lighter
-                $(".article-body textarea").addClass("brush: js;");
-                SyntaxHighlighter.config.tagName = "textarea";
-                SyntaxHighlighter.config.tagName = "pre";
-                SyntaxHighlighter.config.stripBrs = true;
-                SyntaxHighlighter.defaults["gutter"] = true;
-                SyntaxHighlighter.all();
-
-                // Stack initialize
-                var openspeed = 300;
-                var closespeed = 300;
-                $('.stack>img').toggle(function(){
-                    var vertical = 0;
-                    var horizontal = 0;
-                    var $el=$(this);
-                    $el.next().children().each(function(){
-                        $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
-                        vertical = vertical + 36;
-                        horizontal = (horizontal+.42)*2;
-                    });
-                    $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
-                    .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
-                    $el.animate({paddingTop: '0'});
-                }, function(){
-                    //reverse above
-                    var $el=$(this);
-                    $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
-                    $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
-                    $el.animate({paddingTop: '9px'});
+            // Stack initialize
+            var openspeed = 300;
+            var closespeed = 300;
+            $('.stack>img').toggle(function(){
+                var vertical = 0;
+                var horizontal = 0;
+                var $el=$(this);
+                $el.next().children().each(function(){
+                    $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
+                    vertical = vertical + 36;
+                    horizontal = (horizontal+.42)*2;
                 });
 
                 // Stacks additional animation
