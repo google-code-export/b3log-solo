@@ -1,6 +1,6 @@
 /*
     Document   : default-base
-    Version    : 1.0.1.0, Oct 21, 2010
+    Version    : 1.0.1.2, Oct 27, 2010
     Author     : Vanessa
     Description: Basic CSS.
 */
@@ -269,6 +269,9 @@ button:hover,.button:hover {
 
 .goTopIcon {
     background-position: -64px -32px;
+    bottom:14px;
+    position:fixed;
+    right:20px;
 }
 
 /* article default css */
