@@ -48,6 +48,22 @@
                     </tr>
                     <tr>
                         <th>
+                            ${metaKeywords1Label}
+                        </th>
+                        <th>
+                            <input id="metaKeywords"></input>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            ${metaDescription1Label}
+                        </th>
+                        <th>
+                            <input id="metaDescription"></input>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
                             ${noticeBoard1Label}
                         </th>
                         <th>
@@ -60,22 +76,6 @@
                         </th>
                         <th>
                             <textarea rows="9" id="htmlHead"></textarea>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${metaKeywords1Label}
-                        </th>
-                        <th>
-                            <textarea rows="1" id="metaKeywords"></textarea>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            ${metaDescription1Label}
-                        </th>
-                        <th>
-                            <textarea rows="1" id="metaDescription"></textarea>
                         </th>
                     </tr>
                 </tbody>

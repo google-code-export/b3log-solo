@@ -102,6 +102,9 @@
             </div>
         </div>
         <script type="text/javascript">
+            var PAGE_SIZE = 18,
+            WINDOW_SIZE = 10;
+
             var adminLogin = function () {
                 var loginURL = jsonRpc.adminService.getLoginURL();
                 window.location.href = loginURL;
@@ -146,8 +149,6 @@
                 $("#tag").val("");
             }
 
-            var PAGE_SIZE = 2,
-            WINDOW_SIZE = 10;
             var initAdmin = function () {
                 $("#loadMsg").text("${loadingLabel}");
                 // tipMsg
