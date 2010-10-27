@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 31, 2010
+ * @version 1.0.0.3, Oct 26, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -127,8 +127,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         try {
             ret.put(Cache.CACHE_CACHED_COUNT, cachedCount);
             ret.put(Cache.CACHE_HIT_COUNT, hitCount);
-            ret.put(Cache.CACHE_MAX_COUNT, hitCount);
-            ret.put(Cache.CACHE_MISS_COUNT, hitCount);
+            ret.put(Cache.CACHE_MAX_COUNT, maxCount);
+            ret.put(Cache.CACHE_MISS_COUNT, missCount);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Get page cache error: {0}", e.getMessage());
             throw new ActionException(e);
