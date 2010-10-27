@@ -150,6 +150,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                                final HttpServletRequest request,
                                final HttpServletResponse response)
             throws ActionException, IOException {
+        // FIXME: issue 20
         checkAuthorized(request, response);
 
         AbstractCacheablePageAction.PAGE_CACHE.remove(cachedPageKey);

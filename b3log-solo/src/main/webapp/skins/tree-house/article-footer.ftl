@@ -119,6 +119,7 @@ ver ${version}
     initIndex();
     
     var clearCache = function () {
+        // FIXME: issue 20
         var locationString = window.location.toString();
         var indexOfSharp = locationString.indexOf("#");
         var cachedPageKey = locationString.substring(locationString.lastIndexOf("/"),
