@@ -12,7 +12,10 @@
         <title>${article.articleTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreDefault.css"/>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css"/>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
@@ -210,6 +213,18 @@
                 <div class="clear"></div>
             </div>
             <script type="text/javascript">
+                // code high lighter
+                SyntaxHighlighter.autoloader(
+                'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
+                'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
+                'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
+            );
+
+                SyntaxHighlighter.config.tagName = "pre";
+                SyntaxHighlighter.config.stripBrs = true;
+                SyntaxHighlighter.defaults['toolbar'] = false;
+                SyntaxHighlighter.all();
+            
                 var currentCommentId = "";
 
                 var moveCursor = function(event) {
@@ -480,18 +495,8 @@
                 </ul>
             </div>
         </div>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushJScript.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushJava.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushXml.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shBrushCss.js"></script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
-            var loadTool = function () {
-                // code high lighter
-                SyntaxHighlighter.config.stripBrs = false;
-                SyntaxHighlighter.all();
-
                 // article view count
                 jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
                 jsonRpc.statisticService.getArticleViewCount(function (result, error) {

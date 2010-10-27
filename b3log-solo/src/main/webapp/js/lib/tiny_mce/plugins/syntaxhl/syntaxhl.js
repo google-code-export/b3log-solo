@@ -2,13 +2,17 @@ tinyMCEPopup.requireLangPack();
 
 // replace special HTML chars with their escape counterparts
 function escapeHtml(text) {
-	return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").
-		replace(/\r\n/g,"<br>").replace(/\n/g,"<br>").replace(/\r/g,"<br>");
+//	return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").
+//		replace(/\r\n/g,"<br>").replace(/\n/g,"<br>").replace(/\r/g,"<br>");
+//        return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    return text;
 }
 
 // convert escaped characters back to unescaped ones (inversion of escapeHtml)
 function unescapeHtml(text) {
-	return text.replace(/<br>/g,"\n").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
+//	return text.replace(/<br>/g,"\n").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
+//	return text.replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&");
+    return text;
 }
 
 function trim(str) {
@@ -167,9 +171,9 @@ var SyntaxHLDialog = {
 			tinyMCEPopup.editor.execCommand('mceInsertContent', false, textarea_output);
 		} else {
 			pre.className = commands.join(";");
-			pre.innerHTML = escapeHtml(f.syntaxhl_code.value);
+                        pre.innerHTML = escapeHtml(f.syntaxhl_code.value);
 		}
-		
+
 		tinyMCEPopup.close();
 	}	
 };
