@@ -119,7 +119,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 AbstractCacheablePageAction.PAGE_CACHE.getMaxCount();
         final int missCount =
                 AbstractCacheablePageAction.PAGE_CACHE.getMissCount();
-        LOGGER.log(Level.INFO,
+        LOGGER.log(Level.FINE,
                    "Cache[cachedCount={0}, hitCount={1}, maxCount={2}, missCount={3}",
                    new Object[]{cachedCount, hitCount, maxCount, missCount});
 
