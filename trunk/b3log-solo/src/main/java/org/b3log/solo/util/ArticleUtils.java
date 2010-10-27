@@ -122,8 +122,7 @@ public final class ArticleUtils {
     public int getArticleViewCount(final String articleId)
             throws JSONException, RepositoryException {
         final JSONObject article = articleRepository.get(articleId);
-        final JSONObject newArticle = new JSONObject(
-                article, JSONObject.getNames(article));
+
         return article.getInt(Article.ARTICLE_VIEW_COUNT);
     }
 
