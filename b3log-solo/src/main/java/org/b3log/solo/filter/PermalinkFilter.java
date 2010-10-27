@@ -80,7 +80,8 @@ public final class PermalinkFilter implements Filter {
         final RequestDispatcher requestDispatcher =
                 httpServletRequest.getRequestDispatcher("/article-detail.do");
         request.setAttribute(Keys.OBJECT_ID, articleId);
-        request.setAttribute(Keys.REQUEST_URI, requestURI);
+        request.setAttribute(Keys.REQUEST_URI, "/article-detail.do?oId="
+                                               + articleId);
         requestDispatcher.forward(request, response);
     }
 
