@@ -67,7 +67,7 @@
                             ${metaKeywords1Label}
                         </th>
                         <th>
-                            <textarea rows="9" id="metaKeywords"></textarea>
+                            <textarea rows="1" id="metaKeywords"></textarea>
                         </th>
                     </tr>
                     <tr>
@@ -75,7 +75,7 @@
                             ${metaDescription1Label}
                         </th>
                         <th>
-                            <textarea rows="9" id="metaDescription"></textarea>
+                            <textarea rows="1" id="metaDescription"></textarea>
                         </th>
                     </tr>
                 </tbody>
