@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="keywords" content="GAE 博客,GAE blog,b3log solo,b3log rhythm,b3log"/>
-        <meta name="description" content="An open source blog based on GAE. 基于 GAE 的开源博客。"/>
+        <meta name="keywords" content="${metaKeywords}"/>
+        <meta name="description" content="${metaDescription}"/>
         <meta http-equiv="pragma" content="no-cache"/>
         <meta name="revised" content="${blogTitle}, ${article.articleCreateDate?string('MM/dd/yy')}"/>
         <meta name="generator" content="b3log"/>
@@ -12,7 +12,7 @@
         <title>${article.articleTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
-         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreDefault.css"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>

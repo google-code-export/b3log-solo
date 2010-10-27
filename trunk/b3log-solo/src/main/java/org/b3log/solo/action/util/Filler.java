@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Oct 20, 2010
+ * @version 1.0.1.3, Oct 26, 2010
  */
 public final class Filler {
 
@@ -113,7 +113,8 @@ public final class Filler {
         final int windowSize =
                 preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-        final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+        final Map<String, SortDirection> sorts =
+                new HashMap<String, SortDirection>();
         sorts.put(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
         final JSONObject result = articleRepository.get(
@@ -322,6 +323,10 @@ public final class Filler {
                       preference.getString(Preference.BLOG_SUBTITLE));
         dataModel.put(Preference.HTML_HEAD,
                       preference.getString(Preference.HTML_HEAD));
+        dataModel.put(Preference.META_KEYWORDS,
+                      preference.getString(Preference.META_KEYWORDS));
+        dataModel.put(Preference.META_DESCRIPTION,
+                      preference.getString(Preference.META_DESCRIPTION));
 
         fillPageNavigations(dataModel);
     }
@@ -356,7 +361,8 @@ public final class Filler {
      */
     private void fillPageNavigations(final Map<String, Object> dataModel)
             throws Exception {
-        final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+        final Map<String, SortDirection> sorts =
+                new HashMap<String, SortDirection>();
         sorts.put(Page.PAGE_ORDER, SortDirection.ASCENDING);
         final JSONObject result = pageRepository.get(1,
                                                      Integer.MAX_VALUE, sorts);

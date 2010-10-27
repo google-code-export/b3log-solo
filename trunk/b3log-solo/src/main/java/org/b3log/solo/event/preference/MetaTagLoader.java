@@ -44,14 +44,16 @@ public final class MetaTagLoader
     /**
      * Default meta keywords..
      */
-    private static final String DEFAULT_META_KEYWORDS = "";
+    private static final String DEFAULT_META_KEYWORDS = 
+            "GAE 博客,GAE blog,b3log solo,b3log rhythm,b3log";
     /**
      * Default meta description..
      */
-    private static final String DEFAULT_META_DESCRIPTION = "";
+    private static final String DEFAULT_META_DESCRIPTION = 
+            "An open source blog based on GAE. 基于 GAE 的开源博客。";
 
     /**
-     * Constructs a {@link HTMLHeadLoader} object with the specified event
+     * Constructs a {@link MetaTagLoader} object with the specified event
      * manager.
      *
      * @param eventManager the specified event manager
