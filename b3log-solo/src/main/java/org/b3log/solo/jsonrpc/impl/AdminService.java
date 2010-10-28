@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 26, 2010
+ * @version 1.0.0.4, Oct 27, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -97,10 +97,10 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "cacheCachedCount": int,
-     *     "cacheHitCount": int,
-     *     "cacheMaxCount": int,
-     *     "cacheMissCount": int
+     *     "cacheCachedCount": long,
+     *     "cacheHitCount": long,
+     *     "cacheMaxCount": long,
+     *     "cacheMissCount": long
      * }
      * </pre>
      * @throws ActionException action exception
@@ -111,13 +111,13 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
-        final int cachedCount =
+        final long cachedCount =
                 AbstractCacheablePageAction.PAGE_CACHE.getCachedCount();
-        final int hitCount =
+        final long hitCount =
                 AbstractCacheablePageAction.PAGE_CACHE.getHitCount();
-        final int maxCount =
+        final long maxCount =
                 AbstractCacheablePageAction.PAGE_CACHE.getMaxCount();
-        final int missCount =
+        final long missCount =
                 AbstractCacheablePageAction.PAGE_CACHE.getMissCount();
         LOGGER.log(Level.FINE,
                    "Cache[cachedCount={0}, hitCount={1}, maxCount={2}, missCount={3}",
