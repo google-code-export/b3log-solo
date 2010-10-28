@@ -17,6 +17,7 @@ package org.b3log.solo;
 
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
@@ -205,6 +206,8 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.info("Latke is running on Google app enigne.");
 
         super.contextInitialized(servletContextEvent);
+
+        MemcacheServiceFactory.getMemcacheService().clearAll();
 
         initPreference();
         initStatistic();
