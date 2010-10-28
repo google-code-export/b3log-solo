@@ -21,8 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Cache;
 import org.json.JSONException;
@@ -111,14 +111,12 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
-        final long cachedCount =
-                AbstractCacheablePageAction.PAGE_CACHE.getCachedCount();
-        final long hitCount =
-                AbstractCacheablePageAction.PAGE_CACHE.getHitCount();
-        final long maxCount =
-                AbstractCacheablePageAction.PAGE_CACHE.getMaxCount();
-        final long missCount =
-                AbstractCacheablePageAction.PAGE_CACHE.getMissCount();
+        final org.b3log.latke.cache.Cache<String, Object> cache =
+                PageCaches.getCache();
+        final long cachedCount = cache.getCachedCount();
+        final long hitCount = cache.getHitCount();
+        final long maxCount = cache.getMaxCount();
+        final long missCount = cache.getMissCount();
         LOGGER.log(Level.FINE,
                    "Cache[cachedCount={0}, hitCount={1}, maxCount={2}, missCount={3}",
                    new Object[]{cachedCount, hitCount, maxCount, missCount});
@@ -153,7 +151,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         // FIXME: issue 20
         checkAuthorized(request, response);
 
-        AbstractCacheablePageAction.PAGE_CACHE.remove(cachedPageKey);
+        PageCaches.remove(cachedPageKey);
     }
 
     /**
@@ -169,6 +167,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
     }
 }

@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 20, 2010
+ * @version 1.0.0.3, Oct 27, 2010
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
@@ -143,7 +143,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     Pagination.PAGINATION_WINDOW_SIZE);
 
 
-            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+            final Map<String, SortDirection> sorts =
+                    new HashMap<String, SortDirection>();
             sorts.put(Page.PAGE_ORDER, SortDirection.ASCENDING);
             final JSONObject result =
                     pageRepository.get(currentPageNum, pageSize, sorts);
@@ -220,7 +221,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -269,7 +270,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -323,7 +324,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
 
         return ret;
     }

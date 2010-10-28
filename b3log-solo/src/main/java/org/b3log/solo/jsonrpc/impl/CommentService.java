@@ -42,8 +42,8 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Oct 26, 2010
+ * @version 1.0.1.8, Oct 27, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -377,10 +377,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.remove(
-                "/article-detail.do?oId=" + articleId);
-        AbstractCacheablePageAction.PAGE_CACHE.remove(
-                "/article-detail.do?oId=" + articleId + "#" + commentId);
+        PageCaches.remove("/article-detail.do?oId=" + articleId);
 
         return ret;
     }
@@ -513,7 +510,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
 
         return ret;
     }
