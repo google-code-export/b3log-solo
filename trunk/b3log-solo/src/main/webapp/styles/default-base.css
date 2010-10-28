@@ -1,6 +1,6 @@
 /*
     Document   : default-base
-    Version    : 1.0.1.2, Oct 27, 2010
+    Version    : 1.0.1.3, Oct 28, 2010
     Author     : Vanessa
     Description: Basic CSS.
 */
@@ -180,7 +180,8 @@ button:hover,.button:hover {
 .putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon,
 .homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,
 .postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon,
-.pageIcon, .trueIcon,.falseIcon,.fileIcon, .cacheIcon, .goTopIcon {
+.pageIcon, .trueIcon,.falseIcon,.fileIcon, .cacheIcon, .goTopIcon,
+.goBottomIcon {
     width: 16px;
     height: 16px;
     background-image: url("../images/icon.png");
@@ -269,7 +270,14 @@ button:hover,.button:hover {
 
 .goTopIcon {
     background-position: -64px -32px;
-    bottom:14px;
+    top:45%;
+    position:fixed;
+    right:20px;
+}
+
+.goBottomIcon {
+    background-position: -80px -32px;
+    bottom:40%;
     position:fixed;
     right:20px;
 }
