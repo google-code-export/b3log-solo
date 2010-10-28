@@ -15,11 +15,9 @@
  */
 package org.b3log.solo.filter;
 
-import org.apache.commons.lang.StringUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.cache.Cache;
-import org.b3log.latke.util.Strings;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.Filter;
@@ -31,12 +29,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.solo.util.PageCacheKeys;
 
 /**
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 27, 2010
+ * @version 1.0.0.7, Oct 27, 2010
  */
 public final class PageCacheFilter implements Filter {
 
@@ -89,21 +88,22 @@ public final class PageCacheFilter implements Filter {
         }
 
         final String queryString = httpServletRequest.getQueryString();
-        final String cachedPageKey = getPageCacheKey(requestURI, queryString);
+        final String pageCacheKey =
+                PageCacheKeys.getPageCacheKey(requestURI, queryString);
         final Cache<String, Object> cache = PageCaches.getCache();
-        LOGGER.log(Level.FINER, "Request[cachedPageKey={0}]", cachedPageKey);
+        LOGGER.log(Level.FINER, "Request[pageCacheKey={0}]", pageCacheKey);
         LOGGER.log(Level.FINEST, "Page cache[cachedCount={0}, maxCount={1}]",
                    new Object[]{cache.getCachedCount(),
                                 cache.getMaxCount()});
-        final Object cachedPageContentObject = cache.get(cachedPageKey);
+        final Object cachedPageContentObject = cache.get(pageCacheKey);
         if (null == cachedPageContentObject) {
             chain.doFilter(request, response);
 
             return;
         } else {
             LOGGER.log(Level.FINEST,
-                       "Writes resposne for page[cachedPageKey={0}] from cache",
-                       cachedPageKey);
+                       "Writes resposne for page[pageCacheKey={0}] from cache",
+                       pageCacheKey);
             response.setContentType("text/html");
             response.setCharacterEncoding("UTF-8");
             final PrintWriter writer = response.getWriter();
@@ -111,32 +111,6 @@ public final class PageCacheFilter implements Filter {
             writer.write(cachedPageContent);
             writer.close();
         }
-    }
-
-    /**
-     * Gets page cache key by the specified URI and query string.
-     *
-     * @param uri the specified URI
-     * @param queryString the specified query string
-     * @return cache key
-     */
-    // XXX: more generally?
-    public static String getPageCacheKey(final String uri,
-                                         final String queryString) {
-        String ret = null;
-        if (uri.endsWith(".html")) { // article permalink
-            final String articleId = StringUtils.substring(
-                    uri,
-                    uri.lastIndexOf("/") + 1, uri.lastIndexOf("."));
-            ret = "/article-detail.do?oId=" + articleId;
-        } else {
-            ret = uri;
-            if (!Strings.isEmptyOrNull(queryString)) {
-                ret += "?" + queryString;
-            }
-        }
-
-        return ret;
     }
 
     @Override
