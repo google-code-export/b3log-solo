@@ -181,12 +181,11 @@ ver ${version}
     initIndex();
     
     var clearCache = function () {
-        // FIXME: issue 20
         var locationString = window.location.toString();
         var indexOfSharp = locationString.indexOf("#");
-        var cachedPageKey = locationString.substring(locationString.lastIndexOf("/"),
+        var url = locationString.substring(locationString.lastIndexOf("/"),
         (-1 == indexOfSharp)? locationString.length : indexOfSharp);
-        jsonRpc.adminService.clearPageCache(cachedPageKey);
+        jsonRpc.adminService.clearPageCache(url);
         window.location.reload();
     }
 

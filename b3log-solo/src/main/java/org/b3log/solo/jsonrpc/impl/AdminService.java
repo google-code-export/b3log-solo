@@ -136,22 +136,23 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Clears a page cache specified by the given cached page key.
+     * Clears a page cache specified by the given URL.
      *
-     * @param cachedPageKey the given cached page key
+     * @param url the specified URL
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public void clearPageCache(final String cachedPageKey,
+    public void clearPageCache(final String url,
                                final HttpServletRequest request,
                                final HttpServletResponse response)
             throws ActionException, IOException {
         // FIXME: issue 20
+        LOGGER.info(url);
         checkAuthorized(request, response);
 
-        PageCaches.remove(cachedPageKey);
+        PageCaches.remove(url);
     }
 
     /**
