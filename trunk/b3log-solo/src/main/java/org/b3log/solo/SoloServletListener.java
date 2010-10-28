@@ -38,6 +38,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RunsOnEnv;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
@@ -68,7 +70,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Oct 22, 2010
+ * @version 1.0.2.1, Oct 27, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -191,6 +193,9 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
+        Latkes.setRunsOnEnv(RunsOnEnv.GAE);
+        LOGGER.info("Latke is running on Google app enigne.");
+
         super.contextInitialized(servletContextEvent);
 
         initPreference();
