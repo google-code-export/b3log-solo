@@ -60,7 +60,8 @@
 
                     for (var i = 0; i < pages.length; i++) {
                         pageData[i] = {};
-                        pageData[i].pageTitle = pages[i].pageTitle;
+                        pageData[i].pageTitle = "<a href='/page.do?oId=" + pages[i].oId + "' target='_blank'>"
+                            + pages[i].pageTitle + "</a>";
                         pageData[i].pageOrder = pages[i].pageOrder;
                         pageData[i].update = "<div class='updateIcon'></div>";
                         pageData[i].deleted = "<div class='deleteIcon'></div>";
