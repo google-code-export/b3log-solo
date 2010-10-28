@@ -25,6 +25,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Cache;
+import org.b3log.solo.util.PageCacheKeys;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -148,11 +149,16 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                                final HttpServletRequest request,
                                final HttpServletResponse response)
             throws ActionException, IOException {
-        // FIXME: issue 20
-        LOGGER.info(url);
         checkAuthorized(request, response);
 
-        PageCaches.remove(url);
+        String pageCacheKey = url;
+        if (url.contains(".html")) {
+            pageCacheKey = PageCacheKeys.getPageCacheKey(url, null);
+        }
+
+        LOGGER.log(Level.FINER, "pageCacheKey[{0}]", pageCacheKey);
+
+        PageCaches.remove(pageCacheKey);
     }
 
     /**
