@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 27, 2010
+ * @version 1.0.0.5, Oct 27, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -100,7 +100,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * {
      *     "cacheCachedCount": long,
      *     "cacheHitCount": long,
-     *     "cacheMaxCount": long,
+     *     "cachedBytes": long,
+     *     "hitBytes": long,
      *     "cacheMissCount": long
      * }
      * </pre>
@@ -116,17 +117,16 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 PageCaches.getCache();
         final long cachedCount = cache.getCachedCount();
         final long hitCount = cache.getHitCount();
-        final long maxCount = cache.getMaxCount();
         final long missCount = cache.getMissCount();
-        LOGGER.log(Level.FINE,
-                   "Cache[cachedCount={0}, hitCount={1}, maxCount={2}, missCount={3}",
-                   new Object[]{cachedCount, hitCount, maxCount, missCount});
+        final long cachedBytes = cache.getCachedBytes();
+        final long hitBytes = cache.getHitBytes();
 
         final JSONObject ret = new JSONObject();
         try {
             ret.put(Cache.CACHE_CACHED_COUNT, cachedCount);
             ret.put(Cache.CACHE_HIT_COUNT, hitCount);
-            ret.put(Cache.CACHE_MAX_COUNT, maxCount);
+            ret.put(Cache.CACHE_CACHED_BYTES, cachedBytes);
+            ret.put(Cache.CACHE_HIT_BYTES, hitBytes);
             ret.put(Cache.CACHE_MISS_COUNT, missCount);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Get page cache error: {0}", e.getMessage());

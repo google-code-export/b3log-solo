@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all cache model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2010
+ * @version 1.0.0.1, Oct 27, 2010
  */
 public final class Cache {
 
@@ -36,9 +36,13 @@ public final class Cache {
      */
     public static final String CACHE_HIT_COUNT = "cacheHitCount";
     /**
-     * Cache max count.
+     * Cache hit bytes.
      */
-    public static final String CACHE_MAX_COUNT = "cacheMaxCount";
+    public static final String CACHE_HIT_BYTES = "cacheHitBytes";
+    /**
+     * Cached bytes.
+     */
+    public static final String CACHE_CACHED_BYTES = "cacheCachedBytes";
     /**
      * Cache miss count.
      */
