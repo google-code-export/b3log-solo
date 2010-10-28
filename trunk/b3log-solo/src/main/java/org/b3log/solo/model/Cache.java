@@ -19,9 +19,8 @@ package org.b3log.solo.model;
  * This class defines all cache model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 25, 2010
+ * @version 1.0.0.0, Oct 27, 2010
  */
-// TODO: move this class into Latke
 public final class Cache {
 
     /**
@@ -44,6 +43,10 @@ public final class Cache {
      * Cache miss count.
      */
     public static final String CACHE_MISS_COUNT = "cacheMissCount";
+    /**
+     * Cache page keys.
+     */
+    public static final String CACHE_PAGE_KEYS = "cachePageKeys";
 
     /**
      * Private default constructor.

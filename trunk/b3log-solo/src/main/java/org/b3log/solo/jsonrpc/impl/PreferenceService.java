@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Oct 26, 2010
+ * @version 1.0.1.0, Oct 27, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -202,8 +202,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             preferenceRepository.update(Preference.PREFERENCE, preference);
             SoloServletListener.setUserPreference(preference);
 
-            // Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+            PageCaches.removeAll();
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_SUCC);

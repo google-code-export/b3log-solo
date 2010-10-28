@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
@@ -40,14 +40,14 @@ import org.json.JSONObject;
  * Link service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 21, 2010
+ * @version 1.0.0.2, Oct 26, 2010
  */
 public final class LinkService extends AbstractGAEJSONRpcService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = 
+    private static final Logger LOGGER =
             Logger.getLogger(LinkService.class.getName());
     /**
      * Link repository.
@@ -201,8 +201,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             final String linkId = link.getString(Keys.OBJECT_ID);
             linkRepository.update(linkId, link);
 
-            // Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+            PageCaches.removeAll();
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_SUCC);
@@ -251,8 +250,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINER, "Removing a link[oId={0}]", linkId);
             linkRepository.remove(linkId);
 
-            // Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+            PageCaches.removeAll();
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_LINK_SUCC);

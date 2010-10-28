@@ -18,6 +18,7 @@ package org.b3log.solo.filter;
 import org.apache.commons.lang.StringUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.cache.Cache;
 import org.b3log.latke.util.Strings;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -29,13 +30,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.latke.action.util.PageCaches;
 
 /**
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 26, 2010
+ * @version 1.0.0.6, Oct 27, 2010
  */
 public final class PageCacheFilter implements Filter {
 
@@ -89,12 +90,12 @@ public final class PageCacheFilter implements Filter {
 
         final String queryString = httpServletRequest.getQueryString();
         final String cachedPageKey = getPageCacheKey(requestURI, queryString);
-
+        final Cache<String, Object> cache = PageCaches.getCache();
         LOGGER.log(Level.FINER, "Request[cachedPageKey={0}]", cachedPageKey);
         LOGGER.log(Level.FINEST, "Page cache[cachedCount={0}, maxCount={1}]",
-                   new Object[]{PAGE_CACHE.getCachedCount(),
-                                PAGE_CACHE.getMaxCount()});
-        final Object cachedPageContentObject = PAGE_CACHE.get(cachedPageKey);
+                   new Object[]{cache.getCachedCount(),
+                                cache.getMaxCount()});
+        final Object cachedPageContentObject = cache.get(cachedPageKey);
         if (null == cachedPageContentObject) {
             chain.doFilter(request, response);
 

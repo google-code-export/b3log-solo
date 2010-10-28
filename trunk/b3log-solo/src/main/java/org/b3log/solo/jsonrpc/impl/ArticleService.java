@@ -36,8 +36,8 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -246,7 +246,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -499,7 +499,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -553,7 +553,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -608,7 +608,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -730,7 +730,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+        PageCaches.removeAll();
 
         return ret;
     }

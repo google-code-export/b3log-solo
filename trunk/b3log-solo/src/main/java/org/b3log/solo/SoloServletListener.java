@@ -40,6 +40,8 @@ import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RunsOnEnv;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
@@ -110,9 +112,9 @@ public final class SoloServletListener extends AbstractServletListener {
     public static final Map<String, Image> CAPTCHAS =
             new HashMap<String, Image>();
     /**
-     * Preference.
+     * Preference cache.
      */
-    private static JSONObject userPreference;
+    private static Cache<String, Object> userPreferenceCache;
     /**
      * B3log Rhythm address.
      */
@@ -145,8 +147,9 @@ public final class SoloServletListener extends AbstractServletListener {
      * 
      * @param preference the specified preference
      */
-    public static void setUserPreference(final JSONObject preference) {
-        userPreference = preference;
+    public static synchronized void setUserPreference(
+            final JSONObject preference) {
+        userPreferenceCache.put(PREFERENCE, preference.toString());
     }
 
     /**
@@ -154,8 +157,13 @@ public final class SoloServletListener extends AbstractServletListener {
      *
      * @return user preference
      */
-    public static JSONObject getUserPreference() {
-        return userPreference;
+    public static synchronized JSONObject getUserPreference() {
+        try {
+            return new JSONObject(userPreferenceCache.get(PREFERENCE).toString());
+        } catch (final JSONException e) {
+            LOGGER.severe(e.getMessage());
+            throw new RuntimeException("Get user preference error!");
+        }
     }
 
     /**
@@ -201,13 +209,6 @@ public final class SoloServletListener extends AbstractServletListener {
         initPreference();
         initStatistic();
         loadCaptchas();
-
-        final String localeString =
-                userPreference.optString(LOCALE_STRING, "zh_CN");
-        if ("zh_CN".equals(localeString)) {
-            Templates.CONFIGURATION.setTimeZone(
-                    TimeZone.getTimeZone("Asia/Shanghai"));
-        }
 
         registerRemoteJSServiceSerializers();
 
@@ -334,6 +335,9 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void initPreference() {
         LOGGER.info("Loading preference....");
+        if (null == userPreferenceCache) {
+            userPreferenceCache = CacheFactory.getCache(PREFERENCE);
+        }
 
         try {
             final Injector injector = getInjector();
@@ -342,9 +346,8 @@ public final class SoloServletListener extends AbstractServletListener {
             // Try to load preference from datastore.
             final PreferenceRepository preferenceRepository =
                     injector.getInstance(PreferenceRepository.class);
-            userPreference = preferenceRepository.get(preferenceId);
+            JSONObject userPreference = preferenceRepository.get(preferenceId);
             if (null == userPreference) {
-                // FIXME: null == userPreference sometimes?
                 // Try to load preference from configuration file and then
                 // persist it.
                 userPreference = new JSONObject();
@@ -384,6 +387,7 @@ public final class SoloServletListener extends AbstractServletListener {
                                           userPreference));
 
             preferenceRepository.update(preferenceId, userPreference);
+            setUserPreference(userPreference);
 
             LOGGER.log(Level.INFO, "Loaded preference[{0}]",
                        userPreference.toString(JSON_PRINT_INDENT_FACTOR));
@@ -391,6 +395,9 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.severe(e.getMessage());
             throw new RuntimeException("Preference load error!");
         }
+
+        Templates.CONFIGURATION.setTimeZone(// XXX: freemarker timezone
+                TimeZone.getTimeZone("Asia/Shanghai"));
     }
 
     @Override

@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * File upload.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 8, 2010
+ * @version 1.0.0.1, Oct 27, 2010
  */
 public final class FileAccessServlet extends HttpServlet {
 
@@ -76,11 +76,6 @@ public final class FileAccessServlet extends HttpServlet {
      */
     private BlobstoreService blobstoreService =
             BlobstoreServiceFactory.getBlobstoreService();
-    /**
-     * User preference.
-     */
-    private JSONObject preference =
-            SoloServletListener.getUserPreference();
 
     @Override
     protected void doPost(final HttpServletRequest request,
@@ -109,6 +104,8 @@ public final class FileAccessServlet extends HttpServlet {
                 file.put(File.FILE_NAME, fileName);
                 final long fileSize = blobInfo.getSize();
                 file.put(File.FILE_SIZE, fileSize);
+                final JSONObject preference =
+                        SoloServletListener.getUserPreference();
                 final String host = "http://" + preference.getString(
                         Preference.BLOG_HOST);
                 final String downloadURL = host + "/file-access.do?oId="

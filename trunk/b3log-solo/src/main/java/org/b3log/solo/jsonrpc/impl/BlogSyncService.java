@@ -26,8 +26,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.ActionException;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Oct 20, 2010
+ * @version 1.0.1.2, Oct 27, 2010
  */
 public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
@@ -320,8 +320,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                 }
             }
 
-            // Clear page cache
-            AbstractCacheablePageAction.PAGE_CACHE.removeAll();
+            PageCaches.removeAll();
             ret.put(Keys.OBJECT_IDS, importedIds);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
