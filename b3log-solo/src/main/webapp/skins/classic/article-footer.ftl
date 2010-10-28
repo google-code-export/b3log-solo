@@ -37,15 +37,33 @@ ver ${version}
         var x = Math.max(x1, Math.max(x2, x3));
         // 滚动条到页面顶部的垂直距离
         var y = Math.max(y1, Math.max(y2, y3));
-
         // 滚动距离 = 目前距离 / 速度, 因为距离原来越小, 速度是大于 1 的数, 所以滚动距离会越来越小
         var speed = 1 + acceleration;
         window.scrollTo(Math.floor(x / speed), Math.floor(y / speed));
-
         // 如果距离不为零, 继续调用迭代本函数
         if(x > 0 || y > 0) {
             var invokeFunction = "goTop(" + acceleration + ", " + time + ")";
             window.setTimeout(invokeFunction, time);
+        }
+    }
+    
+    var goBottom = function (acceleration, time) {
+        acceleration = acceleration || 1;
+        time = time || 16;
+
+        var y1 = document.documentElement.scrollTop;
+        var y = document.body.clientHeight - window.innerHeight;
+        var value = y;
+        var base = 1;
+        var i = 2;
+        while (base < y) {
+            if (value > 1) {
+                value = value / i;
+                i++;
+            }
+            base += value;
+            window.scrollTo(0, base);
+            value = y - base;
         }
     }
 
@@ -174,7 +192,8 @@ ver ${version}
         }
 
         if ($("#randomArticles").length < 1) {
-            $("body").append("<div class='goTopIcon' onclick='goTop();'></div>");
+            $("body").append("<div class='goTopIcon' onclick='goTop();'></div>"
+                + "<div class='goBottomIcon' onclick='goBottom();'></div>");
         }
         jsonRpc.statisticService.incBlogViewCount(function (result, error) {});
     }
