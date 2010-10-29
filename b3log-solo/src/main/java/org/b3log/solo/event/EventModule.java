@@ -19,7 +19,8 @@ import java.util.logging.Logger;
 import org.b3log.solo.event.sync.impl.CSDNBlogAddArticleProcessor;
 import org.b3log.latke.event.AbstractEventModule;
 import org.b3log.solo.event.buzz.ActivityCreator;
-import org.b3log.solo.event.comment.ReplyNotifier;
+import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
+import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.preference.DisplayCntLoader;
 import org.b3log.solo.event.preference.GoogleSettingsLoader;
 import org.b3log.solo.event.preference.HTMLHeadLoader;
@@ -41,7 +42,7 @@ import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
  * configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Oct 26, 2010
+ * @version 1.0.1.6, Oct 29, 2010
  */
 public final class EventModule extends AbstractEventModule {
 
@@ -79,7 +80,8 @@ public final class EventModule extends AbstractEventModule {
         bind(MetaTagLoader.class).asEagerSingleton();
         bind(GoogleSettingsLoader.class).asEagerSingleton();
         bind(DisplayCntLoader.class).asEagerSingleton();
-        bind(ReplyNotifier.class).asEagerSingleton();
+        bind(ArticleCommentReplyNotifier.class).asEagerSingleton();
+        bind(PageCommentReplyNotifier.class).asEagerSingleton();
         bind(ActivityCreator.class).asEagerSingleton();
         bind(ArticleSender.class).asEagerSingleton();
     }

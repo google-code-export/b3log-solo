@@ -1,0 +1,132 @@
+/*
+ * Copyright (C) 2009, 2010, B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.b3log.solo.util;
+
+import com.google.inject.Inject;
+import java.util.List;
+import java.util.logging.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.PageCommentRepository;
+import org.b3log.solo.repository.PageRepository;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * Page utilities.
+ *
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.0, Oct 29, 2010
+ */
+public final class PageUtils {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(PageUtils.class.getName());
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
+    /**
+     * Page-Comment repository.
+     */
+    @Inject
+    private PageCommentRepository pageCommentRepository;
+    /**
+     * Page repository.
+     */
+    @Inject
+    private PageRepository pageRepository;
+    /**
+     * Statistic utilities.
+     */
+    @Inject
+    private Statistics statistics;
+
+    /**
+     * Page comment count +1 for an page specified by the given page id.
+     *
+     * @param pageId the given page id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void incPageCommentCount(final String pageId)
+            throws JSONException, RepositoryException {
+        final JSONObject page = pageRepository.get(pageId);
+        final JSONObject newPage =
+                new JSONObject(page, JSONObject.getNames(page));
+        final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
+        newPage.put(Page.PAGE_COMMENT_COUNT, commentCnt + 1);
+        pageRepository.update(pageId, newPage);
+    }
+
+    /**
+     * Page comment count -1 for an page specified by the given page id.
+     *
+     * @param pageId the given page id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void decPageCommentCount(final String pageId)
+            throws JSONException, RepositoryException {
+        final JSONObject page = pageRepository.get(pageId);
+        final JSONObject newPage =
+                new JSONObject(page, JSONObject.getNames(page));
+        final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
+        newPage.put(Page.PAGE_COMMENT_COUNT, commentCnt - 1);
+        pageRepository.update(pageId, newPage);
+    }
+
+    /**
+     * Removes page comments by the specified page id.
+     *
+     * <p>
+     * Removes related comments, page-comment relations, sets page/blog
+     * comment statistic count.
+     * </p>
+     *
+     * @param pageId the specified page id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void removePageComments(final String pageId)
+            throws JSONException, RepositoryException {
+        final List<JSONObject> pageCommentRelations =
+                pageCommentRepository.getByPageId(pageId);
+        for (int i = 0; i < pageCommentRelations.size(); i++) {
+            final JSONObject pageCommentRelation =
+                    pageCommentRelations.get(i);
+            final String commentId =
+                    pageCommentRelation.getString(Comment.COMMENT + "_"
+                                                     + Keys.OBJECT_ID);
+            commentRepository.remove(commentId);
+            final String relationId =
+                    pageCommentRelation.getString(Keys.OBJECT_ID);
+            pageCommentRepository.remove(relationId);
+        }
+
+        int blogCommentCount = statistics.getBlogCommentCount();
+        final int pageCommentCount = pageCommentRelations.size();
+        blogCommentCount -= pageCommentCount;
+        statistics.setBlogCommentCount(blogCommentCount);
+    }
+}

@@ -19,7 +19,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Oct 25, 2010
+ * @version 1.0.1.2, Oct 29, 2010
  */
 public enum StatusCodes {
 
@@ -63,6 +63,10 @@ public enum StatusCodes {
      * Indicates comment an article successfully.
      */
     COMMENT_ARTICLE_SUCC,
+    /**
+     * Indicates comment a page successfully.
+     */
+    COMMENT_PAGE_SUCC,
     /**
      * Indicates get comments successfully.
      */
