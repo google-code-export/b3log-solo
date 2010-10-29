@@ -13,26 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.util;
+package org.b3log.solo.event.buzz;
 
 /**
- * Google Buzz utilities.
+ * This enumeration defines all status codes of Google Buzz actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 24, 2010
+ * @version 1.0.0.0, Oct 29, 2010
  */
-// TODO: Is this class a utilities?
-public final class Buzzs {
+public final class BuzzStatusCodes {
 
     /**
-     * Google profile retrieval URL string.
+     * Indicates post to Google Buzz successfully.
      */
-    public static final String GOOGLE_PROFILE_RETRIEVAL =
-            "http://www.googleapis.com/buzz/v1/people/{userId}/@self?alt=json";
+    public static final String POST_TO_BUZZ_SUCC =
+            "POST_TO_BUZZ_SUCC";
+    /**
+     * Indicates post to Google Buzz fail.
+     */
+    public static final String POST_TO_BUZZ_FAIL =
+            "POST_TO_BUZZ_FAIL";
 
     /**
      * Private default constructor.
      */
-    private Buzzs() {
+    private BuzzStatusCodes() {
     }
 }

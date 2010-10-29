@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -36,6 +37,8 @@ import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Google;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -43,7 +46,7 @@ import org.json.JSONObject;
  * adding an article.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 18, 2010
+ * @version 1.0.0.3, Oct 29, 2010
  */
 public final class ActivityCreator
         extends AbstractEventListener<JSONObject> {
@@ -81,11 +84,14 @@ public final class ActivityCreator
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
-        final JSONObject article = event.getData();
+        final JSONObject eventData = event.getData();
+        JSONObject result = null;
+        JSONObject events = null;
+        JSONObject postToBuzz = null;
         LOGGER.log(Level.FINER,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
-                                article,
+                                eventData,
                                 ActivityCreator.class.getName()});
 
         try {
@@ -97,18 +103,52 @@ public final class ActivityCreator
                 return;
             }
 
+            result = eventData.getJSONObject(Keys.RESULTS);
+            JSONObject status = result.optJSONObject(Keys.STATUS);
+            if (null == status) {
+                status = new JSONObject();
+                result.put(Keys.STATUS, status);
+            }
+
+            events = status.optJSONObject(Keys.EVENTS);
+            if (null == events) {
+                events = new JSONObject();
+                status.put(Keys.EVENTS, events);
+            }
+
+            postToBuzz = events.optJSONObject(Google.GOOGLE_POST_TO_BUZZ);
+            if (null == postToBuzz) {
+                postToBuzz = new JSONObject();
+                events.put(Google.GOOGLE_POST_TO_BUZZ, postToBuzz);
+            }
+
+            final JSONObject article = eventData.getJSONObject(Article.ARTICLE);
             final HttpTransport httpTransport = BuzzOAuth.getHttpTransport();
 
             if (null == httpTransport) {
-                LOGGER.log(Level.SEVERE, "Http transport is null");
-                throw new Exception("Http transport is null");
+                throw new EventException("Http transport is null");
             }
 
             post(httpTransport, article);
+
+            try {
+                postToBuzz.put(Keys.CODE,
+                               BuzzStatusCodes.POST_TO_BUZZ_SUCC);
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                throw new EventException(ex);
+            }
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new EventException(
-                    "Send article creation buzz activity to Google Buzz error");
+            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE,
+                       "Send article creation buzz activity to Google Buzz error");
+            try {
+                postToBuzz.put(Keys.CODE,
+                               BuzzStatusCodes.POST_TO_BUZZ_FAIL);
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                throw new EventException(ex);
+            }
         }
     }
 
