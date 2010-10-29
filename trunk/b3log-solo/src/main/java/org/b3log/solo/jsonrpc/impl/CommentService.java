@@ -55,8 +55,8 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Google;
 import org.b3log.solo.util.ArticleUtils;
-import org.b3log.solo.util.Buzzs;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Oct 27, 2010
+ * @version 1.0.1.9, Oct 29, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -531,7 +531,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         // Try to set thumbnail URL using Google Buzz API
         if ("gmail.com".equals(domain.toLowerCase())) {
             final URL googleProfileURL =
-                    new URL(Buzzs.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
+                    new URL(Google.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
                                                                    id));
             final HTTPResponse response =
                     urlFetchService.fetch(googleProfileURL);

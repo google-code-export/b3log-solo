@@ -128,6 +128,13 @@
                             if ("BLOG_SYNC_ADD_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
                                 msg += ", ${syncBlogJavaFailLabel}";
                             }
+
+                            if (undefined !== events.postToGoogleBuzz) {
+                                if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
+                                    msg += ", ${postToBuzzFailLabel}";
+                                }
+                            }
+
                             $("#article-listPanel").load("admin-article-list.do", function () {
                                 $("#tipMsg").text(msg);
                                 $("#article-listTab").click();
