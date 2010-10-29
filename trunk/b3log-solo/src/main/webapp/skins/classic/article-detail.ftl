@@ -312,7 +312,7 @@
                             "commentOriginalCommentId": id
                         };
 
-                        jsonRpc.commentService.addComment(function (result, error) {
+                        jsonRpc.commentService.addCommentToArticle(function (result, error) {
                             if (result && !error) {
                                 switch (result.sc) {
                                     case "COMMENT_ARTICLE_SUCC":
@@ -344,7 +344,7 @@
                             "captcha": $("#commentValidate").val()
                         };
 
-                        jsonRpc.commentService.addComment(function (result, error) {
+                        jsonRpc.commentService.addCommentToArticle(function (result, error) {
                             if (result && !error) {
                                 switch (result.sc) {
                                     case "COMMENT_ARTICLE_SUCC":

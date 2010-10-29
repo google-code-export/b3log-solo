@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all page model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 11, 2010
+ * @version 1.0.0.2, Oct 29, 2010
  */
 public final class Page {
 
@@ -43,6 +43,14 @@ public final class Page {
      * Key of order.
      */
     public static final String PAGE_ORDER = "pageOrder";
+    /**
+     * Key of comment count.
+     */
+    public static final String PAGE_COMMENT_COUNT = "pageCommentCount";
+    /**
+     * Key of comments.
+     */
+    public static final String PAGE_COMMENTS_REF = "pageComments";
 
     /**
      * Private default constructor.

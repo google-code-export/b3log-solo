@@ -36,19 +36,19 @@ import org.b3log.solo.model.Article;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for processing comment reply.
+ * This listener is responsible for processing article comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 26, 2010
+ * @version 1.0.0.4, Oct 29, 2010
  */
-public final class ReplyNotifier
+public final class ArticleCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ReplyNotifier.class.getName());
+            Logger.getLogger(ArticleCommentReplyNotifier.class.getName());
     /**
      * Comment repository.
      */
@@ -67,7 +67,7 @@ public final class ReplyNotifier
      * @param eventManager the specified event manager
      */
     @Inject
-    public ReplyNotifier(final EventManager eventManager) {
+    public ArticleCommentReplyNotifier(final EventManager eventManager) {
         super(eventManager);
     }
 
@@ -80,7 +80,7 @@ public final class ReplyNotifier
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(),
                                 eventData,
-                                ReplyNotifier.class.getName()});
+                                ArticleCommentReplyNotifier.class.getName()});
         final String originalCommentId =
                 comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         if (Strings.isEmptyOrNull(originalCommentId)) {
@@ -142,12 +142,12 @@ public final class ReplyNotifier
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_COMMENT}.
+     * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
      *
      * @return event type
      */
     @Override
     public String getEventType() {
-        return EventTypes.ADD_COMMENT;
+        return EventTypes.ADD_COMMENT_TO_ARTICLE;
     }
 }

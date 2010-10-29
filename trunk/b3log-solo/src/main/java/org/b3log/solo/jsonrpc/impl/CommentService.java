@@ -56,7 +56,11 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Google;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.PageCommentRepository;
+import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.PageUtils;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,15 +94,30 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     @Inject
     private ArticleCommentRepository articleCommentRepository;
     /**
+     * Page-Comment repository.
+     */
+    @Inject
+    private PageCommentRepository pageCommentRepository;
+    /**
      * Article repository.
      */
     @Inject
     private ArticleRepository articleRepository;
     /**
+     * Page repository.
+     */
+    @Inject
+    private PageRepository pageRepository;
+    /**
      * Article utilities.
      */
     @Inject
     private ArticleUtils articleUtils;
+    /**
+     * Page utilities.
+     */
+    @Inject
+    private PageUtils pageUtils;
     /**
      * Statistic utilities.
      */
@@ -283,10 +302,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public synchronized JSONObject addComment(final JSONObject requestJSONObject,
-                                              final HttpServletRequest request,
-                                              final HttpServletResponse response)
-            throws ActionException, IOException {
+    public JSONObject addCommentToArticle(
+            final JSONObject requestJSONObject,
+            final HttpServletRequest request,
+            final HttpServletResponse response) throws ActionException,
+                                                       IOException {
         final JSONObject ret = new JSONObject();
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -343,8 +363,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             setCommentThumbnailURL(comment);
             commentId = commentRepository.add(comment);
             // Save comment sharp URL
-            final String commentSharpURL = getCommentSharpURL(article,
-                                                              commentId);
+            final String commentSharpURL =
+                    getCommentSharpURLForArticle(article,
+                                                 commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.update(commentId, comment);
@@ -366,7 +387,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
             eventManager.fireEventSynchronously(
-                    new Event<JSONObject>(EventTypes.ADD_COMMENT, eventData));
+                    new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE,
+                                          eventData));
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
@@ -378,6 +400,135 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         }
 
         PageCaches.remove("/article-detail.do?oId=" + articleId);
+
+        return ret;
+    }
+
+    /**
+     * Adds a comment to a page.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "captcha": "",
+     *     "oId": pageId,
+     *     "commentName": "",
+     *     "commentEmail": "",
+     *     "commentURL": "",
+     *     "commentContent": "",
+     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment
+     *                                    // is an reply comment
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "oId": generatedCommentId
+     *     "sc": "COMMENT_PAGE_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject addCommentToPage(
+            final JSONObject requestJSONObject,
+            final HttpServletRequest request,
+            final HttpServletResponse response) throws ActionException,
+                                                       IOException {
+        final JSONObject ret = new JSONObject();
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+
+        String pageId, commentId;
+        try {
+            final String captcha = requestJSONObject.getString(
+                    CaptchaServlet.CAPTCHA);
+            final HttpSession session = request.getSession();
+            final String storedCaptcha = (String) session.getAttribute(
+                    CaptchaServlet.CAPTCHA);
+            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
+                ret.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
+
+                return ret;
+            }
+
+            pageId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final JSONObject page = pageRepository.get(pageId);
+            final String commentName =
+                    requestJSONObject.getString(Comment.COMMENT_NAME);
+            final String commentEmail =
+                    requestJSONObject.getString(Comment.COMMENT_EMAIL);
+            final String commentURL =
+                    requestJSONObject.optString(Comment.COMMENT_URL);
+            String commentContent =
+                    requestJSONObject.getString(Comment.COMMENT_CONTENT);
+            commentContent = StringEscapeUtils.escapeHtml(commentContent);
+            final String originalCommentId = requestJSONObject.optString(
+                    Comment.COMMENT_ORIGINAL_COMMENT_ID);
+            // Step 1: Add comment
+            final JSONObject comment = new JSONObject();
+            JSONObject originalComment = null;
+            comment.put(Comment.COMMENT_NAME, commentName);
+            comment.put(Comment.COMMENT_EMAIL, commentEmail);
+            comment.put(Comment.COMMENT_URL, commentURL);
+            comment.put(Comment.COMMENT_CONTENT, commentContent);
+            comment.put(Comment.COMMENT_DATE, new Date());
+            if (!Strings.isEmptyOrNull(originalCommentId)) {
+                originalComment =
+                        commentRepository.get(originalCommentId);
+                if (null != originalComment) {
+                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
+                                originalCommentId);
+                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                                originalComment.getString(Comment.COMMENT_NAME));
+                } else {
+                    LOGGER.log(Level.WARNING,
+                               "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                               new String[]{originalCommentId, commentName,
+                                            commentContent});
+                }
+            }
+            setCommentThumbnailURL(comment);
+            commentId = commentRepository.add(comment);
+            // Save comment sharp URL
+            final String commentSharpURL = getCommentSharpURLForPage(page,
+                                                                     commentId);
+            comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
+            comment.put(Keys.OBJECT_ID, commentId);
+            commentRepository.update(commentId, comment);
+            // Step 2: Add page-comment relation
+            final JSONObject pageCommentRelation = new JSONObject();
+            pageCommentRelation.put(Page.PAGE + "_" + Keys.OBJECT_ID,
+                                    pageId);
+            pageCommentRelation.put(Comment.COMMENT + "_" + Keys.OBJECT_ID,
+                                    commentId);
+            pageCommentRepository.add(pageCommentRelation);
+            // Step 3: Update page comment count
+            pageUtils.incPageCommentCount(pageId);
+            // Step 4: Update blog statistic comment count
+            statistics.incBlogCommentCount();
+            // Step 5: Send an email to admin
+            sendNotificationMail(page, comment, originalComment);
+            // Step 6: Fire add comment event
+            final JSONObject eventData = new JSONObject();
+            eventData.put(Comment.COMMENT, comment);
+            eventData.put(Page.PAGE, page);
+            eventManager.fireEventSynchronously(
+                    new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_PAGE,
+                                          eventData));
+
+            transaction.commit();
+            ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_PAGE_SUCC);
+            ret.put(Keys.OBJECT_ID, commentId);
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.severe(e.getMessage());
+            throw new ActionException(e);
+        }
+
+        PageCaches.remove("/page.do?oId=" + pageId);
 
         return ret;
     }
@@ -427,8 +578,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 preference.getString(Preference.BLOG_HOST);
         final String articleTitle =
                 article.getString(Article.ARTICLE_TITLE);
-        final String commentSharpURL = getCommentSharpURL(article,
-                                                          commentId);
+        final String commentSharpURL = getCommentSharpURLForArticle(article,
+                                                                    commentId);
         final Message message = new Message();
         message.setSender(adminEmail);
         final String mailSubject = blogTitle + ": New comment about "
@@ -532,7 +683,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         if ("gmail.com".equals(domain.toLowerCase())) {
             final URL googleProfileURL =
                     new URL(Google.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
-                                                                   id));
+                                                                    id));
             final HTTPResponse response =
                     urlFetchService.fetch(googleProfileURL);
             final int statusCode = response.getResponseCode();
@@ -617,8 +768,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * @return comment sharp URL
      * @throws JSONException json exception
      */
-    private String getCommentSharpURL(final JSONObject article,
-                                      final String commentId)
+    private String getCommentSharpURLForArticle(final JSONObject article,
+                                                final String commentId)
             throws JSONException {
         final JSONObject preference =
                 SoloServletListener.getUserPreference();
@@ -626,5 +777,25 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         final String articleLink = "http://" + blogHost + article.getString(
                 Article.ARTICLE_PERMALINK);
         return articleLink + "#" + commentId;
+    }
+
+    /**
+     * Gets comment sharp URL with the specified page and comment id.
+     *
+     * @param page the specified page
+     * @param commentId the specified comment id
+     * @return comment sharp URL
+     * @throws JSONException json exception
+     */
+    private String getCommentSharpURLForPage(final JSONObject page,
+                                             final String commentId)
+            throws JSONException {
+        final JSONObject preference =
+                SoloServletListener.getUserPreference();
+        final String blogHost = preference.getString(Preference.BLOG_HOST);
+        final String pageId = page.getString(Keys.OBJECT_ID);
+
+        return "http://" + blogHost + "/page.do?oId=" + pageId
+               + "#" + commentId;
     }
 }
