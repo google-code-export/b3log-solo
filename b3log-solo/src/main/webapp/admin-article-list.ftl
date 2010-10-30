@@ -155,50 +155,45 @@
 
     var getUpdateArticle = function (event) {
         $("#loadMsg").text("${loadingLabel}");
-        $("#articlePanel").show();
-        $("#articleTab").addClass("selected");
-        $("#article-listPanel").hide();
-        $("#article-listTab").removeClass("selected");
-        $("#articlePanel").load("admin-article.do", function () {
-            $("#loadMsg").text("${loadingLabel}");
-            var requestJSONObject = {
-                "oId": event.data.id[0]
-            };
-            jsonRpc.articleService.getArticle(function (result, error) {
-                switch (result.sc) {
-                    case "GET_ARTICLE_SUCC":
-                        // set default value for article.
-                        $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
-                        if (tinyMCE.get('articleContent')) {
-                            tinyMCE.get('articleContent').setContent(result.article.articleContent);
-                        } else {
-                            $("#articleContent").val(result.article.articleContent);
-                        }
-                        if (tinyMCE.get('abstract')) {
-                            tinyMCE.get('abstract').setContent(result.article.articleAbstract);
-                        } else {
-                            $("#abstract").val(result.article.articleAbstract);
-                        }
+        $("#articleTab").click();
+        $("#tipMsg").text("");
+        var requestJSONObject = {
+            "oId": event.data.id[0]
+        };
+        jsonRpc.articleService.getArticle(function (result, error) {
+            switch (result.sc) {
+                case "GET_ARTICLE_SUCC":
+                    // set default value for article.
+                    $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
+                    if (tinyMCE.get('articleContent')) {
+                        tinyMCE.get('articleContent').setContent(result.article.articleContent);
+                    } else {
+                        $("#articleContent").val(result.article.articleContent);
+                    }
+                    if (tinyMCE.get('abstract')) {
+                        tinyMCE.get('abstract').setContent(result.article.articleAbstract);
+                    } else {
+                        $("#abstract").val(result.article.articleAbstract);
+                    }
 
-                        var tags = result.article.articleTags,
-                        tagsString = '';
-                        for (var i = 0; i < tags.length; i++) {
-                            if (0 === i) {
-                                tagsString = tags[i].tagTitle;
-                            } else {
-                                tagsString += "," + tags[i].tagTitle;
-                            }
+                    var tags = result.article.articleTags,
+                    tagsString = '';
+                    for (var i = 0; i < tags.length; i++) {
+                        if (0 === i) {
+                            tagsString = tags[i].tagTitle;
+                        } else {
+                            tagsString += "," + tags[i].tagTitle;
                         }
-                        $("#tag").val(tagsString);
-                        break;
-                    case "GET_ARTICLE_FAIL_":
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
-            }, requestJSONObject);
-        });
+                    }
+                    $("#tag").val(tagsString);
+                    break;
+                case "GET_ARTICLE_FAIL_":
+                    break;
+                default:
+                    break;
+            }
+            $("#loadMsg").text("");
+        }, requestJSONObject);
     }
     
     var deleteArticle = function (event) {
