@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Oct 29, 2010
+ * @version 1.0.2.0, Oct 30, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -258,6 +258,71 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                         articleCommentRelations.get(i);
                 final String commentId =
                         articleCommentRelation.getString(Comment.COMMENT + "_"
+                                                         + Keys.OBJECT_ID);
+
+                final JSONObject comment = commentRepository.get(commentId);
+                comments.add(comment);
+            }
+
+            ret.put(Comment.COMMENTS, comments);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets comments of a page specified by the page id for administrator.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": pageId
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "comments": [{
+     *         "oId": "",
+     *         "commentName": "",
+     *         "commentEmail": "",
+     *         "thumbnailUrl": "",
+     *         "commentURL": "",
+     *         "commentContent": "",
+     *         "commentDate": "",
+     *         "commentSharpURL": ""
+     *      }, ....]
+     *     "sc": "GET_COMMENTS_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject getCommentsOfPage(final JSONObject requestJSONObject,
+                                           final HttpServletRequest request,
+                                           final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
+            // Step 1: Get page-comment relations
+            final List<JSONObject> pageCommentRelations =
+                    pageCommentRepository.getByPageId(pageId);
+            // Step 2: Get comments
+            final List<JSONObject> comments = new ArrayList<JSONObject>();
+            for (int i = 0; i < pageCommentRelations.size(); i++) {
+                final JSONObject pageCommentRelation =
+                        pageCommentRelations.get(i);
+                final String commentId =
+                        pageCommentRelation.getString(Comment.COMMENT + "_"
                                                          + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
