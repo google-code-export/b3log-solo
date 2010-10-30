@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.action.impl;
 
+import java.util.List;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
 import java.util.HashMap;
@@ -33,13 +34,14 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.util.PageUtils;
 import org.json.JSONObject;
 
 /**
  * Page action. page.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2010
+ * @version 1.0.0.1, Oct 30, 2010
  */
 public final class PageAction extends AbstractCacheablePageAction {
 
@@ -67,6 +69,11 @@ public final class PageAction extends AbstractCacheablePageAction {
      */
     @Inject
     private PageRepository pageRepository;
+    /**
+     * Page utilities.
+     */
+    @Inject
+    private PageUtils pageUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -94,6 +101,8 @@ public final class PageAction extends AbstractCacheablePageAction {
                     queryStringJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject page = pageRepository.get(pageId);
             ret.put(Page.PAGE, page);
+            final List<JSONObject> comments = pageUtils.getComments(pageId);
+            ret.put(Page.PAGE_COMMENTS_REF, comments);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);

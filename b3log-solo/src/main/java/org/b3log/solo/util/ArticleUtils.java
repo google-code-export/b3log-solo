@@ -27,6 +27,7 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.json.JSONArray;
@@ -37,7 +38,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 26, 2010
+ * @version 1.0.0.5, Oct 30, 2010
  */
 public final class ArticleUtils {
 
@@ -219,6 +220,71 @@ public final class ArticleUtils {
 
             tagArticleRepository.add(tagArticleRelation);
         }
+    }
+
+    /**
+     * Gets comments of an article specified by the article id.
+     *
+     * @param articleId the specified article id
+     * @return a list of comments, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    public List<JSONObject> getComments(final String articleId)
+            throws JSONException, RepositoryException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> articleCommentRelations =
+                articleCommentRepository.getByArticleId(articleId);
+        for (int i = 0; i < articleCommentRelations.size(); i++) {
+            final JSONObject articleCommentRelation =
+                    articleCommentRelations.get(i);
+            final String commentId =
+                    articleCommentRelation.getString(Comment.COMMENT + "_"
+                                                     + Keys.OBJECT_ID);
+
+            final JSONObject comment = commentRepository.get(commentId);
+            comment.remove(Comment.COMMENT_EMAIL); // Remove email
+
+            if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
+                comment.put(Common.IS_REPLY, true);
+                final String originalCommentName = comment.getString(
+                        Comment.COMMENT_ORIGINAL_COMMENT_NAME);
+                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                            originalCommentName);
+            } else {
+                comment.put(Common.IS_REPLY, false);
+            }
+
+            ret.add(comment);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets tags of an article specified by the article id.
+     *
+     * @param articleId the specified article id
+     * @return a list of tags, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    public List<JSONObject> getTags(final String articleId)
+            throws RepositoryException, JSONException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> tagArticleRelations =
+                tagArticleRepository.getByArticleId(articleId);
+        for (int i = 0; i < tagArticleRelations.size(); i++) {
+            final JSONObject tagArticleRelation =
+                    tagArticleRelations.get(i);
+            final String tagId =
+                    tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID);
+
+            final JSONObject tag = tagRepository.get(tagId);
+            ret.add(tag);
+        }
+
+        return ret;
     }
 
     /**
