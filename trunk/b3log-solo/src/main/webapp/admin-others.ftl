@@ -4,7 +4,7 @@
 <script type="text/javascript">
     var removeUnusedTags = function () {
         $("#tipMsg").text("");
-        jsonRpc.adminService.removeUnusedTags(function (result, error) {
+        jsonRpc.tagService.removeUnusedTags(function (result, error) {
             if (result.sc === "REMOVE_UNUSED_TAGS_SUCC") {
                 $("#tipMsg").text("${removeSuccLabel}");
             } else {
