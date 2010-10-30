@@ -207,7 +207,10 @@
                 } else {
                     $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
                 }
-                $("#loadMsg").text("");
+
+                $("#articlePanel").load("admin-article.do",function () {
+                    $("#loadMsg").text("");
+                });
             }
             initAdmin();
         </script>
