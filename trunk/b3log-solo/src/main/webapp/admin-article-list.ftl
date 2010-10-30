@@ -190,10 +190,10 @@
 
     var topArticle = function (event) {
         $("#loadMsg").text("${loadingLabel}");
+
         var requestJSONObject = {
             "oId": event.data.id[0]
         };
-
         if ($(this).find("div").hasClass("notPutTopIcon")) {
             jsonRpc.articleService.putTopArticle(function (result, error) {
                 switch (result.sc) {
@@ -342,7 +342,6 @@
 
     var deleteComment = function (id) {
         var isDelete = confirm("${confirmRemoveLabel}");
-
         if (isDelete) {
             $("#loadMsg").text("${loadingLabel}");
             jsonRpc.commentService.removeComment(function (result, error) {
@@ -353,9 +352,9 @@
                         break;
                     default:
                         $("#tipMsg").text("");
+                         $("#loadMsg").text("");
                         break;
                 }
-                $("#loadMsg").text("");
             }, {"oId": id});
         }
     }

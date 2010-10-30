@@ -4,7 +4,7 @@
     <div id="pagePagination" class="margin12 right">
     </div>
 </div>
-<table class="form right" width="76%" cellpadding="0px" cellspacing="9px">
+<table class="form right" width="70%" cellpadding="0px" cellspacing="9px">
     <tbody>
         <tr>
             <th width="48px">
@@ -13,30 +13,30 @@
             <td>
                 <input id="pageTitle"/>
             </td>
+            <th>
+                ${order1Label}
+            </th>
+            <td>
+                <input id="pageOrder" style="width: 24px;"/>
+            </td>
         </tr>
         <tr>
             <th valign="top">
                 ${content1Label}
             </th>
-            <td>
+            <td colspan="3">
                 <textarea id="pageContent" style="height: 400px;width: 100%;" name="pageContent"></textarea>
             </td>
         </tr>
         <tr>
-            <th>
-                ${order1Label}
-            </th>
-            <td>
-                <input id="pageOrder" style="width: 30px;" name="pageOrder"/>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
+            <td colspan="4" align="right">
                 <button onclick="submitPage();">${saveLabel}</button>
             </td>
         </tr>
     </tbody>
 </table>
+<div id="comments" class="none">
+</div>
 <div class="clear"></div>
 <script type="text/javascript">
     var currentPage = 1,
@@ -66,6 +66,8 @@
                         pageData[i].update = "<div class='updateIcon'></div>";
                         pageData[i].deleted = "<div class='deleteIcon'></div>";
                         pageData[i].id = pages[i].oId;
+                        pageData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
+                            + pages[i].pageCommentCount + "</div>";
                     }
 
                     $("#pageList").table({
@@ -128,6 +130,16 @@
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
+                    textAlign: "center",
+                    name: "${commentLabel}",
+                    index: "comments",
+                    width: 66,
+                    bindEvent: [{
+                            'eventName': 'click',
+                            'functionName': 'popComments'
+                        }],
+                    style: "cursor:pointer; margin-left:16px;"
+                }, {
                     visible: false,
                     index: "id"
                 }]
@@ -169,7 +181,6 @@
         });
 
         getPageList(1);
-        $("#loadMsg").text("");
     }
 
     initPage();
@@ -312,5 +323,56 @@
         } else {
             addPage();
         }
+    }
+
+    var popComments = function (event) {
+        $("#comments").data("oId", event.data.id[0]);
+        getComment();
+        $("#comments").dialog({
+            width: 700,
+            height:500,
+            closeEvent: "closeDialog()"
+        });
+    }
+
+    var getComment = function () {
+        $("#loadMsg").text("${loadingLabel}");
+        jsonRpc.commentService.getCommentsOfPage(function (result, error) {
+            switch (result.sc) {
+                case "GET_COMMENTS_SUCC":
+                    var comments = result.comments,
+                    commentsHTML = '';
+                    for (var i = 0; i < comments.length; i++) {
+                        var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>";
+
+                        if (comments[i].commentURL === "http://") {
+                            hrefHTML = "<a target='_blank'>";
+                        }
+
+                        commentsHTML += "<div class='comment-title'><span class='left'>"
+                            + hrefHTML + comments[i].commentName + "</a>";
+
+                        if (comments[i].commentOriginalCommentName) {
+                            commentsHTML += "@" + comments[i].commentOriginalCommentName;
+                        }
+                        commentsHTML += "</span><span class='right deleteIcon' onclick=\"deleteComment('" + comments[i].oId
+                            + "')\"></span><span class='right'>" + $.bowknot.getDate(comments[i].commentDate.time, 1)
+                            + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
+                    }
+                    if ("" === commentsHTML) {
+                        commentsHTML = "${noCommentLabel}"
+                    }
+                    $("#comments").html(commentsHTML);
+                    break;
+                default:
+                    break;
+            };
+            $("#loadMsg").text("");
+        }, {"oId": $("#comments").data("oId")});
+    }
+    
+    var closeDialog = function () {
+        getCommentList(currentPage);
+        $("#comments").dialog("close");
     }
 </script>

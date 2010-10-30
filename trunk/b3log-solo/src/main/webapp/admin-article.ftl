@@ -30,7 +30,6 @@
 </div>
 <script type="text/javascript">
     var initArticle = function () {
-        $("#loadMsg").text("${loadingLabel}");
         // submit action
         $("#submitArticle").click(function () {
             if ($("#title").data("oId")) {

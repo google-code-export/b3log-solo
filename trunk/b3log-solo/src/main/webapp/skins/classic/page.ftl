@@ -26,7 +26,9 @@
             </div>
             <div class="body">
                 <div class="left side">
+                    <div class="article-body">
                     <#include "article-side.ftl">
+                    </div>
                 </div>
                 <div class="right main">
                     ${page.pageContent}
