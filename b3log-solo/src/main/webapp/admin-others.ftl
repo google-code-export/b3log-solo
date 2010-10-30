@@ -1,6 +1,11 @@
 <div class="padding12" id="cacheContent">
 </div>
+<button class="margin12" onclick="removeUnusedTags();">{removeUnusedTagsLabel}</button>
 <script type="text/javascript">
+    var removeUnusedTags = function () {
+
+    }
+    
     var getCacheState = function () {
         jsonRpc.adminService.getPageCache(function (result, error) {
             var cacheHTML = "<div>${cachedBytes1Label}" + result.cacheCachedBytes + "</div>"

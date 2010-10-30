@@ -180,7 +180,7 @@ button:hover,.button:hover {
 .putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon,
 .homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon,
 .postIcon,.articlesIcon,.linkIcon,.preferenceIcon,.blogSyncIcon,
-.pageIcon, .trueIcon,.falseIcon,.fileIcon, .cacheIcon, .goTopIcon,
+.pageIcon, .trueIcon,.falseIcon,.fileIcon, .othersIcon, .goTopIcon,
 .goBottomIcon {
     width: 16px;
     height: 16px;
@@ -264,7 +264,7 @@ button:hover,.button:hover {
     background-position: -32px -32px;
 }
 
-.cacheIcon {
+.othersIcon {
     background-position: -48px -32px;
 }
 
