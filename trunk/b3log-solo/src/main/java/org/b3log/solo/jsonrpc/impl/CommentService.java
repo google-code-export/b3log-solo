@@ -305,8 +305,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject getCommentsOfPage(final JSONObject requestJSONObject,
-                                           final HttpServletRequest request,
-                                           final HttpServletResponse response)
+                                        final HttpServletRequest request,
+                                        final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
         final JSONObject ret = new JSONObject();
@@ -323,7 +323,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                         pageCommentRelations.get(i);
                 final String commentId =
                         pageCommentRelation.getString(Comment.COMMENT + "_"
-                                                         + Keys.OBJECT_ID);
+                                                      + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
                 comments.add(comment);
@@ -665,7 +665,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Removes a comment by the specified request json object.
+     * Removes a comment of an article by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -684,9 +684,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject removeComment(final JSONObject requestJSONObject,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response)
+    public JSONObject removeCommentOfArticle(final JSONObject requestJSONObject,
+                                             final HttpServletRequest request,
+                                             final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -720,6 +720,74 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_COMMENT_SUCC);
 
             LOGGER.log(Level.FINER, "Removed comment[oId={0}]", commentId);
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.severe(e.getMessage());
+            throw new ActionException(e);
+        }
+
+        PageCaches.removeAll();
+
+        return ret;
+    }
+
+    /**
+     * Removes a comment of a page by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": commentId,
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "REMOVE_COMMENT_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject removeCommentOfPage(final JSONObject requestJSONObject,
+                                          final HttpServletRequest request,
+                                          final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final JSONObject ret = new JSONObject();
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            final String commentId = requestJSONObject.getString(Keys.OBJECT_ID);
+            LOGGER.log(Level.FINER, "Removing comment[oId={0}]", commentId);
+
+            // Step 1: Remove page-comment relation
+            final JSONObject pageCommentRelation =
+                    pageCommentRepository.getByCommentId(commentId);
+            final String pageCommentRelationId =
+                    pageCommentRelation.getString(Keys.OBJECT_ID);
+            pageCommentRepository.remove(pageCommentRelationId);
+
+            final String pageId = pageCommentRelation.getString(
+                    Page.PAGE + "_" + Keys.OBJECT_ID);
+            // Step 2: Remove comment
+            commentRepository.remove(commentId);
+            // Step 3: Update page comment count
+            pageUtils.decPageCommentCount(pageId);
+            // Step 4: Update blog statistic comment count
+            statistics.decBlogCommentCount();
+            // Step 5: Fire remove comment event
+            eventManager.fireEventSynchronously(
+                    new Event<String>(EventTypes.REMOVE_COMMENT, pageId));
+
+            transaction.commit();
+            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_COMMENT_SUCC);
+
+            LOGGER.log(Level.FINER, "Removed comment[oId={0}] of page[{oId={1}}]",
+                       new String[]{commentId, pageId});
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());

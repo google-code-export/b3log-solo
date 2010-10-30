@@ -344,7 +344,7 @@
         var isDelete = confirm("${confirmRemoveLabel}");
         if (isDelete) {
             $("#loadMsg").text("${loadingLabel}");
-            jsonRpc.commentService.removeComment(function (result, error) {
+            jsonRpc.commentService.removeCommentOfArticle(function (result, error) {
                 switch (result.sc) {
                     case "REMOVE_COMMENT_SUCC":
                         getComment();
