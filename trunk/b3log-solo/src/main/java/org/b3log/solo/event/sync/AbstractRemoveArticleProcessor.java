@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Sep 24, 2010
+ * @version 1.0.0.5, Oct 30, 2010
  */
 public abstract class AbstractRemoveArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -70,8 +70,20 @@ public abstract class AbstractRemoveArticleProcessor
         super(eventManager);
     }
 
-    @Override
-    public void action(final Event<JSONObject> event) throws EventException {
+    /**
+     * Removes articles with the specified event.
+     *
+     * @param event the specified event
+     * @return event result, for example,
+     * <pre>
+     * {
+     *     "sc": "BLOG_SYNC_SUCC"
+     * }
+     * </pre>
+     * @throws EventException event exception
+     */
+    protected final JSONObject removeArticle(final Event<JSONObject> event)
+            throws EventException {
         final JSONObject eventData = event.getData();
 
         String articleId = null;
@@ -89,6 +101,7 @@ public abstract class AbstractRemoveArticleProcessor
         }
 
         try {
+            final JSONObject ret = new JSONObject();
             final String externalBloggingSys = getExternalBloggingSys();
             final JSONObject blogSyncMgmt =
                     blogSyncManagementRepository.getByExternalBloggingSystem(
@@ -97,7 +110,10 @@ public abstract class AbstractRemoveArticleProcessor
                 LOGGER.log(Level.FINER,
                            "Not found syn management settings for external blogging system[{0}]",
                            externalBloggingSys);
-                return;
+                ret.put(Keys.STATUS_CODE,
+                        BlogSyncStatusCodes.BLOG_SYNC_NO_NEED_TO_SYNC);
+                
+                return ret;
             }
 
             LOGGER.log(Level.FINER,
@@ -131,6 +147,10 @@ public abstract class AbstractRemoveArticleProcessor
                         Keys.OBJECT_ID);
                 externalArticleSoloArticleRepository.remove(relationId);
             }
+
+            ret.put(Keys.STATUS_CODE, BlogSyncStatusCodes.BLOG_SYNC_SUCC);
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Can not handle event[{0}], error msg[{1}]",
                        new String[]{getEventType(), e.getMessage()});

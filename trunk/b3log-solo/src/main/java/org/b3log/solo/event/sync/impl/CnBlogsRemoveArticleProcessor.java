@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * This listener is responsible for blog sync remove article from CnBlogs.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 24, 2010
+ * @version 1.0.0.3, Oct 30, 2010
  */
 public final class CnBlogsRemoveArticleProcessor
         extends AbstractRemoveArticleProcessor {
@@ -91,10 +91,9 @@ public final class CnBlogsRemoveArticleProcessor
         }
 
         try {
-            super.action(event);
+            final JSONObject rslt = removeArticle(event);
             try {
-                blogSyncCnBlogs.put(Keys.CODE,
-                                    BlogSyncStatusCodes.BLOG_SYNC_REMOVE_CNBLOGS_SUCC);
+                blogSyncCnBlogs.put(Keys.CODE, rslt.getString(Keys.STATUS_CODE));
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 throw new EventException(ex);
@@ -102,7 +101,7 @@ public final class CnBlogsRemoveArticleProcessor
         } catch (final EventException e) {
             try {
                 blogSyncCnBlogs.put(Keys.CODE,
-                                    BlogSyncStatusCodes.BLOG_SYNC_REMOVE_CNBLOGS_FAIL);
+                                    BlogSyncStatusCodes.BLOG_SYNC_FAIL);
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 throw new EventException(ex);
