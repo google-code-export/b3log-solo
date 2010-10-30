@@ -143,7 +143,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      */
     private static final String COMMENT_MAIL_HTML_BODY =
             "Article[<a href=\""
-            + "{articleURL}\">" + "{articleTitle}</a>]"
+            + "{articleOrPageURL}\">" + "{title}</a>]"
             + " received a new comment[<a href=\"{commentSharpURL}\">"
             + "{commentContent}</a>]";
 
@@ -575,7 +575,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             // Step 4: Update blog statistic comment count
             statistics.incBlogCommentCount();
             // Step 5: Send an email to admin
-           // sendNotificationMail(page, comment, originalComment);
+            sendNotificationMail(page, comment, originalComment);
             // Step 6: Fire add comment event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
@@ -600,16 +600,16 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
     /**
      * Sends a notification mail to administrator for notifying the specified
-     * article received the specified comment.
+     * article or page received the specified comment.
      *
-     * @param article the specified article
+     * @param articleOrPage the specified article or page
      * @param comment the specified comment
      * @param originalComment original comment, if not exists, set it as
      * {@code null}
      * @throws IOException io exception
      * @throws JSONException json exception
      */
-    private void sendNotificationMail(final JSONObject article,
+    private void sendNotificationMail(final JSONObject articleOrPage,
                                       final JSONObject comment,
                                       final JSONObject originalComment)
             throws IOException, JSONException {
@@ -641,20 +641,32 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 preference.getString(Preference.BLOG_TITLE);
         final String blogHost =
                 preference.getString(Preference.BLOG_HOST);
-        final String articleTitle =
-                article.getString(Article.ARTICLE_TITLE);
-        final String commentSharpURL = getCommentSharpURLForArticle(article,
-                                                                    commentId);
+        boolean isArticle = true;
+        String title =
+                articleOrPage.optString(Article.ARTICLE_TITLE);
+        if (Strings.isEmptyOrNull(title)) {
+            title = articleOrPage.getString(Page.PAGE_TITLE);
+            isArticle = false;
+        }
+
+        final String commentSharpURL =
+                comment.getString(Comment.COMMENT_SHARP_URL);
         final Message message = new Message();
         message.setSender(adminEmail);
         final String mailSubject = blogTitle + ": New comment about "
-                                   + articleTitle;
+                                   + title;
         message.setSubject(mailSubject);
-        final String articleURL = "http://" + blogHost + article.getString(
-                Article.ARTICLE_PERMALINK);
+        String articleOrPageURL = null;
+        if (isArticle) {
+            articleOrPageURL = "http://" + blogHost + articleOrPage.getString(
+                    Article.ARTICLE_PERMALINK);
+        } else {
+            articleOrPageURL = "http://" + blogHost + "/page.do?oId="
+                               + articleOrPage.getString(Keys.OBJECT_ID);
+        }
         final String mailBody =
-                COMMENT_MAIL_HTML_BODY.replace("{articleURL}", articleURL).
-                replace("{articleTitle}", articleTitle).
+                COMMENT_MAIL_HTML_BODY.replace("{articleOrPageURL}", articleOrPageURL).
+                replace("{title}", title).
                 replace("{commentContent}", commentContent).
                 replace("{commentSharpURL}", commentSharpURL);
         message.setHtmlBody(mailBody);
