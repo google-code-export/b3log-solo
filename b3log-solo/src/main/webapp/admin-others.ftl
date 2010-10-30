@@ -1,9 +1,16 @@
 <div class="padding12" id="cacheContent">
 </div>
-<button class="margin12" onclick="removeUnusedTags();">{removeUnusedTagsLabel}</button>
+<button class="margin12" onclick="removeUnusedTags();">${removeUnusedTagsLabel}</button>
 <script type="text/javascript">
     var removeUnusedTags = function () {
-
+        $("#tipMsg").text("");
+        jsonRpc.adminService.removeUnusedTags(function (result, error) {
+            if (result.sc === "REMOVE_UNUSED_TAGS_SUCC") {
+                $("#tipMsg").text("${removeSuccLabel}");
+            } else {
+               $("#tipMsg").text("${removeFailLabel}");
+            }
+        });
     }
     
     var getCacheState = function () {
