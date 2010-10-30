@@ -100,6 +100,7 @@
     var addArticle = function () {
         if (validateArticle()) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var tagArray = $("#tag").val().split(",");
             var requestJSONObject = {
                 "article": {
@@ -161,6 +162,7 @@
     var updateArticle = function () {
         if (validateArticle()) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var tagArray = $("#tag").val().split(",");
 
             var requestJSONObject = {

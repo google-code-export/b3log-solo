@@ -164,6 +164,7 @@
     var changeBlogType = function () {
         if ("" !== $("#blogType").val()) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             jsonRpc.blogSyncService.getBlogSyncMgmt(function (result, error) {
                 if (result) {
                     $("#magName").val(result.blogSyncExternalBloggingSysUserName);
@@ -216,6 +217,7 @@
     var syncSetting = function () {
         if (validateSyncSetting()) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var addSync = $("#addSync").attr("checked"),
             updateSync = $("#updateSync").attr("checked"),
             deleteSync =  $("#deleteSync").attr("checked");
@@ -255,6 +257,7 @@
 
     var getBlogArticleArchiveDate = function () {
         if (validateSyncSetting()) {
+            $("#tipMsg").text("");
             $("#loadMsg").text("${loadingLabel}");
             $("#archiveDatePanel").hide();
             jsonRpc.blogSyncService.getExternalArticleArchiveDate(function (result, error) {

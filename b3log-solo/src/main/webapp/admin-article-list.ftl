@@ -206,6 +206,7 @@
         
         if (isDelete) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -255,7 +256,7 @@
 
     var topArticle = function (event) {
         $("#loadMsg").text("${loadingLabel}");
-
+        $("#tipMsg").text("");
         var requestJSONObject = {
             "oId": event.data.id[0]
         };
