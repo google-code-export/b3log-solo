@@ -217,30 +217,20 @@
                         var events = result.status.events;
                         if (events) {
                             var msg = "${removeSuccLabel}";
-                            if ("BLOG_SYNC_REMOVE_CSDN_BLOG_FAIL" === events.blogSyncCSDNBlog.code) {
+                            if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
                                 msg += ", ${syncCSDNBlogFailLabel}";
                             }
 
-                            if ("BLOG_SYNC_REMOVE_CNBLOGS_FAIL" === events.blogSyncCnBlogs.code) {
+                            if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
                                 msg += ", ${syncCnBlogsFailLabel}";
                             }
 
-                            if ("BLOG_SYNC_REMOVE_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
+                            if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
                                 msg += ", ${syncBlogJavaFailLabel}";
                             }
                             getArticleList(1);
                             $("#tipMsg").text(msg);
-
-                            if ("BLOG_SYNC_REMOVE_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
-                                && "BLOG_SYNC_REMOVE_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
-                                && "BLOG_SYNC_REMOVE_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code) {
-                                getArticleList(1);
-                                $("#tipMsg").text("${removeSuccLabel}");
-                            }
-                            return;
                         }
-                        getArticleList(1);
-                        $("#tipMsg").text("${removeSuccLabel}");
                         break;
                     case "REMOVE_ARTICLE_FAIL_":
                         $("#tipMsg").text("${removeFailLabel}");

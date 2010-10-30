@@ -117,46 +117,23 @@
                         var events = result.status.events;
                         if (events) {
                             var msg = "${addSuccLabel}";
-                            if ("BLOG_SYNC_ADD_CSDN_BLOG_FAIL" === events.blogSyncCSDNBlog.code) {
+                            if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
                                 msg += ", ${syncCSDNBlogFailLabel}";
                             }
 
-                            if ("BLOG_SYNC_ADD_CNBLOGS_FAIL" === events.blogSyncCnBlogs.code) {
+                            if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
                                 msg += ", ${syncCnBlogsFailLabel}";
                             }
 
-                            if ("BLOG_SYNC_ADD_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
+                            if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
                                 msg += ", ${syncBlogJavaFailLabel}";
                             }
 
-                            if (events.postToGoogleBuzz) {
-                                if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
-                                    msg += ", ${postToBuzzFailLabel}";
-                                }
+                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
+                                msg += ", ${postToBuzzFailLabel}";
                             }
-
-                            if ("BLOG_SYNC_ADD_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
-                                && "BLOG_SYNC_ADD_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
-                                && "BLOG_SYNC_ADD_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code) {
-                                if (!events.postToGoogleBuzz) {
-                                    $("#article-listPanel").load("admin-article-list.do", function () {
-                                        $("#tipMsg").text("${addSuccLabel}");
-                                        $("#article-listTab").click();
-                                    });
-                                } else if(events.postToGoogleBuzz) {
-                                    if ("POST_TO_BUZZ_SUCC" === events.postToGoogleBuzz.code) {
-                                        $("#article-listPanel").load("admin-article-list.do", function () {
-                                            $("#tipMsg").text("${addSuccLabel}");
-                                            $("#article-listTab").click();
-                                        });
-                                    }
-                                }
-                            } else {
-                                $("#article-listPanel").load("admin-article-list.do", function () {
-                                    $("#tipMsg").text(msg);
-                                    $("#article-listTab").click();
-                                });
-                            }
+                            $("#tipMsg").text(msg);
+                            $("#article-listTab").click();
                         }
                         break;
                     default:
@@ -190,36 +167,21 @@
                         var events = result.status.events;
                         if (events) {
                             var msg = "${updateSuccLabel}";
-                            if ("BLOG_SYNC_UPDATE_CSDN_BLOG_FAIL" === events.blogSyncCSDNBlog.code) {
+                            if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
                                 msg += ", ${syncCSDNBlogFailLabel}";
                             }
 
-                            if ("BLOG_SYNC_UPDATE_CNBLOGS_FAIL" === events.blogSyncCnBlogs.code) {
+                            if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
                                 msg += ", ${syncCnBlogsFailLabel}";
                             }
 
-                            if ("BLOG_SYNC_UPDATE_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
+                            if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
                                 msg += ", ${syncBlogJavaFailLabel}";
                             }
-                            $("#article-listPanel").load("admin-article-list.do", function () {
-                                $("#tipMsg").text(msg);
-                                $("#article-listTab").click();
-                            });
-
-                            if ("BLOG_SYNC_UPDATE_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
-                                && "BLOG_SYNC_UPDATE_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
-                                && "BLOG_SYNC_UPDATE_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code) {
-                                $("#article-listPanel").load("admin-article-list.do", function () {
-                                    $("#tipMsg").text("${updateSuccLabel}");
-                                    $("#article-listTab").click();
-                                });
-                            }
-                            return;
-                        }
-                        $("#article-listPanel").load("admin-article-list.do", function () {
-                            $("#tipMsg").text("${updateSuccLabel}");
+                            
+                            $("#tipMsg").text(msg);
                             $("#article-listTab").click();
-                        });
+                        }
                         break;
                     default:
                         $("#tipMsg").text("${updateFailLabel}");
