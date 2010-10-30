@@ -239,9 +239,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject getComments(final JSONObject requestJSONObject,
-                                  final HttpServletRequest request,
-                                  final HttpServletResponse response)
+    public JSONObject getCommentsOfArticle(final JSONObject requestJSONObject,
+                                           final HttpServletRequest request,
+                                           final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
         final JSONObject ret = new JSONObject();
