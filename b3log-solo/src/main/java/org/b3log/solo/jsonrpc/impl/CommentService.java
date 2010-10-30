@@ -575,7 +575,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             // Step 4: Update blog statistic comment count
             statistics.incBlogCommentCount();
             // Step 5: Send an email to admin
-            sendNotificationMail(page, comment, originalComment);
+           // sendNotificationMail(page, comment, originalComment);
             // Step 6: Fire add comment event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);

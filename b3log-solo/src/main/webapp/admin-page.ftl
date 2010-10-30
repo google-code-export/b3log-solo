@@ -4,7 +4,7 @@
     <div id="pagePagination" class="margin12 right">
     </div>
 </div>
-<table class="form right" width="70%" cellpadding="0px" cellspacing="9px">
+<table class="form right" width="68%" cellpadding="0px" cellspacing="9px">
     <tbody>
         <tr>
             <th width="48px">
@@ -35,7 +35,7 @@
         </tr>
     </tbody>
 </table>
-<div id="comments" class="none">
+<div id="pageComments" class="none">
 </div>
 <div class="clear"></div>
 <script type="text/javascript">
@@ -60,7 +60,7 @@
 
                     for (var i = 0; i < pages.length; i++) {
                         pageData[i] = {};
-                        pageData[i].pageTitle = "<a href='/page.do?oId=" + pages[i].oId + "' target='_blank'>"
+                        pageData[i].pageTitle = "<a class='noUnderline' href='/page.do?oId=" + pages[i].oId + "' target='_blank'>"
                             + pages[i].pageTitle + "</a>";
                         pageData[i].pageOrder = pages[i].pageOrder;
                         pageData[i].update = "<div class='updateIcon'></div>";
@@ -136,7 +136,7 @@
                     width: 66,
                     bindEvent: [{
                             'eventName': 'click',
-                            'functionName': 'popComments'
+                            'functionName': 'popPageComments'
                         }],
                     style: "cursor:pointer; margin-left:16px;"
                 }, {
@@ -148,7 +148,7 @@
         $("#pagePagination").paginate({
             bindEvent: "getPageList",
             pageCount: 1,
-            windowSize: 1,
+            windowSize: WINDOW_SIZE,
             currentPage: 1,
             style: "google",
             isGoTo: false,
@@ -325,17 +325,17 @@
         }
     }
 
-    var popComments = function (event) {
-        $("#comments").data("oId", event.data.id[0]);
-        getComment();
-        $("#comments").dialog({
+    var popPageComments = function (event) {
+        $("#pageComments").data("oId", event.data.id[0]);
+        getPageComment();
+        $("#pageComments").dialog({
             width: 700,
             height:500,
-            closeEvent: "closeDialog()"
+            closeEvent: "closePageDialog()"
         });
     }
 
-    var getComment = function () {
+    var getPageComment = function () {
         $("#loadMsg").text("${loadingLabel}");
         jsonRpc.commentService.getCommentsOfPage(function (result, error) {
             switch (result.sc) {
@@ -355,24 +355,43 @@
                         if (comments[i].commentOriginalCommentName) {
                             commentsHTML += "@" + comments[i].commentOriginalCommentName;
                         }
-                        commentsHTML += "</span><span class='right deleteIcon' onclick=\"deleteComment('" + comments[i].oId
+                        commentsHTML += "</span><span class='right deleteIcon' onclick=\"deletePageComment('" + comments[i].oId
                             + "')\"></span><span class='right'>" + $.bowknot.getDate(comments[i].commentDate.time, 1)
                             + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
                     }
                     if ("" === commentsHTML) {
                         commentsHTML = "${noCommentLabel}"
                     }
-                    $("#comments").html(commentsHTML);
+                    $("#pageComments").html(commentsHTML);
                     break;
                 default:
                     break;
             };
             $("#loadMsg").text("");
-        }, {"oId": $("#comments").data("oId")});
+        }, {"oId": $("#pageComments").data("oId")});
     }
     
-    var closeDialog = function () {
-        getCommentList(pageListCurrentPage);
-        $("#comments").dialog("close");
+    var closePageDialog = function () {
+        getPageList(pageListCurrentPage);
+        $("#pageComments").dialog("close");
+    }
+
+     var deletePageComment = function (id) {
+        var isDelete = confirm("${confirmRemoveLabel}");
+        if (isDelete) {
+            $("#loadMsg").text("${loadingLabel}");
+            jsonRpc.commentService.removeCommentOfPage(function (result, error) {
+                switch (result.sc) {
+                    case "REMOVE_COMMENT_SUCC":
+                        getPageComment();
+                        $("#tipMsg").text("${removeSuccLabel}");
+                        break;
+                    default:
+                        $("#tipMsg").text("");
+                        $("#loadMsg").text("");
+                        break;
+                }
+            }, {"oId": id});
+        }
     }
 </script>

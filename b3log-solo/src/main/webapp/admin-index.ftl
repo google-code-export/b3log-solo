@@ -103,7 +103,7 @@
         </div>
         <script type="text/javascript">
             var PAGE_SIZE = 2,
-            WINDOW_SIZE = 10;
+            WINDOW_SIZE = 4;
 
             var adminLogin = function () {
                 var loginURL = jsonRpc.adminService.getLoginURL();
