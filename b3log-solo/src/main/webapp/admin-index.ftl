@@ -120,10 +120,23 @@
                     'article-sync', 'page', 'others'];
                 for (var i = 0; i < tabs.length; i++) {
                     if (it.id === tabs[i] + "Tab") {
-                        if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === ""
-                            || tabs[i] === 'others') {
+                        if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
                             $("#loadMsg").text("${loadingLabel}");
                             $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
+                        } else {
+                            switch (tabs[i]) {
+                                case "others":
+                                    getCacheState();
+                                    break;
+                                case "article-list":
+                                    getArticleList(1);
+                                    break;
+                                case "page":
+                                    getPageList(1);
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                         $("#" + tabs[i] + "Panel").show();
                         $("#" + tabs[i] + "Tab").addClass("selected");

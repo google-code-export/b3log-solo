@@ -148,6 +148,8 @@
                 </div>
             </div>
         </div>
+        <div class='goTopIcon' onclick='goTop();'></div>
+        <div class='goBottomIcon' onclick='goBottom();'></div>
         <script type="text/javascript">
             var currentCommentId = "";
             var moveCursor = function(event) {
@@ -338,7 +340,7 @@
 
             var showComment = function (id, oId) {
                 if ($("#commentItemRef" + id).length > 0) {
-                    $("#commentItemRef" + id).fadeIn("normal");
+                    $("#commentItemRef" + id).show();
                 } else {
                     var refComment = $("#commentItem" + id).clone();
                     refComment.find(".comment-body-ref").remove();
@@ -350,7 +352,7 @@
             }
 
             var hideComment = function (id) {
-                $("#commentItemRef" + id).fadeOut("normal");
+                $("#commentItemRef" + id).hide();
             }
         </script>
     </body>

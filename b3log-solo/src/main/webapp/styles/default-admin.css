@@ -60,9 +60,8 @@
 #sideNavi li {
 	padding: 2px 0 2px 24px;
 	margin-left: 0;
-}
-#sideNavi li {
 	cursor: pointer;
+        list-style: none;
 }
 #sideNavi li.hover {
 	background-color: #DDE5FF;

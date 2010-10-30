@@ -24,6 +24,22 @@ ver ${version}
         window.scrollTo(0, scrollHeight - clientHeight - 350);
         
     }
+
+
+
+    var clearCache = function () {
+        var locationString = window.location.toString();
+        var indexOfSharp = locationString.indexOf("#");
+        var url = locationString.substring(locationString.lastIndexOf("/"),
+        (-1 == indexOfSharp)? locationString.length : indexOfSharp);
+        jsonRpc.adminService.clearPageCache(url);
+        window.location.reload();
+    }
+
+    var clearAllCache = function () {
+        jsonRpc.adminService.clearAllPageCache();
+        window.location.reload();
+    }
     
     var initIndex = function () {
         // common-top.ftl use state
@@ -87,24 +103,8 @@ ver ${version}
                 $("#recentComments").after(recentCommentsHTML);
             });
         }
-        $("body").append("<div class='goTopIcon' onclick='goTop();'></div>"
-            + "<div class='goBottomIcon' onclick='goBottom();'></div>");
 
         jsonRpc.statisticService.incBlogViewCount();
     }
     initIndex();
-    
-    var clearCache = function () {
-        var locationString = window.location.toString();
-        var indexOfSharp = locationString.indexOf("#");
-        var url = locationString.substring(locationString.lastIndexOf("/"),
-        (-1 == indexOfSharp)? locationString.length : indexOfSharp);
-        jsonRpc.adminService.clearPageCache(url);
-        window.location.reload();
-    }
-
-    var clearAllCache = function () {
-        jsonRpc.adminService.clearAllPageCache();
-        window.location.reload();
-    }
 </script>

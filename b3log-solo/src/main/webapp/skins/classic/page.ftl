@@ -295,7 +295,7 @@
 
             var showComment = function (id, oId) {
                 if ($("#commentItemRef" + id).length > 0) {
-                    $("#commentItemRef" + id).fadeIn("normal");
+                    $("#commentItemRef" + id).show();
                 } else {
                     var refComment = $("#commentItem" + id).clone();
                     refComment.find(".comment-body-ref").remove();
@@ -308,7 +308,7 @@
             }
 
             var hideComment = function (id) {
-                $("#commentItemRef" + id).fadeOut("normal");
+                $("#commentItemRef" + id).hide();
             }
 
             var loadAction = function () {
