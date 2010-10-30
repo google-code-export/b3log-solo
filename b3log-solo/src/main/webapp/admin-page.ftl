@@ -231,6 +231,14 @@
                     default:
                         break;
                 }
+                $("#pageTitle").val("").removeData("oId");
+                $("#pageOrder").val("");
+                if (tinyMCE.get("pageContent")) {
+                    tinyMCE.get('pageContent').setContent("");
+                } else {
+                    $("#pageContent").val("");
+                }
+
                 $("#loadMsg").text("");
             }, requestJSONObject);
         }

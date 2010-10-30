@@ -58,7 +58,7 @@ ver ${version}
         var clientHeight = 0;
         var scrollHeight = 0;
 
-      if (document.documentElement) {
+        if (document.documentElement) {
             x1 = document.documentElement.scrollLeft || 0;
             y1 = document.documentElement.scrollTop || 0;
         }
@@ -213,11 +213,8 @@ ver ${version}
                 }
             });
         }
-
-        if ($("#randomArticles").length < 1) {
-            $("body").append("<div class='goTopIcon' onclick='goTop();'></div>"
-                + "<div class='goBottomIcon' onclick='goBottom();'></div>");
-        }
+        $("body").append("<div class='goTopIcon' onclick='goTop();'></div>"
+            + "<div class='goBottomIcon' onclick='goBottom();'></div>");
         jsonRpc.statisticService.incBlogViewCount(function (result, error) {});
     }
     initIndex();
