@@ -2,7 +2,7 @@
 </div>
 <div id="articlePagination" class="right margin12">
 </div>
-<div id="comments" class="none">
+<div id="articleListComments" class="none">
 </div>
 <div class="clear"></div>
 <script type="text/javascript">
@@ -121,7 +121,7 @@
                     width: 66,
                     bindEvent: [{
                             'eventName': 'click',
-                            'functionName': 'popComments'
+                            'functionName': 'popArticleListComments'
                         }],
                     style: "cursor:pointer; margin-left:16px;"
                 }, {
@@ -312,22 +312,22 @@
         }
     }
 
-    var closeDialog = function () {
+    var closeArticleListDialog = function () {
         getArticleList(articleListCurrentPage);
-        $("#comments").dialog("close");
+        $("#articleListComments").dialog("close");
     }
 
-    var popComments = function (event) {
-        $("#comments").data("oId", event.data.id[0]);
-        getComment();
-        $("#comments").dialog({
+    var popArticleListComments = function (event) {
+        $("#articleListComments").data("oId", event.data.id[0]);
+        getArticleListComment();
+        $("#articleListComments").dialog({
             width: 700,
             height:500,
-            closeEvent: "closeDialog()"
+            closeEvent: "closeArticleListDialog()"
         });
     }
 
-    var getComment = function () {
+    var getArticleListComment = function () {
         $("#loadMsg").text("${loadingLabel}");
         jsonRpc.commentService.getCommentsOfArticle(function (result, error) {
             switch (result.sc) {
@@ -347,30 +347,30 @@
                         if (comments[i].commentOriginalCommentName) {
                             commentsHTML += "@" + comments[i].commentOriginalCommentName;
                         }
-                        commentsHTML += "</span><span class='right deleteIcon' onclick=\"deleteComment('" + comments[i].oId
+                        commentsHTML += "</span><span class='right deleteIcon' onclick=\"deleteArticleListComment('" + comments[i].oId
                             + "')\"></span><span class='right'>" + $.bowknot.getDate(comments[i].commentDate.time, 1)
                             + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
                     }
                     if ("" === commentsHTML) {
                         commentsHTML = "${noCommentLabel}"
                     }
-                    $("#comments").html(commentsHTML);
+                    $("#articleListComments").html(commentsHTML);
                     break;
                 default:
                     break;
             };
             $("#loadMsg").text("");
-        }, {"oId": $("#comments").data("oId")});
+        }, {"oId": $("#articleListComments").data("oId")});
     }
 
-    var deleteComment = function (id) {
+    var deleteArticleListComment = function (id) {
         var isDelete = confirm("${confirmRemoveLabel}");
         if (isDelete) {
             $("#loadMsg").text("${loadingLabel}");
             jsonRpc.commentService.removeCommentOfArticle(function (result, error) {
                 switch (result.sc) {
                     case "REMOVE_COMMENT_SUCC":
-                        getComment();
+                        getArticleListComment();
                         $("#tipMsg").text("${removeSuccLabel}");
                         break;
                     default:
