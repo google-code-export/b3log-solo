@@ -9,6 +9,7 @@
                 + "<div>${hitBytes1Label}" + result.cacheHitBytes + "</div>"
                 + "<div>${missCount1Label}" + result.cacheMissCount + "</div>";
             $("#cacheContent").html(cacheHTML);
+            $("#loadMsg").text("");
         });
     }
     getCacheState();

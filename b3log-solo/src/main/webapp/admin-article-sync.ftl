@@ -115,7 +115,6 @@
 <script type="text/javascript">
     var articleDataTemp = [];
     var initSync = function () {
-        $("#loadMsg").text("${loadingLabel}");
         // Blog table
         $("#articleSyncList").table({
             height: 357,

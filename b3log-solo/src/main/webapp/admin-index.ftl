@@ -119,6 +119,7 @@
                 var tabs = ['article', 'article-list', 'link-list', 'preference',
                     'article-sync', 'page', 'cache'];
                 for (var i = 0; i < tabs.length; i++) {
+                    $("#loadMsg").text("${loadingLabel}");
                     if (it.id === tabs[i] + "Tab") {
                         if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
                             $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
@@ -150,7 +151,6 @@
             }
 
             var initAdmin = function () {
-                $("#loadMsg").text("${loadingLabel}");
                 // tipMsg
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
