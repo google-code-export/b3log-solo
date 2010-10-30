@@ -93,7 +93,7 @@
                                 </span>
                                 <a href="/article-detail.do?oId=${article.oId}" class="left">
                                     <span class="left browserIcon" title="${viewLabel}"></span>
-                                    ${article.articleViewCount}
+                                    <span id="articleViewCount">${article.articleViewCount}</span>
                                 </a>
                             </div>
                             <div class="clear"></div>
