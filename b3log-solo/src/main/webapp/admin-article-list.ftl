@@ -77,7 +77,7 @@
                 }, {
                     name: "${tagsLabel}",
                     index: "tags",
-                    minWidth: 340,
+                    minWidth: 320,
                     style: "padding-left: 6px; overflow: hidden;font-size:11px; "
                 }, {
                     textAlign: "center",
