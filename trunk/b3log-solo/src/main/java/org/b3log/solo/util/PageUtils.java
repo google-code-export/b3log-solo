@@ -16,11 +16,13 @@
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageCommentRepository;
@@ -61,6 +63,45 @@ public final class PageUtils {
      */
     @Inject
     private Statistics statistics;
+
+    /**
+     * Gets comments of an article specified by the page id.
+     *
+     * @param pageId the specified page id
+     * @return a list of comments, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    public List<JSONObject> getComments(final String pageId)
+            throws JSONException, RepositoryException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> pageCommentRelations =
+                pageCommentRepository.getByPageId(pageId);
+        for (int i = 0; i < pageCommentRelations.size(); i++) {
+            final JSONObject pageCommentRelation =
+                    pageCommentRelations.get(i);
+            final String commentId =
+                    pageCommentRelation.getString(Comment.COMMENT + "_"
+                                                  + Keys.OBJECT_ID);
+
+            final JSONObject comment = commentRepository.get(commentId);
+            comment.remove(Comment.COMMENT_EMAIL); // Remove email
+
+            if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
+                comment.put(Common.IS_REPLY, true);
+                final String originalCommentName = comment.getString(
+                        Comment.COMMENT_ORIGINAL_COMMENT_NAME);
+                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                            originalCommentName);
+            } else {
+                comment.put(Common.IS_REPLY, false);
+            }
+
+            ret.add(comment);
+        }
+
+        return ret;
+    }
 
     /**
      * Page comment count +1 for an page specified by the given page id.
@@ -117,7 +158,7 @@ public final class PageUtils {
                     pageCommentRelations.get(i);
             final String commentId =
                     pageCommentRelation.getString(Comment.COMMENT + "_"
-                                                     + Keys.OBJECT_ID);
+                                                  + Keys.OBJECT_ID);
             commentRepository.remove(commentId);
             final String relationId =
                     pageCommentRelation.getString(Keys.OBJECT_ID);
