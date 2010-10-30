@@ -18,8 +18,8 @@
 </div>
 <script type="text/javascript">
     // variable
-    var currentPage = 1,
-    pageCount = 1,
+    var fileListCurrentPage = 1,
+    fileListPageCount = 1,
     linksLength = 1;
 
     var initFile = function () {
@@ -106,7 +106,7 @@
 
     var getFileList = function (pageNum) {
         $("#tipMsg").text("${loadingLabel}");
-        currentPage = pageNum;
+        fileListCurrentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
             "paginationPageSize": PAGE_SIZE,
@@ -135,15 +135,15 @@
                 });
 
                 if (result.pagination.paginationPageCount === 0) {
-                    pageCount = 1;
+                    fileListPageCount = 1;
                 } else {
-                    pageCount = result.pagination.paginationPageCount;
+                    fileListPageCount = result.pagination.paginationPageCount;
                 }
 
                 $("#filePagination").paginate({
                     update: {
                         currentPage: pageNum,
-                        pageCount: pageCount
+                        pageCount: fileListPageCount
                     }
                 });
 

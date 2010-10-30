@@ -6,7 +6,7 @@
         <meta name="description" content="${metaDescription}"/>
         <meta http-equiv="pragma" content="no-cache"/>
         <meta name="revised" content="${blogTitle}, ${article.articleCreateDate?string('MM/dd/yy')}"/>
-        <meta name="generator" content="b3log"/>
+        <meta name="generator" content="NetBeans, GAE"/>
         <meta name="author" content="${blogTitle}"/>
         <meta http-equiv="Window-target" content="_top"/>
         <title>${article.articleTitle} - ${blogTitle}</title>
@@ -88,7 +88,7 @@
                                         </span>
                                         <a href="/article-detail.do?oId=${article.oId}" class="left">
                                             <span class="left browserIcon" title="${viewLabel}"></span>
-                                            <span id="articleViewCount">${article.articleViewCount}</span>
+                                            ${article.articleViewCount}
                                         </a>
                                     </div>
                                     <div class="clear"></div>
@@ -196,9 +196,9 @@
                                                         <input class="normalInput" id="commentValidate"/>
                                                         <img id="captcha" alt="validate" src="/captcha.do"></img>
                                                     </td>
-                                                    <th>
+                                                    <td>
                                                         <span class="error-msg" id="commentErrorTip"/>
-                                                    </th>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="3" align="right">
@@ -272,12 +272,6 @@
 
                 // article view count
                 jsonRpc.statisticService.incArticleViewCount("${article.oId}");
-                jsonRpc.statisticService.getArticleViewCount(function (result, error) {
-                    if (!result || error) {
-                        return;
-                    }
-                    $("#articleViewCount").html(result);
-                },"${article.oId}");
 
                 //getRandomArticles
                 jsonRpc.articleService.getRandomArticles(function (result, error) {
@@ -515,12 +509,6 @@
             var loadTool = function () {
                 // article view count
                 jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
-                jsonRpc.statisticService.getArticleViewCount(function (result, error) {
-                    if (!result || error) {
-                        return;
-                    }
-                    $("#articleViewCount").html(result);
-                },"${article.oId}");
 
                 // Stack initialize
                 var openspeed = 300;
