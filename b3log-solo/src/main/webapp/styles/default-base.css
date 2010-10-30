@@ -123,9 +123,13 @@ button:hover,.button:hover {
     white-space: nowrap;
 }
 
-.form input,.form textarea {
+.form input, .form textarea {
     width: 100%;
     font-size: 12px;
+}
+
+.form textarea {
+    overflow: auto;
 }
 
 .form input:focus,.form textarea:focus {
