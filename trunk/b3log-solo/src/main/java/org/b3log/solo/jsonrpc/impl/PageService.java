@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 27, 2010
+ * @version 1.0.0.4, Oct 30, 2010
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
@@ -122,7 +122,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
      *     "pages": [{
      *         "oId": "",
      *         "pageTitle": "",
-     *         "pageContent": "",
+     *         "pageCommentCount": "",
      *         "pageOrder": int
      *      }, ....]
      *     "sc": "GET_PAGES_SUCC"
@@ -159,6 +159,10 @@ public final class PageService extends AbstractGAEJSONRpcService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final JSONArray pages = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < pages.length(); i++) { // remove unused properties
+                final JSONObject page = pages.getJSONObject(i);
+                page.remove(Page.PAGE_CONTENT);
+            }
 
             ret.put(Pagination.PAGINATION, pagination);
             ret.put(Page.PAGES, pages);
@@ -181,7 +185,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
      *         "oId": "",
      *         "pageTitle": "",
      *         "pageContent": "",
-     *         "pageOrder": int
+     *         "pageOrder": int,
+     *         "pageCommentCount": int
      *     }
      * }, see {@link Page} for more details
      * </pre>
@@ -312,6 +317,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject page =
                     requestJSONObject.getJSONObject(Page.PAGE);
+            page.put(Page.PAGE_COMMENT_COUNT, 0);
             final String pageId = pageRepository.add(page);
 
             transaction.commit();

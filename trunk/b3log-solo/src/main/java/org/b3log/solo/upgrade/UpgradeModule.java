@@ -23,7 +23,7 @@ import com.google.inject.servlet.ServletModule;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 21, 2010
+ * @version 1.0.0.1, Oct 30, 2010
  */
 public final class UpgradeModule extends ServletModule {
 
@@ -34,5 +34,8 @@ public final class UpgradeModule extends ServletModule {
 
         bind(V010ToV011.class).in(Scopes.SINGLETON);
         serve("/upgrade/v010-v011.do").with(V010ToV011.class);
+
+        bind(V011ToV020.class).in(Scopes.SINGLETON);
+        serve("/upgrade/v011-v020.do").with(V011ToV020.class);
     }
 }
