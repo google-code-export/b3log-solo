@@ -36,6 +36,7 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.util.PageUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -57,6 +58,11 @@ public final class PageService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private PageRepository pageRepository;
+    /**
+     * Page utilities.
+     */
+    @Inject
+    private PageUtils pageUtils;
 
     /**
      * Gets a page by the specified request json object.
@@ -263,6 +269,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
         try {
             final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
+            pageUtils.removePageComments(pageId);
             pageRepository.remove(pageId);
 
             transaction.commit();
