@@ -84,7 +84,8 @@
         var isDelete = confirm("${confirmRemoveLabel}");
 
         if (isDelete) {
-            $("#tipMsg").text("${loadingLabel}");
+            $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -105,7 +106,8 @@
     }
 
     var getFileList = function (pageNum) {
-        $("#tipMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
+        $("#tipMsg").text("");
         fileListCurrentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,

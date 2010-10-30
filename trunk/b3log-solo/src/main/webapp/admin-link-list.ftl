@@ -179,6 +179,7 @@
         var isDelete = confirm("${confirmRemoveLabel}");
         if (isDelete) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -254,6 +255,7 @@
     var updateLink = function () {
         if (validateUpdateLink()) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var requestJSONObject = {
                 "link": {
                     "linkTitle": $("#updateLinkTitle").val(),
@@ -279,6 +281,7 @@
     var submitLink = function () {
         if (validateLink()) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var requestJSONObject = {
                 "link": {
                     "linkTitle": $("#linkTitle").val(),

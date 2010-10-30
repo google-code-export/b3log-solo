@@ -285,7 +285,7 @@
     
     var changePreference = function () {
         $("#loadMsg").text("${loadingLabel}");
-
+        $("#tipMsg").text("");
         if ($("#syncGoogle").hasClass("selected")) {
             if ("" === $("#secret").val().replace(/\s/g, "")) {
                 $("#tipMsg").text("${contentEmptyLabel}");

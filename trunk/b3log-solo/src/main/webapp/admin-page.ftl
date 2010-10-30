@@ -226,6 +226,7 @@
         var isDelete = confirm("${confirmRemoveLabel}");
         if (isDelete) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var requestJSONObject = {
                 "oId": event.data.id[0]
             };
@@ -258,6 +259,7 @@
     var updatePage = function () {
         if (validatePage()) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
@@ -286,6 +288,7 @@
     var addPage = function () {
         if (validatePage()) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
@@ -380,6 +383,7 @@
         var isDelete = confirm("${confirmRemoveLabel}");
         if (isDelete) {
             $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
             jsonRpc.commentService.removeCommentOfPage(function (result, error) {
                 switch (result.sc) {
                     case "REMOVE_COMMENT_SUCC":
