@@ -306,7 +306,7 @@
 
     var getComment = function () {
         $("#loadMsg").text("${loadingLabel}");
-        jsonRpc.commentService.getComments(function (result, error) {
+        jsonRpc.commentService.getCommentsOfArticle(function (result, error) {
             switch (result.sc) {
                 case "GET_COMMENTS_SUCC":
                     var comments = result.comments,
