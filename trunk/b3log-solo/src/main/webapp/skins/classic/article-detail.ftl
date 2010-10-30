@@ -500,12 +500,6 @@
             var loadTool = function () {
                 // article view count
                 jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
-                jsonRpc.statisticService.getArticleViewCount(function (result, error) {
-                    if (!result || error) {
-                        return;
-                    }
-                    $("#articleViewCount").html(result);
-                },"${article.oId}");
 
                 // Stack initialize
                 var openspeed = 300;
