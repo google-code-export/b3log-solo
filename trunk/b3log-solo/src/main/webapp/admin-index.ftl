@@ -59,9 +59,9 @@
                             <div class="left pageIcon"></div>
                             <span>&nbsp;${pageMgmtLabel}</span>
                         </li>
-                        <li id="cacheTab" onclick="changeList(this);">
-                            <div class="left cacheIcon"></div>
-                            <span>&nbsp;${cacheStateLabel}</span>
+                        <li id="othersTab" onclick="changeList(this);">
+                            <div class="left othersIcon"></div>
+                            <span>&nbsp;${othersLabel}</span>
                         </li>
                         <!--li>
                             <div class="left fileIcon"></div>
@@ -83,7 +83,7 @@
                         </div>
                         <div id="pagePanel" class="none">
                         </div>
-                        <div id="cachePanel" class="none">
+                        <div id="othersPanel" class="none">
                         </div>
                     </div>
                 </div>
@@ -117,11 +117,11 @@
             
             var changeList = function (it) {
                 var tabs = ['article', 'article-list', 'link-list', 'preference',
-                    'article-sync', 'page', 'cache'];
+                    'article-sync', 'page', 'others'];
                 for (var i = 0; i < tabs.length; i++) {
                     if (it.id === tabs[i] + "Tab") {
                         if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === ""
-                            || tabs[i] === 'cache') {
+                            || tabs[i] === 'others') {
                             $("#loadMsg").text("${loadingLabel}");
                             $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
                         }

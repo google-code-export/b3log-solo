@@ -88,7 +88,7 @@ public final class ActionModule extends AbstractActionModule {
               "/admin-article-sync.do",
               "/admin-file-list.do",
               "/admin-page.do",
-              "/admin-cache.do").with(AdminDoNothingAction.class);
+              "/admin-others.do").with(AdminDoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
