@@ -1,6 +1,6 @@
 /* 
     Document   : default-index
-    Version    : 1.0.0.7, Oct 25, 2010
+    Version    : 1.0.0.9, Oct 30, 2010
     Author     : Liyuan Li
     Description:
         user blog for tree house style.
@@ -278,7 +278,6 @@ h5 {
     opacity:0.9;
     position:absolute;
     top:16px;
-    filter:alpha(opacity=90);
     z-index: 16;
 }
 

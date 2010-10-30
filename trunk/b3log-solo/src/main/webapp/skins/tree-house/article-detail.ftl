@@ -479,7 +479,7 @@
 
             var showComment = function (id, oId) {
                 if ($("#commentItemRef" + id).length > 0) {
-                    $("#commentItemRef" + id).fadeIn("normal");
+                    $("#commentItemRef" + id).show();
                 } else {
                     var refComment = $("#commentItem" + id).clone();
                     refComment.find(".comment-body-ref").remove();
@@ -491,7 +491,7 @@
             }
 
             var hideComment = function (id) {
-                $("#commentItemRef" + id).fadeOut("normal");
+                $("#commentItemRef" + id).hide();
             }
         </script>
         <div class="stack addthis_toolbox">
@@ -504,6 +504,8 @@
                 <li><a class="addthis_button_more"><span>More...</span><img src="/images/addthis.png" alt="More..." /></a></li>
             </ul>
         </div>
+        <div class='goTopIcon' onclick='goTop();'></div>
+        <div class='goBottomIcon' onclick='goBottom();'></div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             var loadTool = function () {

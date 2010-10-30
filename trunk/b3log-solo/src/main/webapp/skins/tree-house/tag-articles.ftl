@@ -44,5 +44,7 @@
                 </div>
             </div>
         </div>
+        <div class='goTopIcon' onclick='goTop();'></div>
+        <div class='goBottomIcon' onclick='goBottom();'></div>
     </body>
 </html>

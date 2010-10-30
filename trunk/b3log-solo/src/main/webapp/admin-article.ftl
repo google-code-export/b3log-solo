@@ -128,26 +128,35 @@
                             if ("BLOG_SYNC_ADD_BLOGJAVA_FAIL" === events.blogSyncBlogJava.code) {
                                 msg += ", ${syncBlogJavaFailLabel}";
                             }
-                            
-                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
-                                msg += ", ${postToBuzzFailLabel}";
+
+                            if (events.postToGoogleBuzz) {
+                                if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
+                                    msg += ", ${postToBuzzFailLabel}";
+                                }
                             }
 
                             if ("BLOG_SYNC_ADD_CSDN_BLOG_SUCC" === events.blogSyncCSDNBlog.code
                                 && "BLOG_SYNC_ADD_CNBLOGS_SUCC" === events.blogSyncCnBlogs.code
-                                && "BLOG_SYNC_ADD_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code
-                                && "POST_TO_BUZZ_SUCC" === events.postToGoogleBuzz.code) {
-                                $("#article-listPanel").load("admin-article-list.do", function () {
-                                    $("#tipMsg").text("${addSuccLabel}");
-                                    $("#article-listTab").click();
-                                });
+                                && "BLOG_SYNC_ADD_BLOGJAVA_SUCC" === events.blogSyncBlogJava.code) {
+                                if (!events.postToGoogleBuzz) {
+                                    $("#article-listPanel").load("admin-article-list.do", function () {
+                                        $("#tipMsg").text("${addSuccLabel}");
+                                        $("#article-listTab").click();
+                                    });
+                                } else if(events.postToGoogleBuzz) {
+                                    if ("POST_TO_BUZZ_SUCC" === events.postToGoogleBuzz.code) {
+                                        $("#article-listPanel").load("admin-article-list.do", function () {
+                                            $("#tipMsg").text("${addSuccLabel}");
+                                            $("#article-listTab").click();
+                                        });
+                                    }
+                                }
                             } else {
                                 $("#article-listPanel").load("admin-article-list.do", function () {
                                     $("#tipMsg").text(msg);
                                     $("#article-listTab").click();
                                 });
                             }
-                            return;
                         }
                         break;
                     default:

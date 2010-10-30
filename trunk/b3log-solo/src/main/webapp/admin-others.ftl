@@ -14,6 +14,7 @@
     }
     
     var getCacheState = function () {
+        $("#loadMsg").text("${loadingLabel}");
         jsonRpc.adminService.getPageCache(function (result, error) {
             var cacheHTML = "<div>${cachedBytes1Label}" + result.cacheCachedBytes + "</div>"
                 + "<div>${cachedCount1Label}" + result.cacheCachedCount + "</div>"
