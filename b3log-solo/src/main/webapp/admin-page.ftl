@@ -25,7 +25,7 @@
                 ${content1Label}
             </th>
             <td colspan="3">
-                <textarea id="pageContent" style="height: 400px;width: 100%;" name="pageContent"></textarea>
+                <textarea id="pageContent" style="height: 430px;width: 100%;" name="pageContent"></textarea>
             </td>
         </tr>
         <tr>
@@ -39,13 +39,13 @@
 </div>
 <div class="clear"></div>
 <script type="text/javascript">
-    var currentPage = 1,
-    pageCount = 1,
-    pagesLength = 1;
+    var pageListCurrentPage = 1,
+    pageListPageCount = 1,
+    pagePagesLength = 1;
     
     var getPageList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
-        currentPage = pageNum;
+        pageListCurrentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
             "paginationPageSize": PAGE_SIZE,
@@ -56,7 +56,7 @@
                 case "GET_PAGES_SUCC":
                     var pages = result.pages;
                     var pageData = [];
-                    pagesLength = pages.length;
+                    pagePagesLength = pages.length;
 
                     for (var i = 0; i < pages.length; i++) {
                         pageData[i] = {};
@@ -77,15 +77,15 @@
                     });
 
                     if (result.pagination.paginationPageCount === 0) {
-                        pageCount = 1;
+                        pageListPageCount = 1;
                     } else {
-                        pageCount = result.pagination.paginationPageCount;
+                        pageListPageCount = result.pagination.paginationPageCount;
                     }
 
                     $("#pagePagination").paginate({
                         update: {
                             currentPage: pageNum,
-                            pageCount: pageCount
+                            pageCount: pageListPageCount
                         }
                     });
                     break;
@@ -113,7 +113,7 @@
                     textAlign: "center",
                     name: "${updateLabel}",
                     index: "update",
-                    width: 48,
+                    width: 56,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'getUpdatePage'
@@ -123,7 +123,7 @@
                     textAlign: "center",
                     name: "${removeLabel}",
                     index: "deleted",
-                    width: 48,
+                    width: 56,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'deletePage'
@@ -269,7 +269,7 @@
             jsonRpc.pageService.updatePage(function (result, error) {
                 switch (result.sc) {
                     case "UPDATE_PAGE_SUCC":
-                        getPageList(currentPage);
+                        getPageList(pageListCurrentPage);
                         $("#pageTitle").removeData("oId").val("");
                         $("#tipMsg").text("${updateSuccLabel}");
                         tinyMCE.get('pageContent').setContent("");
@@ -303,10 +303,10 @@
                         } else {
                             $("#pageContent").val("");
                         }
-                        if (pagesLength === PAGE_SIZE) {
-                            pageCount++;
+                        if (pagePagesLength === PAGE_SIZE) {
+                            pageListPageCount++;
                         }
-                        getPageList(pageCount);
+                        getPageList(pageListPageCount);
                         $("#tipMsg").text("${addSuccLabel}");
                         break;
                     default:
@@ -372,7 +372,7 @@
     }
     
     var closeDialog = function () {
-        getCommentList(currentPage);
+        getCommentList(pageListCurrentPage);
         $("#comments").dialog("close");
     }
 </script>

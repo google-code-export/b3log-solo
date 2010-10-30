@@ -102,7 +102,7 @@
             </div>
         </div>
         <script type="text/javascript">
-            var PAGE_SIZE = 18,
+            var PAGE_SIZE = 2,
             WINDOW_SIZE = 10;
 
             var adminLogin = function () {
@@ -119,11 +119,10 @@
                 var tabs = ['article', 'article-list', 'link-list', 'preference',
                     'article-sync', 'page', 'cache'];
                 for (var i = 0; i < tabs.length; i++) {
-                    $("#loadMsg").text("${loadingLabel}");
                     if (it.id === tabs[i] + "Tab") {
-                        if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
-                            $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
-                        } else if (tabs[i] === 'cache') {
+                        if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === ""
+                            || tabs[i] === 'cache') {
+                            $("#loadMsg").text("${loadingLabel}");
                             $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
                         }
                         $("#" + tabs[i] + "Panel").show();

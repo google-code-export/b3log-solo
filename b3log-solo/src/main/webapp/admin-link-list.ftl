@@ -70,8 +70,8 @@
     </table>
 </div>
 <script type="text/javascript">
-    var currentPage = 1,
-    pageCount = 1,
+    var linkListCurrentPage = 1,
+    linkListPageCount = 1,
     linksLength = 1;
     $("#linkList").table({
         resizable: true,
@@ -202,7 +202,7 @@
 
     var getLinkList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
-        currentPage = pageNum;
+        linkListCurrentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
             "paginationPageSize": PAGE_SIZE,
@@ -231,15 +231,15 @@
                     });
 
                     if (result.pagination.paginationPageCount === 0) {
-                        pageCount = 1;
+                        linkListPageCount = 1;
                     } else {
-                        pageCount = result.pagination.paginationPageCount;
+                        linkListPageCount = result.pagination.paginationPageCount;
                     }
 
                     $("#linkPagination").paginate({
                         update: {
                             currentPage: pageNum,
-                            pageCount: pageCount
+                            pageCount: linkListPageCount
                         }
                     });
                     break;
@@ -265,7 +265,7 @@
                 switch (result.sc) {
                     case "UPDATE_LINK_SUCC":
                         $("#updateLink").dialog("close");
-                        getLinkList(currentPage);
+                        getLinkList(linkListCurrentPage);
                         $("#tipMsg").text("${updateSuccLabel}");
                         break;
                     default:
@@ -291,9 +291,9 @@
                         $("#linkTitle").val("");
                         $("#linkAddress").val("");
                         if (linksLength === PAGE_SIZE) {
-                            pageCount++;
+                            linkListPageCount++;
                         }
-                        getLinkList(pageCount);
+                        getLinkList(linkListPageCount);
                         $("#tipMsg").text("${addSuccLabel}");
                         break;
                     default:

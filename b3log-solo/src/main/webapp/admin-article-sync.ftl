@@ -113,7 +113,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var articleDataTemp = [];
+    var articleSyncDataTemp = [];
     var initSync = function () {
         // Blog table
         $("#articleSyncList").table({
@@ -330,7 +330,7 @@
                     }
                 });
 
-                articleDataTemp = articleData;
+                articleSyncDataTemp = articleData;
                 $("#articlesCount").html("${sumLabel} " + articleData.length + " ${countLabel}");
             } else {
                 $("#tipMsg").text("${getFailLabel}");
@@ -352,21 +352,21 @@
                 }
                 var oIds = result.oIds;
                 
-                for (var i = 0; i < articleDataTemp.length; i++) {
+                for (var i = 0; i < articleSyncDataTemp.length; i++) {
                     for (var j = 0; j < oIds.length; j++) {
-                        if (oIds[j] === articleDataTemp[i].id) {
-                            articleDataTemp[i].selected = {
+                        if (oIds[j] === articleSyncDataTemp[i].id) {
+                            articleSyncDataTemp[i].selected = {
                                 value: false,
                                 disabled: true
                             };
-                            articleDataTemp[i].imported = "<div class='falseIcon'></div>";
+                            articleSyncDataTemp[i].imported = "<div class='falseIcon'></div>";
                         }
                     }
                 }
 
                 $("#articleSyncList").table({
                     update:{
-                        data: articleDataTemp
+                        data: articleSyncDataTemp
                     }
                 });
 

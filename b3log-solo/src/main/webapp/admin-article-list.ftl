@@ -6,87 +6,152 @@
 </div>
 <div class="clear"></div>
 <script type="text/javascript">
-    var currentPage = 1;
-    $("#articleList").table({
-        resizable: true,
-        colModel: [{
-                name: "${titleLabel}",
-                index: "title",
-                width: 460,
-                style: "padding-left: 6px;"
-            }, {
-                name: "${tagsLabel}",
-                index: "tags",
-                minWidth: 380,
-                style: "padding-left: 6px; overflow: hidden;font-size:11px; "
-            }, {
-                textAlign: "center",
-                name: "${createDateLabel}",
-                index: "date",
-                width: 130
-            }, {
-                textAlign: "center",
-                name: "${updateLabel}",
-                index: "update",
-                width: 56,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'functionName': 'getUpdateArticle'
-                    }],
-                style: "cursor:pointer; margin-left:22px;"
-            }, {
-                textAlign: "center",
-                name: "${removeLabel}",
-                index: "remove",
-                width: 56,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'functionName': 'deleteArticle'
-                    }],
-                style: "cursor:pointer; margin-left:22px;"
-            },  {
-                textAlign: "center",
-                name: "${putTopLabel}",
-                index: "topArticle",
-                width: 56,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'functionName': 'topArticle'
-                    }],
-                style: "cursor:pointer; margin-left:22px;"
-            }, {
-                textAlign: "center",
-                name: "${commentLabel}",
-                index: "comments",
-                width: 66,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'functionName': 'popComments'
-                    }],
-                style: "cursor:pointer; margin-left:16px;"
-            }, {
-                name: "${viewLabel}",
-                width: 66,
-                index: "articleViewCount",
-                style: "margin-left:16px;"
-            }, {
-                visible: false,
-                index: "id"
-            }]
-    });
+    var articleListCurrentPage = 1, articleDataTemp = [];
+    var getArticleList = function (pageNum) {
+        $("#loadMsg").text("${loadingLabel}");
+        articleListCurrentPage = pageNum;
+        var requestJSONObject = {
+            "paginationCurrentPageNum": pageNum,
+            "paginationPageSize": PAGE_SIZE,
+            "paginationWindowSize": WINDOW_SIZE
+        };
 
-    $("#articlePagination").paginate({
-        bindEvent: "getArticleList",
-        pageCount: 1,
-        windowSize: WINDOW_SIZE,
-        currentPage: 1,
-        style: "google",
-        isGoTo: false,
-        lastPage: "${lastPageLabel}",
-        nextPage: "${nextPagePabel}",
-        previousPage: "${previousPageLabel}",
-        firstPage: "${firstPageLabel}"
-    });
+        jsonRpc.articleService.getArticles(function (result, error) {
+            switch (result.sc) {
+                case "GET_ARTICLES_SUCC":
+                    var articles = result.articles,
+                    articleData = [];
+
+                    for (var i = 0; i < articles.length; i++) {
+                        articleData[i] = {};
+                        articleData[i].tags = "<div title='" + articles[i].articleTags + "'>" + articles[i].articleTags + "</div>";
+                        articleData[i].title = "<a href='article-detail.do?oId=" + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle + "' class='noUnderline'>"
+                            + articles[i].articleTitle + "</a>";
+                        articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
+                        articleData[i].update = "<div class='updateIcon'></div>";
+                        articleData[i].remove = "<div class='deleteIcon'></div>";
+                        var topArticleHtml = articles[i].articlePutTop ?
+                            "<div class='putTopIcon'></div>" : "<div class='notPutTopIcon'></div>"
+                        articleData[i].topArticle = topArticleHtml;
+                        articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
+                            + articles[i].articleCommentCount + "</div>";
+                        articleData[i].articleViewCount = "<a href='article-detail.do?oId="
+                            + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle
+                            + "' class='noUnderline'><div class='left browserIcon'></div><div class='left' style='margin-left:6px;'>"
+                            + articles[i].articleViewCount + "</div></a>";;
+                        articleData[i].id = articles[i].oId;
+                    }
+                    articleDataTemp = articleData;
+                    $("#articleList").table({
+                        update:{
+                            data: articleData
+                        }
+                    });
+
+                    if (0 === result.pagination.paginationPageCount) {
+                        result.pagination.paginationPageCount = 1;
+                    }
+
+                    $("#articlePagination").paginate({
+                        update: {
+                            pageCount: result.pagination.paginationPageCount,
+                            currentPage: pageNum
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+            $("#loadMsg").text("");
+        }, requestJSONObject);
+    }
+
+    var loadArticleList = function () {
+        $("#articleList").table({
+            resizable: true,
+            colModel: [{
+                    name: "${titleLabel}",
+                    index: "title",
+                    width: 400,
+                    style: "padding-left: 6px;"
+                }, {
+                    name: "${tagsLabel}",
+                    index: "tags",
+                    minWidth: 380,
+                    style: "padding-left: 6px; overflow: hidden;font-size:11px; "
+                }, {
+                    textAlign: "center",
+                    name: "${createDateLabel}",
+                    index: "date",
+                    width: 130
+                }, {
+                    textAlign: "center",
+                    name: "${updateLabel}",
+                    index: "update",
+                    width: 56,
+                    bindEvent: [{
+                            'eventName': 'click',
+                            'functionName': 'getUpdateArticle'
+                        }],
+                    style: "cursor:pointer; margin-left:22px;"
+                }, {
+                    textAlign: "center",
+                    name: "${removeLabel}",
+                    index: "remove",
+                    width: 56,
+                    bindEvent: [{
+                            'eventName': 'click',
+                            'functionName': 'deleteArticle'
+                        }],
+                    style: "cursor:pointer; margin-left:22px;"
+                },  {
+                    textAlign: "center",
+                    name: "${putTopLabel}",
+                    index: "topArticle",
+                    width: 56,
+                    bindEvent: [{
+                            'eventName': 'click',
+                            'functionName': 'topArticle'
+                        }],
+                    style: "cursor:pointer; margin-left:22px;"
+                }, {
+                    textAlign: "center",
+                    name: "${commentLabel}",
+                    index: "comments",
+                    width: 66,
+                    bindEvent: [{
+                            'eventName': 'click',
+                            'functionName': 'popComments'
+                        }],
+                    style: "cursor:pointer; margin-left:16px;"
+                }, {
+                    name: "${viewLabel}",
+                    width: 66,
+                    index: "articleViewCount",
+                    style: "margin-left:16px;"
+                }, {
+                    visible: false,
+                    index: "id"
+                }]
+        });
+
+        $("#articlePagination").paginate({
+            bindEvent: "getArticleList",
+            pageCount: 1,
+            windowSize: WINDOW_SIZE,
+            currentPage: 1,
+            style: "google",
+            isGoTo: false,
+            lastPage: "${lastPageLabel}",
+            nextPage: "${nextPagePabel}",
+            previousPage: "${previousPageLabel}",
+            firstPage: "${firstPageLabel}"
+        });
+        
+        getArticleList(1);
+    }
+    loadArticleList();
+    
 
     var getUpdateArticle = function (event) {
         $("#loadMsg").text("${loadingLabel}");
@@ -198,7 +263,16 @@
             jsonRpc.articleService.putTopArticle(function (result, error) {
                 switch (result.sc) {
                     case "PUT_TOP_ARTICLE_SUCC":
-                        getArticleList(1);
+                        for (var i = 0; i < articleDataTemp.length; i++) {
+                            if (event.data.id[0] === articleDataTemp[i].id) {
+                                articleDataTemp[i].topArticle = "<div class='putTopIcon'></div>";
+                            }
+                        }
+                        $("#articleList").table({
+                            update:{
+                                data: articleDataTemp
+                            }
+                        });
                         $("#tipMsg").text("${putTopSuccLabel}");
                         break;
                     case "PUT_TOP_ARTICLE_FAIL_":
@@ -214,7 +288,16 @@
             jsonRpc.articleService.cancelTopArticle(function (result, error) {
                 switch (result.sc) {
                     case "CANCEL_TOP_ARTICLE_SUCC":
-                        getArticleList(1);
+                        for (var i = 0; i < articleDataTemp.length; i++) {
+                            if (event.data.id[0] === articleDataTemp[i].id) {
+                                articleDataTemp[i].topArticle = "<div class='notPutTopIcon'></div>";
+                            }
+                        }
+                        $("#articleList").table({
+                            update:{
+                                data: articleDataTemp
+                            }
+                        });
                         $("#tipMsg").text("${cancelTopSuccLabel}");
                         break;
                     case "CANCEL_TOP_ARTICLE_FAIL_":
@@ -230,7 +313,7 @@
     }
 
     var closeDialog = function () {
-        getArticleList(currentPage);
+        getArticleList(articleListCurrentPage);
         $("#comments").dialog("close");
     }
 
@@ -243,66 +326,6 @@
             closeEvent: "closeDialog()"
         });
     }
-    
-    var getArticleList = function (pageNum) {
-        $("#loadMsg").text("${loadingLabel}");
-        currentPage = pageNum;
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": PAGE_SIZE,
-            "paginationWindowSize": WINDOW_SIZE
-        };
-        
-        jsonRpc.articleService.getArticles(function (result, error) {
-            switch (result.sc) {
-                case "GET_ARTICLES_SUCC":
-                    var articles = result.articles,
-                    articleData = [];
-
-                    for (var i = 0; i < articles.length; i++) {
-                        articleData[i] = {};
-                        articleData[i].tags = "<div title='" + articles[i].articleTags + "'>" + articles[i].articleTags + "</div>";
-                        articleData[i].title = "<a href='article-detail.do?oId=" + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle + "' class='noUnderline'>"
-                            + articles[i].articleTitle + "</a>";
-                        articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
-                        articleData[i].update = "<div class='updateIcon'></div>";
-                        articleData[i].remove = "<div class='deleteIcon'></div>";
-                        var topArticleHtml = articles[i].articlePutTop ?
-                            "<div class='putTopIcon'></div>" : "<div class='notPutTopIcon'></div>"
-                        articleData[i].topArticle = topArticleHtml;
-                        articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
-                            + articles[i].articleCommentCount + "</div>";
-                        articleData[i].articleViewCount = "<a href='article-detail.do?oId="
-                            + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle
-                            + "' class='noUnderline'><div class='left browserIcon'></div><div class='left' style='margin-left:6px;'>"
-                            + articles[i].articleViewCount + "</div></a>";;
-                        articleData[i].id = articles[i].oId;
-                    }
-
-                    $("#articleList").table({
-                        update:{
-                            data: articleData
-                        }
-                    });
-
-                    if (0 === result.pagination.paginationPageCount) {
-                        result.pagination.paginationPageCount = 1;
-                    }
-
-                    $("#articlePagination").paginate({
-                        update: {
-                            pageCount: result.pagination.paginationPageCount,
-                            currentPage: pageNum
-                        }
-                    });
-                    break;
-                default:
-                    break;
-            }
-            $("#loadMsg").text("");
-        }, requestJSONObject);
-    }
-    getArticleList(1);
 
     var getComment = function () {
         $("#loadMsg").text("${loadingLabel}");
@@ -352,7 +375,7 @@
                         break;
                     default:
                         $("#tipMsg").text("");
-                         $("#loadMsg").text("");
+                        $("#loadMsg").text("");
                         break;
                 }
             }, {"oId": id});

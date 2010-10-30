@@ -255,7 +255,7 @@ h5 {
 }
 
 .comment-body td {
-    white-space: nowrap;
+    white-space: normal;
 }
 
 .comment-bottom {
@@ -298,6 +298,7 @@ img.comment-picture {
 
 .error-msg {
     color: #EC0A8B;
+    font-weight: bold;
 }
 
 /* side */

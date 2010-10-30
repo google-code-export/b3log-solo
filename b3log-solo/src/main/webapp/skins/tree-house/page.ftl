@@ -5,12 +5,14 @@
         <meta name="keywords" content="${metaKeywords}"/>
         <meta name="description" content="${metaDescription}"/>
         <meta http-equiv="pragma" content="no-cache"/>
-        <meta name="author" content="b3log-solo.googlecode.com"/>
-        <meta name="revised" content="b3log, 9/10/10"/>
-        <meta name="generator" content="NetBeans, GAE"/>
+        <meta name="revised" content="${blogTitle}, 9/10/10"/>
+        <meta name="generator" content="b3log"/>
+        <meta name="author" content="${blogTitle}"/>
         <meta http-equiv="Window-target" content="_top"/>
         <title>${page.pageTitle} - ${blogTitle}</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
@@ -36,7 +38,7 @@
                             <div class="line right"></div>
                             <div class="comments marginTop12" id="comments" name="comments">
                                 <div class="comments-header"></div>
-                                <#list articleComments as comment>
+                                <#list pageComments as comment>
                                 <div id="commentItem${comment.oId}" class="comment">
                                     <div class="comment-top"></div>
                                     <div class="comment-body">
@@ -49,7 +51,7 @@
                                             </#if>
                                             <#if comment.isReply>
                                             &nbsp;@&nbsp;<a
-                                                href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}"
+                                                href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
                                                 onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
                                                 onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                             </#if>
@@ -119,9 +121,9 @@
                                                         <input class="normalInput" id="commentValidate"/>
                                                         <img id="captcha" alt="validate" src="/captcha.do"></img>
                                                     </td>
-                                                    <th>
+                                                    <td>
                                                         <span class="error-msg" id="commentErrorTip"/>
-                                                    </th>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="3" align="right">
@@ -277,10 +279,10 @@
                         "commentOriginalCommentId": id
                     };
 
-                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
+                    jsonRpc.commentService.addCommentToPage(function (result, error) {
                         if (result && !error) {
                             switch (result.sc) {
-                                case "COMMENT_ARTICLE_SUCC":
+                                case "COMMENT_PAGE_SUCC":
                                     $("#replyForm").remove();
                                     window.location.reload();
                                     break;
@@ -309,10 +311,10 @@
                         "captcha": $("#commentValidate").val()
                     };
 
-                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
+                    jsonRpc.commentService.addCommentToPage(function (result, error) {
                         if (result && !error) {
                             switch (result.sc) {
-                                case "COMMENT_ARTICLE_SUCC":
+                                case "COMMENT_PAGE_SUCC":
                                     $("#commentErrorTip").html("");
                                     $("#comment").val("");
                                     $("#commentEmail").val("");
