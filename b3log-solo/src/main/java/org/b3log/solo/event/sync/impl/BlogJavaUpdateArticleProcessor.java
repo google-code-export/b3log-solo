@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * This listener is responsible for blog sync update article to BlogJava.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 21, 2010
+ * @version 1.0.0.2, Oct 30, 2010
  */
 public final class BlogJavaUpdateArticleProcessor
         extends AbstractUpdateArticleProcessor {
@@ -91,10 +91,9 @@ public final class BlogJavaUpdateArticleProcessor
         }
 
         try {
-            super.action(event);
+            final JSONObject rslt = updateArticle(event);
             try {
-                blogSyncBlogJava.put(Keys.CODE,
-                                     BlogSyncStatusCodes.BLOG_SYNC_UPDATE_BLOGJAVA_SUCC);
+                blogSyncBlogJava.put(Keys.CODE, rslt.getString(Keys.STATUS_CODE));
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 throw new EventException(ex);
@@ -102,7 +101,7 @@ public final class BlogJavaUpdateArticleProcessor
         } catch (final EventException e) {
             try {
                 blogSyncBlogJava.put(Keys.CODE,
-                                     BlogSyncStatusCodes.BLOG_SYNC_UPDATE_BLOGJAVA_FAIL);
+                                     BlogSyncStatusCodes.BLOG_SYNC_FAIL);
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 throw new EventException(ex);

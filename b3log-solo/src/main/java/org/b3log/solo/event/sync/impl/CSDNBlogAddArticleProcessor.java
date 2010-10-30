@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * This listener is responsible for blog sync add article to CSDN blog.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Sep 24, 2010
+ * @version 1.0.0.6, Oct 30, 2010
  */
 public final class CSDNBlogAddArticleProcessor
         extends AbstractAddArticleProcessor {
@@ -91,10 +91,9 @@ public final class CSDNBlogAddArticleProcessor
         }
 
         try {
-            super.action(event);
+            final JSONObject rslt = addArticle(event);
             try {
-                blogSyncCSDNBlog.put(Keys.CODE,
-                                     BlogSyncStatusCodes.BLOG_SYNC_ADD_CSDN_BLOG_SUCC);
+                blogSyncCSDNBlog.put(Keys.CODE, rslt.getString(Keys.STATUS_CODE));
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 throw new EventException(ex);
@@ -102,7 +101,7 @@ public final class CSDNBlogAddArticleProcessor
         } catch (final EventException e) {
             try {
                 blogSyncCSDNBlog.put(Keys.CODE,
-                                     BlogSyncStatusCodes.BLOG_SYNC_ADD_CSDN_BLOG_FAIL);
+                                     BlogSyncStatusCodes.BLOG_SYNC_FAIL);
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 throw new EventException(ex);

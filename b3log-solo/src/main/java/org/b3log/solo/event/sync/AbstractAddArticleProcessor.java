@@ -74,10 +74,21 @@ public abstract class AbstractAddArticleProcessor
         super(eventManager);
     }
 
-    @Override
-    public void action(final Event<JSONObject> event) throws EventException {
+    /**
+     * Adds articles with the specified event.
+     *
+     * @param event the specified event
+     * @return event result, for example,
+     * <pre>
+     * {
+     *     "sc": "BLOG_SYNC_SUCC"
+     * }
+     * </pre>
+     * @throws EventException event exception
+     */
+    protected final JSONObject addArticle(final Event<JSONObject> event)
+            throws EventException {
         final JSONObject eventData = event.getData();
-
         JSONObject article = null;
 
         try {
@@ -93,6 +104,7 @@ public abstract class AbstractAddArticleProcessor
             throw new EventException(e);
         }
 
+        final JSONObject ret = new JSONObject();
         String postId = null;
         String articleId = null;
         final String externalBloggingSys = getExternalBloggingSys();
@@ -105,7 +117,9 @@ public abstract class AbstractAddArticleProcessor
                 LOGGER.log(Level.FINER,
                            "Not found syn management settings for external blogging system[{0}]",
                            externalBloggingSys);
-                return;
+                ret.put(Keys.STATUS_CODE,
+                        BlogSyncStatusCodes.BLOG_SYNC_NO_NEED_TO_SYNC);
+                return ret;
             }
 
             LOGGER.log(Level.FINER,
@@ -168,6 +182,10 @@ public abstract class AbstractAddArticleProcessor
                                         externalArticleSoloArticleRelation.
                             toString()});
             }
+
+            ret.put(Keys.STATUS_CODE, BlogSyncStatusCodes.BLOG_SYNC_SUCC);
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Can not handle event[{0}], error msg[{1}]",
                        new String[]{getEventType(), e.getMessage()});

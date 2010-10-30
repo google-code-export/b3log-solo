@@ -19,100 +19,25 @@ package org.b3log.solo.event.sync;
  * This enumeration defines all status codes of blog sync actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 24, 2010
+ * @version 1.0.0.2, Oct 30, 2010
  */
 public final class BlogSyncStatusCodes {
 
     /**
-     * Indicates sync add an article to CSDN blog successfully.
+     * Indicates no sync management configured.
      */
-    public static final String BLOG_SYNC_ADD_CSDN_BLOG_SUCC =
-            "BLOG_SYNC_ADD_CSDN_BLOG_SUCC";
+    public static final String BLOG_SYNC_NO_NEED_TO_SYNC =
+            "BLOG_SYNC_NO_NEED_TO_SYNC";
     /**
-     * Indicates sync add an article to CSDN blog fail.
+     * Indicates sync article successfully.
      */
-    public static final String BLOG_SYNC_ADD_CSDN_BLOG_FAIL =
-            "BLOG_SYNC_ADD_CSDN_BLOG_FAIL";
+    public static final String BLOG_SYNC_SUCC =
+            "BLOG_SYNC_SUCC";
     /**
-     * Indicates sync update an article to CSDN blog successfully.
+     * Indicates sync article fail.
      */
-    public static final String BLOG_SYNC_UPDATE_CSDN_BLOG_SUCC =
-            "BLOG_SYNC_UPDATE_CSDN_BLOG_SUCC";
-    /**
-     * Indicates sync update an article to CSDN blog fail.
-     */
-    public static final String BLOG_SYNC_UPDATE_CSDN_BLOG_FAIL =
-            "BLOG_SYNC_UPDATE_CSDN_BLOG_FAIL";
-    /**
-     * Indicates sync remove an article from CSDN blog successfully.
-     */
-    public static final String BLOG_SYNC_REMOVE_CSDN_BLOG_SUCC =
-            "BLOG_SYNC_REMOVE_CSDN_BLOG_SUCC";
-    /**
-     * Indicates sync remove an article from CSDN blog fail.
-     */
-    public static final String BLOG_SYNC_REMOVE_CSDN_BLOG_FAIL =
-            "BLOG_SYNC_REMOVE_CSDN_BLOG_FAIL";
-    /**
-     * Indicates sync add an article to CnBlogs successfully.
-     */
-    public static final String BLOG_SYNC_ADD_CNBLOGS_SUCC =
-            "BLOG_SYNC_ADD_CNBLOGS_SUCC";
-    /**
-     * Indicates sync add an article to CnBlogs fail.
-     */
-    public static final String BLOG_SYNC_ADD_CNBLOGS_FAIL =
-            "BLOG_SYNC_ADD_CNBLOGS_FAIL";
-    /**
-     * Indicates sync update an article to CnBlogs successfully.
-     */
-    public static final String BLOG_SYNC_UPDATE_CNBLOGS_SUCC =
-            "BLOG_SYNC_UPDATE_CNBLOGS_SUCC";
-    /**
-     * Indicates sync update an article to CnBlogs fail.
-     */
-    public static final String BLOG_SYNC_UPDATE_CNBLOGS_FAIL =
-            "BLOG_SYNC_UPDATE_CNBLOGS_FAIL";
-    /**
-     * Indicates sync remove an article from CnBlogs successfully.
-     */
-    public static final String BLOG_SYNC_REMOVE_CNBLOGS_SUCC =
-            "BLOG_SYNC_REMOVE_CNBLOGS_SUCC";
-    /**
-     * Indicates sync remove an article from CnBlogs fail.
-     */
-    public static final String BLOG_SYNC_REMOVE_CNBLOGS_FAIL =
-            "BLOG_SYNC_REMOVE_CNBLOGS_FAIL";
-    /**
-     * Indicates sync add an article to BlogJava successfully.
-     */
-    public static final String BLOG_SYNC_ADD_BLOGJAVA_SUCC =
-            "BLOG_SYNC_ADD_BLOGJAVA_SUCC";
-    /**
-     * Indicates sync add an article to BlogJava fail.
-     */
-    public static final String BLOG_SYNC_ADD_BLOGJAVA_FAIL =
-            "BLOG_SYNC_ADD_BLOGJAVA_FAIL";
-    /**
-     * Indicates sync update an article to BlogJava successfully.
-     */
-    public static final String BLOG_SYNC_UPDATE_BLOGJAVA_SUCC =
-            "BLOG_SYNC_UPDATE_BLOGJAVA_SUCC";
-    /**
-     * Indicates sync update an article to BlogJava fail.
-     */
-    public static final String BLOG_SYNC_UPDATE_BLOGJAVA_FAIL =
-            "BLOG_SYNC_UPDATE_BLOGJAVA_FAIL";
-    /**
-     * Indicates sync remove an article from BlogJava successfully.
-     */
-    public static final String BLOG_SYNC_REMOVE_BLOGJAVA_SUCC =
-            "BLOG_SYNC_REMOVE_BLOGJAVA_SUCC";
-    /**
-     * Indicates sync remove an article from BlogJava fail.
-     */
-    public static final String BLOG_SYNC_REMOVE_BLOGJAVA_FAIL =
-            "BLOG_SYNC_REMOVE_BLOGJAVA_FAIL";
+    public static final String BLOG_SYNC_FAIL =
+            "BLOG_SYNC_FAIL";
 
     /**
      * Private default constructor.

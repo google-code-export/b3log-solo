@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 21, 2010
+ * @version 1.0.0.4, Oct 30, 2010
  */
 public abstract class AbstractUpdateArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -73,8 +73,20 @@ public abstract class AbstractUpdateArticleProcessor
         super(eventManager);
     }
 
-    @Override
-    public void action(final Event<JSONObject> event) throws EventException {
+    /**
+     * Updates articles with the specified event.
+     *
+     * @param event the specified event
+     * @return event result, for example,
+     * <pre>
+     * {
+     *     "sc": "BLOG_SYNC_SUCC"
+     * }
+     * </pre>
+     * @throws EventException event exception
+     */
+    protected final JSONObject updateArticle(final Event<JSONObject> event)
+            throws EventException {
         final JSONObject eventData = event.getData();
 
         JSONObject article = null;
@@ -93,6 +105,7 @@ public abstract class AbstractUpdateArticleProcessor
 
         final String externalBloggingSys = getExternalBloggingSys();
         try {
+            final JSONObject ret = new JSONObject();
             final JSONObject blogSyncMgmt =
                     blogSyncManagementRepository.getByExternalBloggingSystem(
                     externalBloggingSys);
@@ -100,7 +113,10 @@ public abstract class AbstractUpdateArticleProcessor
                 LOGGER.log(Level.FINER,
                            "Not found syn management settings for external blogging system[{0}]",
                            externalBloggingSys);
-                return;
+                ret.put(Keys.STATUS_CODE,
+                        BlogSyncStatusCodes.BLOG_SYNC_NO_NEED_TO_SYNC);
+
+                return ret;
             }
 
             LOGGER.log(Level.FINER,
@@ -112,6 +128,10 @@ public abstract class AbstractUpdateArticleProcessor
                 LOGGER.log(Level.INFO,
                            "External blogging system[{0}] need NOT to syn update article",
                            externalBloggingSys);
+                ret.put(Keys.STATUS_CODE,
+                        BlogSyncStatusCodes.BLOG_SYNC_NO_NEED_TO_SYNC);
+
+                return ret;
             } else {
                 final String userName = blogSyncMgmt.getString(
                         BLOG_SYNC_EXTERNAL_BLOGGING_SYS_USER_NAME);
@@ -151,6 +171,11 @@ public abstract class AbstractUpdateArticleProcessor
                         externalArticleSoloArticleRelation.getString(
                         Keys.OBJECT_ID), externalArticleSoloArticleRelation);
             }
+
+
+            ret.put(Keys.STATUS_CODE, BlogSyncStatusCodes.BLOG_SYNC_SUCC);
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Can not handle event[{0}], error msg[{1}]",
                        new String[]{getEventType(), e.getMessage()});

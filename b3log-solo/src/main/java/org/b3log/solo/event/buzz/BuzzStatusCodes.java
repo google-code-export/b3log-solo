@@ -19,7 +19,7 @@ package org.b3log.solo.event.buzz;
  * This enumeration defines all status codes of Google Buzz actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 29, 2010
+ * @version 1.0.0.1, Oct 30, 2010
  */
 public final class BuzzStatusCodes {
 
@@ -33,6 +33,11 @@ public final class BuzzStatusCodes {
      */
     public static final String POST_TO_BUZZ_FAIL =
             "POST_TO_BUZZ_FAIL";
+    /**
+     * Indicates no post to Google Buzz configured.
+     */
+    public static final String NO_NEED_TO_POST_BUZZ =
+            "NO_NEED_TO_POST_BUZZ";
 
     /**
      * Private default constructor.
