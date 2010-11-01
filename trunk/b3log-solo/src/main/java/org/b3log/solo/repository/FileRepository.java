@@ -15,22 +15,13 @@
  */
 package org.b3log.solo.repository;
 
-import com.google.appengine.api.datastore.Blob;
 import org.b3log.latke.repository.Repository;
 
 /**
  * File repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 8, 2010
+ * @version 1.0.0.1, Nov 1, 2010
  */
 public interface FileRepository extends Repository {
-
-    /**
-     * Gets blob by the specified object id.
-     *
-     * @param oId the specified object id
-     * @return blob
-     */
-    Blob getBlob(final String oId);
 }

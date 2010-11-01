@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.Blob;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.File;
@@ -25,7 +24,7 @@ import org.b3log.solo.repository.FileRepository;
  * File Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 8, 2010
+ * @version 1.0.0.1, Nov 1, 2010
  */
 public class FileGAERepository extends AbstractGAERepository
         implements FileRepository {
@@ -39,10 +38,5 @@ public class FileGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return File.FILE;
-    }
-
-    @Override
-    public Blob getBlob(final String oId) {
-        return null;
     }
 }
