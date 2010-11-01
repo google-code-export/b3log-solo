@@ -371,7 +371,7 @@
 
                 var showComment = function (id, oId) {
                     if ($("#commentItemRef" + id).length > 0) {
-                        $("#commentItemRef" + id).shwo();
+                        $("#commentItemRef" + id).show();
                     } else {
                         var refComment = $("#commentItem" + id).clone();
                         refComment.find(".comment-body-ref").remove();
