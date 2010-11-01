@@ -246,7 +246,7 @@
                 'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
                 'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
                 'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
-                );
+            );
 
                 SyntaxHighlighter.config.tagName = "pre";
                 SyntaxHighlighter.config.stripBrs = true;
@@ -303,7 +303,8 @@
                     <#if 0 != externalRelevantArticlesDisplayCount>
                     var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
                 $.ajax({
-                    url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags,
+                    url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags
+                        + "&soloHost=${blogHost}&paginationPageSize=${externalRelevantArticlesDisplayCount}",
                     type: "GET",
                     dataType:"jsonp",
                     jsonp: "callback",
