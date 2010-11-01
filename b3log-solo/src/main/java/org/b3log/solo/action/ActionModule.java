@@ -108,7 +108,7 @@ public final class ActionModule extends AbstractActionModule {
         serve("/file-access.do").with(BlobStoreFileAccessServlet.class);
 
         bind(DataStoreFileAccessServlet.class).in(Scopes.SINGLETON);
-        serve("/datasotre-file-access.do").with(DataStoreFileAccessServlet.class);
+        serve("/datastore-file-access.do").with(DataStoreFileAccessServlet.class);
 
 
         bind(BuzzOAuth.class).in(Scopes.SINGLETON);

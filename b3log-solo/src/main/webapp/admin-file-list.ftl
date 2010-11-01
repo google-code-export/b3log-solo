@@ -1,4 +1,5 @@
-<form id="uploadForm" action="" method="post" enctype="multipart/form-data">
+<form id="uploadForm" action="/datastore-file-access.do" method="POST"
+      enctype="multipart/form-data">
     <table class="form" width="40%" cellpadding="0" cellspacing="9">
         <tbody>
             <tr>
@@ -23,12 +24,7 @@
     linksLength = 1;
 
     var initFile = function () {
-        // uploadFile
-        jsonRpc.fileService.getUploadURL(function (result, error) {
-            $("#uploadForm").attr("action", "http://localhost:8080" + result);
-        });
-
-        // init file list
+            // init file list
         $("#fileList").table({
             resizable: true,
             colModel: [{

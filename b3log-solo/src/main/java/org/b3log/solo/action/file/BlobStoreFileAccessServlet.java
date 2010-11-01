@@ -40,18 +40,20 @@ import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
 /**
- * File upload.
+ * File access via
+ * <a href="http://code.google.com/appengine/docs/java/blobstore/">
+ * Google Blog Store</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Oct 27, 2010
  */
-public final class FileAccessServlet extends HttpServlet {
+public final class BlobStoreFileAccessServlet extends HttpServlet {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(FileAccessServlet.class.getName());
+            Logger.getLogger(BlobStoreFileAccessServlet.class.getName());
     /**
      * Default serial version uid.
      */

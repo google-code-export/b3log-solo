@@ -59,14 +59,14 @@
                             <div class="left pageIcon"></div>
                             <span>&nbsp;${pageMgmtLabel}</span>
                         </li>
+                        <li id="file-listTab" onclick="changeList(this);">
+                            <div class="left fileIcon"></div>
+                            <span>&nbsp;${fileListLabel}</span>
+                        </li>
                         <li id="othersTab" onclick="changeList(this);">
                             <div class="left othersIcon"></div>
                             <span>&nbsp;${othersLabel}</span>
                         </li>
-                        <!--li>
-                            <div class="left fileIcon"></div>
-                            <span>&nbsp;${fileListLabel}</span>
-                        </li-->
                     </ul>
                 </div>
                 <div class="left" id="main">
@@ -82,6 +82,8 @@
                         <div id="article-syncPanel" class="none">
                         </div>
                         <div id="pagePanel" class="none">
+                        </div>
+                        <div id="file-listPanel" class="none">
                         </div>
                         <div id="othersPanel" class="none">
                         </div>
@@ -117,7 +119,7 @@
             
             var changeList = function (it) {
                 var tabs = ['article', 'article-list', 'link-list', 'preference',
-                    'article-sync', 'page', 'others'];
+                    'article-sync', 'page', 'file-list', 'others'];
                 for (var i = 0; i < tabs.length; i++) {
                     if (it.id === tabs[i] + "Tab") {
                         if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
