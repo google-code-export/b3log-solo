@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 30, 2010
+ * @version 1.0.0.5, Nov 1, 2010
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
@@ -220,7 +220,12 @@ public final class PageService extends AbstractGAEJSONRpcService {
             final JSONObject page =
                     requestJSONObject.getJSONObject(Page.PAGE);
             final String pageId = page.getString(Keys.OBJECT_ID);
-            pageRepository.update(pageId, page);
+            final JSONObject oldPage = pageRepository.get(pageId);
+            final JSONObject newPage =
+                    new JSONObject(page, JSONObject.getNames(page));
+            newPage.put(Page.PAGE_COMMENT_COUNT,
+                        oldPage.getInt(Page.PAGE_COMMENT_COUNT));
+            pageRepository.update(pageId, newPage);
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PAGE_SUCC);
