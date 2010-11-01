@@ -67,7 +67,6 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws ServletException, IOException {
-        LOGGER.info("Uploading file....");
         final ServletFileUpload upload = new ServletFileUpload();
         FileItemIterator iterator = null;
 
@@ -117,7 +116,6 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                          final HttpServletResponse response)
             throws ServletException, IOException {
         final String id = request.getParameter(Keys.OBJECT_ID);
-        LOGGER.log(Level.FINER, "Getting a file[oId={0}]....", id);
         try {
             final JSONObject file = fileRepository.get(id);
             final Blob content = (Blob) file.get(File.FILE_CONTENT);
