@@ -304,7 +304,7 @@
                     var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
                 $.ajax({
                     url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags
-                        + "&soloHost=${blogHost}&paginationPageSize=${externalRelevantArticlesDisplayCount}",
+                        + "&blogHost=${blogHost}&paginationPageSize=${externalRelevantArticlesDisplayCount}",
                     type: "GET",
                     dataType:"jsonp",
                     jsonp: "callback",
