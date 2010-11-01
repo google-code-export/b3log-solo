@@ -64,6 +64,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         final ServletFileUpload upload = new ServletFileUpload();
         FileItemIterator iterator = null;
 
@@ -87,8 +88,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                     file.put(File.FILE_DOWNLOAD_COUNT, 0);
                     final Date createDate = new Date();
                     file.put(File.FILE_UPLOAD_DATE, createDate);
-                    final String fileName = new String(item.getName().getBytes(
-                            "ISO-8859-1"), "UTF-8");
+                    final String fileName = item.getName();
                     file.put(File.FILE_NAME, fileName);
                     final long fileSize = contentBytes.length;
                     file.put(File.FILE_SIZE, fileSize);
@@ -99,6 +99,8 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                     fileRepository.add(file);
                 }
             }
+
+            response.sendRedirect("/admin-index.do");
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ServletException("File upload error: " + e.getMessage());
@@ -120,8 +122,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
             final Blob content = (Blob) file.get(File.FILE_CONTENT);
             final String name = file.getString(File.FILE_NAME);
             response.addHeader("Content-Disposition",
-                               "attachment; filename=" + new String(name.
-                    getBytes("UTF-8"), "ISO-8859-1"));
+                               "attachment; filename=" + name);
             response.setContentType(file.getString(File.FILE_CONTENT_TYPE));
             response.getOutputStream().write(content.getBytes());
             response.getOutputStream().close();
