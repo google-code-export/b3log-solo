@@ -340,6 +340,7 @@
 
     var getPageComment = function () {
         $("#loadMsg").text("${loadingLabel}");
+        $("#pageComments").html("");
         jsonRpc.commentService.getCommentsOfPage(function (result, error) {
             switch (result.sc) {
                 case "GET_COMMENTS_SUCC":
