@@ -11,7 +11,7 @@
     ver ${version}
 </div>
 <div class="right goTop">
-    <span onclick="goTop();">Top</span>
+    <span onclick="goTop();">${goTopLabel}</span>
 </div>
 <script type="text/javascript">
     var goTop = function () {
