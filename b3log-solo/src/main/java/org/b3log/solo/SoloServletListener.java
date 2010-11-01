@@ -444,59 +444,59 @@ public final class SoloServletListener extends AbstractServletListener {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.1, Sep 8, 2010
+     * @version 1.0.0.2, Nov 1, 2010
      */
-    private static final class DefaultPreference {
+    public static final class DefaultPreference {
 
         /**
          * Default recent article display count.
          */
-        private static final int DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT = 10;
+        public static final int DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT = 10;
         /**
          * Default recent comment display count.
          */
-        private static final int DEFAULT_RECENT_COMMENT_DISPLAY_COUNT = 10;
+        public static final int DEFAULT_RECENT_COMMENT_DISPLAY_COUNT = 10;
         /**
          * Default most used tag display count.
          */
-        private static final int DEFAULT_MOST_USED_TAG_DISPLAY_COUNT = 20;
+        public static final int DEFAULT_MOST_USED_TAG_DISPLAY_COUNT = 20;
         /**
          * Default article list display count.
          */
-        private static final int DEFAULT_ARTICLE_LIST_DISPLAY_COUNT = 20;
+        public static final int DEFAULT_ARTICLE_LIST_DISPLAY_COUNT = 20;
         /**
          * Default article list pagination window size.
          */
-        private static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE =
+        public static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE =
                 15;
         /**
          * Default most comment article display count.
          */
-        private static final int DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT = 5;
+        public static final int DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT = 5;
         /**
          * Default blog title.
          */
-        private static final String DEFAULT_BLOG_TITLE = "Solo 示例";
+        public static final String DEFAULT_BLOG_TITLE = "Solo 示例";
         /**
          * Default blog subtitle.
          */
-        private static final String DEFAULT_BLOG_SUBTITLE = "GAE 上的个人博客";
+        public static final String DEFAULT_BLOG_SUBTITLE = "GAE 上的个人博客";
         /**
          * Default skin directory name.
          */
-        private static final String DEFAULT_SKIN_DIR_NAME = "classic";
+        public static final String DEFAULT_SKIN_DIR_NAME = "classic";
         /**
          * Default administrator mail.
          */
-        private static final String DEFAULT_ADMIN_GMAIL = "b3log.solo@gmail.com";
+        public static final String DEFAULT_ADMIN_GMAIL = "b3log.solo@gmail.com";
         /**
          * Default blog host.
          */
-        private static final String DEFAULT_BLOG_HOST = "localhost:8080";
+        public static final String DEFAULT_BLOG_HOST = "localhost:8080";
         /**
          * Default language.
          */
-        private static final String DEFAULT_LANGUAGE = "zh_CN";
+        public static final String DEFAULT_LANGUAGE = "zh_CN";
 
         /**
          * Private default constructor.

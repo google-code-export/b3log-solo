@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending articles to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 19, 2010
+ * @version 1.0.0.4, Nov 1, 2010
  */
 public final class ArticleSender
         extends AbstractEventListener<JSONObject> {
@@ -92,14 +93,25 @@ public final class ArticleSender
                                 data,
                                 ArticleSender.class.getName()});
         try {
+            final JSONObject article =
+                    data.getJSONObject(Article.ARTICLE);
             final JSONObject preference =
                     SoloServletListener.getUserPreference();
             final String blogHost = preference.getString(Preference.BLOG_HOST);
+            if (SoloServletListener.DefaultPreference.DEFAULT_BLOG_HOST.equals(
+                    blogHost)) {
+                LOGGER.log(Level.INFO,
+                           "Blog Solo runs on local server, so should not send "
+                           + "this article[oId={0}, title={1}] to Rhythm",
+                           new Object[]{article.getString(Keys.OBJECT_ID),
+                                        article.getString(Article.ARTICLE_TITLE)});
+                return;
+            }
+            
             final HTTPRequest httpRequest =
                     new HTTPRequest(ADD_ARTICLE_URL, HTTPMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
-            requestJSONObject.put(Article.ARTICLE,
-                                  data.getJSONObject(Article.ARTICLE));
+            requestJSONObject.put(Article.ARTICLE, article);
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
             httpRequest.setPayload(
                     requestJSONObject.toString().getBytes("UTF-8"));

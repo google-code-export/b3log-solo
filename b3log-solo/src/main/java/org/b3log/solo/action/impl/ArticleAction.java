@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Oct 30, 2010
+ * @version 1.0.1.0, Nov 1, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -162,6 +162,9 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                     preference.getInt(
                     Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+
+            ret.put(Preference.BLOG_HOST,
+                    preference.getString(Preference.BLOG_HOST));
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
