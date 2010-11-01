@@ -99,7 +99,7 @@
                                     <ul class="marginLeft12">
                                         <#list relevantArticles as relevantArticle>
                                         <li>
-                                            <a href="/article-detail.do?oId=${relevantArticle.oId}">
+                                            <a href="${relevantArticle.permalink}">
                                                 ${relevantArticle.articleTitle}
                                             </a>
                                         </li>
