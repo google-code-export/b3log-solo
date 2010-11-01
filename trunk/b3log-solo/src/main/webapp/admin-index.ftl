@@ -15,7 +15,7 @@
         ${htmlHead}
     </head>
     <body>
-        <div id="loadMsg"></div>
+        <div id="loadMsg">${loadingLabel}</div>
         <div id="tipMsg"></div>
         <div id="adminMain">
             <div id="top">
@@ -207,7 +207,6 @@
                 } else {
                     $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
                 }
-
                 $("#articlePanel").load("admin-article.do",function () {
                     $("#loadMsg").text("");
                 });
