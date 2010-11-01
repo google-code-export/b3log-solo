@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Oct 30, 2010
+ * @version 1.0.2.1, Nov 1, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -142,7 +142,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * Comment mail HTML body.
      */
     private static final String COMMENT_MAIL_HTML_BODY =
-            "Article[<a href=\""
+            "{articleOrPage}[<a href=\""
             + "{articleOrPageURL}\">" + "{title}</a>]"
             + " received a new comment[<a href=\"{commentSharpURL}\">"
             + "{commentContent}</a>]";
@@ -660,9 +660,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         if (isArticle) {
             articleOrPageURL = "http://" + blogHost + articleOrPage.getString(
                     Article.ARTICLE_PERMALINK);
+            COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Article");
         } else {
             articleOrPageURL = "http://" + blogHost + "/page.do?oId="
                                + articleOrPage.getString(Keys.OBJECT_ID);
+             COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
         }
         final String mailBody =
                 COMMENT_MAIL_HTML_BODY.replace("{articleOrPageURL}", articleOrPageURL).
