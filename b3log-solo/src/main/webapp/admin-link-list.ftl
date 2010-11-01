@@ -219,7 +219,8 @@
                     for (var i = 0; i < links.length; i++) {
                         linkData[i] = {};
                         linkData[i].linkTitle = links[i].linkTitle;
-                        linkData[i].linkAddress = links[i].linkAddress;
+                        linkData[i].linkAddress = "<a target='_blank' class='noUnderline' href='" + links[i].linkAddress + "'>"
+                        + links[i].linkAddress + "</a>";
                         linkData[i].update = "<div class='updateIcon'></div>";
                         linkData[i].deleted = "<div class='deleteIcon'></div>";
                         linkData[i].id = links[i].oId;
