@@ -19,7 +19,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Oct 29, 2010
+ * @version 1.0.1.3, Nov 1, 2010
  */
 public enum StatusCodes {
 
@@ -139,4 +139,20 @@ public enum StatusCodes {
      * Indicates remove unused tags fails.
      */
     REMOVE_UNUSED_TAGS_FAIL_,
+    /**
+     * Indicates get files successfully.
+     */
+    GET_FILES_SUCC,
+    /**
+     * Indicates upload a file successfully.
+     */
+    UPLOAD_FILES_SUCC,
+    /**
+     * Indicates remove a file successfully.
+     */
+    REMOVE_FILE_SUCC,
+    /**
+     * Indicates update a file successfully.
+     */
+    UPDATE_FILE_SUCC,
 }

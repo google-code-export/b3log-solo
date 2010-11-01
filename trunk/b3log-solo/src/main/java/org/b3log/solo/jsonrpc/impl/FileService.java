@@ -17,6 +17,7 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.File;
@@ -86,8 +88,7 @@ public final class FileService extends AbstractGAEJSONRpcService {
      *         "fileName": "",
      *         "fileSize": long,
      *         "fileDownloadCount": int,
-     *         "fileUploadDate": java.util.Date,
-     *         "fileDownloadURL": ""
+     *         "fileUploadDate": java.util.Date
      *     }, ....]
      * }
      * </pre>
@@ -109,7 +110,8 @@ public final class FileService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+            final Map<String, SortDirection> sorts =
+                    new HashMap<String, SortDirection>();
             sorts.put(File.FILE_UPLOAD_DATE, SortDirection.DESCENDING);
             final JSONObject result =
                     fileRepository.get(currentPageNum, pageSize, sorts);
@@ -125,10 +127,58 @@ public final class FileService extends AbstractGAEJSONRpcService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final JSONArray files = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < files.length(); i++) { // Remove unused properties
+                final JSONObject file = files.getJSONObject(i);
+                file.remove(File.FILE_CONTENT_TYPE);
+                file.remove(File.FILE_CONTENT);
+            }
             ret.put(File.FILES, files);
 
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLES_SUCC);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_FILES_SUCC);
         } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Removes a file by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "REMOVE_FILE_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject removeFile(final JSONObject requestJSONObject,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
+            fileRepository.remove(linkId);
+            transaction.commit();
+            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_FILE_SUCC);
+        } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);
         }
