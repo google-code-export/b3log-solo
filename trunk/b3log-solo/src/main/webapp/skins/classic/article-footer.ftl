@@ -9,7 +9,15 @@ Powered by
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
 ver ${version}
 <script type="text/javascript">
+    var goingTop = false;
+    var goingBottom = false;
+
     var goTop = function (acceleration, time) {
+        if (goingBottom) {
+            return;
+        }
+        
+        goingTop = true;
         acceleration = acceleration || 0.1;
         time = time || 16;
 
@@ -41,10 +49,17 @@ ver ${version}
         if(x > 0 || y > 0) {
             var invokeFunction = "goTop(" + acceleration + ", " + time + ")";
             window.setTimeout(invokeFunction, time);
+        } else {
+            goingTop = false;
         }
     }
     
     var goBottom = function (acceleration, time) {
+        if (goingTop) {
+            return;
+        }
+        
+        goingBottom = true;
         acceleration = acceleration || 0.1;
         acceleration = acceleration > 1 ? 1 : acceleration;
         time = time || 16;
@@ -87,6 +102,8 @@ ver ${version}
         if (clientHeight + y < scrollHeight) {
             var invokeFunction = "goBottom(" + acceleration + ", " + time + ")";
             window.setTimeout(invokeFunction, time);
+        } else {
+            goingBottom = false;
         }
     }
     
