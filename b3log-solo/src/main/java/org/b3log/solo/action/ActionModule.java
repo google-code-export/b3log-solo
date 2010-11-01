@@ -26,7 +26,8 @@ import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.action.impl.AdminIndexAction;
 import org.b3log.solo.action.feed.BlogArticlesFeedServlet;
 import org.b3log.solo.action.feed.TagArticlesFeedServlet;
-import org.b3log.solo.action.file.FileAccessServlet;
+import org.b3log.solo.action.file.BlobStoreFileAccessServlet;
+import org.b3log.solo.action.file.DataStoreFileAccessServlet;
 import org.b3log.solo.action.gae.LiveServlet;
 import org.b3log.solo.action.google.BuzzOAuth;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
@@ -103,8 +104,11 @@ public final class ActionModule extends AbstractActionModule {
 //        bind(ErrorAction.class).in(Scopes.SINGLETON);
 //        serve("/error.do").with(ErrorAction.class);
 
-        bind(FileAccessServlet.class).in(Scopes.SINGLETON);
-        serve("/file-access.do").with(FileAccessServlet.class);
+        bind(BlobStoreFileAccessServlet.class).in(Scopes.SINGLETON);
+        serve("/file-access.do").with(BlobStoreFileAccessServlet.class);
+
+        bind(DataStoreFileAccessServlet.class).in(Scopes.SINGLETON);
+        serve("/datasotre-file-access.do").with(DataStoreFileAccessServlet.class);
 
 
         bind(BuzzOAuth.class).in(Scopes.SINGLETON);

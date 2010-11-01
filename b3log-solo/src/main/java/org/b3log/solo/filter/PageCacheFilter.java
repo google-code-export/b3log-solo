@@ -35,7 +35,7 @@ import org.b3log.solo.util.PageCacheKeys;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 27, 2010
+ * @version 1.0.0.8, Nov 1, 2010
  */
 public final class PageCacheFilter implements Filter {
 
@@ -80,7 +80,8 @@ public final class PageCacheFilter implements Filter {
             || requestURI.equals("/blog-articles-feed.do")
             || requestURI.equals("/file-access.do")
             || requestURI.contains("/admin-")
-            || requestURI.contains("/_ah/upload/")) {
+            || requestURI.contains("/_ah/upload/")
+            || requestURI.contains("/datastore-file-access.do")) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 
