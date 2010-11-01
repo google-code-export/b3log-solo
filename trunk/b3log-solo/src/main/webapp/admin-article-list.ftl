@@ -315,6 +315,7 @@
 
     var getArticleListComment = function () {
         $("#loadMsg").text("${loadingLabel}");
+        $("#articleListComments").html("");
         jsonRpc.commentService.getCommentsOfArticle(function (result, error) {
             switch (result.sc) {
                 case "GET_COMMENTS_SUCC":
