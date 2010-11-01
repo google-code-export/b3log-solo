@@ -465,7 +465,7 @@
                                 var article = articles[i];
                                 var title = article.articleTitle;
                                 var articleLiHtml = "<li>"
-                                    + "<a href='http://" + article.articlePermalink +"'>"
+                                    + "<a target='_blank' href='" + article.articlePermalink + "'>"
                                     +  title + "</a></li>"
                                 listHtml += articleLiHtml
                             }
