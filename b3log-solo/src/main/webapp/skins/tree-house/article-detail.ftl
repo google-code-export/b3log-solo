@@ -99,7 +99,7 @@
                                     <ul class="marginLeft12">
                                         <#list relevantArticles as relevantArticle>
                                         <li>
-                                            <a href="${relevantArticle.permalink}">
+                                            <a href="${relevantArticle.articlePermalink}">
                                                 ${relevantArticle.articleTitle}
                                             </a>
                                         </li>
