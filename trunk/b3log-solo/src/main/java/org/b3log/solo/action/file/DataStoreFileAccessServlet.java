@@ -20,7 +20,6 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -32,9 +31,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.util.Ids;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.File;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
 import org.json.JSONObject;
 
@@ -78,7 +75,8 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                 final InputStream stream = item.openStream();
 
                 if (!item.isFormField()) {
-                    final Blob blob = new Blob(IOUtils.toByteArray(stream));
+                    final byte[] contentBytes = IOUtils.toByteArray(stream);
+                    final Blob blob = new Blob(contentBytes);
                     final JSONObject file = new JSONObject();
                     final String id = Ids.genTimeMillisId();
                     file.put(Keys.OBJECT_ID, id);
@@ -91,14 +89,9 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                     file.put(File.FILE_UPLOAD_DATE, createDate);
                     final String fileName = item.getName();
                     file.put(File.FILE_NAME, fileName);
-                    final long fileSize = stream.available();
+                    final long fileSize = contentBytes.length;
                     file.put(File.FILE_SIZE, fileSize);
-                    final JSONObject preference =
-                            SoloServletListener.getUserPreference();
-                    final String host = "http://" + preference.getString(
-                            Preference.BLOG_HOST);
-                    final String downloadURL = host
-                                               + "/datastore-file-access.do?oId="
+                    final String downloadURL = "/datastore-file-access.do?oId="
                                                + id;
                     file.put(File.FILE_DOWNLOAD_URL, downloadURL);
 
