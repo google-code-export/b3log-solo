@@ -230,8 +230,6 @@ ver ${version}
                 }
             });
         }
-        $("body").append("<div class='goTopIcon' onclick='goTop();'></div>"
-            + "<div class='goBottomIcon' onclick='goBottom();'></div>");
         jsonRpc.statisticService.incBlogViewCount(function (result, error) {});
     }
     initIndex();
