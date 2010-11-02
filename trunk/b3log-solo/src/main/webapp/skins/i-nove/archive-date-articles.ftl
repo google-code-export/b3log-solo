@@ -20,29 +20,32 @@
     </head>
     <body>
         <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
+        <div class="wrapper">
+            <div class="content">
                 <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
+                <div class="body">
+                    <div class="left main">
+                        <div class="kind-title">
+                            ${archive1Label}
+                        </div>
+                        <div class="kind-panel">
+                            <#if "en" == localeString?substring(0, 2)>
+                            ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDateArticleCount})
+                            <#else>
+                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
+                            </#if>
+                        </div>
+                        <#include "common-articles.ftl">
+                    </div>
+                    <div class="right">
+                        <#include "article-side.ftl">
+                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="right main">
-                    <h2>${archive1Label}
-                        <#if "en" == localeString?substring(0, 2)>
-                        ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDateArticleCount})
-                        <#else>
-                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
-                        </#if>
-                    </h2>
-                    <#include "common-articles.ftl">
+                <div class="footer">
+                    <#include "article-footer.ftl">
                 </div>
-                <div class="clear"></div>
             </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
-            </div>
-        </div>
+        </div>>
     </body>
 </html>

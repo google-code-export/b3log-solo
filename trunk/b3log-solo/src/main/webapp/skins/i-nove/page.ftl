@@ -22,118 +22,118 @@
     </head>
     <body>
         <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
+        <div class="wrapper">
+            <div class="content">
                 <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
-                </div>
-                <div class="right main">
-                    <div class="article">
-                        <div class="article-body">
-                            ${page.pageContent}
+                <div class="body">
+                    <div class="left main">
+                        <div class="article">
+                            <div class="article-body">
+                                ${page.pageContent}
+                            </div>
                         </div>
-                    </div>
-                    <div class="comments" id="comments" name="comments">
-                        <#list pageComments as comment>
-                        <div id="commentItem${comment.oId}">
-                            <div class="comment-title">
-                                <#if "http://" == comment.commentURL>
-                                <a name="${comment.oId}" class="left">${comment.commentName}</a>
-                                <#else>
-                                <a name="${comment.oId}" href="${comment.commentURL}"
-                                   target="_blank" class="left">${comment.commentName}</a>
-                                </#if>
-                                <#if comment.isReply>
-                                &nbsp;@&nbsp;<a
-                                    href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
-                                    onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
-                                    onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
-                                </#if>
-                                <div class="right">
-                                    ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                    <a class="noUnderline"
-                                       href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                        <div class="comments" id="comments" name="comments">
+                            <#list pageComments as comment>
+                            <div id="commentItem${comment.oId}">
+                                <div class="comment-title">
+                                    <#if "http://" == comment.commentURL>
+                                    <a name="${comment.oId}" class="left">${comment.commentName}</a>
+                                    <#else>
+                                    <a name="${comment.oId}" href="${comment.commentURL}"
+                                       target="_blank" class="left">${comment.commentName}</a>
+                                    </#if>
+                                    <#if comment.isReply>
+                                    &nbsp;@&nbsp;<a
+                                        href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
+                                        onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
+                                        onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                    </#if>
+                                    <div class="right">
+                                        ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
+                                        <a class="noUnderline"
+                                           href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                                    </div>
+                                    <div class="clear"></div>
                                 </div>
-                                <div class="clear"></div>
+                                <div class="comment-body">
+                                    <div class="left comment-picture">
+                                        <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                                    </div>
+                                    <div>
+                                        ${comment.commentContent}
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                            </#list>
+                            <div class="comment-title">
+                                ${postCommentsLabel}
                             </div>
                             <div class="comment-body">
-                                <div class="left comment-picture">
-                                    <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
-                                </div>
-                                <div>
-                                    ${comment.commentContent}
-                                </div>
-                                <div class="clear"></div>
+                                <table class="form">
+                                    <tbody>
+                                        <tr>
+                                            <th>
+                                                ${commentName1Label}
+                                            </th>
+                                            <td colspan="2">
+                                                <input class="normalInput" id="commentName"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                ${commentEmail1Label}
+                                            </th>
+                                            <td colspan="2">
+                                                <input class="normalInput" id="commentEmail"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                ${commentURL1Label}
+                                            </th>
+                                            <td colspan="2">
+                                                <input value="http://" id="commentURL"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th valign="top">
+                                                ${commentContent1Label}
+                                            </th>
+                                            <td colspan="2">
+                                                <textarea rows="10" cols="96" id="comment"></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                                ${captcha1Label}
+                                            </th>
+                                            <td>
+                                                <input class="normalInput" id="commentValidate"/>
+                                                <img id="captcha" alt="validate" src="/captcha.do"></img>
+                                            </td>
+                                            <th>
+                                                <span class="error-msg" id="commentErrorTip"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" align="right">
+                                                <button onclick="submitComment();">${submmitCommentLabel}</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        </#list>
-                        <div class="comment-title">
-                            ${postCommentsLabel}
-                        </div>
-                        <div class="comment-body">
-                            <table class="form">
-                                <tbody>
-                                    <tr>
-                                        <th>
-                                            ${commentName1Label}
-                                        </th>
-                                        <td colspan="2">
-                                            <input class="normalInput" id="commentName"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            ${commentEmail1Label}
-                                        </th>
-                                        <td colspan="2">
-                                            <input class="normalInput" id="commentEmail"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            ${commentURL1Label}
-                                        </th>
-                                        <td colspan="2">
-                                            <input value="http://" id="commentURL"/>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th valign="top">
-                                            ${commentContent1Label}
-                                        </th>
-                                        <td colspan="2">
-                                            <textarea rows="10" cols="96" id="comment"></textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            ${captcha1Label}
-                                        </th>
-                                        <td>
-                                            <input class="normalInput" id="commentValidate"/>
-                                            <img id="captcha" alt="validate" src="/captcha.do"></img>
-                                        </td>
-                                        <th>
-                                            <span class="error-msg" id="commentErrorTip"/>
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" align="right">
-                                            <button onclick="submitComment();">${submmitCommentLabel}</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
+                    <div class="right">
+                        <#include "article-side.ftl">
+                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="clear"></div>
-            </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
+                <div class="footer">
+                    <#include "article-footer.ftl">
+                </div>
             </div>
         </div>
         <script type="text/javascript">

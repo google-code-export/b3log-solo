@@ -1,6 +1,6 @@
 /* 
     Document   : default-index
-    Version    : 1.0.0.0, Aug 13, 2010
+    Version    : 1.0.0.3, Aug 13, 2010
     Author     : Liyuan Li
     Description:
         user blog for i-nove style.
@@ -68,11 +68,11 @@ h5 {
 }
 
 .side-navi {
-    background:url("img/sidebar_shadow.gif") repeat-x scroll 50% 0 #F7F7F7;
+    background:url("images/sidebar_shadow.gif") repeat-x scroll 50% 0 #F7F7F7;
     font-size:95%;
     line-height:145%;
     padding-top:8px;
-    width:300px
+    width:300px;
 }
 
 .main {
@@ -141,6 +141,10 @@ h5 {
 .article-title a {
     color:#4C4C4C;
     text-decoration:none;
+}
+
+.article-title a:hover {
+    color: #2970A6;
 }
 
 .article-abstract {
@@ -255,7 +259,7 @@ h5 {
     white-space: nowrap;
     overflow: hidden;
     background:url("images/icons.gif") no-repeat scroll 0 -624px transparent;
-    margin-top:5px;
+    margin:5px 0 0 0;
     padding-left:22px;
 }
 
@@ -313,21 +317,48 @@ h5 {
 }
 
 /* error */
+.error-body {
+    background:url("images/main_shadow.gif") repeat-x scroll center top #FFFFFF;
+    height: 400px;
+    padding: 12px;
+}
+
 .error-title {
-    background-color: #E5ECF9;
-    padding:6px 12px;
+    line-height: 72px;
 }
 
 .error-panel {
-    border-bottom: 5px solid #E5ECF9;
-    padding: 24px;
+    margin:0 auto;
+    width:201px;
 }
 
-/* icon */
-.commentIcon, .browserIcon {width:16px;height:16px;background-image:url("../../images/icon.png");cursor:pointer;margin-right: 3px;}
-.commentIcon {
-    background-position: -32px -16px;
+.error-panel a {
+    background:none repeat scroll 0 0 #9CD941;
+    border-color:#D0F29D #398A38 #398A38 #D0F29D;
+    border-style:solid;
+    border-width:1px;
+    color:#000000;
+    font-size:14px;
+    font-weight:bold;
+    margin-right:3px;
+    padding:10px 15px;
+    text-decoration:none;
 }
-.browserIcon {
-    background-position: -128px -16px;
+
+.error-panel a:hover {
+    background-color: #ADEb51;
+}
+
+/* kind */
+.kind-panel {
+    background:url("images/box.gif") no-repeat scroll 100% 100% #F4F5F7;
+    margin-bottom:10px;
+    padding:8px 12px;
+}
+
+.kind-title {
+    background:url("images/box.gif") no-repeat scroll 0 0 #E3E4E6;
+    border-bottom:1px solid #CCCCCC;
+    padding:6px 12px;
+    font-weight: bold;
 }
