@@ -136,6 +136,8 @@
                 <#include "article-footer.ftl">
             </div>
         </div>
+        <div class='goTopIcon' onclick='goTop();'></div>
+        <div class='goBottomIcon' onclick='goBottom();'></div>
         <script type="text/javascript">
             var currentCommentId = "";
 

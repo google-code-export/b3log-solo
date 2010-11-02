@@ -496,6 +496,8 @@
                 </ul>
             </div>
         </div>
+        <div class='goTopIcon' onclick='goTop();'></div>
+        <div class='goBottomIcon' onclick='goBottom();'></div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             var loadTool = function () {

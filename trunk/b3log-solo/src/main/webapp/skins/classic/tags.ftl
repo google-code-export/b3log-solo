@@ -38,6 +38,8 @@
                 <#include "article-footer.ftl">
             </div>
         </div>
+        <div class='goTopIcon' onclick='goTop();'></div>
+        <div class='goBottomIcon' onclick='goBottom();'></div>
         <script type="text/javascript">
             var randomColor = function () {
                 var arrHex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
