@@ -20,22 +20,22 @@
     </head>
     <body>
         <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
+        <div class="wrapper">
+            <div class="content">
                 <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
-                </div>
-                <div class="right main">
-                    <div id="tagsPanel">
+                <div class="body">
+                    <div class="left main">
+                        <div id="tagsPanel">
+                        </div>
                     </div>
+                    <div class="right">
+                        <#include "article-side.ftl">
+                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="clear"></div>
-            </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
+                <div class="footer">
+                    <#include "article-footer.ftl">
+                </div>
             </div>
         </div>
         <script type="text/javascript">

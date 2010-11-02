@@ -20,26 +20,29 @@
     </head>
     <body>
         <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
+        <div class="wrapper">
+            <div class="content">
                 <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
+                <div class="body">
+                    <div class="left main">
+                        <div class="kind-title">
+                            ${tag1Label}
+                        </div>
+                        <div class="kind-panel">
+                            <span id="tagArticlesTag">
+                                ${tag.tagTitle}
+                            </span>(${tag.tagReferenceCount})
+                        </div>
+                        <#include "common-articles.ftl">
+                    </div>
+                    <div class="right">
+                        <#include "article-side.ftl">
+                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="right main">
-                    <h2>${tag1Label}
-                        <span id="tagArticlesTag">
-                            ${tag.tagTitle}
-                        </span>(${tag.tagReferenceCount})
-                    </h2>
-                    <#include "common-articles.ftl">
+                <div class="footer">
+                    <#include "article-footer.ftl">
                 </div>
-                <div class="clear"></div>
-            </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
             </div>
         </div>
     </body>
