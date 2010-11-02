@@ -32,6 +32,13 @@ h5 {
     font-size: 12px;
 }
 
+.margin5R {
+    margin-right: 5px;
+}
+
+.margin5 {
+    margin: 5px;
+}
 /* framework */
 .wrapper {
     background:url("images/light.gif") no-repeat scroll 50% 0 transparent;
@@ -116,33 +123,55 @@ h5 {
     line-height:18px;
     margin:5px 17px 0 0;
     padding-left:18px;
+    width: 20px;
 }
 
 /* article list */
 .article, .comments {
-    padding: 12px 0 24px 12px;
+    padding-bottom: 15px;
 }
 
 .article-title {
-    background-color:#E3E9FF;
-    border-top:1px solid #3366CC;
-    margin-left:91px;
-    padding:3px 0 3px 12px;
+    border-bottom:1px solid #CCCCCC;
+    font-size:16px;
+    margin-top:10px;
+    padding:0 5px 3px;
 }
 
-.article-date {
-    -moz-border-radius:5px;
-    -webkit-border-radius:5px;
-    background-color:#E3E9FF;
-    border:1px solid #BBCCFF;
-    margin:0 12px 12px 0;
-    padding:6px;
-    width:65px;
-    float: left;
+.article-title a {
+    color:#4C4C4C;
+    text-decoration:none;
 }
 
 .article-abstract {
     word-wrap:break-word;
+    margin: 5px 0 5px 5px;
+    line-height:145%;
+}
+
+.tagsIcon, .articles-commentIcon, .dateIcon, .article-browserIcon {
+    background:url("images/icons.gif") no-repeat scroll 0 -400px transparent;
+    height:16px;
+    margin-right: 6px;
+    width:16px;
+    float: left;
+}
+
+.tagsIcon {
+    background-position: 0 -400px;
+    margin-left: 15px;
+}
+
+.dateIcon {
+    background-position:0 -48px;
+}
+
+.articles-commentIcon {
+    background-position:0 -96px;
+}
+
+.article-browserIcon {
+    background-position: 0 -480px;
 }
 
 /* article detail or common-articles */
@@ -151,11 +180,7 @@ h5 {
 }
 
 .article-footer {
-    margin-right: 12px;
-}
-
-.article-footer a, .article-details-footer a{
-    text-decoration: none;
+    margin: 0 5px 10px 5px ;
 }
 
 .article-details-footer {
@@ -261,7 +286,6 @@ h5 {
 .pagination a, .pagination a:visited {
     color: #4272DB;
     padding: 0 3px;
-    text-decoration: none;
 }
 
 .pagination a.selected {

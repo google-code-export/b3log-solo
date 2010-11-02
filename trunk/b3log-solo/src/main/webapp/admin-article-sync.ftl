@@ -237,6 +237,8 @@
                 } else {
                     $("#tipMsg").html("${setFailLabel}");
                 }
+                $("#archiveDatePanel").hide();
+                $("#articlesPanel").hide();
                 $("#loadMsg").text("");
             }, requestJSONObject);
         }
@@ -306,6 +308,7 @@
                 jsonRpc.blogSyncService.getExternalArticlesByArchiveDate(requestJSONObject);
             var articles = result.blogSyncExternalArticles;
             if (articles.length === $("#articleSyncListTableMain tr").length && articles.length !== 0) {
+                $("#tipMsg").text("${getSuccLabel}");
                 break;
             }
             if (articles.length > 0) {
@@ -335,13 +338,12 @@
 
                 articleSyncDataTemp = articleData;
                 $("#articlesCount").html("${sumLabel} " + articleData.length + " ${countLabel}");
-                $("#tipMsg").text("${getSuccLabel}");
             } else {
                 $("#tipMsg").text("${getFailLabel}");
-                $("#loadMsg").text("");
                 break;
             }
         }
+        $("#loadMsg").html("");
     }
 
     var sync = function () {
