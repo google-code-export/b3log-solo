@@ -35,9 +35,7 @@
         <em class="article-tags">
             <#list article.articleTags as articleTag>
             <a href="/tag-articles.do?oId=${articleTag.oId}">
-                ${articleTag.tagTitle}
-            </a>
-            <#if articleTag_has_next>,</#if>
+                ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
             </#list>
         </em>
         <div class="article-abstract">
