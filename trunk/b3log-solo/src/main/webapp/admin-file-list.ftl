@@ -184,7 +184,7 @@
             default:
                 break;
         }
-        $("#tipMsg").text("");
+        $("#loadMsg").text("");
     }
 
     getFileList(1);
