@@ -4,7 +4,7 @@
         <tbody>
             <tr>
                 <td>
-                    <input type="file" name="myFile" size="50">
+                    <input type="file" name="myFile" size="45">
                 </td>
                 <td>
                     <input type="submit" value="Submit" class="button" style="height: 28px;">
@@ -18,13 +18,11 @@
 <div id="filePagination" class="right margin12">
 </div>
 <script type="text/javascript">
-    // variable
     var fileListCurrentPage = 1,
     fileListPageCount = 1,
     filesLength = 1;
 
     var initFile = function () {
-        // init file list
         $("#fileList").table({
             resizable: true,
             colModel: [{
