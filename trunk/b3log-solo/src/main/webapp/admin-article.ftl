@@ -118,15 +118,18 @@
                         if (events) {
                             var msg = "${addSuccLabel}";
                             if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                msg += ", ${syncCSDNBlogFailLabel}";
+                                msg += ", ${syncCSDNBlogFailLabel}: "
+                                    + events.blogSyncCSDNBlog.msg;
                             }
 
                             if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                msg += ", ${syncCnBlogsFailLabel}";
+                                msg += ", ${syncCnBlogsFailLabel}: "
+                                    + events.blogSyncCnBlogs.msg;
                             }
 
                             if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                msg += ", ${syncBlogJavaFailLabel}";
+                                msg += ", ${syncBlogJavaFailLabel}: "
+                                    + events.blogSyncBlogJava.msg;
                             }
 
                             if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
@@ -168,15 +171,18 @@
                         if (events) {
                             var msg = "${updateSuccLabel}";
                             if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                msg += ", ${syncCSDNBlogFailLabel}";
+                                msg += ", ${syncCSDNBlogFailLabel}: "
+                                    + events.blogSyncCSDNBlog.msg;
                             }
 
                             if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                msg += ", ${syncCnBlogsFailLabel}";
+                                msg += ", ${syncCnBlogsFailLabel}: "
+                                    + events.blogSyncCnBlogs.msg;
                             }
 
                             if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                msg += ", ${syncBlogJavaFailLabel}";
+                                msg += ", ${syncBlogJavaFailLabel}: "
+                                    + events.blogSyncBlogJava.msg;
                             }
                             
                             $("#tipMsg").text(msg);

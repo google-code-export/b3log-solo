@@ -213,15 +213,18 @@
                         if (events) {
                             var msg = "${removeSuccLabel}";
                             if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                msg += ", ${syncCSDNBlogFailLabel}";
+                                msg += ", ${syncCSDNBlogFailLabel}: "
+                                    + events.blogSyncCSDNBlog.msg;
                             }
 
                             if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                msg += ", ${syncCnBlogsFailLabel}";
+                                msg += ", ${syncCnBlogsFailLabel}: "
+                                    + events.blogSyncCnBlogs.msg;
                             }
 
                             if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                msg += ", ${syncBlogJavaFailLabel}";
+                                msg += ", ${syncBlogJavaFailLabel}: "
+                                    + events.blogSyncBlogJava.msg;
                             }
                             getArticleList(1);
                             $("#tipMsg").text(msg);

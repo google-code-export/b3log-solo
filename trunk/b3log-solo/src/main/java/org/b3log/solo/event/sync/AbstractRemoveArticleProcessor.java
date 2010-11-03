@@ -30,6 +30,7 @@ import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
+import org.b3log.solo.sync.SyncException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,9 +82,10 @@ public abstract class AbstractRemoveArticleProcessor
      * }
      * </pre>
      * @throws EventException event exception
+     * @throws SyncException sync exception
      */
     protected final JSONObject removeArticle(final Event<JSONObject> event)
-            throws EventException {
+            throws EventException, SyncException {
         final JSONObject eventData = event.getData();
 
         String articleId = null;
@@ -112,7 +114,7 @@ public abstract class AbstractRemoveArticleProcessor
                            externalBloggingSys);
                 ret.put(Keys.STATUS_CODE,
                         BlogSyncStatusCodes.BLOG_SYNC_NO_NEED_TO_SYNC);
-                
+
                 return ret;
             }
 
@@ -151,6 +153,11 @@ public abstract class AbstractRemoveArticleProcessor
             ret.put(Keys.STATUS_CODE, BlogSyncStatusCodes.BLOG_SYNC_SUCC);
 
             return ret;
+        } catch (final SyncException e) {
+            LOGGER.log(Level.WARNING,
+                       "Can not remove article sync, error msg[{0}]",
+                       e.getMessage());
+            throw e;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Can not handle event[{0}], error msg[{1}]",
                        new String[]{getEventType(), e.getMessage()});
