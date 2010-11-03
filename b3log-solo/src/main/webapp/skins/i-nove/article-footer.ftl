@@ -73,14 +73,13 @@
 
                 for (var i = 0; i < result.recentComments.length; i++) {
                     var comment = result.recentComments[i];
-                    var itemHTML = "<li><a href=" + comment.commentSharpURL + ">"
-                        + comment.commentName + "</a>: <span>"
-                        + comment.commentContent + "</span></li>";
+                    var itemHTML = "<li><img class='left' alt='" + comment.commentName
+                        + "' src='" + comment.commentThumbnailURL + "'/><div class='left'><div><a href=" + comment.commentSharpURL + ">"
+                        + comment.commentName + "</a></div><div><span>"
+                        + comment.commentContent + "</div></div><div class='clear'></div></li>";
                     recentCommentsHTML += itemHTML;
                 }
-
-                recentCommentsHTML += "</ul>";
-                $("#recentComments").after(recentCommentsHTML);
+                $("#recentComments").after(recentCommentsHTML + "</ul>");
             });
         }
         

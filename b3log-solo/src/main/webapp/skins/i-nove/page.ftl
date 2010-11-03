@@ -34,97 +34,91 @@
                         </div>
                         <div class="comments" id="comments" name="comments">
                             <#list pageComments as comment>
-                            <div id="commentItem${comment.oId}">
-                                <div class="comment-title">
+                            <div id="commentItem${comment.oId}" class="comment-body">
+                                <div class="left comment-author">
+                                    <div>
+                                        <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                                    </div>
                                     <#if "http://" == comment.commentURL>
                                     <a name="${comment.oId}" class="left">${comment.commentName}</a>
                                     <#else>
                                     <a name="${comment.oId}" href="${comment.commentURL}"
-                                       target="_blank" class="left">${comment.commentName}</a>
+                                       target="_blank">${comment.commentName}</a>
                                     </#if>
-                                    <#if comment.isReply>
-                                    &nbsp;@&nbsp;<a
-                                        href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
-                                        onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
-                                        onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
-                                    </#if>
-                                    <div class="right">
+                                </div>
+                                <div class="left comment-info">
+                                    <div class="left">
                                         ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
+                                        <#if comment.isReply>
+                                        &nbsp;@&nbsp;<a
+                                            href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
+                                            onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
+                                            onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                        </#if>
+                                    </div>
+                                    <div class="right">
                                         <a class="noUnderline"
                                            href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                                     </div>
-                                    <div class="clear"></div>
-                                </div>
-                                <div class="comment-body">
-                                    <div class="left comment-picture">
-                                        <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                                    <div class="clear">
                                     </div>
-                                    <div>
+                                    <div class="comment-content">
                                         ${comment.commentContent}
                                     </div>
-                                    <div class="clear"></div>
                                 </div>
+                                <div class="clear"></div>
                             </div>
                             </#list>
-                            <div class="comment-title">
-                                ${postCommentsLabel}
-                            </div>
-                            <div class="comment-body">
-                                <table class="form">
-                                    <tbody>
-                                        <tr>
-                                            <th>
-                                                ${commentName1Label}
-                                            </th>
-                                            <td colspan="2">
-                                                <input class="normalInput" id="commentName"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                ${commentEmail1Label}
-                                            </th>
-                                            <td colspan="2">
-                                                <input class="normalInput" id="commentEmail"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                ${commentURL1Label}
-                                            </th>
-                                            <td colspan="2">
-                                                <input value="http://" id="commentURL"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th valign="top">
-                                                ${commentContent1Label}
-                                            </th>
-                                            <td colspan="2">
-                                                <textarea rows="10" cols="96" id="comment"></textarea>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th>
-                                                ${captcha1Label}
-                                            </th>
-                                            <td>
-                                                <input class="normalInput" id="commentValidate"/>
-                                                <img id="captcha" alt="validate" src="/captcha.do"></img>
-                                            </td>
-                                            <th>
-                                                <span class="error-msg" id="commentErrorTip"/>
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" align="right">
-                                                <button onclick="submitComment();">${submmitCommentLabel}</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
+                        <table class="comment-form">
+                            <tbody>
+                                <tr>
+                                    <td width="208px">
+                                        <input class="normalInput" id="commentName"/>
+                                    </td>
+                                    <td colspan="2">
+                                        ${commentName1Label}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input class="normalInput" id="commentEmail"/>
+                                    </td>
+                                    <td colspan="2">
+                                        ${commentEmail1Label}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input value="http://" id="commentURL"/>
+                                    </td>
+                                    <td colspan="2">
+                                        ${commentURL1Label}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <textarea rows="10" cols="96" id="comment"></textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input class="normalInput" id="commentValidate"/>
+                                    </td>
+                                    <td>
+                                        <img id="captcha" alt="validate" src="/captcha.do"></img>
+                                    </td>
+                                    <th align="right">
+                                        <span class="error-msg" id="commentErrorTip"/>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" align="right">
+                                        <button onclick="submitComment();">${submmitCommentLabel}</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="right">
                         <#include "article-side.ftl">
@@ -187,15 +181,16 @@
                 } else {
                     $("#replyForm").remove();
 
-                    var commentFormHTML = "<table class='form comment-reply' id='replyForm'><tbody><tr><th>${commentName1Label}"
-                        + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
-                        + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
-                        + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
-                        + "<th>${commentURL1Label}</th><td colspan='2'><input value='http://' id='commentURLReply'/>"
-                        + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
+                    var commentFormHTML = "<table class='marginTop12 comment-form' id='replyForm'><tbody><tr>"
+                        + "<td width='208px'><input class='normalInput' id='commentNameReply'/>"
+                        + "</td><td colspan='2'>${commentName1Label}</td></tr><tr><td>"
+                        + "<input class='normalInput' id='commentEmailReply'/></td><td colspan='2'>${commentEmail1Label}</td></tr><tr>"
+                        + "<td><input value='http://' id='commentURLReply'/>"
+                        + "</td><td colspan='2'>${commentURL1Label}</td></tr><tr><td colspan='3'>"
                         + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                        + "<th>${captcha1Label}</th><td><input class='normalInput' id='commentValidateReply'/>"
-                        + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
+                        + "<td><input class='normalInput' id='commentValidateReply'/>"
+                        + "</td><td><img id='captchaReply' alt='validate' src='/captcha.do?"
+                        + new Date().getTime() + "'></img></td><th align='right'>"
                         + "<span class='error-msg' id='commentErrorTipReply'/>"
                         + "</th></tr><tr><td colspan='3' align='right'>"
                         + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
@@ -300,10 +295,8 @@
                     var refComment = $("#commentItem" + id).clone();
                     refComment.find(".comment-body-ref").remove();
                     refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
-                    $("#commentItem" + oId + " .comment-title").append(refComment);
-                    $("#commentItemRef" + id + " #replyForm").remove();
-                    $("#commentItemRef" + id + " .comment-title").css("border-top-style", "hidden");
-                    $("#commentItemRef" + id + " .comment-title .right a").remove();
+                    $("#commentItem" + oId + " .comment-info").append(refComment);
+                    $("#commentItemRef" + id + " .comment-info .right").remove();
                 }
             }
 

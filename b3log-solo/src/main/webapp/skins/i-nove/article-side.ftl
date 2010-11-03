@@ -6,7 +6,7 @@
         </div>
     </div>
     <div class="line"></div>
-    <div class="item">
+    <div class="item navi-comments">
         <h4 id="recentComments">${recentCommentsLabel}</h4>
     </div>
     <div class="line"></div>
