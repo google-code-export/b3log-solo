@@ -14,12 +14,12 @@
                     ${article.articleTitle}
                 </a>
                 <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-                <sup class="red" style="font-size: 12px">
+                <sup class="red">
                     ${updatedLabel}
                 </sup>
                 </#if>
                 <#if article.articlePutTop>
-                <sup class="red" style="font-size: 12px">
+                <sup class="red">
                     ${topArticleLabel}
                 </sup>
                 </#if>
