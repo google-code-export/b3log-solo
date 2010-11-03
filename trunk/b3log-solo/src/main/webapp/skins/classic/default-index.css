@@ -74,6 +74,10 @@ h5 {
     padding:3px 0 3px 12px;
 }
 
+.article-title sup {
+    font-size: 12px;
+}
+
 .article-date {
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
