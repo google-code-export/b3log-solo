@@ -77,7 +77,7 @@
                                         <input class="normalInput" id="commentName"/>
                                     </td>
                                     <td colspan="2">
-                                        ${commentName1Label}
+                                        ${commentNameLabel}
                                     </td>
                                 </tr>
                                 <tr>
@@ -85,7 +85,7 @@
                                         <input class="normalInput" id="commentEmail"/>
                                     </td>
                                     <td colspan="2">
-                                        ${commentEmail1Label}
+                                        ${commentEmailLabel}
                                     </td>
                                 </tr>
                                 <tr>
@@ -93,7 +93,7 @@
                                         <input value="http://" id="commentURL"/>
                                     </td>
                                     <td colspan="2">
-                                        ${commentURL1Label}
+                                        ${commentURLLabel}
                                     </td>
                                 </tr>
                                 <tr>
@@ -183,10 +183,10 @@
 
                     var commentFormHTML = "<table class='marginTop12 comment-form' id='replyForm'><tbody><tr>"
                         + "<td width='208px'><input class='normalInput' id='commentNameReply'/>"
-                        + "</td><td colspan='2'>${commentName1Label}</td></tr><tr><td>"
-                        + "<input class='normalInput' id='commentEmailReply'/></td><td colspan='2'>${commentEmail1Label}</td></tr><tr>"
+                        + "</td><td colspan='2'>${commentNameLabel}</td></tr><tr><td>"
+                        + "<input class='normalInput' id='commentEmailReply'/></td><td colspan='2'>${commentEmailLabel}</td></tr><tr>"
                         + "<td><input value='http://' id='commentURLReply'/>"
-                        + "</td><td colspan='2'>${commentURL1Label}</td></tr><tr><td colspan='3'>"
+                        + "</td><td colspan='2'>${commentURLLabel}</td></tr><tr><td colspan='3'>"
                         + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
                         + "<td><input class='normalInput' id='commentValidateReply'/>"
                         + "</td><td><img id='captchaReply' alt='validate' src='/captcha.do?"
