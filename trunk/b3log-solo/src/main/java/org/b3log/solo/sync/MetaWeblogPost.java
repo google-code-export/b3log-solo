@@ -241,7 +241,7 @@ public final class MetaWeblogPost implements Post {
                         Preference.BLOG_HOST);
                 final String blogDomain = blogHost.split(":")[0];
                 // TODO: i18N
-                descriptionBuilder.append("<br/><br/>");
+                descriptionBuilder.append("<br/>");
                 descriptionBuilder.append(
                         "<div style='font: italic normal normal 11px Verdana'>");
                 descriptionBuilder.append(
