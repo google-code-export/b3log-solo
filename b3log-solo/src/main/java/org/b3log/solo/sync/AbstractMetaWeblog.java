@@ -25,13 +25,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.xmlrpc.client.XmlRpcClient;
 import org.apache.xmlrpc.client.XmlRpcClientConfigImpl;
-import org.b3log.latke.service.ServiceException;
 
 /**
  * Abstract MetaWeblog.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 14, 2010
+ * @version 1.0.0.2, Nov 3, 2010
  */
 public abstract class AbstractMetaWeblog extends AbstractBlog
         implements MetaWeblog {
@@ -93,14 +92,12 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
     }
 
     @Override
-    public void deletePost(final String postId) throws
-            ServiceException {
+    public void deletePost(final String postId) throws SyncException {
         final Object[] params = new Object[]{"ignored",
                                              postId,
                                              getUserName(),
                                              getUserPassword(),
                                              true};
-
         try {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(new URL(getApiAddress()));
@@ -109,16 +106,15 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             LOGGER.log(Level.INFO, "Deleted article[id={0}] from [{1}]",
                        new String[]{postId, getBloggingServiceProvider()});
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ServiceException("Delete post to ["
-                                       + getBloggingServiceProvider() + "] error");
+            LOGGER.log(Level.SEVERE, "Delete post to [{0}] error",
+                       getBloggingServiceProvider());
+            throw new SyncException(e.getMessage());
         }
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Post getPost(final String postId)
-            throws ServiceException {
+    public Post getPost(final String postId) throws SyncException {
         final Object[] params = new Object[]{postId,
                                              getUserName(),
                                              getUserPassword()};
@@ -182,16 +178,13 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
 
     @Override
     public String newPost(final Post metaWeblogPost)
-            throws ServiceException {
+            throws SyncException {
         final Object[] params = new Object[]{getUserName(),
                                              getUserName(),
                                              getUserPassword(),
                                              metaWeblogPost.toMetaWeblogPost(),
                                              true};
-
         String ret = null;
-
-
         try {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(new URL(getApiAddress()));
@@ -202,10 +195,9 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
 
             ret = articleId;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ServiceException("New post to ["
-                                       + getBloggingServiceProvider()
-                                       + "] error");
+            LOGGER.log(Level.SEVERE, "New post to [{0}] error",
+                       getBloggingServiceProvider());
+            throw new SyncException(e.getMessage());
         }
 
         return ret;
@@ -214,15 +206,12 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
     @Override
     public void editPost(final String postId,
                          final Post metaWeblogPost)
-            throws ServiceException {
+            throws SyncException {
         final Object[] params = new Object[]{postId,
                                              getUserName(),
                                              getUserPassword(),
                                              metaWeblogPost.toMetaWeblogPost(),
                                              true};
-
-
-
         try {
             config.setConnectionTimeout(CONNECTION_TIMEOUT);
             config.setServerURL(new URL(getApiAddress()));
@@ -233,13 +222,9 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
 
 
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-
-
-            throw new ServiceException("Edit a post to ["
-                                       + getBloggingServiceProvider()
-                                       + "] error");
-
+            LOGGER.log(Level.SEVERE, "Edit post to [{0}] error",
+                       getBloggingServiceProvider());
+            throw new SyncException(e.getMessage());
         }
     }
 }

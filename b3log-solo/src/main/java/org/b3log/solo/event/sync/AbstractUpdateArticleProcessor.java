@@ -33,6 +33,7 @@ import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.MetaWeblogPost;
 import org.b3log.solo.sync.Post;
+import org.b3log.solo.sync.SyncException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,7 +42,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 30, 2010
+ * @version 1.0.0.5, Nov 3, 2010
  */
 public abstract class AbstractUpdateArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -84,9 +85,10 @@ public abstract class AbstractUpdateArticleProcessor
      * }
      * </pre>
      * @throws EventException event exception
+     * @throws SyncException sync exception
      */
     protected final JSONObject updateArticle(final Event<JSONObject> event)
-            throws EventException {
+            throws EventException, SyncException {
         final JSONObject eventData = event.getData();
 
         JSONObject article = null;
@@ -176,6 +178,10 @@ public abstract class AbstractUpdateArticleProcessor
             ret.put(Keys.STATUS_CODE, BlogSyncStatusCodes.BLOG_SYNC_SUCC);
 
             return ret;
+        } catch (final SyncException e) {
+            LOGGER.log(Level.WARNING, "Can not update article sync, error msg[{0}]",
+                       e.getMessage());
+            throw e;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Can not handle event[{0}], error msg[{1}]",
                        new String[]{getEventType(), e.getMessage()});

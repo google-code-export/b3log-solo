@@ -15,14 +15,12 @@
  */
 package org.b3log.solo.sync;
 
-import org.b3log.latke.service.ServiceException;
-
 /**
  * Article remote management via via
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a> blog.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 4, 2010
+ * @version 1.0.0.2, Nov 3, 2010
  */
 public interface MetaWeblog extends Blog {
 
@@ -40,29 +38,29 @@ public interface MetaWeblog extends Blog {
      * @param postId the specified post id
      * @return blog post, returns {@code null} if occurs error or not
      * found
-     * @throws ServiceException service exception
+     * @throws SyncException sync exception
      */
     Post getPost(final String postId)
-            throws ServiceException;
+            throws SyncException;
 
     /**
      * Deletes a post from a MetaWeblog blog with specified parameters.
      *
      * @param postId the specified post id
-     * @throws ServiceException service exception
+     * @throws SyncException sync exception
      */
     void deletePost(final String postId)
-            throws ServiceException;
+            throws SyncException;
 
     /**
      * Creates a post to a MetaWeblog blog with specified parameters.
      *
      * @param metaWeblogPost the specified blog post
      * @return post id just created
-     * @throws ServiceException service exception
+     * @throws SyncException sync exception
      */
     String newPost(final Post metaWeblogPost)
-            throws ServiceException;
+            throws SyncException;
 
     /**
      * Updates a post specified by the given post id to MetaWeblog blog with
@@ -70,9 +68,9 @@ public interface MetaWeblog extends Blog {
      *
      * @param postId the given post id
      * @param metaWeblogPost the specified blog post to update
-     * @throws ServiceException service exception
+     * @throws SyncException sync exception
      */
     void editPost(final String postId,
                   final Post metaWeblogPost)
-            throws ServiceException;
+            throws SyncException;
 }

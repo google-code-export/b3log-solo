@@ -15,10 +15,10 @@
  */
 package org.b3log.solo.sync.cnblogs;
 
+import org.b3log.solo.sync.SyncException;
 import org.b3log.solo.sync.MetaWeblogPost;
 import java.util.List;
 import java.util.Date;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.sync.Post;
 import org.json.JSONException;
@@ -29,7 +29,7 @@ import static org.testng.Assert.*;
  * {@link CnBlogsBlog} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 4, 2010
+ * @version 1.0.0.1, Nov 3, 2010
  */
 public final class CnBlogsBlogTestCase {
 
@@ -76,10 +76,10 @@ public final class CnBlogsBlogTestCase {
 
     /**
      * Tests {@linkplain CnBlogsBlog#getPost(java.lang.String)} method.
-     * @throws ServiceException service exception
+     * @throws SyncException sync exception
      */
     //@org.testng.annotations.Test
-    public void getPost() throws ServiceException {
+    public void getPost() throws SyncException {
         final Post article = cnBlogsBlog.getPost("1818114");
         assertNotNull(article);
         assertEquals(article.getTitle(), "For Solo 同步测试");

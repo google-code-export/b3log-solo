@@ -15,11 +15,11 @@
  */
 package org.b3log.solo.sync.csdn.blog;
 
+import org.b3log.solo.sync.SyncException;
 import org.b3log.latke.Keys;
 import java.util.List;
 import java.util.Date;
 import java.util.UUID;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.sync.MetaWeblogPost;
 import org.b3log.solo.sync.Post;
@@ -31,7 +31,7 @@ import static org.testng.Assert.*;
  * {@link CSDNBlog} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Sep 4, 2010
+ * @version 1.0.0.5, Nov 3, 2010
  */
 public final class CSDNBlogTestCase {
 
@@ -83,10 +83,10 @@ public final class CSDNBlogTestCase {
 
     /**
      * Tests {@linkplain CSDNBlog#getPost(java.lang.String)} method.
-     * @throws ServiceException service exception
+     * @throws SyncException sync exception
      */
     //@Test
-    public void getPost() throws ServiceException {
+    public void getPost() throws SyncException {
         final Post article = csdnBlog.getPost("5817062");
         assertNotNull(article);
         assertEquals(article.getTitle(), "HTTP/1.1 Status Code Definitions");

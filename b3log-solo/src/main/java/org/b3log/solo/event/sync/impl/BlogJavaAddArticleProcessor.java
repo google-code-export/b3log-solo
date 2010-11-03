@@ -25,6 +25,7 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.sync.AbstractAddArticleProcessor;
 import org.b3log.solo.event.sync.BlogSyncStatusCodes;
 import org.b3log.solo.model.BlogSync;
+import org.b3log.solo.sync.SyncException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +33,7 @@ import org.json.JSONObject;
  * This listener is responsible for blog sync add article to BlogJava.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 30, 2010
+ * @version 1.0.0.4, Nov 3, 2010
  */
 public final class BlogJavaAddArticleProcessor
         extends AbstractAddArticleProcessor {
@@ -98,10 +99,21 @@ public final class BlogJavaAddArticleProcessor
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 throw new EventException(ex);
             }
-        } catch (final EventException e) {
+        } catch (final SyncException e) {
             try {
                 blogSyncBlogJava.put(Keys.CODE,
                                      BlogSyncStatusCodes.BLOG_SYNC_FAIL);
+                blogSyncBlogJava.put(Keys.MSG, e.getMessage());
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                throw new EventException(ex);
+            }
+        } catch (final EventException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            try {
+                blogSyncBlogJava.put(Keys.CODE,
+                                     BlogSyncStatusCodes.BLOG_SYNC_FAIL);
+                blogSyncBlogJava.put(Keys.MSG, "Unknown exception :-(");
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 throw new EventException(ex);
