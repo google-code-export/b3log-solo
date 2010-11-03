@@ -16,6 +16,7 @@
 package org.b3log.solo.action.file;
 
 import com.google.appengine.api.datastore.Blob;
+import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +31,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.Ids;
 import org.b3log.solo.model.File;
 import org.b3log.solo.repository.FileRepository;
@@ -41,7 +43,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Nov 1, 2010
+ * @version 1.0.0.1, Nov 3, 2010
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -112,6 +114,9 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                          final HttpServletResponse response)
             throws ServletException, IOException {
         final String id = request.getParameter(Keys.OBJECT_ID);
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+
         try {
             final JSONObject file = fileRepository.get(id);
             if (null == file) {
@@ -126,7 +131,13 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
             response.setContentType(file.getString(File.FILE_CONTENT_TYPE));
             response.getOutputStream().write(content.getBytes());
             response.getOutputStream().close();
+
+            final int downloadCnt = file.getInt(File.FILE_DOWNLOAD_COUNT);
+            file.put(File.FILE_DOWNLOAD_COUNT, downloadCnt + 1);
+            fileRepository.update(id, file);
+            transaction.commit();
         } catch (final Exception e) {
+            transaction.rollback();
             LOGGER.severe(e.getMessage());
             throw new ServletException("File download error: " + e.getMessage());
         }
