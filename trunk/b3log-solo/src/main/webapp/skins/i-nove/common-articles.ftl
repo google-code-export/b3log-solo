@@ -5,12 +5,12 @@
             ${article.articleTitle}
         </a>
         <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-        <sup class="red" style="font-size: 12px">
+        <sup class="red">
             ${updatedLabel}
         </sup>
         </#if>
         <#if article.articlePutTop>
-        <sup class="red" style="font-size: 12px">
+        <sup class="red">
             ${topArticleLabel}
         </sup>
         </#if>
@@ -41,7 +41,7 @@
             ${article.articleViewCount}
         </a>
         <div class="left">
-            <span class="tagsIcon" title="${tags1Label}"></span>
+            <span class="tagsIcon" title="${tagLabel}"></span>
             <#list article.articleTags as articleTag>
             <span>
                 <a href="/tag-articles.do?oId=${articleTag.oId}">
