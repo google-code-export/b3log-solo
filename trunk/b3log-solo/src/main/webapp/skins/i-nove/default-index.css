@@ -365,6 +365,11 @@ h5 {
     font-weight: bold;
 }
 
+.side-navi .navi-comments .side-comment {
+    font-weight: normal;
+    color: #555555;
+}
+
 .side-navi .navi-comments li {
     padding: 2px 0;
 }
