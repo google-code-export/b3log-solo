@@ -21,6 +21,8 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +45,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 3, 2010
+ * @version 1.0.0.2, Nov 4, 2010
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -61,12 +63,15 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
      */
     @Inject
     private FileRepository fileRepository;
+    /**
+     * Maximum entity size limited by data store.
+     */
+    private static final long MAX_SIZE = 1024 * 1024;
 
     @Override
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         final ServletFileUpload upload = new ServletFileUpload();
         FileItemIterator iterator = null;
 
@@ -78,7 +83,19 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                 final InputStream stream = item.openStream();
 
                 if (!item.isFormField()) {
+                    // XXX: check size before streaming
                     final byte[] contentBytes = IOUtils.toByteArray(stream);
+                    if (contentBytes.length > MAX_SIZE) {
+                        final Locale locale = new Locale("en", "US");
+                        final ResourceBundle lang =
+                                ResourceBundle.getBundle(Keys.LANGUAGE, locale);
+                        final String msg =
+                                lang.getString("exceedMaxUploadSizeLabel");
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                                           msg);
+                        return;
+                    }
+
                     final Blob blob = new Blob(contentBytes);
                     final JSONObject file = new JSONObject();
                     final String id = Ids.genTimeMillisId();
