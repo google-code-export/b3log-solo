@@ -357,15 +357,12 @@
                     }
 
                     var showComment = function (id, oId) {
-                        if ($("#commentItemRef" + id).length > 0) {
-                            $("#commentItemRef" + id).show();
-                        } else {
-                            var refComment = $("#commentItem" + id).clone();
-                            refComment.find(".comment-body-ref").remove();
-                            refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
-                            $("#commentItem" + oId + " .comment-info").append(refComment);
-                            $("#commentItemRef" + id + " .comment-info .right").remove();
-                        }
+                        $("#commentItemRef" + id).show();
+                        var refComment = $("#commentItem" + id).clone();
+                        refComment.find(".comment-body-ref").remove();
+                        refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
+                        $("#commentItem" + oId + " .comment-info").append(refComment);
+                        $("#commentItemRef" + id + " .comment-info .right").remove();
                     }
 
                     var hideComment = function (id) {

@@ -8,7 +8,8 @@
         <span style="color: red;">O</span>
         <span style="color: blue;">G</span>&nbsp;
         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-    ver ${version}
+    ver ${version}&nbsp;&nbsp;
+    Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://b3log-vanessa.appspot.com" target="_blank">Vanessa</a>.
 </div>
 <div class="right goTop">
     <span onclick="goTop();">${goTopLabel}</span>
@@ -73,10 +74,11 @@
 
                 for (var i = 0; i < result.recentComments.length; i++) {
                     var comment = result.recentComments[i];
-                    var itemHTML = "<li><img class='left' alt='" + comment.commentName
-                        + "' src='" + comment.commentThumbnailURL + "'/><div class='left'><div><a href=" + comment.commentSharpURL + ">"
-                        + comment.commentName + "</a></div><div>"
-                        + comment.commentContent + "</div></div><div class='clear'></div></li>";
+                    var itemHTML = "<li><img class='left' title='" + comment.commentName
+                        + "' alt='" + comment.commentName
+                        + "' src='" + comment.commentThumbnailURL + "'/><div class='left'><div><a href=" + comment.commentURL + ">"
+                        + comment.commentName + "</a></div><div><a class='side-comment' href=" + comment.commentSharpURL + ">"
+                        + comment.commentContent + "</a></div></div><div class='clear'></div></li>";
                     recentCommentsHTML += itemHTML;
                 }
                 $("#recentComments").after(recentCommentsHTML + "</ul>");
