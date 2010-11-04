@@ -358,14 +358,12 @@ img.comment-picture {
 #sideNavi li a {
     color:#42423D;
     float:left;
-    height:14px;
+    height:13px;
     margin:0;
     padding:7px 0 8px 16px;
     text-decoration:none;
     width:167px;
     border-bottom: 1px dotted #FFFFFF;
-    word-break: break-all;
-    word-wrap: break-word;
     line-height: 18px;
     overflow: hidden;
 }
