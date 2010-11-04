@@ -79,13 +79,16 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
                     Preference.BLOG_SUBTITLE);
+            final String blogHost = preference.getString(Preference.BLOG_HOST);
 
             feed.setTitle(blogTitle);
             feed.setSubtitle(blogSubtitle);
             feed.setUpdated(new Date());
             feed.addAuthor(blogTitle);
+            feed.addLink("http://" + blogHost);
 
-            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+            final Map<String, SortDirection> sorts =
+                    new HashMap<String, SortDirection>();
             sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
             final JSONObject articleResult =
                     articleRepository.get(1, ENTRY_OUTPUT_CNT,
@@ -100,7 +103,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                 final Date updated = (Date) article.get(
                         Article.ARTICLE_UPDATE_DATE);
                 final String id = article.getString(Keys.OBJECT_ID);
-                final String link = article.getString(Article.ARTICLE_PERMALINK);
+                final String link = "http://" + blogHost + article.getString(
+                        Article.ARTICLE_PERMALINK);
 
                 entry.setTitle(title);
                 entry.addLink(link);
