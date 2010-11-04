@@ -485,6 +485,11 @@
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             var loadTool = function () {
+                // hide comments
+                if ($("#comments div").length === 0) {
+                    $("#comments").removeClass("comments");
+                }
+                
                 // article view count
                 jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
 

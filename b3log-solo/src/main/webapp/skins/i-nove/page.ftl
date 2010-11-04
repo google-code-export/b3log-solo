@@ -305,6 +305,11 @@
             }
 
             var loadAction = function () {
+                // hide comments
+                if ($("#comments div").length === 0) {
+                    $("#comments").removeClass("comments");
+                }
+
                 // code high lighter
                 SyntaxHighlighter.autoloader(
                 'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
