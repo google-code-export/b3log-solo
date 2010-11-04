@@ -75,7 +75,7 @@
                     var comment = result.recentComments[i];
                     var itemHTML = "<li><img class='left' alt='" + comment.commentName
                         + "' src='" + comment.commentThumbnailURL + "'/><div class='left'><div><a href=" + comment.commentSharpURL + ">"
-                        + comment.commentName + "</a></div><div><span>"
+                        + comment.commentName + "</a></div><div>"
                         + comment.commentContent + "</div></div><div class='clear'></div></li>";
                     recentCommentsHTML += itemHTML;
                 }
