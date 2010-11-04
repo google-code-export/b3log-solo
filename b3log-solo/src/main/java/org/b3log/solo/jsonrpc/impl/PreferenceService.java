@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Oct 27, 2010
+ * @version 1.0.1.1, Nov 4, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -198,6 +198,20 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 Templates.CONFIGURATION.setTimeZone(
                         TimeZone.getTimeZone("Asia/Shanghai"));
             }
+
+            final String blogHost = preference.getString(Preference.BLOG_HOST).
+                    toLowerCase().trim(); // blog host check
+            LOGGER.log(Level.INFO, "Blog Host[{0}]", blogHost);
+            final boolean containColon = blogHost.contains(":");
+            final boolean containScheme = blogHost.contains("http://");
+            final boolean containSlash = blogHost.contains("/");
+            if (!containColon || containScheme || containSlash) {
+                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
+                transaction.rollback();
+
+                return ret;
+            }
+
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
             SoloServletListener.setUserPreference(preference);

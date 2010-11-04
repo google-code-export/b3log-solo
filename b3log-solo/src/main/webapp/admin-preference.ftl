@@ -327,7 +327,8 @@
                         window.location.reload();
                     }
                     break;
-                case "GET_ARTICLE_FAIL_":
+                case "UPDATE_PREFERENCE_FAIL_":
+                    $("#tipMsg").text("${updatePreferenceFailLabel}");
                     break;
                 default:
                     break;
