@@ -86,6 +86,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                     // XXX: check size before streaming
                     final byte[] contentBytes = IOUtils.toByteArray(stream);
                     if (contentBytes.length > MAX_SIZE) {
+                        // XXX: i18n
                         final Locale locale = new Locale("en", "US");
                         final ResourceBundle lang =
                                 ResourceBundle.getBundle(Keys.LANGUAGE, locale);
