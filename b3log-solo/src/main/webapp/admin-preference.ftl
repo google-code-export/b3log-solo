@@ -6,9 +6,11 @@
         <span id="skins" onclick="changePreferenceTab(this);">
             ${skinLabel}
         </span>
+        <!--
         <span id="syncGoogle" onclick="changePreferenceTab(this);">
             ${googleLabel}
         </span>
+        -->
     </div>
     <div class="tabMain">
         <div id="preferencesPanel">
