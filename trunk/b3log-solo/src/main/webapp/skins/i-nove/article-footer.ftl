@@ -82,7 +82,22 @@
                 $("#recentComments").after(recentCommentsHTML + "</ul>");
             });
         }
-        
+
+        // set selected navi
+        $("#header-navi li").each(function (i) {
+            if (i < $("#header-navi li").length - 1) {
+                var $it = $(this),
+                locationURL = window.location.pathname + window.location.search;
+                if (i === 0 && (locationURL.indexOf("/index.do") > -1 || locationURL === "/")) {
+                    $it.addClass("selected");
+                    return;
+                }
+                if (locationURL.indexOf($it.find("a").attr("href")) > -1 && i !== 0) {
+                    $it.addClass("selected");
+                }
+            }
+        });
+
         jsonRpc.statisticService.incBlogViewCount(function (result, error) {});
     }
     initIndex();
