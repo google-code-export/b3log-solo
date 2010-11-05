@@ -296,7 +296,7 @@
             }
 
             var showComment = function (id, oId) {
-                $("#commentItemRef" + id).show();
+                $("#commentItemRef" + id).remove();
                 var refComment = $("#commentItem" + id).clone();
                 refComment.find(".comment-body-ref").remove();
                 refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
