@@ -29,7 +29,7 @@
                     style: "padding-left: 6px;",
                     name: "${fileNameLabel}",
                     index: "name",
-                    width: 260
+                    minWidth: 260
                 }, {
                     textAlign: "center",
                     name: "${uploadDateLabel}",
@@ -44,7 +44,7 @@
                     textAlign: "center",
                     name: "${downloadCountLabel}",
                     index: "downloadCnt",
-                    width: 56
+                    width: 80
                 }, {
                     textAlign: "center",
                     name: "${removeLabel}",
@@ -56,12 +56,6 @@
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
-                    textAlign: "center",
-                    name: "${updateLabel}",
-                    index: "update",
-                    width: 56,
-                    style: "cursor:pointer; margin-left:22px;"
-                }, {
                     visible: false,
                     index: "id"
                 }]
@@ -69,8 +63,8 @@
 
         $("#filePagination").paginate({
             bindEvent: "getfileList",
-            pageCount: 1,
-            windowSize: 1,
+            pageCount: PAGE_SIZE,
+            windowSize: WINDOW_SIZE,
             currentPage: 1,
             style: "google",
             isGoTo: false,
@@ -155,8 +149,6 @@
                     fileData[i].uploadDate = $.bowknot.getDate(files[i].fileUploadDate.time, 1);
                     fileData[i].downloadCnt = files[i].fileDownloadCount;
                     fileData[i].size = files[i].fileSize;
-
-                    fileData[i].update = "<div class='updateIcon'></div>";
                     fileData[i].remove = "<div class='deleteIcon'></div>";
                     fileData[i].id = files[i].oId;
                 }
