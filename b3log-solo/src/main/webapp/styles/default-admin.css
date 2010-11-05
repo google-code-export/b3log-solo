@@ -27,6 +27,7 @@
 .content {
 	height: 100%;
 	background-color: #E3E9FF;
+        min-height: 300px;
 }
 .comment-title {
 	background-color: #E3E9FF;
