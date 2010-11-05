@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Nov 1, 2010
+ * @version 1.0.2.2, Nov 5, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -142,9 +142,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * Comment mail HTML body.
      */
     private static final String COMMENT_MAIL_HTML_BODY =
-            "{articleOrPage}[<a href=\""
+            "{articleOrPage} [<a href=\""
             + "{articleOrPageURL}\">" + "{title}</a>]"
-            + " received a new comment[<a href=\"{commentSharpURL}\">"
+            + " received a new comment [<a href=\"{commentSharpURL}\">"
             + "{commentContent}</a>]";
 
     /**
@@ -653,21 +653,25 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 comment.getString(Comment.COMMENT_SHARP_URL);
         final Message message = new Message();
         message.setSender(adminEmail);
-        final String mailSubject = blogTitle + ": New comment about "
-                                   + title;
-        message.setSubject(mailSubject);
+        String mailSubject = null;
         String articleOrPageURL = null;
         if (isArticle) {
+            mailSubject = blogTitle + ": New comment about article ["
+                          + title + "]";
             articleOrPageURL = "http://" + blogHost + articleOrPage.getString(
                     Article.ARTICLE_PERMALINK);
             COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Article");
         } else {
+            mailSubject = blogTitle + ": New comment about page ["
+                          + title + "]";
             articleOrPageURL = "http://" + blogHost + "/page.do?oId="
                                + articleOrPage.getString(Keys.OBJECT_ID);
-             COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
+            COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
         }
-        final String mailBody =
-                COMMENT_MAIL_HTML_BODY.replace("{articleOrPageURL}", articleOrPageURL).
+
+        message.setSubject(mailSubject);
+        final String mailBody = COMMENT_MAIL_HTML_BODY.replace(
+                "{articleOrPageURL}", articleOrPageURL).
                 replace("{title}", title).
                 replace("{commentContent}", commentContent).
                 replace("{commentSharpURL}", commentSharpURL);
@@ -800,7 +804,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_COMMENT_SUCC);
 
-            LOGGER.log(Level.FINER, "Removed comment[oId={0}] of page[{oId={1}}]",
+            LOGGER.log(Level.FINER,
+                       "Removed comment[oId={0}] of page[{oId={1}}]",
                        new String[]{commentId, pageId});
         } catch (final Exception e) {
             transaction.rollback();
