@@ -55,11 +55,13 @@ import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.filter.FilterModule;
+import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.PreferenceRepository;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Skin;
 import static org.b3log.solo.model.Skin.*;
 import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.sync.SyncModule;
 import org.b3log.solo.upgrade.UpgradeModule;
@@ -73,7 +75,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Oct 30, 2010
+ * @version 1.0.2.3, Nov 5, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -119,7 +121,6 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * B3log Rhythm address.
      */
-    // TODO: change Rhythm port in production
     public static final String B3LOG_RHYTHM_ADDRESS =
             "http://b3log-rhythm.appspot.com:80";
     /**
@@ -211,11 +212,58 @@ public final class SoloServletListener extends AbstractServletListener {
 
         initPreference();
         initStatistic();
+        initDefaultLinks();
         loadCaptchas();
 
         registerRemoteJSServiceSerializers();
 
         LOGGER.info("Initialized the context");
+    }
+
+    /**
+     * Initializes default links if not found.
+     *
+     * <ul>
+     *   <li>简约设计の艺术</li>
+     *   http://b3log-88250.appspot.com
+     *   <li>Vanessa</li>
+     *   http://b3log-vanessa.appspot.com
+     * </ul>
+     */
+    private void initDefaultLinks() {
+        LOGGER.info("Checking default links....");
+
+        try {
+            final Injector injector = getInjector();
+            final LinkRepository linkRepository =
+                    injector.getInstance(LinkRepository.class);
+            
+            final String address88250 = "http://b3log-88250.appspot.com";
+            final String addressVanessa = "http://b3log-vanessa.appspot.com";
+
+            JSONObject linkTo88250 = linkRepository.getByAddress(address88250);
+            if (null == linkTo88250) {
+                linkTo88250 = new JSONObject();
+                linkTo88250.put(Link.LINK_TITLE, "简约设计\u306e艺术").
+                        put(Link.LINK_ADDRESS, address88250);
+                linkRepository.add(linkTo88250);
+                LOGGER.info("Added a link [title=简约设计\u306e艺术] to your links");
+            }
+
+            JSONObject linkToVanessa =
+                    linkRepository.getByAddress(addressVanessa);
+            if (null == linkToVanessa) {
+                linkToVanessa = new JSONObject();
+                linkToVanessa.put(Link.LINK_TITLE, "Vanessa").
+                        put(Link.LINK_ADDRESS, addressVanessa);
+                linkRepository.add(linkToVanessa);
+                LOGGER.info("Added a link [title=Vanessa] to your links");
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARNING, e.getMessage());
+        }
+
+        LOGGER.info("Checked default links....");
     }
 
     /**
@@ -226,6 +274,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * @throws JSONException json exception
      */
     private void initSkins(final JSONObject preference) throws JSONException {
+        LOGGER.info("Loading skins....");
         final String skinDirName =
                 preference.optString(SKIN_DIR_NAME,
                                      DefaultPreference.DEFAULT_SKIN_DIR_NAME);
@@ -257,6 +306,8 @@ public final class SoloServletListener extends AbstractServletListener {
         } catch (final IOException e) {
             throw new RuntimeException(e);
         }
+
+        LOGGER.info("Loaded skins....");
     }
 
     /**
@@ -330,7 +381,7 @@ public final class SoloServletListener extends AbstractServletListener {
             throw new RuntimeException(e);
         }
 
-        LOGGER.info("Loaded captch image");
+        LOGGER.info("Loaded captch images");
     }
 
     /**

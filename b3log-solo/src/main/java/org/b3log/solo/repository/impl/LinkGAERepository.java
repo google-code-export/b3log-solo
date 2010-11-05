@@ -15,16 +15,21 @@
  */
 package org.b3log.solo.repository.impl;
 
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
+import org.json.JSONObject;
 
 /**
  * Link Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 14, 2010
+ * @version 1.0.0.1, Nov 5, 2010
  */
 public class LinkGAERepository extends AbstractGAERepository
         implements LinkRepository {
@@ -38,5 +43,20 @@ public class LinkGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return Link.LINK;
+    }
+
+    @Override
+    public JSONObject getByAddress(final String address) {
+        final Query query = new Query(getName());
+        query.addFilter(Link.LINK_ADDRESS, Query.FilterOperator.EQUAL, address);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final Entity entity = preparedQuery.asSingleEntity();
+        if (null == entity) {
+            return null;
+        }
+
+        final Map<String, Object> properties = entity.getProperties();
+
+        return new JSONObject(properties);
     }
 }
