@@ -28,6 +28,7 @@
     filter: alpha(opacity=30);
     z-index: 99;
 }
+
 .dialog-panel {
     -moz-border-radius: 4px 4px 4px 4px;
     background: #FFF;
@@ -35,9 +36,12 @@
     position: absolute;
     z-index: 100;
 }
+
 .dialog-content {
     margin: 12px;
+    overflow: auto;
 }
+
 .dialog-close {
     float: right;
     cursor: pointer;
