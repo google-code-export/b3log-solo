@@ -655,22 +655,24 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         message.setSender(adminEmail);
         String mailSubject = null;
         String articleOrPageURL = null;
+        String mailBody = null;
         if (isArticle) {
             mailSubject = blogTitle + ": New comment about article ["
                           + title + "]";
             articleOrPageURL = "http://" + blogHost + articleOrPage.getString(
                     Article.ARTICLE_PERMALINK);
-            COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Article");
+            mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}",
+                                                      "Article");
         } else {
             mailSubject = blogTitle + ": New comment about page ["
                           + title + "]";
             articleOrPageURL = "http://" + blogHost + "/page.do?oId="
                                + articleOrPage.getString(Keys.OBJECT_ID);
-            COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
+            mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
         }
 
         message.setSubject(mailSubject);
-        final String mailBody = COMMENT_MAIL_HTML_BODY.replace(
+        mailBody = COMMENT_MAIL_HTML_BODY.replace(
                 "{articleOrPageURL}", articleOrPageURL).
                 replace("{title}", title).
                 replace("{commentContent}", commentContent).
