@@ -166,7 +166,7 @@ h5 {
     line-height: 22px;
 }
 
-.side-navi li.aboutMe {
+.side-navi li.aboutMe, .side-navi li.side-navi-notice {
     white-space: normal;
 }
 

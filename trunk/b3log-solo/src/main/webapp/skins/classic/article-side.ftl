@@ -7,7 +7,7 @@
         <li>
             <h4>${noticeBoardLabel}</h4>
         </li>
-        <li>${noticeBoard}</li>
+        <li class="side-navi-notice">${noticeBoard}</li>
     </ul>
     <div class="line"></div>
     <ul>

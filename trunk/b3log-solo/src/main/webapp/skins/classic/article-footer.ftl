@@ -253,7 +253,6 @@ ver ${version}
         if ($("#sideNavi").length > 0) {
             var userInfo = {};
             var userIntroHTML = "";
-            
             if (response.error) {
                 userInfo.thumbnailUrl = localStorage.getItem("userInfoThumbnailUrl");
                 userInfo.displayName = localStorage.getItem("userInfoDisplayName");
