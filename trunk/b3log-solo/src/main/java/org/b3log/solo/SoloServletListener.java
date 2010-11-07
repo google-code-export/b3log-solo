@@ -75,7 +75,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Nov 5, 2010
+ * @version 1.0.2.4, Nov 7, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -161,6 +161,11 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static synchronized JSONObject getUserPreference() {
         try {
+            if (null == userPreferenceCache) {
+                userPreferenceCache = CacheFactory.getCache(PREFERENCE);
+                LOGGER.warning("Got cache from cache pool....");
+            }
+            
             return new JSONObject(userPreferenceCache.get(PREFERENCE).toString());
         } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());
@@ -237,7 +242,7 @@ public final class SoloServletListener extends AbstractServletListener {
             final Injector injector = getInjector();
             final LinkRepository linkRepository =
                     injector.getInstance(LinkRepository.class);
-            
+
             final String address88250 = "http://b3log-88250.appspot.com";
             final String addressVanessa = "http://b3log-vanessa.appspot.com";
 
