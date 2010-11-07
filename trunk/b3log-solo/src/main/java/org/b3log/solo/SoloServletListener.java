@@ -161,11 +161,7 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static synchronized JSONObject getUserPreference() {
         try {
-            if (null == userPreferenceCache) {
-                userPreferenceCache = CacheFactory.getCache(PREFERENCE);
-                LOGGER.warning("Got cache from cache pool....");
-            }
-            
+            // FIXME: NPE
             return new JSONObject(userPreferenceCache.get(PREFERENCE).toString());
         } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());
