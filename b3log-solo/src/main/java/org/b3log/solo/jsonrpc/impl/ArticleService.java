@@ -45,11 +45,11 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TagUtils;
 import org.json.JSONArray;
@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Oct 26, 2010
+ * @version 1.0.1.8, Nov 8, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -110,6 +110,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     @Inject
     private ArchiveDateUtils archiveDateUtils;
     /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
+    /**
      * Permalink date format(yyyy/MM/dd).
      */
     public static final DateFormat PERMALINK_FORMAT =
@@ -123,8 +128,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     public List<JSONObject> getRandomArticles() throws ActionException {
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final int displayCnt =
                     preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
             final List<JSONObject> ret =

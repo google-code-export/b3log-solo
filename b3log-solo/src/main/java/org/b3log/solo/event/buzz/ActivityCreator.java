@@ -35,8 +35,8 @@ import org.b3log.solo.action.google.BuzzOAuth;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Google;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * adding an article.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 30, 2010
+ * @version 1.0.0.5, Nov 8, 2010
  */
 public final class ActivityCreator
         extends AbstractEventListener<JSONObject> {
@@ -59,6 +59,11 @@ public final class ActivityCreator
      * My Buzz feed URL.
      */
     private static final GoogleUrl MY_BUZZ_FEED_URL;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     static {
         MY_BUZZ_FEED_URL = new GoogleUrl(
@@ -108,13 +113,12 @@ public final class ActivityCreator
                 events.put(Google.GOOGLE_POST_TO_BUZZ, postToBuzz);
             }
 
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final boolean postToBuzzEnabled =
                     preference.getBoolean(Preference.ENABLE_POST_TO_BUZZ);
             if (!postToBuzzEnabled) {
                 postToBuzz.put(Keys.CODE, BuzzStatusCodes.NO_NEED_TO_POST_BUZZ);
-                
+
                 return;
             }
 
@@ -173,7 +177,7 @@ public final class ActivityCreator
      * @throws Exception exception
      */
     private JsonCContent toContent(final JSONObject article) throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final JsonCContent ret = new JsonCContent();
         final Map<String, Object> data = new HashMap<String, Object>();
         data.put("title", preference.getString(Preference.BLOG_TITLE));

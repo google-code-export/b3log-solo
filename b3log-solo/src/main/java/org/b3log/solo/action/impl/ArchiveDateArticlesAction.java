@@ -45,6 +45,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
+import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,7 +54,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 22, 2010
+ * @version 1.0.0.4, Nov 8, 2010
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -101,6 +102,11 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -110,8 +116,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(

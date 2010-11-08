@@ -40,10 +40,10 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
 import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Nov 1, 2010
+ * @version 1.0.1.1, Nov 8, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -90,6 +90,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
      */
     @Inject
     private ArticleUtils articleUtils;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -99,8 +104,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -190,8 +194,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
     private List<JSONObject> getRelevantArticles(
             final String articleId, final List<JSONObject> articleTags)
             throws JSONException, RepositoryException {
-        final JSONObject preference =
-                SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final int displayCnt =
                 preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
 

@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
@@ -38,7 +40,7 @@ import org.json.JSONObject;
  * Error action. error.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 26, 2010
+ * @version 1.0.0.6, Nov 8, 2010
  */
 public final class ErrorAction extends AbstractAction {
 
@@ -60,8 +62,14 @@ public final class ErrorAction extends AbstractAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final Cache<String, Object> userPreferenceCache =
+                    CacheFactory.getCache(Preference.PREFERENCE);
+            final Object preferenceString =
+                    userPreferenceCache.get(Preference.PREFERENCE);
+            // XXX: preference string may be null
+            final JSONObject preference = new JSONObject(preferenceString.
+                    toString());
+
             final String blogHost = preference.getString(Preference.BLOG_HOST);
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);

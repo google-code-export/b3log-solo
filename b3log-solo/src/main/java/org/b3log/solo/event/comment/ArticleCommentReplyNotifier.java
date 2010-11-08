@@ -31,8 +31,8 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
 /**
@@ -59,6 +59,11 @@ public final class ArticleCommentReplyNotifier
      */
     private MailService mailService =
             MailServiceFactory.getMailService();
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     /**
      * Constructs a {@link ReplyProcessor} object with the specified event
@@ -102,8 +107,7 @@ public final class ArticleCommentReplyNotifier
                 return;
             }
 
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String blogTitle =
                     preference.getString(Preference.BLOG_TITLE);
             final String adminGmail =

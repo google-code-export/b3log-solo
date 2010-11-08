@@ -36,7 +36,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 26, 2010
+ * @version 1.0.0.4, Nov 8, 2010
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -82,6 +82,11 @@ public final class TagsAction extends AbstractCacheablePageAction {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -91,8 +96,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(

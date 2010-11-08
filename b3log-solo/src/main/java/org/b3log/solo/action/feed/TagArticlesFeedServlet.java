@@ -37,7 +37,7 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -73,6 +73,11 @@ public final class TagArticlesFeedServlet extends HttpServlet {
      */
     private Factory feedFactory = Abdera.getNewFactory();
     /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
+    /**
      * Count of output entry.
      */
     public static final int ENTRY_OUTPUT_CNT = 10;
@@ -107,8 +112,7 @@ public final class TagArticlesFeedServlet extends HttpServlet {
             final String tagTitle =
                     tagRepository.get(tagId).getString(Tag.TAG_TITLE);
 
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
                     Preference.BLOG_SUBTITLE) + ", " + tagTitle;

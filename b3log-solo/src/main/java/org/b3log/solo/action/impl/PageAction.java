@@ -31,17 +31,17 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.PageUtils;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
 /**
  * Page action. page.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 30, 2010
+ * @version 1.0.0.2, Nov 8, 2010
  */
 public final class PageAction extends AbstractCacheablePageAction {
 
@@ -74,6 +74,11 @@ public final class PageAction extends AbstractCacheablePageAction {
      */
     @Inject
     private PageUtils pageUtils;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -86,8 +91,7 @@ public final class PageAction extends AbstractCacheablePageAction {
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
 
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(

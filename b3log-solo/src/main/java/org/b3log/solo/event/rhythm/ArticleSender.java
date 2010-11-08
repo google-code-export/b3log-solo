@@ -33,6 +33,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
 /**
@@ -54,6 +55,11 @@ public final class ArticleSender
      */
     private final URLFetchService urlFetchService =
             URLFetchServiceFactory.getURLFetchService();
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
     /**
      * Timeout.
      */
@@ -95,8 +101,7 @@ public final class ArticleSender
         try {
             final JSONObject article =
                     data.getJSONObject(Article.ARTICLE);
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String blogHost = preference.getString(Preference.BLOG_HOST);
             if (SoloServletListener.DefaultPreference.DEFAULT_BLOG_HOST.equals(
                     blogHost)) {
@@ -107,7 +112,7 @@ public final class ArticleSender
                                         article.getString(Article.ARTICLE_TITLE)});
                 return;
             }
-            
+
             final HTTPRequest httpRequest =
                     new HTTPRequest(ADD_ARTICLE_URL, HTTPMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
