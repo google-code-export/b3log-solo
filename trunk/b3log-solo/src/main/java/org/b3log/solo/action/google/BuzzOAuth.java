@@ -20,6 +20,7 @@ import com.google.api.client.googleapis.json.JsonCParser;
 import com.google.api.client.http.HttpTransport;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
@@ -33,9 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.google.auth.OAuths;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +44,7 @@ import org.json.JSONObject;
  * Buzz OAuth.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 20, 2010
+ * @version 1.0.0.2, Nov 8, 2010
  */
 public final class BuzzOAuth extends HttpServlet {
 
@@ -73,6 +74,11 @@ public final class BuzzOAuth extends HttpServlet {
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     /**
      * Gets http transport.
@@ -92,9 +98,8 @@ public final class BuzzOAuth extends HttpServlet {
         String googleOAuthConsumerSecret =
                 request.getParameter(Preference.GOOGLE_OAUTH_CONSUMER_SECRET);
         if (Strings.isEmptyOrNull(googleOAuthConsumerSecret)) {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
             try {
+                final JSONObject preference = preferenceUtils.getPreference();
                 googleOAuthConsumerSecret = preference.getString(
                         Preference.GOOGLE_OAUTH_CONSUMER_SECRET);
             } catch (final JSONException e) {
@@ -150,35 +155,39 @@ public final class BuzzOAuth extends HttpServlet {
      * Generates error page HTML content.
      *
      * @return error page HTML contente
+     * @throws ServletException servlet exception
      */
-    private String genErrorPageHTMLContent() {
-        final JSONObject preference =
-                SoloServletListener.getUserPreference();
-        final String localeString = preference.optString(
-                Preference.LOCALE_STRING);
-        final Locale locale = new Locale(
-                Locales.getLanguage(localeString),
-                Locales.getCountry(localeString));
-        final ResourceBundle lang =
-                ResourceBundle.getBundle(Keys.LANGUAGE, locale);
-        final String blogTitle = preference.optString(Preference.BLOG_TITLE);
+    private String genErrorPageHTMLContent() throws ServletException {
+        try {
+            final JSONObject preference = preferenceUtils.getPreference();
+            final String localeString = preference.optString(
+                    Preference.LOCALE_STRING);
+            final Locale locale = new Locale(
+                    Locales.getLanguage(localeString),
+                    Locales.getCountry(localeString));
+            final ResourceBundle lang =
+                    ResourceBundle.getBundle(Keys.LANGUAGE, locale);
+            final String blogTitle = preference.optString(Preference.BLOG_TITLE);
 
-        final StringBuilder htmlContentBuilder = new StringBuilder();
+            final StringBuilder htmlContentBuilder = new StringBuilder();
 
-        htmlContentBuilder.append(
-                "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" ");
-        htmlContentBuilder.append(
-                "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
-        htmlContentBuilder.append(
-                "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><title>");
-        htmlContentBuilder.append(blogTitle);
-        htmlContentBuilder.append("</title>");
-        htmlContentBuilder.append(
-                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
-        htmlContentBuilder.append("</head><body>");
-        htmlContentBuilder.append(lang.getString("noAuthorizationURLLabel"));
-        htmlContentBuilder.append("</body></html>");
+            htmlContentBuilder.append(
+                    "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" ");
+            htmlContentBuilder.append(
+                    "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
+            htmlContentBuilder.append(
+                    "<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><title>");
+            htmlContentBuilder.append(blogTitle);
+            htmlContentBuilder.append("</title>");
+            htmlContentBuilder.append(
+                    "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />");
+            htmlContentBuilder.append("</head><body>");
+            htmlContentBuilder.append(lang.getString("noAuthorizationURLLabel"));
+            htmlContentBuilder.append("</body></html>");
 
-        return htmlContentBuilder.toString();
+            return htmlContentBuilder.toString();
+        } catch (final Exception e) {
+            throw new ServletException(e);
+        }
     }
 }

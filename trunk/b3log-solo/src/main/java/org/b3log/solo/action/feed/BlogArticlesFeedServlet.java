@@ -35,7 +35,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Oct 20, 2010
+ * @version 1.0.0.9, Nov 8, 2010
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -61,6 +61,11 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
      */
     private Factory feedFactory = Abdera.getNewFactory();
     /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
+    /**
      * Count of output entry.
      */
     public static final int ENTRY_OUTPUT_CNT = 10;
@@ -74,8 +79,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
 
         final Feed feed = feedFactory.newFeed();
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
                     Preference.BLOG_SUBTITLE);

@@ -33,13 +33,14 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
 /**
  * Abstract admin action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 18, 2010
+ * @version 1.0.0.1, Nov 8, 2010
  */
 public abstract class AbstractAdminAction extends AbstractAction {
 
@@ -61,6 +62,11 @@ public abstract class AbstractAdminAction extends AbstractAction {
      * FreeMarker configuration.
      */
     private Configuration configuration;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     @Override
     public void init() throws ServletException {
@@ -83,8 +89,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(

@@ -31,8 +31,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
 /**
@@ -63,10 +62,10 @@ public final class IndexAction extends AbstractCacheablePageAction {
     @Inject
     private Filler filler;
     /**
-     * Statistic utilities.
+     * Preference utilities.
      */
     @Inject
-    private Statistics statistics;
+    private PreferenceUtils preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -81,8 +80,7 @@ public final class IndexAction extends AbstractCacheablePageAction {
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(

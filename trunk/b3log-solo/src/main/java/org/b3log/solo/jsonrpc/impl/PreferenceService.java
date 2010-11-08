@@ -32,10 +32,11 @@ import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
-import org.b3log.solo.model.Preference;
+import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Nov 4, 2010
+ * @version 1.0.1.2, Nov 8, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -63,6 +64,11 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Skins skins;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     /**
      * Gets preference.
@@ -104,10 +110,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
-
-            ret.put(Preference.PREFERENCE, preference);
+            final JSONObject preference = preferenceUtils.getPreference();
+            ret.put(PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_PREFERENCE_SUCC);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
@@ -169,7 +173,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
         try {
             final JSONObject preference =
-                    requestJSONObject.getJSONObject(Preference.PREFERENCE);
+                    requestJSONObject.getJSONObject(PREFERENCE);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             final String skinName = skins.getSkinName(skinDirName);
@@ -186,22 +190,22 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             }
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
-            LOGGER.log(Level.INFO, "Skin path[{0}]", skinPath);
+            LOGGER.log(Level.FINE, "Skin path[{0}]", skinPath);
             Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                     new File(skinPath));
 
             preference.put(Skin.SKINS, skinArray.toString());
 
             final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
+                    LOCALE_STRING);
             if ("zh_CN".equals(localeString)) {
                 Templates.CONFIGURATION.setTimeZone(
                         TimeZone.getTimeZone("Asia/Shanghai"));
             }
 
-            final String blogHost = preference.getString(Preference.BLOG_HOST).
+            final String blogHost = preference.getString(BLOG_HOST).
                     toLowerCase().trim(); // blog host check
-            LOGGER.log(Level.INFO, "Blog Host[{0}]", blogHost);
+            LOGGER.log(Level.FINE, "Blog Host[{0}]", blogHost);
             final boolean containColon = blogHost.contains(":");
             final boolean containScheme = blogHost.contains("http://");
             final boolean containSlash = blogHost.contains("/");
@@ -212,9 +216,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
-
-            preferenceRepository.update(Preference.PREFERENCE, preference);
-            SoloServletListener.setUserPreference(preference);
+            preferenceRepository.update(PREFERENCE, preference);
+            preferenceUtils.setPreference(preference);
 
             PageCaches.removeAll();
 

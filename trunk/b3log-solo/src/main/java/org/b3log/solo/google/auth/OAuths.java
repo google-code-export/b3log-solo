@@ -22,10 +22,11 @@ import com.google.api.client.auth.oauth.OAuthParameters;
 import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetAccessToken;
 import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetTemporaryToken;
 import com.google.api.client.http.HttpTransport;
+import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
 /**
@@ -58,6 +59,11 @@ public final class OAuths {
      * Credentials.
      */
     private static OAuthCredentialsResponse credentials;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private static PreferenceUtils preferenceUtils;
 
     /**
      * Gets the Buzz authorization URL for the specified http transport.
@@ -69,8 +75,9 @@ public final class OAuths {
     public static String getBuzzAuthorizationURL(
             final HttpTransport httpTransport,
             final String consumerSecret) {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+
         try {
+            final JSONObject preference = preferenceUtils.getPreference();
             final String blogHost = preference.getString(Preference.BLOG_HOST);
             final String consumerKey = blogHost.split(":")[0];
 
@@ -119,7 +126,7 @@ public final class OAuths {
                             final String verifier,
                             final HttpTransport httpTransport)
             throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final String consumerKey = preference.getString(Preference.BLOG_HOST).
                 split(":")[0];
         final GoogleOAuthGetAccessToken accessToken =

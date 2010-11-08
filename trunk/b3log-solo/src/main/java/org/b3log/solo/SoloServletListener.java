@@ -115,10 +115,6 @@ public final class SoloServletListener extends AbstractServletListener {
     public static final Map<String, Image> CAPTCHAS =
             new HashMap<String, Image>();
     /**
-     * Preference cache.
-     */
-    private static Cache<String, Object> userPreferenceCache;
-    /**
      * B3log Rhythm address.
      */
     public static final String B3LOG_RHYTHM_ADDRESS =
@@ -142,31 +138,6 @@ public final class SoloServletListener extends AbstractServletListener {
         EN_MONTHS.put("10", "October");
         EN_MONTHS.put("11", "November");
         EN_MONTHS.put("12", "December");
-    }
-
-    /**
-     * Sets the user preference with the specified preference.
-     * 
-     * @param preference the specified preference
-     */
-    public static synchronized void setUserPreference(
-            final JSONObject preference) {
-        userPreferenceCache.put(PREFERENCE, preference.toString());
-    }
-
-    /**
-     * Gets user preference.
-     *
-     * @return user preference
-     */
-    public static synchronized JSONObject getUserPreference() {
-        try {
-            // FIXME: NPE
-            return new JSONObject(userPreferenceCache.get(PREFERENCE).toString());
-        } catch (final JSONException e) {
-            LOGGER.severe(e.getMessage());
-            throw new RuntimeException("Get user preference error!");
-        }
     }
 
     /**
@@ -390,9 +361,6 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void initPreference() {
         LOGGER.info("Loading preference....");
-        if (null == userPreferenceCache) {
-            userPreferenceCache = CacheFactory.getCache(PREFERENCE);
-        }
 
         try {
             final Injector injector = getInjector();
@@ -442,7 +410,10 @@ public final class SoloServletListener extends AbstractServletListener {
                                           userPreference));
 
             preferenceRepository.update(preferenceId, userPreference);
-            setUserPreference(userPreference);
+
+            final Cache<String, Object> userPreferenceCache =
+                    CacheFactory.getCache(PREFERENCE);
+            userPreferenceCache.put(PREFERENCE, userPreference.toString());
 
             LOGGER.log(Level.INFO, "Loaded preference[{0}]",
                        userPreference.toString(JSON_PRINT_INDENT_FACTOR));

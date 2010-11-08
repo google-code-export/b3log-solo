@@ -43,8 +43,8 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
+import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Sep 7, 2010
+ * @version 1.0.1.0, Nov 8, 2010
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -101,6 +101,11 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -111,8 +116,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
 
         try {
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(

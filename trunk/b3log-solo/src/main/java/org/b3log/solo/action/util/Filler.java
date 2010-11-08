@@ -43,6 +43,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,7 +51,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Oct 26, 2010
+ * @version 1.0.1.4, Nov 8, 2010
  */
 public final class Filler {
 
@@ -94,6 +95,11 @@ public final class Filler {
      */
     @Inject
     private ArchiveDateUtils archiveDateUtils;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     /**
      * Fills articles in index.ftl.
@@ -106,7 +112,7 @@ public final class Filler {
     public void fillIndexArticles(final Map<String, Object> dataModel,
                                   final int currentPageNum)
             throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
 
         final int pageSize =
                 preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -170,7 +176,7 @@ public final class Filler {
      */
     public void fillMostUsedTags(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final int mostUsedTagDisplayCnt =
                 preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
 
@@ -190,7 +196,7 @@ public final class Filler {
             throws Exception {
         final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
         final JSONObject preference =
-                SoloServletListener.getUserPreference();
+                preferenceUtils.getPreference();
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         final String language = Locales.getLanguage(localeString);
@@ -222,7 +228,7 @@ public final class Filler {
      */
     public void fillMostViewCountArticles(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostViewCountArticles =
@@ -240,7 +246,7 @@ public final class Filler {
      */
     public void fillMostCommentArticles(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostCommentArticles =
@@ -258,7 +264,7 @@ public final class Filler {
      */
     public void fillRecentArticles(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final int recentArticleDisplayCnt =
                 preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
 
@@ -276,7 +282,7 @@ public final class Filler {
      */
     public void fillRecentComments(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final int recentCommentDisplayCnt =
                 preference.getInt(Preference.RECENT_COMMENT_DISPLAY_CNT);
 
@@ -294,7 +300,7 @@ public final class Filler {
      */
     public void fillBlogFooter(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final String adminGmail = preference.getString(Preference.ADMIN_GMAIL);
         LOGGER.log(Level.FINER, "Current user[userId={0}]", adminGmail);
         dataModel.put(User.USER_EMAIL, adminGmail);
@@ -314,7 +320,7 @@ public final class Filler {
      */
     public void fillBlogHeader(final Map<String, Object> dataModel)
             throws Exception {
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         dataModel.put(Preference.LOCALE_STRING,
                       preference.getString(Preference.LOCALE_STRING));
         dataModel.put(Preference.BLOG_TITLE,
@@ -347,7 +353,7 @@ public final class Filler {
         fillMostViewCountArticles(dataModel);
         fillArchiveDates(dataModel);
 
-        final JSONObject preference = SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final String noticeBoard =
                 preference.getString(Preference.NOTICE_BOARD);
         dataModel.put(Preference.NOTICE_BOARD, noticeBoard);

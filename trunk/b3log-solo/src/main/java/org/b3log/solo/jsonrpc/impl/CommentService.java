@@ -54,13 +54,13 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Google;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.ArticleUtils;
 import org.b3log.solo.util.PageUtils;
+import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Nov 5, 2010
+ * @version 1.0.2.3, Nov 8, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -146,6 +146,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             + "{articleOrPageURL}\">" + "{title}</a>]"
             + " received a new comment [<a href=\"{commentSharpURL}\">"
             + "{commentContent}</a>]";
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     /**
      * Gets recent comments with the specified http servlet request and response.
@@ -177,8 +182,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         try {
             final String requestHost =
                     request.getServerName() + ":" + request.getServerPort();
-            final JSONObject preference =
-                    SoloServletListener.getUserPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             final String configuredHost = preference.getString(
                     Preference.BLOG_HOST);
             LOGGER.log(Level.FINEST, "Request[host={0}], configured[host={1}]",
@@ -616,8 +620,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String commentId = comment.getString(Keys.OBJECT_ID);
         final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
-        final JSONObject preference =
-                SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final String adminEmail = preference.getString(Preference.ADMIN_GMAIL);
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
             LOGGER.log(Level.FINE,
@@ -925,8 +928,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     private String getCommentSharpURLForArticle(final JSONObject article,
                                                 final String commentId)
             throws JSONException {
-        final JSONObject preference =
-                SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final String blogHost = preference.getString(Preference.BLOG_HOST);
         final String articleLink = "http://" + blogHost + article.getString(
                 Article.ARTICLE_PERMALINK);
@@ -944,8 +946,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     private String getCommentSharpURLForPage(final JSONObject page,
                                              final String commentId)
             throws JSONException {
-        final JSONObject preference =
-                SoloServletListener.getUserPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
         final String blogHost = preference.getString(Preference.BLOG_HOST);
         final String pageId = page.getString(Keys.OBJECT_ID);
 
