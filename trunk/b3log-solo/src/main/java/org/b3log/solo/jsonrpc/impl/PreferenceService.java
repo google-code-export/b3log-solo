@@ -216,7 +216,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
-            preferenceRepository.update(PREFERENCE, preference);
             preferenceUtils.setPreference(preference);
 
             PageCaches.removeAll();

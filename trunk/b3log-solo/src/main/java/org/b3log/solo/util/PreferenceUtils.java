@@ -84,8 +84,11 @@ public final class PreferenceUtils {
      *
      * @param preference the specified preference
      * @throws JSONException json exception
+     * @throws RepositoryException repository exception
      */
-    public void setPreference(final JSONObject preference) throws JSONException {
+    public void setPreference(final JSONObject preference)
+            throws JSONException, RepositoryException {
         userPreferenceCache.put(PREFERENCE, preference.toString());
+        preferenceRepository.update(PREFERENCE, preference);
     }
 }
