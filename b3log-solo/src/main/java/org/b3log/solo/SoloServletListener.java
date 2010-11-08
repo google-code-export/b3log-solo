@@ -65,6 +65,7 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.sync.SyncModule;
 import org.b3log.solo.upgrade.UpgradeModule;
+import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONArray;
@@ -429,7 +430,18 @@ public final class SoloServletListener extends AbstractServletListener {
     @Override
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
-        // TODO: flush cache to repository
+
+        try {
+            final Injector injector = getInjector();
+            final PreferenceUtils preferenceUtils =
+                    injector.getInstance(PreferenceUtils.class);
+            // Flush cache to repository
+            final JSONObject preference = preferenceUtils.getPreference();
+            preferenceUtils.setPreference(preference);
+
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
 
         LOGGER.info("Destroyed the context");
     }
