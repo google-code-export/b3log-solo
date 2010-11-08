@@ -429,6 +429,7 @@ public final class SoloServletListener extends AbstractServletListener {
     @Override
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
+        // TODO: flush cache to repository
 
         LOGGER.info("Destroyed the context");
     }
