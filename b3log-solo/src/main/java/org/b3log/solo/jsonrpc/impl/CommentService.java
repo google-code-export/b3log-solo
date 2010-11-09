@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Nov 8, 2010
+ * @version 1.0.2.4, Nov 9, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -928,10 +928,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     private String getCommentSharpURLForArticle(final JSONObject article,
                                                 final String commentId)
             throws JSONException {
-        final JSONObject preference = preferenceUtils.getPreference();
-        final String blogHost = preference.getString(Preference.BLOG_HOST);
-        final String articleLink = "http://" + blogHost + article.getString(
-                Article.ARTICLE_PERMALINK);
+        final String articleLink = article.getString(Article.ARTICLE_PERMALINK);
+
         return articleLink + "#" + commentId;
     }
 
@@ -946,11 +944,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     private String getCommentSharpURLForPage(final JSONObject page,
                                              final String commentId)
             throws JSONException {
-        final JSONObject preference = preferenceUtils.getPreference();
-        final String blogHost = preference.getString(Preference.BLOG_HOST);
         final String pageId = page.getString(Keys.OBJECT_ID);
 
-        return "http://" + blogHost + "/page.do?oId=" + pageId
-               + "#" + commentId;
+        return "/page.do?oId=" + pageId + "#" + commentId;
     }
 }
