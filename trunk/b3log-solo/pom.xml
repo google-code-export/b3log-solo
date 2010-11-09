@@ -38,7 +38,7 @@
         <com.google.api.client.version>1.1.1-alpha</com.google.api.client.version>
         <oauth.signpost.version>1.2.1.1</oauth.signpost.version>
         <!-- maven plugin -->
-        <maven-license-plugin.version>1.6.0</maven-license-plugin.version>
+        <maven-license-plugin.version>1.8.0</maven-license-plugin.version>
         <maven-checkstyle-plugin.version>2.5</maven-checkstyle-plugin.version>
         <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
         <maven-gae-plugin.version>0.7.2</maven-gae-plugin.version>
@@ -277,10 +277,11 @@
                 <version>${maven-license-plugin.version}</version>
                 <configuration>
                     <basedir>${basedir}</basedir>
-                    <header>etc/header.txt</header>
+                    <header>src/main/resources/etc/header.txt</header>
                     <quiet>false</quiet>
                     <failIfMissing>true</failIfMissing>
                     <aggregate>true</aggregate>
+                    <strictCheck>true</strictCheck>
                     <includes>
                         <include>**/src/*/java/**/*.java</include>
                         <include>**/src/*/webapp/js/*.js</include>
@@ -319,7 +320,7 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>${maven-checkstyle-plugin.version}</version>
                 <configuration>
-                    <configLocation>${basedir}/etc/beyondtrack_checks.xml</configLocation>
+                    <configLocation>${basedir}/src/main/resources/etc/beyondtrack_checks.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <excludes>
                     freemarker/core/TextBlock.java
