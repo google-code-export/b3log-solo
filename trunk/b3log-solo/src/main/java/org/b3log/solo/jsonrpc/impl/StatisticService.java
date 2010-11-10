@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -31,7 +30,7 @@ import org.json.JSONObject;
  * Statistic service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 30, 2010
+ * @version 1.0.0.2, Nov 10, 2010
  */
 public final class StatisticService extends AbstractGAEJSONRpcService {
 
@@ -108,21 +107,6 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
-        }
-    }
-
-    /**
-     * Gets view count for an article specified by the given article id.
-     * .
-     * @param articleId the given article id
-     * @return article view count
-     */
-    public int getArticleViewCount(final String articleId) {
-        try {
-            return articleUtils.getArticleViewCount(articleId);
-        } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-            return 0;
         }
     }
 }
