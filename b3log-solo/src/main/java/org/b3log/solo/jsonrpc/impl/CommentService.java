@@ -170,8 +170,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      *         "commentDate": "",
      *      }, ....]
      *     "sc": "GET_COMMENTS_SUCC"
-     * }, returns {@code null} if the request host(request server name and port)
-     * is not as the same as the configured blog host
+     * }
      * </pre>
      * @throws ActionException action exception
      * @throws IOException io exception
@@ -181,19 +180,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         try {
-            final String requestHost =
-                    request.getServerName() + ":" + request.getServerPort();
             final JSONObject preference = preferenceUtils.getPreference();
-            final String configuredHost = preference.getString(
-                    Preference.BLOG_HOST);
-            LOGGER.log(Level.FINEST, "Request[host={0}], configured[host={1}]",
-                       new Object[]{requestHost, configuredHost});
-            if (!requestHost.equals(configuredHost)) {
-                LOGGER.log(Level.WARNING, "Unauthorized request[host={0}]",
-                           requestHost);
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                return null;
-            }
 
             final int fetchSize = preference.getInt(
                     Preference.RECENT_COMMENT_DISPLAY_CNT);
