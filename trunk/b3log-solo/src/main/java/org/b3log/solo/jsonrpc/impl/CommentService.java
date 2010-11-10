@@ -144,7 +144,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     private static final String COMMENT_MAIL_HTML_BODY =
             "{articleOrPage} [<a href=\""
             + "{articleOrPageURL}\">" + "{title}</a>]"
-            + " received a new comment [<a href=\"{commentSharpURL}\">"
+            + " received a new comment [<a href=\"http://{commentSharpURL}\">"
             + "{commentContent}</a>]";
     /**
      * Preference utilities.
@@ -666,7 +666,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 "{articleOrPageURL}", articleOrPageURL).
                 replace("{title}", title).
                 replace("{commentContent}", commentContent).
-                replace("{commentSharpURL}", commentSharpURL);
+                replace("{commentSharpURL}", blogHost + commentSharpURL);
         message.setHtmlBody(mailBody);
         LOGGER.log(Level.FINER,
                    "Sending a mail[mailSubject={0}, mailBody=[{1}] to admins",
