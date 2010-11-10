@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
@@ -39,7 +38,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 30, 2010
+ * @version 1.0.0.6, Nov 10, 2010
  */
 public final class ArticleUtils {
 
@@ -111,21 +110,6 @@ public final class ArticleUtils {
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt - 1);
         articleRepository.update(articleId, newArticle);
-    }
-
-    /**
-     * Gets article view count1 for an article specified by the given article id.
-     *
-     * @param articleId the given article id
-     * @return article view count
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public int getArticleViewCount(final String articleId)
-            throws JSONException, RepositoryException {
-        final JSONObject article = articleRepository.get(articleId);
-
-        return article.getInt(Article.ARTICLE_VIEW_COUNT);
     }
 
     /**
