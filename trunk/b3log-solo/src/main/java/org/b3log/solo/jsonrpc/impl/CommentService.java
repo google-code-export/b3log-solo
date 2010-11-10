@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -70,7 +69,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Nov 9, 2010
+ * @version 1.0.2.6, Nov 10, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -663,7 +662,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         }
 
         message.setSubject(mailSubject);
-        mailBody = COMMENT_MAIL_HTML_BODY.replace(
+        mailBody = mailBody.replace(
                 "{articleOrPageURL}", articleOrPageURL).
                 replace("{title}", title).
                 replace("{commentContent}", commentContent).
