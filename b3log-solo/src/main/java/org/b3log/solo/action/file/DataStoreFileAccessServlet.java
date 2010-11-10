@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 4, 2010
+ * @version 1.0.0.3, Nov 11, 2010
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -73,6 +73,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         final ServletFileUpload upload = new ServletFileUpload();
         FileItemIterator iterator = null;
 
@@ -132,6 +133,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         final String id = request.getParameter(Keys.OBJECT_ID);
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -145,8 +147,13 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
 
             final Blob content = (Blob) file.get(File.FILE_CONTENT);
             final String name = file.getString(File.FILE_NAME);
+            String charset = "ISO-8859-1";
+            if (request.getLocale().getLanguage().equals("zh")) {
+                charset = "GBK";
+            }
             response.addHeader("Content-Disposition",
-                               "attachment; filename=" + name);
+                               "attachment; filename="
+                               + new String(name.getBytes(charset), "ISO-8859-1"));
             response.setContentType(file.getString(File.FILE_CONTENT_TYPE));
             response.getOutputStream().write(content.getBytes());
             response.getOutputStream().close();
