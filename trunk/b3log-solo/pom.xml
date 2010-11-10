@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.2.6, Nov 9, 2010
+    Version: 1.0.2.7, Nov 10, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -318,7 +318,7 @@
                     <execution>
                         <phase>compile</phase>
                         <goals>
-                            <goal>check</goal>
+                            <goal>format</goal>
                         </goals>
                     </execution>
                 </executions>
