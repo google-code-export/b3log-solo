@@ -90,6 +90,17 @@ public final class PreferenceUtils {
             if (null == preferenceString) {
                 LOGGER.info("Load preference from datastore");
                 ret = preferenceRepository.get(PREFERENCE);
+                final int numRetries = 5; // Number retries to get preference from datastore
+                final int sleep = 50;
+                for (int i = 0; i < numRetries && null == ret; i++) {
+                    ret = preferenceRepository.get(PREFERENCE);
+                    try {
+                        Thread.sleep(sleep);
+                    } catch (final InterruptedException e) {
+                        LOGGER.severe(e.getMessage());
+                    }
+                }
+
                 if (null == ret) {
                     ret = initPreference();
                 }
@@ -198,7 +209,9 @@ public final class PreferenceUtils {
      */
     private void loadSkins(final JSONObject preference) throws JSONException {
         LOGGER.info("Loading skins....");
-        final String skinDirName = DefaultPreference.DEFAULT_SKIN_DIR_NAME;
+        final String skinDirName =
+                preference.optString(SKIN_DIR_NAME,
+                                     DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         preference.put(SKIN_DIR_NAME, skinDirName);
 
         final String skinName = skins.getSkinName(skinDirName);

@@ -73,6 +73,17 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
         try {
             ret = statisticRepository.get(Statistic.STATISTIC);
 
+            final int numRetries = 5; // Number retries to get statistic from datastore
+            final int sleep = 50;
+            for (int i = 0; i < numRetries && null == ret; i++) {
+                ret = statisticRepository.get(Statistic.STATISTIC);
+                try {
+                    Thread.sleep(sleep);
+                } catch (final InterruptedException e) {
+                    LOGGER.severe(e.getMessage());
+                }
+            }
+
             if (null == ret) {
                 ret = statistics.initStatistic();
             }
