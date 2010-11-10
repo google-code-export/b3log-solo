@@ -16,8 +16,12 @@
 
 package org.b3log.solo.util;
 
+import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
+import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.json.JSONException;
@@ -27,15 +31,44 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 26, 2010
+ * @version 1.0.0.2, Nov 10, 2010
  */
 public final class Statistics {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(Statistics.class.getName());
     /**
      * Statistic repository.
      */
     @Inject
     private StatisticRepository statisticRepository;
+
+    /**
+     * Initializes statistic.
+     *
+     * @return statistic
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    public JSONObject initStatistic() throws RepositoryException,
+                                             JSONException {
+        LOGGER.info("Initializing blog statistic....");
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.OBJECT_ID, Statistic.STATISTIC);
+        ret.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 0);
+        ret.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, 0);
+        ret.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 0);
+        statisticRepository.add(ret);
+        transaction.commit();
+        LOGGER.info("Initialized blog statistic");
+
+        return ret;
+    }
 
     /**
      * Get blog comment count.
@@ -46,8 +79,12 @@ public final class Statistics {
      */
     public int getBlogCommentCount()
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
+        JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            statistic = initStatistic();
+        }
+
         return statistic.getInt(
                 Statistic.STATISTIC_BLOG_COMMENT_COUNT);
     }
@@ -61,8 +98,12 @@ public final class Statistics {
      */
     public void setBlogCommentCount(final int count)
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
+        JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            statistic = initStatistic();
+        }
+
         statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
                       count);
         statisticRepository.update(Statistic.STATISTIC, statistic);
@@ -77,8 +118,12 @@ public final class Statistics {
      */
     public int getBlogArticleCount()
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
+        JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            statistic = initStatistic();
+        }
+
         return statistic.getInt(Statistic.STATISTIC_BLOG_ARTICLE_COUNT);
     }
 
@@ -91,8 +136,12 @@ public final class Statistics {
      */
     public void setBlogArticleCount(final int count)
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
+        JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            statistic = initStatistic();
+        }
+
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
                       count);
         statisticRepository.update(Statistic.STATISTIC, statistic);
@@ -106,8 +155,12 @@ public final class Statistics {
      */
     public void incBlogViewCount()
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
+        JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            statistic = initStatistic();
+        }
+
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_BLOG_VIEW_COUNT) + 1);
@@ -122,8 +175,12 @@ public final class Statistics {
      */
     public void incBlogArticleCount()
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
+        JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            statistic = initStatistic();
+        }
+
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_BLOG_ARTICLE_COUNT) + 1);
@@ -138,8 +195,12 @@ public final class Statistics {
      */
     public void decBlogArticleCount()
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
+        JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            statistic = initStatistic();
+        }
+
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_BLOG_ARTICLE_COUNT) - 1);
@@ -154,8 +215,11 @@ public final class Statistics {
      */
     public void incBlogCommentCount()
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
+        JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            statistic = initStatistic();
+        }
         statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_BLOG_COMMENT_COUNT) + 1);
@@ -170,8 +234,12 @@ public final class Statistics {
      */
     public void decBlogCommentCount()
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
+        JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            statistic = initStatistic();
+        }
+
         statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_BLOG_COMMENT_COUNT) - 1);

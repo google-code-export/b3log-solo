@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -71,6 +72,10 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
         JSONObject ret = null;
         try {
             ret = statisticRepository.get(Statistic.STATISTIC);
+
+            if (null == ret) {
+                ret = statistics.initStatistic();
+            }
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
         }

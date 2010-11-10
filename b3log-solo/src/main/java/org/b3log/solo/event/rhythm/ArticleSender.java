@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending articles to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 1, 2010
+ * @version 1.0.0.5, Nov 10, 2010
  */
 public final class ArticleSender
         extends AbstractEventListener<JSONObject> {
@@ -104,7 +104,7 @@ public final class ArticleSender
                     data.getJSONObject(Article.ARTICLE);
             final JSONObject preference = preferenceUtils.getPreference();
             final String blogHost = preference.getString(Preference.BLOG_HOST);
-            if (SoloServletListener.DefaultPreference.DEFAULT_BLOG_HOST.equals(
+            if (PreferenceUtils.DefaultPreference.DEFAULT_BLOG_HOST.equals(
                     blogHost)) {
                 LOGGER.log(Level.INFO,
                            "Blog Solo runs on local server, so should not send "
