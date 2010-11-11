@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action;
 
 import com.google.inject.Scopes;
@@ -35,6 +34,7 @@ import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.auth.AuthFilter;
 import org.b3log.solo.action.google.BuzzOAuthCallback;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
+import org.b3log.solo.action.impl.InitAction;
 import org.b3log.solo.action.impl.PageAction;
 import org.b3log.solo.google.auth.OAuths;
 
@@ -60,6 +60,9 @@ public final class ActionModule extends AbstractActionModule {
 
         bind(AuthFilter.class).in(Scopes.SINGLETON);
         filter("/admin-index.do").through(AuthFilter.class);
+
+        bind(InitAction.class).in(Scopes.SINGLETON);
+        serve("/init.do").with(InitAction.class);
 
         bind(AdminIndexAction.class).in(Scopes.SINGLETON);
         serve("/admin-index.do").with(AdminIndexAction.class);
