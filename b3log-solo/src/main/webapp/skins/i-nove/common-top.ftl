@@ -14,7 +14,7 @@
 </div>
 <script type="text/javascript">
     var adminLogin = function () {
-        var loginURL = jsonRpc.adminService.getLoginURL();
+        var loginURL = jsonRpc.adminService.getLoginURL("/admin-index.do");
         window.location.href = loginURL;
     }
 
