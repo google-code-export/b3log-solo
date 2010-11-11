@@ -14,7 +14,7 @@
 {{{
 dev_appserver.cmd ${solo.war}
 }}}
-等启动完毕后，在浏览器中访问：[http://localhost:8080]
+等启动完毕后，在浏览器中访问：[http://localhost:8080/init.do]
 
 _注_：
 在本地测试环境下可能
