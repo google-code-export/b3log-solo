@@ -25,7 +25,7 @@
                     for (var i = 0; i < articles.length; i++) {
                         articleData[i] = {};
                         articleData[i].tags = "<div title='" + articles[i].articleTags + "'>" + articles[i].articleTags + "</div>";
-                        articleData[i].title = "<a href='article-detail.do?oId=" + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle + "' class='noUnderline'>"
+                        articleData[i].title = "<a href='" + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle + "' class='noUnderline'>"
                             + articles[i].articleTitle + "</a>";
                         articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                         articleData[i].update = "<div class='updateIcon'></div>";
