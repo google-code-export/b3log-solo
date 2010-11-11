@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import org.b3log.latke.repository.RepositoryException;
@@ -211,7 +210,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
     /**
      * Initializes B3log Solo.
-     *
+     * 
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws ActionException action exception
+     * @throws IOException io exception
      * @return for example,
      * <pre>
      * {
@@ -219,7 +222,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * }
      * </pre>
      */
-    public JSONObject init() {
+    public JSONObject init(final HttpServletRequest request,
+                           final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
         final JSONObject ret = new JSONObject();
 
         try {
