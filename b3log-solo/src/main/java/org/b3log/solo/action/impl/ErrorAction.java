@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.action.impl;
 
 import java.util.ArrayList;
@@ -69,8 +70,7 @@ public final class ErrorAction extends AbstractAction {
             final JSONObject preference = new JSONObject(preferenceString.
                     toString());
             if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND,
-                                   "Please init B3log Solo first");
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST);
