@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import java.util.ArrayList;
@@ -67,9 +66,12 @@ public final class ErrorAction extends AbstractAction {
                     CacheFactory.getCache(Preference.PREFERENCE);
             final Object preferenceString =
                     userPreferenceCache.get(Preference.PREFERENCE);
-            // XXX: preference string may be null
             final JSONObject preference = new JSONObject(preferenceString.
                     toString());
+            if (null == preference) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND,
+                                   "Please init B3log Solo first");
+            }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST);
             final String localeString = preference.getString(
