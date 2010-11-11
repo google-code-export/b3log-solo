@@ -13,16 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import java.io.File;
+import java.io.IOException;
 import org.b3log.latke.action.ActionException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractAction;
+import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
 /**
@@ -42,6 +47,10 @@ public final class InitAction extends AbstractAction {
      */
     private static final Logger LOGGER =
             Logger.getLogger(InitAction.class.getName());
+    /**
+     * FreeMarker configuration.
+     */
+    private Configuration configuration;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -59,5 +68,32 @@ public final class InitAction extends AbstractAction {
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void init() throws ServletException {
+        configuration = new Configuration();
+        configuration.setDefaultEncoding("UTF-8");
+        try {
+            final String webRootPath = SoloServletListener.getWebRoot();
+
+            configuration.setDirectoryForTemplateLoading(new File(webRootPath));
+        } catch (final IOException e) {
+            LOGGER.severe(e.getMessage());
+        }
+    }
+
+    @Override
+    protected Template beforeDoFreeMarkerAction(
+            final HttpServletRequest request, final HttpServletResponse response)
+            throws ActionException {
+        final String pageName = getPageName(request.getRequestURI());
+
+        try {
+            return configuration.getTemplate(pageName);
+        } catch (final IOException e) {
+            LOGGER.severe(e.getMessage());
+            throw new ActionException(e);
+        }
     }
 }
