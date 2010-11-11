@@ -95,6 +95,7 @@ public final class PageAction extends AbstractCacheablePageAction {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return ret;
             }
             
             final String localeString = preference.getString(

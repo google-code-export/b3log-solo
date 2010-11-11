@@ -115,6 +115,7 @@ public final class BlobStoreFileAccessServlet extends HttpServlet {
                 final JSONObject preference = preferenceUtils.getPreference();
                 if (null == preference) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    return;
                 }
                 
                 final String host = "http://" + preference.getString(
