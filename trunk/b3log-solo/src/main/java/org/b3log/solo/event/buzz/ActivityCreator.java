@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.buzz;
 
 import com.google.api.client.googleapis.GoogleUrl;
@@ -115,6 +114,10 @@ public final class ActivityCreator
             }
 
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+               throw new EventException("Not found preference");
+            }
+
             final boolean postToBuzzEnabled =
                     preference.getBoolean(Preference.ENABLE_POST_TO_BUZZ);
             if (!postToBuzzEnabled) {
@@ -179,6 +182,10 @@ public final class ActivityCreator
      */
     private JsonCContent toContent(final JSONObject article) throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         final JsonCContent ret = new JsonCContent();
         final Map<String, Object> data = new HashMap<String, Object>();
         data.put("title", preference.getString(Preference.BLOG_TITLE));

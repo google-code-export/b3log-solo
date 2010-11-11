@@ -13,15 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.util.logging.Logger;
-import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.json.JSONException;
@@ -47,30 +43,6 @@ public final class Statistics {
     private StatisticRepository statisticRepository;
 
     /**
-     * Initializes statistic.
-     *
-     * @return statistic
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
-     */
-    public JSONObject initStatistic() throws RepositoryException,
-                                             JSONException {
-        LOGGER.info("Initializing blog statistic....");
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
-        ret.put(Keys.OBJECT_ID, Statistic.STATISTIC);
-        ret.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 0);
-        ret.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, 0);
-        ret.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 0);
-        statisticRepository.add(ret);
-        transaction.commit();
-        LOGGER.info("Initialized blog statistic");
-
-        return ret;
-    }
-
-    /**
      * Get blog comment count.
      *
      * @return blog comment count
@@ -82,7 +54,7 @@ public final class Statistics {
         JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
-            statistic = initStatistic();
+            throw new RepositoryException("Not found statistic");
         }
 
         return statistic.getInt(
@@ -101,7 +73,7 @@ public final class Statistics {
         JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
-            statistic = initStatistic();
+            throw new RepositoryException("Not found statistic");
         }
 
         statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
@@ -121,7 +93,7 @@ public final class Statistics {
         JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
-            statistic = initStatistic();
+            throw new RepositoryException("Not found statistic");
         }
 
         return statistic.getInt(Statistic.STATISTIC_BLOG_ARTICLE_COUNT);
@@ -139,7 +111,7 @@ public final class Statistics {
         JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
-            statistic = initStatistic();
+            throw new RepositoryException("Not found statistic");
         }
 
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
@@ -158,7 +130,7 @@ public final class Statistics {
         JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
-            statistic = initStatistic();
+            throw new RepositoryException("Not found statistic");
         }
 
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT,
@@ -178,7 +150,7 @@ public final class Statistics {
         JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
-            statistic = initStatistic();
+            throw new RepositoryException("Not found statistic");
         }
 
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
@@ -198,7 +170,7 @@ public final class Statistics {
         JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
-            statistic = initStatistic();
+            throw new RepositoryException("Not found statistic");
         }
 
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
@@ -218,7 +190,7 @@ public final class Statistics {
         JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
-            statistic = initStatistic();
+            throw new RepositoryException("Not found statistic");
         }
         statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
                       statistic.getInt(
@@ -237,7 +209,7 @@ public final class Statistics {
         JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
-            statistic = initStatistic();
+            throw new RepositoryException("Not found statistic");
         }
 
         statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,

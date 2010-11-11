@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.util;
 
 import com.google.inject.Inject;
@@ -114,6 +113,9 @@ public final class Filler {
                                   final int currentPageNum)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
 
         final int pageSize =
                 preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -178,6 +180,10 @@ public final class Filler {
     public void fillMostUsedTags(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         final int mostUsedTagDisplayCnt =
                 preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
 
@@ -196,8 +202,11 @@ public final class Filler {
     public void fillArchiveDates(final Map<String, Object> dataModel)
             throws Exception {
         final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
-        final JSONObject preference =
-                preferenceUtils.getPreference();
+        final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         final String language = Locales.getLanguage(localeString);
@@ -230,6 +239,10 @@ public final class Filler {
     public void fillMostViewCountArticles(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostViewCountArticles =
@@ -248,6 +261,10 @@ public final class Filler {
     public void fillMostCommentArticles(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostCommentArticles =
@@ -266,6 +283,10 @@ public final class Filler {
     public void fillRecentArticles(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         final int recentArticleDisplayCnt =
                 preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
 
@@ -284,6 +305,10 @@ public final class Filler {
     public void fillRecentComments(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         final int recentCommentDisplayCnt =
                 preference.getInt(Preference.RECENT_COMMENT_DISPLAY_CNT);
 
@@ -302,6 +327,10 @@ public final class Filler {
     public void fillBlogFooter(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         final String adminGmail = preference.getString(Preference.ADMIN_GMAIL);
         LOGGER.log(Level.FINER, "Current user[userId={0}]", adminGmail);
         dataModel.put(User.USER_EMAIL, adminGmail);
@@ -322,6 +351,10 @@ public final class Filler {
     public void fillBlogHeader(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         dataModel.put(Preference.LOCALE_STRING,
                       preference.getString(Preference.LOCALE_STRING));
         dataModel.put(Preference.BLOG_TITLE,
@@ -355,6 +388,10 @@ public final class Filler {
         fillArchiveDates(dataModel);
 
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
         final String noticeBoard =
                 preference.getString(Preference.NOTICE_BOARD);
         dataModel.put(Preference.NOTICE_BOARD, noticeBoard);

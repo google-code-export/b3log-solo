@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action;
 
 /**
@@ -160,4 +159,8 @@ public enum StatusCodes {
      * Indicates update a file successfully.
      */
     UPDATE_FILE_SUCC,
+    /**
+     * Indicates initializes B3log Solo successfully.
+     */
+    INIT_B3LOG_SOLO_SUCC,
 }

@@ -66,27 +66,12 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
      *     "statisticBlogCommentCount": int,
      *     "statisticBlogArticleCount": int
      * }
-     * </pre>
+     * </pre>, returns {@code null} if not found
      */
     public JSONObject getBlogStatistic() {
         JSONObject ret = null;
         try {
             ret = statisticRepository.get(Statistic.STATISTIC);
-
-            final int numRetries = 5; // Number retries to get statistic from datastore
-            final int sleep = 50;
-            for (int i = 0; i < numRetries && null == ret; i++) {
-                ret = statisticRepository.get(Statistic.STATISTIC);
-                try {
-                    Thread.sleep(sleep);
-                } catch (final InterruptedException e) {
-                    LOGGER.severe(e.getMessage());
-                }
-            }
-
-            if (null == ret) {
-                ret = statistics.initStatistic();
-            }
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
         }

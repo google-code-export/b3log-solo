@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -130,6 +129,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     public List<JSONObject> getRandomArticles() throws ActionException {
         try {
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                throw new ActionException("Not found preference");
+            }
+
             final int displayCnt =
                     preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
             final List<JSONObject> ret =

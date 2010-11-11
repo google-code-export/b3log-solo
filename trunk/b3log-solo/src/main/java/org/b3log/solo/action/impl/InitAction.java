@@ -13,31 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.action.impl;
 
-import java.util.logging.Level;
 import org.b3log.latke.action.ActionException;
-import com.google.inject.Inject;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.action.util.Filler;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Locales;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.latke.action.AbstractAction;
 import org.json.JSONObject;
 
 /**
- * Admin index action. admin-index.ftl.
+ * B3log Solo initialization action. init.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 8, 2010
+ * @version 1.0.0.0, Nov 11, 2010
  */
-public final class AdminIndexAction extends AbstractAdminAction {
+public final class InitAction extends AbstractAction {
 
     /**
      * Default serial version uid.
@@ -47,22 +41,7 @@ public final class AdminIndexAction extends AbstractAdminAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(AdminIndexAction.class.getName());
-    /**
-     * Language service.
-     */
-    @Inject
-    private LangPropsService langPropsService;
-    /**
-     * Filler.
-     */
-    @Inject
-    private Filler filler;
-    /**
-     * Preference utilities.
-     */
-    @Inject
-    private PreferenceUtils preferenceUtils;
+            Logger.getLogger(InitAction.class.getName());
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -72,23 +51,6 @@ public final class AdminIndexAction extends AbstractAdminAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            }
-
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
-
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            LOGGER.log(Level.FINEST, "Langs[values={0}]", langs.values());
-            ret.putAll(langs);
-
-            filler.fillBlogHeader(ret);
-            filler.fillBlogFooter(ret);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             throw new ActionException(e);

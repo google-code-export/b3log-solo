@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -181,6 +180,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
         try {
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
 
             final int fetchSize = preference.getInt(
                     Preference.RECENT_COMMENT_DISPLAY_CNT);
@@ -609,6 +611,10 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         final String commentId = comment.getString(Keys.OBJECT_ID);
         final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new IOException("Not found preference");
+        }
+
         final String adminEmail = preference.getString(Preference.ADMIN_GMAIL);
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
             LOGGER.log(Level.FINE,

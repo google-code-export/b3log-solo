@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo;
 
 import com.google.appengine.api.images.Image;
@@ -49,13 +48,13 @@ import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.filter.FilterModule;
+import org.b3log.solo.jsonrpc.impl.AdminService.DefaultPreference;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.sync.SyncModule;
 import org.b3log.solo.upgrade.UpgradeModule;
 import org.b3log.solo.util.PreferenceUtils;
-import org.b3log.solo.util.PreferenceUtils.DefaultPreference;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 

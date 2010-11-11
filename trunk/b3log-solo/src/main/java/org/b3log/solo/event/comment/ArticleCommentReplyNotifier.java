@@ -109,6 +109,10 @@ public final class ArticleCommentReplyNotifier
             }
 
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                throw new EventException("Not found preference");
+            }
+            
             final String blogTitle =
                     preference.getString(Preference.BLOG_TITLE);
             final String adminGmail =

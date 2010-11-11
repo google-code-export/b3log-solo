@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.rhythm;
 
 import com.google.appengine.api.urlfetch.HTTPMethod;
@@ -32,6 +31,7 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.jsonrpc.impl.AdminService.DefaultPreference;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.PreferenceUtils;
@@ -103,8 +103,12 @@ public final class ArticleSender
             final JSONObject article =
                     data.getJSONObject(Article.ARTICLE);
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+               throw new EventException("Not found preference");
+            }
+
             final String blogHost = preference.getString(Preference.BLOG_HOST);
-            if (PreferenceUtils.DefaultPreference.DEFAULT_BLOG_HOST.equals(
+            if (DefaultPreference.DEFAULT_BLOG_HOST.equals(
                     blogHost)) {
                 LOGGER.log(Level.INFO,
                            "Blog Solo runs on local server, so should not send "

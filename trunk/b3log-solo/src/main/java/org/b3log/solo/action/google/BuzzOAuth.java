@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.google;
 
 import com.google.api.client.googleapis.GoogleTransport;
@@ -101,6 +100,10 @@ public final class BuzzOAuth extends HttpServlet {
         if (Strings.isEmptyOrNull(googleOAuthConsumerSecret)) {
             try {
                 final JSONObject preference = preferenceUtils.getPreference();
+                if (null == preference) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
+
                 googleOAuthConsumerSecret = preference.getString(
                         Preference.GOOGLE_OAUTH_CONSUMER_SECRET);
             } catch (final JSONException e) {
@@ -161,6 +164,10 @@ public final class BuzzOAuth extends HttpServlet {
     private String genErrorPageHTMLContent() throws ServletException {
         try {
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                throw new ServletException("Not found preference");
+            }
+            
             final String localeString = preference.optString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
