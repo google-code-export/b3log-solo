@@ -32,7 +32,6 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.jsonrpc.impl.AdminService.DefaultPreference;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.PreferenceUtils;
@@ -109,7 +108,7 @@ public final class ArticleSender
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST);
-            if (DefaultPreference.DEFAULT_BLOG_HOST.equals(
+            if (Preference.Default.DEFAULT_BLOG_HOST.equals(
                     blogHost)) {
                 LOGGER.log(Level.INFO,
                            "Blog Solo runs on local server, so should not send "

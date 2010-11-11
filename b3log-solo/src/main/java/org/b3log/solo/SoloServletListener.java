@@ -49,8 +49,8 @@ import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.filter.FilterModule;
-import org.b3log.solo.jsonrpc.impl.AdminService.DefaultPreference;
 import org.b3log.solo.model.Link;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.sync.SyncModule;
@@ -265,11 +265,11 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void initDefaultSkins() {
         LOGGER.info("Loading default skin[dirName="
-                    + DefaultPreference.DEFAULT_SKIN_DIR_NAME + "]");
+                    + Preference.Default.DEFAULT_SKIN_DIR_NAME + "]");
         try {
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + Skin.SKINS + "/"
-                                    + DefaultPreference.DEFAULT_SKIN_DIR_NAME;
+                                    + Preference.Default.DEFAULT_SKIN_DIR_NAME;
             Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                     new File(skinPath));
         } catch (final IOException e) {
