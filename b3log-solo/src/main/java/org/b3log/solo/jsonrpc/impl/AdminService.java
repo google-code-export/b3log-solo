@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import org.b3log.latke.repository.RepositoryException;
@@ -107,16 +106,18 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Gets the administrator login.
      *
+     * @param redirectURL redirect URL after logged in
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return login URL
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public String getLoginURL(final HttpServletRequest request,
+    public String getLoginURL(final String redirectURL,
+                              final HttpServletRequest request,
                               final HttpServletResponse response)
             throws ActionException, IOException {
-        return userService.createLoginURL("/admin-index.do");
+        return userService.createLoginURL(redirectURL);
     }
 
     /**
@@ -219,7 +220,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     public JSONObject init() {
         final JSONObject ret = new JSONObject();
-        
+
         try {
             initStatistic();
             initPreference();
