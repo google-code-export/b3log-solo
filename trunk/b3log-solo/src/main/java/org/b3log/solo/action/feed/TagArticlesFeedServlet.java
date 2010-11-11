@@ -116,6 +116,7 @@ public final class TagArticlesFeedServlet extends HttpServlet {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);

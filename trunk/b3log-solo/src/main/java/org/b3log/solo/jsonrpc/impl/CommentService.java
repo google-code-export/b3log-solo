@@ -183,6 +183,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return ret;
             }
 
             final int fetchSize = preference.getInt(

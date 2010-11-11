@@ -71,6 +71,7 @@ public final class ErrorAction extends AbstractAction {
                     toString());
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return ret;
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST);
