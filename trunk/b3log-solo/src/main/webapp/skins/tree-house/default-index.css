@@ -35,6 +35,7 @@ h5{font-size:12px;}
 .main h2.title{color:#FF9000;text-align:center;margin:-34px 0 12px}
 .main h2 span{font-size:12px;float:right;color:DimGray;padding-right:10px;margin-top:7px;}
 .article-body{margin:0 12px 12px;}
+.article-body a, .article-abstract a{color:#242323;text-decoration: underline;}
 .article-footer{margin-right:12px;}
 .article-details-footer a{line-height:16px;}
 .article-details-footer{margin:36px 12px 0 0;}
