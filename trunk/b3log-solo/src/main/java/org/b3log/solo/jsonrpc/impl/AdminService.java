@@ -35,6 +35,7 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Cache;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.util.PageCacheKeys;
 import static org.b3log.solo.model.Preference.*;
@@ -277,27 +278,27 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         try {
             final String preferenceId = PREFERENCE;
             ret.put(ARTICLE_LIST_DISPLAY_COUNT,
-                    DefaultPreference.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
+                    Preference.Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
             ret.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
-                    DefaultPreference.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+                    Preference.Default.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
             ret.put(MOST_USED_TAG_DISPLAY_CNT,
-                    DefaultPreference.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
+                    Preference.Default.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
             ret.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
-                    DefaultPreference.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
+                    Preference.Default.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
             ret.put(RECENT_ARTICLE_DISPLAY_CNT,
-                    DefaultPreference.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
+                    Preference.Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
             ret.put(RECENT_COMMENT_DISPLAY_CNT,
-                    DefaultPreference.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
+                    Preference.Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
             ret.put(BLOG_TITLE,
-                    DefaultPreference.DEFAULT_BLOG_TITLE);
+                    Preference.Default.DEFAULT_BLOG_TITLE);
             ret.put(BLOG_SUBTITLE,
-                    DefaultPreference.DEFAULT_BLOG_SUBTITLE);
+                    Preference.Default.DEFAULT_BLOG_SUBTITLE);
             ret.put(BLOG_HOST,
-                    DefaultPreference.DEFAULT_BLOG_HOST);
+                    Preference.Default.DEFAULT_BLOG_HOST);
             ret.put(ADMIN_GMAIL,
-                    DefaultPreference.DEFAULT_ADMIN_GMAIL);
+                    Preference.Default.DEFAULT_ADMIN_GMAIL);
             ret.put(LOCALE_STRING,
-                    DefaultPreference.DEFAULT_LANGUAGE);
+                    Preference.Default.DEFAULT_LANGUAGE);
 
             ret.put(Keys.OBJECT_ID, preferenceId);
             preferenceRepository.add(ret);
@@ -318,70 +319,5 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         LOGGER.info("Initialized preference");
 
         return ret;
-    }
-
-    /**
-     * Default preference.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.2, Nov 1, 2010
-     */
-    public static final class DefaultPreference {
-
-        /**
-         * Default recent article display count.
-         */
-        public static final int DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT = 10;
-        /**
-         * Default recent comment display count.
-         */
-        public static final int DEFAULT_RECENT_COMMENT_DISPLAY_COUNT = 10;
-        /**
-         * Default most used tag display count.
-         */
-        public static final int DEFAULT_MOST_USED_TAG_DISPLAY_COUNT = 20;
-        /**
-         * Default article list display count.
-         */
-        public static final int DEFAULT_ARTICLE_LIST_DISPLAY_COUNT = 20;
-        /**
-         * Default article list pagination window size.
-         */
-        public static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE =
-                15;
-        /**
-         * Default most comment article display count.
-         */
-        public static final int DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT = 5;
-        /**
-         * Default blog title.
-         */
-        public static final String DEFAULT_BLOG_TITLE = "Solo 示例";
-        /**
-         * Default blog subtitle.
-         */
-        public static final String DEFAULT_BLOG_SUBTITLE = "GAE 上的个人博客";
-        /**
-         * Default skin directory name.
-         */
-        public static final String DEFAULT_SKIN_DIR_NAME = "classic";
-        /**
-         * Default administrator mail.
-         */
-        public static final String DEFAULT_ADMIN_GMAIL = "b3log.solo@gmail.com";
-        /**
-         * Default blog host.
-         */
-        public static final String DEFAULT_BLOG_HOST = "localhost:8080";
-        /**
-         * Default language.
-         */
-        public static final String DEFAULT_LANGUAGE = "zh_CN";
-
-        /**
-         * Private default constructor.
-         */
-        private DefaultPreference() {
-        }
     }
 }
