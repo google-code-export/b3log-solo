@@ -28,7 +28,7 @@
             }
 
             var login = function () {
-                var loginURL = jsonRpc.adminService.getLoginURL();
+                var loginURL = jsonRpc.adminService.getLoginURL("/init.do");
                 window.location.href = loginURL;
             }
         </script>

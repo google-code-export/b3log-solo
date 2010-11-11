@@ -108,7 +108,7 @@
             WINDOW_SIZE = 10;
 
             var adminLogin = function () {
-                var loginURL = jsonRpc.adminService.getLoginURL();
+                var loginURL = jsonRpc.adminService.getLoginURL("/admin-index.do");
                 window.location.href = loginURL;
             }
 
