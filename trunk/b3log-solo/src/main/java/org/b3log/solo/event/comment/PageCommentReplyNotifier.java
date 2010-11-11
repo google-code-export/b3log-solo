@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.comment;
 
 import com.google.appengine.api.mail.MailService;
@@ -40,7 +39,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 29, 2010
+ * @version 1.0.0.1, Nov 11, 2010
  */
 public final class PageCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -132,8 +131,9 @@ public final class PageCommentReplyNotifier
                                     + pageLink + "'>" + pageTitle
                                     + "</a>] received an reply: <p>"
                                     + commentContent + "</p><p>"
-                                    + "See <a href=" + commentSharpURL
-                                    + ">here</a> for original post.</p>";
+                                    + "See <a href='http://" + blogHost
+                                    + commentSharpURL
+                                    + "'>here</a> for original post.</p>";
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.FINER,
                        "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
