@@ -24,7 +24,10 @@
             init();
 
             var initSys = function () {
-                jsonRpc.adminService.init();
+                var rslt = jsonRpc.adminService.init();
+                if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
+
+                }
             }
 
             var login = function () {
