@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
@@ -51,7 +52,7 @@ public final class Statistics {
      */
     public int getBlogCommentCount()
             throws JSONException, RepositoryException {
-        JSONObject statistic =
+        final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
@@ -70,7 +71,7 @@ public final class Statistics {
      */
     public void setBlogCommentCount(final int count)
             throws JSONException, RepositoryException {
-        JSONObject statistic =
+        final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
@@ -90,7 +91,7 @@ public final class Statistics {
      */
     public int getBlogArticleCount()
             throws JSONException, RepositoryException {
-        JSONObject statistic =
+        final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
@@ -108,7 +109,7 @@ public final class Statistics {
      */
     public void setBlogArticleCount(final int count)
             throws JSONException, RepositoryException {
-        JSONObject statistic =
+        final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
@@ -127,7 +128,7 @@ public final class Statistics {
      */
     public void incBlogViewCount()
             throws JSONException, RepositoryException {
-        JSONObject statistic =
+        final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
@@ -147,7 +148,7 @@ public final class Statistics {
      */
     public void incBlogArticleCount()
             throws JSONException, RepositoryException {
-        JSONObject statistic =
+        final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
@@ -167,7 +168,7 @@ public final class Statistics {
      */
     public void decBlogArticleCount()
             throws JSONException, RepositoryException {
-        JSONObject statistic =
+        final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
@@ -187,7 +188,7 @@ public final class Statistics {
      */
     public void incBlogCommentCount()
             throws JSONException, RepositoryException {
-        JSONObject statistic =
+        final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");
@@ -206,7 +207,7 @@ public final class Statistics {
      */
     public void decBlogCommentCount()
             throws JSONException, RepositoryException {
-        JSONObject statistic =
+        final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
             throw new RepositoryException("Not found statistic");

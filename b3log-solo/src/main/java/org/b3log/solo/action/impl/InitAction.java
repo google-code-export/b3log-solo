@@ -50,12 +50,6 @@ public final class InitAction extends AbstractAction {
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
-        try {
-        } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
-        }
-
         return ret;
     }
 
