@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import java.io.File;
@@ -128,7 +127,9 @@ public final class PreferenceUtils {
      */
     private void loadSkins(final JSONObject preference) throws JSONException {
         LOGGER.info("Loading skins....");
-        final String skinDirName = preference.getString(SKIN_DIR_NAME);
+        final String skinDirName =
+                preference.optString(SKIN_DIR_NAME,
+                                     Default.DEFAULT_SKIN_DIR_NAME);
         preference.put(SKIN_DIR_NAME, skinDirName);
 
         final String skinName = skins.getSkinName(skinDirName);
