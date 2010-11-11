@@ -216,6 +216,7 @@ public final class PreferenceUtils {
 
         final String skinName = skins.getSkinName(skinDirName);
         preference.put(SKIN_NAME, skinName);
+        LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
 
         final Set<String> skinDirNames = skins.getSkinDirNames();
         LOGGER.log(Level.FINER, "Loaded skins[dirNames={0}]", skinDirNames);
