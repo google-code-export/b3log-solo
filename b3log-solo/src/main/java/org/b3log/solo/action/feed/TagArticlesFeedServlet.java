@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.feed;
 
 import com.google.inject.Inject;
@@ -114,6 +113,10 @@ public final class TagArticlesFeedServlet extends HttpServlet {
                     tagRepository.get(tagId).getString(Tag.TAG_TITLE);
 
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
                     Preference.BLOG_SUBTITLE) + ", " + tagTitle;

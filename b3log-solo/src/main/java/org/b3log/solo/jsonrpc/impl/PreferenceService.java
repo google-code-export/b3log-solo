@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -112,6 +111,10 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
         try {
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                throw new ActionException("Not found preference");
+            }
+
             ret.put(PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_PREFERENCE_SUCC);
         } catch (final Exception e) {

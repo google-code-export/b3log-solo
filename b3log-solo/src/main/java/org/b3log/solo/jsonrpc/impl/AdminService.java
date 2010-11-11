@@ -13,20 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
+import org.b3log.latke.repository.RepositoryException;
+import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventManager;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.solo.action.StatusCodes;
+import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Cache;
+import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.util.PageCacheKeys;
+import static org.b3log.solo.model.Preference.*;
+import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.StatisticRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,6 +60,21 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     private com.google.appengine.api.users.UserService userService =
             UserServiceFactory.getUserService();
+    /**
+     * Preference repository.
+     */
+    @Inject
+    private PreferenceRepository preferenceRepository;
+    /**
+     * Statistic repository.
+     */
+    @Inject
+    private StatisticRepository statisticRepository;
+    /**
+     * Event manager.
+     */
+    @Inject
+    private EventManager eventManager;
 
     /**
      * Determines whether the administrator is logged in.
@@ -176,5 +203,184 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         checkAuthorized(request, response);
 
         PageCaches.removeAll();
+    }
+
+    /**
+     * Initializes B3log Solo.
+     *
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "INIT_B3LOG_SOLO_SUCC"
+     * }
+     * </pre>
+     */
+    public JSONObject init() {
+        final JSONObject ret = new JSONObject();
+        
+        try {
+            initStatistic();
+            initPreference();
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
+        } catch (final Exception e) {
+            LOGGER.severe("Initialize B3log Solo error");
+        }
+
+        return ret;
+    }
+
+    /**
+     * Initializes statistic.
+     *
+     * @return statistic
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    private JSONObject initStatistic() throws RepositoryException,
+                                              JSONException {
+        LOGGER.info("Initializing statistic....");
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+        try {
+            ret.put(Keys.OBJECT_ID, Statistic.STATISTIC);
+            ret.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 0);
+            ret.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, 0);
+            ret.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 0);
+            statisticRepository.add(ret);
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.severe(e.getMessage());
+            throw new RuntimeException("Statistic init error!");
+        }
+
+        LOGGER.info("Initialized statistic");
+
+        return ret;
+    }
+
+    /**
+     * Initializes preference.
+     *
+     * @return preference
+     */
+    private JSONObject initPreference() {
+        LOGGER.info("Initializing preference....");
+
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final String preferenceId = PREFERENCE;
+            ret.put(ARTICLE_LIST_DISPLAY_COUNT,
+                    DefaultPreference.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
+            ret.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
+                    DefaultPreference.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+            ret.put(MOST_USED_TAG_DISPLAY_CNT,
+                    DefaultPreference.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
+            ret.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
+                    DefaultPreference.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
+            ret.put(RECENT_ARTICLE_DISPLAY_CNT,
+                    DefaultPreference.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
+            ret.put(RECENT_COMMENT_DISPLAY_CNT,
+                    DefaultPreference.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
+            ret.put(BLOG_TITLE,
+                    DefaultPreference.DEFAULT_BLOG_TITLE);
+            ret.put(BLOG_SUBTITLE,
+                    DefaultPreference.DEFAULT_BLOG_SUBTITLE);
+            ret.put(BLOG_HOST,
+                    DefaultPreference.DEFAULT_BLOG_HOST);
+            ret.put(ADMIN_GMAIL,
+                    DefaultPreference.DEFAULT_ADMIN_GMAIL);
+            ret.put(LOCALE_STRING,
+                    DefaultPreference.DEFAULT_LANGUAGE);
+
+            ret.put(Keys.OBJECT_ID, preferenceId);
+            preferenceRepository.add(ret);
+
+            LOGGER.info("Initialized preference");
+
+            eventManager.fireEventSynchronously(// for upgrade extensions
+                    new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
+                                          ret));
+
+            preferenceRepository.update(preferenceId, ret);
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.severe(e.getMessage());
+            throw new RuntimeException("Preference init error!");
+        }
+
+        LOGGER.info("Initialized preference");
+
+        return ret;
+    }
+
+    /**
+     * Default preference.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.2, Nov 1, 2010
+     */
+    public static final class DefaultPreference {
+
+        /**
+         * Default recent article display count.
+         */
+        public static final int DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT = 10;
+        /**
+         * Default recent comment display count.
+         */
+        public static final int DEFAULT_RECENT_COMMENT_DISPLAY_COUNT = 10;
+        /**
+         * Default most used tag display count.
+         */
+        public static final int DEFAULT_MOST_USED_TAG_DISPLAY_COUNT = 20;
+        /**
+         * Default article list display count.
+         */
+        public static final int DEFAULT_ARTICLE_LIST_DISPLAY_COUNT = 20;
+        /**
+         * Default article list pagination window size.
+         */
+        public static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE =
+                15;
+        /**
+         * Default most comment article display count.
+         */
+        public static final int DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT = 5;
+        /**
+         * Default blog title.
+         */
+        public static final String DEFAULT_BLOG_TITLE = "Solo 示例";
+        /**
+         * Default blog subtitle.
+         */
+        public static final String DEFAULT_BLOG_SUBTITLE = "GAE 上的个人博客";
+        /**
+         * Default skin directory name.
+         */
+        public static final String DEFAULT_SKIN_DIR_NAME = "classic";
+        /**
+         * Default administrator mail.
+         */
+        public static final String DEFAULT_ADMIN_GMAIL = "b3log.solo@gmail.com";
+        /**
+         * Default blog host.
+         */
+        public static final String DEFAULT_BLOG_HOST = "localhost:8080";
+        /**
+         * Default language.
+         */
+        public static final String DEFAULT_LANGUAGE = "zh_CN";
+
+        /**
+         * Private default constructor.
+         */
+        private DefaultPreference() {
+        }
     }
 }

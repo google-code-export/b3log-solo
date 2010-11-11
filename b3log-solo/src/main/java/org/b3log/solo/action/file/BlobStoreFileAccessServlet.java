@@ -113,6 +113,10 @@ public final class BlobStoreFileAccessServlet extends HttpServlet {
                 final long fileSize = blobInfo.getSize();
                 file.put(File.FILE_SIZE, fileSize);
                 final JSONObject preference = preferenceUtils.getPreference();
+                if (null == preference) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
+                
                 final String host = "http://" + preference.getString(
                         Preference.BLOG_HOST);
                 final String downloadURL = host + "/file-access.do?oId="

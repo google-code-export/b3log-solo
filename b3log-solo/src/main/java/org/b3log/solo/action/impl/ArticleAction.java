@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import java.util.logging.Level;
@@ -106,6 +105,10 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
         try {
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -196,6 +199,10 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final String articleId, final List<JSONObject> articleTags)
             throws JSONException, RepositoryException {
         final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new RepositoryException("Not found preference");
+        }
+
         final int displayCnt =
                 preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
 

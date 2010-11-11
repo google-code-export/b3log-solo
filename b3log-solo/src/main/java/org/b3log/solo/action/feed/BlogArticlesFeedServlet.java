@@ -81,6 +81,10 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
         final Feed feed = feedFactory.newFeed();
         try {
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+            
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
                     Preference.BLOG_SUBTITLE);

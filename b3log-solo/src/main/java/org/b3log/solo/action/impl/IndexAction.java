@@ -82,6 +82,10 @@ public final class IndexAction extends AbstractCacheablePageAction {
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
             final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+            
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
