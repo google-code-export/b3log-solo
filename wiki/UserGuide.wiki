@@ -44,8 +44,7 @@ appcfg.cmd update ${solo.war}
 ===基本配置===
 在*初次*部署完毕后，*必须*对 Solo 进行基本配置，步骤如下：
  # *初始化* `http://${application-id}.appspot.com/init.do`  
- # 访问应用地址 `http://${application-id}.appspot.com/`，点击右上角“登录”
- # 输入登录口令进入 Solo 管理后台
+ # 初始化成功后将自动跳转至管理后台
  # 点击页面左边导航的“偏好设定”
  # 修改“博客地址”为你使用的实际地址及端口（例如：`solo-demo.appspot.com:80`）
  # 修改“管理员 Gmail”为你当前登录用 Gmail
