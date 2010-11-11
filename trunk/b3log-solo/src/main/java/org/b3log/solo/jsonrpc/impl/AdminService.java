@@ -304,13 +304,12 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             ret.put(Keys.OBJECT_ID, preferenceId);
             preferenceRepository.add(ret);
 
-            LOGGER.info("Initialized preference");
-
             eventManager.fireEventSynchronously(// for upgrade extensions
                     new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
                                           ret));
 
             preferenceRepository.update(preferenceId, ret);
+            transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
