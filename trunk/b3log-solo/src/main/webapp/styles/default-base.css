@@ -30,7 +30,7 @@ button:hover,.button:hover{border-color:#BBB;}
 .red{color:red;}
 .contentBody{padding:3px 12px;margin-bottom:12px;}
 .form th{text-align:right;white-space:nowrap;}
-.form input, .form textarea{width:100%;font-size:12px;}
+.form input, .form textarea{width:100%;font-size:12px;border:2px inset #CCCCCC;}
 .form textarea{overflow:auto;}
 .form input:focus,.form textarea:focus{border:2px solid #73A6FF;}
 .form input{height:24px;line-height:24px;}

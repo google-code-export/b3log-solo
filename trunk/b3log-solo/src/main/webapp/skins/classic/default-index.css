@@ -151,6 +151,23 @@ h5 {
     margin: 0 auto 24px auto;
 }
 
+#commentURLLabel, #commentURLLabelReply {
+    border-width: 2px 0px 2px 2px;
+    border-style: inset none inset inset;
+    border-color: #CCCCCC;
+    float: left;
+    height: 24px;
+    line-height: 24px;
+}
+
+#commentURL, #commentURLReply {
+    border-left: 0px;
+}
+
+#comment, #commentReply {
+    width: 604px;
+}
+
 .error-msg {
     color: #3366CC;
 }
