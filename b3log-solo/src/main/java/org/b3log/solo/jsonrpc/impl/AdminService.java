@@ -343,8 +343,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             ret.put(Skin.SKINS, skinArray.toString());
 
             try {
-                PageCaches.removeAll();
-                Templates.CONFIGURATION.clearTemplateCache();
                 final String webRootPath = SoloServletListener.getWebRoot();
                 final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
                 Templates.CONFIGURATION.setDirectoryForTemplateLoading(
