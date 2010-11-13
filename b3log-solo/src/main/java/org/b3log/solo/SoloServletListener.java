@@ -47,7 +47,6 @@ import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.filter.FilterModule;
 import org.b3log.solo.model.Link;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.sync.SyncModule;
 import org.b3log.solo.upgrade.UpgradeModule;
@@ -166,7 +165,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         MemcacheServiceFactory.getMemcacheService().clearAll();
 
-        initDefaultSkins();
+        initSkin();
         initDefaultLinks();
         loadCaptchas();
 
@@ -245,11 +244,10 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * Initializes skins from the default configuration.
+     * Initializes skin from the preference.
      */
-    private void initDefaultSkins() {
-        LOGGER.info("Loading default skin[dirName="
-                + Preference.Default.DEFAULT_SKIN_DIR_NAME + "]");
+    private void initSkin() {
+        LOGGER.info("Loading skin....");
         final Injector injector = getInjector();
         final PreferenceUtils preferenceUtils =
                 injector.getInstance(PreferenceUtils.class);
@@ -263,7 +261,7 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.warning(e.getMessage());
         }
 
-        LOGGER.info("Loaded default skin....");
+        LOGGER.info("Loaded skin");
     }
 
     /**
