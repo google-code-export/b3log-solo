@@ -147,14 +147,14 @@ public final class SoloServletListener extends AbstractServletListener {
         if (null == ret) {
             LOGGER.info("Initializing Guice....");
             setInjector(Guice.createInjector(Stage.PRODUCTION,
-                                             new FilterModule(),
-                                             new ActionModule(),
-                                             new JSONRpcServiceModule(),
-                                             new RepositoryModule(),
-                                             new EventModule(),
-                                             new SyncModule(),
-                                             new UtilModule(),
-                                             new UpgradeModule()));
+                    new FilterModule(),
+                    new ActionModule(),
+                    new JSONRpcServiceModule(),
+                    new RepositoryModule(),
+                    new EventModule(),
+                    new SyncModule(),
+                    new UtilModule(),
+                    new UpgradeModule()));
         }
 
         return ret;
@@ -252,11 +252,11 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void initDefaultSkins() {
         LOGGER.info("Loading default skin[dirName="
-                    + Preference.Default.DEFAULT_SKIN_DIR_NAME + "]");
+                + Preference.Default.DEFAULT_SKIN_DIR_NAME + "]");
         try {
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + Skin.SKINS + "/"
-                                    + Preference.Default.DEFAULT_SKIN_DIR_NAME;
+                    + Preference.Default.DEFAULT_SKIN_DIR_NAME;
             Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                     new File(skinPath));
         } catch (final IOException e) {
