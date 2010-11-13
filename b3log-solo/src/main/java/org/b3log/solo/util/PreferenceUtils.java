@@ -29,7 +29,6 @@ import static org.b3log.solo.model.Skin.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.google.inject.Inject;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
