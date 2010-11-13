@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import java.io.File;
@@ -94,7 +93,6 @@ public final class PreferenceUtils {
 
                 loadSkins(ret);
 
-                userPreferenceCache.put(PREFERENCE, ret.toString());
                 setPreference(ret);
             } else {
                 ret = new JSONObject(preferenceString.toString());
@@ -108,7 +106,8 @@ public final class PreferenceUtils {
     }
 
     /**
-     * Sets the user preference with the specified preference.
+     * Sets the user preference with the specified preference in cache and
+     * repository.
      *
      * @param preference the specified preference
      * @throws JSONException json exception
