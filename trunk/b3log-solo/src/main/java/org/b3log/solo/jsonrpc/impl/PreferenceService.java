@@ -56,11 +56,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
     private static final Logger LOGGER = Logger.getLogger(
             PreferenceService.class.getName());
     /**
-     * Preference repository.
-     */
-    @Inject
-    private PreferenceRepository preferenceRepository;
-    /**
      * Skin utilities.
      */
     @Inject
