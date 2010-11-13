@@ -28,7 +28,7 @@
     <cron>
         <url>/live.do</url>
         <description>Avoiding Solo to shutdown on GAE.</description>
-        <schedule>every 30 seconds</schedule>
+        <schedule>every 1 minutes</schedule>
     </cron>
 
     <!-- Issue 15: http://code.google.com/p/b3log-solo/issues/detail?id=15
