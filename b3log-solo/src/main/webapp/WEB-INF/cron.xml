@@ -21,14 +21,14 @@
     Description: Cron job for GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.0.0.1, Oct 21, 2010
+    Version: 1.0.0.2, Nov13, 2010
     Author: Liang Ding
 -->
 <cronentries>
     <cron>
         <url>/live.do</url>
         <description>Avoiding Solo to shutdown on GAE.</description>
-        <schedule>every 1 minutes</schedule>
+        <schedule>every 30 seconds</schedule>
     </cron>
 
     <!-- Issue 15: http://code.google.com/p/b3log-solo/issues/detail?id=15
