@@ -183,18 +183,6 @@ public final class SoloServletListener extends AbstractServletListener {
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
 
-        try {
-            final Injector injector = getInjector();
-            final PreferenceUtils preferenceUtils =
-                    injector.getInstance(PreferenceUtils.class);
-            // Flush cache to repository
-            final JSONObject preference = preferenceUtils.getPreference();
-            preferenceUtils.setPreference(preference);
-
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-
         LOGGER.info("Destroyed the context");
     }
 
