@@ -338,7 +338,7 @@
                                         $("#commentErrorTip").html("");
                                         $("#comment").val("");
                                         $("#commentEmail").val("");
-                                        $("#commentURL").val("http://");
+                                        $("#commentURL").val("");
                                         $("#commentName").val("");
                                         $("#commentValidate").val("");
                                         window.location.reload();

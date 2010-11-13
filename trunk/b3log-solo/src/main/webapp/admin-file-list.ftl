@@ -7,7 +7,7 @@
                     <input type="file" name="myFile" size="45">
                 </td>
                 <td>
-                    <input type="submit" value="${submitUploadLabel}" class="button" style="height: 28px;">
+                    <button type="submit">${submitUploadLabel}</button>
                 </td>
             </tr>
         </tbody>

@@ -102,7 +102,10 @@
                                                         ${commentURL1Label}
                                                     </th>
                                                     <td colspan="2">
-                                                        <input value="http://" id="commentURL"/>
+                                                        <div id="commentURLLabel">
+                                                            http://
+                                                        </div>
+                                                        <input id="commentURL"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -152,19 +155,6 @@
         <div class='goBottomIcon' onclick='goBottom();'></div>
         <script type="text/javascript">
             var currentCommentId = "";
-            var moveCursor = function(event) {
-                if ($.browser.msie) {
-                    var e = event.srcElement;
-                    var r = e.createTextRange();
-                    r.moveStart('character', e.value.length);
-                    r.collapse(true);
-                    r.select();
-                } else {
-                    var iCaretPos = event.target.value.length;
-                    event.target.selectionStart = iCaretPos;
-                    event.target.selectionEnd = iCaretPos;
-                }
-            }
 
             var loadAction = function () {
                 // code high lighter
@@ -187,14 +177,11 @@
                 });
 
                 // comment url
-                $("#commentURL").keyup(function (event) {
-                    if (-1 === this.value.indexOf("http://")) {
-                        this.value = "http://";
-                    }
-                    moveCursor(event);
-                }).focus(function (event) {
-                    moveCursor(event);
-                });
+                $("#commentURL").focus(function (event) {
+                    $("#commentURLLabel").css({"border":"2px solid #73A6FF","border-right":"0px"});
+                }).blur(function () {
+                    $("#commentURLLabel").css({"border":"2px inset #CCCCCC","border-right":"0px"});
+                }).width($("#comment").width() - $("#commentURLLabel").width());
             }
             loadAction();
 
@@ -235,7 +222,8 @@
                         + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
                         + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
                         + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
-                        + "<th>${commentURL1Label}</th><td colspan='2'><input value='http://' id='commentURLReply'/>"
+                        + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
+                        + "http://</div><input id='commentURLReply'/>"
                         + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
                         + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
                         + "<th valign='top'>${captcha1Label}</th><td valign='top'>"
@@ -254,14 +242,11 @@
                         }
                     });
 
-                    $("#commentURLReply").keyup(function (event) {
-                        if (-1 === this.value.indexOf("http://")) {
-                            this.value = "http://";
-                        }
-                        moveCursor(event);
-                    }).focus(function (event) {
-                        moveCursor(event);
-                    });
+                    $("#commentURLReply").focus(function (event) {
+                        $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
+                    }).blur(function () {
+                        $("#commentURLLabelReply").css({"border":"2px inset #CCCCCC","border-right":"0px"});
+                    }).width($("#commentReply").width() - $("#commentURLLabelReply").width());
 
                     $("#commentNameReply").focus();
                 }
@@ -275,7 +260,7 @@
                         "oId": "${page.oId}",
                         "commentContent": $("#commentReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "commentEmail": $("#commentEmailReply").val(),
-                        "commentURL": $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentURL": "http://" + $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "captcha": $("#commentValidateReply").val(),
                         "commentOriginalCommentId": id
@@ -308,7 +293,7 @@
                         "oId": "${page.oId}",
                         "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "commentEmail": $("#commentEmail").val(),
-                        "commentURL": $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "captcha": $("#commentValidate").val()
                     };
@@ -320,7 +305,7 @@
                                     $("#commentErrorTip").html("");
                                     $("#comment").val("");
                                     $("#commentEmail").val("");
-                                    $("#commentURL").val("http://");
+                                    $("#commentURL").val("");
                                     $("#commentName").val("");
                                     $("#commentValidate").val("");
                                     window.location.reload();
