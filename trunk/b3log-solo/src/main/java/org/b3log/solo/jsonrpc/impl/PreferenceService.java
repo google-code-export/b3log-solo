@@ -36,7 +36,6 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
@@ -149,7 +148,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "metaKeywords": "",
      *         "metaDescription": ""
      *     }
-     * }, see {@link Preference} for more details
+     * }, see {@link org.b3log.solo.model.Preference} for more details
      * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
