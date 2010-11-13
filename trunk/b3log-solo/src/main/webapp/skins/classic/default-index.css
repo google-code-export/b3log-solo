@@ -19,8 +19,10 @@ h5{font-size:12px;}
 .article-footer a, .article-details-footer a{text-decoration:none;}
 .article-details-footer{margin:36px 12px 0 0;}
 .article-relative{line-height:22px;margin-top:24px;}
-.comment-title{background-color:#E3E9FF;border-top:1px solid #3366CC;padding:3px 12px 3px 12px;position:relative;}
+.comments{position:relative;}
+.comment-title{background-color:#E3E9FF;border-top:1px solid #3366CC;padding:3px 12px 3px 12px;}
 .comment-body-ref{background-color:#FFFFFF;border:1px solid #E3E9FF;left:97px;opacity:0.9;position:absolute;top:27px;width:87%;z-index:10;filter:alpha(opacity=90);}
+.comment-body-ref .comment-title{border-top:0px;}
 .comment-body{padding:9px 12px 12px;}
 .comment-picture{margin-right:12px;}
 .comment-picture img{width:60px;height:60px;}
