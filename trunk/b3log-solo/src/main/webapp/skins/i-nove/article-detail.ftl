@@ -165,7 +165,10 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input value="http://" id="commentURL"/>
+                                        <div id="commentURLLabel">
+                                            http://
+                                        </div>
+                                        <input id="commentURL"/>
                                     </td>
                                     <td colspan="2">
                                         ${commentURLLabel}
@@ -202,20 +205,6 @@
                 </div>
                 <script type="text/javascript">
                     var currentCommentId = "";
-
-                    var moveCursor = function(event) {
-                        if ($.browser.msie) {
-                            var e = event.srcElement;
-                            var r = e.createTextRange();
-                            r.moveStart('character', e.value.length);
-                            r.collapse(true);
-                            r.select();
-                        } else {
-                            var iCaretPos = event.target.value.length;
-                            event.target.selectionStart = iCaretPos;
-                            event.target.selectionEnd = iCaretPos;
-                        }
-                    }
 
                     var validateComment = function (state) {
                         if (state === undefined) {
@@ -255,7 +244,7 @@
                                 + "<td width='208px'><input class='normalInput' id='commentNameReply'/>"
                                 + "</td><td colspan='2' width='400px'>${commentNameLabel}</td></tr><tr><td>"
                                 + "<input class='normalInput' id='commentEmailReply'/></td><td colspan='2'>${commentEmailLabel}</td></tr><tr>"
-                                + "<td><input value='http://' id='commentURLReply'/>"
+                                + "<td><div id='commentURLLabelReply'>http://</div><input id='commentURLReply'/>"
                                 + "</td><td colspan='2'>${commentURLLabel}</td></tr><tr><td colspan='3'>"
                                 + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
                                 + "<td><input class='normalInput' id='commentValidateReply'/>"
@@ -274,15 +263,6 @@
                                 }
                             });
 
-                            $("#commentURLReply").keyup(function (event) {
-                                if (-1 === this.value.indexOf("http://")) {
-                                    this.value = "http://";
-                                }
-                                moveCursor(event);
-                            }).focus(function (event) {
-                                moveCursor(event);
-                            });
-
                             $("#commentNameReply").focus();
                         }
                         currentCommentId = id;
@@ -295,7 +275,7 @@
                                 "oId": "${article.oId}",
                                 "commentContent": $("#commentReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                                 "commentEmail": $("#commentEmailReply").val(),
-                                "commentURL": $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                                "commentURL": "http://" + $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                                 "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                                 "captcha": $("#commentValidateReply").val(),
                                 "commentOriginalCommentId": id
@@ -328,7 +308,7 @@
                                 "oId": "${article.oId}",
                                 "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
                                 "commentEmail": $("#commentEmail").val(),
-                                "commentURL": $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                                "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                                 "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
                                 "captcha": $("#commentValidate").val()
                             };
@@ -340,7 +320,7 @@
                                             $("#commentErrorTip").html("");
                                             $("#comment").val("");
                                             $("#commentEmail").val("");
-                                            $("#commentURL").val("http://");
+                                            $("#commentURL").val("");
                                             $("#commentName").val("");
                                             $("#commentValidate").val("");
                                             window.location.reload();
@@ -396,16 +376,6 @@
                             if (event.keyCode === 13) {
                                 submitComment();
                             }
-                        });
-
-                        // comment url
-                        $("#commentURL").keyup(function (event) {
-                            if (-1 === this.value.indexOf("http://")) {
-                                this.value = "http://";
-                            }
-                            moveCursor(event);
-                        }).focus(function (event) {
-                            moveCursor(event);
                         });
 
                         // getRandomArticles

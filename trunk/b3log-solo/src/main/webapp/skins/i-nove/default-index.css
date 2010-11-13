@@ -52,10 +52,12 @@ h5{font-size:12px;}
 .comment-info{background:url("images/comment.gif") no-repeat scroll 0 0 #EDEFF0;padding:10px 15px 0;width:494px;font-size:10px;}
 .comment-content{background:url("images/comment.gif") no-repeat scroll 100% 100% transparent;line-height:145%;margin:0 -15px;padding:9px 15px 10px;font-size:12px;}
 .comment-form img{width:52px;height:20px;}
-.comment-form input, .comment-form textarea{background:url("images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;border:1px solid #A6A6A6;padding:2px 1px;width:200px;}
+.comment-form input, .comment-form textarea{font-family:Helvetica,Arial,sans-serif;color:#555555;background:url("images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;border:1px solid #A6A6A6;padding:2px 1px;width:200px;}
 .comment-form textarea{width:601px;}
 .comment-form button{background:none repeat scroll 0 0 #B4D666;border-color:#B4D666 #81B840 #81B840 #B4D666;border-style:solid;border-width:1px;color:#2970A6;font-size:11px;padding:3px 6px;height:22px;line-height:22px;-moz-border-radius:0px;-webkit-border-radius:0px;}
 .comment-form button:hover{background:none repeat scroll 0 0 #98C64C;border-color:#76B33A #98C64C #98C64C #76B33A;color:#074A7E;}
+#commentURLLabel, #commentURLLabelReply{background:url("images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;border-color:#A6A6A6 -moz-use-text-color #A6A6A6 #A6A6A6;border-style:solid none solid solid;border-width:1px 0 1px 1px;float:left;height:20px;line-height:20px;}
+#commentURL, #commentURLReply{border-left:0 none;width:166px;}
 .error-msg{color:#3366CC;}
 .side-navi .item{padding:15px;}
 .side-navi .navi-comments img{width:32px;height:32px;border:1px solid #999999;padding:1px;margin-right:7px;}
