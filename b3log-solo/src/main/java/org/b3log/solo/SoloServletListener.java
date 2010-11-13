@@ -55,7 +55,6 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.sync.SyncModule;
 import org.b3log.solo.upgrade.UpgradeModule;
-import org.b3log.solo.util.PreferenceUtils;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
