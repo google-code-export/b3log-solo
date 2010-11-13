@@ -29,6 +29,7 @@ import static org.b3log.solo.model.Skin.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.google.inject.Inject;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,9 +129,8 @@ public final class PreferenceUtils {
      */
     private void loadSkins(final JSONObject preference) throws JSONException {
         LOGGER.info("Loading skins....");
-        final String skinDirName =
-                preference.optString(SKIN_DIR_NAME,
-                                     Default.DEFAULT_SKIN_DIR_NAME);
+
+        final String skinDirName = preference.getString(SKIN_DIR_NAME);
         preference.put(SKIN_DIR_NAME, skinDirName);
 
         final String skinName = skins.getSkinName(skinDirName);

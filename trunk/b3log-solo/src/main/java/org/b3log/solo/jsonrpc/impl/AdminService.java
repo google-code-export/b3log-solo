@@ -16,10 +16,14 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
+import java.util.Set;
+import java.util.TimeZone;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.latke.repository.RepositoryException;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +35,7 @@ import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -39,8 +44,11 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.util.PageCacheKeys;
 import static org.b3log.solo.model.Preference.*;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.util.Skins;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,7 +56,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 27, 2010
+ * @version 1.0.0.6, Nov 13, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -77,6 +85,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private EventManager eventManager;
+    /**
+     * Skin utilities.
+     */
+    @Inject
+    private Skins skins;
 
     /**
      * Determines whether the administrator is logged in.
@@ -97,7 +110,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public String getLogoutURL(final HttpServletRequest request,
-                               final HttpServletResponse response)
+            final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -115,8 +128,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public String getLoginURL(final String redirectURL,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         return userService.createLoginURL(redirectURL);
     }
@@ -141,7 +154,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject getPageCache(final HttpServletRequest request,
-                                   final HttpServletResponse response)
+            final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -178,8 +191,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public void clearPageCache(final String url,
-                               final HttpServletRequest request,
-                               final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -202,7 +215,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public void clearAllPageCache(final HttpServletRequest request,
-                                  final HttpServletResponse response)
+            final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -224,7 +237,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * </pre>
      */
     public JSONObject init(final HttpServletRequest request,
-                           final HttpServletResponse response)
+            final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -250,7 +263,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws JSONException json exception
      */
     private JSONObject initStatistic() throws RepositoryException,
-                                              JSONException {
+            JSONException {
         LOGGER.info("Initializing statistic....");
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -310,12 +323,45 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             ret.put(LOCALE_STRING,
                     Preference.Default.DEFAULT_LANGUAGE);
 
+            final String skinDirName = Preference.Default.DEFAULT_SKIN_DIR_NAME;
+            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
+
+            final String skinName = skins.getSkinName(skinDirName);
+            ret.put(Skin.SKIN_NAME, skinName);
+
+            final Set<String> skinDirNames = skins.getSkinDirNames();
+            final JSONArray skinArray = new JSONArray();
+            for (final String dirName : skinDirNames) {
+                final JSONObject skin = new JSONObject();
+                skinArray.put(skin);
+
+                final String name = skins.getSkinName(dirName);
+                skin.put(Skin.SKIN_NAME, name);
+                skin.put(Skin.SKIN_DIR_NAME, dirName);
+            }
+
+            ret.put(Skin.SKINS, skinArray.toString());
+
+            try {
+                PageCaches.removeAll();
+                Templates.CONFIGURATION.clearTemplateCache();
+                final String webRootPath = SoloServletListener.getWebRoot();
+                final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
+                Templates.CONFIGURATION.setDirectoryForTemplateLoading(
+                        new File(skinPath));
+            } catch (final IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            Templates.CONFIGURATION.setTimeZone(
+                    TimeZone.getTimeZone("Asia/Shanghai"));
+
             ret.put(Keys.OBJECT_ID, preferenceId);
             preferenceRepository.add(ret);
 
             eventManager.fireEventSynchronously(// for upgrade extensions
                     new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
-                                          ret));
+                    ret));
 
             preferenceRepository.update(preferenceId, ret);
             transaction.commit();
