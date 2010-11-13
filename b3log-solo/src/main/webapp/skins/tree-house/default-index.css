@@ -40,13 +40,13 @@ h5{font-size:12px;}
 .article-details-footer a{line-height:16px;}
 .article-details-footer{margin:36px 12px 0 0;}
 .article-relative{line-height:20px;margin:12px 0;}
-.comments{padding:26px 0 0 99px;}
-.comments-header{background:url("images/balloons.png") no-repeat scroll 0 0 transparent;height:88px;margin:-11px 0 -29px;position:relative;width:440px;z-index:10;}
+.comments{padding:26px 0 0 99px;position:relative;}
+.comments-header{position:relative;background:url("images/balloons.png") no-repeat scroll 0 0 transparent;height:88px;margin:-11px 0 -29px;width:440px;z-index:10;}
 .comment-top{background:url("images/bg-comments-top.png") no-repeat scroll 0 0 transparent;height:22px;}
 .comment-body{background:url("images/bg-comments-body.png") repeat-y scroll 0 0 transparent;padding:0 27px 2px 27px;width:401px;margin-left:-1px;color:#42423D;}
 .comment-body td{white-space:normal;}
 .comment-bottom{background:url("images/bg-comments-bottom.png") no-repeat scroll 0 0 transparent;height:23px;}
-.comment-title{position:relative;padding-bottom:6px;}
+.comment-title{padding-bottom:6px;}
 .comment-title a{font-weight:bold;color:#42423D;}
 .comment-body-ref{left:54px;opacity:0.9;position:absolute;top:16px;z-index:16;}
 img.comment-picture{width:60px;height:60px;padding:0px 6px 4px 0;}

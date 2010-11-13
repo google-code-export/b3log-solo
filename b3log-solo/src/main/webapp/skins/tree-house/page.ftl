@@ -40,37 +40,39 @@
                                 <div class="comments-header"></div>
                                 <#list pageComments as comment>
                                 <div id="commentItem${comment.oId}" class="comment">
-                                    <div class="comment-top"></div>
-                                    <div class="comment-body">
-                                        <div class="comment-title">
-                                            <#if "http://" == comment.commentURL>
-                                            <a name="${comment.oId}" class="left">${comment.commentName}</a>
-                                            <#else>
-                                            <a name="${comment.oId}" href="${comment.commentURL}"
-                                               target="_blank" class="left">${comment.commentName}</a>
-                                            </#if>
-                                            <#if comment.isReply>
-                                            &nbsp;@&nbsp;<a
-                                                href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
-                                                onmouseover="showComment('${comment.commentOriginalCommentId}', '${comment.oId}');"
-                                                onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
-                                            </#if>
-                                            <div class="right">
-                                                ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                                <a class="noUnderline"
-                                                   href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                                    <div class="comment-panel">
+                                        <div class="comment-top"></div>
+                                        <div class="comment-body">
+                                            <div class="comment-title">
+                                                <#if "http://" == comment.commentURL>
+                                                <a name="${comment.oId}" class="left">${comment.commentName}</a>
+                                                <#else>
+                                                <a name="${comment.oId}" href="${comment.commentURL}"
+                                                   target="_blank" class="left">${comment.commentName}</a>
+                                                </#if>
+                                                <#if comment.isReply>
+                                                &nbsp;@&nbsp;<a
+                                                    href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
+                                                    onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
+                                                    onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                                </#if>
+                                                <div class="right">
+                                                    ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
+                                                    <a class="noUnderline"
+                                                       href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                                                </div>
+                                                <div class="clear"></div>
                                             </div>
-                                            <div class="clear"></div>
-                                        </div>
-                                        <div>
-                                            <img class="comment-picture left" alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                                             <div>
-                                                ${comment.commentContent}
+                                                <img class="comment-picture left" alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                                                <div>
+                                                    ${comment.commentContent}
+                                                </div>
+                                                <div class="clear"></div>
                                             </div>
-                                            <div class="clear"></div>
                                         </div>
+                                        <div class="comment-bottom"></div>
                                     </div>
-                                    <div class="comment-bottom"></div>
                                 </div>
                                 </#list>
                                 <div class="comment">
@@ -323,14 +325,20 @@
                 }
             }
 
-            var showComment = function (id, oId) {
-                $("#commentItemRef" + id).remove();
-                var refComment = $("#commentItem" + id).clone();
-                refComment.find(".comment-body-ref").remove();
-                refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
-                $("#commentItem" + oId + " .comment-title").append(refComment);
-                $("#commentItemRef" + id + " #replyForm").remove();
-                $("#commentItemRef" + id + " .comment-title .right a").remove();
+            var showComment = function (it, id) {
+                if ( $("#commentItemRef" + id).length > 0) {
+                    $("#commentItemRef" + id).show();
+                } else {
+                    var $refComment = $("#commentItem" + id + " .comment-panel").clone();
+                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
+                    $refComment.find(".comment-title .right a").remove();
+                    $("#comments").append($refComment);
+                }
+                var position =  $(it).position();
+                $("#commentItemRef" + id).css({
+                    "top": (position.top + 12) + "px",
+                    "left": "182px"
+                });
             }
 
             var hideComment = function (id) {
