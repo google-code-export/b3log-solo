@@ -236,8 +236,10 @@
                         + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
                         + "</td></tr>";
 
-                    $("#commentItem" + id  + ">.comment-body").append("<table class='form comment-reply' id='replyForm'></table>");
-                    $("#replyForm").append(commentFormHTML);
+                    $("#commentItem" + id).append("<div id='replyForm'><div class='comment-top'></div>"
+                        + "<div class='comment-body'><table class='form comment-reply'>" + commentFormHTML
+                        +"</table></div><div class='comment-bottom'></div></div>");
+                    
                     $("#commentValidateReply").keypress(function (event) {
                         if (event.keyCode === 13) {
                             submitCommentReply(id);
