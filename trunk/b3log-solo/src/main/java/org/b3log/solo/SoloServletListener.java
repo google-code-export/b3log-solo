@@ -23,8 +23,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,7 +40,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.RunsOnEnv;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
 import org.b3log.latke.servlet.AbstractServletListener;
-import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.util.UtilModule;
 import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
@@ -51,10 +48,10 @@ import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.filter.FilterModule;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.sync.SyncModule;
 import org.b3log.solo.upgrade.UpgradeModule;
+import org.b3log.solo.util.PreferenceUtils;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
@@ -253,14 +250,17 @@ public final class SoloServletListener extends AbstractServletListener {
     private void initDefaultSkins() {
         LOGGER.info("Loading default skin[dirName="
                 + Preference.Default.DEFAULT_SKIN_DIR_NAME + "]");
+        final Injector injector = getInjector();
+        final PreferenceUtils preferenceUtils =
+                injector.getInstance(PreferenceUtils.class);
         try {
-            final String webRootPath = SoloServletListener.getWebRoot();
-            final String skinPath = webRootPath + Skin.SKINS + "/"
-                    + Preference.Default.DEFAULT_SKIN_DIR_NAME;
-            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
-                    new File(skinPath));
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
+            final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                throw new Exception(
+                        "Can't not init default skin, please init B3log Solo first");
+            }
+        } catch (final Exception e) {
+            LOGGER.warning(e.getMessage());
         }
 
         LOGGER.info("Loaded default skin....");
@@ -290,8 +290,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
                 final BufferedInputStream bufferedInputStream =
                         new BufferedInputStream(zipFile.getInputStream(zipEntry));
-                final byte[] captchaCharData = new byte[bufferedInputStream.
-                        available()];
+                final byte[] captchaCharData = new byte[bufferedInputStream.available()];
                 bufferedInputStream.read(captchaCharData);
                 bufferedInputStream.close();
 
