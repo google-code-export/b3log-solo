@@ -248,11 +248,11 @@
                             && skins[i].skinDirName === preference.skinDirName ) {
                             skinsHTML += "<div title='" + skins[i].skinDirName
                                 + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
-                                + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
+                                + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
                         } else {
                             skinsHTML += "<div title='" + skins[i].skinDirName
                                 + "' class='left skinItem'><img class='skinPreview' src='skins/"
-                                + skins[i].skinDirName + "/preview.png'/><span>" + skins[i].skinName + "</span></div>"
+                                + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
                         }
                     }
                     $("#skinMain").append(skinsHTML + "<div class='clear'></div>");

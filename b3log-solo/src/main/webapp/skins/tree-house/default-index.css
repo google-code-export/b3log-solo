@@ -52,6 +52,9 @@ h5{font-size:12px;}
 img.comment-picture{width:60px;height:60px;padding:0px 6px 4px 0;}
 #replyForm{margin:12px auto 0 auto;}
 .comment-reply{margin:0 auto 24px auto;}
+#commentURLLabel, #commentURLLabelReply {border-width: 2px 0px 2px 2px;border-style: inset none inset inset;border-color: #CCCCCC;float: left;height: 24px;line-height: 24px;background-color: #FFFFFF;}
+#commentURL, #commentURLReply {border-left: 0px;}
+#comment, #commentReply {width: 321px;}
 .error-msg{color:#EC0A8B;font-weight:bold;}
 #sideNavi .line{background:url("images/bg-branch-small.png") no-repeat;height:69px;margin-top:12px;}
 #sideNavi .block{margin-left:64px;}
