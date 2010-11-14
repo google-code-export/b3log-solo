@@ -56,19 +56,6 @@ ver ${version}
             }
         });
 
-        // article-header.ftl blogStatistic
-        jsonRpc.statisticService.getBlogStatistic(function (result, error) {
-            if (!error && result) {
-                var statisticHTML = "<div>${viewCount1Label}&nbsp;&nbsp;<span class='error-msg'>"
-                    + result.statisticBlogViewCount + "</span></div>"
-                    + "<div>${articleCount1Label}&nbsp;&nbsp;<span class='error-msg'>"
-                    + result.statisticBlogArticleCount + "</span></div>"
-                    + "<div>${commentCount1Label}&nbsp;&nbsp;<span class='error-msg'>"
-                    + result.statisticBlogCommentCount + "</span></div>";
-                $("#statistic").html(statisticHTML);
-            }
-        });
-
         if ($("#sideNavi").length > 0) {
             // article-side.ftl selected style
             if (window.location.search === "") {
@@ -87,6 +74,7 @@ ver ${version}
                 }
             });
 
+            // TODO: Vanessa, using template in article-side.ftl instead
             // article-side.ftl comments
             jsonRpc.commentService.getRecentComments(function (result, error) {
                 if (!result || error) {

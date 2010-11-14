@@ -14,6 +14,17 @@
         <li>
             <h4 id="recentComments">${recentCommentsLabel}</h4>
         </li>
+         <li>
+            <ul id="mostCommentArticles">
+                <#list recentComments as comment>
+                <li>
+                    <a href="${comment.commentSharpURL}">
+                        ${comment.commentName}
+                    </a>: ${comment.commentContent}
+                </li>
+                </#list>
+            </ul>
+        </li>
     </ul>
     <div class="line"></div>
     <ul>
@@ -24,7 +35,7 @@
             <ul id="mostCommentArticles">
                 <#list mostCommentArticles as article>
                 <li>
-                    <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="/article-detail.do?oId=${article.oId}">
+                    <a name="mostComment${article.oId}" title="${article.articleTitle}" href="/article-detail.do?oId=${article.oId}">
                         ${article.articleTitle}
                     </a>(${article.articleCommentCount})
                 </li>
