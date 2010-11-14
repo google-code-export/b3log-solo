@@ -41,8 +41,11 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONException;
@@ -52,7 +55,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Nov 8, 2010
+ * @version 1.0.1.5, Nov 14, 2010
  */
 public final class Filler {
 
@@ -101,6 +104,11 @@ public final class Filler {
      */
     @Inject
     private PreferenceUtils preferenceUtils;
+    /**
+     * Statistic repository.
+     */
+    @Inject
+    private StatisticRepository statisticRepository;
 
     /**
      * Fills articles in index.ftl.
@@ -315,6 +323,10 @@ public final class Filler {
 
         final List<JSONObject> recentComments =
                 commentRepository.getRecentComments(recentCommentDisplayCnt);
+        // Erase email for security reason
+        for (final JSONObject comment : recentComments) {
+            comment.remove(Comment.COMMENT_EMAIL);
+        }
 
         dataModel.put(Common.RECENT_COMMENTS, recentComments);
     }
@@ -370,6 +382,7 @@ public final class Filler {
                       preference.getString(Preference.META_DESCRIPTION));
 
         fillPageNavigations(dataModel);
+        fillStatistic(dataModel);
     }
 
     /**
@@ -382,7 +395,7 @@ public final class Filler {
             throws Exception {
         fillLinks(dataModel);
 //        fillRecentArticles(dataModel);
-//        fillRecentComments(dataModel);
+        fillRecentComments(dataModel);
         fillMostUsedTags(dataModel);
         fillMostCommentArticles(dataModel);
         fillMostViewCountArticles(dataModel);
@@ -416,5 +429,19 @@ public final class Filler {
                 getJSONArray(Keys.RESULTS));
 
         dataModel.put(Common.PAGE_NAVIGATIONS, pageNavigations);
+    }
+
+    /**
+     * Fills statistic.
+     *
+     * @param dataModel data model
+     * @throws Exception exception
+     */
+    private void fillStatistic(final Map<String, Object> dataModel)
+            throws Exception {
+        final JSONObject statistic =
+                statisticRepository.get(Statistic.STATISTIC);
+
+        dataModel.put(Statistic.STATISTIC, statistic);
     }
 }

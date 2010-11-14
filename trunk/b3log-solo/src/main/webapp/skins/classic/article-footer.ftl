@@ -162,19 +162,6 @@ ver ${version}
             }
         });
 
-        // article-header.ftl blogStatistic
-        jsonRpc.statisticService.getBlogStatistic(function (result, error) {
-            if (!error && result) {
-                var statisticHTML = "<span>${viewCount1Label}<span class='error-msg'>"
-                    + result.statisticBlogViewCount + "</span>&nbsp;&nbsp;</span>"
-                    + "<span>${articleCount1Label}<span class='error-msg'>"
-                    + result.statisticBlogArticleCount + "</span>&nbsp;&nbsp;</span>"
-                    + "<span>${commentCount1Label}<span class='error-msg'>"
-                    + result.statisticBlogCommentCount + "</span></span>";
-                $("#statistic").html(statisticHTML);
-            }
-        });
-
         if ($("#sideNavi").length > 0) {
             // article-side.ftl selected style
             if (window.location.search === "") {
@@ -193,34 +180,6 @@ ver ${version}
                 }
             });
 
-            // article-side.ftl comments
-            jsonRpc.commentService.getRecentComments(function (result, error) {
-                if (!result || error) {
-                    return;
-                }
-                var recentCommentsHTML = "<ul>";
-
-                for (var i = 0; i < result.recentComments.length; i++) {
-                    var comment = result.recentComments[i];
-                    var itemHTML = "<li><a href=" + comment.commentSharpURL + ">"
-                        + comment.commentName + "</a>: ";
-
-                    // The comment.commentContent may contain HTML entities, such as
-                    // &#27979;&#35797;. So convert these entities to HTML string
-                    // for calculating the length of the comment content
-                    var commentContentSpan = document.createElement("span");
-                    commentContentSpan.innerHTML = comment.commentContent;
-                    var commentContent = commentContentSpan.innerHTML.length > 11 ?
-                        commentContentSpan.innerHTML.substring(0, 11) + "...." : commentContentSpan.innerHTML;
-                    itemHTML += commentContent + "</li>";
-
-                    recentCommentsHTML += itemHTML;
-                }
-
-                recentCommentsHTML += "</ul>";
-                $("#recentComments").after(recentCommentsHTML);
-            });
-        
             // article-side.ftl ellipsis
             sideEllipsis();
             

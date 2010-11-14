@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Nov 10, 2010
+ * @version 1.0.2.7, Nov 15, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -451,7 +451,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                     new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE,
                                           eventData));
 
-            PageCaches.remove("/article-detail.do?oId=" + articleId);
+            PageCaches.removeAll();
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
@@ -580,7 +580,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                     new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_PAGE,
                                           eventData));
 
-            PageCaches.remove("/page.do?oId=" + pageId);
+            PageCaches.removeAll();
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_PAGE_SUCC);
