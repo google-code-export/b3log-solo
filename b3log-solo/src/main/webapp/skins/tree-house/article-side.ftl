@@ -48,7 +48,7 @@
         <ul id="mostCommentArticles">
             <#list mostCommentArticles as article>
             <li>
-                <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="/article-detail.do?oId=${article.oId}">
+                <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
                     ${article.articleTitle}
                     <span>
                         (${article.articleCommentCount})
@@ -65,7 +65,7 @@
         <ul id="mostViewCountArticles">
             <#list mostViewCountArticles as article>
             <li>
-                <a name="mostView${article.oId}" title="${article.articleTitle}" href="/article-detail.do?oId=${article.oId}">
+                <a name="mostView${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
                     ${article.articleTitle}
                     <span>
                         (${article.articleViewCount})

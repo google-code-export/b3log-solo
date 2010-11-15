@@ -26,7 +26,7 @@
             </#if>
         </div>
         <div class="article-comment">
-            <a href="/article-detail.do?oId=${article.oId}#comments">
+            <a href="${article.articlePermalink}#comments">
                 ${commentLabel}（${article.articleCommentCount}）
             </a>
         </div>

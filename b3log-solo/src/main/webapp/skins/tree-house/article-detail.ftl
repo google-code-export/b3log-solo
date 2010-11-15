@@ -87,7 +87,7 @@
                                         <span class="left">
                                             &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
                                         </span>
-                                        <a href="/article-detail.do?oId=${article.oId}" class="left">
+                                        <a href="${article.articlePermalink}" class="left">
                                             <span class="left browserIcon" title="${viewLabel}"></span>
                                             ${article.articleViewCount}
                                         </a>
@@ -128,7 +128,7 @@
                                                 </#if>
                                                 <#if comment.isReply>
                                                 &nbsp;@&nbsp;<a
-                                                    href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}"
+                                                    href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
                                                     onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
                                                     onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                                 </#if>
