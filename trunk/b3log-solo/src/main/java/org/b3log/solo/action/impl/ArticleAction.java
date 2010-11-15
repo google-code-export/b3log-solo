@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import java.util.logging.Level;
@@ -53,7 +52,7 @@ import org.json.JSONObject;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Nov 8, 2010
+ * @version 1.0.1.2, Nov 15, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -127,7 +126,20 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             if (Strings.isEmptyOrNull(articleId)) {
                 articleId = (String) request.getAttribute(Keys.OBJECT_ID);
             }
+
+            if (Strings.isEmptyOrNull(articleId)) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            }
+
             final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            }
+
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE, article);
