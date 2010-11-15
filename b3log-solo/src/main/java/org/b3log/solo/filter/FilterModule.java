@@ -36,6 +36,9 @@ public final class FilterModule extends ServletModule {
         bind(ArticlePermalinkFilter.class).in(Scopes.SINGLETON);
         filter("/*").through(ArticlePermalinkFilter.class);
 
+        bind(PagePermalinkFilter.class).in(Scopes.SINGLETON);
+        filter("/*").through(PagePermalinkFilter.class);
+
         bind(DefaultArticlePermalinkFilter.class).in(Scopes.SINGLETON);
         filterRegex("/articles/\\d{4}/\\d{2}/\\d{2}/\\d+.html").
                 through(DefaultArticlePermalinkFilter.class);

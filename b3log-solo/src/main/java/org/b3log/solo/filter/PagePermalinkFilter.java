@@ -30,34 +30,34 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.PageRepository;
 import org.json.JSONObject;
 
 /**
- * Article permalink filter.
+ * Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 15, 2010
+ * @version 1.0.0.0, Nov 15, 2010
  */
-public final class ArticlePermalinkFilter implements Filter {
+public final class PagePermalinkFilter implements Filter {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticlePermalinkFilter.class.getName());
+            Logger.getLogger(PagePermalinkFilter.class.getName());
     /**
-     * Article repository.
+     * Page repository.
      */
     @Inject
-    private ArticleRepository articleRepository;
+    private PageRepository pageRepository;
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
     }
 
     /**
-     * Redirects request URI to {@link org.b3log.solo.action.impl.ArticleAction}.
+     * Redirects request URI to {@link org.b3log.solo.action.impl.PageAction}.
      *
      * @param request the specified request
      * @param response the specified response
@@ -70,26 +70,25 @@ public final class ArticlePermalinkFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        LOGGER.finer("Doing article permalink filter....");
+        LOGGER.finer("Doing page permalink filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
-        final JSONObject article = articleRepository.getByPermalink(requestURI);
-        if (null == article) {
+        final JSONObject page = pageRepository.getByPermalink(requestURI);
+        if (null == page) {
             chain.doFilter(request, response);
 
             return;
         }
 
         try {
-            final String articleId = article.getString(Keys.OBJECT_ID);
+            final String pageId = page.getString(Keys.OBJECT_ID);
 
             final RequestDispatcher requestDispatcher =
-                    httpServletRequest.getRequestDispatcher("/article-detail.do");
-            request.setAttribute(Keys.OBJECT_ID, articleId);
-            request.setAttribute(Keys.PAGE_CACHE_KEY, "/article-detail.do?oId="
-                                                      + articleId);
+                    httpServletRequest.getRequestDispatcher("/page.do");
+            request.setAttribute(Keys.OBJECT_ID, pageId);
+            request.setAttribute(Keys.PAGE_CACHE_KEY, "/page.do?oId=" + pageId);
             requestDispatcher.forward(request, response);
         } catch (final Exception e) {
             ((HttpServletResponse) response).sendError(

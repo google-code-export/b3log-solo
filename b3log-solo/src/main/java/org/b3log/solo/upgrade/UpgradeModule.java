@@ -24,10 +24,9 @@ import com.google.inject.servlet.ServletModule;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 30, 2010
+ * @version 1.0.0.2, Nov 15, 2010
  */
 public final class UpgradeModule extends ServletModule {
-
 
     @Override
     protected void configureServlets() {
@@ -38,5 +37,8 @@ public final class UpgradeModule extends ServletModule {
 
         bind(V011ToV020.class).in(Scopes.SINGLETON);
         serve("/upgrade/v011-v020.do").with(V011ToV020.class);
+
+        bind(V020ToV021.class).in(Scopes.SINGLETON);
+        serve("/upgrade/v020-v021.do").with(V020ToV021.class);
     }
 }
