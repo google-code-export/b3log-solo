@@ -164,9 +164,12 @@
             firstPage: "${firstPageLabel}"
         });
 
+        var localeString = "${localeString}";
+        var language = localeString.substring(0, 2);
         // editor
         tinyMCE.init({
             // General options
+            language: language,
             mode : "exact",
             elements : "pageContent",
             theme : "advanced",

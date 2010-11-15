@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Abstract admin action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 8, 2010
+ * @version 1.0.0.2, Nov 15, 2010
  */
 public abstract class AbstractAdminAction extends AbstractAction {
 
@@ -98,6 +98,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
+            ret.put(Preference.LOCALE_STRING, localeString);
             final Locale locale = new Locale(
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString));

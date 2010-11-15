@@ -58,10 +58,12 @@
             }
         });
 
+        var localeString = "${localeString}";
+        var language = localeString.substring(0, 2);
         // editor
         tinyMCE.init({
             // General options
-            language: "zh",
+            language: language,
             mode : "exact",
             elements : "articleContent, abstract",
             theme : "advanced",
