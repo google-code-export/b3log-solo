@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -385,7 +384,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
-            session.removeAttribute(CaptchaServlet.CAPTCHA);
+            synchronized (CommentService.class) {
+                session.removeAttribute(CaptchaServlet.CAPTCHA);
+            }
 
             articleId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject article = articleRepository.get(articleId);
@@ -517,7 +518,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
-            session.removeAttribute(CaptchaServlet.CAPTCHA);
+            synchronized (CommentService.class) {
+                session.removeAttribute(CaptchaServlet.CAPTCHA);
+            }
 
             pageId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject page = pageRepository.get(pageId);
