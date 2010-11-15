@@ -51,26 +51,6 @@
                     $it.addClass("selected");
                 }
             });
-
-            // TODO: Vanessa, using template in article-side.ftl instead
-            // article-side.ftl comments
-            jsonRpc.commentService.getRecentComments(function (result, error) {
-                if (!result || error) {
-                    return;
-                }
-                var recentCommentsHTML = "<ul>";
-
-                for (var i = 0; i < result.recentComments.length; i++) {
-                    var comment = result.recentComments[i];
-                    var itemHTML = "<li><img class='left' title='" + comment.commentName
-                        + "' alt='" + comment.commentName
-                        + "' src='" + comment.commentThumbnailURL + "'/><div class='left'><div><a href=" + comment.commentURL + ">"
-                        + comment.commentName + "</a></div><div><a class='side-comment' href=" + comment.commentSharpURL + ">"
-                        + comment.commentContent + "</a></div></div><div class='clear'></div></li>";
-                    recentCommentsHTML += itemHTML;
-                }
-                $("#recentComments").after(recentCommentsHTML + "</ul>");
-            });
         }
 
         // set selected navi

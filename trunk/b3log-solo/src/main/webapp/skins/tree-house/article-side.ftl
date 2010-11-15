@@ -1,11 +1,23 @@
 <div id="sideNavi">
     <div id="statistic">
-        <span>${viewCount1Label}<span class='error-msg'>
-                ${statistic.statisticBlogViewCount}</span>&nbsp;&nbsp;</span>
-        <span>${articleCount1Label}<span class='error-msg'>
-                ${statistic.statisticBlogArticleCount}</span>&nbsp;&nbsp;</span>
-        <span>${commentCount1Label}<span class='error-msg'>
-                ${statistic.statisticBlogCommentCount}</span></span>
+        <div>
+            ${viewCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticBlogViewCount}
+            </span>
+        </div>
+        <div>
+            ${articleCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticBlogArticleCount}
+            </span>
+        </div>
+        <div>
+            ${commentCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticBlogCommentCount}
+            </span>
+        </div>
     </div>
     <div class="block notice">
         <h3>${noticeBoardLabel}</h3>
@@ -16,6 +28,19 @@
     <div class="line"></div>
     <div class="block">
         <h3 id="recentComments">${recentCommentsLabel}</h3>
+        <ul>
+            <#list recentComments as comment>
+            <li>
+                <a href="${comment.commentSharpURL}">
+                    ${comment.commentName}:
+                    <span>
+                        ${comment.commentContent}
+                    </span>
+                </a>
+            </li>
+            </#list>
+        </ul>
+        <div class='clear'></div>
     </div>
     <div class="line"></div>
     <div class="block mostCommentArticles">
