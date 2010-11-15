@@ -8,6 +8,28 @@
     <div class="line"></div>
     <div class="item navi-comments">
         <h4 id="recentComments">${recentCommentsLabel}</h4>
+        <ul>
+             <#list recentComments as comment>
+            <li>
+                <img class='left' title='${comment.commentName}'
+                     alt='${comment.commentName}'
+                     src='${comment.commentThumbnailURL}'/>
+                <div class='left'>
+                    <div>
+                        <a href="${comment.commentURL}">
+                        ${comment.commentName}
+                        </a>
+                    </div>
+                    <div>
+                        <a class='side-comment' href="${comment.commentSharpURL}">
+                        ${comment.commentContent}
+                        </a>
+                    </div>
+                </div>
+                <div class='clear'></div>
+            </li>
+            </#list>
+        </ul>
     </div>
     <div class="line"></div>
     <div class="item">
