@@ -34,15 +34,15 @@ import org.b3log.latke.Keys;
  * Article permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 26, 2010
+ * @version 1.0.0.3, Nov 15, 2010
  */
-public final class PermalinkFilter implements Filter {
+public final class DefaultArticlePermalinkFilter implements Filter {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PermalinkFilter.class.getName());
+            Logger.getLogger(DefaultArticlePermalinkFilter.class.getName());
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
