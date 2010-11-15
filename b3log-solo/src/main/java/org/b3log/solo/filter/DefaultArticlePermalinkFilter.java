@@ -31,8 +31,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 
 /**
- * Article permalink filter.
+ * Default article permalink filter.
  *
+ * <p>
+ *   Filters URL pattern {@literal /articles/\\d{4}/\\d{2}/\\d{2}/\\d+.html}.
+ * </p>
+ * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.3, Nov 15, 2010
  */
