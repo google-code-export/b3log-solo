@@ -29,7 +29,13 @@
             </td>
         </tr>
         <tr>
-            <td colspan="4" align="right">
+            <th>
+                ${permalink1Label}
+            </th>
+            <td>
+                <input id="pagePermalink" type="text"/>
+            </td>
+            <td colspan="2" align="right">
                 <button onclick="submitPage();">${saveLabel}</button>
             </td>
         </tr>
@@ -60,7 +66,7 @@
 
                     for (var i = 0; i < pages.length; i++) {
                         pageData[i] = {};
-                        pageData[i].pageTitle = "<a class='noUnderline' href='/page.do?oId=" + pages[i].oId + "' target='_blank'>"
+                        pageData[i].pageTitle = "<a class='noUnderline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                             + pages[i].pageTitle + "</a>";
                         pageData[i].pageOrder = pages[i].pageOrder;
                         pageData[i].update = "<div class='updateIcon'></div>";
@@ -212,6 +218,7 @@
                     $("#pageTitle").val(result.page.pageTitle).data('oId', event.data.id[0]);
                     tinyMCE.get('pageContent').setContent(result.page.pageContent);
                     $("#pageOrder").val(result.page.pageOrder);
+                    $("#pagePermalink").val(result.page.pagePermalink);
                     break;
                 case "GET_LINK_FAIL_":
                     break;
@@ -265,7 +272,8 @@
                     "pageTitle": $("#pageTitle").val(),
                     "oId": $("#pageTitle").data("oId"),
                     "pageContent": tinyMCE.get('pageContent').getContent(),
-                    "pageOrder": $("#pageOrder").val()
+                    "pageOrder": $("#pageOrder").val(),
+                    "pagePermalink": $("#pagePermalink").val()
                 }
             };
             jsonRpc.pageService.updatePage(function (result, error) {
@@ -276,6 +284,7 @@
                         $("#tipMsg").text("${updateSuccLabel}");
                         tinyMCE.get('pageContent').setContent("");
                         $("#pageOrder").val("");
+                        $("#pagePermalink").val("");
                         break;
                     default:
                         break;
@@ -293,7 +302,8 @@
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
                     "pageContent": tinyMCE.get('pageContent').getContent(),
-                    "pageOrder": $("#pageOrder").val()
+                    "pageOrder": $("#pageOrder").val(),
+                    "pagePermalink": $("#pagePermalink").val()
                 }
             };
             jsonRpc.pageService.addPage(function (result, error) {
@@ -301,6 +311,7 @@
                     case "ADD_PAGE_SUCC":
                         $("#pageTitle").val("").removeData("oId");
                         $("#pageOrder").val("");
+                        $("#pagePermalink").val("");
                         if (tinyMCE.get("pageContent")) {
                             tinyMCE.get('pageContent').setContent("");
                         } else {
@@ -380,7 +391,7 @@
         $("#pageComments").dialog("close");
     }
 
-     var deletePageComment = function (id) {
+    var deletePageComment = function (id) {
         var isDelete = confirm("${confirmRemoveLabel}");
         if (isDelete) {
             $("#loadMsg").text("${loadingLabel}");

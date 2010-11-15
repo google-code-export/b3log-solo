@@ -38,7 +38,7 @@
     <security-constraint>
         <web-resource-collection>
             <url-pattern>/admin-index.do</url-pattern>
-             <url-pattern>/upgrade/*</url-pattern>
+            <url-pattern>/upgrade/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>

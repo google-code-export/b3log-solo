@@ -16,16 +16,21 @@
 
 package org.b3log.solo.repository.impl;
 
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
+import org.json.JSONObject;
 
 /**
  * Page Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2010
+ * @version 1.0.0.1, Nov 15, 2010
  */
 public final class PageGAERepository extends AbstractGAERepository
         implements PageRepository {
@@ -39,5 +44,21 @@ public final class PageGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return Page.PAGE;
+    }
+
+    @Override
+    public JSONObject getByPermalink(final String permalink) {
+        final Query query = new Query(getName());
+        query.addFilter(Page.PAGE_PERMALINK,
+                        Query.FilterOperator.EQUAL, permalink);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final Entity entity = preparedQuery.asSingleEntity();
+        if (null == entity) {
+            return null;
+        }
+
+        final Map<String, Object> properties = entity.getProperties();
+
+        return new JSONObject(properties);
     }
 }

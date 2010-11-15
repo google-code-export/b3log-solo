@@ -30,6 +30,7 @@ import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Page;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
  * Page action. page.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 8, 2010
+ * @version 1.0.0.3, Nov 15, 2010
  */
 public final class PageAction extends AbstractCacheablePageAction {
 
@@ -107,8 +108,18 @@ public final class PageAction extends AbstractCacheablePageAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
-            final String pageId =
-                    queryStringJSONObject.getString(Keys.OBJECT_ID);
+            String pageId =
+                    queryStringJSONObject.optString(Keys.OBJECT_ID);
+            if (Strings.isEmptyOrNull(pageId)) {
+                pageId = (String) request.getAttribute(Keys.OBJECT_ID);
+            }
+
+            if (Strings.isEmptyOrNull(pageId)) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            }
+            
             final JSONObject page = pageRepository.get(pageId);
             ret.put(Page.PAGE, page);
             final List<JSONObject> comments = pageUtils.getComments(pageId);

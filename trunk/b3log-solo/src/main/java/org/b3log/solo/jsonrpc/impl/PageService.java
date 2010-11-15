@@ -33,6 +33,7 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Page;
@@ -45,7 +46,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 1, 2010
+ * @version 1.0.0.6, Nov 15, 2010
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
@@ -81,7 +82,9 @@ public final class PageService extends AbstractGAEJSONRpcService {
      *         "oId": "",
      *         "pageTitle": "",
      *         "pageContent": ""
-     *         "pageOrder": int
+     *         "pageOrder": int,
+     *         "pagePermalink": "",
+     *         "pageCommentCount": int,
      *     },
      *     "sc": "GET_PAGE_SUCC"
      * }
@@ -129,8 +132,9 @@ public final class PageService extends AbstractGAEJSONRpcService {
      *     "pages": [{
      *         "oId": "",
      *         "pageTitle": "",
-     *         "pageCommentCount": "",
-     *         "pageOrder": int
+     *         "pageCommentCount": int,
+     *         "pageOrder": int,
+     *         "pagePermalink": ""
      *      }, ....]
      *     "sc": "GET_PAGES_SUCC"
      * }
@@ -148,7 +152,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
-
 
             final Map<String, SortDirection> sorts =
                     new HashMap<String, SortDirection>();
@@ -193,7 +196,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
      *         "pageTitle": "",
      *         "pageContent": "",
      *         "pageOrder": int,
-     *         "pageCommentCount": int
+     *         "pageCommentCount": int,
+     *         "pagePermalink": ""
      *     }
      * }, see {@link Page} for more details
      * </pre>
@@ -226,6 +230,11 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     new JSONObject(page, JSONObject.getNames(page));
             newPage.put(Page.PAGE_COMMENT_COUNT,
                         oldPage.getInt(Page.PAGE_COMMENT_COUNT));
+            String permalink = page.optString(Page.PAGE_PERMALINK);
+            if (Strings.isEmptyOrNull(permalink)) {
+                permalink = "/page.do?oId=" + pageId;
+            }
+
             pageRepository.update(pageId, newPage);
 
             transaction.commit();
@@ -331,7 +340,16 @@ public final class PageService extends AbstractGAEJSONRpcService {
             final JSONObject page =
                     requestJSONObject.getJSONObject(Page.PAGE);
             page.put(Page.PAGE_COMMENT_COUNT, 0);
+            
             final String pageId = pageRepository.add(page);
+
+            String permalink = page.optString(Page.PAGE_PERMALINK);
+            if (Strings.isEmptyOrNull(permalink)) {
+                permalink = "/page.do?oId=" + pageId;
+            }
+            page.put(Page.PAGE_PERMALINK, permalink);
+
+            pageRepository.update(pageId, page);
 
             transaction.commit();
             ret.put(Keys.OBJECT_ID, pageId);

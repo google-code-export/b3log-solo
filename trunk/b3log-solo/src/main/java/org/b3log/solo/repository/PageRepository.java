@@ -17,12 +17,21 @@
 package org.b3log.solo.repository;
 
 import org.b3log.latke.repository.Repository;
+import org.json.JSONObject;
 
 /**
  * Page repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 28, 2010
+ * @version 1.0.0.1, Nov 15, 2010
  */
 public interface PageRepository extends Repository {
+
+    /**
+     * Gets a page by the specified permalink.
+     *
+     * @param permalink the specified permalink
+     * @return an article, returns {@code null} if not found
+     */
+    JSONObject getByPermalink(final String permalink);
 }

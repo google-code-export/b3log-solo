@@ -14,7 +14,7 @@
             </li>
             <#list pageNavigations as page>
             <li>
-                <a href="/page.do?oId=${page.oId}">
+                <a href="${page.pagePermalink}">
                     ${page.pageTitle}
                 </a>
             </li>
