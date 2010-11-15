@@ -80,12 +80,13 @@
                                 <div class="clear"></div>
                             </div>
                             <div class="article-relative">
-                                <#if nextArticleId??>
-                                <a href="/article-detail.do?oId=${nextArticleId}">${nextArticle1Label}${nextArticleTitle}</a>
-                                <br/>
+                                <#if nextArticlePermalink??>
+                                <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
                                 </#if>
-                                <#if previousArticleId??>
-                                <a href="/article-detail.do?oId=${previousArticleId}">${previousArticle1Label}${previousArticleTitle}</a>
+                                <br/>
+                                <#if previousArticlePermalink??>
+                                <br/>
+                                <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                                 </#if>
                             </div>
                             <#if 0 != relevantArticles?size>

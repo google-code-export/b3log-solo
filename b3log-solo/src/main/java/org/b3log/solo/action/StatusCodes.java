@@ -20,7 +20,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Nov 4, 2010
+ * @version 1.0.1.5, Nov 15, 2010
  */
 public enum StatusCodes {
 
@@ -28,6 +28,10 @@ public enum StatusCodes {
      * Indicates add an article successfully.
      */
     ADD_ARTICLE_SUCC,
+    /**
+     * Indicates add an article fails, caused by duplicated permalink.
+     */
+    ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK,
     /**
      * Indicates get articles successfully.
      */
@@ -60,6 +64,10 @@ public enum StatusCodes {
      * Indicates update an article successfully.
      */
     UPDATE_ARTICLE_SUCC,
+    /**
+     * Indicates update an article fails, caused by duplicated permalink.
+     */
+    UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK,
     /**
      * Indicates comment an article successfully.
      */
@@ -121,6 +129,10 @@ public enum StatusCodes {
      */
     ADD_PAGE_SUCC,
     /**
+     * Indicates add a page fails, caused by duplicated permalink.
+     */
+    ADD_PAGE_FAIL_DUPLICATED_PERMALINK,
+    /**
      * Indicates remove a page successfully.
      */
     REMOVE_PAGE_SUCC,
@@ -132,6 +144,10 @@ public enum StatusCodes {
      * Indicates get a page successfully.
      */
     GET_PAGE_SUCC,
+    /**
+     * Indicates update a page fails, caused by duplicated permalink.
+     */
+    UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK,
     /**
      * Indicates get pages successfully.
      */

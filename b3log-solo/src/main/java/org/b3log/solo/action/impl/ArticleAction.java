@@ -151,22 +151,23 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final JSONObject previous =
                     articleRepository.getPreviousArticle(articleId);
             if (null != previous) {
-                final String previousArticleId =
-                        previous.getString(Keys.OBJECT_ID);
+                final String previousArticlePermalink =
+                        previous.getString(Article.ARTICLE_PERMALINK);
                 final String previousArticleTitle =
                         previous.getString(Article.ARTICLE_TITLE);
-                ret.put(Common.PREVIOUS_ARTICLE_ID, previousArticleId);
+                ret.put(Common.PREVIOUS_ARTICLE_PERMALINK,
+                        previousArticlePermalink);
                 ret.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticleTitle);
             }
 
             final JSONObject next =
                     articleRepository.getNextArticle(articleId);
             if (null != next) {
-                final String nextArticleId =
-                        next.getString(Keys.OBJECT_ID);
-                final String nextArticleTitle = next.getString(
-                        Article.ARTICLE_TITLE);
-                ret.put(Common.NEXT_ARTICLE_ID, nextArticleId);
+                final String nextArticlePermalink =
+                        next.getString(Article.ARTICLE_PERMALINK);
+                final String nextArticleTitle =
+                        next.getString(Article.ARTICLE_TITLE);
+                ret.put(Common.NEXT_ARTICLE_PERMALINK, nextArticlePermalink);
                 ret.put(Common.NEXT_ARTICLE_TITLE, nextArticleTitle);
             }
 

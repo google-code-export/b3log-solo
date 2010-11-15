@@ -119,6 +119,10 @@
 
             jsonRpc.articleService.addArticle(function (result, error) {
                 switch (result.status.code) {
+                    case "ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK":
+                        var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
+                        $("#tipMsg").text(msg);
+                        break;
                     case "ADD_ARTICLE_SUCC":
                         var events = result.status.events;
                         if (events) {
@@ -173,6 +177,10 @@
 
             jsonRpc.articleService.updateArticle(function (result, error) {
                 switch (result.status.code) {
+                    case "UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK":
+                        var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
+                        $("#tipMsg").text(msg);
+                        break;
                     case "UPDATE_ARTICLE_SUCC":
                         var events = result.status.events;
                         if (events) {

@@ -278,6 +278,10 @@
             };
             jsonRpc.pageService.updatePage(function (result, error) {
                 switch (result.sc) {
+                    case "UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK":
+                        var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
+                        $("#tipMsg").text(msg);
+                        break;
                     case "UPDATE_PAGE_SUCC":
                         getPageList(pageListCurrentPage);
                         $("#pageTitle").removeData("oId").val("");
@@ -308,6 +312,10 @@
             };
             jsonRpc.pageService.addPage(function (result, error) {
                 switch (result.sc) {
+                    case "ADD_PAGE_FAIL_DUPLICATED_PERMALINK":
+                        var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
+                        $("#tipMsg").text(msg);
+                        break;
                     case "ADD_PAGE_SUCC":
                         $("#pageTitle").val("").removeData("oId");
                         $("#pageOrder").val("");

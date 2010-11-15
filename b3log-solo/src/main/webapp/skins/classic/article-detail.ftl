@@ -75,12 +75,12 @@
                         </div>
                         <div class="article-details-footer">
                             <div class="left">
-                                <#if nextArticleId??>
-                                <a href="/article-detail.do?oId=${nextArticleId}">${nextArticle1Label}${nextArticleTitle}</a>
+                                <#if nextArticlePermalink??>
+                                <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
                                 </#if>
-                                <#if previousArticleId??>
+                                <#if previousArticlePermalink??>
                                 <br/>
-                                <a href="/article-detail.do?oId=${previousArticleId}">${previousArticle1Label}${previousArticleTitle}</a>
+                                <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                                 </#if>
                             </div>
                             <div class="right">
