@@ -69,11 +69,7 @@ public final class CnBlogsRemoveArticleProcessor
         JSONObject blogSyncCnBlogs = null;
         try {
             result = eventData.getJSONObject(Keys.RESULTS);
-            JSONObject status = result.optJSONObject(Keys.STATUS);
-            if (null == status) {
-                status = new JSONObject();
-                result.put(Keys.STATUS, status);
-            }
+            final JSONObject status = result.getJSONObject(Keys.STATUS);
 
             events = status.optJSONObject(Keys.EVENTS);
             if (null == events) {

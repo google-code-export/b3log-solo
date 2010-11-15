@@ -230,9 +230,22 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     new JSONObject(page, JSONObject.getNames(page));
             newPage.put(Page.PAGE_COMMENT_COUNT,
                         oldPage.getInt(Page.PAGE_COMMENT_COUNT));
-            String permalink = page.optString(Page.PAGE_PERMALINK);
-            if (Strings.isEmptyOrNull(permalink)) {
-                permalink = "/page.do?oId=" + pageId;
+            String permalink = page.optString(Page.PAGE_PERMALINK).trim();
+            final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
+            if (!oldPermalink.equals(permalink)) {
+                if (Strings.isEmptyOrNull(permalink)) {
+                    permalink = "/page.do?oId=" + pageId;
+                }
+
+                final JSONObject pageWithTheSamePermalink =
+                        pageRepository.getByPermalink(permalink);
+                if (null != pageWithTheSamePermalink) {
+                    ret.put(Keys.STATUS_CODE,
+                            StatusCodes.UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK);
+
+                    throw new Exception("Update page fail, caused by duplicated permalink["
+                                        + permalink + "]");
+                }
             }
 
             pageRepository.update(pageId, newPage);
@@ -244,10 +257,15 @@ public final class PageService extends AbstractGAEJSONRpcService {
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+
+            return ret;
         }
 
         PageCaches.removeAll();
+
+
+
+
 
         return ret;
     }
@@ -281,6 +299,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
+
+
         try {
             final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
@@ -291,15 +311,25 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_PAGE_SUCC);
 
             LOGGER.log(Level.FINER, "Removed a page[oId={0}]", pageId);
+
+
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
+
+
             throw new ActionException(e);
+
+
         }
 
         PageCaches.removeAll();
 
+
+
         return ret;
+
+
     }
 
     /**
@@ -336,17 +366,41 @@ public final class PageService extends AbstractGAEJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
+
+
         try {
             final JSONObject page =
                     requestJSONObject.getJSONObject(Page.PAGE);
             page.put(Page.PAGE_COMMENT_COUNT, 0);
-            
+
             final String pageId = pageRepository.add(page);
 
             String permalink = page.optString(Page.PAGE_PERMALINK);
+
+
             if (Strings.isEmptyOrNull(permalink)) {
                 permalink = "/page.do?oId=" + pageId;
+
+
             }
+
+            final JSONObject pageWithTheSamePermalink =
+                    pageRepository.getByPermalink(permalink);
+
+
+            if (null != pageWithTheSamePermalink) {
+                ret.put(Keys.STATUS_CODE,
+                        StatusCodes.ADD_PAGE_FAIL_DUPLICATED_PERMALINK);
+
+
+
+                throw new Exception("Add page fail, caused by duplicated permalink["
+                                    + permalink + "]");
+
+
+            }
+
+
             page.put(Page.PAGE_PERMALINK, permalink);
 
             pageRepository.update(pageId, page);
@@ -355,14 +409,24 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.OBJECT_ID, pageId);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_PAGE_SUCC);
+
+
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+
+
+
+            return ret;
+
+
         }
 
         PageCaches.removeAll();
 
+
+
         return ret;
+
     }
 }

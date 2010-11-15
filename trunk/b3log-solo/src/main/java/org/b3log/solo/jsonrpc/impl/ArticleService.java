@@ -204,6 +204,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
+            final JSONObject status = new JSONObject();
+            ret.put(Keys.STATUS, status);
+
             final JSONObject article =
                     requestJSONObject.getJSONObject(ARTICLE);
             // Step 1: Add tags
@@ -235,6 +238,16 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 permalink = "/articles/" + PERMALINK_FORMAT.format(date) + "/"
                             + articleId + ".html";
             }
+            final JSONObject articleWithTheSamePermalink =
+                    articleRepository.getByPermalink(permalink);
+            if (null != articleWithTheSamePermalink) {
+                status.put(Keys.CODE,
+                           StatusCodes.ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK);
+
+                throw new Exception("Add article fail, caused by duplicated permalink["
+                                    + permalink + "]");
+            }
+
             article.put(ARTICLE_PERMALINK, permalink);
             // Step 10: Update article
             articleRepository.update(articleId, article);
@@ -247,17 +260,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             transaction.commit();
 
-            JSONObject status = ret.optJSONObject(Keys.STATUS);
-            if (null == status) {
-                status = new JSONObject();
-            }
-
             status.put(Keys.CODE, StatusCodes.ADD_ARTICLE_SUCC);
-            ret.put(Keys.STATUS, status);
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+
+            return ret;
         }
 
         PageCaches.removeAll();
@@ -675,6 +683,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
+            final JSONObject status = new JSONObject();
+            ret.put(Keys.STATUS, status);
+
             final JSONObject article =
                     requestJSONObject.getJSONObject(ARTICLE);
             final String articleId = article.getString(Keys.OBJECT_ID);
@@ -696,11 +707,26 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final JSONObject oldArticle = articleRepository.get(articleId);
             final Date createDate = (Date) oldArticle.get(
                     ARTICLE_CREATE_DATE);
-            String permalink = article.optString(ARTICLE_PERMALINK);
-            if (Strings.isEmptyOrNull(permalink)) {
-                permalink = "/articles/" + PERMALINK_FORMAT.format(createDate)
-                            + "/" + articleId + ".html";
+            String permalink = article.optString(ARTICLE_PERMALINK).trim();
+            final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
+            if (!oldPermalink.equals(permalink)) {
+                if (Strings.isEmptyOrNull(permalink)) {
+                    permalink = "/articles/" + PERMALINK_FORMAT.format(
+                            createDate)
+                                + "/" + articleId + ".html";
+                }
+                
+                final JSONObject articleWithTheSamePermalink =
+                        articleRepository.getByPermalink(permalink);
+                if (null != articleWithTheSamePermalink) {
+                    status.put(Keys.CODE,
+                               StatusCodes.UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK);
+
+                    throw new Exception("Update article fail, caused by duplicated permalink["
+                                        + permalink + "]");
+                }
             }
+
             article.put(ARTICLE_PERMALINK, permalink);
             // Step 6: Fill auto properties
             article.put(ARTICLE_CREATE_DATE, createDate);
@@ -731,10 +757,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
 
             transaction2.commit();
-            JSONObject status = ret.optJSONObject(Keys.STATUS);
-            if (null == status) {
-                status = new JSONObject();
-            }
 
             status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
             ret.put(Keys.STATUS, status);
@@ -747,8 +769,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
+            
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+
+            return ret;
         }
 
         PageCaches.removeAll();

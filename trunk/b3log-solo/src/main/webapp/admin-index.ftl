@@ -162,6 +162,7 @@
                     $("#abstract").val("");
                 }
                 $("#tag").val("");
+                $("#permalink").val("");
             }
 
             var initAdmin = function () {
