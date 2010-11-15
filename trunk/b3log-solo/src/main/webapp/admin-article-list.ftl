@@ -35,8 +35,8 @@
                         articleData[i].topArticle = topArticleHtml;
                         articleData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
                             + articles[i].articleCommentCount + "</div>";
-                        articleData[i].articleViewCount = "<a href='article-detail.do?oId="
-                            + articles[i].oId + "' target='_blank' title='" + articles[i].articleTitle
+                        articleData[i].articleViewCount = "<a href='"
+                            + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle
                             + "' class='noUnderline'><div class='left browserIcon'></div><div class='left' style='margin-left:6px;'>"
                             + articles[i].articleViewCount + "</div></a>";;
                         articleData[i].id = articles[i].oId;
