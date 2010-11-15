@@ -25,9 +25,17 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Aug 31, 2010
+ * @version 1.0.0.9, Nov 15, 2010
  */
 public interface ArticleRepository extends Repository {
+
+    /**
+     * Gets an article by the specified permalink.
+     *
+     * @param permalink the specified permalink
+     * @return an article, returns {@code null} if not found
+     */
+    JSONObject getByPermalink(final String permalink);
 
     /**
      * Gets post articles recently with the specified fetch size.

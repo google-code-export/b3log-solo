@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Nov 5, 2010
  */
-public class LinkGAERepository extends AbstractGAERepository
+public final class LinkGAERepository extends AbstractGAERepository
         implements LinkRepository {
 
     /**

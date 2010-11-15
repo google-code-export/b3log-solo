@@ -23,6 +23,11 @@
         <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
     </div>
     <div class="clear"></div>
+    <div class="left label">${permalink1Label}</div>
+    <div class="left input">
+        <input id="permalink" type="text"/>
+    </div>
+    <div class="clear"></div>
     <div class="right label">
         <button id="submitArticle">${postLabel}</button>
     </div>
@@ -107,7 +112,8 @@
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
-                    "articleTags": $.bowknot.trimUnique(tagArray).toString()
+                    "articleTags": $.bowknot.trimUnique(tagArray).toString(),
+                    "articlePermalink": $("#permalink").val()
                 }
             };
 
@@ -160,7 +166,8 @@
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
-                    "articleTags": $.bowknot.trimUnique(tagArray).toString()
+                    "articleTags": $.bowknot.trimUnique(tagArray).toString(),
+                    "articlePermalink": $("#permalink").val()
                 }
             };
 

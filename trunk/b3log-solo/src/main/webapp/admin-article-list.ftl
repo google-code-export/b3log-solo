@@ -186,6 +186,7 @@
                         }
                     }
                     $("#tag").val(tagsString);
+                    $("#permalink").val(result.article.articlePermalink);
                     break;
                 case "GET_ARTICLE_FAIL_":
                     break;

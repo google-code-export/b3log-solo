@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 19, 2010
  */
-public class ArchiveDateGAERepository extends AbstractGAERepository
+public final class ArchiveDateGAERepository extends AbstractGAERepository
         implements ArchiveDateRepository {
 
     /**

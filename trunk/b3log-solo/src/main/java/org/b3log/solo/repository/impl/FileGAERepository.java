@@ -27,7 +27,7 @@ import org.b3log.solo.repository.FileRepository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Nov 1, 2010
  */
-public class FileGAERepository extends AbstractGAERepository
+public final class FileGAERepository extends AbstractGAERepository
         implements FileRepository {
 
     /**
