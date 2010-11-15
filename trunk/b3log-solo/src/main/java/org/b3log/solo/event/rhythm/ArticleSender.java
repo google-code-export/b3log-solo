@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.rhythm;
 
 import com.google.appengine.api.urlfetch.HTTPMethod;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending articles to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 10, 2010
+ * @version 1.0.0.6, Nov 15, 2010
  */
 public final class ArticleSender
         extends AbstractEventListener<JSONObject> {
@@ -62,13 +61,13 @@ public final class ArticleSender
     @Inject
     private PreferenceUtils preferenceUtils;
     /**
-     * Timeout.
-     */
-    private static final long TIMEOUT = 5000;
-    /**
      * URL of adding article to Rhythm.
      */
     private static final URL ADD_ARTICLE_URL;
+    /**
+     * Key of version.
+     */
+    private static final String VER = "soloVersion";
 
     static {
         try {
@@ -104,7 +103,7 @@ public final class ArticleSender
                     data.getJSONObject(Article.ARTICLE);
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
-               throw new EventException("Not found preference");
+                throw new EventException("Not found preference");
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST);
@@ -121,6 +120,7 @@ public final class ArticleSender
             final HTTPRequest httpRequest =
                     new HTTPRequest(ADD_ARTICLE_URL, HTTPMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
+            requestJSONObject.put(VER, SoloServletListener.VERSION);
             requestJSONObject.put(Article.ARTICLE, article);
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
             httpRequest.setPayload(
