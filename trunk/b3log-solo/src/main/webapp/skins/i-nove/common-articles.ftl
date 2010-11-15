@@ -25,7 +25,7 @@
             </#if>
         </div>
         <div class="right">
-            <a href="/article-detail.do?oId=${article.oId}#comments" class="left">
+            <a href="${article.articlePermalink}#comments" class="left">
                 <span class="left articles-commentIcon" title="${commentLabel}"></span>
                 ${article.articleCommentCount}
             </a>
@@ -36,7 +36,7 @@
         ${article.articleAbstract}
     </div>
     <div class="article-footer">
-        <a href="/article-detail.do?oId=${article.oId}" class="left">
+        <a href="${article.articlePermalink}" class="left">
             <span class="left article-browserIcon" title="${viewLabel}"></span>
             ${article.articleViewCount}
         </a>

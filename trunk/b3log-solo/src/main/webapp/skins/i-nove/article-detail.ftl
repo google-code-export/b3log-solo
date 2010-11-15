@@ -53,7 +53,7 @@
                                     </#if>
                                 </div>
                                 <div class="right">
-                                    <a href="/article-detail.do?oId=${article.oId}#comments" class="left">
+                                    <a href="${article.articlePermalink}#comments" class="left">
                                         <span class="left articles-commentIcon" title="${commentLabel}"></span>
                                         ${article.articleCommentCount}
                                     </a>
@@ -64,7 +64,7 @@
                                 ${article.articleContent}
                             </div>
                             <div class="margin5 paddingTop12">
-                                <a class="left" href="/article-detail.do?oId=${article.oId}">
+                                <a class="left" href="${article.articlePermalink}">
                                     <span title="${viewLabel}" class="left article-browserIcon"></span>
                                     ${article.articleViewCount}
                                 </a>
@@ -95,7 +95,7 @@
                                 <ul class="marginLeft12">
                                     <#list relevantArticles as relevantArticle>
                                     <li>
-                                        <a href="/article-detail.do?oId=${relevantArticle.oId}">
+                                        <a href="${relevantArticle.articlePermalink}">
                                             ${relevantArticle.articleTitle}
                                         </a>
                                     </li>
@@ -126,7 +126,7 @@
                                             ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
                                             <#if comment.isReply>
                                             &nbsp;@&nbsp;<a
-                                                href="http://${blogHost}/article-detail.do?oId=${article.oId}#${comment.commentOriginalCommentId}"
+                                                href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
                                                 onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
                                                 onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                             </#if>

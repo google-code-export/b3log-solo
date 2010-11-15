@@ -47,12 +47,12 @@
             <span class="article-create-date left">
                 &nbsp;${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp
             </span>
-            <a href="/article-detail.do?oId=${article.oId}#comments" class="left">
+            <a href="${article.articlePermalink}#comments" class="left">
                 <span class="left commentIcon" title="${commentLabel}"></span>
                 ${article.articleCommentCount}
             </a>
             <span class="left">&nbsp;&nbsp;</span>
-            <a href="/article-detail.do?oId=${article.oId}" class="left">
+            <a href="${article.articlePermalink}" class="left">
                 <span class="left browserIcon" title="${viewLabel}"></span>
                 ${article.articleViewCount}
             </a>
