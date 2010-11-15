@@ -27,7 +27,7 @@ import org.b3log.solo.repository.StatisticRepository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 18, 2010
  */
-public class StatisticGAERepository extends AbstractGAERepository
+public final class StatisticGAERepository extends AbstractGAERepository
         implements StatisticRepository {
 
     /**

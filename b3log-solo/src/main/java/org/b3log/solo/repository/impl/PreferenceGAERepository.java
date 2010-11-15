@@ -27,7 +27,7 @@ import org.b3log.solo.repository.PreferenceRepository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 14, 2010
  */
-public class PreferenceGAERepository extends AbstractGAERepository
+public final class PreferenceGAERepository extends AbstractGAERepository
         implements PreferenceRepository {
 
     /**

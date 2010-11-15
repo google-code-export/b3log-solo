@@ -27,7 +27,7 @@ import org.b3log.solo.repository.SkinRepository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 21, 2010
  */
-public class SkinGAERepository extends AbstractGAERepository
+public final class SkinGAERepository extends AbstractGAERepository
         implements SkinRepository {
 
     /**

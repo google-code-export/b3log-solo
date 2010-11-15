@@ -27,7 +27,7 @@ import org.b3log.solo.repository.PageRepository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 28, 2010
  */
-public class PageGAERepository extends AbstractGAERepository
+public final class PageGAERepository extends AbstractGAERepository
         implements PageRepository {
 
     /**

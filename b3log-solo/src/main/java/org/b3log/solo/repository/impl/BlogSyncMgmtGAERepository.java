@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Aug 27, 2010
  */
-public class BlogSyncMgmtGAERepository extends AbstractGAERepository
+public final class BlogSyncMgmtGAERepository extends AbstractGAERepository
         implements BlogSyncManagementRepository {
 
     /**

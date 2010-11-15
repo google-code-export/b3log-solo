@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.action.impl;
 
 import java.util.logging.Level;
@@ -179,7 +180,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final List<JSONObject> relevantArticles =
                     getRelevantArticles(articleId, articleTags);
             ret.put(Common.RELEVANT_ARTICLES, relevantArticles);
-
 
             ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                     preference.getInt(

@@ -16,7 +16,7 @@
 
 package org.b3log.solo.filter;
 
-import org.apache.commons.lang.StringUtils;
+import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -28,33 +28,36 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.solo.repository.ArticleRepository;
+import org.json.JSONObject;
 
 /**
- * Default article permalink filter.
+ * Article permalink filter.
  *
- * <p>
- *   Filters URL pattern {@literal /articles/\\d{4}/\\d{2}/\\d{2}/\\d+.html}.
- * </p>
- * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.3, Nov 15, 2010
  */
-public final class DefaultArticlePermalinkFilter implements Filter {
+public final class ArticlePermalinkFilter implements Filter {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(DefaultArticlePermalinkFilter.class.getName());
+            Logger.getLogger(ArticlePermalinkFilter.class.getName());
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
     }
 
     /**
-     * Redirects request URI {@code /articles/yyyy/MM/dd/articleId.html} to
-     * {@link org.b3log.solo.action.impl.ArticleAction}.
+     * Redirects request URI to {@link org.b3log.solo.action.impl.ArticleAction}.
      *
      * @param request the specified request
      * @param response the specified response
@@ -67,24 +70,33 @@ public final class DefaultArticlePermalinkFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        LOGGER.finer("Doing default permalink filter....");
+        LOGGER.finer("Doing permalink filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
+        LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
+        final JSONObject article = articleRepository.getByPermalink(requestURI);
+        if (null == article) {
+            chain.doFilter(request, response);
 
-        final String articleId = StringUtils.substring(
-                requestURI,
-                requestURI.lastIndexOf("/") + 1, requestURI.lastIndexOf("."));
-        LOGGER.log(Level.FINER,
-                   "Article permalink request[URI={0}, oId={1}]",
-                   new String[]{requestURI, articleId});
+            return;
+        }
 
-        final RequestDispatcher requestDispatcher =
-                httpServletRequest.getRequestDispatcher("/article-detail.do");
-        request.setAttribute(Keys.OBJECT_ID, articleId);
-        request.setAttribute(Keys.PAGE_CACHE_KEY, "/article-detail.do?oId="
-                                               + articleId);
-        requestDispatcher.forward(request, response);
+        try {
+            final String articleId = article.getString(Keys.OBJECT_ID);
+
+            final RequestDispatcher requestDispatcher =
+                    httpServletRequest.getRequestDispatcher("/article-detail.do");
+            request.setAttribute(Keys.OBJECT_ID, articleId);
+            request.setAttribute(Keys.PAGE_CACHE_KEY, "/article-detail.do?oId="
+                                                      + articleId);
+            requestDispatcher.forward(request, response);
+        } catch (final Exception e) {
+            ((HttpServletResponse) response).sendError(
+                    HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
     }
 
     @Override

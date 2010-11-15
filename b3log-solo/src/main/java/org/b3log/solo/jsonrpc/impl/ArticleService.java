@@ -46,6 +46,7 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.ArchiveDateUtils;
@@ -61,7 +62,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Nov 8, 2010
+ * @version 1.0.1.9, Nov 15, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -167,7 +168,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleTitle": "",
      *         "articleAbstract": "",
      *         "articleContent": "",
-     *         "articleTags": "tag1,tag2,tag3"
+     *         "articleTags": "tag1,tag2,tag3",
+     *         "articlePermalink": ""
      *     },
      * }
      * </pre>
@@ -227,13 +229,16 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             statistics.incBlogArticleCount();
             // Step 8: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
-            // Step 9: Set permalink(/articles/yyyy/MM/dd/articleId.html)
-            final String permalinkDate = PERMALINK_FORMAT.format(date);
-            final String permalink = "/articles/" + permalinkDate + "/"
-                                     + articleId + ".html";
+            // Step 9: Set permalink
+            String permalink = article.optString(ARTICLE_PERMALINK);
+            if (Strings.isEmptyOrNull(permalink)) {
+                permalink = "/articles/" + PERMALINK_FORMAT.format(date) + "/"
+                            + articleId + ".html";
+            }
             article.put(ARTICLE_PERMALINK, permalink);
+            // Step 10: Update article
             articleRepository.update(articleId, article);
-            // Step 10: Fire add article event
+            // Step 11: Fire add article event
             final JSONObject eventData = new JSONObject();
             eventData.put(ARTICLE, article);
             eventData.put(Keys.RESULTS, ret);
@@ -633,7 +638,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleTitle": "",
      *         "articleAbstract": "",
      *         "articleContent": "",
-     *         "articleTags": "tag1,tag2,tag3"
+     *         "articleTags": "tag1,tag2,tag3",
+     *         "articlePermalink": ""
      *     }
      * }
      * </pre>
@@ -686,27 +692,33 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     article.getString(ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
-            // Step 5: Fill auto properties
+            // Step 5: Set permalink
             final JSONObject oldArticle = articleRepository.get(articleId);
-            article.put(ARTICLE_CREATE_DATE, oldArticle.get(
-                    ARTICLE_CREATE_DATE));
+            final Date createDate = (Date) oldArticle.get(
+                    ARTICLE_CREATE_DATE);
+            String permalink = article.optString(ARTICLE_PERMALINK);
+            if (Strings.isEmptyOrNull(permalink)) {
+                permalink = "/articles/" + PERMALINK_FORMAT.format(createDate)
+                            + "/" + articleId + ".html";
+            }
+            article.put(ARTICLE_PERMALINK, permalink);
+            // Step 6: Fill auto properties
+            article.put(ARTICLE_CREATE_DATE, createDate);
             article.put(ARTICLE_COMMENT_COUNT,
                         oldArticle.getInt(ARTICLE_COMMENT_COUNT));
             article.put(ARTICLE_VIEW_COUNT,
                         oldArticle.getInt(ARTICLE_VIEW_COUNT));
-            article.put(ARTICLE_PERMALINK,
-                        oldArticle.getString(ARTICLE_PERMALINK));
             article.put(ARTICLE_PUT_TOP,
                         oldArticle.getBoolean(ARTICLE_PUT_TOP));
-            // Step 6: Set updat date
+            // Step 7: Set updat date
             article.put(ARTICLE_UPDATE_DATE, new Date());
-            // Step 7: Update
+            // Step 8: Update
             articleRepository.update(articleId, article);
-            // Step 8: Add tag-article relations
+            // Step 9: Add tag-article relations
             articleUtils.addTagArticleRelation(tags, article);
-            // Step 9: Add archive date-article relations
+            // Step 10: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
-            // Step 10: Fire update article event
+            // Step 11: Fire update article event
             final JSONObject eventData = new JSONObject();
             eventData.put(ARTICLE, article);
             eventData.put(Keys.RESULTS, ret);

@@ -23,6 +23,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultIterable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
@@ -37,9 +38,9 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Oct 11, 2010
+ * @version 1.0.1.4, Oct 15, 2010
  */
-public class ArticleGAERepository extends AbstractGAERepository
+public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
 
     /**
@@ -51,6 +52,22 @@ public class ArticleGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return Article.ARTICLE;
+    }
+
+    @Override
+    public JSONObject getByPermalink(final String permalink) {
+        final Query query = new Query(getName());
+        query.addFilter(Article.ARTICLE_PERMALINK,
+                        Query.FilterOperator.EQUAL, permalink);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final Entity entity = preparedQuery.asSingleEntity();
+        if (null == entity) {
+            return null;
+        }
+
+        final Map<String, Object> properties = entity.getProperties();
+
+        return new JSONObject(properties);
     }
 
     @Override
