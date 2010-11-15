@@ -62,4 +62,5 @@ _注意_：<br/>
 在 Profile URL 一栏中，请确保该 URL 是使用 Gmail 用户名生成的，例如：
 `http://www.google.com/profiles/b3log.solo`
 </p>
-  
+==升级==
+如果部署了新版本，除了按照新版的升级操作步骤（该步骤会在每次新版本的发布记录里说明）进行操作，还需要在 <a href="http://appengine.google.com/">GAE 控制台</a>进行版本切换。
