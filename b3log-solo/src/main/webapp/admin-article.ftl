@@ -61,6 +61,7 @@
         // editor
         tinyMCE.init({
             // General options
+            language: "zh",
             mode : "exact",
             elements : "articleContent, abstract",
             theme : "advanced",
