@@ -39,6 +39,7 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.PageUtils;
+import org.b3log.solo.util.Permalinks;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -65,6 +66,11 @@ public final class PageService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private PageUtils pageUtils;
+    /**
+     * Permalink utilities.
+     */
+    @Inject
+    private Permalinks permalinks;
 
     /**
      * Gets a page by the specified request json object.
@@ -237,9 +243,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     permalink = "/page.do?oId=" + pageId;
                 }
 
-                final JSONObject pageWithTheSamePermalink =
-                        pageRepository.getByPermalink(permalink);
-                if (null != pageWithTheSamePermalink) {
+                if (permalinks.exist(permalink)) {
                     ret.put(Keys.STATUS_CODE,
                             StatusCodes.UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK);
 
@@ -255,17 +259,13 @@ public final class PageService extends AbstractGAEJSONRpcService {
 
             LOGGER.log(Level.FINER, "Updated a page[oId={0}]", pageId);
         } catch (final Exception e) {
-            transaction.rollback();
             LOGGER.severe(e.getMessage());
+            transaction.rollback();
 
             return ret;
         }
 
         PageCaches.removeAll();
-
-
-
-
 
         return ret;
     }
@@ -299,8 +299,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
 
-
-
         try {
             final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
@@ -311,25 +309,16 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_PAGE_SUCC);
 
             LOGGER.log(Level.FINER, "Removed a page[oId={0}]", pageId);
-
-
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.severe(e.getMessage());
 
-
             throw new ActionException(e);
-
-
         }
 
         PageCaches.removeAll();
 
-
-
         return ret;
-
-
     }
 
     /**
@@ -372,35 +361,20 @@ public final class PageService extends AbstractGAEJSONRpcService {
             final JSONObject page =
                     requestJSONObject.getJSONObject(Page.PAGE);
             page.put(Page.PAGE_COMMENT_COUNT, 0);
-
             final String pageId = pageRepository.add(page);
-
             String permalink = page.optString(Page.PAGE_PERMALINK);
-
 
             if (Strings.isEmptyOrNull(permalink)) {
                 permalink = "/page.do?oId=" + pageId;
-
-
             }
 
-            final JSONObject pageWithTheSamePermalink =
-                    pageRepository.getByPermalink(permalink);
-
-
-            if (null != pageWithTheSamePermalink) {
+            if (permalinks.exist(permalink)) {
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.ADD_PAGE_FAIL_DUPLICATED_PERMALINK);
 
-
-
                 throw new Exception("Add page fail, caused by duplicated permalink["
                                     + permalink + "]");
-
-
             }
-
-
             page.put(Page.PAGE_PERMALINK, permalink);
 
             pageRepository.update(pageId, page);
@@ -412,19 +386,13 @@ public final class PageService extends AbstractGAEJSONRpcService {
 
 
         } catch (final Exception e) {
-            transaction.rollback();
             LOGGER.severe(e.getMessage());
-
-
+            transaction.rollback();
 
             return ret;
-
-
         }
 
         PageCaches.removeAll();
-
-
 
         return ret;
 

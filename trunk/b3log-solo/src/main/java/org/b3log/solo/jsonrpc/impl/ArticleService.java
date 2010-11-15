@@ -51,6 +51,7 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.ArchiveDateUtils;
 import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TagUtils;
@@ -116,6 +117,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private PreferenceUtils preferenceUtils;
+    /**
+     * Permalink utilities.
+     */
+    @Inject
+    private Permalinks permalinks;
     /**
      * Permalink date format(yyyy/MM/dd).
      */
@@ -238,9 +244,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 permalink = "/articles/" + PERMALINK_FORMAT.format(date) + "/"
                             + articleId + ".html";
             }
-            final JSONObject articleWithTheSamePermalink =
-                    articleRepository.getByPermalink(permalink);
-            if (null != articleWithTheSamePermalink) {
+
+            if (permalinks.exist(permalink)) {
                 status.put(Keys.CODE,
                            StatusCodes.ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK);
 
@@ -262,8 +267,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             status.put(Keys.CODE, StatusCodes.ADD_ARTICLE_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
             LOGGER.severe(e.getMessage());
+            transaction.rollback();
 
             return ret;
         }
@@ -477,8 +482,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Step 3: Remove related comments, article-comment relations,
             // set article/blog comment statistic count
             articleUtils.removeArticleComments(articleId);
+            // XXX: GAE transaction isolation
+            // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
             transaction.commit();
-
             transaction2 =
                     AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
             // Step 4: Remove article
@@ -681,6 +687,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         Transaction transaction2 = null;
 
         final JSONObject ret = new JSONObject();
+        String articleId = null;
 
         try {
             final JSONObject status = new JSONObject();
@@ -688,22 +695,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             final JSONObject article =
                     requestJSONObject.getJSONObject(ARTICLE);
-            final String articleId = article.getString(Keys.OBJECT_ID);
-            // Step 1: Dec reference count of tag
-            tagUtils.decTagRefCount(articleId);
-            // Step 2: Un-archive date-article relations
-            archiveDateUtils.unArchiveDate(articleId);
-            // Step 3: Remove tag-article relations
-            articleUtils.removeTagArticleRelations(articleId);
-            transaction.commit();
-            transaction2 =
-                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-            // Step 4: Add tags
-            final String tagsString =
-                    article.getString(ARTICLE_TAGS_REF);
-            final String[] tagTitles = tagsString.split(",");
-            final JSONArray tags = tagUtils.tag(tagTitles, article);
-            // Step 5: Set permalink
+            articleId = article.getString(Keys.OBJECT_ID);
+
+            // Step 1: Set permalink
             final JSONObject oldArticle = articleRepository.get(articleId);
             final Date createDate = (Date) oldArticle.get(
                     ARTICLE_CREATE_DATE);
@@ -715,10 +709,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                             createDate)
                                 + "/" + articleId + ".html";
                 }
-                
-                final JSONObject articleWithTheSamePermalink =
-                        articleRepository.getByPermalink(permalink);
-                if (null != articleWithTheSamePermalink) {
+
+                if (permalinks.exist(permalink)) {
                     status.put(Keys.CODE,
                                StatusCodes.UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK);
 
@@ -728,6 +720,24 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
 
             article.put(ARTICLE_PERMALINK, permalink);
+
+            // Step 2: Dec reference count of tag
+            tagUtils.decTagRefCount(articleId);
+            // Step 3: Un-archive date-article relations
+            archiveDateUtils.unArchiveDate(articleId);
+            // Step 4: Remove tag-article relations
+            articleUtils.removeTagArticleRelations(articleId);
+            // XXX: GAE transaction isolation
+            // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
+            transaction.commit();
+            transaction2 =
+                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+            // Step 5: Add tags
+            final String tagsString =
+                    article.getString(ARTICLE_TAGS_REF);
+            final String[] tagTitles = tagsString.split(",");
+            final JSONArray tags = tagUtils.tag(tagTitles, article);
+
             // Step 6: Fill auto properties
             article.put(ARTICLE_CREATE_DATE, createDate);
             article.put(ARTICLE_COMMENT_COUNT,
@@ -762,6 +772,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
         } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+
             if (null != transaction2 && transaction2.isActive()) {
                 transaction2.rollback();
             }
@@ -769,8 +781,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            
-            LOGGER.severe(e.getMessage());
 
             return ret;
         }
