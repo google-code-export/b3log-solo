@@ -17,6 +17,7 @@ h5{font-size:12px;}
 .body{padding-bottom:682px;min-height:643px;}
 .main{width:634px;}
 .footer{color:Lavender;}
+.footer a{font-weight:bold;}
 .article{overflow:hidden;width:553px;}
 .article-header sup{color:red;font-size:12px;}
 .article-header h2{color:#242323;font-weight:bold;position:relative;margin-left:6px;}
@@ -34,7 +35,7 @@ h5{font-size:12px;}
 .article-comment a{color:#42423D;}
 .main h2.title{color:#FF9000;text-align:center;margin:-34px 0 12px}
 .main h2 span{font-size:12px;float:right;color:DimGray;padding-right:10px;margin-top:7px;}
-.article-body{margin:0 12px 12px;}
+.article-body{margin:0 12px 12px;min-height:176px;}
 .article-body a, .article-abstract a{color:#242323;text-decoration: underline;}
 .article-footer{margin-right:12px;}
 .article-details-footer a{line-height:16px;}

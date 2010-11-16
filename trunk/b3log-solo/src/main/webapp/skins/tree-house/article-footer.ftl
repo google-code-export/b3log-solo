@@ -7,7 +7,8 @@ Powered by
     <span style="color: red;">O</span>
     <span style="color: blue;">G</span>&nbsp;
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-ver ${version}
+ver ${version}&nbsp;&nbsp;
+Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 <script type="text/javascript">
     var goTop = function () {
         window.scrollTo(0, 0);
