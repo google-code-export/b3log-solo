@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -243,6 +242,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             if (Strings.isEmptyOrNull(permalink)) {
                 permalink = "/articles/" + PERMALINK_FORMAT.format(date) + "/"
                             + articleId + ".html";
+            }
+
+            if (!permalink.startsWith("/")) {
+                permalink += "/";
             }
 
             if (permalinks.exist(permalink)) {
@@ -702,12 +705,15 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final Date createDate = (Date) oldArticle.get(
                     ARTICLE_CREATE_DATE);
             String permalink = article.optString(ARTICLE_PERMALINK).trim();
+            if (!permalink.startsWith("/")) {
+                permalink += "/";
+            }
+
             final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
             if (!oldPermalink.equals(permalink)) {
                 if (Strings.isEmptyOrNull(permalink)) {
                     permalink = "/articles/" + PERMALINK_FORMAT.format(
-                            createDate)
-                                + "/" + articleId + ".html";
+                            createDate) + "/" + articleId + ".html";
                 }
 
                 if (permalinks.exist(permalink)) {
