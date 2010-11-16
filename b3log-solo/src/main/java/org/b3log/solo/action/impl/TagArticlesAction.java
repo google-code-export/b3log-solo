@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Nov 8, 2010
+ * @version 1.0.1.1, Nov 16, 2010
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -115,11 +116,11 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
-
         try {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return ret;
             }
 
@@ -128,7 +129,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final Locale locale = new Locale(
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString));
-
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
@@ -200,7 +200,14 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
         }
 
         return ret;

@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -194,7 +195,14 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             filler.fillBlogFooter(ret);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+            
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
         }
 
         return ret;
