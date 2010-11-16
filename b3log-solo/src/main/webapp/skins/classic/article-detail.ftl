@@ -185,6 +185,28 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <th>
+                                            ${commentEmotions1Label}
+                                        </th>
+                                        <td id="emotions">
+                                            <img class="/em00" src="/skins/classic/emotions/em00.png" alt="${em00Label}" title="${em00Label}" />
+                                            <img class="/em01" src="/skins/classic/emotions/em01.png" alt="${em01Label}" title="${em01Label}" />
+                                            <img class="/em02" src="/skins/classic/emotions/em02.png" alt="${em02Label}" title="${em02Label}" />
+                                            <img class="/em03" src="/skins/classic/emotions/em03.png" alt="${em03Label}" title="${em03Label}" />
+                                            <img class="/em04" src="/skins/classic/emotions/em04.png" alt="${em04Label}" title="${em04Label}" />
+                                            <img class="/em05" src="/skins/classic/emotions/em05.png" alt="${em05Label}" title="${em05Label}" />
+                                            <img class="/em06" src="/skins/classic/emotions/em06.png" alt="${em06Label}" title="${em06Label}" />
+                                            <img class="/em07" src="/skins/classic/emotions/em07.png" alt="${em07Label}" title="${em07Label}" />
+                                            <img class="/em08" src="/skins/classic/emotions/em08.png" alt="${em08Label}" title="${em08Label}" />
+                                            <img class="/em09" src="/skins/classic/emotions/em09.png" alt="${em09Label}" title="${em09Label}" />
+                                            <img class="/em10" src="/skins/classic/emotions/em10.png" alt="${em10Label}" title="${em10Label}" />
+                                            <img class="/em11" src="/skins/classic/emotions/em11.png" alt="${em11Label}" title="${em11Label}" />
+                                            <img class="/em12" src="/skins/classic/emotions/em12.png" alt="${em12Label}" title="${em12Label}" />
+                                            <img class="/em13" src="/skins/classic/emotions/em13.png" alt="${em13Label}" title="${em13Label}" />
+                                            <img class="/em14" src="/skins/classic/emotions/em14.png" alt="${em14Label}" title="${em14Label}" />
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th valign="top">
                                             ${commentContent1Label}
                                         </th>
@@ -219,6 +241,27 @@
             </div>
             <script type="text/javascript">
                 var currentCommentId = "";
+
+                var insertEmotions = function () {
+                    $comment = $("#comment");
+                    $("#emotions img").click(function () {
+                        // TODO: should be insert it at the after of cursor
+                        var key = this.className;
+                        $comment.val($comment.val() + key);
+                    });
+                }
+
+                var processEmotions = function (str) { 
+                    var ems = str.split("/em");
+                    var content = ems[0];
+                    for (var i = 1; i < ems.length; i++) {
+                        var key = ems[i].substr(0, 2),
+                        emImgHTML = "<img src='/skins/classic/emotions/em" + key 
+                            + ".png'/>";
+                        content += emImgHTML + ems[i].slice(2);
+                    }
+                    return content;
+                }
 
                 var validateComment = function (state) {
                     if (state === undefined) {
@@ -324,9 +367,11 @@
                 var submitComment = function () {
                     if (validateComment()) {
                         $("#commentErrorTip").html("${loadingLabel}");
+                        var commentContent = processEmotions($("#comment").val().replace(/(^\s*)|(\s*$)/g, ""));
+                        
                         var requestJSONObject = {
                             "oId": "${article.oId}",
-                            "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
+                            "commentContent": commentContent,
                             "commentEmail": $("#commentEmail").val(),
                             "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                             "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
@@ -404,6 +449,9 @@
                     }).blur(function () {
                         $("#commentURLLabel").css({"border":"2px inset #CCCCCC","border-right":"0px"});
                     }).width($("#comment").width() - $("#commentURLLabel").width());
+
+                    // emotions
+                    insertEmotions();
 
                     // getRandomArticles
                     jsonRpc.articleService.getRandomArticles(function (result, error) {
