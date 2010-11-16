@@ -82,7 +82,7 @@
         <ul>
             <#list mostUsedTags as tag>
             <li>
-                <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tags/${tag.tagTitle}">
+                <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('UTF-8')}">
                     ${tag.tagTitle}
                     <span>
                         (${tag.tagReferenceCount})

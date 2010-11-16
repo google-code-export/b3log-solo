@@ -44,7 +44,7 @@
             <span class="tagsIcon" title="${tagLabel}"></span>
             <#list article.articleTags as articleTag>
             <span>
-                <a href="/tags/${articleTag.tagTitle}">
+                <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
                     ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
             </span>
             </#list>
