@@ -60,7 +60,7 @@
                                     ${tags1Label}
                                     <#list articleTags as articleTag>
                                     <span>
-                                        <a href="/tag-articles.do?oId=${articleTag.oId}">
+                                        <a href="/tags/${articleTag.tagTitle}">
                                             ${articleTag.tagTitle}
                                         </a>
                                         <#if articleTag_has_next>,</#if>

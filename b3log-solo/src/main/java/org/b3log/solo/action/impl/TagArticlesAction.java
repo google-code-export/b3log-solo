@@ -41,6 +41,7 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
@@ -135,7 +136,18 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
-            final String tagId = queryStringJSONObject.getString(Keys.OBJECT_ID);
+            String tagId = queryStringJSONObject.optString(Keys.OBJECT_ID);
+            if (Strings.isEmptyOrNull(tagId)) {
+                tagId = (String) request.getAttribute(Keys.OBJECT_ID);
+            }
+
+            if (Strings.isEmptyOrNull(tagId)) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            }
+
+
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 

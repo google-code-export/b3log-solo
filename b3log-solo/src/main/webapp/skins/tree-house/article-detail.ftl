@@ -57,7 +57,7 @@
                                     </h2>
                                     <em class="article-tags left marginTop12 marginLeft6">
                                         <#list articleTags as articleTag>
-                                        <a href="/tag-articles.do?oId=${articleTag.oId}">
+                                        <a href="/tags/${articleTag.tagTitle}">
                                             ${articleTag.tagTitle}
                                         </a>
                                         <#if articleTag_has_next>,</#if>

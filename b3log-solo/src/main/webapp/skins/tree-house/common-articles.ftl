@@ -2,20 +2,20 @@
 <div class="article">
     <div class="article-header">
         <h2>
-        <a class="noUnderline" href="${article.articlePermalink}">
-            ${article.articleTitle}
-            <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-            <sup>
-                ${updatedLabel}
-            </sup>
-            </#if>
-            <#if article.articlePutTop>
-            <sup>
-                ${topArticleLabel}
-            </sup>
-            </#if>
-        </a>
-    </h2>
+            <a class="noUnderline" href="${article.articlePermalink}">
+                ${article.articleTitle}
+                <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+                <sup>
+                    ${updatedLabel}
+                </sup>
+                </#if>
+                <#if article.articlePutTop>
+                <sup>
+                    ${topArticleLabel}
+                </sup>
+                </#if>
+            </a>
+        </h2>
     </div>
     <div class="left article-info">
         <div class="article-date">
@@ -34,7 +34,7 @@
     <div class="right article-main">
         <em class="article-tags">
             <#list article.articleTags as articleTag>
-            <a href="/tag-articles.do?oId=${articleTag.oId}">
+            <a href="/tags/${articleTag.tagTitle}">
                 ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
             </#list>
         </em>
