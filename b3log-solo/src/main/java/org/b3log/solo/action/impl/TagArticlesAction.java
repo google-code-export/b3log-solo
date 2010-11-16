@@ -147,10 +147,8 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                 return ret;
             }
 
-
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
-
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(
@@ -175,8 +173,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                 final JSONObject article = articleRepository.get(articleId);
                 articles.add(article);
             }
-
-            Collections.sort(articles, new ArticleUpdateDateComparator());
 
             LOGGER.log(Level.FINEST,
                        "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
