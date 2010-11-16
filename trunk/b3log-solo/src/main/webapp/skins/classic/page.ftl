@@ -172,7 +172,7 @@
                 $("#emotions" + name + " img").click(function () {
                     // TODO: should be insert it at the after of cursor
                     var key = this.className;
-                    $("#comment" + name).val($("#comment" + name).val() + key);
+                    $("#comment" + name).val($("#comment" + name).val() + key).focus();
                 });
             }
 
