@@ -143,7 +143,7 @@
                                     <div class="left comment-picture">
                                         <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                                     </div>
-                                    <div>
+                                    <div class="comment-content">
                                         ${comment.commentContent}
                                     </div>
                                     <div class="clear"></div>
@@ -242,25 +242,28 @@
             <script type="text/javascript">
                 var currentCommentId = "";
 
-                var insertEmotions = function () {
-                    $comment = $("#comment");
-                    $("#emotions img").click(function () {
+                var insertEmotions = function (name) {
+                    $("#emotions" + name + " img").click(function () {
                         // TODO: should be insert it at the after of cursor
                         var key = this.className;
-                        $comment.val($comment.val() + key);
+                        $("#comment" + name).val($("#comment" + name).val() + key);
                     });
                 }
 
-                var processEmotions = function (str) { 
-                    var ems = str.split("/em");
-                    var content = ems[0];
-                    for (var i = 1; i < ems.length; i++) {
-                        var key = ems[i].substr(0, 2),
-                        emImgHTML = "<img src='/skins/classic/emotions/em" + key 
-                            + ".png'/>";
-                        content += emImgHTML + ems[i].slice(2);
+                var processEmotions = function () { 
+                    var $commentContents = $("#comments .comment-content");
+                    for (var i = 0; i < $commentContents.length; i++) {
+                        var str = $commentContents[i].innerHTML;
+                        var ems = str.split("/em");
+                        var content = ems[0];
+                        for (var j = 1; j < ems.length; j++) {
+                            var key = ems[j].substr(0, 2),
+                            emImgHTML = "<img src='/skins/classic/emotions/em" + key
+                                + ".png'/>";
+                            content += emImgHTML + ems[j].slice(2);
+                        }
+                        $commentContents[i].innerHTML = content;
                     }
-                    return content;
                 }
 
                 var validateComment = function (state) {
@@ -303,6 +306,7 @@
                             + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
                             + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
                             + "http://</div><input id='commentURLReply'/>"
+                            + "</td></tr><tr><th>${commentEmotions1Label}</th><td id='emotionsReply'>" + $("#emotions").html()
                             + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
                             + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
                             + "<th>${captcha1Label}</th><td><input class='normalInput' id='commentValidateReply'/>"
@@ -319,6 +323,8 @@
                                 submitCommentReply(id);
                             }
                         });
+
+                        insertEmotions("Reply");
 
                         $("#commentURLReply").focus(function (event) {
                             $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
@@ -366,12 +372,10 @@
 
                 var submitComment = function () {
                     if (validateComment()) {
-                        $("#commentErrorTip").html("${loadingLabel}");
-                        var commentContent = processEmotions($("#comment").val().replace(/(^\s*)|(\s*$)/g, ""));
-                        
+                        $("#commentErrorTip").html("${loadingLabel}");                        
                         var requestJSONObject = {
                             "oId": "${article.oId}",
-                            "commentContent": commentContent,
+                            "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
                             "commentEmail": $("#commentEmail").val(),
                             "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                             "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
@@ -451,7 +455,8 @@
                     }).width($("#comment").width() - $("#commentURLLabel").width());
 
                     // emotions
-                    insertEmotions();
+                    insertEmotions("");
+                    processEmotions();
 
                     // getRandomArticles
                     jsonRpc.articleService.getRandomArticles(function (result, error) {
