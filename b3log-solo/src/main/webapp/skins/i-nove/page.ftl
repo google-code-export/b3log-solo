@@ -92,7 +92,10 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input value="http://" id="commentURL"/>
+                                        <div id="commentURLLabel">
+                                            http://
+                                        </div>
+                                        <input id="commentURL"/>
                                     </td>
                                     <td colspan="2">
                                         ${commentURLLabel}
@@ -135,20 +138,6 @@
         <script type="text/javascript">
             var currentCommentId = "";
 
-            var moveCursor = function(event) {
-                if ($.browser.msie) {
-                    var e = event.srcElement;
-                    var r = e.createTextRange();
-                    r.moveStart('character', e.value.length);
-                    r.collapse(true);
-                    r.select();
-                } else {
-                    var iCaretPos = event.target.value.length;
-                    event.target.selectionStart = iCaretPos;
-                    event.target.selectionEnd = iCaretPos;
-                }
-            }
-
             var validateComment = function (state) {
                 if (state === undefined) {
                     state = '';
@@ -187,7 +176,7 @@
                         + "<td width='208px'><input class='normalInput' id='commentNameReply'/>"
                         + "</td><td colspan='2' width='400px'>${commentNameLabel}</td></tr><tr><td>"
                         + "<input class='normalInput' id='commentEmailReply'/></td><td colspan='2'>${commentEmailLabel}</td></tr><tr>"
-                        + "<td><input value='http://' id='commentURLReply'/>"
+                        + "<td><div id='commentURLLabelReply'>http://</div><input id='commentURLReply'/>"
                         + "</td><td colspan='2'>${commentURLLabel}</td></tr><tr><td colspan='3'>"
                         + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
                         + "<td><input class='normalInput' id='commentValidateReply'/>"
@@ -204,15 +193,6 @@
                         if (event.keyCode === 13) {
                             submitCommentReply(id);
                         }
-                    });
-
-                    $("#commentURLReply").keyup(function (event) {
-                        if (-1 === this.value.indexOf("http://")) {
-                            this.value = "http://";
-                        }
-                        moveCursor(event);
-                    }).focus(function (event) {
-                        moveCursor(event);
                     });
 
                     $("#commentNameReply").focus();
@@ -333,16 +313,6 @@
                     if (event.keyCode === 13) {
                         submitComment();
                     }
-                });
-
-                // comment url
-                $("#commentURL").keyup(function (event) {
-                    if (-1 === this.value.indexOf("http://")) {
-                        this.value = "http://";
-                    }
-                    moveCursor(event);
-                }).focus(function (event) {
-                    moveCursor(event);
                 });
             }
             loadAction();
