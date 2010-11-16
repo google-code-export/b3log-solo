@@ -214,6 +214,14 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
                 return ret;
             }
+            final String domain = blogHost.split(":")[0].trim();
+            final String port = blogHost.split(":")[1].trim();
+            if (!"localhost".equals(domain) && !"80".equals(port)) {
+                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
+                transaction.rollback();
+
+                return ret;
+            }
 
             preferenceUtils.setPreference(preference);
 
