@@ -64,7 +64,7 @@
                                     <div class="left comment-picture">
                                         <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                                     </div>
-                                    <div>
+                                    <div class="comment-content">
                                         ${comment.commentContent}
                                     </div>
                                     <div class="clear"></div>
@@ -103,6 +103,28 @@
                                                 http://
                                             </div>
                                             <input id="commentURL"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            ${commentEmotions1Label}
+                                        </th>
+                                        <td id="emotions">
+                                            <img class="/em00" src="/skins/classic/emotions/em00.png" alt="${em00Label}" title="${em00Label}" />
+                                            <img class="/em01" src="/skins/classic/emotions/em01.png" alt="${em01Label}" title="${em01Label}" />
+                                            <img class="/em02" src="/skins/classic/emotions/em02.png" alt="${em02Label}" title="${em02Label}" />
+                                            <img class="/em03" src="/skins/classic/emotions/em03.png" alt="${em03Label}" title="${em03Label}" />
+                                            <img class="/em04" src="/skins/classic/emotions/em04.png" alt="${em04Label}" title="${em04Label}" />
+                                            <img class="/em05" src="/skins/classic/emotions/em05.png" alt="${em05Label}" title="${em05Label}" />
+                                            <img class="/em06" src="/skins/classic/emotions/em06.png" alt="${em06Label}" title="${em06Label}" />
+                                            <img class="/em07" src="/skins/classic/emotions/em07.png" alt="${em07Label}" title="${em07Label}" />
+                                            <img class="/em08" src="/skins/classic/emotions/em08.png" alt="${em08Label}" title="${em08Label}" />
+                                            <img class="/em09" src="/skins/classic/emotions/em09.png" alt="${em09Label}" title="${em09Label}" />
+                                            <img class="/em10" src="/skins/classic/emotions/em10.png" alt="${em10Label}" title="${em10Label}" />
+                                            <img class="/em11" src="/skins/classic/emotions/em11.png" alt="${em11Label}" title="${em11Label}" />
+                                            <img class="/em12" src="/skins/classic/emotions/em12.png" alt="${em12Label}" title="${em12Label}" />
+                                            <img class="/em13" src="/skins/classic/emotions/em13.png" alt="${em13Label}" title="${em13Label}" />
+                                            <img class="/em14" src="/skins/classic/emotions/em14.png" alt="${em14Label}" title="${em14Label}" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -146,6 +168,30 @@
         <script type="text/javascript">
             var currentCommentId = "";
 
+            var insertEmotions = function (name) {
+                $("#emotions" + name + " img").click(function () {
+                    // TODO: should be insert it at the after of cursor
+                    var key = this.className;
+                    $("#comment" + name).val($("#comment" + name).val() + key);
+                });
+            }
+
+            var processEmotions = function () {
+                var $commentContents = $("#comments .comment-content");
+                for (var i = 0; i < $commentContents.length; i++) {
+                    var str = $commentContents[i].innerHTML;
+                    var ems = str.split("/em");
+                    var content = ems[0];
+                    for (var j = 1; j < ems.length; j++) {
+                        var key = ems[j].substr(0, 2),
+                        emImgHTML = "<img src='/skins/classic/emotions/em" + key
+                            + ".png'/>";
+                        content += emImgHTML + ems[j].slice(2);
+                    }
+                    $commentContents[i].innerHTML = content;
+                }
+            }
+
             var validateComment = function (state) {
                 if (state === undefined) {
                     state = '';
@@ -186,6 +232,7 @@
                         + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
                         + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
                         + "http://</div><input id='commentURLReply'/>"
+                        + "</td></tr><tr><th>${commentEmotions1Label}</th><td id='emotionsReply'>" + $("#emotions").html()
                         + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
                         + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
                         + "<th>${captcha1Label}</th><td><input class='normalInput' id='commentValidateReply'/>"
@@ -196,6 +243,8 @@
                         + "</td></tr></tbody></table>";
 
                     $("#commentItem" + id).append(commentFormHTML);
+
+                    insertEmotions("Reply");
 
                     $("#commentValidateReply").keypress(function (event) {
                         if (event.keyCode === 13) {
@@ -323,6 +372,10 @@
                         submitComment();
                     }
                 });
+                
+                // emotions
+                insertEmotions("");
+                processEmotions();
 
                 // comment url
                 $("#commentURL").focus(function (event) {
