@@ -187,8 +187,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
 
-            statistics.incBlogViewCount();
-
             final JSONObject archiveDate =
                     archiveDateRepository.get(archiveDateId);
             final Date date = (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
