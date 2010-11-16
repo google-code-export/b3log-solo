@@ -60,5 +60,10 @@
         <property name="tag_oId" direction="asc"/>
         <property name="oId" direction="desc"/>
     </datastore-index>
+
+    <datastore-index kind="archiveDate_article" ancestor="false" source="auto">
+        <property name="archiveDate_oId" direction="asc"/>
+        <property name="oId" direction="desc"/>
+    </datastore-index>
     
 </datastore-indexes>
