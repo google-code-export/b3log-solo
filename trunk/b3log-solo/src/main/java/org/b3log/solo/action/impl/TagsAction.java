@@ -127,8 +127,6 @@ public final class TagsAction extends AbstractCacheablePageAction {
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
-
-            statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             
