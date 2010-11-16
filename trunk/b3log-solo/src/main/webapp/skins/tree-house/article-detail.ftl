@@ -57,7 +57,7 @@
                                     </h2>
                                     <em class="article-tags left marginTop12 marginLeft6">
                                         <#list articleTags as articleTag>
-                                        <a href="/tags/${articleTag.tagTitle}">
+                                        <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
                                             ${articleTag.tagTitle}
                                         </a>
                                         <#if articleTag_has_next>,</#if>

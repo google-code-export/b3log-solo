@@ -84,6 +84,7 @@
 
             var setTagsPanel = function () {
                 var tags = [<#list tags as tag>{
+                        tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",
                         tagName: "${tag.tagTitle}",
                         tagCount: ${tag.tagReferenceCount},
                         tagId: ${tag.oId}
@@ -97,7 +98,7 @@
                     var style = getStyle(maxCount, tags[i].tagCount);
                     tagsHTML += "<a title='" + tags[i].tagCount + "' class='tagPanel' style='"
                         + style.font + style.color + style.padding + "' href='/tags/"
-                        + tags[i].tagName +"'>" + tags[i].tagName + "</a> ";
+                        + tags[i].tagtagNameURLEncodedName +"'>" + tags[i].tagName + "</a> ";
                 }
                 $("#tagsPanel").append(tagsHTML + "<div class='clear'></div>");
             }
