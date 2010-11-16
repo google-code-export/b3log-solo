@@ -65,7 +65,7 @@
                 <a href="/tag-articles-feed.do?oId=${tag.oId}" class="noUnderline">
                     <img alt="${tag.tagTitle}" src="/images/feed.png"/>
                 </a>
-                <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
+                <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tags/${tag.tagTitle}">
                     ${tag.tagTitle}</a>(${tag.tagReferenceCount})
             </li>
             </#list>

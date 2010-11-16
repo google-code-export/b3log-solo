@@ -109,8 +109,7 @@ public final class PageAction extends AbstractCacheablePageAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
-            String pageId =
-                    queryStringJSONObject.optString(Keys.OBJECT_ID);
+            String pageId = queryStringJSONObject.optString(Keys.OBJECT_ID);
             if (Strings.isEmptyOrNull(pageId)) {
                 pageId = (String) request.getAttribute(Keys.OBJECT_ID);
             }

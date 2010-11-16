@@ -82,7 +82,7 @@
         <ul>
             <#list mostUsedTags as tag>
             <li>
-                <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tag-articles.do?oId=${tag.oId}&paginationCurrentPageNum=1">
+                <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tags/${tag.tagTitle}">
                     ${tag.tagTitle}
                     <span>
                         (${tag.tagReferenceCount})

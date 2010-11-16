@@ -108,8 +108,8 @@
                 for (var i = 0; i < tags.length; i++) {
                     var style = getStyle(maxCount, tags[i].tagCount);
                     tagsHTML += "<a title='" + tags[i].tagCount + "' class='tagPanel' style='"
-                        + style.font + style.color + style.padding + "' href='/tag-articles.do?oId="
-                        + tags[i].tagId + "&paginationCurrentPageNum=1'>" + tags[i].tagName + "</a> ";
+                        + style.font + style.color + style.padding + "' href='/tags/"
+                        + tags[i].tagName +"'>" + tags[i].tagName + "</a> ";
                 }
                 $("#tagsPanel").html(tagsHTML + "<div class='clear'></div>");
             }
