@@ -165,8 +165,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                 articles.add(article);
             }
 
-            Collections.sort(articles, new ArticleUpdateDateComparator());
-
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
