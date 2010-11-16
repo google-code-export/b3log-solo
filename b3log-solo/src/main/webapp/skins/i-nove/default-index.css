@@ -17,7 +17,7 @@ h5{font-size:12px;}
 .sub-title{border-top:1px solid #FFFFFF;color:#FFFFFF;font-size:10px;padding:0 3px;}
 #header-navi{background:none repeat scroll 0 0 #FFFFFF;border-bottom:1px solid #A6A6A6;}
 #header-navi li{float:left;list-style:none;margin-left:0px;}
-#header-navi li a{background:url("images/menu.gif") no-repeat scroll 0 0 transparent;color:#382E1F;display:block;font-size:11px;height:31px;line-height:31px;margin-left:-10px;padding:0 20px;text-decoration:none;}
+#header-navi li a{outline:none;background:url("images/menu.gif") no-repeat scroll 0 0 transparent;color:#382E1F;display:block;font-size:11px;height:31px;line-height:31px;margin-left:-10px;padding:0 20px;text-decoration:none;}
 #header-navi li a:hover{background-position:0 -31px;}
 #header-navi li a.home{margin-left:0;padding:0;text-indent:-999em;width:45px;background-position:0 -93px;}
 #header-navi li a.home:hover{background-position:0 -124px;}
@@ -49,11 +49,11 @@ h5{font-size:12px;}
 .comment-author div{margin-top:10px;padding-right:14px;background:url("images/commentpoint.png") no-repeat scroll 100% 33% transparent;}
 .comment-author img{border:1px solid #999999;padding:1px;width:32px;height:32px;}
 .comment-author a{margin-right:14px;font-weight:bold;}
-.comment-info{background:url("images/comment.gif") no-repeat scroll 0 0 #EDEFF0;padding:10px 15px 0;width:494px;font-size:10px;}
+.comment-info{background:url("images/comment.gif") no-repeat scroll 0 0 #EDEFF0;padding:10px 15px 0;width:494px;font-size:12px;}
 .comment-content{background:url("images/comment.gif") no-repeat scroll 100% 100% transparent;line-height:145%;margin:0 -15px;padding:9px 15px 10px;font-size:12px;}
 .comment-form img{cursor:pointer;}
 .comment-form input, .comment-form textarea{font-family:Helvetica,Arial,sans-serif;color:#555555;background:url("images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;border:1px solid #A6A6A6;padding:2px 1px;width:200px;}
-.comment-form textarea{width:601px;}
+.comment-form textarea{width:601px;font-size: 12px;}
 .comment-form button{background:none repeat scroll 0 0 #B4D666;border-color:#B4D666 #81B840 #81B840 #B4D666;border-style:solid;border-width:1px;color:#2970A6;font-size:11px;padding:3px 6px;height:22px;line-height:22px;-moz-border-radius:0px;-webkit-border-radius:0px;}
 .comment-form button:hover{background:none repeat scroll 0 0 #98C64C;border-color:#76B33A #98C64C #98C64C #76B33A;color:#074A7E;}
 #commentURLLabel, #commentURLLabelReply{background:url("images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;border:1px solid #A6A6A6;border-right:0px;float:left;height:20px;line-height:20px;}
