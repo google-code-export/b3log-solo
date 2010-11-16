@@ -19,6 +19,7 @@ package org.b3log.solo.action.impl;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -122,7 +123,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
-            
+
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -206,7 +207,14 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                
+                return ret;
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
         }
 
         return ret;

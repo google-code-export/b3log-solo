@@ -19,6 +19,7 @@ package org.b3log.solo.action.impl;
 import java.util.List;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -98,7 +99,7 @@ public final class PageAction extends AbstractCacheablePageAction {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
-            
+
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -119,7 +120,7 @@ public final class PageAction extends AbstractCacheablePageAction {
 
                 return ret;
             }
-            
+
             final JSONObject page = pageRepository.get(pageId);
             ret.put(Page.PAGE, page);
             final List<JSONObject> comments = pageUtils.getComments(pageId);
@@ -132,7 +133,14 @@ public final class PageAction extends AbstractCacheablePageAction {
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
         }
 
         return ret;

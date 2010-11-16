@@ -21,6 +21,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import java.util.List;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -130,7 +131,14 @@ public final class TagsAction extends AbstractCacheablePageAction {
             statistics.incBlogViewCount();
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-            throw new ActionException(e);
+            
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
         }
 
         return ret;
