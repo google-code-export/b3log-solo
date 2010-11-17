@@ -59,7 +59,6 @@
                     </div>
                     <div class="clear"></div>
                 </div>
-
                 <div class="error-body">
                     <div class="error-panel">
                         <h1 class="error-title">${notFoundLabel}</h1>

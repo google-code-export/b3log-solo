@@ -148,11 +148,7 @@ ver ${version}
     initIndex();
     
     var clearCache = function () {
-        var locationString = window.location.toString();
-        var indexOfSharp = locationString.indexOf("#");
-        var url = locationString.substring(locationString.lastIndexOf("/"),
-        (-1 == indexOfSharp)? locationString.length : indexOfSharp);
-        jsonRpc.adminService.clearPageCache(url);
+        jsonRpc.adminService.clearPageCache(window.location.pathname);
         window.location.reload();
     }
 
