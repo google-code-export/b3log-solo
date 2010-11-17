@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="none"/>
-        <title>B3log</title>
+        <title>${welcomeToSoloLabel}</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
@@ -16,9 +16,11 @@
             var init = function () {
                 var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
                 if (isAdminLoggedIn) {
-                    jQuery("#initPanel").html("<button onclick='initSys();'>init</button>");
+                    var html = "<div>${initIntroLabel}</div>"
+                    + "<button onclick='initSys();'>${initLabel}</button>";
+                    jQuery("#initPanel").html(html);
                 } else {
-                    jQuery("#initPanel").html("<button onclick='login();'>login</button>");
+                    jQuery("#initPanel").html("<button onclick='login();'>${loginLabel}</button>");
                 }
             }
             init();

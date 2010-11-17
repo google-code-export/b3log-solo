@@ -16,6 +16,7 @@
 
 package org.b3log.solo.action.impl;
 
+import com.google.inject.Inject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.File;
@@ -28,6 +29,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractAction;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
@@ -52,6 +56,11 @@ public final class InitAction extends AbstractAction {
      * FreeMarker configuration.
      */
     private Configuration configuration;
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -60,13 +69,21 @@ public final class InitAction extends AbstractAction {
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
+        try {
+            final Map<String, String> langs =
+                    langPropsService.getAll(Locales.getLocale(request));
+            ret.putAll(langs);
+        } catch (final ServiceException e) {
+            LOGGER.severe(e.getMessage());
+        }
+
         return ret;
     }
 
     @Override
     protected JSONObject doAjaxAction(final JSONObject data,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
