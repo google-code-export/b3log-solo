@@ -15,7 +15,7 @@
             <h4 id="recentComments">${recentCommentsLabel}</h4>
         </li>
          <li>
-            <ul id="mostCommentArticles">
+            <ul id="recentComments">
                 <#list recentComments as comment>
                 <li>
                     <a href="${comment.commentSharpURL}">
@@ -32,7 +32,7 @@
             <h4>${mostCommentArticlesLabel}</h4>
         </li>
         <li>
-            <ul id="mostCommentArticles">
+            <ul>
                 <#list mostCommentArticles as article>
                 <li>
                     <a name="mostComment${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
