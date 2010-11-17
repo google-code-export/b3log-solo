@@ -75,7 +75,6 @@ button:hover,.button:hover{border-color:#BBB;}
 .article-body h6{font-size:.75em;margin:1.67em 0}
 .article-body blockquote{margin-left:40px;margin-right:40px}
 .article-body ol, .article-body ul, .article-body dir, .article-body menu, .article-body dd{margin-left:40px}
-#initPanel{width: 620px;margin: 62px auto 0 auto;}
 .stack{position:fixed;bottom:9px;right:18px;font:13px "Trebuchet MS", Verdana, Helvetica, sans-serif;color:#666;}
 .stack *{margin:0;padding:0;}
 .stack > img{position:relative;cursor:pointer;z-index:2;width:38px;}
