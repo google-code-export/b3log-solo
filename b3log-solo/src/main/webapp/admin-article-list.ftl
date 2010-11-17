@@ -326,8 +326,17 @@
                     var comments = result.comments,
                     commentsHTML = '';
                     for (var i = 0; i < comments.length; i++) {
-                        var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>";
-
+                        var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>",
+                        content = comments[i].commentContent;
+                        var ems = content.split("[em");
+                        var contentHTML = ems[0];
+                        for (var j = 1; j < ems.length; j++) {
+                            var key = ems[j].substr(0, 2),
+                            emImgHTML = "<img src='/skins/classic/emotions/em" + key
+                                + ".png'/>";
+                            contentHTML += emImgHTML + ems[j].slice(3);
+                        }
+                        
                         if (comments[i].commentURL === "http://") {
                             hrefHTML = "<a target='_blank'>";
                         }
@@ -338,9 +347,12 @@
                         if (comments[i].commentOriginalCommentName) {
                             commentsHTML += "@" + comments[i].commentOriginalCommentName;
                         }
-                        commentsHTML += "</span><span class='right deleteIcon' onclick=\"deleteArticleListComment('" + comments[i].oId
-                            + "')\"></span><span class='right'>" + $.bowknot.getDate(comments[i].commentDate.time, 1)
-                            + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
+                        commentsHTML += "</span><span title='${removeLabel}' class='right deleteIcon' onclick=\"deleteArticleListComment('" 
+                            + comments[i].oId + "')\"></span><span class='right'><a href='mailto:"
+                            + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
+                            + $.bowknot.getDate(comments[i].commentDate.time, 1)
+                            + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>" 
+                            + contentHTML + "</div>";
                     }
                     if ("" === commentsHTML) {
                         commentsHTML = "${noCommentLabel}"
