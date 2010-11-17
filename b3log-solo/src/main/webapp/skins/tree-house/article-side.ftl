@@ -27,8 +27,8 @@
     </div>
     <div class="line"></div>
     <div class="block">
-        <h3 id="recentComments">${recentCommentsLabel}</h3>
-        <ul>
+        <h3 id="recentCommentsLabel">${recentCommentsLabel}</h3>
+        <ul id="recentComments">
             <#list recentComments as comment>
             <li>
                 <a href="${comment.commentSharpURL}">
