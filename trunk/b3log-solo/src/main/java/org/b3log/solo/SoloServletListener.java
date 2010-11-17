@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo;
 
+import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -39,6 +39,7 @@ import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RunsOnEnv;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.UtilModule;
 import org.b3log.solo.event.EventModule;
@@ -143,14 +144,14 @@ public final class SoloServletListener extends AbstractServletListener {
         if (null == ret) {
             LOGGER.info("Initializing Guice....");
             setInjector(Guice.createInjector(Stage.PRODUCTION,
-                    new FilterModule(),
-                    new ActionModule(),
-                    new JSONRpcServiceModule(),
-                    new RepositoryModule(),
-                    new EventModule(),
-                    new SyncModule(),
-                    new UtilModule(),
-                    new UpgradeModule()));
+                                             new FilterModule(),
+                                             new ActionModule(),
+                                             new JSONRpcServiceModule(),
+                                             new RepositoryModule(),
+                                             new EventModule(),
+                                             new SyncModule(),
+                                             new UtilModule(),
+                                             new UpgradeModule()));
         }
 
         return ret;
@@ -165,10 +166,20 @@ public final class SoloServletListener extends AbstractServletListener {
 
         MemcacheServiceFactory.getMemcacheService().clearAll();
 
-        initSkin();
-        initDefaultLinks();
-        loadCaptchas();
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            initSkin();
+            initDefaultLinks();
 
+            transaction.commit();
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+
+            transaction.rollback();
+        }
+
+        loadCaptchas();
         registerRemoteJSServiceSerializers();
 
         LOGGER.info("Initialized the context");
@@ -288,7 +299,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
                 final BufferedInputStream bufferedInputStream =
                         new BufferedInputStream(zipFile.getInputStream(zipEntry));
-                final byte[] captchaCharData = new byte[bufferedInputStream.available()];
+                final byte[] captchaCharData = new byte[bufferedInputStream.
+                        available()];
                 bufferedInputStream.read(captchaCharData);
                 bufferedInputStream.close();
 
