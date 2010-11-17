@@ -164,23 +164,7 @@
                     $("#comment" + name).val($("#comment" + name).val() + key).focus();
                 });
             }
-
-            var processEmotions = function () {
-                var $commentContents = $("#comments .comment-content");
-                for (var i = 0; i < $commentContents.length; i++) {
-                    var str = $commentContents[i].innerHTML;
-                    var ems = str.split("[em");
-                    var content = ems[0];
-                    for (var j = 1; j < ems.length; j++) {
-                        var key = ems[j].substr(0, 2),
-                        emImgHTML = "<img src='/skins/i-nove/emotions/em" + key
-                            + ".png'/>";
-                        content += emImgHTML + ems[j].slice(3);
-                    }
-                    $commentContents[i].innerHTML = content;
-                }
-            }
-
+            
             var validateComment = function (state) {
                 if (state === undefined) {
                     state = '';
@@ -361,7 +345,7 @@
                 
                 // emotions
                 insertEmotions("");
-                processEmotions();
+                replaceCommentsEm("#comments .comment-content");
             }
             loadAction();
         </script>
