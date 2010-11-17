@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 13, 2010
+ * @version 1.0.0.7, Nov 17, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -90,6 +90,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Skins skins;
+    /**
+     * Page cache utilities.
+     */
+    @Inject
+    private PageCacheKeys pageCacheKeys;
 
     /**
      * Determines whether the administrator is logged in.
@@ -110,7 +115,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public String getLogoutURL(final HttpServletRequest request,
-            final HttpServletResponse response)
+                               final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -128,8 +133,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public String getLoginURL(final String redirectURL,
-            final HttpServletRequest request,
-            final HttpServletResponse response)
+                              final HttpServletRequest request,
+                              final HttpServletResponse response)
             throws ActionException, IOException {
         return userService.createLoginURL(redirectURL);
     }
@@ -154,7 +159,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject getPageCache(final HttpServletRequest request,
-            final HttpServletResponse response)
+                                   final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -182,24 +187,24 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Clears a page cache specified by the given URL.
+     * Clears a page cache specified by the given URI.
      *
-     * @param url the specified URL
+     * @param uri the specified URI
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public void clearPageCache(final String url,
-            final HttpServletRequest request,
-            final HttpServletResponse response)
+    public void clearPageCache(final String uri,
+                               final HttpServletRequest request,
+                               final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
-        String pageCacheKey = url;
-        if (url.contains(".html")) {
-            pageCacheKey = PageCacheKeys.getPageCacheKey(url, null);
-        }
+        LOGGER.log(Level.FINE, "URI[{0}]", uri);
+
+        String pageCacheKey = uri;
+        pageCacheKey = pageCacheKeys.getPageCacheKey(uri, null);
 
         LOGGER.log(Level.FINER, "pageCacheKey[{0}]", pageCacheKey);
 
@@ -215,7 +220,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public void clearAllPageCache(final HttpServletRequest request,
-            final HttpServletResponse response)
+                                  final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -237,7 +242,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * </pre>
      */
     public JSONObject init(final HttpServletRequest request,
-            final HttpServletResponse response)
+                           final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
@@ -263,7 +268,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws JSONException json exception
      */
     private JSONObject initStatistic() throws RepositoryException,
-            JSONException {
+                                              JSONException {
         LOGGER.info("Initializing statistic....");
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -344,7 +349,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             try {
                 final String webRootPath = SoloServletListener.getWebRoot();
-                final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
+                final String skinPath = webRootPath + Skin.SKINS + "/"
+                                        + skinDirName;
                 Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                         new File(skinPath));
             } catch (final IOException e) {
@@ -359,7 +365,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             eventManager.fireEventSynchronously(// for upgrade extensions
                     new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
-                    ret));
+                                          ret));
 
             preferenceRepository.update(preferenceId, ret);
             transaction.commit();

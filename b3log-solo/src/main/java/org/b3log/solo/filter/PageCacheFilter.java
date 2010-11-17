@@ -16,6 +16,7 @@
 
 package org.b3log.solo.filter;
 
+import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.cache.Cache;
@@ -45,6 +46,11 @@ public final class PageCacheFilter implements Filter {
      */
     private static final Logger LOGGER =
             Logger.getLogger(PageCacheFilter.class.getName());
+    /**
+     * Page cache utilities.
+     */
+    @Inject
+    private PageCacheKeys pageCacheKeys;
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -91,7 +97,7 @@ public final class PageCacheFilter implements Filter {
 
         final String queryString = httpServletRequest.getQueryString();
         final String pageCacheKey =
-                PageCacheKeys.getPageCacheKey(requestURI, queryString);
+                pageCacheKeys.getPageCacheKey(requestURI, queryString);
         final Cache<String, Object> cache = PageCaches.getCache();
         LOGGER.log(Level.FINER, "Request[pageCacheKey={0}]", pageCacheKey);
         LOGGER.log(Level.FINEST, "Page cache[cachedCount={0}, maxCount={1}]",
