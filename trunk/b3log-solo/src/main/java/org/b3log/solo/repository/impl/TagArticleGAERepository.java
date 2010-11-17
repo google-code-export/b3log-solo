@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Tag-Article relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 16, 2010
+ * @version 1.0.0.6, Nov 17, 2010
  */
 public final class TagArticleGAERepository extends AbstractGAERepository
         implements TagArticleRepository {
@@ -63,6 +63,7 @@ public final class TagArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, articleId);
+
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Iterable<Entity> entities = preparedQuery.asIterable();
 
@@ -85,7 +86,8 @@ public final class TagArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Tag.TAG + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, tagId);
-        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
+        query.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                      Query.SortDirection.DESCENDING);
 
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final int count = preparedQuery.countEntities(
