@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Archive date-Article relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 16, 2010
+ * @version 1.0.0.3, Nov 17, 2010
  */
 public final class ArchiveDateArticleGAERepository
         extends AbstractGAERepository
@@ -64,7 +64,8 @@ public final class ArchiveDateArticleGAERepository
         final Query query = new Query(getName());
         query.addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, archiveDateId);
-        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
+        query.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                      Query.SortDirection.DESCENDING);
 
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final int count = preparedQuery.countEntities(
