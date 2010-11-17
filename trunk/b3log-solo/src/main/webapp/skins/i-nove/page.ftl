@@ -251,7 +251,7 @@
                         "oId": "${page.oId}",
                         "commentContent": $("#commentReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "commentEmail": $("#commentEmailReply").val(),
-                        "commentURL": $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentURL": "http://" + $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "captcha": $("#commentValidateReply").val(),
                         "commentOriginalCommentId": id
@@ -284,7 +284,7 @@
                         "oId": "${page.oId}",
                         "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "commentEmail": $("#commentEmail").val(),
-                        "commentURL": $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
                         "captcha": $("#commentValidate").val()
                     };
