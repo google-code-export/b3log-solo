@@ -106,48 +106,11 @@ ver ${version}
             goingBottom = false;
         }
     }
-    
-    var strEllipsis = function (it, length) {
-        var $it = $(it);
-        if (it.offsetWidth > length) {
-            var str = $it.text().replace(/(^\s*)|(\s*$)/g, "");
-            $it.text(str.substr(0, str.length - 2));
-            strEllipsis(it, length);
-        } else {
-            return {
-                value:$it.text(),
-                change: false
-            };
-        }
-        return {
-            value:$it.text(),
-            change: true
-        };
-    }
-
-    var sideEllipsis = function () {
-        var sideLength = $("#sideNavi").width() - 50;
-        $("#mostCommentArticles a").each(function () {
-            var result = strEllipsis(this, sideLength);
-            if (result.change) {
-                $(this).text(result.value + "...");
-            }
-        });
-        $("#mostViewCountArticles a").each(function () {
-            var result = strEllipsis(this, sideLength);
-            if (result.change) {
-                $(this).text(result.value + "...");
-            }
-        });
-        $("#sideLink a").each(function () {
-            var result = strEllipsis(this, sideLength);
-            if (result.change) {
-                $(this).text(result.value + "...");
-            }
-        });
-    }
-    
+  
     var initIndex = function () {
+        // side comment
+        replaceCommentsEm("#recentComments li");
+        
         // common-top.ftl use state
         jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
             if (result && !error) {
@@ -177,15 +140,6 @@ ver ${version}
                 $it.removeClass("selected");
                 if ($it.attr("name") && $it.attr("name") === localStorage.getItem("sideNaviId")) {
                     $it.addClass("selected");
-                }
-            });
-
-            // article-side.ftl ellipsis
-            sideEllipsis();
-            
-            $(window).resize(function () {
-                if ($("#sideNavi").width() > 195) {
-                    sideEllipsis();
                 }
             });
         }
