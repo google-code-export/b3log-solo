@@ -20,6 +20,9 @@
     }
     
     var initIndex = function () {
+        // side comment
+        replaceCommentsEm(".side-navi .navi-comments .side-comment");
+        
         // common-top.ftl use state
         jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
             if (result && !error) {
