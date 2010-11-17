@@ -259,7 +259,6 @@ public final class SoloServletListener extends AbstractServletListener {
             }
         } catch (final Exception e) {
             LOGGER.warning(e.getMessage());
-            throw new RuntimeException(e);
         }
 
         LOGGER.info("Loaded skin");

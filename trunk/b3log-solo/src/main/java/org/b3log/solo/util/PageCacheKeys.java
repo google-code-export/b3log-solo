@@ -16,16 +16,37 @@
 
 package org.b3log.solo.util;
 
-import org.apache.commons.lang.StringUtils;
+import com.google.inject.Inject;
+import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.PageRepository;
+import org.json.JSONObject;
 
 /**
  * Page cache key utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2010
+ * @version 1.0.0.1, Nov 17, 2010
  */
 public final class PageCacheKeys {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(PageCacheKeys.class.getName());
+    /**
+     * Page repository.
+     */
+    @Inject
+    private PageRepository pageRepository;
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Gets page cache key by the specified URI and query string.
@@ -34,27 +55,36 @@ public final class PageCacheKeys {
      * @param queryString the specified query string
      * @return cache key
      */
-    // XXX: more generally?
-    public static String getPageCacheKey(final String uri,
-                                         final String queryString) {
+    public String getPageCacheKey(final String uri,
+                                  final String queryString) {
         String ret = null;
-        if (uri.endsWith(".html")) { // article permalink
-            final String articleId = StringUtils.substring(
-                    uri, uri.lastIndexOf("/") + 1, uri.lastIndexOf("."));
-            ret = "/article-detail.do?oId=" + articleId;
-        } else {
+
+        try {
+            final JSONObject page = pageRepository.getByPermalink(uri);
+            if (null != page) {
+                ret = "/page.do?oId=" + page.getString(Keys.OBJECT_ID);
+
+                return ret;
+            }
+
+            final JSONObject article = articleRepository.getByPermalink(uri);
+            if (null != article) {
+                ret = "/article-detail.do?oId="
+                      + article.getString(Keys.OBJECT_ID);
+
+                return ret;
+            }
+
             ret = uri;
             if (!Strings.isEmptyOrNull(queryString)) {
                 ret += "?" + queryString;
+
+                return ret;
             }
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
         }
 
         return ret;
-    }
-
-    /**
-     * Private default constructor.
-     */
-    private PageCacheKeys() {
     }
 }
