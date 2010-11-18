@@ -227,8 +227,8 @@ public final class SoloServletListener extends AbstractServletListener {
             final LinkRepository linkRepository =
                     injector.getInstance(LinkRepository.class);
 
-            final String address88250 = "http://b3log-88250.appspot.com";
-            final String addressVanessa = "http://b3log-vanessa.appspot.com";
+            final String address88250 = "http://88250.b3log.org";
+            final String addressVanessa = "http://vanessa.b3log.org";
 
             JSONObject linkTo88250 = linkRepository.getByAddress(address88250);
             if (null == linkTo88250) {
