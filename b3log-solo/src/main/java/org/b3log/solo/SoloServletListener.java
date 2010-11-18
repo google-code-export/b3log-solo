@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -37,6 +36,7 @@ import java.util.zip.ZipFile;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RunsOnEnv;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
@@ -227,26 +227,40 @@ public final class SoloServletListener extends AbstractServletListener {
             final LinkRepository linkRepository =
                     injector.getInstance(LinkRepository.class);
 
-            final String address88250 = "http://88250.b3log.org";
-            final String addressVanessa = "http://vanessa.b3log.org";
+            final String address88250_1 = "http://b3log-88250.appspot.com";
+            final String addressVanessa_1 = "http://b3log-vanessa.appspot.com";
 
-            JSONObject linkTo88250 = linkRepository.getByAddress(address88250);
+            JSONObject linkTo88250 = linkRepository.getByAddress(address88250_1);
+            final String address88250 = "http://88250.b3log.org";
             if (null == linkTo88250) {
                 linkTo88250 = new JSONObject();
                 linkTo88250.put(Link.LINK_TITLE, "简约设计\u306e艺术").
                         put(Link.LINK_ADDRESS, address88250);
                 linkRepository.add(linkTo88250);
-                LOGGER.info("Added a link [title=简约设计\u306e艺术] to your links");
+                LOGGER.info("Added a link[title=简约设计\u306e艺术] to your links");
+            } else {
+                linkTo88250.put(Link.LINK_TITLE, "简约设计\u306e艺术").
+                        put(Link.LINK_ADDRESS, address88250);
+                linkRepository.update(linkTo88250.getString(Keys.OBJECT_ID),
+                                      linkTo88250);
+                LOGGER.info("Updated a link[title=简约设计\u306e艺术] to your links");
             }
 
             JSONObject linkToVanessa =
-                    linkRepository.getByAddress(addressVanessa);
+                    linkRepository.getByAddress(addressVanessa_1);
+            final String addressVanessa = "http://vanessa.b3log.org";
             if (null == linkToVanessa) {
                 linkToVanessa = new JSONObject();
                 linkToVanessa.put(Link.LINK_TITLE, "Vanessa").
                         put(Link.LINK_ADDRESS, addressVanessa);
                 linkRepository.add(linkToVanessa);
                 LOGGER.info("Added a link [title=Vanessa] to your links");
+            } else {
+                linkToVanessa.put(Link.LINK_TITLE, "Vanessa").
+                        put(Link.LINK_ADDRESS, address88250);
+                linkRepository.update(linkToVanessa.getString(Keys.OBJECT_ID),
+                                      linkToVanessa);
+                LOGGER.info("Updated a link [title=Vanessa] to your links");
             }
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, e.getMessage());
