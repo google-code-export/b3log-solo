@@ -4,11 +4,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="none"/>
         <title>${welcomeToSoloLabel}</title>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-init.css"/>
         <link rel="icon" type="image/png" href="favicon.png"/>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -43,9 +43,9 @@
                 var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
                 if (!isAdminLoggedIn) {
                     $(".introContent").html("<h1>" + $(".introContent h2").html() + "</h1>"
-                        + "<button onclick='login();'>${loginLabel}</button>")
+                        + "<img src='/images/arrow.png' title='B3log' alt='B3log'/><button onclick='login();'>${loginLabel}</button>")
                     .removeClass("introContent").addClass("introContentLogin");
-                    $($(".introContent h1 span")[0]).css("font-size", "36px");
+                    $($(".introContentLogin h1 span")[0]).css("font-size", "36px");
                 }
             }
             init();
