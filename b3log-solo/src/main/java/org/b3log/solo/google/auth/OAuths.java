@@ -16,19 +16,16 @@
 
 package org.b3log.solo.google.auth;
 
-import com.google.api.client.auth.oauth.OAuthAuthorizeTemporaryTokenUrl;
-import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
-import com.google.api.client.auth.oauth.OAuthHmacSigner;
-import com.google.api.client.auth.oauth.OAuthParameters;
-import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetAccessToken;
-import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetTemporaryToken;
-import com.google.api.client.http.HttpTransport;
+//import com.google.api.client.auth.oauth.OAuthAuthorizeTemporaryTokenUrl;
+//import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
+//import com.google.api.client.auth.oauth.OAuthHmacSigner;
+//import com.google.api.client.auth.oauth.OAuthParameters;
+//import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetAccessToken;
+//import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetTemporaryToken;
+//import com.google.api.client.http.HttpTransport;
 import com.google.inject.Inject;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.PreferenceUtils;
-import org.json.JSONObject;
 
 /**
  * Google OAuth utilities.
@@ -55,11 +52,11 @@ public final class OAuths {
     /**
      * Signer.
      */
-    private static OAuthHmacSigner signer;
+//    private static OAuthHmacSigner signer;
     /**
      * Credentials.
      */
-    private static OAuthCredentialsResponse credentials;
+//    private static OAuthCredentialsResponse credentials;
     /**
      * Preference utilities.
      */
@@ -73,47 +70,47 @@ public final class OAuths {
      * @param consumerSecret the specified Google OAuth consumer secret
      * @return Buzz authorization URL, returns {@code null} if error
      */
-    public static String getBuzzAuthorizationURL(
-            final HttpTransport httpTransport,
-            final String consumerSecret) {
-
-        try {
-            final JSONObject preference = preferenceUtils.getPreference();
-            final String blogHost = preference.getString(Preference.BLOG_HOST);
-            final String consumerKey = blogHost.split(":")[0];
-
-            final GoogleOAuthGetTemporaryToken temporaryToken =
-                    new GoogleOAuthGetTemporaryToken();
-            signer = new OAuthHmacSigner();
-            signer.clientSharedSecret = consumerSecret;
-            temporaryToken.signer = signer;
-            temporaryToken.consumerKey = consumerKey;
-            temporaryToken.scope = BUZZ_SCOPE;
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            temporaryToken.displayName = blogTitle;
-            temporaryToken.callback = "http://" + blogHost + BUZZ_CALLBACK_URL;
-            final OAuthCredentialsResponse tempCredentials =
-                    temporaryToken.execute();
-            signer.tokenSharedSecret = tempCredentials.tokenSecret;
-            final OAuthAuthorizeTemporaryTokenUrl authorizeURL =
-                    new OAuthAuthorizeTemporaryTokenUrl(
-                    "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
-            authorizeURL.set("scope", temporaryToken.scope);
-            authorizeURL.set("domain", consumerKey);
-            authorizeURL.set("iconUrl",
-                             "http://code.google.com/p/b3log-solo/logo?cct=1283958195");
-            final String tempToken = tempCredentials.token;
-            authorizeURL.temporaryToken = tempToken;
-
-            final String ret = authorizeURL.build();
-            LOGGER.log(Level.FINE, "Authorization URL[{0}]", ret);
-
-            return ret;
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return null;
-        }
-    }
+//    public static String getBuzzAuthorizationURL(
+//            final HttpTransport httpTransport,
+//            final String consumerSecret) {
+//
+//        try {
+//            final JSONObject preference = preferenceUtils.getPreference();
+//            final String blogHost = preference.getString(Preference.BLOG_HOST);
+//            final String consumerKey = blogHost.split(":")[0];
+//
+//            final GoogleOAuthGetTemporaryToken temporaryToken =
+//                    new GoogleOAuthGetTemporaryToken();
+//            signer = new OAuthHmacSigner();
+//            signer.clientSharedSecret = consumerSecret;
+//            temporaryToken.signer = signer;
+//            temporaryToken.consumerKey = consumerKey;
+//            temporaryToken.scope = BUZZ_SCOPE;
+//            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+//            temporaryToken.displayName = blogTitle;
+//            temporaryToken.callback = "http://" + blogHost + BUZZ_CALLBACK_URL;
+//            final OAuthCredentialsResponse tempCredentials =
+//                    temporaryToken.execute();
+//            signer.tokenSharedSecret = tempCredentials.tokenSecret;
+//            final OAuthAuthorizeTemporaryTokenUrl authorizeURL =
+//                    new OAuthAuthorizeTemporaryTokenUrl(
+//                    "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
+//            authorizeURL.set("scope", temporaryToken.scope);
+//            authorizeURL.set("domain", consumerKey);
+//            authorizeURL.set("iconUrl",
+//                             "http://code.google.com/p/b3log-solo/logo?cct=1283958195");
+//            final String tempToken = tempCredentials.token;
+//            authorizeURL.temporaryToken = tempToken;
+//
+//            final String ret = authorizeURL.build();
+//            LOGGER.log(Level.FINE, "Authorization URL[{0}]", ret);
+//
+//            return ret;
+//        } catch (final Exception e) {
+//            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+//            return null;
+//        }
+//    }
 
     /**
      * Signs the specified request token, verifier and http transport.
@@ -123,38 +120,38 @@ public final class OAuths {
      * @param httpTransport the specified http transport
      * @throws Exception exception
      */
-    public static void sign(final String requestToken,
-                            final String verifier,
-                            final HttpTransport httpTransport)
-            throws Exception {
-        final JSONObject preference = preferenceUtils.getPreference();
-        final String consumerKey = preference.getString(Preference.BLOG_HOST).
-                split(":")[0];
-        final GoogleOAuthGetAccessToken accessToken =
-                new GoogleOAuthGetAccessToken();
-        accessToken.temporaryToken = requestToken;
-        accessToken.signer = signer;
-        accessToken.consumerKey = consumerKey;
-        accessToken.verifier = verifier;
-        credentials = accessToken.execute();
-        signer.tokenSharedSecret = credentials.tokenSecret;
-        createOAuthParameters().signRequestsUsingAuthorizationHeader(
-                httpTransport);
-
-    }
+//    public static void sign(final String requestToken,
+//                            final String verifier,
+//                            final HttpTransport httpTransport)
+//            throws Exception {
+//        final JSONObject preference = preferenceUtils.getPreference();
+//        final String consumerKey = preference.getString(Preference.BLOG_HOST).
+//                split(":")[0];
+//        final GoogleOAuthGetAccessToken accessToken =
+//                new GoogleOAuthGetAccessToken();
+//        accessToken.temporaryToken = requestToken;
+//        accessToken.signer = signer;
+//        accessToken.consumerKey = consumerKey;
+//        accessToken.verifier = verifier;
+//        credentials = accessToken.execute();
+//        signer.tokenSharedSecret = credentials.tokenSecret;
+//        createOAuthParameters().signRequestsUsingAuthorizationHeader(
+//                httpTransport);
+//
+//    }
 
     /**
      * Creates OAuth parameters.
      *
      * @return OAuth parameters
      */
-    private static OAuthParameters createOAuthParameters() {
-        final OAuthParameters ret = new OAuthParameters();
-        ret.consumerKey = "anonymous";
-        ret.signer = signer;
-        ret.token = credentials.token;
-        return ret;
-    }
+//    private static OAuthParameters createOAuthParameters() {
+//        final OAuthParameters ret = new OAuthParameters();
+//        ret.consumerKey = "anonymous";
+//        ret.signer = signer;
+//        ret.token = credentials.token;
+//        return ret;
+//    }
 
     /**
      * Private default constructor.

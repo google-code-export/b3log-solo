@@ -24,7 +24,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.google.auth.OAuths;
 import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Preference;
 import org.json.JSONObject;
@@ -66,12 +65,12 @@ public final class BuzzOAuthCallback extends HttpServlet {
                    "OAuth callback from Google[requestToken={0}, verifier={1}",
                    new String[]{requestToken, verifier});
 
-        try {
-            OAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ServletException(e);
-        }
+//        try {
+//            OAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
+//        } catch (final Exception e) {
+//            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+//            throw new ServletException(e);
+//        }
 
         try {
             final JSONObject preference = preferenceService.getPreference();
