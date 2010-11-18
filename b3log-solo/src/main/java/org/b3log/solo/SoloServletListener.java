@@ -243,8 +243,7 @@ public final class SoloServletListener extends AbstractServletListener {
                 linkRepository.add(linkTo88250);
                 LOGGER.info("Added a link[title=简约设计\u306e艺术] to your links");
             } else {
-                linkTo88250.put(Link.LINK_TITLE, "简约设计\u306e艺术").
-                        put(Link.LINK_ADDRESS, address88250);
+                linkTo88250.put(Link.LINK_ADDRESS, address88250);
                 linkRepository.update(linkTo88250.getString(Keys.OBJECT_ID),
                                       linkTo88250);
                 LOGGER.info("Updated a link[title=简约设计\u306e艺术] to your links");
@@ -260,8 +259,7 @@ public final class SoloServletListener extends AbstractServletListener {
                 linkRepository.add(linkToVanessa);
                 LOGGER.info("Added a link [title=Vanessa] to your links");
             } else {
-                linkToVanessa.put(Link.LINK_TITLE, "Vanessa").
-                        put(Link.LINK_ADDRESS, address88250);
+                linkToVanessa.put(Link.LINK_ADDRESS, addressVanessa);
                 linkRepository.update(linkToVanessa.getString(Keys.OBJECT_ID),
                                       linkToVanessa);
                 LOGGER.info("Updated a link [title=Vanessa] to your links");
