@@ -215,9 +215,9 @@ public final class SoloServletListener extends AbstractServletListener {
      *
      * <ul>
      *   <li>简约设计の艺术</li>
-     *   http://b3log-88250.appspot.com
+     *   http://88250.b3log.org
      *   <li>Vanessa</li>
-     *   http://b3log-vanessa.appspot.com
+     *   http://vanessa.b3log.org
      * </ul>
      */
     private void initDefaultLinks() {
@@ -228,42 +228,43 @@ public final class SoloServletListener extends AbstractServletListener {
             final LinkRepository linkRepository =
                     injector.getInstance(LinkRepository.class);
 
-            final String address88250Appspot =
+            final String address1Of88250 =
                     "http://b3log-88250.appspot.com";
-            final String addressVanessaAppspot =
-                    "http://b3log-vanessa.appspot.com";
-
             JSONObject linkTo88250 = linkRepository.getByAddress(
-                    address88250Appspot);
-            final String address88250 = "http://88250.b3log.org";
-            if (null == linkTo88250) {
-                linkTo88250 = new JSONObject();
-                linkTo88250.put(Link.LINK_TITLE, "简约设计\u306e艺术").
-                        put(Link.LINK_ADDRESS, address88250);
-                linkRepository.add(linkTo88250);
-                LOGGER.info("Added a link[title=简约设计\u306e艺术] to your links");
-            } else {
-                linkTo88250.put(Link.LINK_ADDRESS, address88250);
-                linkRepository.update(linkTo88250.getString(Keys.OBJECT_ID),
-                                      linkTo88250);
-                LOGGER.info("Updated a link[title=简约设计\u306e艺术] to your links");
+                    address1Of88250);
+            if (null != linkTo88250) {
+                linkRepository.remove(linkTo88250.getString(Keys.OBJECT_ID));
+            }
+            final String address2Of88250 = "http://88250.b3log.org";
+            linkTo88250 = linkRepository.getByAddress(address2Of88250);
+            if (null != linkTo88250) {
+                linkRepository.remove(linkTo88250.getString(Keys.OBJECT_ID));
             }
 
+            linkTo88250 = new JSONObject();
+            linkTo88250.put(Link.LINK_TITLE, "简约设计\u306e艺术").
+                    put(Link.LINK_ADDRESS, address2Of88250);
+            linkRepository.add(linkTo88250);
+            LOGGER.info("Added a link[title=简约设计\u306e艺术] to your links");
+
+            final String address1OfVanessa =
+                    "http://b3log-vanessa.appspot.com";
+            final String address2OfVanessa = "http://vanessa.b3log.org";
             JSONObject linkToVanessa =
-                    linkRepository.getByAddress(addressVanessaAppspot);
-            final String addressVanessa = "http://vanessa.b3log.org";
-            if (null == linkToVanessa) {
-                linkToVanessa = new JSONObject();
-                linkToVanessa.put(Link.LINK_TITLE, "Vanessa").
-                        put(Link.LINK_ADDRESS, addressVanessa);
-                linkRepository.add(linkToVanessa);
-                LOGGER.info("Added a link [title=Vanessa] to your links");
-            } else {
-                linkToVanessa.put(Link.LINK_ADDRESS, addressVanessa);
-                linkRepository.update(linkToVanessa.getString(Keys.OBJECT_ID),
-                                      linkToVanessa);
-                LOGGER.info("Updated a link [title=Vanessa] to your links");
+                    linkRepository.getByAddress(address1OfVanessa);
+            if (null != linkToVanessa) {
+                linkRepository.remove(linkToVanessa.getString(Keys.OBJECT_ID));
             }
+            linkToVanessa = linkRepository.getByAddress(address2OfVanessa);
+            if (null != linkToVanessa) {
+                linkRepository.remove(linkToVanessa.getString(Keys.OBJECT_ID));
+            }
+
+            linkToVanessa = new JSONObject();
+            linkToVanessa.put(Link.LINK_TITLE, "简约设计\u306e艺术").
+                    put(Link.LINK_ADDRESS, address2OfVanessa);
+            linkRepository.add(linkToVanessa);
+            LOGGER.info("Added a link[title=Vanessa] to your links");
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, e.getMessage());
         }
