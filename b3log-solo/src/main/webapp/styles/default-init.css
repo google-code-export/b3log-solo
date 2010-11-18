@@ -1,0 +1,19 @@
+body{background-color:#F3F1E5;border-top:5px solid #E6E5D9;color:#4D505D;margin:0px;padding:0px;font-family:Helvetica,Arial,sans-serif;font-size:small;}
+.wrapper{margin:60px auto 0 auto;width:700px;}
+.intro{height:278px;background:url("/images/zz.jpg") repeat-x scroll center bottom white;border-color:#E6E5D9;border-style:solid solid none;border-width:1px;width:698px;position: relative;}
+.introSign{position:absolute;right:-1px;top:-1px;}
+.introImg{height:56px;padding:106px 12px 0;width:153px;}
+.introContent{border-left:1px solid #E6E5D9;font-size:15px;margin:24px 0;padding:12px 24px;width:470px;}
+.introContentLogin{border-left:1px solid #E6E5D9;
+font-size:15px;
+margin:24px 0;
+padding:24px 24px 9px 0;
+text-align:center;
+width:492px;}
+.introContentLogin button{float:right;margin-top:48px;}
+.introContent button{float:right;
+margin-top:12px;}
+.introContent a, .introContentLogin a{text-decoration: none;}
+.introContent li{margin:6px 0 6px 16px;}
+.introContent p{margin:12px 0;}
+.footerWrapper{background-color:#FFFFFF;border-top:1px solid #E6E5D9;bottom:0;z-index: -1;position:fixed;text-align:center;width:100%;}
