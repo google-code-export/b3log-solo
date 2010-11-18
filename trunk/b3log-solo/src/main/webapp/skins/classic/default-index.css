@@ -31,7 +31,7 @@ h5{font-size:12px;}
 #commentURL, #commentURLReply{border-left:0px;}
 #comment, #commentReply{width:604px;}
 #emotions img{cursor: pointer;}
-.form textarea, .form input {font-family:Helvetica,Arial,sans-serif;}
+.form textarea, .form input {outline:none;font-family:Helvetica,Arial,sans-serif;}
 .error-msg{color:#3366CC;}
 .side-navi a.selected{text-decoration:none;color:#000000;}
 .side-navi li{white-space:nowrap;overflow:hidden;line-height:22px;}
