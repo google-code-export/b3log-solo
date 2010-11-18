@@ -145,9 +145,9 @@
                                     + events.blogSyncBlogJava.msg;
                             }
 
-                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
-                                msg += ", ${postToBuzzFailLabel}";
-                            }
+//                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
+//                                msg += ", ${postToBuzzFailLabel}";
+//                            }
                             $("#tipMsg").text(msg);
                             $("#article-listTab").click();
                         }
