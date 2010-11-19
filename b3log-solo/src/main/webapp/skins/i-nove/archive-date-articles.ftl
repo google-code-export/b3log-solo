@@ -46,6 +46,6 @@
                     <#include "article-footer.ftl">
                 </div>
             </div>
-        </div>>
+        </div>
     </body>
 </html>
