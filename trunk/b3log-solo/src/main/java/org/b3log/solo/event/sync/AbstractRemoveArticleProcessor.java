@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.sync;
 
 import com.google.inject.Inject;
@@ -40,7 +39,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 30, 2010
+ * @version 1.0.0.6, Nov 19, 2010
  */
 public abstract class AbstractRemoveArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -136,6 +135,14 @@ public abstract class AbstractRemoveArticleProcessor
                 final JSONObject externalArticleSoloArticleRelation =
                         externalArticleSoloArticleRepository.getBySoloArticleId(
                         articleId, externalBloggingSys);
+                if (null == externalArticleSoloArticleRelation) {
+                    // This article published without sync adding enabled.
+                    // See issue 72 for details
+                    ret.put(Keys.STATUS_CODE, BlogSyncStatusCodes.BLOG_SYNC_FAIL);
+
+                    return ret;
+                }
+
                 final String externalArticleId =
                         externalArticleSoloArticleRelation.getString(
                         BLOG_SYNC_EXTERNAL_ARTICLE_ID);

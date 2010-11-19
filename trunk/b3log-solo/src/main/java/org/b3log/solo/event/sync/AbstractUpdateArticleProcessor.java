@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.sync;
 
 import com.google.inject.Inject;
@@ -147,6 +146,14 @@ public abstract class AbstractUpdateArticleProcessor
                 final JSONObject externalArticleSoloArticleRelation =
                         externalArticleSoloArticleRepository.getBySoloArticleId(
                         articleId, externalBloggingSys);
+                if (null == externalArticleSoloArticleRelation) {
+                    // This article published without sync adding enabled.
+                    // See issue 72 for details
+                    ret.put(Keys.STATUS_CODE, BlogSyncStatusCodes.BLOG_SYNC_FAIL);
+
+                    return ret;
+                }
+
                 final String postId = externalArticleSoloArticleRelation.
                         getString(BLOG_SYNC_EXTERNAL_ARTICLE_ID);
                 final MetaWeblog metaWeblog =
@@ -175,12 +182,12 @@ public abstract class AbstractUpdateArticleProcessor
                         Keys.OBJECT_ID), externalArticleSoloArticleRelation);
             }
 
-
             ret.put(Keys.STATUS_CODE, BlogSyncStatusCodes.BLOG_SYNC_SUCC);
 
             return ret;
         } catch (final SyncException e) {
-            LOGGER.log(Level.WARNING, "Can not update article sync, error msg[{0}]",
+            LOGGER.log(Level.WARNING,
+                       "Can not update article sync, error msg[{0}]",
                        e.getMessage());
             throw e;
         } catch (final Exception e) {
