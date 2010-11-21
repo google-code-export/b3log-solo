@@ -16,12 +16,12 @@
                      src='${comment.commentThumbnailURL}'/>
                 <div class='left'>
                     <div>
-                        <a href="${comment.commentURL}">
+                        <a target="_blank" href="${comment.commentURL}">
                         ${comment.commentName}
                         </a>
                     </div>
                     <div>
-                        <a class='side-comment' href="${comment.commentSharpURL}">
+                        <a title="${comment.commentContent}" class='side-comment' href="${comment.commentSharpURL}">
                         ${comment.commentContent}
                         </a>
                     </div>

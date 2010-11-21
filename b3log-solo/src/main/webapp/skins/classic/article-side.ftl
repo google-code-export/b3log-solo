@@ -18,9 +18,12 @@
             <ul id="recentComments">
                 <#list recentComments as comment>
                 <li>
-                    <a href="${comment.commentSharpURL}">
+                    <a target="_blank" href="${comment.commentURL}">
                         ${comment.commentName}
-                    </a>: ${comment.commentContent}
+                    </a>:
+                    <a class='side-comment' title="${comment.commentContent}" href="${comment.commentSharpURL}">
+                       ${comment.commentContent}
+                    </a>
                 </li>
                 </#list>
             </ul>
