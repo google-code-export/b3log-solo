@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Nov 15, 2010
+ * @version 1.0.2.7, Nov 21, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -241,9 +241,15 @@ public final class SoloServletListener extends AbstractServletListener {
                 linkRepository.remove(linkTo88250.getString(Keys.OBJECT_ID));
             }
 
+            final String address3Of88250 = "http://daniel.b3log.org";
+            linkTo88250 = linkRepository.getByAddress(address3Of88250);
+            if (null != linkTo88250) {
+                linkRepository.remove(linkTo88250.getString(Keys.OBJECT_ID));
+            }
+
             linkTo88250 = new JSONObject();
             linkTo88250.put(Link.LINK_TITLE, "简约设计\u306e艺术").
-                    put(Link.LINK_ADDRESS, address2Of88250);
+                    put(Link.LINK_ADDRESS, address3Of88250);
             linkRepository.add(linkTo88250);
             LOGGER.info("Added a link[title=简约设计\u306e艺术] to your links");
 
