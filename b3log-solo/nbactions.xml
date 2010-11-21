@@ -15,6 +15,13 @@
         </goals>
     </action>
     <action>
+        <actionName>CUSTOM-gae-deploy</actionName>
+        <displayName>gae-rollback</displayName>
+        <goals>
+            <goal>gae:rollback</goal>
+        </goals>
+    </action>
+    <action>
         <actionName>CUSTOM-gae-unpack</actionName>
         <displayName>gae-unpack</displayName>
         <goals>
