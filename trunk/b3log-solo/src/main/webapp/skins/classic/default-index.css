@@ -36,6 +36,7 @@ h5{font-size:12px;}
 .side-navi a.selected{text-decoration:none;color:#000000;}
 .side-navi li{white-space:nowrap;overflow:hidden;line-height:22px;}
 .side-navi li.aboutMe, .side-navi li.side-navi-notice{white-space:normal;}
+.side-comment{text-decoration:none;}
 .line{margin-top:12px;padding-top:12px;border-top:thin dotted #BBBBBB;}
 #userIntro img{-moz-border-radius:6px;-webkit-border-radius:6px;border:1px solid #BBCCFF;margin-top:9px;padding:6px;}
 .pagination{text-align:center;margin:16px;}
