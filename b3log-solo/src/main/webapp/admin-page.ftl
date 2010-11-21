@@ -382,7 +382,9 @@
                             commentsHTML += "@" + comments[i].commentOriginalCommentName;
                         }
                         commentsHTML += "</span><span class='right deleteIcon' onclick=\"deletePageComment('" + comments[i].oId
-                            + "')\"></span><span class='right'>" + $.bowknot.getDate(comments[i].commentDate.time, 1)
+                            + "')\"></span><span class='right'><a href='mailto:"
+                            + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
+                            + $.bowknot.getDate(comments[i].commentDate.time, 1)
                             + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
                     }
                     if ("" === commentsHTML) {
