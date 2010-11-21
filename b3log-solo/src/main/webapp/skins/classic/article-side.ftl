@@ -19,8 +19,7 @@
                 <#list recentComments as comment>
                 <li>
                     <a target="_blank" href="${comment.commentURL}">
-                        ${comment.commentName}
-                    </a>:
+                        ${comment.commentName}</a>:
                     <a class='side-comment' title="${comment.commentContent}" href="${comment.commentSharpURL}">
                        ${comment.commentContent}
                     </a>
@@ -39,8 +38,8 @@
                 <#list mostCommentArticles as article>
                 <li>
                     <a name="mostComment${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
-                        ${article.articleTitle}
-                    </a>(${article.articleCommentCount})
+                        ${article.articleTitle}</a>
+                    (${article.articleCommentCount})
                 </li>
                 </#list>
             </ul>
@@ -56,8 +55,8 @@
                 <#list mostViewCountArticles as article>
                 <li>
                     <a name="mostView${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
-                        ${article.articleTitle}
-                    </a>(${article.articleViewCount})
+                        ${article.articleTitle}</a>
+                    (${article.articleViewCount})
                 </li>
                 </#list>
             </ul>
@@ -76,7 +75,8 @@
                         <img alt="${tag.tagTitle}" src="/images/feed.png"/>
                     </a>
                     <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('UTF-8')}">
-                        ${tag.tagTitle}</a>(${tag.tagReferenceCount})
+                        ${tag.tagTitle}</a>
+                    (${tag.tagReferenceCount})
                 </li>
                 </#list>
             </ul>
