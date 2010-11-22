@@ -5,7 +5,7 @@
 .content{height:100%;background-color:#E3E9FF;min-height:300px;}
 .comment-title{background-color:#E3E9FF;border-top:1px solid #36C;padding:3px 0 3px 12px;}
 .comment-body{margin:12px;}
-#comments,#updateLink{height:462px;overflow:auto;}
+#comments{height:462px;overflow:auto;}
 #tipMsg, #loadMsg{-moz-border-radius:6px;-webkit-border-radius:6px;background-color:#E5E7EB;font-weight:bold;left:48%;margin:0 auto;padding:2px 0;position:absolute;text-align:center;top:1px;overflow:hidden;z-index:2;}
 #tipMsg{top:25px;}
 #sideNavi li{padding:2px 0 2px 24px;margin-left:0;cursor:pointer;list-style:none;}

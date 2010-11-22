@@ -1,10 +1,10 @@
 <form id="uploadForm" action="/datastore-file-access.do" method="POST"
-      enctype="multipart/form-data">
+      enctype="multipart/form-data" target="formActionHidden">
     <table class="form" width="40%" cellpadding="0" cellspacing="9">
         <tbody>
             <tr>
-                <td>
-                    <input type="file" name="myFile" size="45">
+                <td id="uploadFile">
+                    <input type='file' name='myFile' size='45'>
                 </td>
                 <td>
                     <button type="submit">${submitUploadLabel}</button>
@@ -17,11 +17,55 @@
 </div>
 <div id="filePagination" class="right margin12">
 </div>
+<iframe class="none" onload=" getFileList(1);" style="width: 0px; height: 0px" name="formActionHidden"></iframe>
 <script type="text/javascript">
-    var fileListCurrentPage = 1,
-    fileListPageCount = 1,
-    filesLength = 1;
+    var getFileList = function (pageNum) {
+        $("#loadMsg").text("${loadingLabel}");
+        $("#tipMsg").text("");
+        var requestJSONObject = {
+            "paginationCurrentPageNum": pageNum,
+            "paginationPageSize": PAGE_SIZE,
+            "paginationWindowSize": WINDOW_SIZE
+        };
+        var result = jsonRpc.fileService.getFiles(requestJSONObject);
+        switch (result.sc) {
+            case "GET_FILES_SUCC":
+                var files = result.files;
+                var fileData = [];
 
+                for (var i = 0; i < files.length; i++) {
+                    fileData[i] = {};
+                    fileData[i].name = "<a href='" + files[i].fileDownloadURL + "'>"
+                        + files[i].fileName + "</a>";
+                    fileData[i].uploadDate = $.bowknot.getDate(files[i].fileUploadDate.time, 1);
+                    fileData[i].downloadCnt = files[i].fileDownloadCount;
+                    fileData[i].size = files[i].fileSize;
+                    fileData[i].remove = "<div class='deleteIcon'></div>";
+                    fileData[i].id = files[i].oId;
+                }
+
+                $("#fileList").table({
+                    update:{
+                        data: fileData
+                    }
+                });
+
+                $("#filePagination").paginate({
+                    update: {
+                        currentPage: pageNum,
+                        pageCount: result.pagination.paginationPageCount
+                    }
+                });
+                $("#tipMsg").text("${addSuccLabel}");
+                $("#uploadFile").html("<input type='file' name='myFile' size='45'>");
+                break;
+            default:
+                $("#tipMsg").text("${addFailLabel}");
+                break;
+        }
+        $("#loadMsg").text("");
+    }
+    
     var initFile = function () {
         $("#fileList").table({
             resizable: true,
@@ -126,58 +170,4 @@
             }, requestJSONObject);
         }
     }
-
-    var getFileList = function (pageNum) {
-        $("#loadMsg").text("${loadingLabel}");
-        $("#tipMsg").text("");
-        fileListCurrentPage = pageNum;
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": PAGE_SIZE,
-            "paginationWindowSize": WINDOW_SIZE
-        };
-        var result = jsonRpc.fileService.getFiles(requestJSONObject);
-        switch (result.sc) {
-            case "GET_FILES_SUCC":
-                var files = result.files;
-                var fileData = [];
-
-                for (var i = 0; i < files.length; i++) {
-                    fileData[i] = {};
-                    fileData[i].name = "<a href='" + files[i].fileDownloadURL + "'>"
-                        + files[i].fileName + "</a>";
-                    fileData[i].uploadDate = $.bowknot.getDate(files[i].fileUploadDate.time, 1);
-                    fileData[i].downloadCnt = files[i].fileDownloadCount;
-                    fileData[i].size = files[i].fileSize;
-                    fileData[i].remove = "<div class='deleteIcon'></div>";
-                    fileData[i].id = files[i].oId;
-                }
-
-                $("#fileList").table({
-                    update:{
-                        data: fileData
-                    }
-                });
-
-                if (result.pagination.paginationPageCount === 0) {
-                    fileListPageCount = 1;
-                } else {
-                    fileListPageCount = result.pagination.paginationPageCount;
-                }
-
-                $("#filePagination").paginate({
-                    update: {
-                        currentPage: pageNum,
-                        pageCount: fileListPageCount
-                    }
-                });
-
-                break;
-            default:
-                break;
-        }
-        $("#loadMsg").text("");
-    }
-
-    getFileList(1);
 </script>
