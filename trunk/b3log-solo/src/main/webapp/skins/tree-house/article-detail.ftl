@@ -285,7 +285,9 @@
 
                 // comment url
                 $("#commentURL").focus(function (event) {
-                    $("#commentURLLabel").css({"border":"2px solid #73A6FF","border-right":"0px"});
+                    if ($.browser.version !== "7.0") {
+                        $("#commentURLLabel").css({"border":"2px solid #73A6FF","border-right":"0px"});
+                    }
                 }).blur(function () {
                     $("#commentURLLabel").css({"border":"2px inset #CCCCCC","border-right":"0px"});
                 }).width($("#comment").width() - $("#commentURLLabel").width());
@@ -421,7 +423,9 @@
                     insertEmotions("Reply");
                     
                     $("#commentURLReply").focus(function (event) {
-                        $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
+                        if ($.browser.version !== "7.0") {
+                            $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
+                        }
                     }).blur(function () {
                         $("#commentURLLabelReply").css({"border":"2px inset #CCCCCC","border-right":"0px"});
                     }).width($("#commentReply").width() - $("#commentURLLabelReply").width());
