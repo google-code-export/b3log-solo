@@ -17,8 +17,33 @@
 </div>
 <div id="filePagination" class="right margin12">
 </div>
-<iframe class="none" onload=" getFileList(1);" style="width: 0px; height: 0px" name="formActionHidden"></iframe>
 <script type="text/javascript">
+    var removeFile = function (event) {
+        var isDelete = confirm("${confirmRemoveLabel}");
+        if (isDelete) {
+            $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
+            var requestJSONObject = {
+                "oId": event.data.id[0]
+            };
+
+            jsonRpc.fileService.removeFile(function (result, error) {
+                switch (result.sc) {
+                    case "REMOVE_FILE_SUCC":
+                        getFileList(1);
+                        $("#tipMsg").text("${removeSuccLabel}");
+                        break;
+                    case "REMOVE_FILE_FAIL_":
+                        $("#tipMsg").text("${removeFailLabel}");
+                        break;
+                    default:
+                        break;
+                }
+                $("#loadMsg").text("");
+            }, requestJSONObject);
+        }
+    }
+    
     var getFileList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
         $("#tipMsg").text("");
@@ -56,11 +81,9 @@
                         pageCount: result.pagination.paginationPageCount
                     }
                 });
-                $("#tipMsg").text("${addSuccLabel}");
                 $("#uploadFile").html("<input type='file' name='myFile' size='45'>");
                 break;
             default:
-                $("#tipMsg").text("${addFailLabel}");
                 break;
         }
         $("#loadMsg").text("");
@@ -117,57 +140,8 @@
             previousPage: "${previousPageLabel}",
             firstPage: "${firstPageLabel}"
         });
+
+        $("#filePagination").after('<iframe class="none" onload="getFileList(1);" name="formActionHidden"></iframe>');
     }
     initFile();
-
-    var deleteFile = function (event) {
-        var isDelete = confirm("${confirmRemoveLabel}");
-
-        if (isDelete) {
-            $("#loadMsg").text("${loadingLabel}");
-            $("#tipMsg").text("");
-            var requestJSONObject = {
-                "oId": event.data.id[0]
-            };
-
-            var result = jsonRpc.fileService.removeFile(requestJSONObject);
-            switch (result.sc) {
-                case "REMOVE_FILE_SUCC":
-                    getFileList(1);
-                    $("#tipMsg").text("${removeSuccLabel}");
-                    break;
-                case "REMOVE_FILE_FAIL_":
-                    $("#tipMsg").text("${removeFailLabel}");
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    var removeFile = function (event) {
-        var isDelete = confirm("${confirmRemoveLabel}");
-        if (isDelete) {
-            $("#loadMsg").text("${loadingLabel}");
-            $("#tipMsg").text("");
-            var requestJSONObject = {
-                "oId": event.data.id[0]
-            };
-
-            jsonRpc.fileService.removeFile(function (result, error) {
-                switch (result.sc) {
-                    case "REMOVE_FILE_SUCC":
-                        getFileList(1);
-                        $("#tipMsg").text("${removeSuccLabel}");
-                        break;
-                    case "REMOVE_FILE_FAIL_":
-                        $("#tipMsg").text("${removeFailLabel}");
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
-            }, requestJSONObject);
-        }
-    }
 </script>
