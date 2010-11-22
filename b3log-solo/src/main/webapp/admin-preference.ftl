@@ -17,6 +17,11 @@
             <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
+                        <td colspan="2" align="right">
+                            <button onclick="changePreference();">${updateLabel}</button>
+                        </td>
+                    </tr>
+                    <tr>
                         <th width="234px">
                             ${blogTitle1Label}
                         </th>

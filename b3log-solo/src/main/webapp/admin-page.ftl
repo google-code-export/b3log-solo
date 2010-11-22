@@ -4,7 +4,7 @@
     <div id="pagePagination" class="margin12 right">
     </div>
 </div>
-<table class="form right" width="68%" cellpadding="0px" cellspacing="9px">
+<table class="form right" width="66%" cellpadding="0px" cellspacing="9px">
     <tbody>
         <tr>
             <th width="48px">
@@ -32,12 +32,14 @@
             <th>
                 ${permalink1Label}
             </th>
-            <td>
+            <td colspan="3">
                 <input id="pagePermalink" type="text"/>
             </td>
-            <td colspan="2" align="right">
+        </tr>
+        <tr>
+            <th colspan="4" align="right">
                 <button onclick="submitPage();">${saveLabel}</button>
-            </td>
+            </th>
         </tr>
     </tbody>
 </table>
