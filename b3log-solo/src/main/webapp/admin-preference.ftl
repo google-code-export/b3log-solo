@@ -126,6 +126,14 @@
                     </tr>
                     <tr>
                         <th>
+                            ${indexMostViewArticleDisplayCnt1Label}
+                        </th>
+                        <td>
+                            <input id="mostViewArticleDisplayCount" class="normalInput"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             ${pageSize1Label}
                         </th>
                         <td>
@@ -229,6 +237,7 @@
                     $("#blogTitle").val(preference.blogTitle),
                     $("#blogSubtitle").val(preference.blogSubtitle),
                     $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
+                    $("#mostViewArticleDisplayCount").val(preference.mostViewArticleDisplayCount),
                     $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
                     $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
                     $("#articleListDisplayCount").val(preference.articleListDisplayCount);
@@ -307,6 +316,7 @@
                 "blogTitle": $("#blogTitle").val(),
                 "blogSubtitle": $("#blogSubtitle").val(),
                 "mostCommentArticleDisplayCount": $("#mostCommentArticleDisplayCount").val(),
+                "mostViewArticleDisplayCount": $("#mostViewArticleDisplayCount").val(),
                 "recentArticleDisplayCount": 10, // XXX: remove recentArticleDisplayCount
                 "recentCommentDisplayCount": $("#recentCommentDisplayCount").val(),
                 "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),

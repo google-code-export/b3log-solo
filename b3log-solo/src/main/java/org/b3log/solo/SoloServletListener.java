@@ -40,6 +40,10 @@ import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RunsOnEnv;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
+import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventManager;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.servlet.AbstractServletListener;
@@ -48,9 +52,12 @@ import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
+import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.filter.FilterModule;
 import org.b3log.solo.model.Link;
+import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.sync.SyncModule;
 import org.b3log.solo.upgrade.UpgradeModule;
 import org.b3log.solo.util.PreferenceUtils;
@@ -171,7 +178,7 @@ public final class SoloServletListener extends AbstractServletListener {
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
-            initSkin();
+            loadPreference();
             initDefaultLinks();
 
             transaction.commit();
@@ -273,24 +280,50 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * Initializes skin from the preference.
+     * Loading preference.
      */
-    private void initSkin() {
-        LOGGER.info("Loading skin....");
+    private void loadPreference() {
+        LOGGER.info("Loading preference....");
+
         final Injector injector = getInjector();
         final PreferenceUtils preferenceUtils =
                 injector.getInstance(PreferenceUtils.class);
+        JSONObject preference = null;
+
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            preference = preferenceUtils.getPreference();
             if (null == preference) {
                 throw new Exception(
                         "Can't not init default skin, please init B3log Solo first");
             }
+
+            final EventManager eventManager =
+                    getInjector().getInstance(EventManager.class);
+            final PreferenceRepository preferenceRepository =
+                    injector.getInstance(PreferenceRepository.class);
+
+            eventManager.fireEventSynchronously(// for upgrade extensions
+                    new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
+                                          preference));
+
+            preferenceRepository.update(PREFERENCE, preference);
+
+            final Cache<String, Object> userPreferenceCache =
+                    CacheFactory.getCache(PREFERENCE);
+            userPreferenceCache.put(PREFERENCE, preference.toString());
         } catch (final Exception e) {
-            LOGGER.warning(e.getMessage());
+            LOGGER.severe(e.getMessage());
+
+            throw new RuntimeException(e);
         }
 
-        LOGGER.info("Loaded skin");
+        try {
+            LOGGER.log(Level.INFO, "Loaded preference[{0}]",
+                       preference.toString(JSON_PRINT_INDENT_FACTOR));
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+        }
+
     }
 
     /**
