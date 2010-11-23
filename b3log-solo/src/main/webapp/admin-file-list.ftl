@@ -17,6 +17,7 @@
 </div>
 <div id="filePagination" class="right margin12">
 </div>
+<iframe class="none" id="formActionHidden" name="formActionHidden"></iframe>
 <script type="text/javascript">
     var removeFile = function (event) {
         var isDelete = confirm("${confirmRemoveLabel}");
@@ -57,7 +58,6 @@
             case "GET_FILES_SUCC":
                 var files = result.files;
                 var fileData = [];
-
                 for (var i = 0; i < files.length; i++) {
                     fileData[i] = {};
                     fileData[i].name = "<a href='" + files[i].fileDownloadURL + "'>"
@@ -81,7 +81,6 @@
                         pageCount: result.pagination.paginationPageCount
                     }
                 });
-                $("#uploadFile").html("<input type='file' name='myFile' size='45'>");
                 break;
             default:
                 break;
@@ -140,8 +139,19 @@
             previousPage: "${previousPageLabel}",
             firstPage: "${firstPageLabel}"
         });
+        
+        getFileList(1);
 
-        $("#filePagination").after('<iframe class="none" onload="getFileList(1);" name="formActionHidden"></iframe>');
+        $("#formActionHidden").load(function () {
+            getFileList(1);
+            var iframePre = $("#formActionHidden").contents().find("pre");
+            if (iframePre.length === 0) {
+                $("#tipMsg").html("${addSuccLabel}");
+                $("#uploadFile").html("<input type='file' name='myFile' size='45'>");
+            } else {
+                $("#tipMsg").html(iframePre.html());
+            }
+        });
     }
     initFile();
 </script>
