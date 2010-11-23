@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Nov 14, 2010
+ * @version 1.0.1.6, Nov 23, 2010
  */
 public final class Filler {
 
@@ -253,7 +253,7 @@ public final class Filler {
         }
 
         final int mostCommentArticleDisplayCnt =
-                preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
+                preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostViewCountArticles =
                 articleRepository.getMostViewCountArticles(
                 mostCommentArticleDisplayCnt);

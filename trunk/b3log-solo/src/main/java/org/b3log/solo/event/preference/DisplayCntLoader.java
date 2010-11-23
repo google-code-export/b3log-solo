@@ -29,16 +29,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for preference 
- * {@linkplain Preference#RELEVANT_ARTICLES_DISPLAY_CNT relevant articles
- * display count},
- * {@linkplain Preference#RANDOM_ARTICLES_DISPLAY_CNT random articles display
- * count} and
- * {@linkplain Preference#EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT random articles display
- * count} load process.
+ * This listener is responsible for preference
+ * <ul>
+ *   <li>
+ *     {@linkplain Preference#RELEVANT_ARTICLES_DISPLAY_CNT relevant articles
+ *     display count}</li>
+ *   <li>{@linkplain Preference#RANDOM_ARTICLES_DISPLAY_CNT random articles
+ *       display count}</li>
+ *   <li>{@linkplain Preference#EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT random
+ *       articles display count}</li>
+ *   <li>{@linkplain Preference#MOST_VIEW_ARTICLE_DISPLAY_CNT most view article
+ *       count}</li>
+ * </ul>
+ * load processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 18, 2010
+ * @version 1.0.0.2, Nov 23, 2010
  */
 public final class DisplayCntLoader
         extends AbstractEventListener<JSONObject> {
@@ -61,6 +67,10 @@ public final class DisplayCntLoader
      */
     private static final int DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT =
             5;
+    /**
+     * Most view articles display count.
+     */
+    private static final int DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT = 5;
 
     /**
      * Constructs a {@link DisplayCntLoader} object with the specified event
@@ -94,6 +104,11 @@ public final class DisplayCntLoader
                     Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT)) {
                 preference.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                                DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
+            }
+            if (!preference.has(
+                    Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT)) {
+                preference.put(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT,
+                               DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
             }
         } catch (final JSONException e) {
             LOGGER.severe(e.getMessage());

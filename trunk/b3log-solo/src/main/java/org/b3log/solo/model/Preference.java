@@ -72,6 +72,12 @@ public final class Preference {
     public static final String MOST_COMMENT_ARTICLE_DISPLAY_CNT =
             "mostCommentArticleDisplayCount";
     /**
+     * Most view article display count.
+     */
+    public static final String MOST_VIEW_ARTICLE_DISPLAY_CNT =
+            "mostViewArticleDisplayCount";
+
+    /**
      * Article list display count.
      */
     public static final String ARTICLE_LIST_DISPLAY_COUNT =
