@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import java.util.List;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -37,6 +37,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.TagRefCntComparator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 24, 2010
+ * @version 1.0.0.6, Nov 24, 2010
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -111,7 +112,10 @@ public final class TagsAction extends AbstractCacheablePageAction {
                 tagArray = new JSONArray();
             }
 
-            final List<Object> tags = CollectionUtils.jsonArrayToList(tagArray);
+            final List<JSONObject> tags =
+                    CollectionUtils.jsonArrayToList(tagArray);
+            Collections.sort(tags, new TagRefCntComparator());
+            
             ret.put(Tag.TAGS, tags);
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
