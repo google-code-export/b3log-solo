@@ -15,6 +15,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>http</word>
         <word>json</word>
         <word>permalink</word>
+        <word>Picasa</word>
         <word>servlet</word>
         <word>Upgrader</word>
     </spellchecker-wordlist>
