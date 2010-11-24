@@ -68,8 +68,8 @@ img.comment-picture{width:60px;height:60px;padding:0px 6px 4px 0;}
 #sideNavi .mostViewCountArticles h3{background-image:url("images/bg-heading-resources.png");margin-bottom:6px;}
 #sideNavi .notice li{border-bottom-style:none;margin:12px;height:auto;}
 #sideNavi ul{margin-left:5px;width:182px;}
-#sideNavi li{font-size:12px;height:0px;line-height:15px;vertical-align:top;margin-left:0px;}
-#sideNavi li a{color:#42423D;float:left;height:13px;margin:0;padding:6px 0 9px 16px;text-decoration:none;width:167px;border-bottom:1px dotted #FFFFFF;line-height:18px;overflow:hidden;}
+#sideNavi li{font-size:12px;height:28px;vertical-align:top;margin-left:0px;}
+#sideNavi li a{color:#42423D;float:left;height:13px;margin:0;padding:6px 0 9px 16px;text-decoration:none;width:167px;border-bottom:1px dotted #FFFFFF;line-height:19px;overflow:hidden;}
 #sideNavi li a sup{color:#EC0A8B;}
 #sideNavi .popTags li a{padding-left:47px;width:136px;}
 #sideNavi .popTags li img{cursor:pointer;left:16px;position:relative;top:-22px;height:16px;width:16px;}
