@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -237,15 +236,17 @@ public final class PageService extends AbstractGAEJSONRpcService {
             newPage.put(Page.PAGE_COMMENT_COUNT,
                         oldPage.getInt(Page.PAGE_COMMENT_COUNT));
             String permalink = page.optString(Page.PAGE_PERMALINK).trim();
-            if (!permalink.startsWith("/")) {
-                permalink = "/" + permalink;
-            }
+
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
             if (!oldPermalink.equals(permalink)) {
                 if (Strings.isEmptyOrNull(permalink)) {
-                    permalink = "/page.do?oId=" + pageId;
+                    permalink = "/pages/" + pageId + ".html";
                 }
 
+                if (!permalink.startsWith("/")) {
+                    permalink = "/" + permalink;
+                }
+                
                 if (permalinks.exist(permalink)) {
                     ret.put(Keys.STATUS_CODE,
                             StatusCodes.UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK);
@@ -254,6 +255,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
                                         + permalink + "]");
                 }
             }
+            newPage.put(Page.PAGE_PERMALINK, permalink);
 
             pageRepository.update(pageId, newPage);
 
@@ -354,11 +356,10 @@ public final class PageService extends AbstractGAEJSONRpcService {
                               final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
+
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
-
-
 
         try {
             final JSONObject page =
@@ -367,7 +368,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             final String pageId = pageRepository.add(page);
             String permalink = page.optString(Page.PAGE_PERMALINK);
             if (Strings.isEmptyOrNull(permalink)) {
-                permalink = "/page.do?oId=" + pageId;
+                permalink = "/pages/" + pageId + ".html";
             }
 
             if (!permalink.startsWith("/")) {
@@ -389,8 +390,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.OBJECT_ID, pageId);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_PAGE_SUCC);
-
-
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
             transaction.rollback();
