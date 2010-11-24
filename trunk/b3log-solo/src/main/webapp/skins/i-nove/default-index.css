@@ -26,6 +26,8 @@ h5{font-size:12px;}
 #header-navi li.selected a.home{background-position:0 -155px;}
 #statistic{line-height:31px;margin-right:15px;font-size:11px;}
 .footer .copyright{padding-top:12px;width:880px;}
+.footer .copyright span{margin:0px;}
+.footer .copyright a span{margin:0px -1px;}
 .footer .goTop{background:url("images/icons.gif") no-repeat scroll 0 -304px transparent;color:#2A2A2A;cursor:pointer;line-height:18px;margin:5px 17px 0 0;padding-left:16px;width:22px;}
 .article{padding-bottom:15px;}
 .article-title{border-bottom:1px solid #CCCCCC;font-size:16px;margin-top:10px;padding:0 5px 3px;}
