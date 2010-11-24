@@ -95,12 +95,16 @@ public final class Permalinks {
      * @return {@code true} if reserved, returns {@code false} otherwise
      */
     private boolean isReserved(final String permalink) {
+        if ("/".equals(permalink)) {
+            return true;
+        }
+
         for (final String reservedLink : RESERVED_LINKS) {
             if ("/".equals(reservedLink)) {
                 continue;
             }
 
-            if (permalink.contains(reservedLink)) {
+            if (permalink.startsWith(reservedLink)) {
                 return true;
             }
         }
