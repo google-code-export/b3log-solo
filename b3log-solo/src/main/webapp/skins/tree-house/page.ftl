@@ -1,15 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+        <title>${page.pageTitle} - ${blogTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="${metaKeywords}"/>
         <meta name="description" content="${metaDescription}"/>
-        <meta http-equiv="pragma" content="no-cache"/>
-        <meta name="revised" content="${blogTitle}, 9/10/10"/>
-        <meta name="generator" content="b3log"/>
-        <meta name="author" content="${blogTitle}"/>
+        <meta name="author" content="B3log Team"/>
+        <meta name="generator" content="B3log"/>
+        <meta name="copyright" content="B3log"/>
+        <meta name="revised" content="B3log, 2010"/>
         <meta http-equiv="Window-target" content="_top"/>
-        <title>${page.pageTitle} - ${blogTitle}</title>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />

@@ -1,15 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+        <title>${tag.tagTitle} - ${blogTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="${metaKeywords}"/>
-        <meta name="description" content="${metaDescription}"/>
-        <meta http-equiv="pragma" content="no-cache"/>
-        <meta name="author" content="b3log-solo.googlecode.com"/>
-        <meta name="revised" content="b3log, 9/10/10"/>
-        <meta name="generator" content="NetBeans, GAE"/>
+        <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
+        <meta name="author" content="B3log Team"/>
+        <meta name="generator" content="B3log"/>
+        <meta name="copyright" content="B3log"/>
+        <meta name="revised" content="B3log, 2010"/>
         <meta http-equiv="Window-target" content="_top"/>
-        <title>${tag.tagTitle} - ${blogTitle}</title>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="tag-articles-feed.do?oId=${oId}" title="ATOM" type="application/atom+xml" rel="alternate" />
