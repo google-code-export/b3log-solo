@@ -4,7 +4,7 @@
         <title>${article.articleTitle} - ${blogTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>"/>
-        <meta name="description" content="${article.articleAbstract}"/>
+        <meta name="description" content="${article.articleAbstract?html}"/>
         <meta name="author" content="B3log Team"/>
         <meta name="generator" content="B3log"/>
         <meta name="copyright" content="B3log"/>
