@@ -46,7 +46,7 @@ public final class MetaTagLoader
      * Default meta keywords..
      */
     private static final String DEFAULT_META_KEYWORDS = 
-            "GAE 博客,GAE blog,b3log solo,b3log rhythm,b3log";
+            "GAE 博客,GAE blog,b3log";
     /**
      * Default meta description..
      */
