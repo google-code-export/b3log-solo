@@ -37,13 +37,6 @@
                             <li>
                                 <a class="home" href="/"></a>
                             </li>
-                            <#list pageNavigations as page>
-                            <li>
-                                <a href="/page.do?oId=${page.oId}">
-                                    ${page.pageTitle}
-                                </a>
-                            </li>
-                            </#list>
                             <li>
                                 <a href="/tags.html">${allTagsLabel}</a>
                             </li>
@@ -77,43 +70,11 @@
                             <span style="color: red;">O</span>
                             <span style="color: blue;">G</span>&nbsp;
                             <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-                        ver ${version}
+                        ver ${version}&nbsp;&nbsp;
+                        Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
                     </div>
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            var initIndex = function () {
-                // common-top.ftl use state
-                jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
-                    if (result && !error) {
-                        var loginHTML = "<span class='left' onclick='clearAllCache();'>${clearAllCacheLabel}&nbsp;|&nbsp;</span>"
-                            + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>"
-                            + "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='${adminLabel}'></div>"
-                            + "<div class='left'>&nbsp;|&nbsp;</div>"
-                            + "<div onclick='adminLogout();' class='left logoutIcon' title='${logoutLabel}'></div>";
-                        $("#admin").append(loginHTML);
-                    } else {
-                        $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
-                    }
-                });
-                jsonRpc.statisticService.incBlogViewCount(function (result, error) {});
-            }
-            initIndex();
-
-            var clearCache = function () {
-                var locationString = window.location.toString();
-                var indexOfSharp = locationString.indexOf("#");
-                var url = locationString.substring(locationString.lastIndexOf("/"),
-                (-1 == indexOfSharp)? locationString.length : indexOfSharp);
-                jsonRpc.adminService.clearPageCache(url);
-                window.location.reload();
-            }
-
-            var clearAllCache = function () {
-                jsonRpc.adminService.clearAllPageCache();
-                window.location.reload();
-            }
-        </script>
     </body>
 </html>

@@ -27,13 +27,6 @@
                     <div class="header">
                         <div class="header-navi right">
                             <ul>
-                                <#list pageNavigations as page>
-                                <li>
-                                    <a href="/page.do?oId=${page.oId}">
-                                        ${page.pageTitle}
-                                    </a>&nbsp;&nbsp;
-                                </li>
-                                </#list>
                                 <li>
                                     <a href="/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
                                 </li>
@@ -55,7 +48,6 @@
                                    quality="high" src="/skins/tree-house/images/fan.swf"
                                    style="position: absolute;top:112px;left:265px;">
                         </div>
-
                     </div>
                     <div class="body">
                         <h1 class="error-title">${sorryLabel}</h1>
@@ -66,12 +58,20 @@
                         <div class="clear"></div>
                     </div>
                     <div class="footer">
-                        <#include "article-footer.ftl">
+                        <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
+                        Powered by
+                        <a href="http://b3log-solo.googlecode.com" target="_blank">
+                            <span style="color: orange;">B</span>
+                            <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
+                            <span style="color: green;">L</span>
+                            <span style="color: red;">O</span>
+                            <span style="color: blue;">G</span>&nbsp;
+                            <span style="color: orangered; font-weight: bold;">Solo</span></a>,
+                        ver ${version}&nbsp;&nbsp;
+                        Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
                     </div>
                 </div>
             </div>
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
     </body>
 </html>
