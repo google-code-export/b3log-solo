@@ -30,21 +30,18 @@ import org.b3log.solo.action.feed.TagArticlesFeedServlet;
 import org.b3log.solo.action.file.BlobStoreFileAccessServlet;
 import org.b3log.solo.action.file.DataStoreFileAccessServlet;
 import org.b3log.solo.action.gae.LiveServlet;
-import org.b3log.solo.action.google.BuzzOAuth;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.auth.AuthFilter;
-import org.b3log.solo.action.google.BuzzOAuthCallback;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
 import org.b3log.solo.action.impl.InitAction;
 import org.b3log.solo.action.impl.PageAction;
-import org.b3log.solo.google.auth.OAuths;
 
 /**
  * Action module for <a href="http://code.google.com/p/google-guice/">
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Oct 27, 2010
+ * @version 1.0.1.6, Nov 24, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -114,12 +111,6 @@ public final class ActionModule extends AbstractActionModule {
 
         bind(DataStoreFileAccessServlet.class).in(Scopes.SINGLETON);
         serve("/datastore-file-access.do").with(DataStoreFileAccessServlet.class);
-
-
-        bind(BuzzOAuth.class).in(Scopes.SINGLETON);
-        serve("/buzz-oauth.do").with(BuzzOAuth.class);
-        bind(BuzzOAuthCallback.class).in(Scopes.SINGLETON);
-        serve(OAuths.BUZZ_CALLBACK_URL).with(BuzzOAuthCallback.class);
 
         bind(LiveServlet.class).in(Scopes.SINGLETON);
         serve("/live.do").with(LiveServlet.class);

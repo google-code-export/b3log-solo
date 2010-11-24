@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.b3log.solo.action.google;
+package org.b3log.solo.google.auth;
 
 import com.google.inject.Inject;
 import java.io.IOException;
@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Buzz OAuth callback.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 19, 2010
+ * @version 1.0.0.3, Nov 24, 2010
  */
 public final class BuzzOAuthCallback extends HttpServlet {
 
@@ -65,12 +65,12 @@ public final class BuzzOAuthCallback extends HttpServlet {
                    "OAuth callback from Google[requestToken={0}, verifier={1}",
                    new String[]{requestToken, verifier});
 
-//        try {
-//            OAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
-//        } catch (final Exception e) {
-//            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-//            throw new ServletException(e);
-//        }
+        try {
+            OAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ServletException(e);
+        }
 
         try {
             final JSONObject preference = preferenceService.getPreference();

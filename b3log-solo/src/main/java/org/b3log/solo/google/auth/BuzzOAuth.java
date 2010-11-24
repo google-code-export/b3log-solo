@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.b3log.solo.action.google;
+package org.b3log.solo.google.auth;
 
-//import com.google.api.client.googleapis.GoogleTransport;
-//import com.google.api.client.googleapis.json.JsonCParser;
-//import com.google.api.client.http.HttpTransport;
+import com.google.api.client.googleapis.GoogleTransport;
+import com.google.api.client.googleapis.json.JsonCParser;
+import com.google.api.client.http.HttpTransport;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
@@ -35,7 +35,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
-//import org.b3log.solo.google.auth.OAuths;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONException;
@@ -45,7 +44,7 @@ import org.json.JSONObject;
  * Buzz OAuth.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 18, 2010
+ * @version 1.0.0.4, Nov 24, 2010
  */
 public final class BuzzOAuth extends HttpServlet {
 
@@ -65,12 +64,7 @@ public final class BuzzOAuth extends HttpServlet {
     /**
      * Http transport.
      */
-//    private static HttpTransport httpTransport;
-    /**
-     * Buzz scope.
-     */
-    public static final String BUZZ_SCOPE =
-            "https://www.googleapis.com/auth/buzz";
+    private static HttpTransport httpTransport;
     /**
      * User service.
      */
@@ -81,14 +75,14 @@ public final class BuzzOAuth extends HttpServlet {
     @Inject
     private PreferenceUtils preferenceUtils;
 
-//    /**
-//     * Gets http transport.
-//     *
-//     * @return http transport
-//     */
-//    public static HttpTransport getHttpTransport() {
-//        return httpTransport;
-//    }
+    /**
+     * Gets http transport.
+     *
+     * @return http transport
+     */
+    public static HttpTransport getHttpTransport() {
+        return httpTransport;
+    }
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -115,12 +109,12 @@ public final class BuzzOAuth extends HttpServlet {
 
         LOGGER.log(Level.FINE, "Google OAuth consumer secret[{0}]",
                    googleOAuthConsumerSecret);
-//        httpTransport = GoogleTransport.create();
-//        httpTransport.addParser(new JsonCParser());
-//        final String buzzAuthorizationURL =
-//                OAuths.getBuzzAuthorizationURL(httpTransport,
-//                                               googleOAuthConsumerSecret);
-//        if (null == buzzAuthorizationURL) {
+        httpTransport = GoogleTransport.create();
+        httpTransport.addParser(new JsonCParser());
+        final String buzzAuthorizationURL =
+                OAuths.getBuzzAuthorizationURL(httpTransport,
+                                               googleOAuthConsumerSecret);
+        if (null == buzzAuthorizationURL) {
             LOGGER.log(Level.WARNING,
                        "Can not retrieve Google Buzz authorization URL");
             response.setContentType("text/html");
@@ -131,9 +125,9 @@ public final class BuzzOAuth extends HttpServlet {
             writer.close();
 
             return;
-//        }
+        }
 
-//        response.sendRedirect(buzzAuthorizationURL);
+        response.sendRedirect(buzzAuthorizationURL);
     }
 
     /**

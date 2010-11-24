@@ -54,6 +54,7 @@ import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.filter.FilterModule;
+import org.b3log.solo.google.GoogleModule;
 import org.b3log.solo.model.Link;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.repository.LinkRepository;
@@ -68,7 +69,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Nov 21, 2010
+ * @version 1.0.2.8, Nov 24, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -160,7 +161,8 @@ public final class SoloServletListener extends AbstractServletListener {
                                              new EventModule(),
                                              new SyncModule(),
                                              new UtilModule(),
-                                             new UpgradeModule()));
+                                             new UpgradeModule(),
+                                             new GoogleModule()));
         }
 
         return ret;
