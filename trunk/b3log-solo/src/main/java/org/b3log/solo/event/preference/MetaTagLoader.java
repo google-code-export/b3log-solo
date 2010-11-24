@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * This listener is responsible for preference HTML head meta tags load process.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 26, 2010
+ * @version 1.0.0.1, Nov 24, 2010
  */
 public final class MetaTagLoader
         extends AbstractEventListener<JSONObject> {
@@ -51,7 +51,7 @@ public final class MetaTagLoader
      * Default meta description..
      */
     private static final String DEFAULT_META_DESCRIPTION = 
-            "An open source blog based on GAE. 基于 GAE 的开源博客。";
+            "An open source blog based on GAE Java. GAE Java 开源博客。";
 
     /**
      * Constructs a {@link MetaTagLoader} object with the specified event
