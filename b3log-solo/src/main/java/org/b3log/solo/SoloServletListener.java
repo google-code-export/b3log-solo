@@ -177,12 +177,21 @@ public final class SoloServletListener extends AbstractServletListener {
 
         MemcacheServiceFactory.getMemcacheService().clearAll();
 
-        final Transaction transaction =
+        Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            loadPreference();
+            transaction.commit();
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+
+            transaction.rollback();
+        }
+
+        transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
             initDefaultLinks();
-            loadPreference();
-
             transaction.commit();
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
