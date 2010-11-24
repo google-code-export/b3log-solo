@@ -51,7 +51,7 @@ public final class MetaTagLoader
      * Default meta description..
      */
     private static final String DEFAULT_META_DESCRIPTION = 
-            "An open source blog based on GAE Java. GAE Java 开源博客。";
+            "An open source blog based on GAE Java. GAE Java 开源博客";
 
     /**
      * Constructs a {@link MetaTagLoader} object with the specified event
