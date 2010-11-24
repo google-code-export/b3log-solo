@@ -181,10 +181,12 @@
             </table>
         </div>
         <div id="skinsPanel" class="none">
-            <button onclick="changePreference();">${saveLabel}</button>
+            <button onclick="changePreference();" class="right">${updateLabel}</button>
+            <div class="clear"></div>
             <div id="skinMain">
             </div>
-            <button onclick="changePreference();">${saveLabel}</button>
+            <button onclick="changePreference();" class="right">${updateLabel}</button>
+            <div class="clear"></div>
         </div>
         <div id="syncGooglePanel" class="none">
             <table class="form" width="99%" cellpadding="0" cellspacing="9px">
