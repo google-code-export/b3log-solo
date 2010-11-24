@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
@@ -96,6 +95,10 @@ public final class Permalinks {
      */
     private boolean isReserved(final String permalink) {
         for (final String reservedLink : RESERVED_LINKS) {
+            if ("/".equals(reservedLink)) {
+                continue;
+            }
+
             if (permalink.contains(reservedLink)) {
                 return true;
             }
