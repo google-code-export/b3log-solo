@@ -32,13 +32,14 @@ import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.model.Preference;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Post(Article/Entry) of
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Oct 19, 2010
+ * @version 1.0.0.5, Nov 24, 2010
  */
 public final class MetaWeblogPost implements Post {
 
@@ -292,9 +293,7 @@ public final class MetaWeblogPost implements Post {
      * {@linkplain #MAX_ABSTRACT_LENGTH}
      */
     protected String genAbstract(final String content) {
-        final String contentWithoutTags = content.replaceAll(
-                "\\&[a-zA-Z]{1,10};", "").replaceAll(
-                "<[^>]*>", "").replaceAll("[(/>)<]", "");
+        final String contentWithoutTags = Jsoup.parse(content).text();
         if (contentWithoutTags.length() >= MAX_ABSTRACT_LENGTH) {
             return contentWithoutTags.substring(0, MAX_ABSTRACT_LENGTH)
                    + "....";

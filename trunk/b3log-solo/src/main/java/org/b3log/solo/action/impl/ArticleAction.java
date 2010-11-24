@@ -49,6 +49,7 @@ import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Article action. article-detail.ftl.
@@ -145,10 +146,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
 
-            final String metaDescription = removeHtmlContents(article.getString(
-                    Article.ARTICLE_ABSTRACT));
             // For <meta name="description" content="${article.articleAbstract}"/>
+            final String metaDescription = Jsoup.parse(article.getString(
+                    Article.ARTICLE_ABSTRACT)).text();
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
+
             ret.put(Article.ARTICLE, article);
 
             final List<JSONObject> articleTags = articleUtils.getTags(articleId);
@@ -296,16 +298,5 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * Removes HTML entities and tags for the specified string.
-     *
-     * @param string the specified string
-     * @return a string without HTML entities and tags
-     */
-    private String removeHtmlContents(final String string) {
-        return string.replaceAll("\\&[a-zA-Z]{1,10};", "").replaceAll(
-                "<[^>]*>", "").replaceAll("[(/>)<]", "");
     }
 }
