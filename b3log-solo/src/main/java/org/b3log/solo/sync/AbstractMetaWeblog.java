@@ -137,7 +137,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             ret.setTitle(title);
 
             final Object[] categoryObjects = (Object[]) result.get("categories");
-            // XXX: // BlogJava always empty
+            // XXX: BlogJava always empty
             if (null != categoryObjects) {
                 LOGGER.log(Level.FINEST, "Category length[{0}]",
                            categoryObjects.length);
@@ -153,7 +153,7 @@ public abstract class AbstractMetaWeblog extends AbstractBlog
             ret.setCreateDate(createDate);
 
             final String description = (String) result.get("description");
-            // XXX: // Syntax highlighting for CSDN
+            // XXX: Syntax highlighting for CSDN
             final String content = description.replaceAll(
                     "<textarea",
                     "<pre name='code' class='brush:java;'").
