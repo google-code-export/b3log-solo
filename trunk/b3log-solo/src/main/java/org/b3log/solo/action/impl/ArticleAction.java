@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Nov 15, 2010
+ * @version 1.0.1.3, Nov 24, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -144,6 +144,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
+
+            final String metaDescription = removeHtmlContents(article.getString(
+                    Article.ARTICLE_ABSTRACT));
+            // For <meta name="description" content="${article.articleAbstract}"/>
+            article.put(Article.ARTICLE_ABSTRACT, metaDescription);
             ret.put(Article.ARTICLE, article);
 
             final List<JSONObject> articleTags = articleUtils.getTags(articleId);
@@ -195,7 +200,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             filler.fillBlogFooter(ret);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-            
+
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -291,5 +296,16 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Removes HTML entities and tags for the specified string.
+     *
+     * @param string the specified string
+     * @return a string without HTML entities and tags
+     */
+    private String removeHtmlContents(final String string) {
+        return string.replaceAll("\\&[a-zA-Z]{1,10};", "").replaceAll(
+                "<[^>]*>", "").replaceAll("[(/>)<]", "");
     }
 }
