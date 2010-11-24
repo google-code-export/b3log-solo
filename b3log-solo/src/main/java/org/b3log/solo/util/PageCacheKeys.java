@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.action.impl.TagsAction;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.json.JSONObject;
@@ -55,11 +56,16 @@ public final class PageCacheKeys {
      * @param queryString the specified query string
      * @return cache key
      */
+    // XXX: Performance issue
     public String getPageCacheKey(final String uri,
                                   final String queryString) {
         String ret = null;
 
         try {
+            if ("/tags.html".equals(uri) || "/tags.do".equals(uri)) {
+                return TagsAction.CACHE_KEY;
+            }
+
             final JSONObject page = pageRepository.getByPermalink(uri);
             if (null != page) {
                 ret = "/page.do?oId=" + page.getString(Keys.OBJECT_ID);

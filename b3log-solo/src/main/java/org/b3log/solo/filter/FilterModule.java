@@ -24,7 +24,7 @@ import com.google.inject.servlet.ServletModule;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 16, 2010
+ * @version 1.0.0.4, Nov 24, 2010
  */
 public final class FilterModule extends ServletModule {
 
@@ -45,5 +45,8 @@ public final class FilterModule extends ServletModule {
 
         bind(TagPermalinkFilter.class).in(Scopes.SINGLETON);
         filter("/tags/*").through(TagPermalinkFilter.class);
+
+        bind(TagsFilter.class).in(Scopes.SINGLETON);
+        filter("/tags.html").through(TagsFilter.class);
     }
 }

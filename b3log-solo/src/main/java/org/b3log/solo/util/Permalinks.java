@@ -17,6 +17,8 @@
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
+import java.util.HashSet;
+import java.util.Set;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 
@@ -24,7 +26,7 @@ import org.b3log.solo.repository.PageRepository;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Nov 15, 2010
+ * @version 1.0.0.1, Nov 24, 2010
  */
 public final class Permalinks {
 
@@ -38,6 +40,41 @@ public final class Permalinks {
      */
     @Inject
     private PageRepository pageRepository;
+    /**
+     * Reserved permalinks.
+     */
+    private static final Set<String> RESERVED_LINKS = new HashSet<String>();
+
+    static {
+        RESERVED_LINKS.add("/");
+        RESERVED_LINKS.add("/admin-index.do");
+        RESERVED_LINKS.add("/init.do");
+        RESERVED_LINKS.add("/admin-index.do");
+        RESERVED_LINKS.add("/index.do");
+        RESERVED_LINKS.add("/article-detail.do");
+        RESERVED_LINKS.add("/tag-articles.do");
+        RESERVED_LINKS.add("/archive-date-articles.do");
+        RESERVED_LINKS.add("/tags.do");
+        RESERVED_LINKS.add("/tags.html");
+        RESERVED_LINKS.add("/tags");
+        RESERVED_LINKS.add("/page.do");
+        RESERVED_LINKS.add("/admin-article.do");
+        RESERVED_LINKS.add("/admin-article-list.do");
+        RESERVED_LINKS.add("/admin-link-list.do");
+        RESERVED_LINKS.add("/admin-preference.do");
+        RESERVED_LINKS.add("/admin-article-sync.do");
+        RESERVED_LINKS.add("/admin-file-list.do");
+        RESERVED_LINKS.add("/admin-page.do");
+        RESERVED_LINKS.add("/admin-others.do");
+        RESERVED_LINKS.add("/blog-articles-feed.do");
+        RESERVED_LINKS.add("/tag-articles-feed.do");
+        RESERVED_LINKS.add("/captcha.do");
+        RESERVED_LINKS.add("/captcha.do");
+        RESERVED_LINKS.add("/error.do");
+        RESERVED_LINKS.add("/file-access.do");
+        RESERVED_LINKS.add("/datastore-file-access.do");
+        RESERVED_LINKS.add("/live.do");
+    }
 
     /**
      * Determines whether the specified permalink exists.
@@ -46,7 +83,24 @@ public final class Permalinks {
      * @return {@code true} if exists, returns {@code false} otherwise
      */
     public boolean exist(final String permalink) {
-        return null != articleRepository.getByPermalink(permalink)
+        return isReserved(permalink)
+               || null != articleRepository.getByPermalink(permalink)
                || null != pageRepository.getByPermalink(permalink);
+    }
+
+    /**
+     * Determines whether the specified permalink reserved.
+     *
+     * @param permalink the specified permalink
+     * @return {@code true} if reserved, returns {@code false} otherwise
+     */
+    private boolean isReserved(final String permalink) {
+        for (final String reservedLink : RESERVED_LINKS) {
+            if (permalink.contains(reservedLink)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
