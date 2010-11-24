@@ -1,15 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+        <title>${notFoundLabel} - ${blogTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="keywords" content="${metaKeywords}"/>
-        <meta name="description" content="${metaDescription}"/>
-        <meta http-equiv="pragma" content="no-cache"/>
-        <meta name="author" content="b3log-solo.googlecode.com"/>
-        <meta name="revised" content="b3log, 9/10/10"/>
-        <meta name="generator" content="NetBeans, GAE"/>
+        <meta name="keywords" content="${notFoundLabel},${metaKeywords}"/>
+        <meta name="description" content="${sorryLabel},${notFoundLabel},${metaDescription}"/>
+        <meta name="author" content="B3log Team"/>
+        <meta name="generator" content="B3log"/>
+        <meta name="copyright" content="B3log"/>
+        <meta name="revised" content="B3log, 2010"/>
+        <meta name="robots" content="noindex, follow"/>
         <meta http-equiv="Window-target" content="_top"/>
-        <title>${blogTitle}</title>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
@@ -34,11 +35,6 @@
                 </div>
                 <div class="right header-right">
                     <div class="left marginLeft12">
-                        <#list pageNavigations as page>
-                        <span>
-                            <a href="/page.do?oId=${page.oId}">${page.pageTitle}</a>&nbsp;&nbsp;
-                        </span>
-                        </#list>
                         <a href="/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
                         <a href="/blog-articles-feed.do">${atomLabel}</a><a href="/blog-articles-feed.do"><img src="/images/feed.png" alt="Atom"/></a>
                     </div>
@@ -52,11 +48,18 @@
                     ${returnTo1Label}<a href="http://${blogHost}">${blogTitle}</a>
                 </div>
             </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
+            <div class="footer error-footer">
+                <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
+                Powered by
+                <a href="http://b3log-solo.googlecode.com" target="_blank">
+                    <span style="color: orange;">B</span>
+                    <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
+                    <span style="color: green;">L</span>
+                    <span style="color: red;">O</span>
+                    <span style="color: blue;">G</span>&nbsp;
+                    <span style="color: orangered; font-weight: bold;">Solo</span></a>,
+                ver ${version}
             </div>
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
     </body>
 </html>
