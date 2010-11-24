@@ -31,11 +31,8 @@
         <ul id="recentComments">
             <#list recentComments as comment>
             <li>
-                <a href="${comment.commentSharpURL}">
-                    ${comment.commentName}:
-                    <span>
-                        ${comment.commentContent}
-                    </span>
+                <a href="${comment.commentSharpURL}" title="${comment.commentContent}">
+                    ${comment.commentName}: ${comment.commentContent}
                 </a>
             </li>
             </#list>
@@ -48,11 +45,8 @@
         <ul id="mostCommentArticles">
             <#list mostCommentArticles as article>
             <li>
-                <a class="test" name="mostComment${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
-                    ${article.articleTitle}
-                    <span>
-                        (${article.articleCommentCount})
-                    </span>
+                <a name="mostComment${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
+                    <sup>[${article.articleCommentCount}]</sup>${article.articleTitle}
                 </a>
             </li>
             </#list>
@@ -66,10 +60,7 @@
             <#list mostViewCountArticles as article>
             <li>
                 <a name="mostView${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
-                    ${article.articleTitle}
-                    <span>
-                        (${article.articleViewCount})
-                    </span>
+                    <sup>[${article.articleViewCount}]</sup>${article.articleTitle}
                 </a>
             </li>
             </#list>
@@ -82,11 +73,8 @@
         <ul>
             <#list mostUsedTags as tag>
             <li>
-                <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('UTF-8')}">
-                    ${tag.tagTitle}
-                    <span>
-                        (${tag.tagReferenceCount})
-                    </span>
+                <a name="tags${tag.oId}" title="${tag.tagTitle}(${tag.tagReferenceCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
+                    ${tag.tagTitle}(${tag.tagReferenceCount})
                 </a>
                 <img onclick="window.location='/tag-articles-feed.do?oId=${tag.oId}'"
                      alt="${tag.tagTitle}" src="/images/feed.png"/>
@@ -116,18 +104,16 @@
             <#list archiveDates as archiveDate>
             <li>
                 <#if "en" == localeString?substring(0, 2)>
-                <a name="archiveDates${archiveDate.oId}" href="/archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}">
-                    ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}
-                    <span>
-                        (${archiveDate.archiveDateArticleCount})
-                    </span>
+                <a name="archiveDates${archiveDate.oId}"
+                   href="/archive-date-articles.do?oId=${archiveDate.oId}"
+                   title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}(${archiveDate.archiveDateArticleCount})">
+                    ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}(${archiveDate.archiveDateArticleCount})
                 </a>
                 <#else>
-                <a name="archiveDates${archiveDate.oId}" href="/archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
-                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}
-                    <span>
-                        (${archiveDate.archiveDateArticleCount})
-                    </span>
+                <a name="archiveDates${archiveDate.oId}"
+                   href="/archive-date-articles.do?oId=${archiveDate.oId}"
+                   title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDateArticleCount})">
+                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDateArticleCount})
                 </a>
                 </#if>
             </li>

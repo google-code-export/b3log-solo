@@ -40,7 +40,7 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
     
     var initIndex = function () {
         // side comment
-        replaceCommentsEm("#recentComments li");
+        replaceCommentsEm("#recentComments li a");
         
         // common-top.ftl use state
         jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
