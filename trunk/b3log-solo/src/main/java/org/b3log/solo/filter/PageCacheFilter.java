@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.filter;
 
 import com.google.inject.Inject;
@@ -38,6 +37,7 @@ import org.b3log.solo.util.PageCacheKeys;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.8, Nov 1, 2010
+ * @see #shouldSkip(java.lang.String) 
  */
 public final class PageCacheFilter implements Filter {
 
@@ -80,15 +80,7 @@ public final class PageCacheFilter implements Filter {
         httpServletResponse.setHeader("Expires", "Mon, 25 Aug 1986 00:00:00 GMT");
 
         final String requestURI = httpServletRequest.getRequestURI();
-        if (requestURI.equals("/json-rpc.do")
-            || requestURI.equals("/live.do")
-            || requestURI.equals("/captcha.do")
-            || requestURI.equals("/tag-articles-feed.do")
-            || requestURI.equals("/blog-articles-feed.do")
-            || requestURI.equals("/file-access.do")
-            || requestURI.contains("/admin-")
-            || requestURI.contains("/_ah/upload/")
-            || requestURI.contains("/datastore-file-access.do")) {
+        if (shouldSkip(requestURI)) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 
@@ -119,6 +111,30 @@ public final class PageCacheFilter implements Filter {
             writer.write(cachedPageContent);
             writer.close();
         }
+    }
+
+    /**
+     * Determines whether the specified request URI should be skipped filter.
+     *
+     * <p>
+     *   <b>Note</b>: This method SHOULD be invoked for all filters with pattern
+     *   "/*".
+     * </p>
+     *
+     * @param requestURI the specified request URI
+     * @return {@code true} if should be skipped, {@code false} otherwise
+     */
+    static boolean shouldSkip(final String requestURI) {
+        return requestURI.equals("/json-rpc.do")
+               || requestURI.equals("/live.do")
+               || requestURI.equals("/captcha.do")
+               || requestURI.equals("/tag-articles-feed.do")
+               || requestURI.equals("/blog-articles-feed.do")
+               || requestURI.equals("/file-access.do")
+               || requestURI.contains("/admin-")
+               || requestURI.contains("/_ah/upload/")
+               || requestURI.contains("/datastore-file-access.do")
+               || requestURI.contains("/skins");
     }
 
     @Override

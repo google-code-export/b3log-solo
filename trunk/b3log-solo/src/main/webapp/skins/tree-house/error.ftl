@@ -34,7 +34,7 @@
                                 </li>
                                 </#list>
                                 <li>
-                                    <a href="/tags.do">${allTagsLabel}</a>&nbsp;&nbsp;
+                                    <a href="/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
                                 </li>
                                 <li>
                                     <a href="/blog-articles-feed.do">${atomLabel}</a><a href="/blog-articles-feed.do"><img src="/images/feed.png" alt="Atom"/></a>

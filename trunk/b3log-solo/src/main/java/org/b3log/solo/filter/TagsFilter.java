@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.filter;
 
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -29,34 +29,28 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.solo.repository.ArticleRepository;
-import org.json.JSONObject;
+import org.b3log.solo.action.impl.TagsAction;
 
 /**
- * Article permalink filter.
+ * Tags filter. tags.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 15, 2010
+ * @version 1.0.0.0, Nov 24, 2010
  */
-public final class ArticlePermalinkFilter implements Filter {
+public final class TagsFilter implements Filter {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticlePermalinkFilter.class.getName());
-    /**
-     * Article repository.
-     */
-    @Inject
-    private ArticleRepository articleRepository;
+            Logger.getLogger(TagsFilter.class.getName());
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
     }
 
     /**
-     * Redirects request URI to {@link org.b3log.solo.action.impl.ArticleAction}.
+     * Redirects request URI to {@link org.b3log.solo.action.impl.TagsAction}.
      *
      * @param request the specified request
      * @param response the specified response
@@ -69,33 +63,17 @@ public final class ArticlePermalinkFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        LOGGER.finer("Doing article permalink filter....");
+        LOGGER.finer("Doing tags filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
-        if (PageCacheFilter.shouldSkip(requestURI)) {
-            LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
-            chain.doFilter(request, response);
-
-            return;
-        }
-        
-        final JSONObject article = articleRepository.getByPermalink(requestURI);
-        if (null == article) {
-            chain.doFilter(request, response);
-
-            return;
-        }
 
         try {
-            final String articleId = article.getString(Keys.OBJECT_ID);
+            request.setAttribute(Keys.PAGE_CACHE_KEY, TagsAction.CACHE_KEY);
 
             final RequestDispatcher requestDispatcher =
-                    httpServletRequest.getRequestDispatcher("/article-detail.do");
-            request.setAttribute(Keys.OBJECT_ID, articleId);
-            request.setAttribute(Keys.PAGE_CACHE_KEY, "/article-detail.do?oId="
-                                                      + articleId);
+                    httpServletRequest.getRequestDispatcher("/tags.do");
             requestDispatcher.forward(request, response);
         } catch (final Exception e) {
             ((HttpServletResponse) response).sendError(

@@ -9,7 +9,7 @@
     </a>
     <div id="navigation">
         <a href="/" class="home">首页</a>
-        <a href="/tags.do" class="about">标签墙</a>
+        <a href="/tags.html" class="about">标签墙</a>
         <#list pageNavigations as page>
                 <a href="${page.pagePermalink}">${page.pageTitle}</a>
         </#list>

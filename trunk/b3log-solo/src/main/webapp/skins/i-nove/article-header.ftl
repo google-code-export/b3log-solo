@@ -20,7 +20,7 @@
             </li>
             </#list>
             <li>
-                <a href="/tags.do">${allTagsLabel}</a>
+                <a href="/tags.html">${allTagsLabel}</a>
             </li>
             <li>
                 <a href="/blog-articles-feed.do">

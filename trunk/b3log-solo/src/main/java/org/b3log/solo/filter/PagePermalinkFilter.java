@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.filter;
 
 import com.google.inject.Inject;
@@ -75,6 +74,13 @@ public final class PagePermalinkFilter implements Filter {
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
+        if (PageCacheFilter.shouldSkip(requestURI)) {
+            LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
+            chain.doFilter(request, response);
+
+            return;
+        }
+
         final JSONObject page = pageRepository.getByPermalink(requestURI);
         if (null == page) {
             chain.doFilter(request, response);

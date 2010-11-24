@@ -16,8 +16,6 @@
 
 package org.b3log.solo.action.impl;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import java.util.List;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
@@ -39,7 +37,6 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.PreferenceUtils;
-import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -47,7 +44,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 8, 2010
+ * @version 1.0.0.5, Nov 24, 2010
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -56,14 +53,14 @@ public final class TagsAction extends AbstractCacheablePageAction {
      */
     private static final long serialVersionUID = 1L;
     /**
+     * Page cache key.
+     */
+    public static final String CACHE_KEY = "/tags.do";
+    /**
      * Logger.
      */
     private static final Logger LOGGER =
             Logger.getLogger(TagsAction.class.getName());
-    /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
     /**
      * Tag repository.
      */
@@ -79,11 +76,6 @@ public final class TagsAction extends AbstractCacheablePageAction {
      */
     @Inject
     private LangPropsService langPropsService;
-    /**
-     * Statistic utilities.
-     */
-    @Inject
-    private Statistics statistics;
     /**
      * Preference utilities.
      */
@@ -129,7 +121,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
             filler.fillBlogFooter(ret);
         } catch (final Exception e) {
             LOGGER.severe(e.getMessage());
-            
+
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
