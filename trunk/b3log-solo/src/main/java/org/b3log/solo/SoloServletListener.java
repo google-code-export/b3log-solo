@@ -178,8 +178,8 @@ public final class SoloServletListener extends AbstractServletListener {
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
-            loadPreference();
             initDefaultLinks();
+            loadPreference();
 
             transaction.commit();
         } catch (final Exception e) {
