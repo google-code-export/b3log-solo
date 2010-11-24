@@ -33,6 +33,7 @@ h5{font-size:12px;}
 #emotions img{cursor: pointer;}
 .form textarea, .form input {outline:none;font-family:Helvetica,Arial,sans-serif;}
 .error-msg{color:#3366CC;}
+.error-footer{position: fixed; bottom: 0px; width: 82%;}
 .side-navi a.selected{text-decoration:none;color:#000000;}
 .side-navi li{white-space:nowrap;overflow:hidden;line-height:22px;}
 .side-navi li.aboutMe, .side-navi li.side-navi-notice{white-space:normal;}
