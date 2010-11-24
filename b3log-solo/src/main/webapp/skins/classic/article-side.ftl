@@ -37,9 +37,7 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
-                    <a name="mostComment${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
-                        ${article.articleTitle}</a>
-                    (${article.articleCommentCount})
+                    <sup>[${article.articleCommentCount}]</sup><a name="mostComment${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">${article.articleTitle}</a>
                 </li>
                 </#list>
             </ul>
@@ -54,9 +52,7 @@
             <ul id="mostViewCountArticles">
                 <#list mostViewCountArticles as article>
                 <li>
-                    <a name="mostView${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
-                        ${article.articleTitle}</a>
-                    (${article.articleViewCount})
+                    <sup>[${article.articleViewCount}]</sup><a name="mostView${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">${article.articleTitle}</a>
                 </li>
                 </#list>
             </ul>
@@ -74,7 +70,7 @@
                     <a href="/tag-articles-feed.do?oId=${tag.oId}" class="noUnderline">
                         <img alt="${tag.tagTitle}" src="/images/feed.png"/>
                     </a>
-                    <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('UTF-8')}">
+                    <a name="tags${tag.oId}" title="${tag.tagTitle}(${tag.tagReferenceCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
                         ${tag.tagTitle}</a>
                     (${tag.tagReferenceCount})
                 </li>
@@ -109,12 +105,15 @@
                 <#list archiveDates as archiveDate>
                 <li>
                     <#if "en" == localeString?substring(0, 2)>
-                    <a name="archiveDates${archiveDate.oId}" href="/archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}">
+                    <a name="archiveDates${archiveDate.oId}"
+                       href="/archive-date-articles.do?oId=${archiveDate.oId}"
+                       title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}(${archiveDate.archiveDateArticleCount})">
                         ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDateArticleCount})
                     <#else>
-                    <a name="archiveDates${archiveDate.oId}" href="/archive-date-articles.do?oId=${archiveDate.oId}" title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}">
-                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDateArticleCount})
-                    </a>
+                    <a name="archiveDates${archiveDate.oId}"
+                       href="/archive-date-articles.do?oId=${archiveDate.oId}"
+                       title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDateArticleCount})">
+                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}</a>(${archiveDate.archiveDateArticleCount})
                     </#if>
                 </li>
                 </#list>
