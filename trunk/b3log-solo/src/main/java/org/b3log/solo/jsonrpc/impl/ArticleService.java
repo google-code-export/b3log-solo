@@ -717,7 +717,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     permalink = "/" + permalink;
                 }
 
-                if (permalinks.exist(permalink)) {
+                if (!oldPermalink.equals(permalink)
+                    && permalinks.exist(permalink)) {
                     status.put(Keys.CODE,
                                StatusCodes.UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK);
 

@@ -247,8 +247,9 @@ public final class PageService extends AbstractGAEJSONRpcService {
                 if (!permalink.startsWith("/")) {
                     permalink = "/" + permalink;
                 }
-                
-                if (permalinks.exist(permalink)) {
+
+                if (!oldPermalink.equals(permalink)
+                    && permalinks.exist(permalink)) {
                     ret.put(Keys.STATUS_CODE,
                             StatusCodes.UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK);
 
