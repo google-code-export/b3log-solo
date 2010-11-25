@@ -25,6 +25,7 @@ import java.io.PrintWriter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -37,7 +38,7 @@ import org.b3log.solo.util.PageCacheKeys;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 1, 2010
+ * @version 1.0.0.9, Nov 25, 2010
  * @see #shouldSkip(java.lang.String) 
  */
 public final class PageCacheFilter implements Filter {
@@ -78,7 +79,11 @@ public final class PageCacheFilter implements Filter {
         final String contentType = httpServletRequest.getContentType();
         if (null != contentType
             && contentType.toLowerCase().contains("multipart/form-data")) {
-            LOGGER.log(Level.FINER, "Skip filter for file uploading");
+            final RequestDispatcher requestDispatcher =
+                    httpServletRequest.getRequestDispatcher(
+                    "/datastore-file-access.do");
+            requestDispatcher.forward(request, response);
+
             return;
         }
 
