@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -70,7 +69,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, Nov 15, 2010
+ * @version 1.0.2.9, Nov 25, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -348,7 +347,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      *     "commentURL": "",
      *     "commentContent": "",
      *     "commentOriginalCommentId": "" // optional, if exists this key, the comment
-     *                                    // is an reply comment
+     *                                    // is an reply
      * }
      * </pre>
      * @param request the specified http servlet request
@@ -356,8 +355,13 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "oId": generatedCommentId
-     *     "sc": "COMMENT_ARTICLE_SUCC"
+     *     "oId": generatedCommentId,
+     *     "sc": "COMMENT_ARTICLE_SUCC",
+     *     "commentDate": java.util.Date,
+     *     "commentSharpURL": "",
+     *     "commentThumbnailURL": "",
+     *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
+     *
      * }
      * </pre>
      * @throws ActionException action exception
@@ -409,15 +413,21 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            comment.put(Comment.COMMENT_DATE, new Date());
+            final Date date = new Date();
+            comment.put(Comment.COMMENT_DATE, date);
+            ret.put(Comment.COMMENT_DATE, date);
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment =
                         commentRepository.get(originalCommentId);
                 if (null != originalComment) {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
                                 originalCommentId);
+                    final String originalCommentName =
+                            originalComment.getString(Comment.COMMENT_NAME);
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
-                                originalComment.getString(Comment.COMMENT_NAME));
+                                originalCommentName);
+                    ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                            originalCommentName);
                 } else {
                     LOGGER.log(Level.WARNING,
                                "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
@@ -426,12 +436,15 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 }
             }
             setCommentThumbnailURL(comment);
+            ret.put(Comment.COMMENT_THUMBNAIL_URL,
+                    comment.getString(Comment.COMMENT_THUMBNAIL_URL));
             commentId = commentRepository.add(comment);
             // Save comment sharp URL
             final String commentSharpURL =
                     getCommentSharpURLForArticle(article,
                                                  commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
+            ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.update(commentId, comment);
             // Step 2: Add article-comment relation
@@ -482,7 +495,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      *     "commentURL": "",
      *     "commentContent": "",
      *     "commentOriginalCommentId": "" // optional, if exists this key, the comment
-     *                                    // is an reply comment
+     *                                    // is an reply
      * }
      * </pre>
      * @param request the specified http servlet request
@@ -490,8 +503,14 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * @return for example,
      * <pre>
      * {
-     *     "oId": generatedCommentId
+     *     "oId": generatedCommentId,
      *     "sc": "COMMENT_PAGE_SUCC"
+     *     "commentDate": java.util.Date,
+     *     "commentSharpURL": "",
+     *     "commentThumbnailURL": "",
+     *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
+     *
+     * }
      * }
      * </pre>
      * @throws ActionException action exception
@@ -543,15 +562,21 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            comment.put(Comment.COMMENT_DATE, new Date());
+            final Date date = new Date();
+            comment.put(Comment.COMMENT_DATE, date);
+            ret.put(Comment.COMMENT_DATE, date);
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment =
                         commentRepository.get(originalCommentId);
                 if (null != originalComment) {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID,
                                 originalCommentId);
+                    final String originalCommentName =
+                            originalComment.getString(Comment.COMMENT_NAME);
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
-                                originalComment.getString(Comment.COMMENT_NAME));
+                                originalCommentName);
+                    ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                            originalCommentName);
                 } else {
                     LOGGER.log(Level.WARNING,
                                "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
@@ -560,10 +585,13 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 }
             }
             setCommentThumbnailURL(comment);
+            ret.put(Comment.COMMENT_THUMBNAIL_URL,
+                    comment.getString(Comment.COMMENT_THUMBNAIL_URL));
             commentId = commentRepository.add(comment);
             // Save comment sharp URL
             final String commentSharpURL = getCommentSharpURLForPage(page,
                                                                      commentId);
+            ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.update(commentId, comment);
