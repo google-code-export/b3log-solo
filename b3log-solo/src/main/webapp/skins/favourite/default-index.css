@@ -1,5 +1,5 @@
 body {background:url("images/bg.jpg") repeat scroll left top transparent;}
-a, a:link, a:active, a:visited{color:#2970A6;text-decoration:none;}
+a, a:link, a:active, a:visited{color:white;text-decoration:none;}
 a:hover{text-decoration:underline;}
 h1{font-size:300%;}
 h4{font-size:160%;padding:25px 0 0 80px;}
@@ -90,8 +90,7 @@ border-width:1px 0;}
 .footer-icon {background:url("images/footer-ico.png") no-repeat scroll left top transparent;height:133px;left:-46px;position:absolute;top:-30px;width:1213px;}
 .info{background:url("images/info.png") repeat-x scroll left top transparent;position:relative;height:110px;top:100px;}
 .logoutIcon {background-position:-96px -16px;}
-#qq1{height:55px;left:800px;position:relative;top:-140px;width:95px;}
-#qq2{float:right;padding:10px 200px 0 0;}
+#qq2{float:right;padding:68px 120px 0 0;}
 .thinks {background:url("images/thinks.png") no-repeat scroll left top transparent;float:right;height:420px;position:absolute;right:40px;top:30px;width:388px;z-index:300;}
 .lamb {background:url("images/lamb.png") no-repeat scroll left top transparent;height:80px;left:460px;position:absolute;top:110px;width:320px;}
 .lamb a {outline:none;display:block;height:80px;width:320px;}
@@ -114,8 +113,3 @@ border-width:1px 0;}
 .blog{background:url("images/blog.png") no-repeat scroll left top transparent;height:64px;}
 .cuore{background:url("images/cuore.png") no-repeat scroll left top transparent;height:64px;}
 .esclamativo{background:url("images/esclamativo.png") no-repeat scroll left top transparent;height:64px;}
-.roundedCorners{
-/* Do rounding (native in Safari, Firefox and Chrome) */
--webkit-border-radius: 6px;
--moz-border-radius: 6px;
-}
