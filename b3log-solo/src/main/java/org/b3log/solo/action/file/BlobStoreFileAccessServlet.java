@@ -36,7 +36,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.solo.model.File;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.FileRepository;
 import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
@@ -62,8 +61,8 @@ public final class BlobStoreFileAccessServlet extends HttpServlet {
     /**
      * File repository.
      */
-    @Inject
-    private FileRepository fileRepository;
+   // @Inject
+   // private FileRepository fileRepository;
     /**
      * Datastore service.
      */
@@ -124,7 +123,7 @@ public final class BlobStoreFileAccessServlet extends HttpServlet {
                                            + blobId;
                 file.put(File.FILE_DOWNLOAD_URL, downloadURL);
 
-                fileRepository.add(file);
+               // fileRepository.add(file);
                 LOGGER.log(Level.INFO, "Uploaded file[name={0}, size={1}]",
                            new Object[]{fileName, fileSize});
                 response.sendRedirect(downloadURL);
@@ -143,14 +142,14 @@ public final class BlobStoreFileAccessServlet extends HttpServlet {
         final BlobKey blobKey =
                 new BlobKey(request.getParameter(Keys.OBJECT_ID));
         final String blobId = blobKey.getKeyString();
-        try {
-            final JSONObject file = fileRepository.get(blobId);
-            final int cnt = file.getInt(File.FILE_DOWNLOAD_COUNT);
-            file.put(File.FILE_DOWNLOAD_COUNT, cnt + 1);
-            fileRepository.update(blobId, file);
-        } catch (final Exception e) {
-            LOGGER.warning("Inc file download count error!");
-        }
+//        try {
+//            final JSONObject file = fileRepository.get(blobId);
+//            final int cnt = file.getInt(File.FILE_DOWNLOAD_COUNT);
+//            file.put(File.FILE_DOWNLOAD_COUNT, cnt + 1);
+//            fileRepository.update(blobId, file);
+//        } catch (final Exception e) {
+//            LOGGER.warning("Inc file download count error!");
+//        }
 
         blobstoreService.serve(blobKey, response);
     }
