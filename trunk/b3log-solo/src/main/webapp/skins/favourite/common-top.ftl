@@ -13,7 +13,7 @@
         <#list pageNavigations as page>
                 <a href="${page.pagePermalink}">${page.pageTitle}</a>
         </#list>
-        <a href="/blog-articles-feed.do" class="classifiche">RSS</a>
+        <a href="/blog-articles-feed.do" class="classifiche">Atom</a>
         <!--<a class="extra" href="#">extra</a>-->
     </div>
     <div class="admins right">
