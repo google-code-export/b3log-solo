@@ -41,7 +41,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Buzz OAuth.
+ * OAuth servlet.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.4, Nov 24, 2010
@@ -74,6 +74,11 @@ public final class BuzzOAuth extends HttpServlet {
      */
     @Inject
     private PreferenceUtils preferenceUtils;
+    /**
+     * OAuth utilities.
+     */
+    @Inject
+    private OAuths oAuths;
 
     /**
      * Gets http transport.
@@ -111,12 +116,12 @@ public final class BuzzOAuth extends HttpServlet {
                    googleOAuthConsumerSecret);
         httpTransport = GoogleTransport.create();
         httpTransport.addParser(new JsonCParser());
-        final String buzzAuthorizationURL =
-                OAuths.getBuzzAuthorizationURL(httpTransport,
+        final String authorizationURL =
+                oAuths.getAuthorizationURL(httpTransport,
                                                googleOAuthConsumerSecret);
-        if (null == buzzAuthorizationURL) {
+        if (null == authorizationURL) {
             LOGGER.log(Level.WARNING,
-                       "Can not retrieve Google Buzz authorization URL");
+                       "Can not retrieve Google authorization URL");
             response.setContentType("text/html");
             response.setCharacterEncoding("UTF-8");
 
@@ -127,7 +132,7 @@ public final class BuzzOAuth extends HttpServlet {
             return;
         }
 
-        response.sendRedirect(buzzAuthorizationURL);
+        response.sendRedirect(authorizationURL);
     }
 
     /**
