@@ -74,6 +74,14 @@ public final class PageCacheFilter implements Filter {
         LOGGER.finer("Doing page cache filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
+        httpServletRequest.getContentType();
+        final String contentType = httpServletRequest.getContentType();
+        if (null != contentType
+            && contentType.toLowerCase().contains("multipart/form-data")) {
+            LOGGER.log(Level.FINER, "Skip filter for file uploading");
+            return;
+        }
+
         final HttpServletResponse httpServletResponse =
                 (HttpServletResponse) response;
 
