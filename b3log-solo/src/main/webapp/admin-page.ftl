@@ -11,7 +11,7 @@
             <th width="48px">
                 ${title1Label}
             </th>
-            <td>
+            <td width="85%">
                 <input id="pageTitle"/>
             </td>
             <th width="58px">
@@ -31,7 +31,7 @@
         </tr>
         <tr>
             <th>
-                ${permalink1Label}
+                ${permalinkLabel}
             </th>
             <td colspan="3">
                 <input id="pagePermalink" type="text"/>

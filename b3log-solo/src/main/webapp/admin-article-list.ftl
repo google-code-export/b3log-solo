@@ -71,12 +71,12 @@
             colModel: [{
                     name: "${titleLabel}",
                     index: "title",
-                    width: 290,
+                    width: 286,
                     style: "padding-left: 6px;"
                 }, {
                     name: "${tagsLabel}",
                     index: "tags",
-                    minWidth: 120,
+                    minWidth: 110,
                     style: "padding-left: 6px; overflow: hidden;font-size:11px; "
                 }, {
                     textAlign: "center",

@@ -192,6 +192,11 @@
                 "blogSyncExternalBloggingSys": $("#blogType").val()
             });
         } else {
+            $("#magName").val("");
+            $("#magPassword").val("");
+            $("#addSync").removeAttr("checked");
+            $("#updateSync").removeAttr("checked");
+            $("#deleteSync").removeAttr("checked");
             $("#tipMsg").text("${blogEmptyLabel}");
             $("#blogSyncTip").text("${blogEmptyLabel}");
             $("#getDateButton").hide();
