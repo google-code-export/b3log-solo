@@ -38,5 +38,7 @@ public final class GoogleModule extends ServletModule {
         
         bind(BuzzOAuthCallback.class).in(Scopes.SINGLETON);
         serve(OAuths.BUZZ_CALLBACK_URL).with(BuzzOAuthCallback.class);
+
+        bind(OAuths.class).in(Scopes.SINGLETON);
     }
 }

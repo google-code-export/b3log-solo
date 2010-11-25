@@ -20,6 +20,7 @@ import com.google.api.client.auth.oauth.OAuthAuthorizeTemporaryTokenUrl;
 import com.google.api.client.auth.oauth.OAuthCredentialsResponse;
 import com.google.api.client.auth.oauth.OAuthHmacSigner;
 import com.google.api.client.auth.oauth.OAuthParameters;
+import com.google.api.client.googleapis.auth.oauth.GoogleOAuthAuthorizeTemporaryTokenUrl;
 import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetAccessToken;
 import com.google.api.client.googleapis.auth.oauth.GoogleOAuthGetTemporaryToken;
 import com.google.api.client.http.HttpTransport;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
  * Google OAuth utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 24, 2010
+ * @version 1.0.0.4, Nov 25, 2010
  */
 public final class OAuths {
 
@@ -69,23 +70,30 @@ public final class OAuths {
      * Preference utilities.
      */
     @Inject
-    private static PreferenceUtils preferenceUtils;
+    private PreferenceUtils preferenceUtils;
+    /**
+     * Consumer key.
+     */
+    private static String consumerKey;
 
     /**
-     * Gets the Buzz authorization URL for the specified http transport.
+     * Gets the authorization URL for the specified http transport.
      * 
      * @param httpTransport the specified http transport
      * @param consumerSecret the specified Google OAuth consumer secret
-     * @return Buzz authorization URL, returns {@code null} if error
+     * @return authorization URL, returns {@code null} if error
      */
-    public static String getBuzzAuthorizationURL(
+    public String getAuthorizationURL(
             final HttpTransport httpTransport,
             final String consumerSecret) {
 
         try {
             final JSONObject preference = preferenceUtils.getPreference();
             final String blogHost = preference.getString(Preference.BLOG_HOST);
-            final String consumerKey = blogHost.split(":")[0];
+            consumerKey = blogHost.split(":")[0];
+            LOGGER.log(Level.INFO,
+                       "Google OAuth[consumerKey={0}, consumerSecret={1}]",
+                       new String[]{consumerKey, consumerSecret});
 
             final GoogleOAuthGetTemporaryToken temporaryToken =
                     new GoogleOAuthGetTemporaryToken();
@@ -93,7 +101,7 @@ public final class OAuths {
             signer.clientSharedSecret = consumerSecret;
             temporaryToken.signer = signer;
             temporaryToken.consumerKey = consumerKey;
-            temporaryToken.scope = BUZZ_SCOPE;
+            temporaryToken.scope = PICASA_SCOPE;
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             temporaryToken.displayName = blogTitle;
             temporaryToken.callback = "http://" + blogHost + BUZZ_CALLBACK_URL;
@@ -101,12 +109,7 @@ public final class OAuths {
                     temporaryToken.execute();
             signer.tokenSharedSecret = tempCredentials.tokenSecret;
             final OAuthAuthorizeTemporaryTokenUrl authorizeURL =
-                    new OAuthAuthorizeTemporaryTokenUrl(
-                    "https://www.google.com/buzz/api/auth/OAuthAuthorizeToken");
-            authorizeURL.set("scope", temporaryToken.scope);
-            authorizeURL.set("domain", consumerKey);
-            authorizeURL.set("iconUrl",
-                             "http://code.google.com/p/b3log-solo/logo?cct=1283958195");
+                    new GoogleOAuthAuthorizeTemporaryTokenUrl();
             final String tempToken = tempCredentials.token;
             authorizeURL.temporaryToken = tempToken;
 
@@ -128,13 +131,10 @@ public final class OAuths {
      * @param httpTransport the specified http transport
      * @throws Exception exception
      */
-    public static void sign(final String requestToken,
-                            final String verifier,
-                            final HttpTransport httpTransport)
+    public void sign(final String requestToken,
+                     final String verifier,
+                     final HttpTransport httpTransport)
             throws Exception {
-        final JSONObject preference = preferenceUtils.getPreference();
-        final String consumerKey = preference.getString(Preference.BLOG_HOST).
-                split(":")[0];
         final GoogleOAuthGetAccessToken accessToken =
                 new GoogleOAuthGetAccessToken();
         accessToken.temporaryToken = requestToken;
@@ -152,18 +152,12 @@ public final class OAuths {
      *
      * @return OAuth parameters
      */
-    private static OAuthParameters createOAuthParameters() {
+    private OAuthParameters createOAuthParameters() {
         final OAuthParameters ret = new OAuthParameters();
-        ret.consumerKey = "anonymous";
+        ret.consumerKey = consumerKey;
         ret.signer = signer;
         ret.token = credentials.token;
 
         return ret;
-    }
-
-    /**
-     * Private default constructor.
-     */
-    private OAuths() {
     }
 }

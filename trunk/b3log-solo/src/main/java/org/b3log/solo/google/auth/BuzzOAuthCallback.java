@@ -24,12 +24,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
 /**
- * Buzz OAuth callback.
+ * OAuth callback.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.3, Nov 24, 2010
@@ -50,10 +50,15 @@ public final class BuzzOAuthCallback extends HttpServlet {
      */
     public static final long SLEEP_INTERVAL = 3000;
     /**
-     * Preference service.
+     * Preference utilities.
      */
     @Inject
-    private PreferenceService preferenceService;
+    private PreferenceUtils preferenceUtils;
+    /**
+     * OAuth utilities.
+     */
+    @Inject
+    private OAuths oAuths;
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -66,21 +71,21 @@ public final class BuzzOAuthCallback extends HttpServlet {
                    new String[]{requestToken, verifier});
 
         try {
-            OAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
+            oAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException(e);
         }
 
         try {
-            final JSONObject preference = preferenceService.getPreference();
+            final JSONObject preference = preferenceUtils.getPreference();
             preference.put(Preference.GOOGLE_BUZZ_TOKEN, requestToken);
             preference.put(Preference.GOOGLE_BUZZ_VERIFIER, verifier);
 
             final JSONObject requestJSONObject = new JSONObject();
             requestJSONObject.put(Preference.PREFERENCE, preference);
 
-            preferenceService.updatePreference(preference, request, response);
+            preferenceUtils.setPreference(preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException(e);
