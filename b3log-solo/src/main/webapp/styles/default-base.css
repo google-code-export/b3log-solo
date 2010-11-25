@@ -37,8 +37,6 @@ button:hover,.button:hover{border-color:#BBB;}
 .form input[type='checkbox']:focus{border:0px;}
 .form input{height:24px;line-height:24px;}
 .form .normalInput{width:auto;}
-.form .label{width:6%;font-weight:bold;text-align:right;line-height:26px;margin:6px;}
-.form .input{width:92%;margin:6px 0;}
 #admin span{cursor:pointer;}
 #top{border-bottom:1px solid #C9D7F1;padding:0 3px;background-color:#FFF;line-height: 22px;height:22px;}
 .logo{float:left;width:100px;outline:none;}

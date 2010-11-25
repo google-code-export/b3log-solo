@@ -37,8 +37,7 @@
                             + articles[i].articleCommentCount + "</div>";
                         articleData[i].articleViewCount = "<a href='"
                             + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle
-                            + "' class='noUnderline'><div class='left browserIcon'></div><div class='left' style='margin-left:6px;'>"
-                            + articles[i].articleViewCount + "</div></a>";;
+                            + "' class='noUnderline'>"+ articles[i].articleViewCount + "</a>";;
                         articleData[i].id = articles[i].oId;
                     }
                     articleDataTemp = articleData;
@@ -72,12 +71,12 @@
             colModel: [{
                     name: "${titleLabel}",
                     index: "title",
-                    width: 300,
+                    width: 290,
                     style: "padding-left: 6px;"
                 }, {
                     name: "${tagsLabel}",
                     index: "tags",
-                    minWidth: 320,
+                    minWidth: 120,
                     style: "padding-left: 6px; overflow: hidden;font-size:11px; "
                 }, {
                     textAlign: "center",
@@ -88,7 +87,7 @@
                     textAlign: "center",
                     name: "${updateLabel}",
                     index: "update",
-                    width: 56,
+                    width: 49,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'getUpdateArticle'
@@ -98,7 +97,7 @@
                     textAlign: "center",
                     name: "${removeLabel}",
                     index: "remove",
-                    width: 56,
+                    width: 53,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'deleteArticle'
@@ -108,7 +107,7 @@
                     textAlign: "center",
                     name: "${putTopLabel}",
                     index: "topArticle",
-                    width: 56,
+                    width: 53,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'topArticle'
@@ -118,7 +117,7 @@
                     textAlign: "center",
                     name: "${commentLabel}",
                     index: "comments",
-                    width: 66,
+                    width: 65,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'popArticleListComments'
@@ -126,9 +125,9 @@
                     style: "cursor:pointer; margin-left:16px;"
                 }, {
                     name: "${viewLabel}",
-                    width: 66,
+                    width: 36,
                     index: "articleViewCount",
-                    style: "margin-left:16px;"
+                    style: "text-align:center;"
                 }, {
                     visible: false,
                     index: "id"

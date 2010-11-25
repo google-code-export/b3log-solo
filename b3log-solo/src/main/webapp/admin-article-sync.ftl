@@ -26,7 +26,7 @@
                 <legend>
                     ${syncMgmtLabel}
                 </legend>
-                <table class="form" cellpadding="12px" cellspacing="12px;">
+                <table class="form" cellpadding="12px" cellspacing="12px;" width="100%">
                     <tbody>
                         <tr>
                             <th width="58px">
@@ -121,29 +121,29 @@
             colModel: [{
                     name: "选择",
                     index: "selected",
-                    width: 46,
+                    width: 26,
                     inputType: "checkbox",
                     textAlign: "center",
                     allSelected: true
                 }, {
                     name: "${titleLabel}",
                     index: "title",
-                    width: 460,
+                    width: 320,
                     style: "padding-left: 6px;"
                 },  {
                     name: "${categoryLabel}",
                     index: "tags",
-                    minWidth: 380
+                    minWidth: 120
                 }, {
                     textAlign: "center",
                     name: "${createDateLabel}",
                     index: "date",
-                    width: 100
+                    width: 79
                 }, {
                     textAlign: "center",
                     name: "${importedLabel}",
                     index: "imported",
-                    width: 60,
+                    width: 61,
                     style: "margin-left:22px;"
                 }, {
                     visible: false,

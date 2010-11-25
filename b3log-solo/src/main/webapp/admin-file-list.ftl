@@ -1,6 +1,6 @@
 <form id="uploadForm" action="/datastore-file-access.do" method="POST"
       enctype="multipart/form-data" target="formActionHidden">
-    <table class="form" width="40%" cellpadding="0" cellspacing="9">
+    <table class="form" cellpadding="0" cellspacing="9">
         <tbody>
             <tr>
                 <td id="uploadFile">
@@ -75,6 +75,10 @@
                     }
                 });
 
+                if (0 === result.pagination.paginationPageCount) {
+                    result.pagination.paginationPageCount = 1;
+                }
+                
                 $("#filePagination").paginate({
                     update: {
                         currentPage: pageNum,
@@ -129,7 +133,7 @@
 
         $("#filePagination").paginate({
             bindEvent: "getfileList",
-            pageCount: PAGE_SIZE,
+            pageCount: 1,
             windowSize: WINDOW_SIZE,
             currentPage: 1,
             style: "google",
@@ -144,12 +148,12 @@
 
         $("#formActionHidden").load(function () {
             getFileList(1);
-            var iframePre = $("#formActionHidden").contents().find("pre");
-            if (iframePre.length === 0) {
+            var $iframe = $("#formActionHidden").contents();
+            if ($iframe.find("pre").length === 1) {
+                $("#tipMsg").html($iframe.find("pre").html());
+            } else if ($iframe.find("#loadMsg").length === 1) {
                 $("#tipMsg").html("${addSuccLabel}");
                 $("#uploadFile").html("<input type='file' name='myFile' size='45'>");
-            } else {
-                $("#tipMsg").html(iframePre.html());
             }
         });
     }

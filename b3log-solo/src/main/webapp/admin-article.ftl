@@ -1,38 +1,54 @@
-<div class="form paddingTop12">
-    <div class='left label'>
-        ${title1Label}
-    </div>
-    <div class="left input">
-        <input id="title" type="text"/>
-    </div>
-    <div class="clear"></div>
-    <div class="label">
-        ${content1Label}
-    </div>
-    <div class="marginBottom12 marginLeft12">
-        <textarea id="articleContent" name="articleContent"
-                  style="height: 500px;width: 99%;"></textarea>
-    </div>
-    <div class="left label">${tags1Label}</div>
-    <div class="left input">
-        <input id="tag" type="text"/>
-    </div>
-    <div class="clear"></div>
-    <div class="left label">${abstract1Label}</div>
-    <div class="left input">
-        <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
-    </div>
-    <div class="clear"></div>
-    <div class="left label">${permalink1Label}</div>
-    <div class="left input">
-        <input id="permalink" type="text"/>
-    </div>
-    <div class="clear"></div>
-    <div class="right label">
-        <button id="submitArticle">${postLabel}</button>
-    </div>
-    <div class="clear"></div>
-</div>
+    <table width="100%" cellpadding="0" cellspacing="9px" class="form">
+        <tr>
+            <th>
+                ${title1Label}
+            </th>
+            <td>
+                <input id="title" type="text"/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                ${content1Label}
+            </th>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                 <textarea id="articleContent" name="articleContent"
+                  style="height: 500px;width:100%;"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                 ${tags1Label}
+            </th>
+            <td>
+                <input id="tag" type="text"/>
+            </td>
+        </tr>
+        <tr>
+            <th valign="top">
+                ${abstract1Label}
+            </th>
+            <td>
+                <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                ${permalink1Label}
+            </th>
+            <td>
+                 <input id="permalink" type="text"/>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <button id="submitArticle">${postLabel}</button>
+            </th>
+        </tr>
+    </table>
 <script type="text/javascript">
     var initArticle = function () {
         // submit action
