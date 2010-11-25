@@ -24,7 +24,6 @@
             <div class="content">
                 <#include "article-header.ftl">
                 <div class="roundtop"></div>
-                <div class="paint"></div>
                 <div class="body">
                     <div class="left main">
                         <div id="tagsPanel">
