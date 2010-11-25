@@ -4,7 +4,7 @@
         <tbody>
             <tr>
                 <td id="uploadFile">
-                    <input type='file' name='myFile' size='45'>
+                    <input type='file' name='myFile' size='45' style="width: 356px;">
                 </td>
                 <td>
                     <button type="submit">${submitUploadLabel}</button>
@@ -109,7 +109,7 @@
                     textAlign: "center",
                     name: "${sizeLabel} (Bytes)",
                     index: "size",
-                    width: 200
+                    width: 150
                 }, {
                     textAlign: "center",
                     name: "${downloadCountLabel}",
