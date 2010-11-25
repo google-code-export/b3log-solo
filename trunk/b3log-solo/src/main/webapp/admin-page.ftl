@@ -1,10 +1,11 @@
-<div class="left">
+<div>
     <div id="pageList">
     </div>
     <div id="pagePagination" class="margin12 right">
     </div>
+    <div class="clear"></div>
 </div>
-<table class="form right" width="66%" cellpadding="0px" cellspacing="9px">
+<table class="form" width="100%" cellpadding="0px" cellspacing="9px">
     <tbody>
         <tr>
             <th width="48px">
@@ -13,10 +14,10 @@
             <td>
                 <input id="pageTitle"/>
             </td>
-            <th>
+            <th width="58px">
                 ${order1Label}
             </th>
-            <td>
+            <td width="28px">
                 <input id="pageOrder" style="width: 24px;"/>
             </td>
         </tr>
@@ -68,9 +69,10 @@
 
                     for (var i = 0; i < pages.length; i++) {
                         pageData[i] = {};
-                        pageData[i].pageTitle = "<a class='noUnderline' href='" + pages[i].pagePermalink + "' target='_blank'>"
-                            + pages[i].pageTitle + "</a>";
+                        pageData[i].pageTitle = pages[i].pageTitle;
                         pageData[i].pageOrder = pages[i].pageOrder;
+                        pageData[i].pagePermalink = "<a class='noUnderline' href='" + pages[i].pagePermalink + "' target='_blank'>"
+                        + pages[i].pagePermalink + "</a>";
                         pageData[i].update = "<div class='updateIcon'></div>";
                         pageData[i].deleted = "<div class='deleteIcon'></div>";
                         pageData[i].id = pages[i].oId;
@@ -110,18 +112,23 @@
             colModel: [ {
                     name: "${orderLabel}",
                     index: "pageOrder",
-                    width: 48,
+                    width: 40,
                     textAlign: "center"
                 }, {
                     style: "padding-left: 6px;",
                     name: "${titleLabel}",
                     index: "pageTitle",
-                    width: 100 
+                    width: 120
+                }, {
+                    style: "padding-left: 6px;",
+                    name: "${permalink1Label}",
+                    index: "pagePermalink",
+                    minWidth: 300
                 }, {
                     textAlign: "center",
                     name: "${updateLabel}",
                     index: "update",
-                    width: 56,
+                    width: 49,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'getUpdatePage'
@@ -131,7 +138,7 @@
                     textAlign: "center",
                     name: "${removeLabel}",
                     index: "deleted",
-                    width: 56,
+                    width: 53,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'deletePage'
@@ -141,7 +148,7 @@
                     textAlign: "center",
                     name: "${commentLabel}",
                     index: "comments",
-                    width: 66,
+                    width: 65,
                     bindEvent: [{
                             'eventName': 'click',
                             'functionName': 'popPageComments'
@@ -257,6 +264,7 @@
                 }
                 $("#pageTitle").val("").removeData("oId");
                 $("#pageOrder").val("");
+                $("#pagePermalink").val("");
                 if (tinyMCE.get("pageContent")) {
                     tinyMCE.get('pageContent').setContent("");
                 } else {
