@@ -17,19 +17,22 @@
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
+import java.net.URLDecoder;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.impl.TagsAction;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.TagRepository;
 import org.json.JSONObject;
 
 /**
  * Page cache key utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 17, 2010
+ * @version 1.0.0.2, Nov 25, 2010
  */
 public final class PageCacheKeys {
 
@@ -48,6 +51,11 @@ public final class PageCacheKeys {
      */
     @Inject
     private ArticleRepository articleRepository;
+    /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Gets page cache key by the specified URI and query string.
@@ -66,17 +74,35 @@ public final class PageCacheKeys {
                 return TagsAction.CACHE_KEY;
             }
 
-            final JSONObject page = pageRepository.getByPermalink(uri);
-            if (null != page) {
-                ret = "/page.do?oId=" + page.getString(Keys.OBJECT_ID);
-
-                return ret;
-            }
-
             final JSONObject article = articleRepository.getByPermalink(uri);
             if (null != article) {
                 ret = "/article-detail.do?oId="
                       + article.getString(Keys.OBJECT_ID);
+
+                return ret;
+            }
+
+            if (uri.startsWith("/tags/")) {
+                String tagTitle = uri.substring("/tags/".length());
+
+                try {
+                    tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
+                    LOGGER.log(Level.FINER, "Tag[title={0}]", tagTitle);
+                } catch (final Exception e) {
+                    LOGGER.warning(e.getMessage());
+                }
+                final JSONObject tag = tagRepository.getByTitle(tagTitle);
+                if (null != tag) {
+                    ret = "/tag-articles.do?oId="
+                          + tag.getString(Keys.OBJECT_ID);
+
+                    return ret;
+                }
+            }
+
+            final JSONObject page = pageRepository.getByPermalink(uri);
+            if (null != page) {
+                ret = "/page.do?oId=" + page.getString(Keys.OBJECT_ID);
 
                 return ret;
             }
