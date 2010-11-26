@@ -8,7 +8,7 @@
         </span>
         <div class="clear"></div>
         <div id="syncBlogType">
-            <span class="label">${chooseBlog1Label}</span>
+            ${chooseBlog1Label}
             <select id="blogType" onchange="changeBlogType();">
                 <option value="">&nbsp;</option>
                 <option value="blogSyncCSDNBlog">${CSDNBlogLabel}</option>
@@ -50,7 +50,7 @@
                             </th>
                             <td>
                                 <label for="addSync">
-                                    ${syncPostLabel}
+                                    <b>${syncPostLabel}</b>
                                 </label>
                             </td>
                             <th>
@@ -58,7 +58,7 @@
                             </th>
                             <td>
                                 <label for="updateSync">
-                                    ${syncUpdateLabel}
+                                    <b>${syncUpdateLabel}</b>
                                 </label>
                             </td>
                             <th>
@@ -66,7 +66,7 @@
                             </th>
                             <td>
                                 <label for="deleteSync">
-                                    ${syncRemoveLabel}
+                                    <b>${syncRemoveLabel}</b>
                                 </label>
                             </td>
                         </tr>
@@ -80,12 +80,12 @@
             </fieldset>
         </div>
         <div id="syncPanel" class="none">
-            <table id="archiveDatePanel" class="form left none" cellpadding="0" cellspacing="9px">
+            <table id="archiveDatePanel" class="form none" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
-                        <th>
+                        <td>
                             ${selectDate1Label}
-                        </th>
+                        </td>
                         <td>
                             <select id="archiveDate">
                                 <option>${selectDateLabel}</option>
@@ -99,12 +99,11 @@
                     </tr>
                 </tbody>
             </table>
-            <button id="getDateButton" class="left none" onclick="getBlogArticleArchiveDate();">${getDateLabel}</button>
-            <div class="clear"></div>
+            <button id="getDateButton" class="none" onclick="getBlogArticleArchiveDate();">${getDateLabel}</button>
+            &nbsp;
             <div id="articlesPanel" class="none">
-                <button onclick="sync();" class="left">${importLabel}</button>
-                <div id="articlesCount" class="right red marginTop12 marginRight12">
-                </div>
+                <button onclick="sync();">${importLabel}</button>
+                <span id="articlesCount" class="red"></span>
                 <div class="clear"></div>
                 <div id="articleSyncList" class="paddingTop12 paddingBottom12"></div>
                 <button onclick="sync();">${importLabel}</button>
