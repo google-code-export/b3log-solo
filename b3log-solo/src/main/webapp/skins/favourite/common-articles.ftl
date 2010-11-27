@@ -15,40 +15,54 @@
         </sup>
         </#if>
     </h2>
-    <div class="margin5">
-        <div class="article-date left">
-            <span class="dateIcon left"></span>
+    <div class="posttime-blue">
+         <div class="posttime-MY">
             <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
-            ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
+            ${article.articleUpdateDate?string("MMM yyyy")}
             <#else>
-            ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+            ${article.articleCreateDate?string("MMM yyyy")}
             </#if>
-        </div>
-        <div class="right">
-            <a href="${article.articlePermalink}#comments" class="left">
-                <span class="left articles-commentIcon" title="${commentLabel}"></span>
-                ${article.articleCommentCount}
-            </a>
-        </div>
-        <div class="clear"></div>
+         </div>
+         <div class="posttime-D">
+            <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+            ${article.articleUpdateDate?string("dd")}
+            <#else>
+            ${article.articleCreateDate?string("dd")}
+            </#if>
+         </div>
     </div>
     <div class="article-abstract">
-        ${article.articleAbstract}
+        <div class="note">
+            <div class="corner"></div>
+            ${article.articleAbstract}
+        </div>
     </div>
-    <div class="article-footer">
+    <div class="margin25">
         <a href="${article.articlePermalink}" class="left">
             <span class="left article-browserIcon" title="${viewLabel}"></span>
-            ${article.articleViewCount}
+            <span class="count">${article.articleViewCount}</span>
         </a>
         <div class="left">
             <span class="tagsIcon" title="${tagLabel}"></span>
             <#list article.articleTags as articleTag>
-            <span>
+            <span class="count">
                 <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
                     ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
             </span>
             </#list>
         </div>
+        <a href="${article.articlePermalink}#comments" class="left">
+            <span class="left articles-commentIcon" title="${commentLabel}"></span>
+            <span class="count">${article.articleCommentCount}<span>
+        </a>
+        <div class="right">
+        <a href="${article.articlePermalink}" class="right">
+            ${readmoreLabel}
+        </a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="article-footer">
         <div class="clear"></div>
     </div>
 </div>
