@@ -26,7 +26,7 @@
                         ${comment.commentName}
                         </a>
                     </div>
-                    <div>
+                    <div class="comm">
                         <a class='side-comment' href="${comment.commentSharpURL}">
                         ${comment.commentContent}
                         </a>
@@ -85,7 +85,6 @@
         </ul>
     </div>
     <div class="line"></div>
-    <div class="rings"></div>
     <div class="item">
         <div class="blog">
             <h4>${linkLabel}</h4>
@@ -101,6 +100,7 @@
         </ul>
     </div>
     <div class="line"></div>
+    <div class="rings"></div>
     <div class="item">
         <div class="archivio">
             <h4>${archiveLabel}</h4>
@@ -121,3 +121,16 @@
         </ul>
     </div>
 </div>
+<script type="text/javascript">
+var comm = function(){
+    $(".side-comment").each(function () {
+        var $it = $(this);
+        var content=$.trim($it.text());
+        if(content.length>=15){
+            var newc=content.substring(0,15)+"[...]";
+            $it.text(newc);
+        }
+    });
+}
+comm();
+</script>
