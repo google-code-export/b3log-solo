@@ -8,12 +8,12 @@
         <span style="color: orangered; font-weight: bold;">Solo</span>
     </a>
     <div id="navigation">
-        <a href="/" class="home">首页</a>
-        <a href="/tags.html" class="about">标签墙</a>
+        <a href="/" class="home">${homeLabel}</a>
+        <a href="/tags.html" class="about">${allTagsLabel}</a>
         <#list pageNavigations as page>
-                <a href="${page.pagePermalink}">${page.pageTitle}</a>
+                <a href="${page.pagePermalink}" class="${page.pageTitle}">${page.pageTitle}</a>
         </#list>
-        <a href="/blog-articles-feed.do" class="classifiche">Atom</a>
+        <a href="/blog-articles-feed.do" class="classifiche">${atomLabel}</a>
         <!--<a class="extra" href="#">extra</a>-->
     </div>
     <div class="admins right">

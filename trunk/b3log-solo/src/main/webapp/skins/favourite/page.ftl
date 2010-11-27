@@ -30,7 +30,10 @@
                     <div class="left main">
                         <div class="article">
                             <div class="article-body">
-                                ${page.pageContent}
+                                <div class="note">
+                                    <div class="corner"></div>
+                                    ${page.pageContent}
+                                </div>
                             </div>
                         </div>
                         <div class="comments" id="comments" name="comments">
