@@ -126,11 +126,22 @@ var comm = function(){
     $(".side-comment").each(function () {
         var $it = $(this);
         var content=$.trim($it.text());
-        if(content.length>=15){
+        //alert(content+"|"+countChinese(content)+"|"+countNonAlphabet(content)+"|"+content.length);
+        var count = countChinese(content)*2+(content.length-countChinese(content));
+        //alert(count);
+        if(content.length>=30){
             var newc=content.substring(0,15)+"[...]";
             $it.text(newc);
         }
     });
 }
 comm();
+function countChinese(str){
+    var m=str.match(/[\u4e00-\u9fff\uf900-\ufaff]/g);
+    return (!m?0:m.length);
+}
+function countNonAlphabet(str){
+    var m=str.match(/[^\x00-\x80]/g);
+    return (!m?0:m.length);
+}
 </script>
