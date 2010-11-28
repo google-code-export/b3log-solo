@@ -258,7 +258,7 @@
                                     $("#commentErrorTipReply").html("${captchaErrorLabel}");
                                     $("#captchaReply").attr("src", "/captcha.do?code=" + Math.random());
                                     $("#commentValidateReply").val("").focus();
-                                    break
+                                    break;
                                 default:
                                     break;
                             }
@@ -295,7 +295,7 @@
                                     $("#commentErrorTip").html("${captchaErrorLabel}");
                                     $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
                                     $("#commentValidate").val("").focus();
-                                    break
+                                    break;
                                 default:
                                     break;
                             }

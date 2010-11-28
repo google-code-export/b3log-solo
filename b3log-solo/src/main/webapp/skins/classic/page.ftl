@@ -51,7 +51,7 @@
                                     &nbsp;@&nbsp;<a
                                         href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
                                         onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                        onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                        onmouseout="ArticleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                     </#if>
                                     <div class="right">
                                         ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -275,7 +275,7 @@
                                     $("#commentErrorTipReply").html("${captchaErrorLabel}");
                                     $("#captchaReply").attr("src", "/captcha.do?code=" + Math.random());
                                     $("#commentValidateReply").val("").focus();
-                                    break
+                                    break;
                                 default:
                                     break;
                             }
@@ -344,7 +344,7 @@
                 }).width($("#comment").width() - $("#commentURLLabel").width());
                 
                 // emotions
-                ArticleUtil.insertEmotions("");
+                ArticleUtil.insertEmotions();
                 replaceCommentsEm("#comments .comment-content");
             }
             loadAction();
