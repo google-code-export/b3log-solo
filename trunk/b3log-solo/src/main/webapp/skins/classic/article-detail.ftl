@@ -341,6 +341,7 @@
                                 switch (result.sc) {
                                     case "COMMENT_ARTICLE_SUCC":
                                         $("#replyForm").remove();
+                                        
                                         window.location.reload();
                                         break;
                                     case "CAPTCHA_ERROR":
