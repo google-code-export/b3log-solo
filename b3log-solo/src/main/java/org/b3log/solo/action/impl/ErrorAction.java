@@ -95,6 +95,7 @@ public final class ErrorAction extends AbstractAction {
             ret.put("sorryLabel", lang.getString("sorryLabel"));
             ret.put("returnTo1Label", lang.getString("returnTo1Label"));
             ret.put("notFoundLabel", lang.getString("notFoundLabel"));
+            ret.put("homeLabel", lang.getString("homeLabel"));
 
             ret.put(User.USER_EMAIL,
                     preference.getString(Preference.ADMIN_GMAIL));
