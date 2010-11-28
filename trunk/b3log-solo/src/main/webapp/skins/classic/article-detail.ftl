@@ -246,7 +246,8 @@
                     mailCannotEmpty: "${mailCannotEmptyLabel}",
                     mailInvalid: "${mailInvalidLabel}",
                     commentContentCannotEmpty: "${commentContentCannotEmptyLabel}",
-                    captchaCannotEmpty: "${captchaCannotEmptyLabel}"
+                    captchaCannotEmpty: "${captchaCannotEmptyLabel}",
+                    randomArticles: "${randomArticles1Label}"
                 };
                 
                 var addComment = function (result, state) {
@@ -350,7 +351,7 @@
                                         $("#commentErrorTipReply").html("${captchaErrorLabel}");
                                         $("#captchaReply").attr("src", "/captcha.do?code=" + Math.random());
                                         $("#commentValidateReply").val("").focus();
-                                        break
+                                        break;
                                     default:
                                         break;
                                 }
@@ -407,7 +408,6 @@
                 }
 
                 var loadAction = function () {
-                    ArticleUtil.load();
                     // comment url
                     $("#commentURL").focus(function (event) {
                         if ($.browser.version !== "7.0") {
@@ -418,36 +418,13 @@
                     }).width($("#comment").width() - $("#commentURLLabel").width());
 
                     // emotions
-                    ArticleUtil.insertEmotions("");
+                    ArticleUtil.insertEmotions();
                     replaceCommentsEm("#comments .comment-content");
 
-                    // getRandomArticles
-                    jsonRpc.articleService.getRandomArticles(function (result, error) {
-                        if (result && !error) {
-                            var randomArticles = result.list;
-                            if (0 === randomArticles.length) {
-                                return;
-                            }
-
-                            var listHtml = "";
-                            for (var i = 0; i < randomArticles.length; i++) {
-                                var article = randomArticles[i];
-                                var title = article.articleTitle;
-                                var randomArticleLiHtml = "<li>"
-                                    + "<a href='" + article.articlePermalink +"'>"
-                                    +  title + "</a></li>"
-                                listHtml += randomArticleLiHtml
-                            }
-
-                            var randomArticlesDiv = $("#randomArticles");
-                            randomArticlesDiv.attr("class", "article-relative");
-                            var randomArticleListHtml = "<h5>${randomArticles1Label}</h5>"
-                                + "<ul class='marginLeft12'>"
-                                + listHtml + "</ul>";
-                            randomArticlesDiv.append(randomArticleListHtml);
-                        }
-                    });
-
+                    ArticleUtil.load();
+                    ArticleUtil.loadRandomArticles();
+                    
+                    // externalRelevantArticles
                         <#if 0 != externalRelevantArticlesDisplayCount>
                         var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
                     $.ajax({

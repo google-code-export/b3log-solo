@@ -130,7 +130,7 @@
                                                 &nbsp;@&nbsp;<a
                                                     href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
                                                     onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                                    onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                                    onmouseout="ArticleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                                 </#if>
                                                 <div class="right">
                                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -248,39 +248,179 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript">
-            var currentCommentId = "";
+            ArticleUtil.tip = {
+                nameTooLong: "${nameTooLongLabel}",
+                mailCannotEmpty: "${mailCannotEmptyLabel}",
+                mailInvalid: "${mailInvalidLabel}",
+                commentContentCannotEmpty: "${commentContentCannotEmptyLabel}",
+                captchaCannotEmpty: "${captchaCannotEmptyLabel}",
+                randomArticles: "${randomArticles1Label}"
+            };
 
-            var insertEmotions = function (name) {
-                $("#emotions" + name + " img").click(function () {
-                    // TODO: should be insert it at the after of cursor
-                    var key = this.className;
-                    $("#comment" + name).val($("#comment" + name).val() + key).focus();
+            var addComment = function (result, state) {
+                if (state === undefined) {
+                    state = "";
+                }
+
+                var commentHTML = '<div id="commentItem' + result.oId + '" class="comment"><div class="comment-panel">'
+                    + '<div class="comment-top"></div><div class="comment-body"><div class="comment-title">';
+
+                if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
+                    commentHTML += '<a name="' + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
+                } else {
+                    commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
+                        + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
+                }
+
+                if (state !== "") {
+                    var commentOriginalCommentName = $("#commentItem" + ArticleUtil.currentCommentId).find(".comment-title a").first().text();
+                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + ArticleUtil.currentCommentId + '"'
+                        + 'onmouseover="showComment(this, \'' + ArticleUtil.currentCommentId + '\');"'
+                        + 'onmouseout="ArticleUtil.hideComment(\'' + ArticleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                }
+
+                commentHTML += '<div class="right">' + ArticleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
+                    + '&nbsp;<a class="noUnderline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
+                    + '</div><div class="clear"></div></div><div><img alt="' + $("#commentName" + state).val()
+                    + '" src="' + result.commentThumbnailURL + '" class="comment-picture left"/>'
+                    + '<div class="comment-content">' + ArticleUtil.replaceEmotions($("#comment" + state).val(), "tree-house") + '</div>'
+                    + ' <div class="clear"></div></div></div><div class="comment-bottom"></div></div></div>';
+
+                ArticleUtil.addCommentAjax(commentHTML, state);
+            }
+
+            var replyTo = function (id) {
+                if (id === ArticleUtil.currentCommentId) {
+                    $("#commentNameReply").focus();
+                    return;
+                } else {
+                    $("#replyForm").remove();
+                    var commentFormHTML = "<tr><th>${commentName1Label}"
+                        + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
+                        + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
+                        + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
+                        + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
+                        + "http://</div><input id='commentURLReply'/>"
+                        + "</td></tr><tr><td id='emotionsReply' colspan='3'>" + $("#emotions").html()
+                        + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
+                        + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
+                        + "<th valign='top'>${captcha1Label}</th><td valign='top'>"
+                        + "<input class='normalInput' id='commentValidateReply'/>"
+                        + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
+                        + "<span class='error-msg' id='commentErrorTipReply'/>"
+                        + "</th></tr><tr><td colspan='3' align='right'>"
+                        + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
+                        + "</td></tr>";
+
+                    $("#commentItem" + id).append("<div id='replyForm'><div class='comment-top'></div>"
+                        + "<div class='comment-body'><table class='form comment-reply'>" + commentFormHTML
+                        +"</table></div><div class='comment-bottom'></div></div>");
+                    
+                    $("#commentValidateReply").keypress(function (event) {
+                        if (event.keyCode === 13) {
+                            submitCommentReply(id);
+                        }
+                    });
+
+                    ArticleUtil.insertEmotions("Reply");
+                    
+                    $("#commentURLReply").focus(function (event) {
+                        if ($.browser.version !== "7.0") {
+                            $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
+                        }
+                    }).blur(function () {
+                        $("#commentURLLabelReply").css({"border":"2px inset #CCCCCC","border-right":"0px"});
+                    }).width($("#commentReply").width() - $("#commentURLLabelReply").width());
+
+                    $("#commentNameReply").focus();
+                }
+                ArticleUtil.currentCommentId = id;
+            }
+
+            var submitCommentReply = function (id) {
+                if (ArticleUtil.validateComment("Reply")) {
+                    $("#commentErrorTipReply").html("${loadingLabel}");
+                    var requestJSONObject = {
+                        "oId": "${article.oId}",
+                        "commentContent": $("#commentReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentEmail": $("#commentEmailReply").val(),
+                        "commentURL": "http://" + $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "captcha": $("#commentValidateReply").val(),
+                        "commentOriginalCommentId": id
+                    };
+
+                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
+                        if (result && !error) {
+                            switch (result.sc) {
+                                case "COMMENT_ARTICLE_SUCC":
+                                    addComment(result, "Reply");
+                                    break;
+                                case "CAPTCHA_ERROR":
+                                    $("#commentErrorTipReply").html("${captchaErrorLabel}");
+                                    $("#captchaReply").attr("src", "/captcha.do?code=" + Math.random());
+                                    $("#commentValidateReply").val("").focus();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }, requestJSONObject);
+                }
+            }
+
+            var submitComment = function () {
+                if (ArticleUtil.validateComment()) {
+                    $("#commentErrorTip").html("${loadingLabel}");
+                    var requestJSONObject = {
+                        "oId": "${article.oId}",
+                        "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentEmail": $("#commentEmail").val(),
+                        "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "captcha": $("#commentValidate").val()
+                    };
+
+                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
+                        if (result && !error) {
+                            switch (result.sc) {
+                                case "COMMENT_ARTICLE_SUCC":
+                                    addComment(result);
+                                    break;
+                                case "CAPTCHA_ERROR":
+                                    $("#commentErrorTip").html("${captchaErrorLabel}");
+                                    $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
+                                    $("#commentValidate").val("").focus();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }, requestJSONObject);
+                }
+            }
+
+            var showComment = function (it, id) {
+                if ( $("#commentItemRef" + id).length > 0) {
+                    $("#commentItemRef" + id).show();
+                } else {
+                    var $refComment = $("#commentItem" + id + " .comment-panel").clone();
+                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
+                    $refComment.find(".comment-title .right a").remove();
+                    $("#comments").append($refComment);
+                }
+                var position =  $(it).position();
+                $("#commentItemRef" + id).css({
+                    "top": (position.top + 12) + "px",
+                    "left": "182px"
                 });
             }
 
             var loadAction = function () {
-                // code high lighter
-                SyntaxHighlighter.autoloader(
-                'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
-                'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
-                'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
-            );
-
-                SyntaxHighlighter.config.tagName = "pre";
-                SyntaxHighlighter.config.stripBrs = true;
-                SyntaxHighlighter.defaults['toolbar'] = false;
-                SyntaxHighlighter.all();
-
-                // submit comment
-                $("#commentValidate").keypress(function (event) {
-                    if (event.keyCode === 13) {
-                        submitComment();
-                    }
-                });
-
                 // emotions
-                insertEmotions("");
+                ArticleUtil.insertEmotions();
                 replaceCommentsEm("#comments .comment-content");
 
                 // comment url
@@ -292,35 +432,8 @@
                     $("#commentURLLabel").css({"border":"2px inset #CCCCCC","border-right":"0px"});
                 }).width($("#comment").width() - $("#commentURLLabel").width());
 
-                // article view count
-                jsonRpc.statisticService.incArticleViewCount("${article.oId}");
-
-                //getRandomArticles
-                jsonRpc.articleService.getRandomArticles(function (result, error) {
-                    if (result && !error) {
-                        var randomArticles = result.list;
-                        if (0 === randomArticles.length) {
-                            return;
-                        }
-
-                        var listHtml = "";
-                        for (var i = 0; i < randomArticles.length; i++) {
-                            var article = randomArticles[i];
-                            var title = article.articleTitle;
-                            var randomArticleLiHtml = "<li>"
-                                + "<a href='" + article.articlePermalink +"'>"
-                                +  title + "</a></li>"
-                            listHtml += randomArticleLiHtml
-                        }
-
-                        var randomArticlesDiv = $("#randomArticles");
-                        var randomArticleListHtml = "<h5>${randomArticles1Label}</h5>"
-                            + "<ul class='marginLeft12'>"
-                            + listHtml + "</ul>";
-                        randomArticlesDiv.append(randomArticleListHtml);
-                    }
-                });
-
+                ArticleUtil.load();
+                ArticleUtil.loadRandomArticles();
 
                     <#if 0 != externalRelevantArticlesDisplayCount>
                     var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
@@ -359,171 +472,6 @@
                     </#if>
                 }
             loadAction();
-
-            var validateComment = function (state) {
-                if (state === undefined) {
-                    state = '';
-                }
-                var commentName = $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
-                commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
-                if (2 > commentName.length || commentName.length > 20) {
-                    $("#commentErrorTip" + state).html("${nameTooLongLabel}");
-                    $("#commentName" + state).focus();
-                } else if ($("#commentEmail" + state).val().replace(/\s/g, "") === "") {
-                    $("#commentErrorTip" + state).html("${mailCannotEmptyLabel}");
-                    $("#commentEmail" + state).focus();
-                } else if(!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#commentEmail" + state).val())) {
-                    $("#commentErrorTip" + state).html("${mailInvalidLabel}");
-                    $("#commentEmail" + state).focus();
-                }  else if (2 > commenterContent.length || commenterContent.length > 500) {
-                    $("#commentErrorTip" + state).html("${commentContentCannotEmptyLabel}");
-                    $("#comment" + state).focus();
-                } else if ($("#commentValidate" + state).val().replace(/\s/g, "") === "") {
-                    $("#commentErrorTip" + state).html("${captchaCannotEmptyLabel}");
-                    $("#commentValidate" + state).focus();
-                } else {
-                    return true;
-                }
-                return false;
-            }
-
-            var replyTo = function (id) {
-                if (id === currentCommentId) {
-                    $("#commentNameReply").focus();
-                    return;
-                } else {
-                    $("#replyForm").remove();
-                    var commentFormHTML = "<tr><th>${commentName1Label}"
-                        + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
-                        + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
-                        + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
-                        + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
-                        + "http://</div><input id='commentURLReply'/>"
-                        + "</td></tr><tr><td id='emotionsReply' colspan='3'>" + $("#emotions").html()
-                        + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
-                        + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                        + "<th valign='top'>${captcha1Label}</th><td valign='top'>"
-                        + "<input class='normalInput' id='commentValidateReply'/>"
-                        + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
-                        + "<span class='error-msg' id='commentErrorTipReply'/>"
-                        + "</th></tr><tr><td colspan='3' align='right'>"
-                        + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
-                        + "</td></tr>";
-
-                    $("#commentItem" + id).append("<div id='replyForm'><div class='comment-top'></div>"
-                        + "<div class='comment-body'><table class='form comment-reply'>" + commentFormHTML
-                        +"</table></div><div class='comment-bottom'></div></div>");
-                    
-                    $("#commentValidateReply").keypress(function (event) {
-                        if (event.keyCode === 13) {
-                            submitCommentReply(id);
-                        }
-                    });
-
-                    insertEmotions("Reply");
-                    
-                    $("#commentURLReply").focus(function (event) {
-                        if ($.browser.version !== "7.0") {
-                            $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
-                        }
-                    }).blur(function () {
-                        $("#commentURLLabelReply").css({"border":"2px inset #CCCCCC","border-right":"0px"});
-                    }).width($("#commentReply").width() - $("#commentURLLabelReply").width());
-
-                    $("#commentNameReply").focus();
-                }
-                currentCommentId = id;
-            }
-
-            var submitCommentReply = function (id) {
-                if (validateComment("Reply")) {
-                    $("#commentErrorTipReply").html("${loadingLabel}");
-                    var requestJSONObject = {
-                        "oId": "${article.oId}",
-                        "commentContent": $("#commentReply").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "commentEmail": $("#commentEmailReply").val(),
-                        "commentURL": "http://" + $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "captcha": $("#commentValidateReply").val(),
-                        "commentOriginalCommentId": id
-                    };
-
-                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
-                        if (result && !error) {
-                            switch (result.sc) {
-                                case "COMMENT_ARTICLE_SUCC":
-                                    $("#replyForm").remove();
-                                    window.location.reload();
-                                    break;
-                                case "CAPTCHA_ERROR":
-                                    $("#commentErrorTipReply").html("${captchaErrorLabel}");
-                                    $("#captchaReply").attr("src", "/captcha.do?code=" + Math.random());
-                                    $("#commentValidateReply").val("").focus();
-                                    break
-                                default:
-                                    break;
-                            }
-                        }
-                    }, requestJSONObject);
-                }
-            }
-
-            var submitComment = function () {
-                if (validateComment()) {
-                    $("#commentErrorTip").html("${loadingLabel}");
-                    var requestJSONObject = {
-                        "oId": "${article.oId}",
-                        "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "commentEmail": $("#commentEmail").val(),
-                        "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "captcha": $("#commentValidate").val()
-                    };
-
-                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
-                        if (result && !error) {
-                            switch (result.sc) {
-                                case "COMMENT_ARTICLE_SUCC":
-                                    $("#commentErrorTip").html("");
-                                    $("#comment").val("");
-                                    $("#commentEmail").val("");
-                                    $("#commentURL").val("");
-                                    $("#commentName").val("");
-                                    $("#commentValidate").val("");
-                                    window.location.reload();
-                                    break;
-                                case "CAPTCHA_ERROR":
-                                    $("#commentErrorTip").html("${captchaErrorLabel}");
-                                    $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
-                                    $("#commentValidate").val("").focus();
-                                    break
-                                default:
-                                    break;
-                            }
-                        }
-                    }, requestJSONObject);
-                }
-            }
-
-            var showComment = function (it, id) {
-                if ( $("#commentItemRef" + id).length > 0) {
-                    $("#commentItemRef" + id).show();
-                } else {
-                    var $refComment = $("#commentItem" + id + " .comment-panel").clone();
-                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
-                    $refComment.find(".comment-title .right a").remove();
-                    $("#comments").append($refComment);
-                }
-                var position =  $(it).position();
-                $("#commentItemRef" + id).css({
-                    "top": (position.top + 12) + "px",
-                    "left": "182px"
-                });
-            }
-
-            var hideComment = function (id) {
-                $("#commentItemRef" + id).hide();
-            }
         </script>
         <div class="stack addthis_toolbox">
             <img src="/images/stack.png" alt="stack"/>
@@ -539,43 +487,7 @@
         <div class='goBottomIcon' onclick='goBottom();'></div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
-            var loadTool = function () {
-                // article view count
-                jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
-
-                // Stack initialize
-                var openspeed = 300;
-                var closespeed = 300;
-                $('.stack>img').toggle(function(){
-                    var vertical = 0;
-                    var horizontal = 0;
-                    var $el=$(this);
-                    $el.next().children().each(function(){
-                        $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
-                        vertical = vertical + 36;
-                        horizontal = (horizontal+.42)*2;
-                    });
-                    $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
-                    .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
-                    $el.animate({paddingTop: '0'});
-                }, function(){
-                    //reverse above
-                    var $el=$(this);
-                    $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
-                    $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
-                    $el.animate({paddingTop: '9px'});
-                });
-
-                // Stacks additional animation
-                $('.stack li a').hover(function(){
-                    $("img",this).animate({width: '32px'}, 100);
-                    $("span",this).animate({marginRight: '12px'});
-                },function(){
-                    $("img",this).animate({width: '28px'}, 100);
-                    $("span",this).animate({marginRight: '0'});
-                });
-            }
-            loadTool();
+            ArticleUtil.loadTool();
         </script>
     </body>
 </html>

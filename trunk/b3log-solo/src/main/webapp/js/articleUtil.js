@@ -25,6 +25,10 @@ $.extend(ArticleUtil.prototype, {
     },
     
     insertEmotions:  function (name) {
+        if (name === undefined) {
+            name = "";
+        }
+        
         $("#emotions" + name + " img").click(function () {
             // TODO: should be insert it at the after of cursor
             var key = this.className;
@@ -64,7 +68,13 @@ $.extend(ArticleUtil.prototype, {
     },
 
     addCommentAjax: function (commentHTML, state) {
-        $("#comments>div").first().before(commentHTML);
+        if ($("#comments .comments-header").length > 0) {
+            $("#comments .comments-header").after(commentHTML);
+        } else if ($("#comments>div").first().length === 1) {
+            $("#comments>div").first().before(commentHTML);
+        } else {
+            $("#comments").first().before(commentHTML);
+        }
 
         if (state === "") {
             $("#commentErrorTip").html("");
@@ -85,7 +95,7 @@ $.extend(ArticleUtil.prototype, {
         for (var j = 1; j < commentContents.length; j++) {
             var key = commentContents[j].substr(0, 2),
             emImgHTML = "<img src='/skins/" + skin + "/emotions/em" + key
-                + ".png'/>";
+            + ".png'/>";
             commentContentHTML += emImgHTML + commentContents[j].slice(3);
         }
         return commentContentHTML;
@@ -125,10 +135,10 @@ $.extend(ArticleUtil.prototype, {
     load: function () {
         // code high lighter
         SyntaxHighlighter.autoloader(
-        'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
-        'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
-        'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
-    );
+            'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
+            'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
+            'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
+            );
 
         SyntaxHighlighter.config.tagName = "pre";
         SyntaxHighlighter.config.stripBrs = true;
@@ -139,6 +149,35 @@ $.extend(ArticleUtil.prototype, {
         $("#commentValidate").keypress(function (event) {
             if (event.keyCode === 13) {
                 submitComment();
+            }
+        });
+    },
+
+    loadRandomArticles: function () {
+        // getRandomArticles
+        jsonRpc.articleService.getRandomArticles(function (result, error) {
+            if (result && !error) {
+                var randomArticles = result.list;
+                if (0 === randomArticles.length) {
+                    return;
+                }
+
+                var listHtml = "";
+                for (var i = 0; i < randomArticles.length; i++) {
+                    var article = randomArticles[i];
+                    var title = article.articleTitle;
+                    var randomArticleLiHtml = "<li>"
+                    + "<a href='" + article.articlePermalink +"'>"
+                    +  title + "</a></li>"
+                    listHtml += randomArticleLiHtml
+                }
+
+                var randomArticlesDiv = $("#randomArticles");
+                randomArticlesDiv.attr("class", "article-relative");
+                var randomArticleListHtml = "<h5>" + ArticleUtil.tip.randomArticles + "</h5>"
+                + "<ul class='marginLeft12'>"
+                + listHtml + "</ul>";
+                randomArticlesDiv.append(randomArticleListHtml);
             }
         });
     },
