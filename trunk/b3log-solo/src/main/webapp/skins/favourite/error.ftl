@@ -31,55 +31,34 @@
                     </h1>
                     <span class="sub-title">${blogSubtitle}</span>
                 </div>
-                <div id="header-navi">
-                    <div class="left">
-                        <ul>
-                            <li>
-                                <a class="home" href="/"></a>
-                            </li>
-                            <#list pageNavigations as page>
-                            <li>
-                                <a href="/page.do?oId=${page.oId}">
-                                    ${page.pageTitle}
-                                </a>
-                            </li>
-                            </#list>
-                            <li>
-                                <a href="/tags.html">${allTagsLabel}</a>
-                            </li>
-                            <li>
-                                <a href="/blog-articles-feed.do">
-                                    ${atomLabel}
-                                    <img src="/images/feed.png" alt="Atom"/>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="lastNavi" href="javascript:void(0);"></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="clear"></div>
-                </div>
+                <div class="roundtop"></div>
                 <div class="error-body">
-                    <div class="error-panel">
-                        <h1 class="error-title">${notFoundLabel}</h1>
-                        <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
+                    <div class="left main">
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=61357158&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:61357158:43" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
+                        <div class="error-panel">
+                            <h1 class="error-title">${notFoundLabel}</h1>
+                            <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
+
+                        </div>
                     </div>
                 </div>
-                <div class="footer">
-                    <div class="left copyright">
-                        <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
-                        Powered by
-                        <a href="http://b3log-solo.googlecode.com" target="_blank">
-                            <span style="color: orange;">B</span>
-                            <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
-                            <span style="color: green;">L</span>
-                            <span style="color: red;">O</span>
-                            <span style="color: blue;">G</span>&nbsp;
-                            <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-                        ver ${version}
-                    </div>
-                </div>
+                <div class="roundbottom"></div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="footer-icon"></div>
+            <div class="info">
+            <div class="left copyright">
+                <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
+                Powered by
+                <a href="http://b3log-solo.googlecode.com" target="_blank">
+                <span style="color: orange;">B</span>
+                <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
+                <span style="color: green;">L</span>
+                <span style="color: red;">O</span>
+                <span style="color: blue;">G</span>&nbsp;
+                <span style="color: orangered; font-weight: bold;">Solo</span></a>,
+                ver ${version}
             </div>
         </div>
         <script type="text/javascript">
