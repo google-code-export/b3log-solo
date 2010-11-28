@@ -31,7 +31,7 @@
         </tr>
         <tr>
             <th>
-                ${permalinkLabel}
+                ${permalink1Label}
             </th>
             <td colspan="3">
                 <input id="pagePermalink" type="text"/>
@@ -121,7 +121,7 @@
                     width: 120
                 }, {
                     style: "padding-left: 6px;",
-                    name: "${permalink1Label}",
+                    name: "${permalinkLabel}",
                     index: "pagePermalink",
                     minWidth: 300
                 }, {
