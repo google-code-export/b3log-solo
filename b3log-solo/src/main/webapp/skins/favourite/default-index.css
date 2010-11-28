@@ -101,7 +101,7 @@ h5{font-size:12px;}
 #navigation a.Guestbook {background:url("images/Guestbook.png") no-repeat scroll left top transparent;}
 #navigation a.ME {background:url("images/ME.png") no-repeat scroll left top transparent;}
 #navigation a {background:url("images/default.png") no-repeat scroll left top transparent;outline:none;color:#FFFFFF;cursor:pointer !important;float:left;height:70px;margin-left:10px;padding-top:2px;text-align:center;text-decoration:none;width:73px;}
-.admins {position:relative;top:-80px;}
+.admins {position:relative;top:-85px;}
 #mostCommentArticles li a,#mostViewCountArticles li a,.navi-tags li a,#sideLink li a,#save li a{color:white;}
 .roundtop{background:url("images/roundtop.png") no-repeat scroll left top transparent;height:75px;}
 .roundbottom{background:url("images/roundbottom.png") no-repeat scroll left top transparent;height:35px;}
@@ -114,48 +114,11 @@ h5{font-size:12px;}
 .blog{background:url("images/blog.png") no-repeat scroll left top transparent;height:64px;}
 .cuore{background:url("images/cuore.png") no-repeat scroll left top transparent;height:64px;}
 .esclamativo{background:url("images/esclamativo.png") no-repeat scroll left top transparent;height:64px;}
-.posttime-blue {
-background-color:#0184AF;
-}
-.posttime-blue, .posttime-pink {
-border:1px solid #999999;
-clear:right;
-color:#FFFFFF;
-float:right;
-font-family:Tohama,Arial,Helvetica,sans-serif;
-height:60px;
-width:60px;
-position:relative;
-right:30px;
-top:-25px;
-}
-.posttime-MY {
-border-bottom:1px solid #FFFFFF;
-font-size:9px;
-height:15px;
-padding-top:5px;
-text-align:center;
-}
-.posttime-D {
-font-size:28px;
-font-weight:bold;
-text-align:center;
-}
-.note{
-background:none repeat scroll 0 0 #E7F5F7;
-margin:40px 0 0 -49px;
-padding:10px 10px 10px 85px;
-position:relative;
-width:574px;
-z-index:50;
-}
-.corner {
-background:url("images/corner.png") no-repeat scroll left top transparent;
-height:9px;
-left:0;
-position:absolute;
-top:-9px;
-width:9px;
-}
+.posttime-blue {background-color:#0184AF;}
+.posttime-blue, .posttime-pink {border:1px solid #999999;clear:right;color:#FFFFFF;float:right;font-family:Tohama,Arial,Helvetica,sans-serif;height:60px;width:60px;position:relative;right:30px;top:-25px;}
+.posttime-MY {border-bottom:1px solid #FFFFFF;font-size:9px;height:15px;padding-top:5px;text-align:center;}
+.posttime-D {font-size:28px;font-weight:bold;text-align:center;}
+.note{background:none repeat scroll 0 0 #E7F5F7;margin:40px 0 0 -49px;padding:10px 10px 10px 85px;position:relative;width:574px;z-index:50;}
+.corner {background:url("images/corner.png") no-repeat scroll left top transparent;height:9px;left:0;position:absolute;top:-9px;width:9px;}
 .count{position:relative;top:8px;}
 
