@@ -239,46 +239,51 @@
                     <div class="clear"></div>
                 </div>
                 <div class="roundbottom"></div>
+<script type="text/javascript" src="/js/articleUtil.js"></script>
                 <script type="text/javascript">
-                    var currentCommentId = "";
+                    ArticleUtil.tip = {
+                        nameTooLong: "${nameTooLongLabel}",
+                        mailCannotEmpty: "${mailCannotEmptyLabel}",
+                        mailInvalid: "${mailInvalidLabel}",
+                        commentContentCannotEmpty: "${commentContentCannotEmptyLabel}",
+                        captchaCannotEmpty: "${captchaCannotEmptyLabel}",
+                        randomArticles: "${randomArticles1Label}"
+                    };
 
-                    var insertEmotions = function (name) {
-                        $("#emotions" + name + " img").click(function () {
-                            // TODO: should be insert it at the after of cursor
-                            var key = this.className;
-                            $("#comment" + name).val($("#comment" + name).val() + key).focus();
-                        });
-                    }
-
-                    var validateComment = function (state) {
+                    var addComment = function (result, state) {
                         if (state === undefined) {
-                            state = '';
+                            state = "";
                         }
-                        var commentName = $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
-                        commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
-                        if (2 > commentName.length || commentName.length > 20) {
-                            $("#commentErrorTip" + state).html("${nameTooLongLabel}");
-                            $("#commentName" + state).focus();
-                        } else if ($("#commentEmail" + state).val().replace(/\s/g, "") === "") {
-                            $("#commentErrorTip" + state).html("${mailCannotEmptyLabel}");
-                            $("#commentEmail" + state).focus();
-                        } else if(!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#commentEmail" + state).val())) {
-                            $("#commentErrorTip" + state).html("${mailInvalidLabel}");
-                            $("#commentEmail" + state).focus();
-                        }  else if (2 > commenterContent.length || commenterContent.length > 500) {
-                            $("#commentErrorTip" + state).html("${commentContentCannotEmptyLabel}");
-                            $("#comment" + state).focus();
-                        } else if ($("#commentValidate" + state).val().replace(/\s/g, "") === "") {
-                            $("#commentErrorTip" + state).html("${captchaCannotEmptyLabel}");
-                            $("#commentValidate" + state).focus();
+
+                        var commentHTML = '<div id="commentItem' + result.oId
+                            + '" class="comment-body"><div class="comment-panel"><div class="left comment-author">'
+                            + '<div><img alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL + '"/></div>';
+
+                        if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
+                            commentHTML += '<a name="' + result.oId + '">' + $("#commentName" + state).val() + '</a>';
                         } else {
-                            return true;
+                            commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
+                                + result.oId + '">' + $("#commentName" + state).val() + '</a>';
                         }
-                        return false;
+                        commentHTML += '</div><div class="left comment-info"><div class="left">' + ArticleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss');
+                        if (state !== "") {
+                            var commentOriginalCommentName = $("#commentItem" + ArticleUtil.currentCommentId).find(".comment-author a").text();
+                            commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + ArticleUtil.currentCommentId + '"'
+                                + 'onmouseover="showComment(this, \'' + ArticleUtil.currentCommentId + '\');"'
+                                + 'onmouseout="ArticleUtil.hideComment(\'' + ArticleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                        }
+                        commentHTML += '</div><div class="right"> <a class="noUnderline" href="javascript:replyTo(\''
+                            + result.oId + '\');">${replyLabel}</a>'
+                            +'</div><div class="clear"></div><div class="comment-content">'
+                            + ArticleUtil.replaceEmotions($("#comment" + state).val(), "i-nove")
+                            + '</div></div><div class="clear"></div></div></div>';
+
+                        ArticleUtil.addCommentAjax(commentHTML, state);
+                        $("#comments").addClass("comments");
                     }
 
                     var replyTo = function (id) {
-                        if (id === currentCommentId) {
+                        if (id === ArticleUtil.currentCommentId) {
                             $("#commentNameReply").focus();
                             return;
                         } else {
@@ -289,7 +294,7 @@
                                 + "</td><td colspan='2' width='400px'>${commentNameLabel}</td></tr><tr><td>"
                                 + "<input class='normalInput' id='commentEmailReply'/></td><td colspan='2'>${commentEmailLabel}</td></tr><tr>"
                                 + "<td><div id='commentURLLabelReply'>http://</div><input id='commentURLReply'/>"
-                                + "</td><td colspan='2'>${commentURLLabel}</td></tr><tr><td id='emotionsReply' colspan='3'>" 
+                                + "</td><td colspan='2'>${commentURLLabel}</td></tr><tr><td id='emotionsReply' colspan='3'>"
                                 + $("#emotions").html() + "</td></tr><tr><td colspan='3'>"
                                 + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
                                 + "<td><input class='normalInput' id='commentValidateReply'/>"
@@ -308,15 +313,15 @@
                                 }
                             });
 
-                            insertEmotions("Reply");
+                            ArticleUtil.insertEmotions("Reply");
 
                             $("#commentNameReply").focus();
                         }
-                        currentCommentId = id;
+                        ArticleUtil.currentCommentId = id;
                     }
 
                     var submitCommentReply = function (id) {
-                        if (validateComment("Reply")) {
+                        if (ArticleUtil.validateComment("Reply")) {
                             $("#commentErrorTipReply").html("${loadingLabel}");
                             var requestJSONObject = {
                                 "oId": "${article.oId}",
@@ -332,8 +337,7 @@
                                 if (result && !error) {
                                     switch (result.sc) {
                                         case "COMMENT_ARTICLE_SUCC":
-                                            $("#replyForm").remove();
-                                            window.location.reload();
+                                            addComment(result, "Reply");
                                             break;
                                         case "CAPTCHA_ERROR":
                                             $("#commentErrorTipReply").html("${captchaErrorLabel}");
@@ -349,7 +353,7 @@
                     }
 
                     var submitComment = function () {
-                        if (validateComment()) {
+                        if (ArticleUtil.validateComment()) {
                             $("#commentErrorTip").html("${loadingLabel}");
                             var requestJSONObject = {
                                 "oId": "${article.oId}",
@@ -364,13 +368,7 @@
                                 if (result && !error) {
                                     switch (result.sc) {
                                         case "COMMENT_ARTICLE_SUCC":
-                                            $("#commentErrorTip").html("");
-                                            $("#comment").val("");
-                                            $("#commentEmail").val("");
-                                            $("#commentURL").val("");
-                                            $("#commentName").val("");
-                                            $("#commentValidate").val("");
-                                            window.location.reload();
+                                            addComment(result);
                                             break;
                                         case "CAPTCHA_ERROR":
                                             $("#commentErrorTip").html("${captchaErrorLabel}");
@@ -401,61 +399,19 @@
                         });
                     }
 
-                    var hideComment = function (id) {
-                        $("#commentItemRef" + id).hide();
-                    }
-
                     var loadAction = function () {
-                        // code high lighter
-                        SyntaxHighlighter.autoloader(
-                        'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
-                        'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
-                        'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
-                    );
-
-                        SyntaxHighlighter.config.tagName = "pre";
-                        SyntaxHighlighter.config.stripBrs = true;
-                        SyntaxHighlighter.defaults['toolbar'] = false;
-                        SyntaxHighlighter.all();
-
-                        // submit comment
-                        $("#commentValidate").keypress(function (event) {
-                            if (event.keyCode === 13) {
-                                submitComment();
-                            }
-                        });
+                        if ($("#comments div").length === 0) {
+                            $("#comments").removeClass("comments");
+                        }
 
                         // emotions
-                        insertEmotions("");
+                        ArticleUtil.insertEmotions();
                         replaceCommentsEm("#comments .comment-content");
 
-                        // getRandomArticles
-                        jsonRpc.articleService.getRandomArticles(function (result, error) {
-                            if (result && !error) {
-                                var randomArticles = result.list;
-                                if (0 === randomArticles.length) {
-                                    return;
-                                }
+                        ArticleUtil.load();
+                        ArticleUtil.loadRandomArticles();
 
-                                var listHtml = "";
-                                for (var i = 0; i < randomArticles.length; i++) {
-                                    var article = randomArticles[i];
-                                    var title = article.articleTitle;
-                                    var randomArticleLiHtml = "<li>"
-                                        + "<a href='" + article.articlePermalink +"'>"
-                                        +  title + "</a></li>"
-                                    listHtml += randomArticleLiHtml
-                                }
-
-                                var randomArticlesDiv = $("#randomArticles");
-                                randomArticlesDiv.attr("class", "article-relative");
-                                var randomArticleListHtml = "<h5>${randomArticles1Label}</h5>"
-                                    + "<ul class='marginLeft12'>"
-                                    + listHtml + "</ul>";
-                                randomArticlesDiv.append(randomArticleListHtml);
-                            }
-                        });
-
+                        // externalRelevantArticles
                             <#if 0 != externalRelevantArticlesDisplayCount>
                             var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
                         $.ajax({
@@ -494,7 +450,6 @@
                         }
                     loadAction();
                 </script>
-            
                 <div class="stack addthis_toolbox">
                     <img src="/images/stack.png" alt="stack"/>
                     <ul id="stack" class="custom_images">
@@ -507,54 +462,13 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
-        <script type="text/javascript">
-            var loadTool = function () {
-                // hide comments
-                if ($("#comments div").length === 0) {
-                    $("#comments").removeClass("comments");
-                }
-                
-                // article view count
-                jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
-
-                // Stack initialize
-                var openspeed = 300;
-                var closespeed = 300;
-                $('.stack>img').toggle(function(){
-                    var vertical = 0;
-                    var horizontal = 0;
-                    var $el=$(this);
-                    $el.next().children().each(function(){
-                        $(this).animate({top: '-' + vertical + 'px', left: horizontal + 'px'}, openspeed);
-                        vertical = vertical + 36;
-                        horizontal = (horizontal+.42)*2;
-                    });
-                    $el.next().animate({top: '-21px', left: '-6px'}, openspeed).addClass('openStack')
-                    .find('li a>img').animate({width: '28px', marginLeft: '9px'}, openspeed);
-                    $el.animate({paddingTop: '0'});
-                }, function(){
-                    //reverse above
-                    var $el=$(this);
-                    $el.next().removeClass('openStack').children('li').animate({top: '32px', left: '6px'}, closespeed);
-                    $el.next().find('li a>img').animate({width: '32px', marginLeft: '0'}, closespeed);
-                    $el.animate({paddingTop: '9px'});
-                });
-
-                // Stacks additional animation
-                $('.stack li a').hover(function(){
-                    $("img",this).animate({width: '32px'}, 100);
-                    $("span",this).animate({marginRight: '12px'});
-                },function(){
-                    $("img",this).animate({width: '28px'}, 100);
-                    $("span",this).animate({marginRight: '0'});
-                });
-            }
-            loadTool();
-        </script>
         <div class="footer">
             <div class="footer-icon"></div>
             <#include "article-footer.ftl">
         </div>
+        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
+        <script type="text/javascript">
+            ArticleUtil.loadTool();
+        </script>
     </body>
 </html>
