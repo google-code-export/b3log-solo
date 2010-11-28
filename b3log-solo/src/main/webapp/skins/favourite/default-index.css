@@ -78,7 +78,7 @@ h5{font-size:12px;}
 #tagsPanel .tagPanel{float:left;border:2px solid;margin:3px;-moz-border-radius:6px;-webkit-border-radius:6px;cursor:pointer;}
 #tagsPanel .tagPanel:hover{background-color:#EEEEEE;border:2px dashed;}
 #tagsPanel .tagPanel{text-decoration:none;}
-.error-body{background:url("images/main_shadow.gif") repeat-x scroll center top #FFFFFF;height:400px;padding:12px;}
+.error-body{background:url("images/cont-bg_2.png") repeat-y scroll left;height:400px;padding:12px;}
 .error-title{line-height:72px;}
 .error-panel{margin:0 auto;width:201px;}
 .error-panel a{background:none repeat scroll 0 0 #9CD941;border-color:#D0F29D #398A38 #398A38 #D0F29D;border-style:solid;border-width:1px;color:#000000;font-size:14px;font-weight:bold;margin-right:3px;padding:10px 15px;text-decoration:none;}
