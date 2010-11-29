@@ -1,1 +1,1 @@
-图片：http://code.google.com/p/b3log-solo/source/browse/wiki/%E6%B5%8B%E8%AF%95%E5%9B%BE%E7%89%87.png
+图片：http://b3log-solo.googlecode.com/svn/wiki/%e6%b5%8b%e8%af%95%e5%9b%be%e7%89%87.png
