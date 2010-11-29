@@ -1,4 +1,4 @@
-NetBean 6.9.1:http://netbeans.org/downloads/index.html<br/>
+NetBeans 6.9.1:http://netbeans.org/downloads/index.html<br/>
 Maven 2..2.1 :http://maven.apache.org/download.html<br/>
 
 
