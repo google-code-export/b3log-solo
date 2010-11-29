@@ -1,4 +1,5 @@
 #summary B3log Solo 开发环境
+#sidebar SideBar
 = B3log Solo 开发环境 =
 <wiki:toc max_depth="3" />
 ==前提准备==
