@@ -1,0 +1,6 @@
+#summary 外部博客文章同步管理
+
+目前为止可以对如下博客服务进行同步文章管理（发布/更新/删除）：
+ * [http://blog.csdn.net/ CSDN 博客]
+ * [http://www.cnblogs.com/ 博客园]
+ * [http://www.blogjava.net/ BlogJava]
