@@ -1,7 +1,7 @@
-#summary B3log Solo 开发环境
+#summary B3log Solo 开发手册
 #labels Featured
 #sidebar SideBar
-= B3log Solo 开发环境 =
+= B3log Solo 开发手册 =
 <wiki:toc max_depth="3" />
 ==前提准备==
 在开始搭建开发环境之前，您必须掌握如下知识或技能：
