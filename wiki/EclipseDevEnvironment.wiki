@@ -1,3 +1,5 @@
+#summary B3log Solo 开发环境（Eclipse）
+
 Eclipse helios:http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1<br/>
 Maven 2..2.1 :http://maven.apache.org/download.html<br/>
 
