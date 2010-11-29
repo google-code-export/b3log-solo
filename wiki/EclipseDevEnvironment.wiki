@@ -9,3 +9,21 @@ Maven插件更新地址：http://m2eclipse.sonatype.org/sites/m2e（详细安装
 4.更新gae相关资源。右键项目，run as maven build... --> Goals: gae:unpack<br/>
 5.运行项目。右键项目，run as maven build... --> Goals: gae:run<br/>
 6.部署项目，run as maven build... --> Goals: gae:deploy<br/>
+需要一个文件C:\Users\lamb\.m2\settings.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    User-specific configuration for maven. Includes things that should not 
+    be distributed with the pom.xml file, such as developer identity, along with 
+    local settings, like proxy information. The default location for the
+    settings file is ~/.m2/settings.xml 
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <servers>
+         <server>
+            <id>appengine.google.com</id>
+            <username>*****o@gmail.com</username>
+            <password>*****</password>
+        </server>
+    </servers>
+</settings>
