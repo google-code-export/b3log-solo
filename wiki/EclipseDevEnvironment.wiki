@@ -1,9 +1,9 @@
 #summary B3log Solo 开发环境（Eclipse）
+下载：
+ * Eclipse helios: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1
+ * Maven 2.2.1: http://maven.apache.org/download.html
 
-Eclipse helios: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1
-Maven 2.2.1: http://maven.apache.org/download.html
-
-
+安装完 Eclipse 后需要进行如下配置或操作：
  # 安装 Maven 的插件：The Maven Integration for Eclipse，更新地址：http://m2eclipse.sonatype.org/sites/m2e
  # Window->Preferences->Maven->installations->Add 把 Maven 的路径添加上
  # 用SVN把项目迁出http://b3log-solo.googlecode.com/svn/trunk/
