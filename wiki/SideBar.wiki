@@ -1,2 +1,0 @@
- * [UserGuide 用户手册]
- * [DeveloperGuide 开发手册]
