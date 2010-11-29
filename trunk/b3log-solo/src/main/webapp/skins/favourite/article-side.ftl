@@ -129,9 +129,10 @@ var comm = function(){
         //alert(content+"|"+countChinese(content)+"|"+countNonAlphabet(content)+"|"+content.length);
         var count = countChinese(content)*2+(content.length-countChinese(content));
         //alert(count);
-        if(content.length>=30){
+        if(count>=30){
             var newc=content.substring(0,15)+"[...]";
             $it.text(newc);
+            //alert(newc);
         }
     });
 }
