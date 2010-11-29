@@ -12,7 +12,7 @@
 [http://b3log-solo.googlecode.com B3log Solo] 是使用 [http://maven.apache.org Maven2] 进行的项目构建，所以并不依赖于任何一款 Java IDE，只要支持 [http://maven.apache.org Maven] 的 IDE 都可以进行开发。
  * [DeveloperGuide#使用NetBeans开发]_（推荐的）_
  * [DeveloperGuide#使用Eclipse开发]
-==使用NetBeans开发==
+==使用 [http://netbeans.org NetBeans] 开发==
 ===下载===
  * NetBeans 6.9.1: http://netbeans.org/downloads/index.html
  * Maven 2.2.1: http://maven.apache.org/download.html
@@ -23,7 +23,7 @@
  # 运行项目。右键项目，定制-> gae:run
  # 部署项目，定制-> gae:deploy
 按提示在控制台输入账号密码即可
-==使用Eclipse开发==
+==使用 [http://eclipse.org Eclipse] 开发==
 ===下载===
  * Eclipse helios: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1
  * Maven 2.2.1: http://maven.apache.org/download.html
