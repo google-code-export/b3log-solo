@@ -1,15 +1,14 @@
 #summary B3log Solo 开发环境（Eclipse）
 
-Eclipse helios:http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1<br/>
-Maven 2..2.1 :http://maven.apache.org/download.html<br/>
+Eclipse helios: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1
+Maven 2.2.1: http://maven.apache.org/download.html
 
 
-1.安装 maven的插件：The Maven Integration for Eclipse <br/>
-Maven插件更新地址：http://m2eclipse.sonatype.org/sites/m2e<br/>
-2.Window->Preferences->Maven->installations->Add 把maven的路径添加上<br/>
-3.用SVN把项目迁出http://b3log-solo.googlecode.com/svn/trunk/<br/>
-4.更新gae相关资源。右键项目，run as maven build... --> Goals: gae:unpack<br/>
-5.运行项目。右键项目，run as maven build... --> Goals: gae:run<br/>
-6.部署项目，run as maven build... --> Goals: gae:deploy<br/>
-需要一个文件,请下载文件将文件放到相应文位置，目录类似C:\Users\lamb\.m2\settings.xml<br/>
-下载地址：http://lamb.b3log.org/datastore-file-access.do?oId=1291005995109<br/>
+ # 安装 Maven 的插件：The Maven Integration for Eclipse，更新地址：http://m2eclipse.sonatype.org/sites/m2e
+ # Window->Preferences->Maven->installations->Add 把 Maven 的路径添加上
+ # 用SVN把项目迁出http://b3log-solo.googlecode.com/svn/trunk/
+ # 更新gae相关资源。右键项目，run as maven build... --> Goals: gae:unpack
+ # 运行项目。右键项目，run as maven build... --> Goals: gae:run
+ # 部署项目，run as maven build... --> Goals: gae:deploy
+需要一个文件，请下载文件将文件放到相应文位置，目录类似C:\Users\lamb\.m2\settings.xml
+下载地址：http://lamb.b3log.org/datastore-file-access.do?oId=1291005995109
