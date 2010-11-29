@@ -21,7 +21,8 @@
  # 运行项目。右键项目，定制-> gae:run
  # 部署项目，定制-> gae:deploy
 按提示在控制台输入账号密码即可
-===使用 [http://eclipse.org Eclipse]===
+
+===[http://eclipse.org Eclipse]===
 ====下载====
  * Eclipse helios: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1
  * Maven 2.2.1: http://maven.apache.org/download.html
