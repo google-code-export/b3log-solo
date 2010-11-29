@@ -1,4 +1,4 @@
-#summary B3log Solo 用户向导
+#summary B3log Solo User Guide
 #labels Featured
 
 =B3log Solo User Guide=
