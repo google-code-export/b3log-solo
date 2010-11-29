@@ -7,7 +7,7 @@
 在开始搭建开发环境之前，您必须掌握如下知识或技能：
  * 能够使用 Java 开发应用程序 
  * 对 [http://code.google.com/appengine/docs/java/overview.html Google App Engine（for Java）]有一定了解
- * 能够使用 [http://maven.apache.org Maven2+]
+ * 熟悉 [http://maven.apache.org Maven2+]
 ==开发环境==
 ===IDE===
 [http://b3log-solo.googlecode.com B3log Solo] 是使用 [http://maven.apache.org Maven2] 进行的项目构建，所以并不依赖于任何一款 Java IDE，只要支持 [http://maven.apache.org Maven] 的 IDE 都可以进行开发。
