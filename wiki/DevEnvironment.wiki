@@ -1,4 +1,5 @@
 #summary B3log Solo 开发环境
+#labels Featured
 #sidebar SideBar
 = B3log Solo 开发环境 =
 <wiki:toc max_depth="3" />
@@ -9,6 +10,21 @@
  * 能够使用 [http://maven.apache.org Maven2+]
 ==IDE==
 [http://b3log-solo.googlecode.com B3log Solo] 是使用 [http://maven.apache.org Maven2] 进行的项目构建，所以并不依赖于任何一款 Java IDE，只要支持 [http://maven.apache.org Maven] 的 IDE 都可以进行开发。
+ * 使用 [http://netbeans.org NetBeans] 开发_（推荐的）_
  * 使用 [http://eclips.org Eclipse] 开发
- * 使用 [http://netbeans.org NetBeans] 开发
 ==使用 NetBeans 开发==
+
+==使用 Eclipse 开发==
+===下载===
+ * Eclipse helios: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1
+ * Maven 2.2.1: http://maven.apache.org/download.html
+
+===配置===
+ # 安装 Maven 的插件：The Maven Integration for Eclipse，更新地址：http://m2eclipse.sonatype.org/sites/m2e
+ # Window->Preferences->Maven->installations->Add 把 Maven 的路径添加上
+ # 用 SVN 把项目迁出http://b3log-solo.googlecode.com/svn/trunk/
+ # 更新 GAE 相关资源。右键项目，run as maven build... --> Goals: gae:unpack
+ # 运行项目。右键项目，run as maven build... --> Goals: gae:run
+ # 部署项目，run as maven build... --> Goals: gae:deploy
+===Maven settings.xml===
+将 Maven 的全局 settings.xml 修改如下载的[http://lamb.b3log.org/datastore-file-access.do?oId=1291005995109 文件]所示。
