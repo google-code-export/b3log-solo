@@ -13,16 +13,24 @@
  * 使用 [http://netbeans.org NetBeans] 开发_（推荐的）_
  * 使用 [http://eclips.org Eclipse] 开发
 ==使用 NetBeans 开发==
-
+===下载===
+ * NetBeans 6.9.1: http://netbeans.org/downloads/index.html
+ * Maven 2.2.1: http://maven.apache.org/download.html
+===配置===
+ # 工具->选项->其他->Maven->外部&Maven主页->浏览 把Maven的路径加上
+ # 用 SVN 把项目迁出 http://b3log-solo.googlecode.com/svn/trunk/
+ # 更新 GAE 相关资源。右键项目，定制-> gae:unpack
+ # 运行项目。右键项目，定制-> gae:run
+ # 部署项目，定制-> gae:deploy
+按提示在控制台输入账号密码即可
 ==使用 Eclipse 开发==
 ===下载===
  * Eclipse helios: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1
  * Maven 2.2.1: http://maven.apache.org/download.html
-
 ===配置===
  # 安装 Maven 的插件：The Maven Integration for Eclipse，更新地址：http://m2eclipse.sonatype.org/sites/m2e
  # Window->Preferences->Maven->installations->Add 把 Maven 的路径添加上
- # 用 SVN 把项目迁出http://b3log-solo.googlecode.com/svn/trunk/
+ # 用 SVN 把项目迁出 http://b3log-solo.googlecode.com/svn/trunk/
  # 更新 GAE 相关资源。右键项目，run as maven build... --> Goals: gae:unpack
  # 运行项目。右键项目，run as maven build... --> Goals: gae:run
  # 部署项目，run as maven build... --> Goals: gae:deploy
