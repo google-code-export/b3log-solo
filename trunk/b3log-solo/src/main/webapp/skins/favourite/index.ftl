@@ -16,8 +16,6 @@
         <link rel="icon" type="image/png" href="/favicon.png"/>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
-        <script type="text/javascript" src="/skins/${skinDirName}/js/curvycorners.js" ></script>
-        <script type="text/javascript" src="/skins/${skinDirName}/js/round.js" ></script>
         ${htmlHead}
     </head>
     <body>
