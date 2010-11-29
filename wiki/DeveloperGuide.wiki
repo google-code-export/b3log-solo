@@ -10,7 +10,7 @@
  * 能够使用 [http://maven.apache.org Maven2+]
 ==IDE==
 [http://b3log-solo.googlecode.com B3log Solo] 是使用 [http://maven.apache.org Maven2] 进行的项目构建，所以并不依赖于任何一款 Java IDE，只要支持 [http://maven.apache.org Maven] 的 IDE 都可以进行开发。
-===[http://netbeans.org NetBeans]_（推荐的）_===
+===[http://netbeans.org NetBeans]（推荐的）===
 ====下载====
  * NetBeans 6.9.1: http://netbeans.org/downloads/index.html
  * Maven 2.2.1: http://maven.apache.org/download.html
