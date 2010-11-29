@@ -1,5 +1,4 @@
 #summary B3log Solo 开发环境
-
 = B3log Solo 开发环境 =
 <wiki:toc max_depth="3" />
 ==前提准备==
@@ -11,4 +10,4 @@
 [http://b3log-solo.googlecode.com B3log Solo] 是使用 [http://maven.apache.org Maven2] 进行的项目构建，所以并不依赖于任何一款 Java IDE，只要支持 [http://maven.apache.org Maven] 的 IDE 都可以进行开发。
  * 使用 [http://eclips.org Eclipse] 开发
  * 使用 [http://netbeans.org NetBeans] 开发
-====
+==使用 NetBeans 开发==
