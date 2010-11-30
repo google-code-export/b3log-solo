@@ -12,7 +12,7 @@ h5{font-size:12px;}
 .body{background:url("images/cont-bg.png") repeat-y scroll right center #FFFFFF;min-height:400px;}
 .side-navi{background:url("images/cont-bg.png") repeat-y scroll left top #00798A;font-size:95%;line-height:145%;padding-top:8px;width:300px;color:white;}
 .main{padding:0 0 15px 35px;width:600px;}
-.footer{background:url("images/footer.jp") no-repeat scroll 0 0 transparent;color:white;height:88px;line-height:145%;padding:0;position:relative;}
+.footer{color:white;height:88px;line-height:145%;padding:0;position:relative;}
 #logoTitle{outline:none;display:block;font-family:"Microsoft YaHei";height:50px;text-decoration:none;color:white;}
 .sub-title{border-top:1px solid #FFFFFF;color:#FFFFFF;font-size:18px;padding:0 3px;}
 #header-navi{background:none repeat scroll 0 0 #FFFFFF;border-bottom:1px solid #A6A6A6;}
