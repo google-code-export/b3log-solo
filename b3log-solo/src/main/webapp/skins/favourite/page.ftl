@@ -32,7 +32,9 @@
                             <div class="article-body">
                                 <div class="note">
                                     <div class="corner"></div>
+                                    <div class="substance">
                                     ${page.pageContent}
+                                    </div>
                                 </div>
                             </div>
                         </div>

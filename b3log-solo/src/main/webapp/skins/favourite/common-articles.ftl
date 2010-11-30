@@ -34,7 +34,9 @@
     <div class="article-abstract">
         <div class="note">
             <div class="corner"></div>
+            <div class="substance">
             ${article.articleAbstract}
+            </div>
         </div>
     </div>
     <div class="margin25">
