@@ -2,7 +2,7 @@
 #labels Featured
 #sidebar SideBar
 =B3log Solo 开发手册=
-<wiki:toc max_depth="3" />
+<wiki:toc max_depth="4" />
 ==前提准备==
 在开始搭建开发环境之前，您必须掌握如下知识或技能：
  * 能够使用 Java 开发应用程序 
