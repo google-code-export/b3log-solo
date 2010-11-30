@@ -60,7 +60,7 @@
                                             &nbsp;@&nbsp;<a
                                                 href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
                                                 onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                                onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                                onmouseout="ArticleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                             </#if>
                                         </div>
                                         <div class="right">

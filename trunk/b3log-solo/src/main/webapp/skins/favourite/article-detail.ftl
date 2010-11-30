@@ -145,7 +145,7 @@
                                             &nbsp;@&nbsp;<a
                                                 href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
                                                 onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                                onmouseout="hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                                onmouseout="ArticleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                             </#if>
                                         </div>
                                         <div class="right">
