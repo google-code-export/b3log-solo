@@ -24,7 +24,7 @@ h5{font-size:12px;}
 #header-navi li a.lastNavi:hover{background-position:0 0;}
 #header-navi li.selected a{background-position:0 -62px;}
 #header-navi li.selected a.home{background-position:0 -155px;}
-#statistic{left:180px;position:relative;text-align:left;top:110px;width:100%;}
+#statistic{left:250px;position:relative;text-align:left;top:110px;width:600px;}
 .footer .copyright{padding:60px 0 0 380px;}
 .footer .goTop{background:url("images/icons.gif") no-repeat scroll 0 -304px transparent;color:white;cursor:pointer;line-height:18px;margin:5px 17px 0 0;padding-left:16px;width:25px;}
 .article{padding-bottom:15px;border-top:1px dotted #0184AF;}
@@ -121,4 +121,5 @@ h5{font-size:12px;}
 .note{background:none repeat scroll 0 0 #E7F5F7;margin:40px 0 0 -49px;padding:10px 10px 10px 85px;position:relative;width:574px;z-index:50;}
 .corner {background:url("images/corner.png") no-repeat scroll left top transparent;height:9px;left:0;position:absolute;top:-9px;width:9px;}
 .count{position:relative;top:8px;}
+.substance{ width: 500px;}
 

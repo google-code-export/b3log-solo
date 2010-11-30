@@ -65,7 +65,9 @@
                             <div class="article-body">
                                 <div class="note">
                                     <div class="corner"></div>
+                                    <div class="substance">
                                     ${article.articleContent}
+                                    </div>
                                 </div>
                             </div>
                             <div class="margin25">
