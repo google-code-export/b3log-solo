@@ -20,7 +20,7 @@ var ArticleUtil = function () {
 
 $.extend(ArticleUtil.prototype, {
     commentUtil: {
-        version:"0.0.0.1",
+        version:"0.0.0.2",
         author: "lly219@gmail.com"
     },
     
@@ -94,8 +94,7 @@ $.extend(ArticleUtil.prototype, {
         commentContentHTML = commentContents[0];
         for (var j = 1; j < commentContents.length; j++) {
             var key = commentContents[j].substr(0, 2),
-            emImgHTML = "<img src='/skins/" + skin + "/emotions/em" + key
-            + ".png'/>";
+            emImgHTML = "<img src='/skins/" + skin + "/emotions/em" + key + ".png'/>";
             commentContentHTML += emImgHTML + commentContents[j].slice(3);
         }
         return commentContentHTML;
@@ -105,30 +104,27 @@ $.extend(ArticleUtil.prototype, {
         var c = new Date(time);
         var d=c.getFullYear(),month=c.getMonth()+1,day=c.getDate(),hours=c.getHours(),seconds=c.getSeconds(),minutes=c.getMinutes();
         if(month<10){
-            month="0"+month.toString()
+            month="0"+month.toString();
         }
         if(day<10){
-            day="0"+day.toString()
+            day="0"+day.toString();
         }
         if(hours<10){
-            hours="0"+hours.toString()
+            hours="0"+hours.toString();
         }
         if(minutes<10){
-            minutes="0"+minutes.toString()
+            minutes="0"+minutes.toString();
         }
         if(seconds<10){
-            seconds="0"+seconds.toString()
+            seconds="0"+seconds.toString();
         }
         switch(type){
             case undefined:
                 return d + "-" + month + "-" + day;
-                break;
             case "yyyy-mm-dd hh:mm:ss":
                 return d + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
-                break;
             default:
                 return false;
-                break
         }
     },
 
@@ -142,7 +138,7 @@ $.extend(ArticleUtil.prototype, {
 
         SyntaxHighlighter.config.tagName = "pre";
         SyntaxHighlighter.config.stripBrs = true;
-        SyntaxHighlighter.defaults['toolbar'] = false;
+        SyntaxHighlighter.defaults.toolbar = false;
         SyntaxHighlighter.all();
 
         // submit comment
@@ -166,17 +162,13 @@ $.extend(ArticleUtil.prototype, {
                 for (var i = 0; i < randomArticles.length; i++) {
                     var article = randomArticles[i];
                     var title = article.articleTitle;
-                    var randomArticleLiHtml = "<li>"
-                    + "<a href='" + article.articlePermalink +"'>"
-                    +  title + "</a></li>"
-                    listHtml += randomArticleLiHtml
+                    var randomArticleLiHtml = "<li>" + "<a href='" + article.articlePermalink +"'>" +  title + "</a></li>";
+                    listHtml += randomArticleLiHtml;
                 }
 
                 var randomArticlesDiv = $("#randomArticles");
                 randomArticlesDiv.attr("class", "article-relative");
-                var randomArticleListHtml = "<h5>" + ArticleUtil.tip.randomArticles + "</h5>"
-                + "<ul class='marginLeft12'>"
-                + listHtml + "</ul>";
+                var randomArticleListHtml = "<h5>" + ArticleUtil.tip.randomArticles + "</h5>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
                 randomArticlesDiv.append(randomArticleListHtml);
             }
         });
@@ -199,7 +191,7 @@ $.extend(ArticleUtil.prototype, {
                     left: horizontal + 'px'
                 }, openspeed);
                 vertical = vertical + 36;
-                horizontal = (horizontal+.42)*2;
+                horizontal = (horizontal + 0.42) * 2;
             });
             $el.next().animate({
                 top: '-21px',
