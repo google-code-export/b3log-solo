@@ -53,14 +53,11 @@ import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.filter.FilterModule;
-import org.b3log.solo.google.GoogleModule;
 import org.b3log.solo.model.Link;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.sync.SyncModule;
-import org.b3log.solo.upgrade.UpgradeModule;
 import org.b3log.solo.util.PreferenceUtils;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
@@ -69,7 +66,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, Nov 24, 2010
+ * @version 1.0.2.9, Nov 30, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -154,15 +151,12 @@ public final class SoloServletListener extends AbstractServletListener {
         if (null == ret) {
             LOGGER.info("Initializing Guice....");
             setInjector(Guice.createInjector(Stage.PRODUCTION,
-                                             new FilterModule(),
-                                             new ActionModule(),
+                                             new ActionModule(), // Only on servlet module
                                              new JSONRpcServiceModule(),
                                              new RepositoryModule(),
                                              new EventModule(),
                                              new SyncModule(),
-                                             new UtilModule(),
-                                             new UpgradeModule(),
-                                             new GoogleModule()));
+                                             new UtilModule()));
         }
 
         return ret;
