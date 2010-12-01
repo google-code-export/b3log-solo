@@ -176,9 +176,9 @@ $.extend(ArticleUtil.prototype, {
         });
     },
 
-    loadTool: function () {
+    loadTool: function (articleId) {
         // article view count
-        jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, "${article.oId}");
+        jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, articleId);
 
         // Stack initialize
         var openspeed = 300;
