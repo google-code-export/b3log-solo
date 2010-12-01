@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-var ArticleUtil = function () {
+var ArticleUtil = function (tip) {
     this.currentCommentId = "";
+    this.tip = tip;
 };
 
 $.extend(ArticleUtil.prototype, {
@@ -43,19 +44,19 @@ $.extend(ArticleUtil.prototype, {
         var commentName = $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
         commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
         if (2 > commentName.length || commentName.length > 20) {
-            $("#commentErrorTip" + state).html(ArticleUtil.tip.nameTooLong);
+            $("#commentErrorTip" + state).html(this.tip.nameTooLong);
             $("#commentName" + state).focus();
         } else if ($("#commentEmail" + state).val().replace(/\s/g, "") === "") {
-            $("#commentErrorTip" + state).html(ArticleUtil.tip.mailCannotEmpty);
+            $("#commentErrorTip" + state).html(this.tip.mailCannotEmpty);
             $("#commentEmail" + state).focus();
         } else if(!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#commentEmail" + state).val())) {
-            $("#commentErrorTip" + state).html(ArticleUtil.tip.mailInvalid);
+            $("#commentErrorTip" + state).html(this.tip.mailInvalid);
             $("#commentEmail" + state).focus();
         } else if (2 > commenterContent.length || commenterContent.length > 500) {
-            $("#commentErrorTip" + state).html(ArticleUtil.tip.commentContentCannotEmpty);
+            $("#commentErrorTip" + state).html(this.tip.commentContentCannotEmpty);
             $("#comment" + state).focus();
         } else if ($("#commentValidate" + state).val().replace(/\s/g, "") === "") {
-            $("#commentErrorTip" + state).html(ArticleUtil.tip.captchaCannotEmpty);
+            $("#commentErrorTip" + state).html(this.tip.captchaCannotEmpty);
             $("#commentValidate" + state).focus();
         } else {
             return true;
@@ -150,6 +151,7 @@ $.extend(ArticleUtil.prototype, {
     },
 
     loadRandomArticles: function () {
+        var randomArticlesLabel = this.tip.randomArticles;
         // getRandomArticles
         jsonRpc.articleService.getRandomArticles(function (result, error) {
             if (result && !error) {
@@ -168,7 +170,7 @@ $.extend(ArticleUtil.prototype, {
 
                 var randomArticlesDiv = $("#randomArticles");
                 randomArticlesDiv.attr("class", "article-relative");
-                var randomArticleListHtml = "<h5>" + ArticleUtil.tip.randomArticles + "</h5>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
+                var randomArticleListHtml = "<h5>" + randomArticlesLabel + "</h5>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
                 randomArticlesDiv.append(randomArticleListHtml);
             }
         });
@@ -238,5 +240,3 @@ $.extend(ArticleUtil.prototype, {
         });
     }
 });
-
-ArticleUtil = new ArticleUtil();

@@ -128,7 +128,7 @@
                                             &nbsp;@&nbsp;<a
                                                 href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
                                                 onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                                onmouseout="ArticleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                                onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                             </#if>
                                         </div>
                                         <div class="right">
@@ -225,14 +225,14 @@
                 </div>
                 <script type="text/javascript" src="/js/articleUtil.js"></script>
                 <script type="text/javascript">
-                    ArticleUtil.tip = {
+                    var articleUtil = new ArticleUtil({
                         nameTooLong: "${nameTooLongLabel}",
                         mailCannotEmpty: "${mailCannotEmptyLabel}",
                         mailInvalid: "${mailInvalidLabel}",
                         commentContentCannotEmpty: "${commentContentCannotEmptyLabel}",
                         captchaCannotEmpty: "${captchaCannotEmptyLabel}",
                         randomArticles: "${randomArticles1Label}"
-                    };
+                    });
 
                     var addComment = function (result, state) {
                         if (state === undefined) {
@@ -249,25 +249,25 @@
                             commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
                                 + result.oId + '">' + $("#commentName" + state).val() + '</a>';
                         }
-                        commentHTML += '</div><div class="left comment-info"><div class="left">' + ArticleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss');
+                        commentHTML += '</div><div class="left comment-info"><div class="left">' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss');
                         if (state !== "") {
-                            var commentOriginalCommentName = $("#commentItem" + ArticleUtil.currentCommentId).find(".comment-author a").text();
-                            commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + ArticleUtil.currentCommentId + '"'
-                                + 'onmouseover="showComment(this, \'' + ArticleUtil.currentCommentId + '\');"'
-                                + 'onmouseout="ArticleUtil.hideComment(\'' + ArticleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                            var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId).find(".comment-author a").text();
+                            commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + articleUtil.currentCommentId + '"'
+                                + 'onmouseover="showComment(this, \'' + articleUtil.currentCommentId + '\');"'
+                                + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                         }
                         commentHTML += '</div><div class="right"> <a class="noUnderline" href="javascript:replyTo(\''
                             + result.oId + '\');">${replyLabel}</a>'
                             +'</div><div class="clear"></div><div class="comment-content">'
-                            + ArticleUtil.replaceEmotions($("#comment" + state).val(), "i-nove")
+                            + articleUtil.replaceEmotions($("#comment" + state).val(), "i-nove")
                             + '</div></div><div class="clear"></div></div></div>';
 
-                        ArticleUtil.addCommentAjax(commentHTML, state);
+                        articleUtil.addCommentAjax(commentHTML, state);
                         $("#comments").addClass("comments");
                     }
 
                     var replyTo = function (id) {
-                        if (id === ArticleUtil.currentCommentId) {
+                        if (id === articleUtil.currentCommentId) {
                             $("#commentNameReply").focus();
                             return;
                         } else {
@@ -297,15 +297,15 @@
                                 }
                             });
 
-                            ArticleUtil.insertEmotions("Reply");
+                            articleUtil.insertEmotions("Reply");
 
                             $("#commentNameReply").focus();
                         }
-                        ArticleUtil.currentCommentId = id;
+                        articleUtil.currentCommentId = id;
                     }
 
                     var submitCommentReply = function (id) {
-                        if (ArticleUtil.validateComment("Reply")) {
+                        if (articleUtil.validateComment("Reply")) {
                             $("#commentErrorTipReply").html("${loadingLabel}");
                             var requestJSONObject = {
                                 "oId": "${article.oId}",
@@ -337,7 +337,7 @@
                     }
 
                     var submitComment = function () {
-                        if (ArticleUtil.validateComment()) {
+                        if (articleUtil.validateComment()) {
                             $("#commentErrorTip").html("${loadingLabel}");
                             var requestJSONObject = {
                                 "oId": "${article.oId}",
@@ -389,11 +389,11 @@
                         }
                         
                         // emotions
-                        ArticleUtil.insertEmotions();
+                        articleUtil.insertEmotions();
                         replaceCommentsEm("#comments .comment-content");
 
-                        ArticleUtil.load();
-                        ArticleUtil.loadRandomArticles();
+                        articleUtil.load();
+                        articleUtil.loadRandomArticles();
 
                         // externalRelevantArticles
                             <#if 0 != externalRelevantArticlesDisplayCount>
@@ -451,7 +451,7 @@
         </div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
-            ArticleUtil.loadTool();
+            articleUtil.loadTool();
         </script>
     </body>
 </html>
