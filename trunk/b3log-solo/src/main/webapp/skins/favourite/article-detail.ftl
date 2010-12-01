@@ -229,14 +229,14 @@
                 <div class="roundbottom"></div>
                 <script type="text/javascript" src="/js/articleUtil.js"></script>
                 <script type="text/javascript">
-                    articleUtil.tip = {
+                    var articleUtil = new ArticleUtil({
                         nameTooLong: "${nameTooLongLabel}",
                         mailCannotEmpty: "${mailCannotEmptyLabel}",
                         mailInvalid: "${mailInvalidLabel}",
                         commentContentCannotEmpty: "${commentContentCannotEmptyLabel}",
                         captchaCannotEmpty: "${captchaCannotEmptyLabel}",
                         randomArticles: "${randomArticles1Label}"
-                    };
+                    });
 
                     var addComment = function (result, state) {
                         if (state === undefined) {
