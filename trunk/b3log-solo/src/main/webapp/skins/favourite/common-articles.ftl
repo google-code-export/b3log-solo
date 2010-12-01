@@ -55,9 +55,9 @@
         </div>
         <a href="${article.articlePermalink}#comments" class="left">
             <span class="left articles-commentIcon" title="${commentLabel}"></span>
-            <span class="count">${article.articleCommentCount}<span>
+            <span class="count">${article.articleCommentCount}</span>
         </a>
-        <div class="right">
+        <div class="right more">
         <a href="${article.articlePermalink}" class="right">
             ${readmoreLabel}
         </a>

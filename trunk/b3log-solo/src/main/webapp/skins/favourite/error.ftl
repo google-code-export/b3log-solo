@@ -34,7 +34,7 @@
                 <div class="roundtop"></div>
                 <div class="error-body">
                     <div class="left main">
-                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=61357158&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:61357158:43" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
+                        <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=61357158&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:61357158:43" alt="点击这里给我发消息" title="点击这里给我发消息" /></a>
                         <div class="error-panel">
                             <h1 class="error-title">${notFoundLabel}</h1>
                             <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
@@ -59,6 +59,7 @@
                 <span style="color: blue;">G</span>&nbsp;
                 <span style="color: orangered; font-weight: bold;">Solo</span></a>,
                 ver ${version}
+            </div>
             </div>
         </div>
         <script type="text/javascript">
