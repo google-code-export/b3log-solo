@@ -18,6 +18,7 @@ package org.b3log.solo.action.feed;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,11 +26,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.abdera.Abdera;
-import org.apache.abdera.factory.Factory;
-import org.apache.abdera.model.Entry;
-import org.apache.abdera.model.Feed;
-import org.apache.abdera.model.Text.Type;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.SortDirection;
@@ -44,7 +40,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Nov 8, 2010
+ * @version 1.0.1.0, Dec 1, 2010
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -57,10 +53,6 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
      */
     @Inject
     private ArticleRepository articleRepository;
-    /**
-     * Feed factory.
-     */
-    private Factory feedFactory = Abdera.getNewFactory();
     /**
      * Preference utilities.
      */
@@ -78,14 +70,14 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
         response.setContentType("application/atom+xml");
         response.setCharacterEncoding("UTF-8");
 
-        final Feed feed = feedFactory.newFeed();
+        final Feed feed = new Feed();
         try {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
-            
+
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
                     Preference.BLOG_SUBTITLE);
@@ -94,8 +86,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
             feed.setTitle(blogTitle);
             feed.setSubtitle(blogSubtitle);
             feed.setUpdated(new Date());
-            feed.addAuthor(blogTitle);
-            feed.addLink("http://" + blogHost);
+            feed.setAuthor(blogTitle);
+            feed.setLink("http://" + blogHost);
 
             final Map<String, SortDirection> sorts =
                     new HashMap<String, SortDirection>();
@@ -106,7 +98,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-                final Entry entry = feed.addEntry();
+                final Entry entry = new Entry();
+                feed.addEntry(entry);
                 final String title = article.getString(Article.ARTICLE_TITLE);
                 final String summary = StringEscapeUtils.escapeHtml(article.
                         getString(Article.ARTICLE_ABSTRACT));
@@ -117,14 +110,16 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                         Article.ARTICLE_PERMALINK);
 
                 entry.setTitle(title);
-                entry.addLink(link);
+                entry.setLink(link);
                 entry.setId(id);
                 entry.setUpdated(updated);
-                entry.setSummary(StringEscapeUtils.unescapeHtml(summary),
-                                 Type.HTML);
+                entry.setSummary(summary);
             }
 
-            feed.getDocument().writeTo(response.getOutputStream());
+            final PrintWriter writer = response.getWriter();
+            System.out.println("~~~~~~~~~~~: " + feed.toString());
+            writer.write(feed.toString());
+            writer.close();
         } catch (final Exception e) {
             throw new IOException(e);
         }
