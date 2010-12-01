@@ -18,6 +18,7 @@ package org.b3log.solo.action.feed;
 
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,11 +26,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.abdera.Abdera;
-import org.apache.abdera.factory.Factory;
-import org.apache.abdera.model.Entry;
-import org.apache.abdera.model.Feed;
-import org.apache.abdera.model.Text.Type;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.solo.model.Article;
@@ -46,7 +42,7 @@ import org.json.JSONObject;
  * Tag articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 4, 2010
+ * @version 1.0.0.7, Dec 1, 2010
  */
 public final class TagArticlesFeedServlet extends HttpServlet {
 
@@ -70,10 +66,6 @@ public final class TagArticlesFeedServlet extends HttpServlet {
     @Inject
     private TagArticleRepository tagArticleRepository;
     /**
-     * Feed factory.
-     */
-    private Factory feedFactory = Abdera.getNewFactory();
-    /**
      * Preference utilities.
      */
     @Inject
@@ -94,7 +86,7 @@ public final class TagArticlesFeedServlet extends HttpServlet {
         final String oIdMap = queryString.split("&")[0];
         final String tagId = oIdMap.split("=")[1];
 
-        final Feed feed = feedFactory.newFeed();
+        final Feed feed = new Feed();
         try {
             final JSONObject tagArticleResult =
                     tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
@@ -127,12 +119,13 @@ public final class TagArticlesFeedServlet extends HttpServlet {
             feed.setTitle(blogTitle);
             feed.setSubtitle(blogSubtitle);
             feed.setUpdated(new Date());
-            feed.addAuthor(blogTitle);
-            feed.addLink("http://" + blogHost);
+            feed.setAuthor(blogTitle);
+            feed.setLink("http://" + blogHost);
 
             for (int i = 0; i < articles.size(); i++) {
                 final JSONObject article = articles.get(i);
-                final Entry entry = feed.addEntry();
+                final Entry entry = new Entry();
+                feed.addEntry(entry);
                 final String title = article.getString(Article.ARTICLE_TITLE);
                 final String summary = StringEscapeUtils.escapeHtml(
                         article.getString(Article.ARTICLE_ABSTRACT));
@@ -143,14 +136,15 @@ public final class TagArticlesFeedServlet extends HttpServlet {
                         Article.ARTICLE_PERMALINK);
 
                 entry.setTitle(title);
-                entry.addLink(link);
+                entry.setLink(link);
                 entry.setId(id);
                 entry.setUpdated(updated);
-                entry.setSummary(StringEscapeUtils.unescapeHtml(summary),
-                                 Type.HTML);
+                entry.setSummary(summary);
             }
 
-            feed.getDocument().writeTo(response.getOutputStream());
+            final PrintWriter writer = response.getWriter();
+            writer.write(feed.toString());
+            writer.close();
         } catch (final Exception e) {
             throw new IOException(e);
         }
