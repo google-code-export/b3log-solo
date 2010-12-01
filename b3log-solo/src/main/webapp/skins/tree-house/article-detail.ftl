@@ -487,7 +487,7 @@
         <div class='goBottomIcon' onclick='goBottom();'></div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
-            articleUtil.loadTool();
+            articleUtil.loadTool("${article.oId}");
         </script>
     </body>
 </html>
