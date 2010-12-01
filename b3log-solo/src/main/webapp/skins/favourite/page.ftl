@@ -145,7 +145,7 @@
             </div>
         </div>
         <div class="footer">
-            <div class="footer-icon"></div>
+            <div class="footer-icon"><#include "statistic.ftl"></div>
             <#include "article-footer.ftl">
         </div>
         <script type="text/javascript" src="/js/articleUtil.js"></script>
