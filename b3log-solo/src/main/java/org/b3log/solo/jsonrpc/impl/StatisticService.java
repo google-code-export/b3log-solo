@@ -16,10 +16,8 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.util.logging.Logger;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
@@ -31,7 +29,7 @@ import org.json.JSONObject;
  * Statistic service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 10, 2010
+ * @version 1.0.0.3, Dec 1, 2010
  */
 public final class StatisticService extends AbstractGAEJSONRpcService {
 
@@ -77,37 +75,5 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
-    }
-
-    /**
-     * Blog view count +1.
-     */
-    public void incBlogViewCount() {
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        try {
-            statistics.incBlogViewCount();
-            transaction.commit();
-        } catch (final Exception e) {
-            transaction.rollback();
-            LOGGER.severe(e.getMessage());
-        }
-    }
-
-    /**
-     * View count +1 for an article specified by the given article id.
-     * .
-     * @param articleId the given article id
-     */
-    public void incArticleViewCount(final String articleId) {
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        try {
-            articleUtils.incArticleViewCount(articleId);
-            transaction.commit();
-        } catch (final Exception e) {
-            transaction.rollback();
-            LOGGER.severe(e.getMessage());
-        }
     }
 }

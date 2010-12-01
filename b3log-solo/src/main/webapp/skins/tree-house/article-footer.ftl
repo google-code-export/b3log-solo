@@ -74,8 +74,6 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
                 }
             });
         }
-
-        jsonRpc.statisticService.incBlogViewCount();
     }
     initIndex();
 </script>

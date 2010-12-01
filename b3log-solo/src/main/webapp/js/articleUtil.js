@@ -177,9 +177,6 @@ $.extend(ArticleUtil.prototype, {
     },
 
     loadTool: function (articleId) {
-        // article view count
-        jsonRpc.statisticService.incArticleViewCount(function (result, error) {}, articleId);
-
         // Stack initialize
         var openspeed = 300;
         var closespeed = 300;
