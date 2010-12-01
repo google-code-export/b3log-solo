@@ -14,7 +14,7 @@
 {{{
 dev_appserver.cmd ${solo.war}
 }}}
-等启动完毕后，在浏览器中访问：[http://localhost:8080/init.do]
+等启动完毕后，在浏览器中访问：[http://localhost:8080/init.do] 进行初始化。
 
 _注_：
 在本地测试环境下可能
@@ -39,7 +39,10 @@ _注_：
 appcfg.cmd update ${solo.war}
 }}}
 </ol>
+等部署完毕后，在浏览器中访问：[http://${application-id}.appspot.com/init.do] 进行初始化。
 
+_注意_：<br/>
+初始化功能请按照初始化向导谨慎使用。
 ==配置==
 ===基本配置===
 在*初次*部署完毕后，*必须*对 Solo 进行基本配置，步骤如下：
