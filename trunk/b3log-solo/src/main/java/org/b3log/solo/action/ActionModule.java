@@ -31,17 +31,24 @@ import org.b3log.solo.action.file.BlobStoreFileAccessServlet;
 import org.b3log.solo.action.file.DataStoreFileAccessServlet;
 import org.b3log.solo.action.gae.LiveServlet;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
-import org.b3log.solo.auth.AuthFilter;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
 import org.b3log.solo.action.impl.InitAction;
 import org.b3log.solo.action.impl.PageAction;
+import org.b3log.solo.filter.FilterModule;
+import org.b3log.solo.google.GoogleModule;
+import org.b3log.solo.upgrade.UpgradeModule;
 
 /**
  * Action module for <a href="http://code.google.com/p/google-guice/">
  * Guice</a> configurations.
  *
+ * <p>
+ * All servlets and filters MUST be configured in this module. If another module
+ * is also a servlet module, installs it in this module.
+ * </p>
+ *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Nov 24, 2010
+ * @version 1.0.1.7, Nov 30, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -52,12 +59,26 @@ public final class ActionModule extends AbstractActionModule {
         putJabsorbInitParam("gzip_threshold", "-1");
     }
 
+    /**
+     * {@inheritDoc}
+     * And actions.
+     *
+     * <p>
+     *   Modules:
+     *   <ul>
+     *     <li>{@link FilterModule}</li>
+     *     <li>{@link GoogleModule}</li>
+     *     <li>{@link UpgradeModule}</li>
+     *   </ul>
+     * </p>
+     */
     @Override
     protected void configureServlets() {
         super.configureServlets();
 
-        bind(AuthFilter.class).in(Scopes.SINGLETON);
-        filter("/admin-index.do").through(AuthFilter.class);
+        install(new FilterModule());
+        install(new GoogleModule());
+        install(new UpgradeModule());
 
         bind(InitAction.class).in(Scopes.SINGLETON);
         serve("/init.do").with(InitAction.class);
