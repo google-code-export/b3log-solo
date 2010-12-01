@@ -16,11 +16,13 @@
 
 package org.b3log.solo.util;
 
+import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.net.URLDecoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.impl.TagsAction;
 import org.b3log.solo.repository.ArticleRepository;
@@ -32,7 +34,7 @@ import org.json.JSONObject;
  * Page cache key utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 25, 2010
+ * @version 1.0.0.3, Dec 1, 2010
  */
 public final class PageCacheKeys {
 
@@ -56,6 +58,11 @@ public final class PageCacheKeys {
      */
     @Inject
     private TagRepository tagRepository;
+    /**
+     * Article utilities.
+     */
+    @Inject
+    private ArticleUtils articleUtils;
 
     /**
      * Gets page cache key by the specified URI and query string.
@@ -76,8 +83,10 @@ public final class PageCacheKeys {
 
             final JSONObject article = articleRepository.getByPermalink(uri);
             if (null != article) {
+                final String articleId = article.getString(Keys.OBJECT_ID);
                 ret = "/article-detail.do?oId="
-                      + article.getString(Keys.OBJECT_ID);
+                      + articleId;
+                incArticleViewCount(articleId);
 
                 return ret;
             }
@@ -118,5 +127,22 @@ public final class PageCacheKeys {
         }
 
         return ret;
+    }
+
+    /**
+     * View count +1 for an article specified by the given article id.
+     * .
+     * @param articleId the given article id
+     */
+    private void incArticleViewCount(final String articleId) {
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            articleUtils.incArticleViewCount(articleId);
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.severe(e.getMessage());
+        }
     }
 }

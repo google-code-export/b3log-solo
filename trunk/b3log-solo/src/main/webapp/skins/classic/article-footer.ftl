@@ -143,7 +143,6 @@ ver ${version}
                 }
             });
         }
-        jsonRpc.statisticService.incBlogViewCount(function (result, error) {});
     }
     initIndex();
     

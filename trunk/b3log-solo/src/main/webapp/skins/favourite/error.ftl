@@ -77,7 +77,6 @@
                         $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
                     }
                 });
-                jsonRpc.statisticService.incBlogViewCount(function (result, error) {});
             }
             initIndex();
 
