@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action;
 
 /**
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Nov 15, 2010
+ * @version 1.0.1.6, Dec 2, 2010
  */
 public enum StatusCodes {
 
@@ -180,4 +179,12 @@ public enum StatusCodes {
      * Indicates initializes B3log Solo successfully.
      */
     INIT_B3LOG_SOLO_SUCC,
+    /**
+     * Indicates cancel publish an article successfully.
+     */
+    CANCEL_PUBLISH_ARTICLE_SUCC,
+    /**
+     * Indicates cancel publish an article fails.
+     */
+    CANCEL_PUBLISH_ARTICLE_FAIL_,
 }

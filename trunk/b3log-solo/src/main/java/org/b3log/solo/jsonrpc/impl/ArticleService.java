@@ -304,6 +304,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *     "articleTitle": "",
      *     "articleAbstract": "",
      *     "articleContent": "",
+     *     "articleIsPublished": boolean
      *     "articleTags": [{
      *         "oId": "",
      *         "tagTitle": ""
@@ -341,6 +342,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
 
             article.put(ARTICLE_TAGS_REF, tags);
+            // XXX: Remove unused properties
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLE_SUCC);
 
             LOGGER.log(Level.FINER, "Got an article[oId={0}]", articleId);
@@ -355,6 +357,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     /**
      * Gets articles(by crate date descending) by the specified request json
      * object.
+     *
+     * <p>
+     * If the property "articleIsPublished" of the specified request json object
+     * is {@code true}, the returned articles all are unpublished, {@code false}
+     * otherwise.
+     * </p>
      * 
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -376,12 +384,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *     "articles": [{
      *         "oId": "",
      *         "articleTitle": "",
-     *         "articleAbstract": "",
      *         "articleCommentCount": int,
      *         "articleCreateDate"; java.util.Date,
      *         "articleViewCount": int,
      *         "articleTags": "tag1, tag2, ....",
-     *         "topArticle": boolean
+     *         "articlePutTop": boolean,
+     *         "articleIsPublished": boolean
      *      }, ....]
      *     "sc": "GET_ARTICLES_SUCC"
      * }
@@ -428,6 +436,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 final JSONObject article = articles.getJSONObject(i);
                 // Remove unused properties
                 article.remove(ARTICLE_CONTENT);
+                article.remove(ARTICLE_ABSTRACT);
                 article.remove(ARTICLE_UPDATE_DATE);
             }
             ret.put(ARTICLES, articles);
