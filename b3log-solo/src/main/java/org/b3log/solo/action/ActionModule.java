@@ -48,7 +48,7 @@ import org.b3log.solo.upgrade.UpgradeModule;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Nov 30, 2010
+ * @version 1.0.1.8, Dec 2, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -112,7 +112,8 @@ public final class ActionModule extends AbstractActionModule {
               "/admin-article-sync.do",
               "/admin-file-list.do",
               "/admin-page.do",
-              "/admin-others.do").with(AdminDoNothingAction.class);
+              "/admin-others.do",
+              "/admin-draft-list.do").with(AdminDoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
