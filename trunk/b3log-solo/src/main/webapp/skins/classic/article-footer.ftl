@@ -158,6 +158,7 @@ ver ${version}
     
     // article-side.ftl user introduction
     function handleResponse (response) {
+        // TODO: issue 97
         if ($("#sideNavi").length > 0) {
             var userInfo = {};
             var userIntroHTML = "";
@@ -184,4 +185,3 @@ ver ${version}
         }
     }
 </script>
-<script type="text/javascript" src="http://www.googleapis.com/buzz/v1/people/${userEmail}/@self?alt=json&callback=handleResponse"></script>
