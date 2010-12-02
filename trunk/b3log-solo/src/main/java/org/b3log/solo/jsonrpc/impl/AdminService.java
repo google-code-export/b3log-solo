@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Nov 17, 2010
+ * @version 1.0.0.8, Dec 2, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -323,8 +323,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                     Preference.Default.DEFAULT_BLOG_SUBTITLE);
             ret.put(BLOG_HOST,
                     Preference.Default.DEFAULT_BLOG_HOST);
-            ret.put(ADMIN_GMAIL,
-                    Preference.Default.DEFAULT_ADMIN_GMAIL);
+            ret.put(ADMIN_EMAIL, // Current logged in adminstrator's email
+                    userService.getCurrentUser().getEmail());
             ret.put(LOCALE_STRING,
                     Preference.Default.DEFAULT_LANGUAGE);
 

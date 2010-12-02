@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Oct 26, 2010
+ * @version 1.0.1.4, Dec 2, 2010
  */
 public final class Preference {
 
@@ -92,9 +92,9 @@ public final class Preference {
      */
     public static final String BLOG_HOST = "blogHost";
     /**
-     * Administrator's Gmail.
+     * Administrator's email.
      */
-    public static final String ADMIN_GMAIL = "adminGmail";
+    public static final String ADMIN_EMAIL = "adminEmail";
     /**
      * Locale string.
      */
@@ -148,7 +148,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.2, Nov 1, 2010
+     * @version 1.0.0.3, Dec 2, 2010
      */
     public static final class Default {
 
@@ -189,10 +189,6 @@ public final class Preference {
          * Default skin directory name.
          */
         public static final String DEFAULT_SKIN_DIR_NAME = "classic";
-        /**
-         * Default administrator mail.
-         */
-        public static final String DEFAULT_ADMIN_GMAIL = "b3log.solo@gmail.com";
         /**
          * Default blog host.
          */

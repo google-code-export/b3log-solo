@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing article comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 11, 2010
+ * @version 1.0.0.6, Dec 2, 2010
  */
 public final class ArticleCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -115,15 +115,15 @@ public final class ArticleCommentReplyNotifier
             
             final String blogTitle =
                     preference.getString(Preference.BLOG_TITLE);
-            final String adminGmail =
-                    preference.getString(Preference.ADMIN_GMAIL);
+            final String adminEmail =
+                    preference.getString(Preference.ADMIN_EMAIL);
 
             final String commentContent =
                     comment.getString(Comment.COMMENT_CONTENT);
             final String commentSharpURL =
                     comment.getString(Comment.COMMENT_SHARP_URL);
             final Message message = new Message();
-            message.setSender(adminGmail);
+            message.setSender(adminEmail);
             message.setTo(originalCommentEmail);
             final String mailSubject = blogTitle + ": New reply of your comment";
             message.setSubject(mailSubject);

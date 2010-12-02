@@ -16,12 +16,13 @@
 
 package org.b3log.solo.action.util;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.ArticleUtils;
@@ -32,7 +33,6 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.ArchiveDate;
@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Nov 23, 2010
+ * @version 1.0.1.7, Dec 2, 2010
  */
 public final class Filler {
 
@@ -109,6 +109,11 @@ public final class Filler {
      */
     @Inject
     private StatisticRepository statisticRepository;
+    /**
+     * User service.
+     */
+    private static final UserService USER_SERVICE =
+            UserServiceFactory.getUserService();
 
     /**
      * Fills articles in index.ftl.
@@ -344,9 +349,6 @@ public final class Filler {
             throw new Exception("Not found preference");
         }
 
-        final String adminGmail = preference.getString(Preference.ADMIN_GMAIL);
-        LOGGER.log(Level.FINER, "Current user[userId={0}]", adminGmail);
-        dataModel.put(User.USER_EMAIL, adminGmail);
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
         final String blogHost = preference.getString(Preference.BLOG_HOST);
