@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -175,8 +174,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleAbstract": "",
      *         "articleContent": "",
      *         "articleTags": "tag1,tag2,tag3",
-     *         "articlePermalink": ""
-     *     },
+     *         "articlePermalink": "",
+     *         "articleIsPublished": boolean
+     *     }
      * }
      * </pre>
      * @param request the specified http servlet request
@@ -260,12 +260,15 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_PERMALINK, permalink);
             // Step 10: Update article
             articleRepository.update(articleId, article);
-            // Step 11: Fire add article event
-            final JSONObject eventData = new JSONObject();
-            eventData.put(ARTICLE, article);
-            eventData.put(Keys.RESULTS, ret);
-            eventManager.fireEventSynchronously(
-                    new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                // Fire add article event
+                final JSONObject eventData = new JSONObject();
+                eventData.put(ARTICLE, article);
+                eventData.put(Keys.RESULTS, ret);
+                eventManager.fireEventSynchronously(
+                        new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+            }
 
             transaction.commit();
 
@@ -657,7 +660,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleAbstract": "",
      *         "articleContent": "",
      *         "articleTags": "tag1,tag2,tag3",
-     *         "articlePermalink": ""
+     *         "articlePermalink": "",
+     *         "articleIsPublished": boolean
      *     }
      * }
      * </pre>
