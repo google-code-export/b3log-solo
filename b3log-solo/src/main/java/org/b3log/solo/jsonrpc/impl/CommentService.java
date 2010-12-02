@@ -654,7 +654,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             throw new IOException("Not found preference");
         }
 
-        final String adminEmail = preference.getString(Preference.ADMIN_GMAIL);
+        final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
             LOGGER.log(Level.FINE,
                        "Do not send comment notification mail to admin itself[{0}]",

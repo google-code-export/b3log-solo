@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 20, 2010
+ * @version 1.0.0.8, Dec 2, 2010
  */
 public final class Article {
 
@@ -76,6 +76,14 @@ public final class Article {
      * Key of put top.
      */
     public static final String ARTICLE_PUT_TOP = "articlePutTop";
+    /**
+     * Key of is published.
+     */
+    public static final String ARTICLE_IS_PUBLISHED = "articleIsPublished";
+    /**
+     * Key of author email.
+     */
+    public static final String ARTICLE_AUTHOR_EMAIL = "articleAuthorEmail";
 
     /**
      * Private default constructor.

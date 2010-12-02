@@ -29,7 +29,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
-import org.b3log.latke.model.User;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * Error action. error.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 8, 2010
+ * @version 1.0.0.7, Dec 2, 2010
  */
 public final class ErrorAction extends AbstractAction {
 
@@ -97,8 +96,6 @@ public final class ErrorAction extends AbstractAction {
             ret.put("notFoundLabel", lang.getString("notFoundLabel"));
             ret.put("homeLabel", lang.getString("homeLabel"));
 
-            ret.put(User.USER_EMAIL,
-                    preference.getString(Preference.ADMIN_GMAIL));
             ret.put(Preference.BLOG_TITLE,
                     preference.getString(Preference.BLOG_TITLE));
             ret.put(Preference.BLOG_HOST, blogHost);

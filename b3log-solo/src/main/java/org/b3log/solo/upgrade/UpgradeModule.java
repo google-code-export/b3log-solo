@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.upgrade;
 
 import com.google.inject.Scopes;
@@ -24,7 +23,7 @@ import com.google.inject.servlet.ServletModule;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 15, 2010
+ * @version 1.0.0.3, Dec 2, 2010
  */
 public final class UpgradeModule extends ServletModule {
 
@@ -40,5 +39,8 @@ public final class UpgradeModule extends ServletModule {
 
         bind(V020ToV021.class).in(Scopes.SINGLETON);
         serve("/upgrade/v020-v021.do").with(V020ToV021.class);
+
+        bind(V021ToV025.class).in(Scopes.SINGLETON);
+        serve("/upgrade/v021-v025.do").with(V021ToV025.class);
     }
 }

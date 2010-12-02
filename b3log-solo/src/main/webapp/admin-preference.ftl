@@ -47,14 +47,6 @@
                     </tr>
                     <tr>
                         <th>
-                            ${adminGmail1Label}
-                        </th>
-                        <td>
-                            <input id="adminGmail"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             ${metaKeywords1Label}
                         </th>
                         <th>
@@ -245,7 +237,6 @@
                     $("#articleListDisplayCount").val(preference.articleListDisplayCount);
                     $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
                     $("#blogHost").val(preference.blogHost);
-                    $("#adminGmail").val(preference.adminGmail);
                     $("#localeString").val(preference.localeString);
                     $("#noticeBoard").val(preference.noticeBoard);
                     $("#htmlHead").val(preference.htmlHead);
@@ -326,7 +317,6 @@
                 "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
                 "skinDirName": $("#skinMain").data("skinDirName"),
                 "blogHost": $("#blogHost").val(),
-                "adminGmail": $("#adminGmail").val(),
                 "localeString": $("#localeString").val(),
                 "noticeBoard": $("#noticeBoard").val(),
                 "htmlHead": $("#htmlHead").val(),
