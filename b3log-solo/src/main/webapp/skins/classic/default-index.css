@@ -40,7 +40,6 @@ h5{font-size:12px;}
 #sideNavi sup{color:green;}
 .side-comment{text-decoration:none;}
 .line{margin-top:12px;padding-top:12px;border-top:thin dotted #BBBBBB;}
-#userIntro img{-moz-border-radius:6px;-webkit-border-radius:6px;border:1px solid #BBCCFF;margin-top:9px;padding:6px;}
 .pagination{text-align:center;margin:16px;}
 .pagination a, .pagination a:visited{color:#4272DB;padding:0 3px;text-decoration:none;}
 .pagination a.selected{color:#000000;font-weight:bold;}
