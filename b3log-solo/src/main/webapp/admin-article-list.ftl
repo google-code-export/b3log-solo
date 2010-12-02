@@ -13,7 +13,8 @@
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
             "paginationPageSize": PAGE_SIZE,
-            "paginationWindowSize": WINDOW_SIZE
+            "paginationWindowSize": WINDOW_SIZE,
+            "articleIsPublished": true
         };
 
         jsonRpc.articleService.getArticles(function (result, error) {

@@ -23,8 +23,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +46,8 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.Filter;
+import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.Strings;
@@ -369,7 +373,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * {
      *     "paginationCurrentPageNum": 1,
      *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10
+     *     "paginationWindowSize": 10,
+     *     "articleIsPublished": boolean
      * }, see {@link Pagination} for more details
      * </pre>
      * @param request the specified http servlet request
@@ -412,13 +417,21 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
+            final boolean articleIsPublished =
+                    requestJSONObject.optBoolean(ARTICLE_IS_PUBLISHED, true);
 
             final Map<String, SortDirection> sorts =
                     new HashMap<String, SortDirection>();
             sorts.put(ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
             sorts.put(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+            final Set<Filter> filters = new HashSet<Filter>();
+            filters.add(new Filter(ARTICLE_IS_PUBLISHED,
+                                   FilterOperator.EQUAL,
+                                   articleIsPublished));
             final JSONObject result =
-                    articleRepository.get(currentPageNum, pageSize, sorts);
+                    articleRepository.get(currentPageNum, pageSize,
+                                          sorts, filters);
+
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
 
@@ -819,7 +832,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * Cancels publish an article by the specified article id.
      *
      * @param articleId the specified article id
-     * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
