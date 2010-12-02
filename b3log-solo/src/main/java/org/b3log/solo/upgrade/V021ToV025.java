@@ -56,8 +56,8 @@ import org.json.JSONObject;
  *       {@link Article article} entity
  *     </li>
  *     <li>
- *       Renames property name from "adminGmail" to {@value Preference#ADMIN_EMAIL}
- *       of {@link Preference preference} entity.
+ *       Renames property name from {@value #OLD_ADMIN_EMAIL_PROPERTY_NAME} to
+ *       {@value Preference#ADMIN_EMAIL} of {@link Preference preference} entity.
  *     </li>
  *   </ul>
  * </p>
@@ -76,6 +76,11 @@ public final class V021ToV025 extends HttpServlet {
      */
     private static final Logger LOGGER =
             Logger.getLogger(V021ToV025.class.getName());
+    /**
+     * Key of old administrator's email.
+     */
+    private static final String OLD_ADMIN_EMAIL_PROPERTY_NAME =
+            "adminGmail";
     /**
      * Article repository.
      */
@@ -108,9 +113,9 @@ public final class V021ToV025 extends HttpServlet {
                     beginTransaction();
             try {
                 final JSONObject preference = preferenceUtils.getPreference();
-                if (preference.has("adminGmail")) {
+                if (preference.has(OLD_ADMIN_EMAIL_PROPERTY_NAME)) {
                     preference.put(Preference.ADMIN_EMAIL, currentUserEmail);
-                    preference.remove("adminGmail");
+                    preference.remove(OLD_ADMIN_EMAIL_PROPERTY_NAME);
                 }
                 preferenceUtils.setPreference(preference);
                 transaction.commit();
