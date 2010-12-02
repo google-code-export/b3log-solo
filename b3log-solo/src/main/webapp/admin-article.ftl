@@ -1,54 +1,55 @@
-    <table width="100%" cellpadding="0" cellspacing="9px" class="form">
-        <tr>
-            <th>
-                ${title1Label}
-            </th>
-            <td>
-                <input id="title" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                ${content1Label}
-            </th>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                 <textarea id="articleContent" name="articleContent"
-                  style="height: 500px;width:100%;"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                 ${tags1Label}
-            </th>
-            <td>
-                <input id="tag" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th valign="top">
-                ${abstract1Label}
-            </th>
-            <td>
-                <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                ${permalink1Label}
-            </th>
-            <td>
-                 <input id="permalink" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th colspan="2">
-                <button id="submitArticle">${postLabel}</button>
-            </th>
-        </tr>
-    </table>
+<table width="100%" cellpadding="0" cellspacing="9px" class="form">
+    <tr>
+        <th>
+            ${title1Label}
+        </th>
+        <td>
+            <input id="title" type="text"/>
+        </td>
+    </tr>
+    <tr>
+        <th>
+            ${content1Label}
+        </th>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <textarea id="articleContent" name="articleContent"
+                      style="height: 500px;width:100%;"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <th>
+            ${tags1Label}
+        </th>
+        <td>
+            <input id="tag" type="text"/>
+        </td>
+    </tr>
+    <tr>
+        <th valign="top">
+            ${abstract1Label}
+        </th>
+        <td>
+            <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <th>
+            ${permalink1Label}
+        </th>
+        <td>
+            <input id="permalink" type="text"/>
+        </td>
+    </tr>
+    <tr>
+        <th colspan="2">
+            <button class="marginRight12" id="saveArticle">${saveLabel}</button>
+            <button id="submitArticle">${publishLabel}</button>
+        </th>
+    </tr>
+</table>
 <script type="text/javascript">
     var initArticle = function () {
         // submit action
@@ -56,7 +57,14 @@
             if ($("#title").data("oId")) {
                 updateArticle();
             } else {
-                addArticle();
+                addArticle(true);
+            }
+        });
+        $("#saveArticle").click(function () {
+            if ($("#title").data("oId")) {
+                updateArticle();
+            } else {
+                addArticle(false);
             }
         });
 
@@ -121,7 +129,7 @@
         return false;
     }
 
-    var addArticle = function () {
+    var addArticle = function (articleIsPublished) {
         if (validateArticle()) {
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
@@ -132,7 +140,8 @@
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
                     "articleTags": $.bowknot.trimUnique(tagArray).toString(),
-                    "articlePermalink": $("#permalink").val()
+                    "articlePermalink": $("#permalink").val(),
+                    "articleIsPublished": articleIsPublished
                 }
             };
 
@@ -161,9 +170,9 @@
                                     + events.blogSyncBlogJava.msg;
                             }
 
-//                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
-//                                msg += ", ${postToBuzzFailLabel}";
-//                            }
+                            //                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
+                            //                                msg += ", ${postToBuzzFailLabel}";
+                            //                            }
                             $("#tipMsg").text(msg);
                             $("#article-listTab").click();
                         }
