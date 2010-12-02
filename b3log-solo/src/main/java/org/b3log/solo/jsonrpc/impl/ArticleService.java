@@ -766,16 +766,19 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             articleUtils.addTagArticleRelation(tags, article);
             // Step 10: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
-            // Step 11: Fire update article event
-            final JSONObject eventData = new JSONObject();
-            eventData.put(ARTICLE, article);
-            eventData.put(Keys.RESULTS, ret);
-            try {
-                eventManager.fireEventSynchronously(
-                        new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
-                                              eventData));
-            } catch (final EventException e) {
-                LOGGER.severe(e.getMessage());
+
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                // Fire update article event
+                final JSONObject eventData = new JSONObject();
+                eventData.put(ARTICLE, article);
+                eventData.put(Keys.RESULTS, ret);
+                try {
+                    eventManager.fireEventSynchronously(
+                            new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
+                                                  eventData));
+                } catch (final EventException e) {
+                    LOGGER.severe(e.getMessage());
+                }
             }
 
             transaction2.commit();
@@ -792,6 +795,56 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             if (transaction.isActive()) {
                 transaction.rollback();
+            }
+
+            return ret;
+        }
+
+        PageCaches.removeAll();
+
+        return ret;
+    }
+
+    /**
+     * Cancels publish an article by the specified article id.
+     *
+     * @param articleId the specified article id
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *   "sc": "CANCEL_PUBLISH_ARTICLE_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject updateArticle(final String articleId,
+                                    final HttpServletRequest request,
+                                    final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+
+        final JSONObject ret = new JSONObject();
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            article.put(ARTICLE_IS_PUBLISHED, false);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_PUBLISH_ARTICLE_SUCC);
+        } catch (final Exception e) {
+            LOGGER.severe(e.getMessage());
+            transaction.rollback();
+
+            try {
+                ret.put(Keys.STATUS_CODE,
+                        StatusCodes.CANCEL_PUBLISH_ARTICLE_FAIL_);
+            } catch (final JSONException ex) {
+                LOGGER.severe(ex.getMessage());
+                throw new ActionException(e);
             }
 
             return ret;
