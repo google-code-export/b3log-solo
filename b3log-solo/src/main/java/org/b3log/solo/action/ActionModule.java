@@ -113,7 +113,8 @@ public final class ActionModule extends AbstractActionModule {
               "/admin-file-list.do",
               "/admin-page.do",
               "/admin-others.do",
-              "/admin-draft-list.do").with(AdminDoNothingAction.class);
+              "/admin-draft-list.do",
+              "/admin-user-list.do").with(AdminDoNothingAction.class);
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
