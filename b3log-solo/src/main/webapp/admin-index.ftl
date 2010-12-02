@@ -44,7 +44,7 @@
                             <span>&nbsp;${articleListLabel}</span>
                         </li>
                         <li id="draft-listTab" onclick="changeList(this);">
-                            <div class="left draftIcon"></div>
+                            <div class="left draftsIcon"></div>
                             <span>&nbsp;${draftListLabel}</span>
                         </li>
                         <li id="link-listTab" onclick="changeList(this);">
