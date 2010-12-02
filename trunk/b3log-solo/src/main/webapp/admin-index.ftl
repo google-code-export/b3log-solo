@@ -71,6 +71,10 @@
                             <div class="left othersIcon"></div>
                             <span>&nbsp;${othersLabel}</span>
                         </li>
+                        <li id="user-listTab" onclick="changeList(this);">
+                            <div class="left usersIcon"></div>
+                            <span>&nbsp;${userManageLabel}</span>
+                        </li>
                     </ul>
                 </div>
                 <div class="left" id="main">
@@ -92,6 +96,8 @@
                         <div id="file-listPanel" class="none">
                         </div>
                         <div id="othersPanel" class="none">
+                        </div>
+                        <div id="user-listPanel" class="none">
                         </div>
                     </div>
                 </div>
