@@ -1,9 +1,5 @@
 <div id="sideNavi" class="side-navi">
-    <ul id="userIntro">
-        <li></li>
-    </ul>
-    <div class="line"></div>
-    <ul>
+    <ul class="marginTop12">
         <li>
             <h4>${noticeBoardLabel}</h4>
         </li>

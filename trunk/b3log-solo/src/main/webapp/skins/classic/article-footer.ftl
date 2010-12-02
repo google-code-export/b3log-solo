@@ -155,33 +155,4 @@ ver ${version}
         jsonRpc.adminService.clearAllPageCache();
         window.location.reload();
     }
-    
-    // article-side.ftl user introduction
-    function handleResponse (response) {
-        // TODO: issue 97
-        if ($("#sideNavi").length > 0) {
-            var userInfo = {};
-            var userIntroHTML = "";
-            if (response.error) {
-                userInfo.thumbnailUrl = localStorage.getItem("userInfoThumbnailUrl");
-                userInfo.displayName = localStorage.getItem("userInfoDisplayName");
-                userInfo.aboutMe = localStorage.getItem("userInfoAboutMe");
-            } else {
-                userInfo = response.data;
-                localStorage.setItem("userInfoThumbnailUrl", response.data.thumbnailUrl);
-                localStorage.setItem("userInfoDisplayName", response.data.displayName);
-                localStorage.setItem("userInfoAboutMe", response.data.aboutMe);
-            }
-
-            if (null !== userInfo.thumbnailUrl
-                &&  undefined !== userInfo.thumbnailUrl
-                && "" !== userInfo.thumbnailUrl) {
-                userIntroHTML = "<li><img src='" + userInfo.thumbnailUrl + "'/></li>"
-                    + "<li>" + userInfo.displayName + "</li>"
-                    + "<li class='aboutMe'>" + userInfo.aboutMe + "</li>";
-            }
-            
-            $("#userIntro").html(userIntroHTML);
-        }
-    }
 </script>
