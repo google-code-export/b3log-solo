@@ -43,6 +43,10 @@
                             <div class="left articlesIcon"></div>
                             <span>&nbsp;${articleListLabel}</span>
                         </li>
+                        <li id="draft-listTab" onclick="changeList(this);">
+                            <div class="left draftIcon"></div>
+                            <span>&nbsp;${draftListLabel}</span>
+                        </li>
                         <li id="link-listTab" onclick="changeList(this);">
                             <div class="left linkIcon"></div>
                             <span>&nbsp;${linkManagementLabel}</span>
@@ -74,6 +78,8 @@
                         <div id="articlePanel" class="none">
                         </div>
                         <div id="article-listPanel" class="none">
+                        </div>
+                        <div id="draft-listPanel" class="none">
                         </div>
                         <div id="link-listPanel" class="none">
                         </div>
@@ -118,7 +124,7 @@
             }
             
             var changeList = function (it) {
-                var tabs = ['article', 'article-list', 'link-list', 'preference',
+                var tabs = ['article', 'article-list', 'draft-list', 'link-list', 'preference',
                     'article-sync', 'page', 'file-list', 'others'];
                 for (var i = 0; i < tabs.length; i++) {
                     if (it.id === tabs[i] + "Tab") {
@@ -132,6 +138,9 @@
                                     break;
                                 case "article-list":
                                     getArticleList(1);
+                                    break;
+                                case "draft-list":
+                                    getDraftList(1);
                                     break;
                                 case "page":
                                     getPageList(1);
