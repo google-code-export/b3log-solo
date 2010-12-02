@@ -145,7 +145,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * @return injector
      */
     @Override
-    public Injector getInjector() {
+    public synchronized Injector getInjector() {
         final Injector ret = super.getInjector();
 
         if (null == ret) {
