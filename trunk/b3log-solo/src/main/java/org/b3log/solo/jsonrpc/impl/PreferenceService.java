@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 2, 2010
+ * @version 1.0.1.4, Dec 3, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -93,7 +93,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "externalRelevantArticlesDisplayCount": int,
      *         "relevantArticlesDisplayCount": int,
      *         "randomArticlesDisplayCount": int,
-     *         "enablePostToBuzz": boolean
+     *         "enablePostToBuzz": boolean,
+     *         "adminEmail": ""
      *     }
      *     "sc": "GET_PREFERENCE_SUCC"
      * }
@@ -220,6 +221,10 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
                 return ret;
             }
+
+            final JSONObject oldPreference =  preferenceUtils.getPreference();
+            final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
+            preference.put(ADMIN_EMAIL, adminEmail);
 
             preferenceUtils.setPreference(preference);
 
