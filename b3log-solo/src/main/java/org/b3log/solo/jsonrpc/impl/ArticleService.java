@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -503,6 +502,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
+            JSONObject status = ret.optJSONObject(Keys.STATUS);
+            if (null == status) {
+                status = new JSONObject();
+            }
+            ret.put(Keys.STATUS, status);
+
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing an article[oId={0}]", articleId);
             // Step 1: Dec reference count of tag
@@ -537,13 +542,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             transaction2.commit();
 
-            JSONObject status = ret.optJSONObject(Keys.STATUS);
-            if (null == status) {
-                status = new JSONObject();
-            }
-
             status.put(Keys.CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
-            ret.put(Keys.STATUS, status);
+
             LOGGER.log(Level.FINER, "Removed an article[oId={0}]", articleId);
         } catch (final Exception e) {
             if (null != transaction2 && transaction2.isActive()) {
