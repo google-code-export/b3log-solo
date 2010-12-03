@@ -104,6 +104,9 @@ public final class TagUtils {
                 if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
                                publishedRefCnt + 1);
+                } else {
+                    tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                               publishedRefCnt);
                 }
                 tagRepository.update(tagId, tagTmp);
             }
