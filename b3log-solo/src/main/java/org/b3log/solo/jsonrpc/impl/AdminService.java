@@ -103,6 +103,50 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     private PageCacheKeys pageCacheKeys;
 
     /**
+     * Removes a user with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": ""
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "REMOVE_USER_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject removeUser(final JSONObject requestJSONObject,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+        try {
+            final String userId = requestJSONObject.getString(Keys.OBJECT_ID);
+            userRepository.remove(userId);
+            transaction.commit();
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_USER_SUCC);
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+
+    /**
      * Adds a user with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
@@ -153,6 +197,62 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_USER_SUCC);
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Updates a user with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "userName": "",
+     *     "userEmail": ""
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "UPDATE_USER_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject updateUser(final JSONObject requestJSONObject,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+        try {
+            final String oldUserId = requestJSONObject.getString(Keys.OBJECT_ID);
+            JSONObject oldUser = userRepository.get(oldUserId);
+            if (null != oldUser) {
+                userRepository.remove(oldUserId);
+                transaction.commit();
+            }
+            // XXX: GAE transaction isolation
+            // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
+            transaction =
+                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+
+            addUser(requestJSONObject, request, response);
+            transaction.commit();
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

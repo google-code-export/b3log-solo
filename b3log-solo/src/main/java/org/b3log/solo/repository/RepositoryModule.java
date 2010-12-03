@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.repository;
 
 import com.google.inject.Scopes;
@@ -34,13 +33,14 @@ import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.repository.impl.SkinGAERepository;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.impl.UserGAERepository;
 
 /**
  * Repository module for <a href="http://code.google.com/p/google-guice/">
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Oct 29, 2010
+ * @version 1.0.1.7, Dec 4, 2010
  */
 public final class RepositoryModule extends AbstractServiceModule {
 
@@ -83,5 +83,7 @@ public final class RepositoryModule extends AbstractServiceModule {
                 FileGAERepository.class).in(Scopes.SINGLETON);
         bind(PageRepository.class).to(
                 PageGAERepository.class).in(Scopes.SINGLETON);
+        bind(UserRepository.class).to(
+                UserGAERepository.class).in(Scopes.SINGLETON);
     }
 }
