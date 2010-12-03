@@ -159,9 +159,9 @@
                                     jsonRpc.articleService.removeArticle(function (result, error) {
                                         switch (result.status.code) {
                                             case "REMOVE_ARTICLE_SUCC":
-                                                var events = result.status.events;
+                                                var events = result.status.events,
+                                                msg = "${removeSuccLabel}";
                                                 if (events) {
-                                                    var msg = "${removeSuccLabel}";
                                                     if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
                                                         msg += ", ${syncCSDNBlogFailLabel}: "
                                                             + events.blogSyncCSDNBlog.msg;
@@ -176,9 +176,9 @@
                                                         msg += ", ${syncBlogJavaFailLabel}: "
                                                             + events.blogSyncBlogJava.msg;
                                                     }
-                                                    getArticleList(1);
-                                                    $("#tipMsg").text(msg);
                                                 }
+                                                $("#tipMsg").text(msg);
+                                                getArticleList(1);
                                                 break;
                                             case "REMOVE_ARTICLE_FAIL_":
                                                 $("#tipMsg").text("${removeFailLabel}");
