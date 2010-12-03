@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Oct 27, 2010
+ * @version 1.0.1.3, Dec 3, 2010
  */
 public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
@@ -141,7 +141,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             return blogSyncManagementRepository.getByExternalBloggingSystem(
                     externalSys);
         } catch (final JSONException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return null;
@@ -242,7 +242,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                     StatusCodes.SET_BLOG_SYNC_MGMT_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -525,7 +525,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
             ret.put(BLOG_SYNC_EXTERNAL_ARCHIVE_DATES, archiveDates);
         } catch (final JSONException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 

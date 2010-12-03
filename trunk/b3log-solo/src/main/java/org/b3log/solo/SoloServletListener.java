@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, Dec 2, 2010
+ * @version 1.0.3.1, Dec 3, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -177,7 +177,7 @@ public final class SoloServletListener extends AbstractServletListener {
             loadPreference();
             transaction.commit();
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             transaction.rollback();
         }
@@ -188,7 +188,7 @@ public final class SoloServletListener extends AbstractServletListener {
             initDefaultLinks();
             transaction.commit();
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             transaction.rollback();
         }
@@ -317,7 +317,7 @@ public final class SoloServletListener extends AbstractServletListener {
                     CacheFactory.getCache(PREFERENCE);
             userPreferenceCache.put(PREFERENCE, preference.toString());
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             throw new RuntimeException(e);
         }
@@ -326,7 +326,7 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.INFO, "Loaded preference[{0}]",
                        preference.toString(JSON_PRINT_INDENT_FACTOR));
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
     }
@@ -385,7 +385,7 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             jsonRpcBridge.registerSerializer(new StatusCodesSerializer());
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException(e);
         }
     }

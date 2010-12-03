@@ -25,6 +25,7 @@ import com.google.appengine.api.datastore.QueryResultList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
@@ -41,7 +42,7 @@ import org.json.JSONObject;
  * Tag-Article relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 17, 2010
+ * @version 1.0.0.7, Dec 3, 2010
  */
 public final class TagArticleGAERepository extends AbstractGAERepository
         implements TagArticleRepository {
@@ -115,7 +116,7 @@ public final class TagArticleGAERepository extends AbstractGAERepository
                 results.put(e);
             }
         } catch (final JSONException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
 

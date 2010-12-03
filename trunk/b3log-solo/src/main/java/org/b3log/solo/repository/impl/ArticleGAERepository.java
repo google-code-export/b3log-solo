@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 3, 2010
+ * @version 1.0.1.6, Dec 3, 2010
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -234,7 +234,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
 
             super.add(article);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
 

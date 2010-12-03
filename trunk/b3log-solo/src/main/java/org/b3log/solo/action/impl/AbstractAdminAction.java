@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Abstract admin action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 15, 2010
+ * @version 1.0.0.3, Dec 3, 2010
  */
 public abstract class AbstractAdminAction extends AbstractAction {
 
@@ -79,7 +79,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
 
             configuration.setDirectoryForTemplateLoading(new File(webRootPath));
         } catch (final IOException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -131,7 +131,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
         try {
             return configuration.getTemplate(pageName);
         } catch (final IOException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
     }

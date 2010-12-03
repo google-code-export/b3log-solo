@@ -42,7 +42,7 @@ import org.b3log.solo.util.Statistics;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Dec 1, 2010
+ * @version 1.0.1.2, Dec 3, 2010
  * @see #shouldSkip(java.lang.String) 
  */
 public final class PageCacheFilter implements Filter {
@@ -187,7 +187,7 @@ public final class PageCacheFilter implements Filter {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 

@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * This listener is responsible for Google settings load process.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 14, 2010
+ * @version 1.0.0.1, Dec 3, 2010
  */
 public final class GoogleSettingsLoader
         extends AbstractEventListener<JSONObject> {
@@ -80,7 +80,7 @@ public final class GoogleSettingsLoader
                                DEFAULT_ENABLE_POST_TO_BUZZ);
             }
         } catch (final JSONException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException("Load Google settings error!");
         }
     }

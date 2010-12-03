@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Page cache key utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 1, 2010
+ * @version 1.0.0.4, Dec 3, 2010
  */
 public final class PageCacheKeys {
 
@@ -123,7 +123,7 @@ public final class PageCacheKeys {
                 return ret;
             }
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return ret;
@@ -142,7 +142,7 @@ public final class PageCacheKeys {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 }

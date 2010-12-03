@@ -23,6 +23,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultList;
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
  * Archive date-Article relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 17, 2010
+ * @version 1.0.0.4, Dec 3, 2010
  */
 public final class ArchiveDateArticleGAERepository
         extends AbstractGAERepository
@@ -92,7 +93,7 @@ public final class ArchiveDateArticleGAERepository
                 results.put(e);
             }
         } catch (final JSONException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
 

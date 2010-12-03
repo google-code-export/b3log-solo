@@ -19,6 +19,7 @@ package org.b3log.solo.sync.util;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 
@@ -26,7 +27,7 @@ import org.apache.commons.io.IOUtils;
  * Web page reader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 4, 2010
+ * @version 1.0.0.1, Dec 3, 2010
  */
 public final class PageReader {
 
@@ -53,7 +54,7 @@ public final class PageReader {
             final InputStream inputStream = connection.getInputStream();
             return IOUtils.toString(inputStream, "UTF-8");
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return "";

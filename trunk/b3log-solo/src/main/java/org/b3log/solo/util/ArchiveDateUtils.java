@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 3, 2010
+ * @version 1.0.0.4, Dec 3, 2010
  */
 public final class ArchiveDateUtils {
 
@@ -93,7 +94,7 @@ public final class ArchiveDateUtils {
 
                 archiveDateRepository.add(archiveDate);
             } catch (final ParseException e) {
-                LOGGER.severe(e.getMessage());
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 throw new RepositoryException(e);
             }
         }

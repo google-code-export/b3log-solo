@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * This listener is responsible for preference HTML head meta tags load process.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 24, 2010
+ * @version 1.0.0.2, Dec 3, 2010
  */
 public final class MetaTagLoader
         extends AbstractEventListener<JSONObject> {
@@ -82,7 +82,7 @@ public final class MetaTagLoader
                                DEFAULT_META_DESCRIPTION);
             }
         } catch (final JSONException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException("Load meta tags error!");
         }
     }

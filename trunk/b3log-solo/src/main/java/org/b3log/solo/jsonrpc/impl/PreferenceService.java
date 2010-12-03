@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 3, 2010
+ * @version 1.0.1.5, Dec 3, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -113,7 +113,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             ret.put(PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_PREFERENCE_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -234,7 +234,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 

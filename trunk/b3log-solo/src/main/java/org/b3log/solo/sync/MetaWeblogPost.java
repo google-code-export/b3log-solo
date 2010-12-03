@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
@@ -39,7 +40,7 @@ import org.jsoup.Jsoup;
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 24, 2010
+ * @version 1.0.0.6, Dec 3, 2010
  */
 public final class MetaWeblogPost implements Post {
 
@@ -278,7 +279,7 @@ public final class MetaWeblogPost implements Post {
                     AbstractMetaWeblog.CST_DATE_FORMAT.parse(
                     AbstractMetaWeblog.UTC_DATE_FORMAT.format(getCreateDate())));
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException(e);
         }
 

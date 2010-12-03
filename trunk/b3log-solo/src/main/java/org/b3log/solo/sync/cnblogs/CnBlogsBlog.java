@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,7 +38,7 @@ import org.b3log.solo.sync.util.PageReader;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Sep 4, 2010
+ * @version 1.0.0.6, Dec 3, 2010
  */
 public final class CnBlogsBlog extends AbstractMetaWeblog {
 
@@ -126,7 +127,7 @@ public final class CnBlogsBlog extends AbstractMetaWeblog {
             return new URL("http://www.cnblogs.com/" + getUserName()
                            + "/archive/" + archiveDate + ".aspx");
         } catch (final MalformedURLException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             return null;
         }
     }
@@ -136,7 +137,7 @@ public final class CnBlogsBlog extends AbstractMetaWeblog {
         try {
             return new URL("http://www.cnblogs.com/" + getUserName());
         } catch (final MalformedURLException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             return null;
         }
     }
