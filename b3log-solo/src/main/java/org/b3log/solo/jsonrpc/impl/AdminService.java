@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
@@ -34,6 +33,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
@@ -47,6 +47,7 @@ import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,7 +57,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Dec 3, 2010
+ * @version 1.0.1.0, Dec 4, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -75,6 +76,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private PreferenceRepository preferenceRepository;
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
     /**
      * Statistic repository.
      */
@@ -95,6 +101,66 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private PageCacheKeys pageCacheKeys;
+
+    /**
+     * Adds a user with the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "userName": "",
+     *     "userEmail": ""
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": "ADD_USER_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject addUser(final JSONObject requestJSONObject,
+                              final HttpServletRequest request,
+                              final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+        try {
+            final JSONObject user = new JSONObject();
+            final String userEmail =
+                    requestJSONObject.getString(User.USER_EMAIL);
+            final JSONObject duplicatedUser =
+                    userRepository.getByEmail(userEmail);
+            if (null != duplicatedUser) {
+                ret.put(Keys.STATUS_CODE,
+                        StatusCodes.ADD_USER_FAIL_DUPLICATED_EMAIL);
+
+                return ret;
+            }
+
+            final String userName = requestJSONObject.getString(User.USER_NAME);
+            user.put(User.USER_EMAIL, userEmail);
+            user.put(User.USER_NAME, userName);
+
+            userRepository.add(user);
+            transaction.commit();
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.ADD_USER_SUCC);
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
 
     /**
      * Determines whether the administrator is logged in.
