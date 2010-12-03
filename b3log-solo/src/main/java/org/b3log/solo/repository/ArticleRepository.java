@@ -46,7 +46,7 @@ public interface ArticleRepository extends Repository {
     List<JSONObject> getRecentArticles(final int fetchSize);
 
     /**
-     * Gets most comment articles with the specified number.
+     * Gets most commented and published articles with the specified number.
      *
      * @param num the specified number
      * @return a list of most comment articles, returns an empty list if not
@@ -55,7 +55,7 @@ public interface ArticleRepository extends Repository {
     List<JSONObject> getMostCommentArticles(final int num);
 
     /**
-     * Gets most view count articles with the specified number.
+     * Gets most view count and published articles with the specified number.
      *
      * @param num the specified number
      * @return a list of most view count articles, returns an empty list if not
