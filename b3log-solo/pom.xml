@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.3.4, Dec 2, 2010
+    Version: 1.0.3.5, Dec 3, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -415,12 +415,6 @@
             <releases>
                 <enabled>true</enabled>
             </releases>
-        </repository>
-
-        <repository>
-            <id>Signpost</id>
-            <name>Signpost Repository</name>
-            <url>http://oss.sonatype.org/content/repositories/signpost-releases</url>
         </repository>
 
     </repositories>
