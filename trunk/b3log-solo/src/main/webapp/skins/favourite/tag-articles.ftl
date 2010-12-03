@@ -32,7 +32,7 @@
                         <div class="kind-panel">
                             <span id="tagArticlesTag">
                                 ${tag.tagTitle}
-                            </span>(${tag.tagReferenceCount})
+                            </span>(${tag.tagPublishedRefCount})
                         </div>
                         <#include "common-articles.ftl">
                     </div>

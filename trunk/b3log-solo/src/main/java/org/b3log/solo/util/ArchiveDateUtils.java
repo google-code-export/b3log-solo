@@ -106,9 +106,11 @@ public final class ArchiveDateUtils {
         newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT,
                            archiveDate.getInt(
                 ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT) + 1);
-        newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                           archiveDate.getInt(
-                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
+        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+            newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                               archiveDate.getInt(
+                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
+        }
         archiveDateRepository.update(archiveDate.getString(Keys.OBJECT_ID),
                                      newArchiveDate);
 

@@ -73,8 +73,8 @@
         <ul>
             <#list mostUsedTags as tag>
             <li>
-                <a name="tags${tag.oId}" title="${tag.tagTitle}(${tag.tagReferenceCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
-                    ${tag.tagTitle}(${tag.tagReferenceCount})
+                <a name="tags${tag.oId}" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
+                    ${tag.tagTitle}(${tag.tagPublishedRefCount})
                 </a>
                 <img onclick="window.location='/tag-articles-feed.do?oId=${tag.oId}'"
                      alt="${tag.tagTitle}" src="/images/feed.png"/>

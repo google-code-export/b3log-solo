@@ -32,7 +32,7 @@
                     <h2>${tag1Label}
                         <span id="tagArticlesTag">
                             ${tag.tagTitle}
-                        </span>(${tag.tagReferenceCount})
+                        </span>(${tag.tagPublishedRefCount})
                     </h2>
                     <#include "common-articles.ftl">
                 </div>
