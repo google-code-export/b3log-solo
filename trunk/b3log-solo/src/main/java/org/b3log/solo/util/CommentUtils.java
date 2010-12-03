@@ -24,7 +24,6 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.CommentRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
