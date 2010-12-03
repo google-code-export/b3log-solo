@@ -74,7 +74,7 @@ $.extend(ArticleUtil.prototype, {
         } else if ($("#comments>div").first().length === 1) {
             $("#comments>div").first().before(commentHTML);
         } else {
-            $("#comments").first().before(commentHTML);
+            $("#comments").html(commentHTML);
         }
 
         if (state === "") {
