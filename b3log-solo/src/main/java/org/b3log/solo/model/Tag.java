@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all tag model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 12, 2010
+ * @version 1.0.0.7, Dec 3, 2010
  */
 public final class Tag {
 
@@ -40,6 +40,11 @@ public final class Tag {
      * Key of tag reference count.
      */
     public static final String TAG_REFERENCE_COUNT = "tagReferenceCount";
+    /**
+     * Key of tag reference(published article) count.
+     */
+    public static final String TAG_PUBLISHED_REFERENCE_COUNT =
+            "tagPublishedRefCount";
 
     /**
      * Private default constructor.

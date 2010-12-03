@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Tag Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 12, 2010
+ * @version 1.0.0.4, Dec 3, 2010
  */
 public final class TagGAERepository extends AbstractGAERepository
         implements TagRepository {
@@ -78,7 +78,7 @@ public final class TagGAERepository extends AbstractGAERepository
     @Override
     public List<JSONObject> getMostUsedTags(final int num) {
         final Query query = new Query(getName());
-        query.addSort(Tag.TAG_REFERENCE_COUNT,
+        query.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
                       Query.SortDirection.DESCENDING);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =

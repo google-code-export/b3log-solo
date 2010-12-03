@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
@@ -22,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
@@ -44,11 +42,6 @@ public final class TagUtils {
      */
     private static final Logger LOGGER =
             Logger.getLogger(TagUtils.class.getName());
-    /**
-     * Article-Comment repository.
-     */
-    @Inject
-    private ArticleCommentRepository articleCommentRepository;
     /**
      * Tag-Article repository.
      */
@@ -84,6 +77,7 @@ public final class TagUtils {
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_COUNT, 1);
+                tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
@@ -94,11 +88,15 @@ public final class TagUtils {
                            new Object[]{tag.getString(Tag.TAG_TITLE),
                                         tag.getString(Keys.OBJECT_ID),
                                         article.getString(Article.ARTICLE_TITLE)});
-                final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tagTitle);
+                final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+                final int publishedRefCnt =
+                        tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
                 tagTmp.put(Tag.TAG_REFERENCE_COUNT, refCnt + 1);
+                tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                           publishedRefCnt + 1);
                 tagRepository.update(tagId, tagTmp);
             }
 
@@ -122,15 +120,18 @@ public final class TagUtils {
 
         for (final JSONObject tag : tags) {
             final String tagId = tag.getString(Keys.OBJECT_ID);
-            final int refCnt =
-                    tag.getInt(Tag.TAG_REFERENCE_COUNT);
+            final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+            final int publishedRefCnt =
+                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
+            tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
 
             tagRepository.update(tagId, tag);
             LOGGER.log(Level.FINEST,
-                       "Deced tag[tagTitle={0}] reference count[{1}] of article[oId={2}]",
+                       "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[oId={3}]",
                        new Object[]{tag.getString(Tag.TAG_TITLE),
                                     tag.getInt(Tag.TAG_REFERENCE_COUNT),
+                                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
                                     articleId});
         }
 

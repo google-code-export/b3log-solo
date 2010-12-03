@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Nov 15, 2010
+ * @version 1.0.1.0, Dec 3, 2010
  */
 public interface ArticleRepository extends Repository {
 
@@ -123,4 +123,13 @@ public interface ArticleRepository extends Repository {
      */
     void importArticle(final JSONObject article)
             throws RepositoryException;
+
+    /**
+     * Determines an article specified by the given article id is published.
+     * 
+     * @param articleId the given article id
+     * @return {@code true} if it is published, {@code false} otherwise
+     * @throws RepositoryException repository exception
+     */
+    boolean isPublished(final String articleId) throws RepositoryException;
 }

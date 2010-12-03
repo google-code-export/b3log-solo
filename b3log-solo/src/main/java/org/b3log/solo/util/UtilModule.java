@@ -23,7 +23,7 @@ import com.google.inject.Scopes;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Nov 17, 2010
+ * @version 1.0.1.5, Dec 3, 2010
  */
 public final class UtilModule extends org.b3log.latke.util.UtilModule {
 
@@ -40,5 +40,6 @@ public final class UtilModule extends org.b3log.latke.util.UtilModule {
         bind(PreferenceUtils.class).in(Scopes.SINGLETON);
         bind(Permalinks.class).in(Scopes.SINGLETON);
         bind(PageCacheKeys.class).in(Scopes.SINGLETON);
+        bind(CommentUtils.class).in(Scopes.SINGLETON);
     }
 }
