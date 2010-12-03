@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.upgrade;
 
 import com.google.appengine.api.datastore.Entity;
@@ -36,9 +35,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Tag;
+import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
@@ -60,11 +63,19 @@ import org.json.JSONObject;
  *       Renames property name from {@value #OLD_ADMIN_EMAIL_PROPERTY_NAME} to
  *       {@value Preference#ADMIN_EMAIL} of {@link Preference preference} entity.
  *     </li>
+ *     <li>
+ *       Adds a property(named {@value Tag#TAG_PUBLISHED_REFERENCE_COUNT}) to
+ *       {@link Tag tag} entity
+ *     </li>
+ *     <li>
+ *       Adds a property(named {@value ArchiveDate#ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT})
+ *       to {@link ArchiveDate archive date} entity
+ *     </li>
  *   </ul>
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 2, 2010
+ * @version 1.0.0.3, Dec 3, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -98,6 +109,16 @@ public final class V021ToV025 extends HttpServlet {
     private static final UserService USER_SERVICE =
             UserServiceFactory.getUserService();
     /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
+    /**
+     * Archive date repository.
+     */
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
+    /**
      * Update size in an request.
      */
     private static final int UPDATE_SIZE = 100;
@@ -108,27 +129,16 @@ public final class V021ToV025 extends HttpServlet {
             throws ServletException, IOException {
         if ("0.2.5".equals(SoloServletListener.VERSION)) {
             LOGGER.info("Checking for consistency....");
+
             final String currentUserEmail =
                     USER_SERVICE.getCurrentUser().getEmail();
-            Transaction transaction = AbstractGAERepository.DATASTORE_SERVICE.
-                    beginTransaction();
-            try {
-                final JSONObject preference = preferenceUtils.getPreference();
-                if (preference.has(OLD_ADMIN_EMAIL_PROPERTY_NAME)) {
-                    preference.put(Preference.ADMIN_EMAIL, currentUserEmail);
-                    preference.remove(OLD_ADMIN_EMAIL_PROPERTY_NAME);
-                }
-                preferenceUtils.setPreference(preference);
-                transaction.commit();
-            } catch (final Exception e) {
-                transaction.rollback();
-                LOGGER.log(Level.SEVERE, "Upgrade preference fail: {0}",
-                           e.getMessage());
-                throw new ServletException("Upgrade fail from v021 to v025");
-            }
 
-            transaction = AbstractGAERepository.DATASTORE_SERVICE.
-                    beginTransaction();
+            upgradePreference(currentUserEmail);
+            upgradeTags();
+            upgradeArchiveDates();
+
+            Transaction transaction =
+                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
             boolean isConsistent = true;
             try {
                 final Query query = new Query(Article.ARTICLE);
@@ -193,6 +203,104 @@ public final class V021ToV025 extends HttpServlet {
             writer.close();
 
             LOGGER.info("Checked for consistency");
+        }
+    }
+
+    /**
+     * Upgrades archive dates.
+     *
+     * @throws ServletException upgrades fails
+     */
+    private void upgradeArchiveDates() throws ServletException {
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            final Query query =
+                    new Query(ArchiveDate.ARCHIVE_DATE);
+            final PreparedQuery preparedQuery =
+                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+            final QueryResultList<Entity> queryResultList =
+                    preparedQuery.asQueryResultList(FetchOptions.Builder.
+                    withDefaults());
+            for (final Entity entity : queryResultList) {
+                if (entity.hasProperty(
+                        ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
+                    final JSONObject archiveDate =
+                            AbstractGAERepository.entity2JSONObject(entity);
+                    archiveDate.put(
+                            ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                            archiveDate.getInt(
+                            ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT));
+                    archiveDateRepository.update(archiveDate.getString(
+                            Keys.OBJECT_ID),
+                                                 archiveDate);
+                }
+            }
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, "Upgrade archive date fail: {0}",
+                       e.getMessage());
+            throw new ServletException("Upgrade fail from v021 to v025");
+        }
+    }
+
+    /**
+     * Upgrades tags.
+     *
+     * @throws ServletException upgrade fails
+     */
+    private void upgradeTags() throws ServletException {
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            final Query query =
+                    new Query(Tag.TAG);
+            final PreparedQuery preparedQuery =
+                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+            final QueryResultList<Entity> queryResultList =
+                    preparedQuery.asQueryResultList(FetchOptions.Builder.
+                    withDefaults());
+            for (final Entity entity : queryResultList) {
+                if (entity.hasProperty(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
+                    final JSONObject tag =
+                            AbstractGAERepository.entity2JSONObject(entity);
+                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                            tag.getInt(Tag.TAG_REFERENCE_COUNT));
+                    tagRepository.update(tag.getString(Keys.OBJECT_ID), tag);
+                }
+            }
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, "Upgrade tag fail: {0}", e.getMessage());
+            throw new ServletException("Upgrade fail from v021 to v025");
+        }
+    }
+
+    /**
+     * Upgrades preference withe the specified user email.
+     *
+     * @param currentUserEmail the specified user email
+     * @throws ServletException upgrade fails
+     */
+    private void upgradePreference(final String currentUserEmail)
+            throws ServletException {
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            final JSONObject preference = preferenceUtils.getPreference();
+            preference.remove(OLD_ADMIN_EMAIL_PROPERTY_NAME);
+            if (!preference.has(Preference.ADMIN_EMAIL)) {
+                preference.put(Preference.ADMIN_EMAIL, currentUserEmail);
+            }
+            preferenceUtils.setPreference(preference);
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, "Upgrade preference fail: {0}",
+                       e.getMessage());
+            throw new ServletException("Upgrade fail from v021 to v025");
         }
     }
 }
