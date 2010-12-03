@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -111,7 +112,7 @@ public final class ErrorAction extends AbstractAction {
                     preference.getString(Preference.META_DESCRIPTION));
             ret.put(Common.PAGE_NAVIGATIONS, new ArrayList<String>());
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 

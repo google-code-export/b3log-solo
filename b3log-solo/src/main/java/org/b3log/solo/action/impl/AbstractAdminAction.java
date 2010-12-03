@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -106,7 +107,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException("Language model fill error");
         }
 

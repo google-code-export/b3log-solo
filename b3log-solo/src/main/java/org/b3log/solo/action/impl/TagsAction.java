@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -125,7 +126,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
