@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -41,7 +42,7 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 3, 2010
+ * @version 1.0.0.5, Dec 4, 2010
  */
 public final class ArchiveDateUtils {
 
@@ -193,6 +194,27 @@ public final class ArchiveDateUtils {
             return ret;
         } catch (final JSONException e) { // not found
             return ret;
+        }
+    }
+
+    /**
+     * Removes archive dates of unpublished articles from the specified archive
+     * dates.
+     *
+     * @param archiveDates the specified archive dates
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void removeForUnpublishedArticles(
+            final List<JSONObject> archiveDates) throws JSONException,
+                                                        RepositoryException {
+        final Iterator<JSONObject> iterator = archiveDates.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject archiveDate = iterator.next();
+            if (0 == archiveDate.getInt(
+                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
+                iterator.remove();
+            }
         }
     }
 }
