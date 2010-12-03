@@ -69,6 +69,7 @@
         });
 
         // tag auto completed
+        // TODO: 文章操作时也应该调用次方法
         jsonRpc.tagService.getTags(function (result, error) {
             if (result.length > 0) {
                 var tags = [];
@@ -175,6 +176,9 @@
                             //                            }
                             $("#tipMsg").text(msg);
                             $("#article-listTab").click();
+                        } else {
+                            $("#tipMsg").text("${addSuccLabel}");
+                            $("#draft-listTab").click();
                         }
                         break;
                     default:

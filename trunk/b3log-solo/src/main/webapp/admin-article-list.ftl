@@ -94,7 +94,6 @@
                             'action': function (event) {
                                 $("#loadMsg").text("${loadingLabel}");
                                 $("#articleTab").click();
-                                $("#tipMsg").text("");
                                 var requestJSONObject = {
                                     "oId": event.data.id[0]
                                 };
@@ -102,7 +101,9 @@
                                     switch (result.sc) {
                                         case "GET_ARTICLE_SUCC":
                                             // set default value for article.
-                                            $("#title").val(result.article.articleTitle).data('oId', event.data.id[0]);
+                                            $("#title").val(result.article.articleTitle).data({
+                                                "articleIsPublished": result.article.articleIsPublished,
+                                                'oId': event.data.id[0]});
                                             if (tinyMCE.get('articleContent')) {
                                                 tinyMCE.get('articleContent').setContent(result.article.articleContent);
                                             } else {
@@ -125,6 +126,7 @@
                                             }
                                             $("#tag").val(tagsString);
                                             $("#permalink").val(result.article.articlePermalink);
+                                            $("#tipMsg").text("${getSuccLabel}");
                                             break;
                                         case "GET_ARTICLE_FAIL_":
                                             break;

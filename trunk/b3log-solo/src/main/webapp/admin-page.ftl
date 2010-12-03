@@ -106,14 +106,19 @@
         }, requestJSONObject);
     }
 
+    var savePageOrder = function () {
+    
+    }
+
     var initPage = function () {
         $("#pageList").table({
             resizable: true,
             colModel: [ {
-                    name: "${orderLabel}",
+                    name: "<button onclick='savePageOrder();'>${saveLabel}</button>",
                     index: "pageOrder",
-                    width: 40,
-                    textAlign: "center"
+                    width: 60,
+                    textAlign: "center",
+                    inputType: "order"
                 }, {
                     style: "padding-left: 6px;",
                     name: "${titleLabel}",
