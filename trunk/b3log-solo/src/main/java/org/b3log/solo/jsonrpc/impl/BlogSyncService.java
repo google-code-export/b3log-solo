@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -288,21 +287,20 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                 final Transaction transaction =
                         AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
                 try {
-
                     final String oId = articleIds.getString(i);
-                    final JSONObject externalArticleRelation =
+                    final JSONObject externalArticle =
                             externalArticleSoloArticleRepository.
                             getBySoloArticleId(oId, blogSyncExternalBloggingSys);
-                    externalArticleRelation.put(
-                            BLOG_SYNC_EXTERNAL_ARTICLE_IMPORTED, true);
+                    externalArticle.put(BLOG_SYNC_EXTERNAL_ARTICLE_IMPORTED,
+                                        true);
                     externalArticleSoloArticleRepository.update(
-                            externalArticleRelation.getString(Keys.OBJECT_ID),
-                            externalArticleRelation);
+                            externalArticle.getString(Keys.OBJECT_ID),
+                            externalArticle);
                     final JSONObject soloArticle =
-                            toSoloArticle(externalArticleRelation);
+                            toSoloArticle(externalArticle);
 
-                    final String categoriesString = externalArticleRelation.
-                            getString(BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES);
+                    final String categoriesString = externalArticle.getString(
+                            BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES);
                     final String[] tagTitles = categoriesString.split(",");
                     @SuppressWarnings(value = "unchecked")
                     final JSONArray tags = tagUtils.tag(tagTitles, soloArticle);
@@ -568,6 +566,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                  + articleId + ".html";
         ret.put(Article.ARTICLE_PERMALINK, permalink);
         ret.put(Article.ARTICLE_PUT_TOP, false);
+        ret.put(Article.ARTICLE_IS_PUBLISHED, true);
 
         return ret;
     }
