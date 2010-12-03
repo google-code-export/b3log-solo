@@ -101,6 +101,14 @@
                         + tags[i].tagNameURLEncoded +"'>" + tags[i].tagName + "</a>";
                 }
                 $("#tagsPanel").append(tagsHTML + "<div class='clear'></div>");
+                $("#tagsPanel a").each(function () {
+                    $(this).hover(function () {
+                        var $it = $(this);
+                        //$it.css({"margin": parseFloat($it.css("padding-top"))*10});
+                    }, function () {
+
+                    });
+                });
             }
             setTagsPanel();
         </script>
