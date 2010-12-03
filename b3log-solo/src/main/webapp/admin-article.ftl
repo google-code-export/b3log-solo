@@ -52,7 +52,7 @@
     </tr>
 </table>
 <script type="text/javascript">
-    var articleStatus = $("#title").data("articleStatus");
+    var articleStatus = {};
     
     var unPublish = function () {
         jsonRpc.articleService.cancelTopArticle(function (result, error) {
@@ -66,6 +66,7 @@
     }
     
     var beforeInitArticle = function () {
+        articleStatus = $("#title").data("articleStatus");
         // set button status
         if (articleStatus) {
             if (articleStatus.articleIsPublished) {
@@ -102,6 +103,7 @@
                 addArticle(true);
             }
         });
+        
         $("#saveArticle").click(function () {
             if (articleStatus) {
                 updateArticle();
