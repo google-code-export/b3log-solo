@@ -502,10 +502,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         try {
-            JSONObject status = ret.optJSONObject(Keys.STATUS);
-            if (null == status) {
-                status = new JSONObject();
-            }
+            final JSONObject status = new JSONObject();
             ret.put(Keys.STATUS, status);
 
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
