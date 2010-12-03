@@ -124,25 +124,6 @@ ver ${version}
                 $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
             }
         });
-
-        if ($("#sideNavi").length > 0) {
-            // article-side.ftl selected style
-            if (window.location.search === "") {
-                localStorage.setItem("sideNaviId", "");
-            }
-
-            $("#sideNavi a").click(function () {
-                localStorage.setItem("sideNaviId", $(this).attr("name"));
-            });
-
-            $("#sideNavi a").each(function () {
-                var $it = $(this);
-                $it.removeClass("selected");
-                if ($it.attr("name") && $it.attr("name") === localStorage.getItem("sideNaviId")) {
-                    $it.addClass("selected");
-                }
-            });
-        }
     }
     initIndex();
     
