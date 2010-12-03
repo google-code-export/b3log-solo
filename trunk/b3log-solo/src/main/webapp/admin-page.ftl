@@ -72,7 +72,7 @@
                         pageData[i].pageTitle = pages[i].pageTitle;
                         pageData[i].pageOrder = pages[i].pageOrder;
                         pageData[i].pagePermalink = "<a class='noUnderline' href='" + pages[i].pagePermalink + "' target='_blank'>"
-                        + pages[i].pagePermalink + "</a>";
+                            + pages[i].pagePermalink + "</a>";
                         pageData[i].update = "<div class='updateIcon'></div>";
                         pageData[i].deleted = "<div class='deleteIcon'></div>";
                         pageData[i].id = pages[i].oId;
@@ -131,7 +131,28 @@
                     width: 49,
                     bindEvent: [{
                             'eventName': 'click',
-                            'functionName': 'getUpdatePage'
+                            'action': function (event) {
+                                $("#loadMsg").text("${loadingLabel}");
+                                var requestJSONObject = {
+                                    "oId": event.data.id[0]
+                                };
+
+                                jsonRpc.pageService.getPage(function (result, error) {
+                                    switch (result.sc) {
+                                        case "GET_PAGE_SUCC":
+                                            $("#pageTitle").val(result.page.pageTitle).data('oId', event.data.id[0]);
+                                            tinyMCE.get('pageContent').setContent(result.page.pageContent);
+                                            $("#pageOrder").val(result.page.pageOrder);
+                                            $("#pagePermalink").val(result.page.pagePermalink);
+                                            break;
+                                        case "GET_LINK_FAIL_":
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    $("#loadMsg").text("");
+                                }, requestJSONObject);
+                            }
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
@@ -141,7 +162,40 @@
                     width: 53,
                     bindEvent: [{
                             'eventName': 'click',
-                            'functionName': 'deletePage'
+                            'action': function (event) {
+                                var isDelete = confirm("${confirmRemoveLabel}");
+                                if (isDelete) {
+                                    $("#loadMsg").text("${loadingLabel}");
+                                    $("#tipMsg").text("");
+                                    var requestJSONObject = {
+                                        "oId": event.data.id[0]
+                                    };
+
+                                    jsonRpc.pageService.removePage(function (result, error) {
+                                        switch (result.sc) {
+                                            case "REMOVE_PAGE_SUCC":
+                                                getPageList(1);
+                                                $("#tipMsg").text("${removeSuccLabel}");
+                                                break;
+                                            case "REMOVE_PAGE_FAIL_":
+                                                $("#tipMsg").text("${removeFailLabel}");
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        $("#pageTitle").val("").removeData("oId");
+                                        $("#pageOrder").val("");
+                                        $("#pagePermalink").val("");
+                                        if (tinyMCE.get("pageContent")) {
+                                            tinyMCE.get('pageContent').setContent("");
+                                        } else {
+                                            $("#pageContent").val("");
+                                        }
+
+                                        $("#loadMsg").text("");
+                                    }, requestJSONObject);
+                                }
+                            }
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
@@ -151,7 +205,15 @@
                     width: 65,
                     bindEvent: [{
                             'eventName': 'click',
-                            'functionName': 'popPageComments'
+                            'action': function (event) {
+                                $("#pageComments").data("oId", event.data.id[0]);
+                                getPageComment();
+                                $("#pageComments").dialog({
+                                    width: 700,
+                                    height:500,
+                                    closeEvent: "closePageDialog()"
+                                });
+                            }
                         }],
                     style: "cursor:pointer; margin-left:16px;"
                 }, {
@@ -216,64 +278,6 @@
             return true;
         }
         return false;
-    }
-
-    var getUpdatePage = function (event) {
-        $("#loadMsg").text("${loadingLabel}");
-        var requestJSONObject = {
-            "oId": event.data.id[0]
-        };
-
-        jsonRpc.pageService.getPage(function (result, error) {
-            switch (result.sc) {
-                case "GET_PAGE_SUCC":
-                    $("#pageTitle").val(result.page.pageTitle).data('oId', event.data.id[0]);
-                    tinyMCE.get('pageContent').setContent(result.page.pageContent);
-                    $("#pageOrder").val(result.page.pageOrder);
-                    $("#pagePermalink").val(result.page.pagePermalink);
-                    break;
-                case "GET_LINK_FAIL_":
-                    break;
-                default:
-                    break;
-            }
-            $("#loadMsg").text("");
-        }, requestJSONObject);
-    }
-
-    var deletePage = function (event) {
-        var isDelete = confirm("${confirmRemoveLabel}");
-        if (isDelete) {
-            $("#loadMsg").text("${loadingLabel}");
-            $("#tipMsg").text("");
-            var requestJSONObject = {
-                "oId": event.data.id[0]
-            };
-
-            jsonRpc.pageService.removePage(function (result, error) {
-                switch (result.sc) {
-                    case "REMOVE_PAGE_SUCC":
-                        getPageList(1);
-                        $("#tipMsg").text("${removeSuccLabel}");
-                        break;
-                    case "REMOVE_PAGE_FAIL_":
-                        $("#tipMsg").text("${removeFailLabel}");
-                        break;
-                    default:
-                        break;
-                }
-                $("#pageTitle").val("").removeData("oId");
-                $("#pageOrder").val("");
-                $("#pagePermalink").val("");
-                if (tinyMCE.get("pageContent")) {
-                    tinyMCE.get('pageContent').setContent("");
-                } else {
-                    $("#pageContent").val("");
-                }
-
-                $("#loadMsg").text("");
-            }, requestJSONObject);
-        }
     }
 
     var updatePage = function () {
@@ -358,16 +362,6 @@
         } else {
             addPage();
         }
-    }
-
-    var popPageComments = function (event) {
-        $("#pageComments").data("oId", event.data.id[0]);
-        getPageComment();
-        $("#pageComments").dialog({
-            width: 700,
-            height:500,
-            closeEvent: "closePageDialog()"
-        });
     }
 
     var getPageComment = function () {

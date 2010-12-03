@@ -193,7 +193,7 @@
                 // resize
                 var $main = $("#main");
                 var leftWidth = $(".side").width() + $.bowknot.strToInt($main.css("padding-left"))
-                    + $.bowknot.strToInt($main.css("padding-right")) + 20;
+                    + $.bowknot.strToInt($main.css("padding-right")) + 17;
 
                 var windowWidth = document.documentElement.clientWidth - leftWidth;
                 if (windowWidth < 700) {
