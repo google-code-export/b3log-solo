@@ -79,7 +79,7 @@
                     <img alt="${tag.tagTitle}" src="/images/feed.png"/>
                 </a>
                 <a name="tags${tag.oId}" title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('UTF-8')}">
-                    ${tag.tagTitle}</a>(${tag.tagReferenceCount})
+                    ${tag.tagTitle}</a>(${tag.tagPublishedRefCount})
             </li>
             </#list>
         </ul>

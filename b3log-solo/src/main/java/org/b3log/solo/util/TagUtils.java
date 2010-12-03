@@ -17,6 +17,7 @@
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -78,7 +79,11 @@ public final class TagUtils {
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_COUNT, 1);
-                tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
+                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
+                } else {
+                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 0);
+                }
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
@@ -96,8 +101,10 @@ public final class TagUtils {
                 final int publishedRefCnt =
                         tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
                 tagTmp.put(Tag.TAG_REFERENCE_COUNT, refCnt + 1);
-                tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                           publishedRefCnt + 1);
+                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                               publishedRefCnt + 1);
+                }
                 tagRepository.update(tagId, tagTmp);
             }
 
@@ -139,5 +146,24 @@ public final class TagUtils {
         LOGGER.log(Level.FINER,
                    "Deced all tag reference count of article[oId={0}]",
                    articleId);
+    }
+
+    /**
+     * Removes tags of unpublished articles from the specified tags.
+     *
+     * @param tags the specified tags
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void removeForUnpublishedArticles(
+            final List<JSONObject> tags) throws JSONException,
+                                                RepositoryException {
+        final Iterator<JSONObject> iterator = tags.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject tag = iterator.next();
+            if (0 == tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
+                iterator.remove();
+            }
+        }
     }
 }

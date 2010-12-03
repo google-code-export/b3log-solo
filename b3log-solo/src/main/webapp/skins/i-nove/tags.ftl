@@ -86,7 +86,7 @@
                 var tags = [<#list tags as tag>{
                         tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",
                         tagName: "${tag.tagTitle}",
-                        tagCount: ${tag.tagReferenceCount},
+                        tagCount: ${tag.tagPublishedRefCount},
                         tagId: ${tag.oId}
                     }<#if tag_has_next>,</#if>
                         </#list>],

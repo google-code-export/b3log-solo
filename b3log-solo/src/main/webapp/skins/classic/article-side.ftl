@@ -68,9 +68,9 @@
                     <a href="/tag-articles-feed.do?oId=${tag.oId}" class="noUnderline">
                         <img alt="${tag.tagTitle}" src="/images/feed.png"/>
                     </a>
-                    <a name="tags${tag.oId}" title="${tag.tagTitle}(${tag.tagReferenceCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
+                    <a name="tags${tag.oId}" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
                         ${tag.tagTitle}</a>
-                    (${tag.tagReferenceCount})
+                    (${tag.tagPublishedRefCount})
                 </li>
                 </#list>
             </ul>
