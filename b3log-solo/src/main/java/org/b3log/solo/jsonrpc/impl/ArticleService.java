@@ -841,7 +841,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject updateArticle(final String articleId,
+    public JSONObject cancelPublishArticle(final String articleId,
                                     final HttpServletRequest request,
                                     final HttpServletResponse response)
             throws ActionException, IOException {
