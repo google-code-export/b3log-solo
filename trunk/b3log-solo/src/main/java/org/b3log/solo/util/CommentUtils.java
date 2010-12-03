@@ -17,6 +17,7 @@
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
@@ -61,14 +62,16 @@ public final class CommentUtils {
     public void removeForUnpublishedArticles(
             final List<JSONObject> comments) throws JSONException,
                                                     RepositoryException {
-        for (final JSONObject comment : comments) {
+        final Iterator<JSONObject> iterator = comments.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject comment = iterator.next();
             final String commentId = comment.getString(Keys.OBJECT_ID);
             final JSONObject articleCommentRelation =
                     articleCommentRepository.getByCommentId(commentId);
             final String articleId = articleCommentRelation.getString(
                     Article.ARTICLE + "_" + Keys.OBJECT_ID);
             if (!articleRepository.isPublished(articleId)) {
-                comments.remove(comment);
+                iterator.remove();
             }
         }
     }

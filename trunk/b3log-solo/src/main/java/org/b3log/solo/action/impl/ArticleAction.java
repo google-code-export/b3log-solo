@@ -201,7 +201,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);

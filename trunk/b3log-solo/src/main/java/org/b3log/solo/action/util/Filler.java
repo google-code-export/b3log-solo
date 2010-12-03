@@ -213,6 +213,7 @@ public final class Filler {
      */
     public void fillMostUsedTags(final Map<String, Object> dataModel)
             throws Exception {
+        LOGGER.finer("Filling most used tags....");
         final JSONObject preference = preferenceUtils.getPreference();
         if (null == preference) {
             throw new Exception("Not found preference");
@@ -294,6 +295,7 @@ public final class Filler {
      */
     public void fillMostCommentArticles(final Map<String, Object> dataModel)
             throws Exception {
+        LOGGER.finer("Filling most comment articles....");
         final JSONObject preference = preferenceUtils.getPreference();
         if (null == preference) {
             throw new Exception("Not found preference");
@@ -338,6 +340,7 @@ public final class Filler {
      */
     public void fillRecentComments(final Map<String, Object> dataModel)
             throws Exception {
+        LOGGER.finer("Filling recent comments....");
         final JSONObject preference = preferenceUtils.getPreference();
         if (null == preference) {
             throw new Exception("Not found preference");
