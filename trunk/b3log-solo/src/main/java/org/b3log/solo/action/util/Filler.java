@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.util;
 
 import com.google.appengine.api.users.UserService;
@@ -21,8 +20,10 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.ArticleUtils;
@@ -33,6 +34,8 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.Filter;
+import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.ArchiveDate;
@@ -47,7 +50,9 @@ import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.util.ArchiveDateUtils;
+import org.b3log.solo.util.CommentUtils;
 import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.TagUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,7 +60,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Dec 2, 2010
+ * @version 1.0.1.8, Dec 3, 2010
  */
 public final class Filler {
 
@@ -84,6 +89,16 @@ public final class Filler {
      */
     @Inject
     private ArticleUtils articleUtils;
+    /**
+     * Comment utilities.
+     */
+    @Inject
+    private CommentUtils commentUtils;
+    /**
+     * Tag utilities.
+     */
+    @Inject
+    private TagUtils tagUtils;
     /**
      * Link repository.
      */
@@ -140,9 +155,13 @@ public final class Filler {
                 new HashMap<String, SortDirection>();
         sorts.put(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final JSONObject result = articleRepository.get(
-                currentPageNum,
-                pageSize, sorts);
+        final Set<Filter> filters = new HashSet<Filter>();
+        filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
+                               FilterOperator.EQUAL,
+                               true)); // Filter unpublished articles
+        final JSONObject result =
+                articleRepository.get(currentPageNum, pageSize,
+                                      sorts, filters);
 
         final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                 getInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -215,12 +234,12 @@ public final class Filler {
      */
     public void fillArchiveDates(final Map<String, Object> dataModel)
             throws Exception {
-        final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
         final JSONObject preference = preferenceUtils.getPreference();
         if (null == preference) {
             throw new Exception("Not found preference");
         }
 
+        final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         final String language = Locales.getLanguage(localeString);
@@ -328,6 +347,8 @@ public final class Filler {
 
         final List<JSONObject> recentComments =
                 commentRepository.getRecentComments(recentCommentDisplayCnt);
+        commentUtils.removeForUnpublishedArticles(recentComments);
+
         // Erase email for security reason
         for (final JSONObject comment : recentComments) {
             comment.remove(Comment.COMMENT_EMAIL);

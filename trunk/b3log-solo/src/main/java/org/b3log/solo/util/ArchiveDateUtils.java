@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
@@ -40,7 +39,7 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 20, 2010
+ * @version 1.0.0.3, Dec 3, 2010
  */
 public final class ArchiveDateUtils {
 
@@ -88,6 +87,8 @@ public final class ArchiveDateUtils {
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE,
                                 ArchiveDate.DATE_FORMAT.parse(createDateString));
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 0);
+                archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                                0);
 
                 archiveDateRepository.add(archiveDate);
             } catch (final ParseException e) {
@@ -103,6 +104,9 @@ public final class ArchiveDateUtils {
         newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT,
                            archiveDate.getInt(
                 ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT) + 1);
+        newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                           archiveDate.getInt(
+                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
         archiveDateRepository.update(archiveDate.getString(Keys.OBJECT_ID),
                                      newArchiveDate);
 
@@ -135,7 +139,11 @@ public final class ArchiveDateUtils {
         int archiveDateArticleCnt =
                 archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT);
         --archiveDateArticleCnt;
-        if (0 == archiveDateArticleCnt) {
+        int archiveDatePublishedArticleCnt =
+                archiveDate.getInt(
+                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
+        --archiveDatePublishedArticleCnt;
+        if (0 == archiveDatePublishedArticleCnt) {
             archiveDateRepository.remove(archiveDateId);
         } else {
             final JSONObject newArchiveDate = new JSONObject(
@@ -144,6 +152,8 @@ public final class ArchiveDateUtils {
                                                      String[].class));
             newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT,
                                archiveDateArticleCnt);
+            newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                               archiveDatePublishedArticleCnt);
             archiveDateRepository.update(archiveDateId, newArchiveDate);
         }
 
@@ -162,7 +172,8 @@ public final class ArchiveDateUtils {
     public List<JSONObject> getArchiveDates()
             throws JSONException, RepositoryException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
-        final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+        final Map<String, SortDirection> sorts =
+                new HashMap<String, SortDirection>();
         sorts.put(ArchiveDate.ARCHIVE_DATE, SortDirection.DESCENDING);
         final JSONObject result = archiveDateRepository.get(
                 1, Integer.MAX_VALUE, sorts);
