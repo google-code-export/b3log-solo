@@ -53,8 +53,16 @@
 </table>
 <script type="text/javascript">
     var articleStatus = $("#title").data("articleStatus");
+    
     var unPublish = function () {
-
+        jsonRpc.articleService.cancelTopArticle(function (result, error) {
+            if (result.sc === "CANCEL_TOP_ARTICLE_SUCC") {
+                $("#tipMsg").text("${unPulbishSuccLabel}");
+                $("#draft-listTab").click();
+            } else {
+                $("#tipMsg").text("${unPulbishFailLabel}");
+            }
+        }, {oId: articleStatus.oId});
     }
     
     var beforeInitArticle = function () {
