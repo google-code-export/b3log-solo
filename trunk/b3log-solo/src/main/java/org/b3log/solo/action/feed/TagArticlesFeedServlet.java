@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Tag articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 1, 2010
+ * @version 1.0.0.8, Dec 4, 2010
  */
 public final class TagArticlesFeedServlet extends HttpServlet {
 
@@ -99,7 +99,10 @@ public final class TagArticlesFeedServlet extends HttpServlet {
                 final String articleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
-                articles.add(articleRepository.get(articleId));
+                final JSONObject article = articleRepository.get(articleId);
+                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    articles.add(article);
+                }
             }
 
             final String tagTitle =

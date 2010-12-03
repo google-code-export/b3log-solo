@@ -40,6 +40,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.TagRefCntComparator;
+import org.b3log.solo.util.TagUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 24, 2010
+ * @version 1.0.0.7, Dec 4, 2010
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -84,6 +85,11 @@ public final class TagsAction extends AbstractCacheablePageAction {
      */
     @Inject
     private PreferenceUtils preferenceUtils;
+    /**
+     * Tag utilities.
+     */
+    @Inject
+    private TagUtils tagUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -109,13 +115,11 @@ public final class TagsAction extends AbstractCacheablePageAction {
             ret.putAll(langs);
 
             final JSONObject result = tagRepository.get(1, Integer.MAX_VALUE);
-            JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
-            if (null == tagArray) {
-                tagArray = new JSONArray();
-            }
+            final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
 
             final List<JSONObject> tags =
                     CollectionUtils.jsonArrayToList(tagArray);
+            tagUtils.removeForUnpublishedArticles(tags);
             Collections.sort(tags, new TagRefCntComparator());
             
             ret.put(Tag.TAGS, tags);

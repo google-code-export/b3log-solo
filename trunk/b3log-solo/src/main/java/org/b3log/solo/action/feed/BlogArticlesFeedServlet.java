@@ -21,13 +21,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.Filter;
+import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -40,7 +44,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Dec 1, 2010
+ * @version 1.0.1.1, Dec 4, 2010
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -92,9 +96,12 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
             final Map<String, SortDirection> sorts =
                     new HashMap<String, SortDirection>();
             sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+            final Set<Filter> filters = new HashSet<Filter>();
+            filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
+                                   FilterOperator.EQUAL, true));
             final JSONObject articleResult =
                     articleRepository.get(1, ENTRY_OUTPUT_CNT,
-                                          sorts);
+                                          sorts, filters);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
