@@ -2,8 +2,6 @@
 </div>
 <div id="draftPagination" class="right margin12">
 </div>
-<div id="draftListComments" class="none">
-</div>
 <div class="clear"></div>
 <script type="text/javascript">
     var draftListCurrentPage = 1;
@@ -152,9 +150,9 @@
                                     jsonRpc.articleService.removeArticle(function (result, error) {
                                         switch (result.status.code) {
                                             case "REMOVE_ARTICLE_SUCC":
-                                                var events = result.status.events;
+                                                var events = result.status.events,
+                                                msg = "${removeSuccLabel}";
                                                 if (events) {
-                                                    var msg = "${removeSuccLabel}";
                                                     if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
                                                         msg += ", ${syncCSDNBlogFailLabel}: "
                                                             + events.blogSyncCSDNBlog.msg;
@@ -169,9 +167,9 @@
                                                         msg += ", ${syncBlogJavaFailLabel}: "
                                                             + events.blogSyncBlogJava.msg;
                                                     }
-                                                    getArticleList(1);
-                                                    $("#tipMsg").text(msg);
                                                 }
+                                                $("#tipMsg").text(msg);
+                                                getDraftList(1);
                                                 break;
                                             case "REMOVE_ARTICLE_FAIL_":
                                                 $("#tipMsg").text("${removeFailLabel}");
@@ -227,81 +225,8 @@
             previousPage: "${previousPageLabel}",
             firstPage: "${firstPageLabel}"
         });
-
+        
         getDraftList(1);
     }
     loadDraftList();
-
-    var closeArticleListDialog = function () {
-        getArticleList(articleListCurrentPage);
-        $("#articleListComments").dialog("close");
-    }
-
-    var getDraftListComment = function () {
-        $("#loadMsg").text("${loadingLabel}");
-        $("#draftListComments").html("");
-        jsonRpc.commentService.getCommentsOfArticle(function (result, error) {
-            switch (result.sc) {
-                case "GET_COMMENTS_SUCC":
-                    var comments = result.comments,
-                    commentsHTML = '';
-                    for (var i = 0; i < comments.length; i++) {
-                        var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>",
-                        content = comments[i].commentContent;
-                        var ems = content.split("[em");
-                        var contentHTML = ems[0];
-                        for (var j = 1; j < ems.length; j++) {
-                            var key = ems[j].substr(0, 2),
-                            emImgHTML = "<img src='/skins/classic/emotions/em" + key
-                                + ".png'/>";
-                            contentHTML += emImgHTML + ems[j].slice(3);
-                        }
-
-                        if (comments[i].commentURL === "http://") {
-                            hrefHTML = "<a target='_blank'>";
-                        }
-
-                        commentsHTML += "<div class='comment-title'><span class='left'>"
-                            + hrefHTML + comments[i].commentName + "</a>";
-
-                        if (comments[i].commentOriginalCommentName) {
-                            commentsHTML += "@" + comments[i].commentOriginalCommentName;
-                        }
-                        commentsHTML += "</span><span title='${removeLabel}' class='right deleteIcon' onclick=\"deleteArticleListComment('"
-                            + comments[i].oId + "')\"></span><span class='right'><a href='mailto:"
-                            + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
-                            + $.bowknot.getDate(comments[i].commentDate.time, 1)
-                            + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>"
-                            + contentHTML + "</div>";
-                    }
-                    if ("" === commentsHTML) {
-                        commentsHTML = "${noCommentLabel}"
-                    }
-                    $("#articleListComments").html(commentsHTML);
-                    break;
-                default:
-                    break;
-            };
-            $("#loadMsg").text("");
-        }, {"oId": $("#articleListComments").data("oId")});
-    }
-
-    var deleteDraftListComment = function (id) {
-        var isDelete = confirm("${confirmRemoveLabel}");
-        if (isDelete) {
-            $("#loadMsg").text("${loadingLabel}");
-            jsonRpc.commentService.removeCommentOfArticle(function (result, error) {
-                switch (result.sc) {
-                    case "REMOVE_COMMENT_SUCC":
-                        getArticleListComment();
-                        $("#tipMsg").text("${removeSuccLabel}");
-                        break;
-                    default:
-                        $("#tipMsg").text("");
-                        $("#loadMsg").text("");
-                        break;
-                }
-            }, {"oId": id});
-        }
-    }
 </script>
