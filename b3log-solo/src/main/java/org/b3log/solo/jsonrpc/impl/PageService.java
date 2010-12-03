@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 15, 2010
+ * @version 1.0.0.7, Dec 3, 2010
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
@@ -110,7 +110,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
 
             LOGGER.log(Level.FINER, "Got page [oId={0}]", pageId);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -184,7 +184,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Page.PAGES, pages);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_PAGES_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -266,7 +266,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
 
             LOGGER.log(Level.FINER, "Updated a page[oId={0}]", pageId);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             transaction.rollback();
 
             return ret;
@@ -318,7 +318,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINER, "Removed a page[oId={0}]", pageId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             throw new ActionException(e);
         }
@@ -393,7 +393,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_PAGE_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             transaction.rollback();
 
             return ret;

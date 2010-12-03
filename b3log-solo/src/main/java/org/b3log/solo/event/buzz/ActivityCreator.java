@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * adding an article.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 18, 2010
+ * @version 1.0.0.7, Dec 3, 2010
  */
 public final class ActivityCreator
         extends AbstractEventListener<JSONObject> {
@@ -139,7 +139,7 @@ public final class ActivityCreator
                 throw new EventException(ex);
             }
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             LOGGER.log(Level.SEVERE,
                        "Send article creation buzz activity to Google Buzz error");
             try {

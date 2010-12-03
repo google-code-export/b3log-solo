@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 2, 2010
+ * @version 1.0.0.3, Dec 3, 2010
  */
 public final class PageCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -146,7 +146,7 @@ public final class PageCommentReplyNotifier
                                     originalCommentEmail});
             mailService.send(message);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException("Reply notifier error!");
         }
     }

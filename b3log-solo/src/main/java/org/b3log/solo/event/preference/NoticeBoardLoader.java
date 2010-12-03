@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * This listener is responsible for preference notice board load process.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 14, 2010
+ * @version 1.0.0.2, Dec 3, 2010
  */
 public final class NoticeBoardLoader
         extends AbstractEventListener<JSONObject> {
@@ -72,7 +72,7 @@ public final class NoticeBoardLoader
                 preference.put(Preference.NOTICE_BOARD, DEFAULT_NOTICE_BOARD);
             }
         } catch (final JSONException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException("Load notice board error!");
         }
     }

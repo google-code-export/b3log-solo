@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -46,7 +47,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 11, 2010
+ * @version 1.0.0.4, Dec 3, 2010
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -124,7 +125,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
 
             response.sendRedirect("/admin-index.do");
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException("File upload error: " + e.getMessage());
         }
     }
@@ -164,7 +165,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException("File download error: " + e.getMessage());
         }
     }

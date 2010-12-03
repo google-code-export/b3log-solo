@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Link service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 26, 2010
+ * @version 1.0.0.3, Dec 3, 2010
  */
 public final class LinkService extends AbstractGAEJSONRpcService {
 
@@ -91,7 +91,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
 
             LOGGER.log(Level.FINER, "Got a link[oId={0}]", linkId);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -156,7 +156,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             ret.put(Link.LINKS, links);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINKS_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -210,7 +210,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINER, "Updated a link[oId={0}]", linkId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -259,7 +259,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINER, "Removed a link[oId={0}]", linkId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -310,7 +310,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_LINK_SUCC);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 

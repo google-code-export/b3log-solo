@@ -17,6 +17,7 @@
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Statistic;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
  * Statistic service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 1, 2010
+ * @version 1.0.0.4, Dec 3, 2010
  */
 public final class StatisticService extends AbstractGAEJSONRpcService {
 
@@ -71,7 +72,7 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
         try {
             ret = statisticRepository.get(Statistic.STATISTIC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return ret;

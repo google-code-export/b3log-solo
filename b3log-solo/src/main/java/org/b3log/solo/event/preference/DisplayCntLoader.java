@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * load processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 23, 2010
+ * @version 1.0.0.3, Dec 3, 2010
  */
 public final class DisplayCntLoader
         extends AbstractEventListener<JSONObject> {
@@ -111,7 +111,7 @@ public final class DisplayCntLoader
                                DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
             }
         } catch (final JSONException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new EventException("Load HTML head error!");
         }
     }

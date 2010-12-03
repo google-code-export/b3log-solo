@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Upgrader for <b>v010</b> to <b>v011</b>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 21, 2010
+ * @version 1.0.0.2, Dec 3, 2010
  */
 public final class V010ToV011 extends HttpServlet {
 
@@ -113,7 +113,7 @@ public final class V010ToV011 extends HttpServlet {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
-                LOGGER.severe(e.getMessage());
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 throw new ServletException("Upgrade fail from v010 to v011");
             }
 

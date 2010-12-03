@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Tag service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Oct 25, 2010
+ * @version 1.0.0.4, Dec 3, 2010
  */
 public final class TagService extends AbstractGAEJSONRpcService {
 
@@ -169,7 +169,7 @@ public final class TagService extends AbstractGAEJSONRpcService {
                 ret = tagArray;
             }
         } catch (final RepositoryException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return ret;

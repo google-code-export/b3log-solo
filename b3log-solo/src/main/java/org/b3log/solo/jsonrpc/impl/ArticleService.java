@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Nov 15, 2010
+ * @version 1.0.2.0, Dec 3, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -162,7 +162,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
     }
@@ -279,7 +279,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             status.put(Keys.CODE, StatusCodes.ADD_ARTICLE_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             transaction.rollback();
 
             return ret;
@@ -351,7 +351,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             LOGGER.log(Level.FINER, "Got an article[oId={0}]", articleId);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -456,7 +456,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLES_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -535,7 +535,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                         new Event<JSONObject>(EventTypes.REMOVE_ARTICLE,
                                               eventData));
             } catch (final EventException e) {
-                LOGGER.severe(e.getMessage());
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
 
             transaction2.commit();
@@ -551,7 +551,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -798,7 +798,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                             new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
                                                   eventData));
                 } catch (final EventException e) {
-                    LOGGER.severe(e.getMessage());
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
             }
 
@@ -808,7 +808,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             if (null != transaction2 && transaction2.isActive()) {
                 transaction2.rollback();
@@ -856,7 +856,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_PUBLISH_ARTICLE_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             transaction.rollback();
 
             try {

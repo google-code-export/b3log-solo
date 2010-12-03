@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, Nov 25, 2010
+ * @version 1.0.3.0, Dec 3, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -198,7 +198,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             ret.put(Common.RECENT_COMMENTS, recentComments);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -263,7 +263,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             ret.put(Comment.COMMENTS, comments);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -328,7 +328,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             ret.put(Comment.COMMENTS, comments);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
         } catch (final Exception e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -476,7 +476,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             ret.put(Keys.OBJECT_ID, commentId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -624,7 +624,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             ret.put(Keys.OBJECT_ID, commentId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -780,7 +780,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINER, "Removed comment[oId={0}]", commentId);
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 
@@ -849,7 +849,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                        new String[]{commentId, pageId});
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
 

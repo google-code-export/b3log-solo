@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 2, 2010
+ * @version 1.0.0.9, Dec 3, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -282,7 +282,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException("Statistic init error!");
         }
 
@@ -371,7 +371,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException("Preference init error!");
         }
 

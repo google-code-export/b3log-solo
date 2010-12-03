@@ -24,6 +24,7 @@ import java.io.IOException;
 import org.b3log.latke.action.ActionException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
  * B3log Solo initialization action. init.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Nov 11, 2010
+ * @version 1.0.0.1, Dec 3, 2010
  */
 public final class InitAction extends AbstractAction {
 
@@ -74,7 +75,7 @@ public final class InitAction extends AbstractAction {
                     langPropsService.getAll(Locales.getLocale(request));
             ret.putAll(langs);
         } catch (final ServiceException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return ret;
@@ -97,7 +98,7 @@ public final class InitAction extends AbstractAction {
 
             configuration.setDirectoryForTemplateLoading(new File(webRootPath));
         } catch (final IOException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
@@ -110,7 +111,7 @@ public final class InitAction extends AbstractAction {
         try {
             return configuration.getTemplate(pageName);
         } catch (final IOException e) {
-            LOGGER.severe(e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
     }
