@@ -102,7 +102,7 @@
                                         case "GET_ARTICLE_SUCC":
                                             // set default value for article.
                                             $("#title").val(result.article.articleTitle).data("articleStatus", {
-                                                "articleIsPublished": result.article.articleIsPublished,
+                                                "isArticle": true,
                                                 'oId': event.data.id[0]});
                                             if (tinyMCE.get('articleContent')) {
                                                 tinyMCE.get('articleContent').setContent(result.article.articleContent);
