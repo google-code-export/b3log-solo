@@ -101,7 +101,7 @@
                                     switch (result.sc) {
                                         case "GET_ARTICLE_SUCC":
                                             // set default value for article.
-                                            $("#title").val(result.article.articleTitle).data({
+                                            $("#title").val(result.article.articleTitle).data("articleStatus", {
                                                 "articleIsPublished": result.article.articleIsPublished,
                                                 'oId': event.data.id[0]});
                                             if (tinyMCE.get('articleContent')) {
@@ -126,6 +126,7 @@
                                             }
                                             $("#tag").val(tagsString);
                                             $("#permalink").val(result.article.articlePermalink);
+                                            beforeInitArticle();
                                             $("#tipMsg").text("${getSuccLabel}");
                                             break;
                                         case "GET_ARTICLE_FAIL_":

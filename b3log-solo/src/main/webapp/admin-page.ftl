@@ -114,11 +114,12 @@
         $("#pageList").table({
             resizable: true,
             colModel: [ {
-                    name: "<button onclick='savePageOrder();'>${saveLabel}</button>",
+                    // name: "<button onclick='savePageOrder();'>${saveLabel}</button>",
+                    // inputType: "order",
+                    name: "",
                     index: "pageOrder",
                     width: 60,
-                    textAlign: "center",
-                    inputType: "order"
+                    textAlign: "center"
                 }, {
                     style: "padding-left: 6px;",
                     name: "${titleLabel}",
@@ -240,9 +241,9 @@
             firstPage: "${firstPageLabel}"
         });
 
+        // editor
         var localeString = "${localeString}";
         var language = localeString.substring(0, 2);
-        // editor
         tinyMCE.init({
             // General options
             language: language,
