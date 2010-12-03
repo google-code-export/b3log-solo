@@ -23,10 +23,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Tag utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 13, 2010
+ * @version 1.0.0.2, Dec 4, 2010
  */
 public final class TagUtils {
 
@@ -45,10 +45,10 @@ public final class TagUtils {
     private static final Logger LOGGER =
             Logger.getLogger(TagUtils.class.getName());
     /**
-     * Tag-Article repository.
+     * Article repository.
      */
     @Inject
-    private TagArticleRepository tagArticleRepository;
+    private ArticleRepository articleRepository;
     /**
      * Tag repository.
      */
@@ -128,15 +128,19 @@ public final class TagUtils {
     public void decTagRefCount(final String articleId)
             throws JSONException, RepositoryException {
         final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
+        final JSONObject article = articleRepository.get(articleId);
 
         for (final JSONObject tag : tags) {
             final String tagId = tag.getString(Keys.OBJECT_ID);
             final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+            tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
             final int publishedRefCnt =
                     tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-            tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
-            tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
-
+            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
+            } else {
+                tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
+            }
             tagRepository.update(tagId, tag);
             LOGGER.log(Level.FINEST,
                        "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[oId={3}]",

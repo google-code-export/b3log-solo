@@ -34,6 +34,7 @@ import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
+import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 4, 2010
+ * @version 1.0.0.6, Dec 4, 2010
  */
 public final class ArchiveDateUtils {
 
@@ -61,6 +62,11 @@ public final class ArchiveDateUtils {
      */
     @Inject
     private ArchiveDateArticleRepository archiveDateArticleRepository;
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Archive the create date with the specified article.
@@ -151,8 +157,12 @@ public final class ArchiveDateUtils {
         int archiveDatePublishedArticleCnt =
                 archiveDate.getInt(
                 ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
-        --archiveDatePublishedArticleCnt;
-        if (0 == archiveDatePublishedArticleCnt) {
+        final JSONObject article = articleRepository.get(articleId);
+        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+            --archiveDatePublishedArticleCnt;
+        }
+        
+        if (0 == archiveDateArticleCnt) {
             archiveDateRepository.remove(archiveDateId);
         } else {
             final JSONObject newArchiveDate = new JSONObject(
