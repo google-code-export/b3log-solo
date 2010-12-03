@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -842,8 +841,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject cancelPublishArticle(final String articleId,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response)
+                                           final HttpServletRequest request,
+                                           final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
         final Transaction transaction =
@@ -853,7 +852,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject article = articleRepository.get(articleId);
             article.put(ARTICLE_IS_PUBLISHED, false);
-
+            articleRepository.update(articleId, article);
+            transaction.commit();
+            
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_PUBLISH_ARTICLE_SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
