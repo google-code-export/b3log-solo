@@ -12,15 +12,10 @@
 .table-main{margin:0;padding:0;position:relative;overflow:auto;}
 .table-main table{border-left:1px solid #CCC;table-layout:fixed;word-break:break-all;word-wrap:break-word;background:url(../images/icon.png) center bottom;}
 .table-main table:hover{border-left:1px solid #BBB;}
-.table-verticalLine{position:absolute;width:2px;background-color:#247AC4;display:none;height:100%;cursor:col-resize;}
 .table-header,.table-body{overflow:auto;}
 .table-header th{border:1px solid;border-color:#CCC #BBBBBB #A0A0A0;border-left-style:none;height:28px;}
 .table-main td{border-bottom:1px solid #D0D0D0;border-right:1px solid #FFF;color:#333;padding:3px 0;}
 .table-heiglight td,.table-lineHover td{background-color:#FFC;}
-.table-sortASC{cursor:pointer;height:8px;width:9px;font-size:0;line-height:0;}
-.table-sortDESC{cursor:pointer;height:8px;width:9px;font-size:0;line-height:0;}
-.table-sort{font-size:0;line-height:0;position:absolute;margin-left:5px;float:left;}
-.table-floatLayerIcon{height:13px;width:13px;margin:0 10px;float:left;}
 .table-oddRow{background-color:#FFF;}
 .table-evenRow{background-color:#FFF;}
 .bowknot-none{display:none;}

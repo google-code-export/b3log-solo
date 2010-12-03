@@ -18,33 +18,7 @@
 <div id="filePagination" class="right margin12">
 </div>
 <iframe class="none" id="formActionHidden" name="formActionHidden"></iframe>
-<script type="text/javascript">
-    var removeFile = function (event) {
-        var isDelete = confirm("${confirmRemoveLabel}");
-        if (isDelete) {
-            $("#loadMsg").text("${loadingLabel}");
-            $("#tipMsg").text("");
-            var requestJSONObject = {
-                "oId": event.data.id[0]
-            };
-
-            jsonRpc.fileService.removeFile(function (result, error) {
-                switch (result.sc) {
-                    case "REMOVE_FILE_SUCC":
-                        getFileList(1);
-                        $("#tipMsg").text("${removeSuccLabel}");
-                        break;
-                    case "REMOVE_FILE_FAIL_":
-                        $("#tipMsg").text("${removeFailLabel}");
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
-            }, requestJSONObject);
-        }
-    }
-    
+<script type="text/javascript">    
     var getFileList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
         $("#tipMsg").text("");
@@ -122,7 +96,31 @@
                     width: 56,
                     bindEvent: [{
                             'eventName': 'click',
-                            'functionName': 'removeFile'
+                            'action': function (event) {
+                                var isDelete = confirm("${confirmRemoveLabel}");
+                                if (isDelete) {
+                                    $("#loadMsg").text("${loadingLabel}");
+                                    $("#tipMsg").text("");
+                                    var requestJSONObject = {
+                                        "oId": event.data.id[0]
+                                    };
+
+                                    jsonRpc.fileService.removeFile(function (result, error) {
+                                        switch (result.sc) {
+                                            case "REMOVE_FILE_SUCC":
+                                                getFileList(1);
+                                                $("#tipMsg").text("${removeSuccLabel}");
+                                                break;
+                                            case "REMOVE_FILE_FAIL_":
+                                                $("#tipMsg").text("${removeFailLabel}");
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        $("#loadMsg").text("");
+                                    }, requestJSONObject);
+                                }
+                            }
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {

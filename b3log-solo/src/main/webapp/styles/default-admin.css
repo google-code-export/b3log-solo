@@ -1,5 +1,5 @@
 .side{width:173px;}
-#adminMain{height:100%;overflow:auto;position:absolute;width:100%;z-index:1;}
+#adminMain{overflow-y: scroll;height:100%;position:absolute;width:100%;z-index:1;}
 #main{background-color:#BCF;padding:6px;min-height:300px;}
 #allPanel{min-width:885px;margin-top:24px;}
 .content{height:100%;background-color:#E3E9FF;min-height:300px;}
