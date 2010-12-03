@@ -55,7 +55,7 @@
     var articleStatus = {};
     
     var unPublish = function () {
-        jsonRpc.articleService.cancelTopArticle(function (result, error) {
+        jsonRpc.articleService.cancelPublishArticle(function (result, error) {
             if (result.sc === "CANCEL_TOP_ARTICLE_SUCC") {
                 $("#tipMsg").text("${unPulbishSuccLabel}");
                 $("#draft-listTab").click();
