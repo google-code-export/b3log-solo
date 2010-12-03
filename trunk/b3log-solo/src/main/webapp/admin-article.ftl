@@ -47,29 +47,29 @@
         <th colspan="2">
             <button class="marginRight12" id="saveArticle">${saveLabel}</button>
             <button id="submitArticle">${publishLabel}</button>
+            <button id="unSubmitArticle" class="none" onclick="unPublish();">${unPublishLabel}</button>
         </th>
     </tr>
 </table>
 <script type="text/javascript">
-    var initArticle = function () {
-        // submit action
-        $("#submitArticle").click(function () {
-            if ($("#title").data("oId")) {
-                updateArticle();
-            } else {
-                addArticle(true);
-            }
-        });
-        $("#saveArticle").click(function () {
-            if ($("#title").data("oId")) {
-                updateArticle();
-            } else {
-                addArticle(false);
-            }
-        });
+    var articleStatus = $("#title").data("articleStatus");
+    var unPublish = function () {
 
+    }
+    
+    var beforeInitArticle = function () {
+        // set button status
+        if (articleStatus) {
+            if (articleStatus.articleIsPublished) {
+                $("#unSubmitArticle").show();
+                $("#submitArticle").hide();
+            } else {
+                $("#submitArticle").show();
+                $("#unSubmitArticle").hide();
+            }
+        }
+        
         // tag auto completed
-        // TODO: 文章操作时也应该调用次方法
         jsonRpc.tagService.getTags(function (result, error) {
             if (result.length > 0) {
                 var tags = [];
@@ -82,10 +82,29 @@
                 });
             }
         });
+    }
+    
+    var initArticle = function () {
+        beforeInitArticle();
+        // submit action
+        $("#submitArticle").click(function () {
+            if (articleStatus) {
+                updateArticle();
+            } else {
+                addArticle(true);
+            }
+        });
+        $("#saveArticle").click(function () {
+            if (articleStatus) {
+                updateArticle();
+            } else {
+                addArticle(false);
+            }
+        });
 
+        // editor
         var localeString = "${localeString}";
         var language = localeString.substring(0, 2);
-        // editor
         tinyMCE.init({
             // General options
             language: language,
@@ -198,12 +217,13 @@
 
             var requestJSONObject = {
                 "article": {
-                    "oId": $("#title").data("oId"),
+                    "oId": articleStatus.oId,
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
                     "articleTags": $.bowknot.trimUnique(tagArray).toString(),
-                    "articlePermalink": $("#permalink").val()
+                    "articlePermalink": $("#permalink").val(),
+                    "articleIsPublished": articleStatus.articleIsPublished
                 }
             };
 
@@ -234,6 +254,9 @@
                             
                             $("#tipMsg").text(msg);
                             $("#article-listTab").click();
+                        } else {
+                            $("#tipMsg").text("${updateSuccLabel}");
+                            $("#draft-listTab").click();
                         }
                         break;
                     default:
