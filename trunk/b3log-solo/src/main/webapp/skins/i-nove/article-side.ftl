@@ -97,13 +97,13 @@
                 <#if "en" == localeString?substring(0, 2)>
                 <a name="archiveDates${archiveDate.oId}"
                    href="/archive-date-articles.do?oId=${archiveDate.oId}"
-                   title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}(${archiveDate.archiveDateArticleCount})">
-                    ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDateArticleCount})
+                   title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
+                    ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDatePublishedArticleCount})
                 <#else>
                 <a name="archiveDates${archiveDate.oId}"
                    href="/archive-date-articles.do?oId=${archiveDate.oId}"
-                   title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}${archiveDate.archiveDateArticleCount}">
-                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}</a>(${archiveDate.archiveDateArticleCount})
+                   title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}${archiveDate.archiveDatePublishedArticleCount}">
+                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}</a>(${archiveDate.archiveDatePublishedArticleCount})
                 </#if>
             </li>
             </#list>
