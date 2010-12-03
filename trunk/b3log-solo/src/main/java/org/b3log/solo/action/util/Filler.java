@@ -224,6 +224,7 @@ public final class Filler {
 
         final List<JSONObject> tags =
                 tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
+        tagUtils.removeForUnpublishedArticles(tags);
 
         dataModel.put(Common.MOST_USED_TAGS, tags);
     }
@@ -242,6 +243,8 @@ public final class Filler {
         }
 
         final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
+        archiveDateUtils.removeForUnpublishedArticles(archiveDates);
+        
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         final String language = Locales.getLanguage(localeString);

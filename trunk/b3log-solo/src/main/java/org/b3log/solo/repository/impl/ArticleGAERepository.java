@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 3, 2010
+ * @version 1.0.1.7, Dec 4, 2010
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -97,6 +97,8 @@ public final class ArticleGAERepository extends AbstractGAERepository
                       Query.SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_UPDATE_DATE,
                         Query.SortDirection.DESCENDING);
+        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                        Query.FilterOperator.EQUAL, true);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
@@ -118,6 +120,8 @@ public final class ArticleGAERepository extends AbstractGAERepository
                       Query.SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_UPDATE_DATE,
                         Query.SortDirection.DESCENDING);
+        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                        Query.FilterOperator.EQUAL, true);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
@@ -252,7 +256,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
                 return article.getBoolean(Article.ARTICLE_IS_PUBLISHED);
             } catch (final JSONException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                
+
                 throw new RepositoryException(e);
             }
         }
