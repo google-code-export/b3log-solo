@@ -56,7 +56,7 @@
     
     var unPublish = function () {
         jsonRpc.articleService.cancelPublishArticle(function (result, error) {
-            if (result.sc === "CANCEL_TOP_ARTICLE_SUCC") {
+            if (result.sc === "CANCEL_PUBLISH_ARTICLE_SUCC") {
                 $("#tipMsg").text("${unPulbishSuccLabel}");
                 $("#draft-listTab").click();
             } else {
@@ -69,16 +69,21 @@
         articleStatus = $("#title").data("articleStatus");
         // set button status
         if (articleStatus) {
-            if (articleStatus.articleIsPublished) {
+            if (articleStatus.isArticle) {
                 $("#unSubmitArticle").show();
                 $("#submitArticle").hide();
-            } else {
-                $("#submitArticle").show();
-                $("#unSubmitArticle").hide();
             }
+        } else {
+            $("#submitArticle").show();
+            $("#unSubmitArticle").hide();
         }
-        
+    }
+    
+    var initArticle = function () {
+        beforeInitArticle();
+
         // tag auto completed
+        // TODO: add to beforeInitArticle()
         jsonRpc.tagService.getTags(function (result, error) {
             if (result.length > 0) {
                 var tags = [];
@@ -91,14 +96,11 @@
                 });
             }
         });
-    }
-    
-    var initArticle = function () {
-        beforeInitArticle();
+
         // submit action
         $("#submitArticle").click(function () {
             if (articleStatus) {
-                updateArticle();
+                updateArticle(true);
             } else {
                 addArticle(true);
             }
@@ -106,7 +108,7 @@
         
         $("#saveArticle").click(function () {
             if (articleStatus) {
-                updateArticle();
+                updateArticle(articleStatus.isArticle);
             } else {
                 addArticle(false);
             }
@@ -219,12 +221,11 @@
         }
     }
 
-    var updateArticle = function () {
+    var updateArticle = function (tag) {
         if (validateArticle()) {
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
             var tagArray = $("#tag").val().split(",");
-
             var requestJSONObject = {
                 "article": {
                     "oId": articleStatus.oId,
@@ -233,7 +234,7 @@
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
                     "articleTags": $.bowknot.trimUnique(tagArray).toString(),
                     "articlePermalink": $("#permalink").val(),
-                    "articleIsPublished": articleStatus.articleIsPublished
+                    "articleIsPublished": tag
                 }
             };
 

@@ -165,7 +165,8 @@
             }
 
             var clearAtricle = function () {
-                $("#title").removeData("oId").val("");
+                $("#title").removeData("articleStatus").val("");
+                beforeInitArticle();
                 if (tinyMCE.get("articleContent")) {
                     tinyMCE.get('articleContent').setContent("");
                 } else {
