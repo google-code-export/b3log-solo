@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * OAuth callback.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 24, 2010
+ * @version 1.0.0.4, Dec 4, 2010
  */
 public final class BuzzOAuthCallback extends HttpServlet {
 
@@ -70,12 +70,12 @@ public final class BuzzOAuthCallback extends HttpServlet {
                    "OAuth callback from Google[requestToken={0}, verifier={1}",
                    new String[]{requestToken, verifier});
 
-        try {
-            oAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ServletException(e);
-        }
+//        try {
+//            oAuths.sign(requestToken, verifier, BuzzOAuth.getHttpTransport());
+//        } catch (final Exception e) {
+//            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+//            throw new ServletException(e);
+//        }
 
         try {
             final JSONObject preference = preferenceUtils.getPreference();

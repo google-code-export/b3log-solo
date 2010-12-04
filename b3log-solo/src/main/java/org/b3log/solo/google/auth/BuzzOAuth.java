@@ -16,14 +16,10 @@
 
 package org.b3log.solo.google.auth;
 
-import com.google.api.client.googleapis.GoogleTransport;
-import com.google.api.client.googleapis.json.JsonCParser;
-import com.google.api.client.http.HttpTransport;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -44,7 +40,7 @@ import org.json.JSONObject;
  * OAuth servlet.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 24, 2010
+ * @version 1.0.0.5, Dec 4, 2010
  */
 public final class BuzzOAuth extends HttpServlet {
 
@@ -64,7 +60,7 @@ public final class BuzzOAuth extends HttpServlet {
     /**
      * Http transport.
      */
-    private static HttpTransport httpTransport;
+//    private static HttpTransport httpTransport;
     /**
      * User service.
      */
@@ -80,14 +76,14 @@ public final class BuzzOAuth extends HttpServlet {
     @Inject
     private OAuths oAuths;
 
-    /**
-     * Gets http transport.
-     *
-     * @return http transport
-     */
-    public static HttpTransport getHttpTransport() {
-        return httpTransport;
-    }
+//    /**
+//     * Gets http transport.
+//     *
+//     * @return http transport
+//     */
+//    public static HttpTransport getHttpTransport() {
+//        return httpTransport;
+//    }
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -114,25 +110,25 @@ public final class BuzzOAuth extends HttpServlet {
 
         LOGGER.log(Level.FINE, "Google OAuth consumer secret[{0}]",
                    googleOAuthConsumerSecret);
-        httpTransport = GoogleTransport.create();
-        httpTransport.addParser(new JsonCParser());
-        final String authorizationURL =
-                oAuths.getAuthorizationURL(httpTransport,
-                                               googleOAuthConsumerSecret);
-        if (null == authorizationURL) {
-            LOGGER.log(Level.WARNING,
-                       "Can not retrieve Google authorization URL");
-            response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
-
-            final PrintWriter writer = response.getWriter();
-            writer.write(genErrorPageHTMLContent());
-            writer.close();
-
-            return;
-        }
-
-        response.sendRedirect(authorizationURL);
+//        httpTransport = GoogleTransport.create();
+//        httpTransport.addParser(new JsonCParser());
+//        final String authorizationURL =
+//                oAuths.getAuthorizationURL(httpTransport,
+//                                               googleOAuthConsumerSecret);
+//        if (null == authorizationURL) {
+//            LOGGER.log(Level.WARNING,
+//                       "Can not retrieve Google authorization URL");
+//            response.setContentType("text/html");
+//            response.setCharacterEncoding("UTF-8");
+//
+//            final PrintWriter writer = response.getWriter();
+//            writer.write(genErrorPageHTMLContent());
+//            writer.close();
+//
+//            return;
+//        }
+//
+//        response.sendRedirect(authorizationURL);
     }
 
     /**
