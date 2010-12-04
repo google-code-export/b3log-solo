@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Dec 3, 2010
+ * @version 1.0.2.1, Dec 4, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -827,9 +827,14 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Cancels publish an article by the specified article id.
+     * Cancels publish an article by the specified request json object.
      *
-     * @param articleId the specified article id
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     * }
+     * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
@@ -841,7 +846,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject cancelPublishArticle(final String articleId,
+    public JSONObject cancelPublishArticle(final JSONObject requestJSONObject,
                                            final HttpServletRequest request,
                                            final HttpServletResponse response)
             throws ActionException, IOException {
@@ -851,6 +856,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
         final JSONObject ret = new JSONObject();
         try {
+            final String articleId =
+                    requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject article = articleRepository.get(articleId);
             article.put(ARTICLE_IS_PUBLISHED, false);
             articleRepository.update(articleId, article);
