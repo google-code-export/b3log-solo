@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.3.6, Dec 4, 2010
+    Version: 1.0.3.7, Dec 4, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -35,8 +35,7 @@
         <commons-lang.version>2.5</commons-lang.version>
         <jsoup.version>1.4.1</jsoup.version>
         <gae.version>1.4.0</gae.version>
-        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>
-<!--        <oauth.signpost.version>1.2.1.1</oauth.signpost.version>-->
+<!--        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>-->
         <!-- maven plugin -->
         <maven-license-plugin.version>1.8.0</maven-license-plugin.version>
         <maven-checkstyle-plugin.version>2.5</maven-checkstyle-plugin.version>
@@ -177,18 +176,12 @@
                 <artifactId>commons-fileupload</artifactId>
                 <version>${commons-fileupload.version}</version>
             </dependency>
-            
-<!--            <dependency>
-                <groupId>oauth.signpost</groupId>
-                <artifactId>signpost-core</artifactId>
-                <version>${oauth.signpost.version}</version>
-            </dependency>-->
 
-            <dependency>
+<!--            <dependency>
                 <groupId>com.google.api.client</groupId>
                 <artifactId>google-api-client</artifactId>
                 <version>${com.google.api.client.version}</version>
-            </dependency>
+            </dependency>-->
 
         </dependencies>
     </dependencyManagement>
@@ -198,6 +191,12 @@
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke</artifactId>
+            <exclusions>
+                <exclusion><!-- Using GAE Mail Service instead -->
+                    <artifactId>mail</artifactId>
+                    <groupId>javax.mail</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -256,14 +255,9 @@
         </dependency>
 
 <!--        <dependency>
-            <groupId>oauth.signpost</groupId>
-            <artifactId>signpost-core</artifactId>
-        </dependency>-->
-
-        <dependency>
             <groupId>com.google.api.client</groupId>
             <artifactId>google-api-client</artifactId>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 
