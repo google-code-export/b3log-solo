@@ -86,7 +86,6 @@ public final class AdminIndexAction extends AbstractAdminAction {
                     Locales.getCountry(localeString));
 
             final Map<String, String> langs = langPropsService.getAll(locale);
-            LOGGER.log(Level.FINEST, "Langs[values={0}]", langs.values());
             ret.putAll(langs);
 
             filler.fillBlogHeader(ret);
