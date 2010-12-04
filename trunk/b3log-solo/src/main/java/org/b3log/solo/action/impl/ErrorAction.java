@@ -16,6 +16,7 @@
 
 package org.b3log.solo.action.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import org.b3log.latke.action.ActionException;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -117,6 +119,13 @@ public final class ErrorAction extends AbstractAction {
         }
 
         return ret;
+    }
+
+    @Override
+    protected void doPost(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 
     @Override

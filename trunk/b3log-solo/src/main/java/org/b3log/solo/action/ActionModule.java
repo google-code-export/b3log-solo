@@ -32,6 +32,7 @@ import org.b3log.solo.action.file.DataStoreFileAccessServlet;
 import org.b3log.solo.action.gae.LiveServlet;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
+import org.b3log.solo.action.impl.AdminErrorAction;
 import org.b3log.solo.action.impl.InitAction;
 import org.b3log.solo.action.impl.PageAction;
 import org.b3log.solo.filter.FilterModule;
@@ -48,7 +49,7 @@ import org.b3log.solo.upgrade.UpgradeModule;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Dec 2, 2010
+ * @version 1.0.1.9, Dec 4, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -126,8 +127,8 @@ public final class ActionModule extends AbstractActionModule {
         bind(CaptchaServlet.class).in(Scopes.SINGLETON);
         serve("/captcha.do").with(CaptchaServlet.class);
 
-//        bind(ErrorAction.class).in(Scopes.SINGLETON);
-//        serve("/error.do").with(ErrorAction.class);
+        bind(AdminErrorAction.class).in(Scopes.SINGLETON);
+        serve("/admin-error.do").with(AdminErrorAction.class);
 
         bind(BlobStoreFileAccessServlet.class).in(Scopes.SINGLETON);
         serve("/file-access.do").with(BlobStoreFileAccessServlet.class);

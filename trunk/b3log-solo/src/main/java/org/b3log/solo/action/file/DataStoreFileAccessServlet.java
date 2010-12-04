@@ -37,8 +37,12 @@ import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.Ids;
+import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.ErrorPage;
 import org.b3log.solo.model.File;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
+import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
 /**
@@ -47,7 +51,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 3, 2010
+ * @version 1.0.0.5, Dec 4, 2010
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -69,12 +73,16 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
      * Maximum entity size limited by data store.
      */
     private static final long MAX_SIZE = 1024 * 1024;
+    /**
+     * Preference utilities.
+     */
+    @Inject
+    private PreferenceUtils preferenceUtils;
 
     @Override
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
         final ServletFileUpload upload = new ServletFileUpload();
         FileItemIterator iterator = null;
 
@@ -85,18 +93,38 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                 final FileItemStream item = iterator.next();
                 final InputStream stream = item.openStream();
 
+                final JSONObject preference = preferenceUtils.getPreference();
+                if (null == preference) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    return;
+                }
+
+                final String localeString = preference.getString(
+                        Preference.LOCALE_STRING);
+                final Locale locale = new Locale(
+                        Locales.getLanguage(localeString),
+                        Locales.getCountry(localeString));
                 if (!item.isFormField()) {
+                    final ResourceBundle lang =
+                            ResourceBundle.getBundle(Keys.LANGUAGE, locale);
                     // XXX: check size before streaming
                     final byte[] contentBytes = IOUtils.toByteArray(stream);
                     if (contentBytes.length > MAX_SIZE) {
-                        // XXX: i18n
-                        final Locale locale = new Locale("en", "US");
-                        final ResourceBundle lang =
-                                ResourceBundle.getBundle(Keys.LANGUAGE, locale);
-                        final String msg =
+                        final String fail = lang.getString("uploadFailLabel");
+                        final String cause =
                                 lang.getString("exceedMaxUploadSizeLabel");
-                        response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                           msg);
+                        sendError(request, response,
+                                  HttpServletResponse.SC_BAD_REQUEST,
+                                  fail, cause);
+                        return;
+                    }
+
+                    if (0 == contentBytes.length) {
+                        final String fail = lang.getString("uploadFailLabel");
+                        final String cause = lang.getString("fileEmptyLabel");
+                        sendError(request, response,
+                                  HttpServletResponse.SC_BAD_REQUEST,
+                                  fail, cause);
                         return;
                     }
 
@@ -168,5 +196,27 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException("File download error: " + e.getMessage());
         }
+    }
+
+    /**
+     * Sends error via {@linkplain HttpServletResponse#sendError(int, java.lang.String)}
+     * with the specified error URI and cause.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param errorCode the specified error code
+     * @param errorURI the specified error URI
+     * @param cause the specified cause
+     * @throws IOException io exception
+     */
+    private void sendError(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final int errorCode,
+                           final String errorURI,
+                           final String cause) throws IOException {
+        request.setAttribute(ErrorPage.ERROR_PAGE_REQUEST_URI,
+                             request.getRequestURI());
+        request.setAttribute(ErrorPage.ERROR_PAGE_CAUSE, errorURI + cause);
+        response.sendError(errorCode);
     }
 }
