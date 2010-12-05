@@ -115,6 +115,14 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final Map<String, String> EN_MONTHS =
             new HashMap<String, String>();
+    /**
+     * 88250's link.
+     */
+    public static final String DEFAULT_LINK_88250 = "http://88250.b3log.org";
+    /**
+     * Vanessa's link.
+     */
+    public static final String DEFAULT_LINK_VANESSA = "http://vanessa.b3log.org";
 
     static {
         EN_MONTHS.put("01", "January");
@@ -247,7 +255,7 @@ public final class SoloServletListener extends AbstractServletListener {
             if (null != linkTo88250) {
                 linkRepository.remove(linkTo88250.getString(Keys.OBJECT_ID));
             }
-            final String address2Of88250 = "http://88250.b3log.org";
+            final String address2Of88250 = DEFAULT_LINK_88250;
             linkTo88250 = linkRepository.getByAddress(address2Of88250);
             if (null != linkTo88250) {
                 linkRepository.remove(linkTo88250.getString(Keys.OBJECT_ID));
@@ -262,7 +270,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
             final String address1OfVanessa =
                     "http://b3log-vanessa.appspot.com";
-            final String address2OfVanessa = "http://vanessa.b3log.org";
+            final String address2OfVanessa = DEFAULT_LINK_VANESSA;
             JSONObject linkToVanessa =
                     linkRepository.getByAddress(address1OfVanessa);
             if (null != linkToVanessa) {
