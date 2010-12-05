@@ -4,7 +4,7 @@
         <a class="noUnderline" href="${article.articlePermalink}">
             ${article.articleTitle}
         </a>
-        <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+        <#if article.hasUpdated>
         <sup class="red">
             ${updatedLabel}
         </sup>
@@ -18,7 +18,7 @@
     <div class="margin5">
         <div class="article-date left">
             <span class="dateIcon left"></span>
-            <#if article.articleUpdateDate?datetime != article.articleCreateDate?datetime>
+            <#if article.hasUpdated>
             ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
             <#else>
             ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}

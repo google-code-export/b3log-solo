@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -130,6 +131,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     public static final DateFormat PERMALINK_FORMAT =
             new SimpleDateFormat("yyyy/MM/dd");
+    /**
+     * Default update date.
+     */
+    public static final Date DEFAULT_UPDATE_DATE = new Date(0);
 
     /**
      * Gets the random articles.
@@ -229,7 +234,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
             final Date date = new Date();
-            article.put(ARTICLE_UPDATE_DATE, date);
+            article.put(ARTICLE_UPDATE_DATE, DEFAULT_UPDATE_DATE);
             article.put(ARTICLE_CREATE_DATE, date);
             // Step 4: Set put top to false
             article.put(ARTICLE_PUT_TOP, false);

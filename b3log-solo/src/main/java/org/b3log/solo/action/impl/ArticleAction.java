@@ -23,6 +23,7 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -39,6 +40,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
@@ -150,6 +152,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final String metaDescription = Jsoup.parse(article.getString(
                     Article.ARTICLE_ABSTRACT)).text();
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
+
+            final Date updateDate =
+                    (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+            article.put(Common.HAS_UPDATED,
+                        !ArticleService.DEFAULT_UPDATE_DATE.equals(updateDate));
 
             ret.put(Article.ARTICLE, article);
 
