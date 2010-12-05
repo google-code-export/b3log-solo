@@ -79,7 +79,7 @@
         }
     }
     
-    (function () {
+    var initArticle = function () {
         beforeInitArticle();
 
         // tag auto completed
@@ -140,7 +140,8 @@
         });
 
         $("#loadMsg").text("");
-    });
+    }
+    initArticle();
 
 
     var validateArticle = function () {
