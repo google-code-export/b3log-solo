@@ -250,11 +250,9 @@
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
             var requestJSONObject = {
-                "user": {
-                    "userTitle": $("#userNameUpdate").val(),
-                    "oId": $("#userNameUpdate").data("oId"),
-                    "userAddress": $("#userEmailUpdate").val()
-                }
+                "userName": $("#userNameUpdate").val(),
+                "oId": $("#userNameUpdate").data("oId"),
+                "userEmail": $("#userEmailUpdate").val()
             };
             jsonRpc.adminService.updateUser(function (result, error) {
                 switch (result.sc) {
