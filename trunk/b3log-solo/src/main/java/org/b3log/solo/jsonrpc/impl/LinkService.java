@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -190,15 +189,14 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             link2.put(Link.LINK_ORDER, oldLink1Order);
             link1.put(Link.LINK_ORDER, linkOrder);
 
-            PageCaches.removeAll();
-
             transaction.commit();
 
+            PageCaches.removeAll();
             return true;
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            
+
             return false;
         }
     }
