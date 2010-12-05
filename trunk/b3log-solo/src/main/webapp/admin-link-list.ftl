@@ -75,14 +75,21 @@
     linksLength = 1;
     
     var saveLinkOrder = function (order, status) {
-        var linkData = $("#linkList").table("option", "data");
+        $("#loadMsg").text("${loadingLabel}");
+        var tableData = $("#pageList").table("option", "data");
         if (status === "up") {
-            alert(linkData[order].linkTitle);
-            alert(linkData[order - 1].linkTitle);
+            order -= 1;
         } else {
-            alert(linkData[order].linkTitle);
-            alert(linkData[order + 1].linkTitle);
+            order += 1;
         }
+
+        jsonRpc.linkService.changeOrder(function (result, error) {
+            if (result) {
+                $("#loadMsg").text("");
+            } else {
+                $("#tipMsg").text("${updateFailLabel}");
+            }
+        }, tableData[order].id, order);
     }
 
     var validateLink = function (status) {
