@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -33,11 +32,13 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -308,6 +309,15 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         try {
             final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing a link[oId={0}]", linkId);
+            final JSONObject link = linkRepository.get(linkId);
+            final String linkAddress = link.getString(Link.LINK_ADDRESS);
+            if (SoloServletListener.DEFAULT_LINK_88250.equals(
+                    linkAddress)
+                || SoloServletListener.DEFAULT_LINK_VANESSA.equals(
+                    linkAddress)) {
+                throw new Exception("Can't not remove default links");
+            }
+
             linkRepository.remove(linkId);
 
             PageCaches.removeAll();
@@ -319,7 +329,13 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
+
+            try {
+                ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_LINK_FAIL_);
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                throw new ActionException(ex);
+            }
         }
 
         return ret;
