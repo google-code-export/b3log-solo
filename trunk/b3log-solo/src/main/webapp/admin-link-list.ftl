@@ -73,9 +73,26 @@
     var linkListCurrentPage = 1,
     linkListPageCount = 1,
     linksLength = 1;
+
+    var saveLinkOrder = function (order, status) {
+        var linkData = $("#linkList").table("option", "data");
+        if (status === "up") {
+            alert(linkData[order].linkTitle);
+            alert(linkData[order - 1].linkTitle);
+        } else {
+            alert(linkData[order].linkTitle);
+            alert(linkData[order + 1].linkTitle);
+        }
+    }
+
     $("#linkList").table({
-        resizable: true,
+        orderActionName: "saveLinkOrder",
         colModel: [{
+                name: "",
+                inputType: "order",
+                index: "linkOrder",
+                width: 60
+            },{
                 style: "padding-left: 6px;",
                 name: "${linkTitleLabel}",
                 index: "linkTitle",
@@ -220,6 +237,7 @@
                         linkData[i].update = "<div class='updateIcon'></div>";
                         linkData[i].deleted = "<div class='deleteIcon'></div>";
                         linkData[i].id = links[i].oId;
+                        linkData[i].linkOrder = "";
                     }
 
                     $("#linkList").table({
