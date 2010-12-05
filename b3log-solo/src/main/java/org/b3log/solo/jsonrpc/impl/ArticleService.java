@@ -769,7 +769,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Step 7: Set updat date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                if (articleUtils.hadBeenPublished(article)) {
+                if (articleUtils.hadBeenPublished(oldArticle)) {
                     // Save update date only for published article
                     article.put(ARTICLE_UPDATE_DATE, new Date());
                 } else {
