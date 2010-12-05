@@ -18,6 +18,7 @@ package org.b3log.solo.util;
 
 import com.google.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
@@ -27,6 +28,7 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
@@ -39,7 +41,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 10, 2010
+ * @version 1.0.0.7, Dec 5, 2010
  */
 public final class ArticleUtils {
 
@@ -303,5 +305,32 @@ public final class ArticleUtils {
                          * process in <#list/> */
                         (Object) tags);
         }
+    }
+
+    /**
+     * Determines the specified article has updated.
+     *
+     * @param article the specified article
+     * @return {@code true} if it has updated, {@code false} otherwise
+     * @throws JSONException json exception
+     */
+    public boolean hasUpdated(final JSONObject article)
+            throws JSONException {
+        final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+
+        return !ArticleService.DEFAULT_UPDATE_DATE.equals(updateDate);
+    }
+
+    /**
+     * Determines the specified article had been published.
+     *
+     * @param article the specified article
+     * @return {@code true} if it had been published, {@code false} otherwise
+     * @throws JSONException json exception
+     */
+    public boolean hadBeenPublished(final JSONObject article)
+            throws JSONException {
+        return !ArticleService.DEFAULT_UPDATE_DATE.equals(
+                article.get(Article.ARTICLE_UPDATE_DATE));
     }
 }

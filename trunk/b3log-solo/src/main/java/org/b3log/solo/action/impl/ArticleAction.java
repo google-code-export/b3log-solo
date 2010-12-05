@@ -23,7 +23,6 @@ import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -40,7 +39,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
@@ -57,7 +55,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Nov 24, 2010
+ * @version 1.0.1.4, Dec 5, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -153,10 +151,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     Article.ARTICLE_ABSTRACT)).text();
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
 
-            final Date updateDate =
-                    (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-            article.put(Common.HAS_UPDATED,
-                        !ArticleService.DEFAULT_UPDATE_DATE.equals(updateDate));
+            article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
 
             ret.put(Article.ARTICLE, article);
 
