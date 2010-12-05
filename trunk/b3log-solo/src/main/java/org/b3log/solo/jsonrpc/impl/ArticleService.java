@@ -732,8 +732,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             // Step 1: Set permalink
             final JSONObject oldArticle = articleRepository.get(articleId);
-            final String permalink =
-                    getPermalinkForUpdateArticle(oldArticle, article, status);
+            String permalink = getPermalinkForUpdateArticle(
+                    oldArticle, article,
+                    (Date) oldArticle.get(ARTICLE_CREATE_DATE), status);
             article.put(ARTICLE_PERMALINK, permalink);
             // Step 2: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
@@ -752,7 +753,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 6: Fill auto properties
-            final Date createDate = (Date) oldArticle.get(ARTICLE_CREATE_DATE);
+            Date createDate = (Date) oldArticle.get(ARTICLE_CREATE_DATE);
             article.put(ARTICLE_CREATE_DATE, createDate);
             article.put(ARTICLE_COMMENT_COUNT,
                         oldArticle.getInt(ARTICLE_COMMENT_COUNT));
@@ -763,9 +764,17 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Step 7: Set updat date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                // Save update date only for published article
                 if (articleUtils.hadBeenPublished(article)) {
+                    // Save update date only for published article
                     article.put(ARTICLE_UPDATE_DATE, new Date());
+                } else {
+                    // Reset create date and permalink
+                    createDate = new Date();
+                    article.put(ARTICLE_CREATE_DATE, createDate);
+                    permalink = getPermalinkForUpdateArticle(oldArticle, article,
+                                                             createDate,
+                                                             status);
+                    article.put(ARTICLE_PERMALINK, permalink);
                 }
             }
             // Step 8: Update
@@ -875,21 +884,21 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
     /**
      * Gets article permalink for updating article with the specified old article,
-     * article and status.
+     * article, create date and status.
      *
      * @param oldArticle the specified old article
      * @param article the specified article
+     * @param createDate the specified create date
      * @param status the specified status
      * @return permalink
      * @throws Exception if duplicated permalink occurs
      */
     private String getPermalinkForUpdateArticle(final JSONObject oldArticle,
                                                 final JSONObject article,
-                                                final JSONObject status) throws
-            Exception {
+                                                final Date createDate,
+                                                final JSONObject status)
+            throws Exception {
         final String articleId = article.getString(Keys.OBJECT_ID);
-        final Date createDate = (Date) oldArticle.get(
-                ARTICLE_CREATE_DATE);
         String ret = article.optString(ARTICLE_PERMALINK).trim();
         final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
         if (!oldPermalink.equals(ret)) {
