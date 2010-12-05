@@ -11,21 +11,15 @@
             <th width="48px">
                 ${title1Label}
             </th>
-            <td width="85%">
+            <td>
                 <input id="pageTitle"/>
-            </td>
-            <th width="58px">
-                ${order1Label}
-            </th>
-            <td width="28px">
-                <input id="pageOrder" style="width: 24px;"/>
             </td>
         </tr>
         <tr>
             <th valign="top">
                 ${content1Label}
             </th>
-            <td colspan="3">
+            <td>
                 <textarea id="pageContent" style="height: 430px;width: 100%;" name="pageContent"></textarea>
             </td>
         </tr>
@@ -33,12 +27,12 @@
             <th>
                 ${permalink1Label}
             </th>
-            <td colspan="3">
+            <td>
                 <input id="pagePermalink" type="text"/>
             </td>
         </tr>
         <tr>
-            <th colspan="4" align="right">
+            <th colspan="2" align="right">
                 <button onclick="submitPage();">${saveLabel}</button>
             </th>
         </tr>
@@ -70,7 +64,7 @@
                     for (var i = 0; i < pages.length; i++) {
                         pageData[i] = {};
                         pageData[i].pageTitle = pages[i].pageTitle;
-                        pageData[i].pageOrder = pages[i].pageOrder;
+                        pageData[i].pageOrder = "";
                         pageData[i].pagePermalink = "<a class='noUnderline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                             + pages[i].pagePermalink + "</a>";
                         pageData[i].update = "<div class='updateIcon'></div>";
@@ -106,20 +100,25 @@
         }, requestJSONObject);
     }
 
-    var savePageOrder = function () {
-    
+    var savePageOrder = function (order, status) {
+        var tableData = $("#pageList").table("option", "data");
+        if (status === "up") {
+            alert(tableData[order].pageTitle);
+            alert(tableData[order - 1].pageTitle);
+        } else {
+            alert(tableData[order].pageTitle);
+            alert(tableData[order + 1].pageTitle);
+        }
     }
 
     var initPage = function () {
         $("#pageList").table({
-            resizable: true,
+            orderActionName: "savePageOrder",
             colModel: [ {
-                    // name: "<button onclick='savePageOrder();'>${saveLabel}</button>",
-                    // inputType: "order",
                     name: "",
+                    inputType: "order",
                     index: "pageOrder",
-                    width: 60,
-                    textAlign: "center"
+                    width: 60
                 }, {
                     style: "padding-left: 6px;",
                     name: "${titleLabel}",
@@ -148,7 +147,6 @@
                                         case "GET_PAGE_SUCC":
                                             $("#pageTitle").val(result.page.pageTitle).data('oId', event.data.id[0]);
                                             tinyMCE.get('pageContent').setContent(result.page.pageContent);
-                                            $("#pageOrder").val(result.page.pageOrder);
                                             $("#pagePermalink").val(result.page.pagePermalink);
                                             break;
                                         case "GET_LINK_FAIL_":
@@ -190,7 +188,6 @@
                                                 break;
                                         }
                                         $("#pageTitle").val("").removeData("oId");
-                                        $("#pageOrder").val("");
                                         $("#pagePermalink").val("");
                                         if (tinyMCE.get("pageContent")) {
                                             tinyMCE.get('pageContent').setContent("");
@@ -277,9 +274,6 @@
             $("#pageTitle").focus();
         } else if (tinyMCE.get('pageContent').getContent().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${contentEmptyLabel}");
-        } else if ("" === $("#pageOrder").val().replace(/\s/g, "")) {
-            $("#tipMsg").text("${orderEmptyLabel}");
-            $("#pageOrder").focus();
         } else {
             return true;
         }
@@ -295,7 +289,6 @@
                     "pageTitle": $("#pageTitle").val(),
                     "oId": $("#pageTitle").data("oId"),
                     "pageContent": tinyMCE.get('pageContent').getContent(),
-                    "pageOrder": $("#pageOrder").val(),
                     "pagePermalink": $("#pagePermalink").val()
                 }
             };
@@ -310,7 +303,6 @@
                         $("#pageTitle").removeData("oId").val("");
                         $("#tipMsg").text("${updateSuccLabel}");
                         tinyMCE.get('pageContent').setContent("");
-                        $("#pageOrder").val("");
                         $("#pagePermalink").val("");
                         break;
                     default:
@@ -329,7 +321,6 @@
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
                     "pageContent": tinyMCE.get('pageContent').getContent(),
-                    "pageOrder": $("#pageOrder").val(),
                     "pagePermalink": $("#pagePermalink").val()
                 }
             };
@@ -341,7 +332,6 @@
                         break;
                     case "ADD_PAGE_SUCC":
                         $("#pageTitle").val("").removeData("oId");
-                        $("#pageOrder").val("");
                         $("#pagePermalink").val("");
                         if (tinyMCE.get("pageContent")) {
                             tinyMCE.get('pageContent').setContent("");
