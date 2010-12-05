@@ -82,7 +82,7 @@ public final class PageCacheFilter implements Filter {
                          final FilterChain chain) throws IOException,
                                                          ServletException {
         final long startTimeMillis = System.currentTimeMillis();
-        LOGGER.finer("Doing page cache filter....");
+        LOGGER.finest("Doing page cache filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         httpServletRequest.getContentType();
@@ -105,7 +105,7 @@ public final class PageCacheFilter implements Filter {
 
         final String requestURI = httpServletRequest.getRequestURI();
         if (shouldSkip(requestURI)) {
-            LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
+            LOGGER.log(Level.FINEST, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 
             return;
