@@ -294,10 +294,8 @@
         $("#loadMsg").html("${loadingLabel}");
         $("#articlesPanel").show();
         $("#articlesCount").html("${sumLabel} 0 ${countLabel}");
-        $("#articleSyncList").table({
-            update:{
-                data: []
-            }
+        $("#articleSyncList").table("update",{
+            data: []
         });
 
         var requestJSONObject = {
@@ -334,10 +332,8 @@
                     }
                 }
                 
-                $("#articleSyncList").table({
-                    update:{
-                        data: articleData
-                    }
+                $("#articleSyncList").table("update",{
+                    data: articleData
                 });
 
                 articleSyncDataTemp = articleData;
@@ -374,10 +370,8 @@
                     }
                 }
 
-                $("#articleSyncList").table({
-                    update:{
-                        data: articleSyncDataTemp
-                    }
+                $("#articleSyncList").table("update",{
+                    data: articleSyncDataTemp
                 });
 
                 if (selectedOIds.length !== oIds.length) {

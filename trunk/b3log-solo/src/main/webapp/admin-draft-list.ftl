@@ -33,10 +33,8 @@
                         articleData[i].articleViewCount = articles[i].articleViewCount;
                         articleData[i].id = articles[i].oId;
                     }
-                    $("#draftList").table({
-                        update:{
-                            data: articleData
-                        }
+                    $("#draftList").table("update",{
+                        data: articleData
                     });
 
                     if (0 === result.pagination.paginationPageCount) {
