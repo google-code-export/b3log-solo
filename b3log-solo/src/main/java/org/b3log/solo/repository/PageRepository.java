@@ -23,7 +23,7 @@ import org.json.JSONObject;
  * Page repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 15, 2010
+ * @version 1.0.0.2, Dec 5, 2010
  */
 public interface PageRepository extends Repository {
 
@@ -31,7 +31,22 @@ public interface PageRepository extends Repository {
      * Gets a page by the specified permalink.
      *
      * @param permalink the specified permalink
-     * @return an article, returns {@code null} if not found
+     * @return page, returns {@code null} if not found
      */
     JSONObject getByPermalink(final String permalink);
+
+    /**
+     * Gets the maximum order.
+     *
+     * @return order number, returns {@code -1} if not found
+     */
+    int getMaxOrder();
+
+    /**
+     * Gets a page by the specified order.
+     *
+     * @param order the specified order
+     * @return page, returns {@code null} if not found
+     */
+    JSONObject getByOrder(final int order);
 }

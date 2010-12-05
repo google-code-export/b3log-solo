@@ -17,8 +17,10 @@
 package org.b3log.solo.repository.impl;
 
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
@@ -30,7 +32,7 @@ import org.json.JSONObject;
  * Page Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 15, 2010
+ * @version 1.0.0.2, Dec 5, 2010
  */
 public final class PageGAERepository extends AbstractGAERepository
         implements PageRepository {
@@ -51,6 +53,35 @@ public final class PageGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Page.PAGE_PERMALINK,
                         Query.FilterOperator.EQUAL, permalink);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final Entity entity = preparedQuery.asSingleEntity();
+        if (null == entity) {
+            return null;
+        }
+
+        final Map<String, Object> properties = entity.getProperties();
+
+        return new JSONObject(properties);
+    }
+
+    @Override
+    public int getMaxOrder() {
+        final Query query = new Query(getName());
+        query.addSort(Page.PAGE_ORDER, Query.SortDirection.DESCENDING);
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final List<Entity> links =
+                preparedQuery.asList(FetchOptions.Builder.withDefaults());
+        if (links.isEmpty()) {
+            return -1;
+        }
+
+        return (Integer) links.get(0).getProperty(Page.PAGE_ORDER);
+    }
+
+    @Override
+    public JSONObject getByOrder(final int order) {
+        final Query query = new Query(getName());
+        query.addFilter(Page.PAGE_ORDER, Query.FilterOperator.EQUAL, order);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {

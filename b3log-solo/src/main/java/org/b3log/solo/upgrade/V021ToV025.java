@@ -39,10 +39,12 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
@@ -79,14 +81,18 @@ import org.json.JSONObject;
  *       {@link Article article} entity
  *     </li>
  *     <li>
- *       Adds a property(named {@value Article#AERTICLE_HAD_BEEN_PUBLISHED})
+ *       Adds a property(named {@value Article#ARTICLE_HAD_BEEN_PUBLISHED})
  *       to {@link Article article} entity
+ *     </li>
+ *     <li>
+ *       Adds a property(named {@value Link#LINK_ORDER})
+ *       to {@link Link link} entity
  *     </li>
  *   </ul>
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 5, 2010
+ * @version 1.0.0.6, Dec 5, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -130,6 +136,11 @@ public final class V021ToV025 extends HttpServlet {
     @Inject
     private ArchiveDateRepository archiveDateRepository;
     /**
+     * Link repository.
+     */
+    @Inject
+    private LinkRepository linkRepository;
+    /**
      * Update size in an request.
      */
     private static final int UPDATE_SIZE = 100;
@@ -147,6 +158,7 @@ public final class V021ToV025 extends HttpServlet {
             upgradePreference(currentUserEmail);
             upgradeTags();
             upgradeArchiveDates();
+            upgradeLinks();
 
             Transaction transaction =
                     AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -226,6 +238,39 @@ public final class V021ToV025 extends HttpServlet {
     }
 
     /**
+     * Upgrades links.
+     *
+     * @throws ServletException upgrades fails
+     */
+    private void upgradeLinks() throws ServletException {
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            final Query query = new Query(Link.LINK);
+            final PreparedQuery preparedQuery =
+                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+            final QueryResultList<Entity> queryResultList =
+                    preparedQuery.asQueryResultList(FetchOptions.Builder.
+                    withDefaults());
+            for (final Entity entity : queryResultList) {
+                if (!entity.hasProperty(Link.LINK_ORDER)) {
+                    final JSONObject link =
+                            AbstractGAERepository.entity2JSONObject(entity);
+                    final int maxOrder = linkRepository.getMaxOrder();
+                    link.put(Link.LINK_ORDER, maxOrder + 1);
+                    linkRepository.update(link.getString(
+                            Keys.OBJECT_ID), link);
+                }
+            }
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, "Upgrade link fail: {0}", e.getMessage());
+            throw new ServletException("Upgrade fail from v021 to v025");
+        }
+    }
+
+    /**
      * Upgrades archive dates.
      *
      * @throws ServletException upgrades fails
@@ -234,8 +279,7 @@ public final class V021ToV025 extends HttpServlet {
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         try {
-            final Query query =
-                    new Query(ArchiveDate.ARCHIVE_DATE);
+            final Query query = new Query(ArchiveDate.ARCHIVE_DATE);
             final PreparedQuery preparedQuery =
                     AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
             final QueryResultList<Entity> queryResultList =
@@ -251,8 +295,7 @@ public final class V021ToV025 extends HttpServlet {
                             archiveDate.getInt(
                             ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT));
                     archiveDateRepository.update(archiveDate.getString(
-                            Keys.OBJECT_ID),
-                                                 archiveDate);
+                            Keys.OBJECT_ID), archiveDate);
                 }
             }
             transaction.commit();

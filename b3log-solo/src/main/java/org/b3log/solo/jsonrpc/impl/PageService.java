@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 3, 2010
+ * @version 1.0.0.8, Dec 5, 2010
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
@@ -234,6 +234,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             final JSONObject oldPage = pageRepository.get(pageId);
             final JSONObject newPage =
                     new JSONObject(page, JSONObject.getNames(page));
+            newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
             newPage.put(Page.PAGE_COMMENT_COUNT,
                         oldPage.getInt(Page.PAGE_COMMENT_COUNT));
             String permalink = page.optString(Page.PAGE_PERMALINK).trim();
@@ -337,7 +338,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
      *     "page": {
      *         "pageTitle": "",
      *         "pageContent": "",
-     *         "pageOrder": int
+     *         "pagePermalink": "" // optional
      *     }
      * }, see {@link Page} for more details
      * </pre>
@@ -367,6 +368,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
             final JSONObject page =
                     requestJSONObject.getJSONObject(Page.PAGE);
             page.put(Page.PAGE_COMMENT_COUNT, 0);
+            final int maxOrder = pageRepository.getMaxOrder();
+            page.put(Page.PAGE_ORDER, maxOrder + 1);
             final String pageId = pageRepository.add(page);
             String permalink = page.optString(Page.PAGE_PERMALINK);
             if (Strings.isEmptyOrNull(permalink)) {
@@ -402,6 +405,45 @@ public final class PageService extends AbstractGAEJSONRpcService {
         PageCaches.removeAll();
 
         return ret;
+    }
 
+    /**
+     * Changes page order by the specified page id and order.
+     *
+     * @param pageId the specified link id
+     * @param pageOrder the specified order
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return {@code true} if changed, {@code false} otherwise
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public boolean changeOrder(final String pageId, final int pageOrder,
+                               final HttpServletRequest request,
+                               final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+
+        try {
+            final JSONObject page1 = pageRepository.get(pageId);
+            final JSONObject page2 = pageRepository.getByOrder(pageOrder);
+            final int oldPage1Order = page1.getInt(Page.PAGE_ORDER);
+            page2.put(Page.PAGE_ORDER, oldPage1Order);
+            page1.put(Page.PAGE_ORDER, pageOrder);
+
+            PageCaches.removeAll();
+
+            transaction.commit();
+
+            return true;
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            return false;
+        }
     }
 }

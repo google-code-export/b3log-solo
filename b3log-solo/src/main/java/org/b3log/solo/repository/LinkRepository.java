@@ -23,7 +23,7 @@ import org.json.JSONObject;
  * Link repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 5, 2010
+ * @version 1.0.0.2, Dec 5, 2010
  */
 public interface LinkRepository extends Repository {
 
@@ -34,4 +34,19 @@ public interface LinkRepository extends Repository {
      * @return link, returns {@code null} if not found
      */
     JSONObject getByAddress(final String address);
+
+    /**
+     * Gets the maximum order.
+     * 
+     * @return order number, returns {@code -1} if not found
+     */
+    int getMaxOrder();
+
+    /**
+     * Gets a link by the specified order.
+     *
+     * @param order the specified order
+     * @return link, returns {@code null} if not found
+     */
+    JSONObject getByOrder(final int order);
 }
