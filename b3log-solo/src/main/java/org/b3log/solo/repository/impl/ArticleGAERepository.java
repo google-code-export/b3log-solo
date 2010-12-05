@@ -31,6 +31,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.BlogSync;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -225,7 +226,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
             if (!article.has(Article.ARTICLE_UPDATE_DATE)
                 || null == article.get(Article.ARTICLE_UPDATE_DATE)) {
                 article.put(Article.ARTICLE_UPDATE_DATE,
-                            article.get(Article.ARTICLE_CREATE_DATE));
+                            ArticleService.DEFAULT_UPDATE_DATE);
             }
 
             // Remove external attributes, such as "blogSyncExternal...."
