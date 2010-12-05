@@ -17,6 +17,7 @@
 package org.b3log.solo.repository;
 
 import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
 
 /**
@@ -39,8 +40,9 @@ public interface LinkRepository extends Repository {
      * Gets the maximum order.
      * 
      * @return order number, returns {@code -1} if not found
+     * @throws RepositoryException repository exception
      */
-    int getMaxOrder();
+    int getMaxOrder() throws RepositoryException;
 
     /**
      * Gets a link by the specified order.
