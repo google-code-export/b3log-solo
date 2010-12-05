@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.util;
 
 import com.google.appengine.api.users.UserService;
@@ -200,8 +199,12 @@ public final class Filler {
      */
     private void fillLinks(final Map<String, Object> dataModel)
             throws JSONException, RepositoryException {
+        final Map<String, SortDirection> sorts =
+                new HashMap<String, SortDirection>();
+        sorts.put(Link.LINK_ORDER, SortDirection.ASCENDING);
         final JSONObject linkResult = linkRepository.get(1,
-                                                         Integer.MAX_VALUE);
+                                                         Integer.MAX_VALUE,
+                                                         sorts);
         final List<JSONObject> links = org.b3log.latke.util.CollectionUtils.
                 jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
 
