@@ -47,33 +47,33 @@
                             <div class="left draftsIcon"></div>
                             <span>&nbsp;${draftListLabel}</span>
                         </li>
-                        <li id="link-listTab" onclick="changeList(this);">
-                            <div class="left linkIcon"></div>
-                            <span>&nbsp;${linkManagementLabel}</span>
-                        </li>
-                        <li id="preferenceTab" onclick="changeList(this);">
-                            <div class="left preferenceIcon"></div>
-                            <span>&nbsp;${preferenceLabel}</span>
-                        </li>
-                        <li id="article-syncTab" onclick="changeList(this);">
-                            <div class="left blogSyncIcon"></div>
-                            <span>&nbsp;${blogSyncLabel}</span>
+                        <li id="file-listTab" onclick="changeList(this);">
+                            <div class="left fileIcon"></div>
+                            <span>&nbsp;${fileListLabel}</span>
                         </li>
                         <li id="pageTab" onclick="changeList(this);">
                             <div class="left pageIcon"></div>
                             <span>&nbsp;${pageMgmtLabel}</span>
                         </li>
-                        <li id="file-listTab" onclick="changeList(this);">
-                            <div class="left fileIcon"></div>
-                            <span>&nbsp;${fileListLabel}</span>
+                        <li id="link-listTab" onclick="changeList(this);">
+                            <div class="left linkIcon"></div>
+                            <span>&nbsp;${linkManagementLabel}</span>
                         </li>
-                        <li id="othersTab" onclick="changeList(this);">
-                            <div class="left othersIcon"></div>
-                            <span>&nbsp;${othersLabel}</span>
+                        <li id="article-syncTab" onclick="changeList(this);">
+                            <div class="left blogSyncIcon"></div>
+                            <span>&nbsp;${blogSyncLabel}</span>
+                        </li>
+                        <li id="preferenceTab" onclick="changeList(this);">
+                            <div class="left preferenceIcon"></div>
+                            <span>&nbsp;${preferenceLabel}</span>
                         </li>
                         <li id="user-listTab" onclick="changeList(this);">
                             <div class="left usersIcon"></div>
                             <span>&nbsp;${userManageLabel}</span>
+                        </li>
+                        <li id="othersTab" onclick="changeList(this);">
+                            <div class="left othersIcon"></div>
+                            <span>&nbsp;${othersLabel}</span>
                         </li>
                     </ul>
                 </div>
@@ -131,7 +131,7 @@
             
             var changeList = function (it) {
                 var tabs = ['article', 'article-list', 'draft-list', 'link-list', 'preference',
-                    'article-sync', 'page', 'file-list', 'others'];
+                    'article-sync', 'page', 'file-list', 'others', 'user-list'];
                 for (var i = 0; i < tabs.length; i++) {
                     if (it.id === tabs[i] + "Tab") {
                         if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
@@ -181,7 +181,7 @@
                 $("#permalink").val("");
             }
 
-            var initAdmin = function () {
+            (function () {
                 // tipMsg
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
@@ -229,8 +229,7 @@
                 $("#articlePanel").load("admin-article.do",function () {
                     $("#loadMsg").text("");
                 });
-            }
-            initAdmin();
+            })();
         </script>
     </body>
 </html>

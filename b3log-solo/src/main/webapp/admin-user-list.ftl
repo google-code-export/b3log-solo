@@ -1,147 +1,114 @@
-<div id="linkList">
+<div id="userList">
 </div>
-<div id="linkPagination" class="margin12 right">
+<div id="userPagination" class="margin12 right">
 </div>
 <div class="clear"></div>
 <table class="form" width="100%" cellpadding="0px" cellspacing="9px">
     <thead>
         <tr>
             <th style="text-align: left" colspan="2">
-                ${addLinkLabel}
+                ${addUserLabel}
             </th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <th width="48px">
-                ${linkTitle1Label}
+                ${commentName1Label}
             </th>
             <td>
-                <input id="linkTitle"/>
+                <input id="userName"/>
             </td>
         </tr>
         <tr>
             <th>
-                ${url1Label}
+                ${commentEmail1Label}
             </th>
             <td>
-                <input id="linkAddress"/>
+                <input id="userEmail"/>
             </td>
         </tr>
         <tr>
             <td colspan="2" align="right">
-                <button onclick="submitLink();">${saveLabel}</button>
+                <button onclick="submitUser();">${saveLabel}</button>
             </td>
         </tr>
     </tbody>
 </table>
-<div id="updateLink" class="none">
+<div id="userUpdate" class="none">
     <table class="form" width="100%" cellpadding="0px" cellspacing="9px">
         <thead>
             <tr>
                 <th style="text-align: left" colspan="2">
-                    ${updateLinkLabel}
+                    ${updateUserLabel}
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <th width="48px">
-                    ${linkTitle1Label}
+                    ${commentName1Label}
                 </th>
                 <td>
-                    <input id="updateLinkTitle"/>
+                    <input id="userNameUpdate"/>
                 </td>
             </tr>
             <tr>
                 <th>
-                    ${url1Label}
+                    ${commentEmail1Label}
                 </th>
                 <td>
-                    <input id="updateLinkAddress"/>
+                    <input id="userEmailUpdate"/>
                 </td>
             </tr>
             <tr>
                 <td colspan="2" align="right">
-                    <button onclick="updateLink();">${updateLabel}</button>
+                    <button onclick="updateUser();">${updateLabel}</button>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
 <script type="text/javascript">
-    var linkListCurrentPage = 1,
-    linkListPageCount = 1,
-    linksLength = 1;
-    $("#linkList").table({
-        resizable: true,
-        colModel: [{
-                style: "padding-left: 6px;",
-                name: "${linkTitleLabel}",
-                index: "linkTitle",
-                width: 230
-            }, {
-                style: "padding-left: 6px;",
-                name: "${urlLabel}",
-                index: "linkAddress",
-                minWidth: 180
-            }, {
-                textAlign: "center",
-                name: "${updateLabel}",
-                index: "update",
-                width: 56,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'action': function (event) {
-                            $("#loadMsg").text("${loadingLabel}");
-                            $("#updateLink").dialog({
-                                width: 700,
-                                height:200
-                            });
-                            var requestJSONObject = {
-                                "oId": event.data.id[0]
-                            };
-
-                            jsonRpc.linkService.getLink(function (result, error) {
-                                switch (result.sc) {
-                                    case "GET_LINK_SUCC":
-                                        $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
-                                        $("#updateLinkAddress").val(result.link.linkAddress);
-                                        break;
-                                    case "GET_LINK_FAIL_":
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                $("#loadMsg").text("");
-                            }, requestJSONObject);
-                        }
-                    }],
-                style: "cursor:pointer; margin-left:22px;"
-            }, {
-                textAlign: "center",
-                name: "${removeLabel}",
-                index: "deleted",
-                width: 56,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'action': function (event) {
-                            var isDelete = confirm("${confirmRemoveLabel}");
-                            if (isDelete) {
+    var userListCurrentPage = 1,
+    userListPageCount = 1,
+    usersLength = 1;
+    (function () {
+        $("#userList").table({
+            colModel: [{
+                    style: "padding-left: 6px;",
+                    name: "${commentNameLabel}",
+                    index: "userName",
+                    width: 230
+                }, {
+                    style: "padding-left: 6px;",
+                    name: "${commentEmailLabel}",
+                    index: "userEmail",
+                    minWidth: 180
+                }, {
+                    textAlign: "center",
+                    name: "${updateLabel}",
+                    index: "update",
+                    width: 56,
+                    bindEvent: [{
+                            'eventName': 'click',
+                            'action': function (event) {
                                 $("#loadMsg").text("${loadingLabel}");
-                                $("#tipMsg").text("");
+                                $("#userUpdate").dialog({
+                                    width: 700,
+                                    height:200
+                                });
                                 var requestJSONObject = {
                                     "oId": event.data.id[0]
                                 };
 
-                                jsonRpc.linkService.removeLink(function (result, error) {
+                                jsonRpc.userService.getUser(function (result, error) {
                                     switch (result.sc) {
-                                        case "REMOVE_LINK_SUCC":
-                                            getLinkList(1);
-                                            $("#tipMsg").text("${removeSuccLabel}");
+                                        case "GET_LINK_SUCC":
+                                            $("#updateUserTitle").val(result.user.userTitle).data('oId', event.data.id[0]);
+                                            $("#updateUserAddress").val(result.user.userAddress);
                                             break;
-                                        case "REMOVE_LINK_FAIL_":
-                                            $("#tipMsg").text("${removeFailLabel}");
+                                        case "GET_LINK_FAIL_":
                                             break;
                                         default:
                                             break;
@@ -149,95 +116,122 @@
                                     $("#loadMsg").text("");
                                 }, requestJSONObject);
                             }
-                        }
-                    }],
-                style: "cursor:pointer; margin-left:22px;"
-            }, {
-                visible: false,
-                index: "id"
-            }]
-    });
+                        }],
+                    style: "cursor:pointer; margin-left:22px;"
+                }, {
+                    textAlign: "center",
+                    name: "${removeLabel}",
+                    index: "deleted",
+                    width: 56,
+                    bindEvent: [{
+                            'eventName': 'click',
+                            'action': function (event) {
+                                var isDelete = confirm("${confirmRemoveLabel}");
+                                if (isDelete) {
+                                    $("#loadMsg").text("${loadingLabel}");
+                                    $("#tipMsg").text("");
+                                    var requestJSONObject = {
+                                        "oId": event.data.id[0]
+                                    };
 
-    $("#linkPagination").paginate({
-        bindEvent: "getLinkList",
-        pageCount: 1,
-        windowSize: WINDOW_SIZE,
-        currentPage: 1,
-        style: "google",
-        isGoTo: false,
-        lastPage: "${lastPageLabel}",
-        nextPage: "${nextPagePabel}",
-        previousPage: "${previousPageLabel}",
-        firstPage: "${firstPageLabel}"
-    });
+                                    jsonRpc.userService.removeUser(function (result, error) {
+                                        switch (result.sc) {
+                                            case "REMOVE_LINK_SUCC":
+                                                getUserList(1);
+                                                $("#tipMsg").text("${removeSuccLabel}");
+                                                break;
+                                            case "REMOVE_LINK_FAIL_":
+                                                $("#tipMsg").text("${removeFailLabel}");
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        $("#loadMsg").text("");
+                                    }, requestJSONObject);
+                                }
+                            }
+                        }],
+                    style: "cursor:pointer; margin-left:22px;"
+                }, {
+                    visible: false,
+                    index: "id"
+                }]
+        });
 
-    var validateUpdateLink = function () {
-        if ($("#updateLinkTitle").val().replace(/\s/g, "") === "") {
+        $("#userPagination").paginate({
+            bindEvent: "getUserList",
+            pageCount: 1,
+            windowSize: WINDOW_SIZE,
+            currentPage: 1,
+            style: "google",
+            isGoTo: false,
+            lastPage: "${lastPageLabel}",
+            nextPage: "${nextPagePabel}",
+            previousPage: "${previousPageLabel}",
+            firstPage: "${firstPageLabel}"
+        });
+        getUserList(1);
+    })();
+    
+    var validateUser = function (status) {
+        if (!status) {
+            status = "";
+        }
+
+        if ($("#userTitle" + status).val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${titleEmptyLabel}");
-            $("#updateLinkTitle").focus().val("");
-        } else if ($("#updateLinkAddress").val().replace(/\s/g, "") === "") {
+            $("#userTitle" + status).focus().val("");
+        } else if ($("#userAddress" + status).val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${addressEmptyLabel}");
-            $("#updateLinkAddress").focus().val("");
+            $("#userAddress" + status).focus().val("");
         } else {
             return true;
         }
         return false;
     }
 
-    var validateLink = function () {
-        if ($("#linkTitle").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${titleEmptyLabel}");
-            $("#linkTitle").focus().val("");
-        } else if ($("#linkAddress").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${addressEmptyLabel}");
-            $("#linkAddress").focus().val("");
-        } else {
-            return true;
-        }
-        return false;
-    }
-
-    var getLinkList = function (pageNum) {
+    var getUserList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
-        linkListCurrentPage = pageNum;
+        userListCurrentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
             "paginationPageSize": PAGE_SIZE,
             "paginationWindowSize": WINDOW_SIZE
         };
-        jsonRpc.linkService.getLinks(function (result, error) {
+        jsonRpc.userService.getUsers(function (result, error) {
             switch (result.sc) {
                 case "GET_LINKS_SUCC":
-                    var links = result.links;
-                    var linkData = [];
-                    linksLength = links.length;
+                    var users = result.users;
+                    var userData = [];
+                    usersLength = users.length;
 
-                    for (var i = 0; i < links.length; i++) {
-                        linkData[i] = {};
-                        linkData[i].linkTitle = links[i].linkTitle;
-                        linkData[i].linkAddress = "<a target='_blank' class='noUnderline' href='" + links[i].linkAddress + "'>"
-                            + links[i].linkAddress + "</a>";
-                        linkData[i].update = "<div class='updateIcon'></div>";
-                        linkData[i].deleted = "<div class='deleteIcon'></div>";
-                        linkData[i].id = links[i].oId;
+                    for (var i = 0; i < users.length; i++) {
+                        userData[i] = {};
+                        userData[i].userTitle = users[i].userTitle;
+                        userData[i].userAddress = "<a target='_blank' class='noUnderline' href='" + users[i].userAddress + "'>"
+                            + users[i].userAddress + "</a>";
+                        userData[i].update = "<div class='updateIcon'></div>";
+                        userData[i].deleted = "<div class='deleteIcon'></div>";
+                        userData[i].id = users[i].oId;
+                        userData[i].userOrder = "";
                     }
 
-                    $("#linkList").table({
+                    $("#userList").table({
                         update:{
-                            data: linkData
+                            data: userData
                         }
                     });
 
                     if (result.pagination.paginationPageCount === 0) {
-                        linkListPageCount = 1;
+                        userListPageCount = 1;
                     } else {
-                        linkListPageCount = result.pagination.paginationPageCount;
+                        userListPageCount = result.pagination.paginationPageCount;
                     }
 
-                    $("#linkPagination").paginate({
+                    $("#userPagination").paginate({
                         update: {
                             currentPage: pageNum,
-                            pageCount: linkListPageCount
+                            pageCount: userListPageCount
                         }
                     });
                     break;
@@ -247,24 +241,23 @@
             $("#loadMsg").text("");
         }, requestJSONObject);
     }
-    getLinkList(1);
-
-    var updateLink = function () {
-        if (validateUpdateLink()) {
+    
+    var updateUser = function () {
+        if (validateUser("Update")) {
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
             var requestJSONObject = {
-                "link": {
-                    "linkTitle": $("#updateLinkTitle").val(),
-                    "oId": $("#updateLinkTitle").data("oId"),
-                    "linkAddress": $("#updateLinkAddress").val()
+                "user": {
+                    "userTitle": $("#updateUserName").val(),
+                    "oId": $("#updateUserName").data("oId"),
+                    "userAddress": $("#updateUserEmail").val()
                 }
             };
-            jsonRpc.linkService.updateLink(function (result, error) {
+            jsonRpc.userService.updateUser(function (result, error) {
                 switch (result.sc) {
                     case "UPDATE_LINK_SUCC":
-                        $("#updateLink").dialog("close");
-                        getLinkList(linkListCurrentPage);
+                        $("#updateUser").dialog("close");
+                        getUserList(userListCurrentPage);
                         $("#tipMsg").text("${updateSuccLabel}");
                         break;
                     default:
@@ -275,25 +268,25 @@
         }
     }
 
-    var submitLink = function () {
-        if (validateLink()) {
+    var submitUser = function () {
+        if (validateUser()) {
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
             var requestJSONObject = {
-                "link": {
-                    "linkTitle": $("#linkTitle").val(),
-                    "linkAddress": $("#linkAddress").val()
+                "user": {
+                    "userTitle": $("#userTitle").val(),
+                    "userAddress": $("#userAddress").val()
                 }
             };
-            jsonRpc.linkService.addLink(function (result, error) {
+            jsonRpc.userService.addUser(function (result, error) {
                 switch (result.sc) {
                     case "ADD_LINK_SUCC":
-                        $("#linkTitle").val("");
-                        $("#linkAddress").val("");
-                        if (linksLength === PAGE_SIZE) {
-                            linkListPageCount++;
+                        $("#userTitle").val("");
+                        $("#userAddress").val("");
+                        if (usersLength === PAGE_SIZE) {
+                            userListPageCount++;
                         }
-                        getLinkList(linkListPageCount);
+                        getUserList(userListPageCount);
                         $("#tipMsg").text("${addSuccLabel}");
                         break;
                     default:

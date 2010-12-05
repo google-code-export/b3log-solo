@@ -111,7 +111,7 @@
         }
     }
 
-    var initPage = function () {
+    (function () {
         $("#pageList").table({
             orderActionName: "savePageOrder",
             colModel: [ {
@@ -264,9 +264,7 @@
         });
 
         getPageList(1);
-    }
-
-    initPage();
+    })();
 
     var validatePage = function () {
         if ($("#pageTitle").val().replace(/\s/g, "") === "") {

@@ -66,7 +66,7 @@
         $("#loadMsg").text("");
     }
     
-    var initFile = function () {
+    (function () {
         $("#fileList").table({
             resizable: true,
             colModel: [{
@@ -154,6 +154,5 @@
                 $("#uploadFile").html("<input type='file' name='myFile' size='45'>");
             }
         });
-    }
-    initFile();
+    })();
 </script>
