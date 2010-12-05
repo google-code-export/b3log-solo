@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -184,10 +185,20 @@ public final class LinkService extends AbstractGAEJSONRpcService {
 
         try {
             final JSONObject link1 = linkRepository.get(linkId);
+            final String link1Id = linkId;
             final JSONObject link2 = linkRepository.getByOrder(linkOrder);
+            final String link2Id = link2.getString(Keys.OBJECT_ID);
             final int oldLink1Order = link1.getInt(Link.LINK_ORDER);
-            link2.put(Link.LINK_ORDER, oldLink1Order);
-            link1.put(Link.LINK_ORDER, linkOrder);
+
+            final JSONObject newLink2 =
+                    new JSONObject(link2, JSONObject.getNames(link2));
+            newLink2.put(Link.LINK_ORDER, oldLink1Order);
+            final JSONObject newLink1 =
+                    new JSONObject(link1, JSONObject.getNames(link1));
+            newLink1.put(Link.LINK_ORDER, linkOrder);
+
+            linkRepository.update(link2Id, link2);
+            linkRepository.update(link1Id, link1);
 
             transaction.commit();
 

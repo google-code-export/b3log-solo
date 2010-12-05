@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -428,10 +429,20 @@ public final class PageService extends AbstractGAEJSONRpcService {
 
         try {
             final JSONObject page1 = pageRepository.get(pageId);
+            final String page1Id = pageId;
             final JSONObject page2 = pageRepository.getByOrder(pageOrder);
+            final String page2Id = page2.getString(Keys.OBJECT_ID);
             final int oldPage1Order = page1.getInt(Page.PAGE_ORDER);
-            page2.put(Page.PAGE_ORDER, oldPage1Order);
-            page1.put(Page.PAGE_ORDER, pageOrder);
+
+            final JSONObject newPage2 =
+                    new JSONObject(page2, JSONObject.getNames(page2));
+            newPage2.put(Page.PAGE_ORDER, oldPage1Order);
+            final JSONObject newPage1 =
+                     new JSONObject(page1, JSONObject.getNames(page1));
+            newPage1.put(Page.PAGE_ORDER, pageOrder);
+            
+            pageRepository.update(page2Id, page2);
+            pageRepository.update(page1Id, page1);
 
             transaction.commit();
 
