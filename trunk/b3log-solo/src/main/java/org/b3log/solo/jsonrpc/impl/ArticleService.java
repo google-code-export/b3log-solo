@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -230,11 +229,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
             final Date date = new Date();
-            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                // Save update date only for published article
-                article.put(ARTICLE_UPDATE_DATE, date);
-                article.put(ARTICLE_CREATE_DATE, date);
-            }
+            article.put(ARTICLE_UPDATE_DATE, date);
+            article.put(ARTICLE_CREATE_DATE, date);
             // Step 4: Set put top to false
             article.put(ARTICLE_PUT_TOP, false);
             // Step 5: Add article
