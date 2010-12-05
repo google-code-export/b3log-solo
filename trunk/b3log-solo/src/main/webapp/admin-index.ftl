@@ -181,7 +181,7 @@
                 $("#permalink").val("");
             }
 
-            (function () {
+            var init = function () {
                 // tipMsg
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
@@ -229,7 +229,8 @@
                 $("#articlePanel").load("admin-article.do",function () {
                     $("#loadMsg").text("");
                 });
-            })();
+            }
+            init();
         </script>
     </body>
 </html>

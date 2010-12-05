@@ -101,17 +101,27 @@
     }
 
     var savePageOrder = function (order, status) {
+        $("#loadMsg").text("${loadingLabel}");
         var tableData = $("#pageList").table("option", "data");
+        jsonRpc.pageService.getPage(function (result, error) {
+
+        },tableData[order].id, order);
         if (status === "up") {
-            alert(tableData[order].pageTitle);
-            alert(tableData[order - 1].pageTitle);
+            order -= 1;
         } else {
-            alert(tableData[order].pageTitle);
-            alert(tableData[order + 1].pageTitle);
+            order += 1;
         }
+
+        jsonRpc.pageService.getPage(function (result, error) {
+            if (result) {
+                $("#loadMsg").text("");
+            } else {
+                $("#tipMsg").text("${updateFailLabel}");
+            }
+        },tableData[order].id, order - 1);
     }
 
-    (function () {
+    var initPage = function () {
         $("#pageList").table({
             orderActionName: "savePageOrder",
             colModel: [ {
@@ -264,7 +274,8 @@
         });
 
         getPageList(1);
-    })();
+    }
+    initPage();
 
     var validatePage = function () {
         if ($("#pageTitle").val().replace(/\s/g, "") === "") {
