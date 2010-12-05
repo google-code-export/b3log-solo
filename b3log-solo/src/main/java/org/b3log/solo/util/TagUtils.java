@@ -58,13 +58,19 @@ public final class TagUtils {
     /**
      * Tags the specified article with the specified tag titles.
      *
+     * <p>
+     *   <b>Note</b>: This method SHOULD be invoked while <em>adding</em>
+     *   article.
+     * </p>
+     *
      * @param tagTitles the specified tag titles
      * @param article the specified article
      * @return an array of tags
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
      */
-    public JSONArray tag(final String[] tagTitles, final JSONObject article)
+    public JSONArray tagForAddArticle(final String[] tagTitles,
+                                      final JSONObject article)
             throws RepositoryException, JSONException {
         final JSONArray ret = new JSONArray();
         for (int i = 0; i < tagTitles.length; i++) {
@@ -79,14 +85,16 @@ public final class TagUtils {
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_COUNT, 1);
-                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (article.getBoolean(
+                        Article.ARTICLE_IS_PUBLISHED)) { // Publish article directly
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
-                } else {
+                } else { // Save as draft
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 0);
                 }
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
+                LOGGER.fine("after tag: " + tag);
             } else {
                 tagId = tag.getString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST,
@@ -109,6 +117,7 @@ public final class TagUtils {
                                publishedRefCnt);
                 }
                 tagRepository.update(tagId, tagTmp);
+                LOGGER.fine("after tag: " + tagTmp);
             }
 
             ret.put(tag);
@@ -131,6 +140,7 @@ public final class TagUtils {
         final JSONObject article = articleRepository.get(articleId);
 
         for (final JSONObject tag : tags) {
+            LOGGER.fine("before dec: " + tag);
             final String tagId = tag.getString(Keys.OBJECT_ID);
             final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
             tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
@@ -148,11 +158,37 @@ public final class TagUtils {
                                     tag.getInt(Tag.TAG_REFERENCE_COUNT),
                                     tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
                                     articleId});
+
+            LOGGER.fine("after dec: " + tag);
         }
 
         LOGGER.log(Level.FINER,
                    "Deced all tag reference count of article[oId={0}]",
                    articleId);
+    }
+
+    /**
+     * Decrements reference count of every tag of an published article specified
+     * by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void decTagPublishedRefCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
+        final JSONObject article = articleRepository.get(articleId);
+
+        for (final JSONObject tag : tags) {
+            final String tagId = tag.getString(Keys.OBJECT_ID);
+            final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+            tag.put(Tag.TAG_REFERENCE_COUNT, refCnt);
+            final int publishedRefCnt =
+                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
+            tagRepository.update(tagId, tag);
+        }
     }
 
     /**
