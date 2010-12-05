@@ -19,7 +19,9 @@ package org.b3log.solo.jsonrpc.impl;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -138,8 +141,11 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
+            final Map<String, SortDirection> sorts =
+                    new HashMap<String, SortDirection>();
+            sorts.put(Link.LINK_ORDER, SortDirection.ASCENDING);
             final JSONObject result =
-                    linkRepository.get(currentPageNum, pageSize);
+                    linkRepository.get(currentPageNum, pageSize, sorts);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
 
