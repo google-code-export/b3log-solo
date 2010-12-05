@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -229,8 +230,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
             final Date date = new Date();
-            article.put(ARTICLE_UPDATE_DATE, date);
-            article.put(ARTICLE_CREATE_DATE, date);
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                // Save update date only for published article
+                article.put(ARTICLE_UPDATE_DATE, date);
+                article.put(ARTICLE_CREATE_DATE, date);
+            }
             // Step 4: Set put top to false
             article.put(ARTICLE_PUT_TOP, false);
             // Step 5: Add article
@@ -752,7 +756,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
 
             article.put(ARTICLE_PERMALINK, permalink);
-
             // Step 2: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
             // Step 3: Un-archive date-article relations
@@ -769,7 +772,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     article.getString(ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
-
             // Step 6: Fill auto properties
             article.put(ARTICLE_CREATE_DATE, createDate);
             article.put(ARTICLE_COMMENT_COUNT,
@@ -779,10 +781,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_PUT_TOP,
                         oldArticle.getBoolean(ARTICLE_PUT_TOP));
             // Step 7: Set updat date
+            article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                if (oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                    article.put(ARTICLE_UPDATE_DATE, new Date());
-                }
+                // Save update date only for published article
+                article.put(ARTICLE_UPDATE_DATE, new Date());
             }
             // Step 8: Update
             articleRepository.update(articleId, article);
