@@ -330,7 +330,6 @@ public final class ArticleUtils {
      */
     public boolean hadBeenPublished(final JSONObject article)
             throws JSONException {
-        return !ArticleService.DEFAULT_UPDATE_DATE.equals(
-                article.get(Article.ARTICLE_UPDATE_DATE));
+        return article.getBoolean(Article.ARTICLE_HAD_BEEN_PUBLISHED);
     }
 }

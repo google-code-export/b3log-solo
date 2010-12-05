@@ -75,8 +75,12 @@ import org.json.JSONObject;
  *     </li>
  *     <li>
  *       Sets the value of property(named {@value Article#ARTICLE_UPDATE_DATE})
- *       to {@linkplain ArticleService#DEFAULT_UPDATE_DATE} of all
- *       {@link Article article} entities
+ *       to {@linkplain ArticleService#DEFAULT_UPDATE_DATE} of an
+ *       {@link Article article} entity
+ *     </li>
+ *     <li>
+ *       Adds a property(named {@value Article#AERTICLE_HAD_BEEN_PUBLISHED})
+ *       to {@link Article article} entity
  *     </li>
  *   </ul>
  * </p>
@@ -168,15 +172,17 @@ public final class V021ToV025 extends HttpServlet {
                                     ArticleService.DEFAULT_UPDATE_DATE);
                     }
 
+                    if (!article.has(Article.ARTICLE_HAD_BEEN_PUBLISHED)) {
+                        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
+                        articleRepository.update(articleId, article);
+                    }
+
                     if (!article.has(Article.ARTICLE_IS_PUBLISHED)) {
                         article.put(Article.ARTICLE_IS_PUBLISHED, true);
                         article.put(Article.ARTICLE_AUTHOR_EMAIL,
                                     currentUserEmail);
 
                         articleRepository.update(articleId, article);
-
-                        LOGGER.log(Level.INFO, "Updated article[oId={0}]",
-                                   articleId);
                         isConsistent = false;
                         cnt++;
                     }
