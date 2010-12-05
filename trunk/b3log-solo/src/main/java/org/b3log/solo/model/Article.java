@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 2, 2010
+ * @version 1.0.0.9, Dec 5, 2010
  */
 public final class Article {
 
@@ -84,6 +84,11 @@ public final class Article {
      * Key of author email.
      */
     public static final String ARTICLE_AUTHOR_EMAIL = "articleAuthorEmail";
+    /**
+     * Key of had been published.
+     */
+    public static final String ARTICLE_HAD_BEEN_PUBLISHED =
+            "articleHadBeenPublished";
 
     /**
      * Private default constructor.

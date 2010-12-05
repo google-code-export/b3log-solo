@@ -265,9 +265,14 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 throw new Exception("Add article fail, caused by duplicated permalink["
                                     + permalink + "]");
             }
-
             article.put(ARTICLE_PERMALINK, permalink);
-            // Step 10: Update article
+            // Step 10: Set had been published status
+            article.put(ARTICLE_HAD_BEEN_PUBLISHED, false);
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                // Publish it directly
+                article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
+            }
+            // Step 11: Update article
             articleRepository.update(articleId, article);
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
@@ -775,6 +780,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                                              createDate,
                                                              status);
                     article.put(ARTICLE_PERMALINK, permalink);
+                    article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
                 }
             }
             // Step 8: Update
