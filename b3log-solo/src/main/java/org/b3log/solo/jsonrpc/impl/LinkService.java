@@ -192,6 +192,11 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
 
         try {
+            if (linkOrder <= 1) {
+                // Can't change order for 88250 and Vanessa's links 
+                return false;
+            }
+
             final JSONObject link1 = linkRepository.get(linkId);
             final String link1Id = linkId;
             final JSONObject link2 = linkRepository.getByOrder(linkOrder);
