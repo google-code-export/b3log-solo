@@ -155,6 +155,7 @@ public final class ArchiveDateUtils {
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
                         archiveDate.getInt(
                 ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) - 1);
+        archiveDateRepository.update(articleId, archiveDate);
     }
 
     /**
