@@ -85,14 +85,13 @@
         };
         jsonRpc.adminService.getUsers(function (result, error) {
             switch (result.sc) {
-                case "GET_LINKS_SUCC":
+                case "GET_USERS_SUCC":
                     var users = result.users;
                     var userData = [];
                     usersLength = users.length;
-
                     for (var i = 0; i < users.length; i++) {
                         userData[i] = {};
-                        userData[i].userTitle = users[i].userName;
+                        userData[i].userName = users[i].userName;
                         userData[i].userEmail = users[i].userEmail;
                         userData[i].update = "<div class='updateIcon'></div>";
                         userData[i].deleted = "<div class='deleteIcon'></div>";
@@ -154,13 +153,13 @@
                                     "oId": event.data.id[0]
                                 };
 
-                                jsonRpc.userService.getUser(function (result, error) {
+                                jsonRpc.adminService.getUser(function (result, error) {
                                     switch (result.sc) {
-                                        case "GET_LINK_SUCC":
-                                            $("#updateUserTitle").val(result.user.userTitle).data('oId', event.data.id[0]);
-                                            $("#updateUserAddress").val(result.user.userAddress);
+                                        case "GET_USER_SUCC":
+                                            $("#userNameUpdate").val(result.user.userName).data('oId', event.data.id[0]);
+                                            $("#userEmailUpdate").val(result.user.userEmail);
                                             break;
-                                        case "GET_LINK_FAIL_":
+                                        case "GET_USER_FAIL_":
                                             break;
                                         default:
                                             break;
@@ -186,13 +185,13 @@
                                         "oId": event.data.id[0]
                                     };
 
-                                    jsonRpc.userService.removeUser(function (result, error) {
+                                    jsonRpc.adminService.removeUser(function (result, error) {
                                         switch (result.sc) {
-                                            case "REMOVE_LINK_SUCC":
+                                            case "REMOVE_USER_SUCC":
                                                 getUserList(1);
                                                 $("#tipMsg").text("${removeSuccLabel}");
                                                 break;
-                                            case "REMOVE_LINK_FAIL_":
+                                            case "REMOVE_USER_FAIL_":
                                                 $("#tipMsg").text("${removeFailLabel}");
                                                 break;
                                             default:
@@ -233,9 +232,9 @@
 
         if ($("#userName" + status).val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${nameEmptyLabel}");
-            $("#userTitle" + status).focus();
+            $("#userName" + status).focus();
         }else if ($("#userEmail" + status).val().replace(/\s/g, "") === "") {
-            $("tipMsg").text("${mailCannotEmptyLabel}");
+            $("#tipMsg").text("${mailCannotEmptyLabel}");
             $("#userEmail" + status).focus();
         } else if(!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#userEmail" + status).val())) {
             $("#tipMsg").text("${mailInvalidLabel}");
@@ -252,12 +251,12 @@
             $("#tipMsg").text("");
             var requestJSONObject = {
                 "user": {
-                    "userTitle": $("#updateUserName").val(),
-                    "oId": $("#updateUserName").data("oId"),
-                    "userAddress": $("#updateUserEmail").val()
+                    "userTitle": $("#userNameUpdate").val(),
+                    "oId": $("#userNameUpdate").data("oId"),
+                    "userAddress": $("#userEmailUpdate").val()
                 }
             };
-            jsonRpc.userService.updateUser(function (result, error) {
+            jsonRpc.adminService.updateUser(function (result, error) {
                 switch (result.sc) {
                     case "UPDATE_LINK_SUCC":
                         $("#updateUser").dialog("close");
@@ -277,16 +276,14 @@
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
             var requestJSONObject = {
-                "user": {
-                    "userTitle": $("#userTitle").val(),
-                    "userAddress": $("#userAddress").val()
-                }
+                "userName": $("#userName").val(),
+                "userEmail": $("#userEmail").val()
             };
-            jsonRpc.userService.addUser(function (result, error) {
+            jsonRpc.adminService.addUser(function (result, error) {
                 switch (result.sc) {
-                    case "ADD_LINK_SUCC":
-                        $("#userTitle").val("");
-                        $("#userAddress").val("");
+                    case "ADD_USER_SUCC":
+                        $("#userName").val("");
+                        $("#userEmail").val("");
                         if (usersLength === PAGE_SIZE) {
                             userListPageCount++;
                         }

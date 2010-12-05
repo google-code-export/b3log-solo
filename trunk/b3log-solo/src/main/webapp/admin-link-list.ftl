@@ -76,7 +76,7 @@
     
     var saveLinkOrder = function (order, status) {
         $("#loadMsg").text("${loadingLabel}");
-        var tableData = $("#pageList").table("option", "data");
+        var tableData = $("#linkList").table("option", "data");
         if (status === "up") {
             order -= 1;
         } else {
