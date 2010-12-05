@@ -410,7 +410,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
     /**
      * Changes page order by the specified page id and order.
      *
-     * @param pageId the specified link id
+     * @param pageId the specified page id
      * @param pageOrder the specified order
      * @param request the specified http servlet request
      * @param response the specified http servlet response
