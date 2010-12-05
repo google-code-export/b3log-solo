@@ -732,30 +732,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             // Step 1: Set permalink
             final JSONObject oldArticle = articleRepository.get(articleId);
-            final Date createDate = (Date) oldArticle.get(
-                    ARTICLE_CREATE_DATE);
-            String permalink = article.optString(ARTICLE_PERMALINK).trim();
-            final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
-            if (!oldPermalink.equals(permalink)) {
-                if (Strings.isEmptyOrNull(permalink)) {
-                    permalink = "/articles/" + PERMALINK_FORMAT.format(
-                            createDate) + "/" + articleId + ".html";
-                }
-
-                if (!permalink.startsWith("/")) {
-                    permalink = "/" + permalink;
-                }
-
-                if (!oldPermalink.equals(permalink)
-                    && permalinks.exist(permalink)) {
-                    status.put(Keys.CODE,
-                               StatusCodes.UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK);
-
-                    throw new Exception("Update article fail, caused by duplicated permalink["
-                                        + permalink + "]");
-                }
-            }
-
+            final String permalink =
+                    getPermalinkForUpdateArticle(oldArticle, article, status);
             article.put(ARTICLE_PERMALINK, permalink);
             // Step 2: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
@@ -774,6 +752,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 6: Fill auto properties
+            final Date createDate = (Date) oldArticle.get(ARTICLE_CREATE_DATE);
             article.put(ARTICLE_CREATE_DATE, createDate);
             article.put(ARTICLE_COMMENT_COUNT,
                         oldArticle.getInt(ARTICLE_COMMENT_COUNT));
@@ -890,6 +869,48 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         }
 
         PageCaches.removeAll();
+
+        return ret;
+    }
+
+    /**
+     * Gets article permalink for updating article with the specified old article,
+     * article and status.
+     *
+     * @param oldArticle the specified old article
+     * @param article the specified article
+     * @param status the specified status
+     * @return permalink
+     * @throws Exception if duplicated permalink occurs
+     */
+    private String getPermalinkForUpdateArticle(final JSONObject oldArticle,
+                                                final JSONObject article,
+                                                final JSONObject status) throws
+            Exception {
+        final String articleId = article.getString(Keys.OBJECT_ID);
+        final Date createDate = (Date) oldArticle.get(
+                ARTICLE_CREATE_DATE);
+        String ret = article.optString(ARTICLE_PERMALINK).trim();
+        final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
+        if (!oldPermalink.equals(ret)) {
+            if (Strings.isEmptyOrNull(ret)) {
+                ret = "/articles/" + PERMALINK_FORMAT.format(
+                        createDate) + "/" + articleId + ".html";
+            }
+
+            if (!ret.startsWith("/")) {
+                ret = "/" + ret;
+            }
+
+            if (!oldPermalink.equals(ret)
+                && permalinks.exist(ret)) {
+                status.put(Keys.CODE,
+                           StatusCodes.UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK);
+
+                throw new Exception("Update article fail, caused by duplicated permalink["
+                                    + ret + "]");
+            }
+        }
 
         return ret;
     }
