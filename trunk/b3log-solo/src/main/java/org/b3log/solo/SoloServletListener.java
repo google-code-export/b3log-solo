@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Dec 3, 2010
+ * @version 1.0.3.2, Dec 5, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -255,7 +255,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
             linkTo88250 = new JSONObject();
             linkTo88250.put(Link.LINK_TITLE, "简约设计\u306e艺术").
-                    put(Link.LINK_ADDRESS, address2Of88250);
+                    put(Link.LINK_ADDRESS, address2Of88250).
+                    put(Link.LINK_ORDER, 0);
             linkRepository.add(linkTo88250);
             LOGGER.info("Added a link[title=简约设计\u306e艺术] to your links");
 
@@ -274,7 +275,9 @@ public final class SoloServletListener extends AbstractServletListener {
 
             linkToVanessa = new JSONObject();
             linkToVanessa.put(Link.LINK_TITLE, "Vanessa").
-                    put(Link.LINK_ADDRESS, address2OfVanessa);
+                    put(Link.LINK_ADDRESS, address2OfVanessa).
+                    put(Link.LINK_ORDER, 0);
+
             linkRepository.add(linkToVanessa);
             LOGGER.info("Added a link[title=Vanessa] to your links");
         } catch (final Exception e) {
