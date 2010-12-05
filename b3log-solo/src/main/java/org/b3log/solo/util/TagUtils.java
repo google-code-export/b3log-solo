@@ -89,7 +89,6 @@ public final class TagUtils {
 
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
-                LOGGER.fine("after tag: " + tag);
             } else {
                 tagId = tag.getString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST,
@@ -112,7 +111,6 @@ public final class TagUtils {
                                publishedRefCnt);
                 }
                 tagRepository.update(tagId, tagTmp);
-                LOGGER.fine("after tag: " + tagTmp);
             }
 
             ret.put(tag);
@@ -135,7 +133,6 @@ public final class TagUtils {
         final JSONObject article = articleRepository.get(articleId);
 
         for (final JSONObject tag : tags) {
-            LOGGER.fine("before dec: " + tag);
             final String tagId = tag.getString(Keys.OBJECT_ID);
             final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
             tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
@@ -153,8 +150,6 @@ public final class TagUtils {
                                     tag.getInt(Tag.TAG_REFERENCE_COUNT),
                                     tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
                                     articleId});
-
-            LOGGER.fine("after dec: " + tag);
         }
 
         LOGGER.log(Level.FINER,
