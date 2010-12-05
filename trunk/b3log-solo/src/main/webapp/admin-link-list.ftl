@@ -50,7 +50,7 @@
                     ${linkTitle1Label}
                 </th>
                 <td>
-                    <input id="updateLinkTitle"/>
+                    <input id="linkTitleUpdate"/>
                 </td>
             </tr>
             <tr>
@@ -58,7 +58,7 @@
                     ${url1Label}
                 </th>
                 <td>
-                    <input id="updateLinkAddress"/>
+                    <input id="linkAddressUpdate"/>
                 </td>
             </tr>
             <tr>
@@ -84,81 +84,48 @@
             alert(linkData[order + 1].linkTitle);
         }
     }
-
-    $("#linkList").table({
-        orderActionName: "saveLinkOrder",
-        colModel: [{
-                name: "",
-                inputType: "order",
-                index: "linkOrder",
-                width: 60
-            },{
-                style: "padding-left: 6px;",
-                name: "${linkTitleLabel}",
-                index: "linkTitle",
-                width: 230
-            }, {
-                style: "padding-left: 6px;",
-                name: "${urlLabel}",
-                index: "linkAddress",
-                minWidth: 180
-            }, {
-                textAlign: "center",
-                name: "${updateLabel}",
-                index: "update",
-                width: 56,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'action': function (event) {
-                            $("#loadMsg").text("${loadingLabel}");
-                            $("#updateLink").dialog({
-                                width: 700,
-                                height:200
-                            });
-                            var requestJSONObject = {
-                                "oId": event.data.id[0]
-                            };
-
-                            jsonRpc.linkService.getLink(function (result, error) {
-                                switch (result.sc) {
-                                    case "GET_LINK_SUCC":
-                                        $("#updateLinkTitle").val(result.link.linkTitle).data('oId', event.data.id[0]);
-                                        $("#updateLinkAddress").val(result.link.linkAddress);
-                                        break;
-                                    case "GET_LINK_FAIL_":
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                $("#loadMsg").text("");
-                            }, requestJSONObject);
-                        }
-                    }],
-                style: "cursor:pointer; margin-left:22px;"
-            }, {
-                textAlign: "center",
-                name: "${removeLabel}",
-                index: "deleted",
-                width: 56,
-                bindEvent: [{
-                        'eventName': 'click',
-                        'action': function (event) {
-                            var isDelete = confirm("${confirmRemoveLabel}");
-                            if (isDelete) {
+    (function () {
+        $("#linkList").table({
+            orderActionName: "saveLinkOrder",
+            colModel: [{
+                    name: "",
+                    inputType: "order",
+                    index: "linkOrder",
+                    width: 60
+                },{
+                    style: "padding-left: 6px;",
+                    name: "${linkTitleLabel}",
+                    index: "linkTitle",
+                    width: 230
+                }, {
+                    style: "padding-left: 6px;",
+                    name: "${urlLabel}",
+                    index: "linkAddress",
+                    minWidth: 180
+                }, {
+                    textAlign: "center",
+                    name: "${updateLabel}",
+                    index: "update",
+                    width: 56,
+                    bindEvent: [{
+                            'eventName': 'click',
+                            'action': function (event) {
                                 $("#loadMsg").text("${loadingLabel}");
-                                $("#tipMsg").text("");
+                                $("#updateLink").dialog({
+                                    width: 700,
+                                    height:200
+                                });
                                 var requestJSONObject = {
                                     "oId": event.data.id[0]
                                 };
 
-                                jsonRpc.linkService.removeLink(function (result, error) {
+                                jsonRpc.linkService.getLink(function (result, error) {
                                     switch (result.sc) {
-                                        case "REMOVE_LINK_SUCC":
-                                            getLinkList(1);
-                                            $("#tipMsg").text("${removeSuccLabel}");
+                                        case "GET_LINK_SUCC":
+                                            $("#linkTitleUpdate").val(result.link.linkTitle).data('oId', event.data.id[0]);
+                                            $("#linkAddressUpdate").val(result.link.linkAddress);
                                             break;
-                                        case "REMOVE_LINK_FAIL_":
-                                            $("#tipMsg").text("${removeFailLabel}");
+                                        case "GET_LINK_FAIL_":
                                             break;
                                         default:
                                             break;
@@ -166,48 +133,74 @@
                                     $("#loadMsg").text("");
                                 }, requestJSONObject);
                             }
-                        }
-                    }],
-                style: "cursor:pointer; margin-left:22px;"
-            }, {
-                visible: false,
-                index: "id"
-            }]
-    });
+                        }],
+                    style: "cursor:pointer; margin-left:22px;"
+                }, {
+                    textAlign: "center",
+                    name: "${removeLabel}",
+                    index: "deleted",
+                    width: 56,
+                    bindEvent: [{
+                            'eventName': 'click',
+                            'action': function (event) {
+                                var isDelete = confirm("${confirmRemoveLabel}");
+                                if (isDelete) {
+                                    $("#loadMsg").text("${loadingLabel}");
+                                    $("#tipMsg").text("");
+                                    var requestJSONObject = {
+                                        "oId": event.data.id[0]
+                                    };
 
-    $("#linkPagination").paginate({
-        bindEvent: "getLinkList",
-        pageCount: 1,
-        windowSize: WINDOW_SIZE,
-        currentPage: 1,
-        style: "google",
-        isGoTo: false,
-        lastPage: "${lastPageLabel}",
-        nextPage: "${nextPagePabel}",
-        previousPage: "${previousPageLabel}",
-        firstPage: "${firstPageLabel}"
-    });
+                                    jsonRpc.linkService.removeLink(function (result, error) {
+                                        switch (result.sc) {
+                                            case "REMOVE_LINK_SUCC":
+                                                getLinkList(1);
+                                                $("#tipMsg").text("${removeSuccLabel}");
+                                                break;
+                                            case "REMOVE_LINK_FAIL_":
+                                                $("#tipMsg").text("${removeFailLabel}");
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        $("#loadMsg").text("");
+                                    }, requestJSONObject);
+                                }
+                            }
+                        }],
+                    style: "cursor:pointer; margin-left:22px;"
+                }, {
+                    visible: false,
+                    index: "id"
+                }]
+        });
 
-    var validateUpdateLink = function () {
-        if ($("#updateLinkTitle").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${titleEmptyLabel}");
-            $("#updateLinkTitle").focus().val("");
-        } else if ($("#updateLinkAddress").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${addressEmptyLabel}");
-            $("#updateLinkAddress").focus().val("");
-        } else {
-            return true;
+        $("#linkPagination").paginate({
+            bindEvent: "getLinkList",
+            pageCount: 1,
+            windowSize: WINDOW_SIZE,
+            currentPage: 1,
+            style: "google",
+            isGoTo: false,
+            lastPage: "${lastPageLabel}",
+            nextPage: "${nextPagePabel}",
+            previousPage: "${previousPageLabel}",
+            firstPage: "${firstPageLabel}"
+        });
+
+        getLinkList(1);
+    })();
+
+    var validateLink = function (status) {
+        if (!status) {
+            status = "";
         }
-        return false;
-    }
-
-    var validateLink = function () {
-        if ($("#linkTitle").val().replace(/\s/g, "") === "") {
+        if ($("#linkTitle" + status).val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${titleEmptyLabel}");
-            $("#linkTitle").focus().val("");
-        } else if ($("#linkAddress").val().replace(/\s/g, "") === "") {
+            $("#linkTitle" + status).focus().val("");
+        } else if ($("#linkAddress" + status).val().replace(/\s/g, "") === "") {
             $("#tipMsg").text("${addressEmptyLabel}");
-            $("#linkAddress").focus().val("");
+            $("#linkAddress" + status).focus().val("");
         } else {
             return true;
         }
@@ -265,17 +258,16 @@
             $("#loadMsg").text("");
         }, requestJSONObject);
     }
-    getLinkList(1);
 
     var updateLink = function () {
-        if (validateUpdateLink()) {
+        if (validateLink("Update")) {
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
             var requestJSONObject = {
                 "link": {
-                    "linkTitle": $("#updateLinkTitle").val(),
-                    "oId": $("#updateLinkTitle").data("oId"),
-                    "linkAddress": $("#updateLinkAddress").val()
+                    "linkTitle": $("#linkTitleUpdate").val(),
+                    "oId": $("#linkTitleUpdate").data("oId"),
+                    "linkAddress": $("#linkAddressUpdate").val()
                 }
             };
             jsonRpc.linkService.updateLink(function (result, error) {
