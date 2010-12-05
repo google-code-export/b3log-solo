@@ -45,7 +45,6 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Statistic;
@@ -62,7 +61,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Dec 3, 2010
+ * @version 1.0.1.9, Dec 5, 2010
  */
 public final class Filler {
 
@@ -184,11 +183,7 @@ public final class Filler {
         final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
                 jsonArrayToList(result.getJSONArray(Keys.RESULTS));
         for (final JSONObject article : articles) {
-            final Date updateDate =
-                    (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-            article.put(Common.HAS_UPDATED,
-                        !ArticleService.DEFAULT_UPDATE_DATE.equals(updateDate));
-            LOGGER.info("~~~~~~~~~~~" + !ArticleService.DEFAULT_UPDATE_DATE.equals(updateDate));
+            article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
         }
 
         articleUtils.addTags(articles);

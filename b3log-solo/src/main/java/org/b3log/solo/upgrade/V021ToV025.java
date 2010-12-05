@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -72,11 +73,16 @@ import org.json.JSONObject;
  *       Adds a property(named {@value ArchiveDate#ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT})
  *       to {@link ArchiveDate archive date} entity
  *     </li>
+ *     <li>
+ *       Sets the value of property(named {@value Article#ARTICLE_UPDATE_DATE})
+ *       to {@linkplain ArticleService#DEFAULT_UPDATE_DATE} of all
+ *       {@link Article article} entities
+ *     </li>
  *   </ul>
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 3, 2010
+ * @version 1.0.0.5, Dec 5, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -155,6 +161,12 @@ public final class V021ToV025 extends HttpServlet {
                             AbstractGAERepository.entity2JSONObject(entity);
                     final String articleId = article.getString(
                             Keys.OBJECT_ID);
+
+                    if (!ArticleService.DEFAULT_UPDATE_DATE.equals(
+                            article.get(Article.ARTICLE_UPDATE_DATE))) {
+                        article.put(Article.ARTICLE_UPDATE_DATE,
+                                    ArticleService.DEFAULT_UPDATE_DATE);
+                    }
 
                     if (!article.has(Article.ARTICLE_IS_PUBLISHED)) {
                         article.put(Article.ARTICLE_IS_PUBLISHED, true);
