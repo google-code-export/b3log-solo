@@ -137,7 +137,7 @@ public final class ArchiveDateUtils {
     }
 
     /**
-     * Decrements reference count of every tag of an published article specified
+     * Decrements reference count of archive date of an published article specified
      * by the given article id.
      *
      * @param articleId the given article id
