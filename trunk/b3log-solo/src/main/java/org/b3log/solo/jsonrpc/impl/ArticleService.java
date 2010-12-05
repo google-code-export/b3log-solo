@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -780,7 +779,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_PUT_TOP,
                         oldArticle.getBoolean(ARTICLE_PUT_TOP));
             // Step 7: Set updat date
-            article.put(ARTICLE_UPDATE_DATE, new Date());
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                article.put(ARTICLE_UPDATE_DATE, new Date());
+            }
             // Step 8: Update
             articleRepository.update(articleId, article);
             // Step 9: Add tag-article relations
@@ -861,9 +862,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final JSONObject article = articleRepository.get(articleId);
             article.put(ARTICLE_IS_PUBLISHED, false);
             tagUtils.decTagPublishedRefCount(articleId);
+            archiveDateUtils.decArchiveDatePublishedRefCount(articleId);
             articleRepository.update(articleId, article);
             transaction.commit();
-            
+
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_PUBLISH_ARTICLE_SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

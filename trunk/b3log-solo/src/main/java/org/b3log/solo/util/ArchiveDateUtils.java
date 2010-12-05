@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 4, 2010
+ * @version 1.0.0.7, Dec 5, 2010
  */
 public final class ArchiveDateUtils {
 
@@ -137,6 +137,27 @@ public final class ArchiveDateUtils {
     }
 
     /**
+     * Decrements reference count of every tag of an published article specified
+     * by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void decArchiveDatePublishedRefCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final JSONObject archiveDateArticleRelation =
+                archiveDateArticleRepository.getByArticleId(articleId);
+        final String archiveDateId =
+                archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
+                                                     + "_" + Keys.OBJECT_ID);
+        final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
+        archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                        archiveDate.getInt(
+                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) - 1);
+    }
+
+    /**
      * Un-archive an article specified by the given specified article id.
      *
      * @param articleId the given article id
@@ -161,7 +182,7 @@ public final class ArchiveDateUtils {
         if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
             --archiveDatePublishedArticleCnt;
         }
-        
+
         if (0 == archiveDateArticleCnt) {
             archiveDateRepository.remove(archiveDateId);
         } else {
