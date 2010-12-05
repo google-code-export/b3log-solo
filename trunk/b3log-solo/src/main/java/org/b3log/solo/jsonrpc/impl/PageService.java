@@ -441,8 +441,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
                      new JSONObject(page1, JSONObject.getNames(page1));
             newPage1.put(Page.PAGE_ORDER, pageOrder);
             
-            pageRepository.update(page2Id, page2);
-            pageRepository.update(page1Id, page1);
+            pageRepository.update(page2Id, newPage2);
+            pageRepository.update(page1Id, newPage1);
 
             transaction.commit();
 

@@ -197,8 +197,8 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                     new JSONObject(link1, JSONObject.getNames(link1));
             newLink1.put(Link.LINK_ORDER, linkOrder);
 
-            linkRepository.update(link2Id, link2);
-            linkRepository.update(link1Id, link1);
+            linkRepository.update(link2Id, newLink2);
+            linkRepository.update(link1Id, newLink1);
 
             transaction.commit();
 
