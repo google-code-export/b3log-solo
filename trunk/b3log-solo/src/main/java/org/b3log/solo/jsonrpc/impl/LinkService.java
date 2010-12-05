@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Link service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 3, 2010
+ * @version 1.0.0.4, Dec 5, 2010
  */
 public final class LinkService extends AbstractGAEJSONRpcService {
 
@@ -164,6 +164,46 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     }
 
     /**
+     * Changes link order by the specified link id and order.
+     *
+     * @param linkId the specified link id
+     * @param linkOrder the specified order
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return {@code true} if changed, {@code false} otherwise
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public boolean changeOrder(final String linkId, final int linkOrder,
+                               final HttpServletRequest request,
+                               final HttpServletResponse response)
+            throws ActionException, IOException {
+        checkAuthorized(request, response);
+
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+
+        try {
+            final JSONObject link1 = linkRepository.get(linkId);
+            final JSONObject link2 = linkRepository.getByOrder(linkOrder);
+            final int oldLink1Order = link1.getInt(Link.LINK_ORDER);
+            link2.put(Link.LINK_ORDER, oldLink1Order);
+            link1.put(Link.LINK_ORDER, linkOrder);
+
+            PageCaches.removeAll();
+
+            transaction.commit();
+
+            return true;
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            
+            return false;
+        }
+    }
+
+    /**
      * Updates a link by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
@@ -200,6 +240,9 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             final JSONObject link =
                     requestJSONObject.getJSONObject(Link.LINK);
             final String linkId = link.getString(Keys.OBJECT_ID);
+            final JSONObject oldLink = linkRepository.get(linkId);
+            link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
+
             linkRepository.update(linkId, link);
 
             PageCaches.removeAll();
@@ -207,7 +250,8 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_SUCC);
 
-            LOGGER.log(Level.FINER, "Updated a link[oId={0}]", linkId);
+            LOGGER.log(Level.FINER, "Updated a link[oId={0}]",
+                       linkId);
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -302,10 +346,12 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject link =
                     requestJSONObject.getJSONObject(Link.LINK);
-            final String pageId = linkRepository.add(link);
+            final int maxOrder = linkRepository.getMaxOrder();
+            link.put(Link.LINK_ORDER, maxOrder + 1);
+            final String linkId = linkRepository.add(link);
 
             transaction.commit();
-            ret.put(Keys.OBJECT_ID, pageId);
+            ret.put(Keys.OBJECT_ID, linkId);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_LINK_SUCC);
         } catch (final Exception e) {

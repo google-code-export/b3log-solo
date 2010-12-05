@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all link model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 14, 2010
+ * @version 1.0.0.1, Dec 5, 2010
  */
 public final class Link {
 
@@ -40,6 +40,10 @@ public final class Link {
      * Key of address.
      */
     public static final String LINK_ADDRESS = "linkAddress";
+    /**
+     * Key of order.
+     */
+    public static final String LINK_ORDER = "linkOrder";
 
     /**
      * Private default constructor.
