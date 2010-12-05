@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Dec 4, 2010
+ * @version 1.0.2.2, Dec 5, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -224,7 +224,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String tagsString =
                     article.getString(ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
-            final JSONArray tags = tagUtils.tag(tagTitles, article);
+            final JSONArray tags = tagUtils.tagForAddArticle(tagTitles, article);
             // Step 2; Set comment/view count to 0
             article.put(ARTICLE_COMMENT_COUNT, 0);
             article.put(ARTICLE_VIEW_COUNT, 0);
@@ -769,7 +769,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String tagsString =
                     article.getString(ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
-            final JSONArray tags = tagUtils.tag(tagTitles, article);
+            final JSONArray tags = tagUtils.tagForAddArticle(tagTitles, article);
 
             // Step 6: Fill auto properties
             article.put(ARTICLE_CREATE_DATE, createDate);
@@ -860,6 +860,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject article = articleRepository.get(articleId);
             article.put(ARTICLE_IS_PUBLISHED, false);
+            tagUtils.decTagPublishedRefCount(articleId);
             articleRepository.update(articleId, article);
             transaction.commit();
             
