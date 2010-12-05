@@ -73,7 +73,61 @@
     var userListCurrentPage = 1,
     userListPageCount = 1,
     usersLength = 1;
-    (function () {
+
+
+    var getUserList = function (pageNum) {
+        $("#loadMsg").text("${loadingLabel}");
+        userListCurrentPage = pageNum;
+        var requestJSONObject = {
+            "paginationCurrentPageNum": pageNum,
+            "paginationPageSize": PAGE_SIZE,
+            "paginationWindowSize": WINDOW_SIZE
+        };
+        jsonRpc.userService.getUsers(function (result, error) {
+            switch (result.sc) {
+                case "GET_LINKS_SUCC":
+                    var users = result.users;
+                    var userData = [];
+                    usersLength = users.length;
+
+                    for (var i = 0; i < users.length; i++) {
+                        userData[i] = {};
+                        userData[i].userTitle = users[i].userTitle;
+                        userData[i].userAddress = "<a target='_blank' class='noUnderline' href='" + users[i].userAddress + "'>"
+                            + users[i].userAddress + "</a>";
+                        userData[i].update = "<div class='updateIcon'></div>";
+                        userData[i].deleted = "<div class='deleteIcon'></div>";
+                        userData[i].id = users[i].oId;
+                        userData[i].userOrder = "";
+                    }
+
+                    $("#userList").table({
+                        update:{
+                            data: userData
+                        }
+                    });
+
+                    if (result.pagination.paginationPageCount === 0) {
+                        userListPageCount = 1;
+                    } else {
+                        userListPageCount = result.pagination.paginationPageCount;
+                    }
+
+                    $("#userPagination").paginate({
+                        update: {
+                            currentPage: pageNum,
+                            pageCount: userListPageCount
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+            $("#loadMsg").text("");
+        }, requestJSONObject);
+    }
+    
+    var initUser = function () {
         $("#userList").table({
             colModel: [{
                     style: "padding-left: 6px;",
@@ -171,7 +225,8 @@
             firstPage: "${firstPageLabel}"
         });
         getUserList(1);
-    })();
+    }
+    initUser();
     
     var validateUser = function (status) {
         if (!status) {
@@ -188,58 +243,6 @@
             return true;
         }
         return false;
-    }
-
-    var getUserList = function (pageNum) {
-        $("#loadMsg").text("${loadingLabel}");
-        userListCurrentPage = pageNum;
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": PAGE_SIZE,
-            "paginationWindowSize": WINDOW_SIZE
-        };
-        jsonRpc.userService.getUsers(function (result, error) {
-            switch (result.sc) {
-                case "GET_LINKS_SUCC":
-                    var users = result.users;
-                    var userData = [];
-                    usersLength = users.length;
-
-                    for (var i = 0; i < users.length; i++) {
-                        userData[i] = {};
-                        userData[i].userTitle = users[i].userTitle;
-                        userData[i].userAddress = "<a target='_blank' class='noUnderline' href='" + users[i].userAddress + "'>"
-                            + users[i].userAddress + "</a>";
-                        userData[i].update = "<div class='updateIcon'></div>";
-                        userData[i].deleted = "<div class='deleteIcon'></div>";
-                        userData[i].id = users[i].oId;
-                        userData[i].userOrder = "";
-                    }
-
-                    $("#userList").table({
-                        update:{
-                            data: userData
-                        }
-                    });
-
-                    if (result.pagination.paginationPageCount === 0) {
-                        userListPageCount = 1;
-                    } else {
-                        userListPageCount = result.pagination.paginationPageCount;
-                    }
-
-                    $("#userPagination").paginate({
-                        update: {
-                            currentPage: pageNum,
-                            pageCount: userListPageCount
-                        }
-                    });
-                    break;
-                default:
-                    break;
-            }
-            $("#loadMsg").text("");
-        }, requestJSONObject);
     }
     
     var updateUser = function () {

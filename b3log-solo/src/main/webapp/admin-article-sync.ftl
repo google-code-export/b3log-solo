@@ -113,7 +113,7 @@
 </div>
 <script type="text/javascript">
     var articleSyncDataTemp = [];
-    (function () {
+    var initSync = function () {
         // Blog table
         $("#articleSyncList").table({
             height: 357,
@@ -157,7 +157,8 @@
             }
         });
         $("#loadMsg").text("");
-    })();
+    }
+    initSync();
 
     var changeBlogType = function () {
         if ("" !== $("#blogType").val()) {
