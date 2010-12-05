@@ -568,6 +568,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
         ret.put(Article.ARTICLE_PERMALINK, permalink);
         ret.put(Article.ARTICLE_PUT_TOP, false);
         ret.put(Article.ARTICLE_IS_PUBLISHED, true);
+        ret.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
 
         return ret;
     }
