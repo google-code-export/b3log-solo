@@ -103,22 +103,19 @@
     var savePageOrder = function (order, status) {
         $("#loadMsg").text("${loadingLabel}");
         var tableData = $("#pageList").table("option", "data");
-        jsonRpc.pageService.getPage(function (result, error) {
-
-        },tableData[order].id, order);
         if (status === "up") {
             order -= 1;
         } else {
             order += 1;
         }
 
-        jsonRpc.pageService.getPage(function (result, error) {
+        jsonRpc.pageService.changeOrder(function (result, error) {
             if (result) {
                 $("#loadMsg").text("");
             } else {
                 $("#tipMsg").text("${updateFailLabel}");
             }
-        },tableData[order].id, order - 1);
+        }, tableData[order].id, order);
     }
 
     var initPage = function () {
