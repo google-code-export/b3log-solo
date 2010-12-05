@@ -76,20 +76,22 @@
     
     var saveLinkOrder = function (order, status) {
         $("#loadMsg").text("${loadingLabel}");
-        var tableData = $("#linkList").table("option", "data");
+        var tableData = $("#linkList").table("option", "data"),
+        srcOrder = order;
         if (status === "up") {
-            order -= 1;
+            srcOrder -= 1;
         } else {
-            order += 1;
+            srcOrder += 1;
         }
 
         jsonRpc.linkService.changeOrder(function (result, error) {
             if (result) {
-                $("#loadMsg").text("");
+                $("#linkList").table("changeOrder", status, order);
             } else {
                 $("#tipMsg").text("${updateFailLabel}");
             }
-        }, tableData[order].id, order);
+            $("#loadMsg").text("");
+        }, tableData[order].id, tableData[srcOrder].linkOrder);
     }
 
     var validateLink = function (status) {
@@ -131,13 +133,11 @@
                         linkData[i].update = "<div class='updateIcon'></div>";
                         linkData[i].deleted = "<div class='deleteIcon'></div>";
                         linkData[i].id = links[i].oId;
-                        linkData[i].linkOrder = "";
+                        linkData[i].linkOrder = links[i].linkOrder;
                     }
 
-                    $("#linkList").table({
-                        update:{
-                            data: linkData
-                        }
+                    $("#linkList").table("update",{
+                        data: linkData
                     });
 
                     if (result.pagination.paginationPageCount === 0) {
@@ -177,6 +177,10 @@
                         $("#updateLink").dialog("close");
                         getLinkList(linkListCurrentPage);
                         $("#tipMsg").text("${updateSuccLabel}");
+                        break;
+                    case "UPDATE_LINK_FAIL_":
+                        $("#updateLink").dialog("close");
+                        $("#tipMsg").text("${updateFailLabel}");
                         break;
                     default:
                         break;

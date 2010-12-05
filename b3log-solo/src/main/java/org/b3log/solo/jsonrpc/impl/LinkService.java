@@ -263,6 +263,14 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                     requestJSONObject.getJSONObject(Link.LINK);
             final String linkId = link.getString(Keys.OBJECT_ID);
             final JSONObject oldLink = linkRepository.get(linkId);
+            final String linkAddress = oldLink.getString(Link.LINK_ADDRESS);
+            if (SoloServletListener.DEFAULT_LINK_88250.equals(
+                    linkAddress)
+                || SoloServletListener.DEFAULT_LINK_VANESSA.equals(
+                    linkAddress)) {
+                throw new Exception("Can't not remove default links");
+            }
+
             link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
 
             linkRepository.update(linkId, link);
@@ -277,7 +285,13 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
+
+            try {
+                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_FAIL_);
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                throw new ActionException(ex);
+            }
         }
 
         return ret;

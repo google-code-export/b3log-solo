@@ -98,10 +98,8 @@
                         userData[i].id = users[i].oId;
                     }
 
-                    $("#userList").table({
-                        update:{
+                    $("#userList").table("update",{
                             data: userData
-                        }
                     });
 
                     if (result.pagination.paginationPageCount === 0) {

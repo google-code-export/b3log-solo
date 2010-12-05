@@ -43,10 +43,8 @@
                     fileData[i].id = files[i].oId;
                 }
 
-                $("#fileList").table({
-                    update:{
-                        data: fileData
-                    }
+                $("#fileList").table("update",{
+                    data: fileData
                 });
 
                 if (0 === result.pagination.paginationPageCount) {

@@ -101,6 +101,10 @@ public enum StatusCodes {
      */
     UPDATE_LINK_SUCC,
     /**
+     * Indicates update a link fails.
+     */
+    UPDATE_LINK_FAIL_,
+    /**
      * Indicates get a link successfully.
      */
     GET_LINK_SUCC,

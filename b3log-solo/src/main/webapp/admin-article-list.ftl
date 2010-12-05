@@ -42,10 +42,8 @@
                         articleData[i].id = articles[i].oId;
                     }
                     articleDataTemp = articleData;
-                    $("#articleList").table({
-                        update:{
-                            data: articleData
-                        }
+                    $("#articleList").table("update",{
+                        data: articleData
                     });
 
                     if (0 === result.pagination.paginationPageCount) {
@@ -216,10 +214,8 @@
                                                         articleDataTemp[i].topArticle = "<div class='putTopIcon'></div>";
                                                     }
                                                 }
-                                                $("#articleList").table({
-                                                    update:{
-                                                        data: articleDataTemp
-                                                    }
+                                                $("#articleList").table("update",{
+                                                    data: articleDataTemp
                                                 });
                                                 $("#tipMsg").text("${putTopSuccLabel}");
                                                 break;
@@ -241,10 +237,8 @@
                                                         articleDataTemp[i].topArticle = "<div class='notPutTopIcon'></div>";
                                                     }
                                                 }
-                                                $("#articleList").table({
-                                                    update:{
-                                                        data: articleDataTemp
-                                                    }
+                                                $("#articleList").table("update",{
+                                                    data: articleDataTemp
                                                 });
                                                 $("#tipMsg").text("${cancelTopSuccLabel}");
                                                 break;

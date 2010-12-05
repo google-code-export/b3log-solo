@@ -64,7 +64,7 @@
                     for (var i = 0; i < pages.length; i++) {
                         pageData[i] = {};
                         pageData[i].pageTitle = pages[i].pageTitle;
-                        pageData[i].pageOrder = "";
+                        pageData[i].pageOrder = pages[i].pageOrder;
                         pageData[i].pagePermalink = "<a class='noUnderline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                             + pages[i].pagePermalink + "</a>";
                         pageData[i].update = "<div class='updateIcon'></div>";
@@ -74,11 +74,9 @@
                             + pages[i].pageCommentCount + "</div>";
                     }
 
-                    $("#pageList").table({
-                        update:{
+                    $("#pageList").table("update",{
                             data: pageData
-                        }
-                    });
+                        });
 
                     if (result.pagination.paginationPageCount === 0) {
                         pageListPageCount = 1;
@@ -102,20 +100,22 @@
 
     var savePageOrder = function (order, status) {
         $("#loadMsg").text("${loadingLabel}");
-        var tableData = $("#pageList").table("option", "data");
+        var tableData = $("#pageList").table("option", "data"),
+        srcOrder = order;
         if (status === "up") {
-            order -= 1;
+            srcOrder -= 1;
         } else {
-            order += 1;
+            srcOrder += 1;
         }
 
         jsonRpc.pageService.changeOrder(function (result, error) {
             if (result) {
-                $("#loadMsg").text("");
+                $("#pageList").table("changeOrder", status, order);
             } else {
                 $("#tipMsg").text("${updateFailLabel}");
             }
-        }, tableData[order].id, order);
+            $("#loadMsg").text("");
+        }, tableData[order].id, tableData[srcOrder].pageOrder);
     }
 
     var initPage = function () {
