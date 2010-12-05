@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action;
 
 /**
@@ -92,6 +91,10 @@ public enum StatusCodes {
      * Indicates remove a link successfully.
      */
     REMOVE_LINK_SUCC,
+    /**
+     * Indicates remove a link fails.
+     */
+    REMOVE_LINK_FAIL_,
     /**
      * Indicates update a link successfully.
      */
