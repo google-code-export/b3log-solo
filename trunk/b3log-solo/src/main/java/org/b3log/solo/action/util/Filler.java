@@ -45,6 +45,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Statistic;
@@ -182,6 +183,13 @@ public final class Filler {
 
         final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
                 jsonArrayToList(result.getJSONArray(Keys.RESULTS));
+        for (final JSONObject article : articles) {
+            final Date updateDate =
+                    (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+            article.put(Common.HAS_UPDATED,
+                        !ArticleService.DEFAULT_UPDATE_DATE.equals(updateDate));
+            LOGGER.info("~~~~~~~~~~~" + !ArticleService.DEFAULT_UPDATE_DATE.equals(updateDate));
+        }
 
         articleUtils.addTags(articles);
 
@@ -244,7 +252,7 @@ public final class Filler {
 
         final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
         archiveDateUtils.removeForUnpublishedArticles(archiveDates);
-        
+
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         final String language = Locales.getLanguage(localeString);
