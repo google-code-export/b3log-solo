@@ -39,7 +39,7 @@
             </div>
         </div>
         <script type="text/javascript">
-            (function () {
+            var initInit = function () {
                 var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
                 if (!isAdminLoggedIn) {
                     $(".introContent").html("<h1>" + $(".introContent h2").html() + "</h1>"
@@ -47,7 +47,8 @@
                     .removeClass("introContent").addClass("introContentLogin");
                     $($(".introContentLogin h1 span")[0]).css("font-size", "36px");
                 }
-            })();
+            }
+            initInit();
 
             var initSys = function () {
                 if(confirm("${confirmRemoveLabel}")){

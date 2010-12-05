@@ -208,8 +208,7 @@
         }
     }
 
-
-    (function () {
+    var initLink = function () {
         $("#linkList").table({
             orderActionName: "saveLinkOrder",
             colModel: [{
@@ -314,5 +313,6 @@
         });
 
         getLinkList(1);
-    })();
+    }
+    initLink();
 </script>
