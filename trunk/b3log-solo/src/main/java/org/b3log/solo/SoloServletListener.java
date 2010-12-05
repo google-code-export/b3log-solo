@@ -276,7 +276,7 @@ public final class SoloServletListener extends AbstractServletListener {
             linkToVanessa = new JSONObject();
             linkToVanessa.put(Link.LINK_TITLE, "Vanessa").
                     put(Link.LINK_ADDRESS, address2OfVanessa).
-                    put(Link.LINK_ORDER, 0);
+                    put(Link.LINK_ORDER, 1);
 
             linkRepository.add(linkToVanessa);
             LOGGER.info("Added a link[title=Vanessa] to your links");
