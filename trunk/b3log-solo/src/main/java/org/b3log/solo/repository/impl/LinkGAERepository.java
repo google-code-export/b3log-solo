@@ -22,10 +22,13 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -64,7 +67,7 @@ public final class LinkGAERepository extends AbstractGAERepository
     }
 
     @Override
-    public int getMaxOrder() {
+    public int getMaxOrder() throws RepositoryException {
         final Query query = new Query(getName());
         query.addSort(Link.LINK_ORDER, Query.SortDirection.DESCENDING);
         final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
@@ -74,7 +77,13 @@ public final class LinkGAERepository extends AbstractGAERepository
             return -1;
         }
 
-        return (Integer) links.get(0).getProperty(Link.LINK_ORDER);
+        try {
+            final Map<String, Object> properties = links.get(0).getProperties();
+            return new JSONObject(properties).getInt(Link.LINK_ORDER);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
     }
 
     @Override
