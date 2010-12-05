@@ -58,18 +58,13 @@ public final class TagUtils {
     /**
      * Tags the specified article with the specified tag titles.
      *
-     * <p>
-     *   <b>Note</b>: This method SHOULD be invoked while <em>adding</em>
-     *   article.
-     * </p>
-     *
      * @param tagTitles the specified tag titles
      * @param article the specified article
      * @return an array of tags
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
      */
-    public JSONArray tagForAddArticle(final String[] tagTitles,
+    public JSONArray tag(final String[] tagTitles,
                                       final JSONObject article)
             throws RepositoryException, JSONException {
         final JSONArray ret = new JSONArray();

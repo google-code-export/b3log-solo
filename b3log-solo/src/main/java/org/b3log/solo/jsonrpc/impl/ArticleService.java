@@ -224,7 +224,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String tagsString =
                     article.getString(ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
-            final JSONArray tags = tagUtils.tagForAddArticle(tagTitles, article);
+            final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 2; Set comment/view count to 0
             article.put(ARTICLE_COMMENT_COUNT, 0);
             article.put(ARTICLE_VIEW_COUNT, 0);
@@ -769,7 +769,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String tagsString =
                     article.getString(ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
-            final JSONArray tags = tagUtils.tagForAddArticle(tagTitles, article);
+            final JSONArray tags = tagUtils.tag(tagTitles, article);
 
             // Step 6: Fill auto properties
             article.put(ARTICLE_CREATE_DATE, createDate);
