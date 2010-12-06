@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action;
 
 /**
@@ -212,6 +211,10 @@ public enum StatusCodes {
      * Indicates updates a user successfully.
      */
     UPDATE_USER_SUCC,
+    /**
+     * Indicates updates a user fails.
+     */
+    UPDATE_USER_FAIL_,
     /**
      * Indicates get users successfully.
      */
