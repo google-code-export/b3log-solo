@@ -76,6 +76,17 @@ public final class InitCheckFilter implements Filter {
 
         try {
             final String requestURI = httpServletRequest.getRequestURI();
+            if (requestURI.equals("/init.do")
+                && SoloServletListener.isInited()) {
+                LOGGER.log(Level.WARNING,
+                           "Solo has been initialized, so redirects to /");
+                final RequestDispatcher requestDispatcher =
+                        httpServletRequest.getRequestDispatcher("/");
+                requestDispatcher.forward(request, response);
+
+                return;
+            }
+
             if (PageCacheFilter.shouldSkip(requestURI)) {
                 LOGGER.log(Level.FINEST, "Skip filter request[URI={0}]",
                            requestURI);
