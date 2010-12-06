@@ -183,7 +183,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject user = new JSONObject();
             final String userEmail =
-                    requestJSONObject.getString(User.USER_EMAIL);
+                    requestJSONObject.getString(User.USER_EMAIL).trim();
             final JSONObject duplicatedUser =
                     userRepository.getByEmail(userEmail);
             if (null != duplicatedUser) {
@@ -209,7 +209,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
         return ret;
     }
-    
+
     /**
      * Gets a user by the specified request json object.
      *
@@ -286,11 +286,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @see Pagination
      */
     public JSONObject getUsers(final JSONObject requestJSONObject,
-                                  final HttpServletRequest request,
-                                  final HttpServletResponse response)
+                               final HttpServletRequest request,
+                               final HttpServletResponse response)
             throws ActionException, IOException {
         checkAuthorized(request, response);
-        
+
         final JSONObject ret = new JSONObject();
         try {
             final int currentPageNum = requestJSONObject.getInt(
@@ -369,7 +369,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             transaction =
                     AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
             // Step 2: Add new user
-           final JSONObject user = new JSONObject();
+            final JSONObject user = new JSONObject();
             final String userEmail =
                     requestJSONObject.getString(User.USER_EMAIL);
             final JSONObject duplicatedUser =
@@ -385,6 +385,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             user.put(User.USER_NAME, userName);
             user.put(Keys.OBJECT_ID, oldUserId);
 
+            userRepository.add(user);
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_SUCC);
