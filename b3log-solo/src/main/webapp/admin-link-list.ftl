@@ -84,8 +84,11 @@
             srcOrder += 1;
         }
 
-        jsonRpc.linkService.changeOrder(function (result, error) {
+jsonRpc.linkService.changeOrder(function (result, error) {
             if (result) {
+                var tmp = tableData[order].linkOrder;
+                tableData[order].linkOrder = tableData[srcOrder].linkOrder;
+                tableData[srcOrder].linkOrder = tmp;
                 $("#linkList").table("changeOrder", status, order);
             } else {
                 $("#tipMsg").text("${updateFailLabel}");
