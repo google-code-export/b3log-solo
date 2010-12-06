@@ -16,6 +16,11 @@
 
 package org.b3log.solo;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
@@ -54,6 +59,7 @@ import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Link;
+import org.b3log.solo.model.Preference;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PreferenceRepository;
@@ -403,6 +409,29 @@ public final class SoloServletListener extends AbstractServletListener {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Determines Solo had been initialized.
+     *
+     * @return {@code true} if it had been initialized, {@code false} otherwise
+     */
+    // XXX: to find a better way?
+    public static boolean isInited() {
+        try {
+            final DatastoreService datastoreService =
+                    DatastoreServiceFactory.getDatastoreService();
+            final Key parentKey = KeyFactory.createKey("parentKind",
+                                                       "parentKeyName");
+            final Key key = KeyFactory.createKey(parentKey,
+                                                 Preference.PREFERENCE,
+                                                 Preference.PREFERENCE);
+            datastoreService.get(key);
+            return true;
+        } catch (final EntityNotFoundException e) {
+            LOGGER.log(Level.WARNING, "B3log Solo has not been initialized", e);
+            return false;
         }
     }
 }
