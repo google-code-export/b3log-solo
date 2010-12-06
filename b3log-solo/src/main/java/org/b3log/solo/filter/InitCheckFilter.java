@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.filter;
 
 import com.google.inject.Inject;
@@ -75,6 +74,12 @@ public final class InitCheckFilter implements Filter {
 
         try {
             final String requestURI = httpServletRequest.getRequestURI();
+            if (isInited()) {
+                chain.doFilter(request, response);
+
+                return;
+            }
+
             if (("/init.do".equals(requestURI)
                  || PageCacheFilter.equalAdminActions(requestURI))
                 && isInited()) {
@@ -90,12 +95,6 @@ public final class InitCheckFilter implements Filter {
             if (PageCacheFilter.shouldSkip(requestURI)) {
                 LOGGER.log(Level.FINEST, "Skip filter request[URI={0}]",
                            requestURI);
-                chain.doFilter(request, response);
-
-                return;
-            }
-
-            if (isInited()) {
                 chain.doFilter(request, response);
 
                 return;
