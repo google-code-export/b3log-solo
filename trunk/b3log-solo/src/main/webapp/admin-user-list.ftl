@@ -95,11 +95,16 @@
                         userData[i].userEmail = users[i].userEmail;
                         userData[i].update = "<div class='updateIcon'></div>";
                         userData[i].deleted = "<div class='deleteIcon'></div>";
+                        if (i === 0) {
+                            userData[i].userRole = "<div class='trueIcon'></div>";
+                        } else {
+                            userData[i].userRole = "<div class='falseIcon'></div>";
+                        }
                         userData[i].id = users[i].oId;
                     }
 
                     $("#userList").table("update",{
-                            data: userData
+                        data: userData
                     });
 
                     if (result.pagination.paginationPageCount === 0) {
@@ -202,6 +207,11 @@
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
+                    style: "padding-left: 6px;",
+                    name: "${administratorLabel}",
+                    index: "userRole",
+                    minWidth: 80
+                }, {
                     visible: false,
                     index: "id"
                 }]
@@ -254,10 +264,13 @@
             };
             jsonRpc.adminService.updateUser(function (result, error) {
                 switch (result.sc) {
-                    case "UPDATE_LINK_SUCC":
+                    case "UPDATE_USER_SUCC":
                         $("#updateUser").dialog("close");
                         getUserList(userListCurrentPage);
                         $("#tipMsg").text("${updateSuccLabel}");
+                        break;
+                    case "UPDATE_USER_FAIL_DUPLICATED_EMAIL":
+                        $("#tipMsg").text("${duplicatedEmailLabel}");
                         break;
                     default:
                         break;
@@ -285,6 +298,9 @@
                         }
                         getUserList(userListPageCount);
                         $("#tipMsg").text("${addSuccLabel}");
+                        break;
+                    case "ADD_USER_FAIL_DUPLICATED_EMAIL":
+                        $("#tipMsg").text("${duplicatedEmailLabel}");
                         break;
                     default:
                         break;
