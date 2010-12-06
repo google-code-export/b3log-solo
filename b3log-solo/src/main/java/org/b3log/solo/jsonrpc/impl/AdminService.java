@@ -359,27 +359,32 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
         try {
-            final String userRole = requestJSONObject.getString(User.USER_ROLE);
-            if (Role.ADMIN_ROLE.equals(userRole)) {
-                // Can't update admin
-                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_FAIL_);
-
-                return ret;
-            }
-
-            // Step 1: Remove old user
             final String oldUserId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject oldUser = userRepository.get(oldUserId);
+            final String userNewEmail =
+                    requestJSONObject.getString(User.USER_EMAIL).trim();
+
+            final String userRole = requestJSONObject.getString(User.USER_ROLE);
+            if (Role.ADMIN_ROLE.equals(userRole)) {
+                final String adminOldEmail = oldUser.getString(User.USER_EMAIL);
+                if (!adminOldEmail.equals(userNewEmail)) {
+                    // Can't update the admin's email
+                    ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_FAIL_);
+
+                    return ret;
+                }
+            }
+
+            // Remove old user
             if (null == oldUser) {
                 ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_FAIL_);
 
                 return ret;
             }
 
-            // Step 2: Check email is whether duplicated
-            final String userEmail =
-                    requestJSONObject.getString(User.USER_EMAIL).trim();
-            final JSONObject mayBeAnother = userRepository.getByEmail(userEmail);
+            // Check email is whether duplicated
+            final JSONObject mayBeAnother = userRepository.getByEmail(
+                    userNewEmail);
             if (null != mayBeAnother
                 && !mayBeAnother.getString(Keys.OBJECT_ID).equals(oldUserId)) {
                 // Exists someone else has the save email as requested
@@ -388,9 +393,10 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
                 return ret;
             }
-            // Step 3: Update
+
+            // Update
             final String userName = requestJSONObject.getString(User.USER_NAME);
-            oldUser.put(User.USER_EMAIL, userEmail);
+            oldUser.put(User.USER_EMAIL, userNewEmail);
             oldUser.put(User.USER_NAME, userName);
             // Unchanges the default role
 
