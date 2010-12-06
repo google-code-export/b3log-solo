@@ -37,6 +37,7 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.freemarker.Templates;
@@ -151,7 +152,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Adds a user with the specified request json object.
+     * Adds a user(default role) with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
@@ -196,6 +197,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             final String userName = requestJSONObject.getString(User.USER_NAME);
             user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
+            user.put(User.USER_ROLE, Role.DEFAULT_ROLE);
 
             userRepository.add(user);
             transaction.commit();
