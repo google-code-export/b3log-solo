@@ -24,12 +24,15 @@ import com.google.inject.servlet.ServletModule;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 24, 2010
+ * @version 1.0.0.5, Dec 6, 2010
  */
 public final class FilterModule extends ServletModule {
 
     @Override
     protected void configureServlets() {
+        bind(InitCheckFilter.class).in(Scopes.SINGLETON);
+        filter("/*").through(InitCheckFilter.class);
+
         bind(PageCacheFilter.class).in(Scopes.SINGLETON);
         filter("/*").through(PageCacheFilter.class);
 
