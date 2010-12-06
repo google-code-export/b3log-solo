@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
@@ -25,9 +24,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +38,6 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
@@ -338,7 +334,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * {
      *     "oId": "",
      *     "userName": "",
-     *     "userEmail": ""
+     *     "userEmail": "",
+     *     "userRole": ""
      * }
      * </pre>
      * @param request the specified http servlet request
@@ -362,35 +359,42 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
         try {
+            final String userRole = requestJSONObject.getString(User.USER_ROLE);
+            if (Role.ADMIN_ROLE.equals(userRole)) {
+                // Can't update admin
+                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_FAIL_);
+
+                return ret;
+            }
+
             // Step 1: Remove old user
             final String oldUserId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject oldUser = userRepository.get(oldUserId);
-            if (null != oldUser) {
-                userRepository.remove(oldUserId);
-                transaction.commit();
+            if (null == oldUser) {
+                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_FAIL_);
+
+                return ret;
             }
-            // XXX: GAE transaction isolation
-            // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
-            transaction =
-                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-            // Step 2: Add new user
-            final JSONObject user = new JSONObject();
+
+            // Step 2: Check email is whether duplicated
             final String userEmail =
-                    requestJSONObject.getString(User.USER_EMAIL);
-            final JSONObject duplicatedUser =
-                    userRepository.getByEmail(userEmail);
-            if (null != duplicatedUser) {
+                    requestJSONObject.getString(User.USER_EMAIL).trim();
+            final JSONObject mayBeAnother = userRepository.getByEmail(userEmail);
+            if (null != mayBeAnother
+                && !mayBeAnother.getString(Keys.OBJECT_ID).equals(oldUserId)) {
+                // Exists someone else has the save email as requested
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.ADD_USER_FAIL_DUPLICATED_EMAIL);
 
                 return ret;
             }
+            // Step 3: Update
             final String userName = requestJSONObject.getString(User.USER_NAME);
-            user.put(User.USER_EMAIL, userEmail);
-            user.put(User.USER_NAME, userName);
-            user.put(Keys.OBJECT_ID, oldUserId);
+            oldUser.put(User.USER_EMAIL, userEmail);
+            oldUser.put(User.USER_NAME, userName);
+            // Unchanges the default role
 
-            userRepository.add(user);
+            userRepository.update(oldUserId, oldUser);
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_SUCC);

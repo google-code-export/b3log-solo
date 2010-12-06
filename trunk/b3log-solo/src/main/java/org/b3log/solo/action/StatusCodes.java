@@ -19,7 +19,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Dec 4, 2010
+ * @version 1.0.1.8, Dec 6, 2010
  */
 public enum StatusCodes {
 
