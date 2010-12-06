@@ -357,6 +357,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
         try {
+            // Step 1: Remove old user
             final String oldUserId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject oldUser = userRepository.get(oldUserId);
             if (null != oldUser) {
@@ -367,8 +368,23 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
             transaction =
                     AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+            // Step 2: Add new user
+           final JSONObject user = new JSONObject();
+            final String userEmail =
+                    requestJSONObject.getString(User.USER_EMAIL);
+            final JSONObject duplicatedUser =
+                    userRepository.getByEmail(userEmail);
+            if (null != duplicatedUser) {
+                ret.put(Keys.STATUS_CODE,
+                        StatusCodes.ADD_USER_FAIL_DUPLICATED_EMAIL);
 
-            addUser(requestJSONObject, request, response);
+                return ret;
+            }
+            final String userName = requestJSONObject.getString(User.USER_NAME);
+            user.put(User.USER_EMAIL, userEmail);
+            user.put(User.USER_NAME, userName);
+            user.put(Keys.OBJECT_ID, oldUserId);
+
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_SUCC);
