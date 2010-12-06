@@ -127,6 +127,10 @@ public final class SoloServletListener extends AbstractServletListener {
      * Vanessa's link order.
      */
     public static final int DEFAULT_LINK_VANESSA_ORDER = 1;
+    /**
+     * Indicates Solo had been initialized.
+     */
+    private static boolean isInited = true;
 
     static {
         EN_MONTHS.put("01", "January");
@@ -235,6 +239,15 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
+     * Determines Solo had been initialized.
+     *
+     * @return {@code true} if it had been initialized, {@code false} otherwise
+     */
+    public static boolean isInited() {
+        return isInited;
+    }
+
+    /**
      * Initializes default links if not found.
      *
      * <ul>
@@ -313,8 +326,11 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             preference = preferenceUtils.getPreference();
             if (null == preference) {
-                throw new Exception(
-                        "Can't not init default skin, please init B3log Solo first");
+                LOGGER.log(Level.SEVERE,
+                           "Can't not init default skin, please init B3log Solo first");
+                isInited = false;
+
+                return;
             }
 
             final EventManager eventManager =

@@ -42,7 +42,7 @@ import org.b3log.solo.util.Statistics;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 4, 2010
+ * @version 1.0.1.4, Dec 6, 2010
  * @see #shouldSkip(java.lang.String) 
  */
 public final class PageCacheFilter implements Filter {
@@ -170,9 +170,9 @@ public final class PageCacheFilter implements Filter {
                || requestURI.equals("/tag-articles-feed.do")
                || requestURI.equals("/blog-articles-feed.do")
                || requestURI.equals("/file-access.do")
-               || requestURI.equals("/_ah/resources") // For local dev server
+               || requestURI.equals("/init.do")
+               || requestURI.contains("/_ah/")  // For local dev server
                || requestURI.contains("/admin-")
-               || requestURI.contains("/_ah/upload/")
                || requestURI.contains("/datastore-file-access.do")
                || requestURI.contains("/skins");
     }
