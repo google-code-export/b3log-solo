@@ -35,6 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.util.PageCacheKeys;
 import org.b3log.solo.util.Statistics;
 
@@ -171,8 +172,8 @@ public final class PageCacheFilter implements Filter {
                || requestURI.equals("/blog-articles-feed.do")
                || requestURI.equals("/file-access.do")
                || requestURI.equals("/init.do")
-               || requestURI.contains("/_ah/")  // For local dev server
-               || requestURI.contains("/admin-")
+               || equalAdminActions(requestURI)
+               || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")
                || requestURI.contains("/skins")
                || requestURI.contains("/images")
@@ -192,6 +193,24 @@ public final class PageCacheFilter implements Filter {
             transaction.rollback();
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+    }
+
+    /**
+     * Determines whether the specified request URI is equals to admin action
+     * URI patterns.
+     * 
+     * @param requestURI the specified request URI
+     * @return {@code true} if it is equals to, {@code false} otherwise
+     * @see org.b3log.solo.action.ActionModule#ADMIN_ACTIONS
+     */
+    public static boolean equalAdminActions(final String requestURI) {
+        for (int i = 0; i < ActionModule.ADMIN_ACTIONS.length; i++) {
+            if (!ActionModule.ADMIN_ACTIONS[i].equals(requestURI)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override

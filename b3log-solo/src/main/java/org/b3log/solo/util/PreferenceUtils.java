@@ -41,7 +41,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 11, 2010
+ * @version 1.0.0.2, Dec 6, 2010
  */
 public final class PreferenceUtils {
 
@@ -78,9 +78,8 @@ public final class PreferenceUtils {
      * Gets the user preference.
      *
      * @return user preference, returns {@code null} if not found
-     * @throws JSONException json exception
      */
-    public JSONObject getPreference() throws JSONException {
+    public JSONObject getPreference() {
         final Object preferenceString = userPreferenceCache.get(PREFERENCE);
         JSONObject ret = null;
         try {
@@ -98,7 +97,7 @@ public final class PreferenceUtils {
             } else {
                 ret = new JSONObject(preferenceString.toString());
             }
-        } catch (final RepositoryException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException(e);
         }
