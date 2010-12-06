@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * User Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 4, 2010
+ * @version 1.0.0.1, Dec 6, 2010
  */
 public final class UserGAERepository extends AbstractGAERepository
         implements UserRepository {
