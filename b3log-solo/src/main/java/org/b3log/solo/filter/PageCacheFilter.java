@@ -174,7 +174,9 @@ public final class PageCacheFilter implements Filter {
                || requestURI.contains("/_ah/")  // For local dev server
                || requestURI.contains("/admin-")
                || requestURI.contains("/datastore-file-access.do")
-               || requestURI.contains("/skins");
+               || requestURI.contains("/skins")
+               || requestURI.contains("/images")
+               || requestURI.contains("/styles");
     }
 
     /**

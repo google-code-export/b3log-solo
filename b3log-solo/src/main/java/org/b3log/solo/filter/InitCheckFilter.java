@@ -76,7 +76,7 @@ public final class InitCheckFilter implements Filter {
 
         try {
             final String requestURI = httpServletRequest.getRequestURI();
-            if (requestURI.equals("/init.do")
+            if ("/init.do".equals(requestURI)
                 && SoloServletListener.isInited()) {
                 LOGGER.log(Level.WARNING,
                            "Solo has been initialized, so redirects to /");
