@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Link service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 5, 2010
+ * @version 1.0.0.5, Dec 6, 2010
  */
 public final class LinkService extends AbstractGAEJSONRpcService {
 
@@ -192,8 +192,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
 
         try {
-            if (linkOrder <= 1) {
-                // Can't change order for 88250 and Vanessa's links 
+            if (changeDefaultLinksOrder(linkId, linkOrder)) {
                 return false;
             }
 
@@ -412,5 +411,36 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
+    }
+
+    /**
+     * Determines whether change the default links with the specified link id
+     * and link order.
+     * 
+     * @param linkId the specified link id
+     * @param linkOrder the specified link order
+     * @return {@code true} if changes the default links, {@code false} 
+     * otherwise
+     * @throws Exception exception
+     */
+    private boolean changeDefaultLinksOrder(final String linkId,
+                                            final int linkOrder)
+            throws Exception {
+        if (linkOrder <= 1) {
+            return true;
+        }
+
+        if (2 == linkOrder) { // Move down vanessa's link
+            final JSONObject vanessaLink =
+                    linkRepository.getByOrder(
+                    SoloServletListener.DEFAULT_LINK_VANESSA_ORDER);
+            final JSONObject link = linkRepository.get(linkId);
+            if (link.getString(Keys.OBJECT_ID).equals(vanessaLink.getString(
+                    Keys.OBJECT_ID))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

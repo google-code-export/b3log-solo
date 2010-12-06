@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.2, Dec 5, 2010
+ * @version 1.0.3.3, Dec 6, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -123,6 +123,10 @@ public final class SoloServletListener extends AbstractServletListener {
      * Vanessa's link.
      */
     public static final String DEFAULT_LINK_VANESSA = "http://vanessa.b3log.org";
+    /**
+     * Vanessa's link order.
+     */
+    public static final int DEFAULT_LINK_VANESSA_ORDER = 1;
 
     static {
         EN_MONTHS.put("01", "January");
@@ -284,7 +288,7 @@ public final class SoloServletListener extends AbstractServletListener {
             linkToVanessa = new JSONObject();
             linkToVanessa.put(Link.LINK_TITLE, "Vanessa").
                     put(Link.LINK_ADDRESS, address2OfVanessa).
-                    put(Link.LINK_ORDER, 1);
+                    put(Link.LINK_ORDER, DEFAULT_LINK_VANESSA_ORDER);
 
             linkRepository.add(linkToVanessa);
             LOGGER.info("Added a link[title=Vanessa] to your links");
