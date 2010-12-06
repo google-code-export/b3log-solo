@@ -430,7 +430,7 @@ public final class SoloServletListener extends AbstractServletListener {
             datastoreService.get(key);
             return true;
         } catch (final EntityNotFoundException e) {
-            LOGGER.log(Level.WARNING, "B3log Solo has not been initialized", e);
+            LOGGER.log(Level.WARNING, "B3log Solo has not been initialized");
             return false;
         }
     }
