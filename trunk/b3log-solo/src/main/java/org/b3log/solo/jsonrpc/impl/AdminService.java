@@ -355,7 +355,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         checkAuthorized(request, response);
 
-        Transaction transaction =
+        final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         final JSONObject ret = new JSONObject();
         try {
