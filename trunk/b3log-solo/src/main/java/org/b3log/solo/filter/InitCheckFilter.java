@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.filter;
 
 import com.google.inject.Inject;
@@ -28,6 +29,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
@@ -74,20 +76,8 @@ public final class InitCheckFilter implements Filter {
 
         try {
             final String requestURI = httpServletRequest.getRequestURI();
-            if (isInited()) {
+            if (SoloServletListener.isInited()) {
                 chain.doFilter(request, response);
-
-                return;
-            }
-
-            if (("/init.do".equals(requestURI)
-                 || PageCacheFilter.equalAdminActions(requestURI))
-                && isInited()) {
-                LOGGER.log(Level.WARNING,
-                           "Solo has been initialized, so redirects to /");
-                final RequestDispatcher requestDispatcher =
-                        httpServletRequest.getRequestDispatcher("/");
-                requestDispatcher.forward(request, response);
 
                 return;
             }
@@ -104,7 +94,7 @@ public final class InitCheckFilter implements Filter {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 LOGGER.log(Level.WARNING,
-                           "Solo has not been initialized, so redirects to /init.do");
+                           "B3log Solo has not been initialized, so redirects to /init.do");
                 final RequestDispatcher requestDispatcher =
                         httpServletRequest.getRequestDispatcher("/init.do");
                 requestDispatcher.forward(request, response);
@@ -123,15 +113,5 @@ public final class InitCheckFilter implements Filter {
 
     @Override
     public void destroy() {
-    }
-
-    /**
-     * Determines Solo had been initialized.
-     *
-     * @return {@code true} if it had been initialized, {@code false} otherwise
-     */
-    // XXX: to find a better way?
-    public boolean isInited() {
-        return null != preferenceUtils.getPreference();
     }
 }
