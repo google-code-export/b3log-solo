@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, Dec 3, 2010
+ * @version 1.0.3.1, Dec 6, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -399,7 +399,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final String commentName =
                     requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail =
-                    requestJSONObject.getString(Comment.COMMENT_EMAIL);
+                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim();
             final String commentURL =
                     requestJSONObject.optString(Comment.COMMENT_URL);
             String commentContent =
@@ -548,7 +548,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final String commentName =
                     requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail =
-                    requestJSONObject.getString(Comment.COMMENT_EMAIL);
+                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim();
             final String commentURL =
                     requestJSONObject.optString(Comment.COMMENT_URL);
             String commentContent =
