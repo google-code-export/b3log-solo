@@ -29,7 +29,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
@@ -76,8 +75,9 @@ public final class InitCheckFilter implements Filter {
 
         try {
             final String requestURI = httpServletRequest.getRequestURI();
-            if ("/init.do".equals(requestURI)
-                && SoloServletListener.isInited()) {
+            if (("/init.do".equals(requestURI)
+                 || PageCacheFilter.equalAdminActions(requestURI))
+                && isInited()) {
                 LOGGER.log(Level.WARNING,
                            "Solo has been initialized, so redirects to /");
                 final RequestDispatcher requestDispatcher =
@@ -95,7 +95,7 @@ public final class InitCheckFilter implements Filter {
                 return;
             }
 
-            if (SoloServletListener.isInited()) {
+            if (isInited()) {
                 chain.doFilter(request, response);
 
                 return;
@@ -124,5 +124,15 @@ public final class InitCheckFilter implements Filter {
 
     @Override
     public void destroy() {
+    }
+
+    /**
+     * Determines Solo had been initialized.
+     *
+     * @return {@code true} if it had been initialized, {@code false} otherwise
+     */
+    // XXX: to find a better way?
+    public boolean isInited() {
+        return null != preferenceUtils.getPreference();
     }
 }

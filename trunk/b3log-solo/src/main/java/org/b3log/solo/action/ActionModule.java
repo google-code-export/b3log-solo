@@ -49,9 +49,26 @@ import org.b3log.solo.upgrade.UpgradeModule;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Dec 4, 2010
+ * @version 1.0.2.0, Dec 6, 2010
  */
 public final class ActionModule extends AbstractActionModule {
+
+    /**
+     * Admin action serve URLs.
+     */
+    public static final String[] ADMIN_ACTIONS = new String[]{
+        "/admin-index.do",
+        "/admin-article.do",
+        "/admin-article-list.do",
+        "/admin-link-list.do",
+        "/admin-preference.do",
+        "/admin-article-sync.do",
+        "/admin-file-list.do",
+        "/admin-page.do",
+        "/admin-others.do",
+        "/admin-draft-list.do",
+        "/admin-user-list.do"
+    };
 
     /**
      * Public default constructor.
@@ -85,7 +102,7 @@ public final class ActionModule extends AbstractActionModule {
         serve("/init.do").with(InitAction.class);
 
         bind(AdminIndexAction.class).in(Scopes.SINGLETON);
-        serve("/admin-index.do").with(AdminIndexAction.class);
+        serve(ADMIN_ACTIONS[0]).with(AdminIndexAction.class);
 
         bind(IndexAction.class).in(Scopes.SINGLETON);
         serve("/", "/index.do").with(IndexAction.class);
@@ -106,16 +123,9 @@ public final class ActionModule extends AbstractActionModule {
         serve("/page.do").with(PageAction.class);
 
         bind(AdminDoNothingAction.class).in(Scopes.SINGLETON);
-        serve("/admin-article.do",
-              "/admin-article-list.do",
-              "/admin-link-list.do",
-              "/admin-preference.do",
-              "/admin-article-sync.do",
-              "/admin-file-list.do",
-              "/admin-page.do",
-              "/admin-others.do",
-              "/admin-draft-list.do",
-              "/admin-user-list.do").with(AdminDoNothingAction.class);
+        for (int i = 1; i < ADMIN_ACTIONS.length; i++) {
+            serve(ADMIN_ACTIONS[i]).with(AdminDoNothingAction.class);
+        }
 
         bind(Filler.class).in(Scopes.SINGLETON);
 
