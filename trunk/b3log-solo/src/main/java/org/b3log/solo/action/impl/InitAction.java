@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import com.google.inject.Inject;
@@ -26,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * B3log Solo initialization action. init.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 3, 2010
+ * @version 1.0.0.2, Dec 6, 2010
  */
 public final class InitAction extends AbstractAction {
 
@@ -69,7 +69,6 @@ public final class InitAction extends AbstractAction {
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
-
         try {
             final Map<String, String> langs =
                     langPropsService.getAll(Locales.getLocale(request));
@@ -78,13 +77,24 @@ public final class InitAction extends AbstractAction {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
+        try {
+            if (SoloServletListener.isInited()) {
+                final RequestDispatcher requestDispatcher =
+                        request.getRequestDispatcher("/");
+                requestDispatcher.forward(request, response);
+                return ret;
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+
         return ret;
     }
 
     @Override
     protected JSONObject doAjaxAction(final JSONObject data,
-            final HttpServletRequest request,
-            final HttpServletResponse response)
+                                      final HttpServletRequest request,
+                                      final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
