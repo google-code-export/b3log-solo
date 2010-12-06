@@ -110,6 +110,9 @@
 
         jsonRpc.pageService.changeOrder(function (result, error) {
             if (result) {
+                var tmp = tableData[order].pageOrder;
+                tableData[order].pageOrder = tableData[srcOrder].pageOrder;
+                tableData[srcOrder].pageOrder = tmp;
                 $("#pageList").table("changeOrder", status, order);
             } else {
                 $("#tipMsg").text("${updateFailLabel}");
