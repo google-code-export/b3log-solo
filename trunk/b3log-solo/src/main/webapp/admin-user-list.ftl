@@ -96,9 +96,9 @@
                         userData[i].update = "<div class='updateIcon'></div>";
                         userData[i].deleted = "<div class='deleteIcon'></div>";
                         if (i === 0) {
-                            userData[i].userRole = "<div class='trueIcon'></div>";
-                        } else {
                             userData[i].userRole = "<div class='falseIcon'></div>";
+                        } else {
+                            userData[i].userRole = "<div class='trueIcon'></div>";
                         }
                         userData[i].id = users[i].oId;
                     }
@@ -207,10 +207,10 @@
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
-                    style: "padding-left: 6px;",
+                    style: "padding-left: 36px;",
                     name: "${administratorLabel}",
                     index: "userRole",
-                    minWidth: 80
+                    width: 89
                 }, {
                     visible: false,
                     index: "id"
@@ -265,9 +265,9 @@
             jsonRpc.adminService.updateUser(function (result, error) {
                 switch (result.sc) {
                     case "UPDATE_USER_SUCC":
-                        $("#updateUser").dialog("close");
                         getUserList(userListCurrentPage);
                         $("#tipMsg").text("${updateSuccLabel}");
+                        $("#userUpdate").dialog("close");
                         break;
                     case "UPDATE_USER_FAIL_DUPLICATED_EMAIL":
                         $("#tipMsg").text("${duplicatedEmailLabel}");
