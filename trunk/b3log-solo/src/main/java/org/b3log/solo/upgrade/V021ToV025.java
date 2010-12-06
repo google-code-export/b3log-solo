@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.upgrade;
 
 import com.google.appengine.api.datastore.Entity;
@@ -34,6 +33,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
@@ -46,6 +47,7 @@ import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.PreferenceUtils;
 import org.json.JSONObject;
 
@@ -88,11 +90,14 @@ import org.json.JSONObject;
  *       Adds a property(named {@value Link#LINK_ORDER})
  *       to {@link Link link} entity
  *     </li>
+ *     <li>
+ *       Saves the administrator to {@value User#USER} entities.
+ *     </li>
  *   </ul>
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 5, 2010
+ * @version 1.0.0.7, Dec 6, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -141,6 +146,11 @@ public final class V021ToV025 extends HttpServlet {
     @Inject
     private LinkRepository linkRepository;
     /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+    /**
      * Update size in an request.
      */
     private static final int UPDATE_SIZE = 100;
@@ -154,11 +164,14 @@ public final class V021ToV025 extends HttpServlet {
 
             final String currentUserEmail =
                     USER_SERVICE.getCurrentUser().getEmail();
+            final String currentUserName =
+                    USER_SERVICE.getCurrentUser().getNickname();
 
             upgradePreference(currentUserEmail);
             upgradeTags();
             upgradeArchiveDates();
             upgradeLinks();
+            saveAdmin(currentUserName, currentUserEmail);
 
             Transaction transaction =
                     AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -299,6 +312,41 @@ public final class V021ToV025 extends HttpServlet {
                 }
             }
             transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, "Upgrade archive date fail: {0}",
+                       e.getMessage());
+            throw new ServletException("Upgrade fail from v021 to v025");
+        }
+    }
+
+    /**
+     * Saves the administrator.
+     *
+     * @param adminName the specified administrator name
+     * @param adminEmail the specified administrator email
+     * @throws ServletException upgrades fails
+     */
+    private void saveAdmin(final String adminName, final String adminEmail)
+            throws ServletException {
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        try {
+            final Query query = new Query(User.USER);
+            query.addFilter(User.USER_ROLE,
+                            Query.FilterOperator.EQUAL, Role.ADMIN_ROLE);
+            final PreparedQuery preparedQuery =
+                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+            final Entity adminEntity = preparedQuery.asSingleEntity();
+            if (null == adminEntity) {
+                final JSONObject admin = new JSONObject();
+                admin.put(User.USER_EMAIL, adminEmail);
+                admin.put(User.USER_NAME, adminName);
+                admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+
+                userRepository.add(admin);
+                transaction.commit();
+            }
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.log(Level.SEVERE, "Upgrade archive date fail: {0}",
