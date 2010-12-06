@@ -100,6 +100,7 @@
 
     var savePageOrder = function (order, status) {
         $("#loadMsg").text("${loadingLabel}");
+        $("#tipMsg").text("");
         var tableData = $("#pageList").table("option", "data"),
         srcOrder = order;
         if (status === "up") {
