@@ -33,7 +33,7 @@ public final class FilterModule extends ServletModule {
     @Override
     protected void configureServlets() {
         bind(AuthFilter.class).in(Scopes.SINGLETON);
-        for (int i = 1; i < ActionModule.ADMIN_ACTIONS.length; i++) {
+        for (int i = 0; i < ActionModule.ADMIN_ACTIONS.length; i++) {
             filter(ActionModule.ADMIN_ACTIONS[i]).through(AuthFilter.class);
         }
 
