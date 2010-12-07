@@ -74,7 +74,7 @@ public final class TagService extends AbstractGAEJSONRpcService {
                                           final HttpServletResponse response)
             throws ActionException, IOException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
-        if (!isAdminLoggedIn()) {
+        if (!isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
