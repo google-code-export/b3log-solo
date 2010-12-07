@@ -161,7 +161,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * <pre>
      * {
      *     "userName": "",
-     *     "userEmail": ""
+     *     "userEmail": "",
+     *     "userRole": ""
      * }
      * </pre>
      * @param request the specified http servlet request
@@ -588,13 +589,51 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         try {
             initStatistic();
             initPreference();
-
+            initAdmin(request, response);
             ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
         } catch (final Exception e) {
             LOGGER.severe("Initialize B3log Solo error");
         }
 
         return ret;
+    }
+
+    /**
+     * Initializes administrator.
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    private void initAdmin(final HttpServletRequest request,
+                           final HttpServletResponse response)
+            throws RepositoryException,
+                   JSONException {
+        LOGGER.info("Initializing admin....");
+        final Transaction transaction =
+                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final JSONObject ret = new JSONObject();
+        try {
+            final JSONObject admin = new JSONObject();
+
+            final com.google.appengine.api.users.User user =
+                    userService.getCurrentUser();
+            final String name = user.getNickname();
+            admin.put(User.USER_NAME, name);
+            final String email = user.getEmail();
+            admin.put(User.USER_EMAIL, email);
+            admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+
+            addUser(admin, request, response);
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RuntimeException("Admin init error!");
+        }
+
+        LOGGER.info("Initialized admin");
     }
 
     /**
