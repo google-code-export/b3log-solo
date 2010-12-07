@@ -3,12 +3,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="none"/>
-        <title>${welcomeToSoloLabel}</title>
+        <title>403 Forbidden</title>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-init.css"/>
         <link rel="icon" type="image/png" href="favicon.png"/>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -22,8 +20,32 @@
                     </a>
                 </div>
                 <div class="left introContent">
-                    ${initIntroLabel}
-                    <button onclick='initSys();'>${initLabel}</button>
+                    <h2>403 Forbidden</h2>
+                    <p>
+                        Problem accessing {errorPageRequestURI}.
+                    </p>
+                    <p>
+                        <i>Reason</i>
+                        : {errorPageCause}
+                    </p>
+                    <ul class="left marginLeft12" style="width: 50%;">
+                        <li>
+                            <a href="/index.do">Click</a> to return Index
+                        </li>
+                        <li>
+                            Return to
+                            <a target="_blank" href="http://b3log-solo.googlecode.com">
+                                <span style="color: orange;">B</span>
+                                <span style="font-size: 11px; color: blue;"><sup>3</sup></span>
+                                <span style="color: green;">L</span>
+                                <span style="color: red;">O</span>
+                                <span style="color: blue;">G</span>
+                                <span style="color: orangered; font-weight: bold;">&nbsp;Solo</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <img class="right" alt="forbidden" style="width: 96px;height: 96px;" src="/images/forbidden.png"/>
+                    <div class="clear"></div>
                 </div>
                 <div class="clear"></div>
             </div>
@@ -42,33 +64,5 @@
                 </a>
             </div>
         </div>
-        <script type="text/javascript">
-            var initInit = function () {
-                var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
-                if (!isAdminLoggedIn) {
-                    $(".introContent").html("<h1>" + $(".introContent h2").html() + "</h1>"
-                        + "<img src='/images/arrow.png' title='B3log' alt='B3log'/><button onclick='login();'>${loginLabel}</button>")
-                    .removeClass("introContent").addClass("introContentLogin");
-                    $($(".introContentLogin h1 span")[0]).css("font-size", "36px");
-                }
-            }
-            initInit();
-
-            var initSys = function () {
-                if(confirm("${confirmRemoveLabel}")){
-                    var rslt = jsonRpc.adminService.init();
-                    if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
-                        window.location.href = "/admin-index.do";
-                    } else {
-                        alert("init error!");
-                    }
-                }
-            }
-
-            var login = function () {
-                var loginURL = jsonRpc.adminService.getLoginURL("/init.do");
-                window.location.href = loginURL;
-            }
-        </script>
     </body>
 </html>
