@@ -884,6 +884,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             tagUtils.decTagPublishedRefCount(articleId);
             archiveDateUtils.decArchiveDatePublishedRefCount(articleId);
             articleRepository.update(articleId, article);
+            // TODO: dec statistic blog article/comment cnt
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_PUBLISH_ARTICLE_SUCC);
