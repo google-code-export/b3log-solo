@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -775,7 +776,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 6: Fill auto properties
-            Date createDate = (Date) oldArticle.get(ARTICLE_CREATE_DATE);
+            final Date createDate = (Date) oldArticle.get(ARTICLE_CREATE_DATE);
             article.put(ARTICLE_CREATE_DATE, createDate);
             article.put(ARTICLE_COMMENT_COUNT,
                         oldArticle.getInt(ARTICLE_COMMENT_COUNT));
