@@ -8,7 +8,7 @@
     <div class="line"></div>
     <ul>
         <li>
-            <h4 id="recentComments">${recentCommentsLabel}</h4>
+            <h4>${recentCommentsLabel}</h4>
         </li>
         <li>
             <ul id="recentComments">
