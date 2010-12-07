@@ -168,10 +168,8 @@ $.extend(ArticleUtil.prototype, {
                     listHtml += randomArticleLiHtml;
                 }
 
-                var randomArticlesDiv = $("#randomArticles");
-                randomArticlesDiv.attr("class", "article-relative");
                 var randomArticleListHtml = "<h5>" + randomArticlesLabel + "</h5>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
-                randomArticlesDiv.append(randomArticleListHtml);
+                $("#randomArticles").append(randomArticleListHtml);
             }
         });
     },

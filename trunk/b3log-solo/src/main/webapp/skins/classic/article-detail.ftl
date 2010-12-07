@@ -99,7 +99,7 @@
                             <div class="clear"></div>
                         </div>
                         <#if 0 != relevantArticles?size>
-                        <div class="article-relative">
+                        <div class="article-relative left" style="width: 50%;">
                             <h5>${relevantArticles1Label}</h5>
                             <ul class="marginLeft12">
                                 <#list relevantArticles as relevantArticle>
@@ -112,7 +112,8 @@
                             </ul>
                         </div>
                         </#if>
-                        <div id="randomArticles"></div>
+                        <div id="randomArticles" class="article-relative left"></div>
+                        <div class="clear"></div>
                         <div id="externalRelevantArticles"></div>
                     </div>
                     <div class="comments" id="comments" name="comments">
@@ -452,11 +453,10 @@
                             }
 
                             var externalRelevantArticlesDiv = $("#externalRelevantArticles");
-                            externalRelevantArticlesDiv.attr("class", "article-relative");
                             var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
                                 + "<ul class='marginLeft12'>"
                                 + listHtml + "</ul>";
-                            externalRelevantArticlesDiv.append(randomArticleListHtml);
+                            $("#externalRelevantArticles").append(randomArticleListHtml).addClass("article-relative");
                         }
                     });
                         </#if>
