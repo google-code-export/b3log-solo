@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.datastore.Transaction;
@@ -788,15 +787,25 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                         oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
             // Step 7: Set updat date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
-            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
+                if (articleUtils.hadBeenPublished(oldArticle)) {
+                    // Edit update date only for published article
+                    article.put(ARTICLE_UPDATE_DATE, new Date());
+                } else { // This article is a draft and this is the first time to publish it
+                    final Date date = new Date();
+                    article.put(ARTICLE_CREATE_DATE, date);
+                    article.put(ARTICLE_UPDATE_DATE, date);
+                    article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
+                }
+            } else { // Save as draft
                 if (articleUtils.hadBeenPublished(oldArticle)) {
                     // Save update date only for published article
                     article.put(ARTICLE_UPDATE_DATE, new Date());
                 } else {
-                    // Reset create date
-                    createDate = new Date();
-                    article.put(ARTICLE_CREATE_DATE, createDate);
-                    article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
+                    // Reset create/update date to indicate this is an new draft
+                    final Date date = new Date();
+                    article.put(ARTICLE_CREATE_DATE, date);
+                    article.put(ARTICLE_UPDATE_DATE, date);
                 }
             }
             // Step 8: Update
