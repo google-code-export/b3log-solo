@@ -28,7 +28,6 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 5, 2010
+ * @version 1.0.0.8, Dec 6, 2010
  */
 public final class ArticleUtils {
 
@@ -317,8 +316,9 @@ public final class ArticleUtils {
     public boolean hasUpdated(final JSONObject article)
             throws JSONException {
         final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+        final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
 
-        return !ArticleService.DEFAULT_UPDATE_DATE.equals(updateDate);
+        return !createDate.equals(updateDate);
     }
 
     /**

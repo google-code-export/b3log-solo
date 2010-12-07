@@ -32,7 +32,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.BlogSync;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Dec 7, 2010
+ * @version 1.0.1.9, Dec 8, 2010
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -223,12 +222,6 @@ public final class ArticleGAERepository extends AbstractGAERepository
             }
 
             // XXX:  check other params
-
-            if (!article.has(Article.ARTICLE_UPDATE_DATE)
-                || null == article.get(Article.ARTICLE_UPDATE_DATE)) {
-                article.put(Article.ARTICLE_UPDATE_DATE,
-                            ArticleService.DEFAULT_UPDATE_DATE);
-            }
 
             // Remove external attributes, such as "blogSyncExternal...."
             article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ABSTRACT);

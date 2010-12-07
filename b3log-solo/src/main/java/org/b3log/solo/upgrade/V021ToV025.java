@@ -79,11 +79,6 @@ import org.json.JSONObject;
  *       to {@link ArchiveDate archive date} entity
  *     </li>
  *     <li>
- *       Sets the value of property(named {@value Article#ARTICLE_UPDATE_DATE})
- *       to {@linkplain ArticleService#DEFAULT_UPDATE_DATE} of an
- *       {@link Article article} entity
- *     </li>
- *     <li>
  *       Adds a property(named {@value Article#ARTICLE_HAD_BEEN_PUBLISHED})
  *       to {@link Article article} entity
  *     </li>
@@ -98,7 +93,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 6, 2010
+ * @version 1.0.0.8, Dec 8, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -191,12 +186,6 @@ public final class V021ToV025 extends HttpServlet {
                             AbstractGAERepository.entity2JSONObject(entity);
                     final String articleId = article.getString(
                             Keys.OBJECT_ID);
-
-                    if (!ArticleService.DEFAULT_UPDATE_DATE.equals(
-                            article.get(Article.ARTICLE_UPDATE_DATE))) {
-                        article.put(Article.ARTICLE_UPDATE_DATE,
-                                    ArticleService.DEFAULT_UPDATE_DATE);
-                    }
 
                     if (!article.has(Article.ARTICLE_HAD_BEEN_PUBLISHED)) {
                         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
