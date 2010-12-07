@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Dec 7, 2010
+ * @version 1.0.2.4, Dec 8, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -131,10 +131,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     public static final DateFormat PERMALINK_FORMAT =
             new SimpleDateFormat("yyyy/MM/dd");
-    /**
-     * Default update date.
-     */
-    public static final Date DEFAULT_UPDATE_DATE = new Date(0);
 
     /**
      * Gets the random articles.
@@ -237,7 +233,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
             final Date date = new Date();
-            article.put(ARTICLE_UPDATE_DATE, DEFAULT_UPDATE_DATE);
+            article.put(ARTICLE_UPDATE_DATE, date);
             article.put(ARTICLE_CREATE_DATE, date);
             // Step 4: Set put top to false
             article.put(ARTICLE_PUT_TOP, false);
