@@ -23,7 +23,7 @@
                  1. DO NOT configure servlets in this file, using Guice-Servlet
                     extension instead, see class org.b3log.solo.action.ActionModule
                     for details.
-    Version: 1.0.1.0, Dec 4, 2010
+    Version: 1.0.1.1, Dec 7, 2010
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -35,23 +35,46 @@
         <filter-name>GuiceFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
     <security-constraint>
         <web-resource-collection>
-            <url-pattern>/admin-index.do</url-pattern>
             <url-pattern>/upgrade/*</url-pattern>
+            <url-pattern>/init.do</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>
+    <security-constraint>
+        <web-resource-collection>
+            <url-pattern>/admin-article-list.do</url-pattern>
+            <url-pattern>/admin-article-sync.do</url-pattern>
+            <url-pattern>/admin-article.do</url-pattern>
+            <url-pattern>/admin-draft-list.do</url-pattern>
+            <url-pattern>/admin-error.do</url-pattern>
+            <url-pattern>/admin-file-list.do</url-pattern>
+            <url-pattern>/admin-index.do</url-pattern>
+            <url-pattern>/admin-link-list.do</url-pattern>
+            <url-pattern>/admin-others.do</url-pattern>
+            <url-pattern>/admin-page.do</url-pattern>
+            <url-pattern>/admin-preference.do</url-pattern>
+            <url-pattern>/admin-user-list.do</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>*</role-name>
+        </auth-constraint>
+    </security-constraint>
+
     <listener>
         <listener-class>org.b3log.solo.SoloServletListener</listener-class>
     </listener>
+    
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    
     <servlet>
         <servlet-name>Error</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.ErrorAction</servlet-class>
@@ -76,6 +99,11 @@
     <error-page>
         <error-code>400</error-code>
         <location>/admin-error.do</location>
+    </error-page>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/403.html</location>
     </error-page>
 
 </web-app>

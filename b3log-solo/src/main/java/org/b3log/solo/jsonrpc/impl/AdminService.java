@@ -131,11 +131,14 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
         try {
             final String userId = requestJSONObject.getString(Keys.OBJECT_ID);
             userRepository.remove(userId);
@@ -176,11 +179,14 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                               final HttpServletRequest request,
                               final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
         try {
             final JSONObject user = new JSONObject();
             final String userEmail =
@@ -291,9 +297,12 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                                final HttpServletRequest request,
                                final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
-
         final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+
         try {
             final int currentPageNum = requestJSONObject.getInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -354,11 +363,14 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
         try {
             final String oldUserId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject oldUser = userRepository.get(oldUserId);
@@ -415,33 +427,27 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Determines whether the administrator is logged in.
-     * 
-     * @return {@code true} if logged in, returns {@code false} otherwise
-     */
-    public boolean isAdminLoggedIn() {
-        return userService.isUserLoggedIn() && userService.isUserAdmin();
-    }
-
-    /**
-     * Gets the administrator logout.
+     * Gets the URL of user logout.
      *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
-     * @return logout URL
+     * @return logout URL, returns {@code null} if the user is not logged in
      * @throws ActionException action exception
      * @throws IOException io exception
      */
     public String getLogoutURL(final HttpServletRequest request,
                                final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        if (!isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return null;
+        }
 
         return userService.createLogoutURL("/");
     }
 
     /**
-     * Gets the administrator login.
+     * Gets the URL of user login.
      *
      * @param redirectURL redirect URL after logged in
      * @param request the specified http servlet request
@@ -479,7 +485,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     public JSONObject getPageCache(final HttpServletRequest request,
                                    final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         final org.b3log.latke.cache.Cache<String, Object> cache =
                 PageCaches.getCache();
@@ -489,7 +499,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         final long cachedBytes = cache.getCachedBytes();
         final long hitBytes = cache.getHitBytes();
 
-        final JSONObject ret = new JSONObject();
         try {
             ret.put(Cache.CACHE_CACHED_COUNT, cachedCount);
             ret.put(Cache.CACHE_HIT_COUNT, hitCount);
@@ -517,7 +526,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                                final HttpServletRequest request,
                                final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
 
         LOGGER.log(Level.FINE, "URI[{0}]", uri);
 
@@ -540,7 +553,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     public void clearAllPageCache(final HttpServletRequest request,
                                   final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
 
         PageCaches.removeAll();
     }
@@ -562,9 +579,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     public JSONObject init(final HttpServletRequest request,
                            final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
-
         final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         try {
             initStatistic();

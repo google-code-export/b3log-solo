@@ -222,10 +222,13 @@ public final class PageService extends AbstractGAEJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
 
         try {
             final JSONObject page =
@@ -302,10 +305,13 @@ public final class PageService extends AbstractGAEJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
 
         try {
             final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -358,11 +364,14 @@ public final class PageService extends AbstractGAEJSONRpcService {
                               final HttpServletRequest request,
                               final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
 
         try {
             final JSONObject page =
@@ -422,7 +431,10 @@ public final class PageService extends AbstractGAEJSONRpcService {
                                final HttpServletRequest request,
                                final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return false;
+        }
 
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -438,9 +450,9 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     new JSONObject(page2, JSONObject.getNames(page2));
             newPage2.put(Page.PAGE_ORDER, oldPage1Order);
             final JSONObject newPage1 =
-                     new JSONObject(page1, JSONObject.getNames(page1));
+                    new JSONObject(page1, JSONObject.getNames(page1));
             newPage1.put(Page.PAGE_ORDER, pageOrder);
-            
+
             pageRepository.update(page2Id, newPage2);
             pageRepository.update(page1Id, newPage1);
 

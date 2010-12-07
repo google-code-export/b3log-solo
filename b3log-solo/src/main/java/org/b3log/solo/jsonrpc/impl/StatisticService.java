@@ -17,8 +17,12 @@
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
@@ -58,6 +62,8 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
     /**
      * Gets the blog statistic.
      *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -66,9 +72,18 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
      *     "statisticBlogArticleCount": int
      * }
      * </pre>, returns {@code null} if not found
+     * @throws ActionException action exception
+     * @throws IOException io exception
      */
-    public JSONObject getBlogStatistic() {
-        JSONObject ret = null;
+    public JSONObject getBlogStatistic(final HttpServletRequest request,
+                                       final HttpServletResponse response)
+            throws ActionException, IOException {
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return null;
+        }
+
+        JSONObject ret = new JSONObject();
         try {
             ret = statisticRepository.get(Statistic.STATISTIC);
         } catch (final Exception e) {

@@ -16,18 +16,18 @@
 
 package org.b3log.solo.jsonrpc;
 
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.google.inject.Inject;
 import org.b3log.latke.jsonrpc.AbstractJSONRpcService;
+import org.b3log.solo.util.Users;
 
 /**
  * Abstract json RPC service on GAE.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 2, 2010
+ * @version 1.0.0.2, Dec 7, 2010
  */
 public abstract class AbstractGAEJSONRpcService extends AbstractJSONRpcService {
 
@@ -35,25 +35,35 @@ public abstract class AbstractGAEJSONRpcService extends AbstractJSONRpcService {
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+   /**
+     * User utilities.
+     */
+    @Inject
+    private Users users;
 
     /**
-     * Checks the specified request authorized or not(Http Status Code:
-     * Forbidden 403).
-     * <p>
-     * If the specified request is not send from the logged in administrator,
-     * sends an error with status code 403.
-     * </p>
+     * Checks whether the current request is made by logged in user(including
+     * default user and administrator lists in <i>users</i>).
      *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws IOException io exception
+     * @return {@code true} if the current request is made by logged in user,
+     * returns {@code false} otherwise
      */
-    @Override
-    public final void checkAuthorized(final HttpServletRequest request,
-                                      final HttpServletResponse response)
-            throws IOException {
-        if (!userService.isUserLoggedIn() || !userService.isUserAdmin()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+    public boolean isLoggedIn() {
+        final User currentUser = userService.getCurrentUser();
+        if (null == currentUser) {
+            return false;
         }
+
+        return users.isSoloUser(currentUser.getEmail());
+    }
+
+    /**
+     * Checks whether the current request is made by logged in administrator.
+     *
+     * @return {@code true} if the current request is made by logged in
+     * administrator, returns {@code false} otherwise
+     */
+    public boolean isAdminLoggedIn() {
+        return userService.isUserLoggedIn() && userService.isUserAdmin();
     }
 }
