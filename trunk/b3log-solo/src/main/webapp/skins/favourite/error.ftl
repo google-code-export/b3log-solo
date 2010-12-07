@@ -65,7 +65,7 @@
         <script type="text/javascript">
             var initIndex = function () {
                 // common-top.ftl use state
-                jsonRpc.adminService.isAdminLoggedIn(function (result, error) {
+                jsonRpc.adminService.isLoggedIn(function (result, error) {
                     if (result && !error) {
                         var loginHTML = "<span class='left' onclick='clearAllCache();'>${clearAllCacheLabel}&nbsp;|&nbsp;</span>"
                             + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>"
