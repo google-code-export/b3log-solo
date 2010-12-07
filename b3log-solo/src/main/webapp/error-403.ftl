@@ -22,11 +22,11 @@
                 <div class="left introContent">
                     <h2>403 Forbidden</h2>
                     <p>
-                        Problem accessing {errorPageRequestURI}.
+                        Problem accessing ${errorPageRequestURI}.
                     </p>
                     <p>
                         <i>Reason</i>
-                        : {errorPageCause}
+                        : ${errorPageCause}
                     </p>
                     <ul class="left marginLeft12" style="width: 50%;">
                         <li>
