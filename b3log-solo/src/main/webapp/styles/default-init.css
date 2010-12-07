@@ -11,4 +11,5 @@ body{background-color:#F3F1E5;border-top:5px solid #E6E5D9;color:#4D505D;margin:
 .introContent a, .introContentLogin a{text-decoration: none;}
 .introContent li{margin:6px 0 6px 16px;}
 .introContent p{margin:12px 0;}
+.introContent span{margin-right:-4px;}
 .footerWrapper{background-color:#FFFFFF;border-top:1px solid #E6E5D9;bottom:0;z-index: -1;position:fixed;text-align:center;width:100%;}
