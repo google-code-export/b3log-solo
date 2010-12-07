@@ -31,6 +31,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.BlogSync;
 import org.json.JSONException;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Dec 4, 2010
+ * @version 1.0.1.8, Dec 7, 2010
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -261,5 +262,37 @@ public final class ArticleGAERepository extends AbstractGAERepository
                 throw new RepositoryException(e);
             }
         }
+    }
+
+    @Override
+    public List<JSONObject> getRandomly(final int fetchSize)
+            throws RepositoryException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final Query query = new Query(getName());
+        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final int count = preparedQuery.countEntities(
+                FetchOptions.Builder.withDefaults());
+
+        if (0 == count) {
+            return ret;
+        }
+
+        final Iterable<Entity> entities = preparedQuery.asIterable();
+        final List<Integer> fetchIndexes =
+                CollectionUtils.getRandomIntegers(0, count - 1, fetchSize);
+
+        int index = 0;
+        for (final Entity entity : entities) { // XXX: performance issue
+            if (fetchIndexes.contains(index)) {
+                if ((Boolean) entity.getProperty(Article.ARTICLE_IS_PUBLISHED)) {
+                    final JSONObject jsonObject = entity2JSONObject(entity);
+                    ret.add(jsonObject);
+                }
+            }
+
+            index++;
+        }
+
+        return ret;
     }
 }

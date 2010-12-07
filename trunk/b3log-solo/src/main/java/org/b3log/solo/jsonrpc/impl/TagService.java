@@ -73,9 +73,13 @@ public final class TagService extends AbstractGAEJSONRpcService {
     public List<JSONObject> getUnusedTags(final HttpServletRequest request,
                                           final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
-        final JSONArray tags = getTags(request, response);
         final List<JSONObject> ret = new ArrayList<JSONObject>();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+        final JSONArray tags = getTags(request, response);
+
         try {
             for (int i = 0; i < tags.length(); i++) {
                 final JSONObject tag = tags.getJSONObject(i);
@@ -109,10 +113,13 @@ public final class TagService extends AbstractGAEJSONRpcService {
     public JSONObject removeUnusedTags(final HttpServletRequest request,
                                        final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final JSONArray tags = getTags(request, response);
 
-        final JSONObject ret = new JSONObject();
         try {
             for (int i = 0; i < tags.length(); i++) {
                 final JSONObject tag = tags.getJSONObject(i);
@@ -159,9 +166,12 @@ public final class TagService extends AbstractGAEJSONRpcService {
     public JSONArray getTags(final HttpServletRequest request,
                              final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
-
         JSONArray ret = new JSONArray();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+
         try {
             final JSONObject result = tagRepository.get(1, Integer.MAX_VALUE);
             final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);

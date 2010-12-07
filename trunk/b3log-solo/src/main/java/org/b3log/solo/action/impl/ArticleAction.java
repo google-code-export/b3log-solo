@@ -55,7 +55,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 5, 2010
+ * @version 1.0.1.5, Dec 7, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -137,7 +137,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             }
 
             final JSONObject article = articleRepository.get(articleId);
-            if (null == article) {
+            if (null == article
+                || !article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return ret;

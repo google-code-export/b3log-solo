@@ -132,7 +132,11 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                       final HttpServletRequest request,
                                       final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         String externalSys = null;
         try {
@@ -177,10 +181,13 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                       final HttpServletRequest request,
                                       final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
         try {
             final String externalBloggingSys =
                     requestJSONObject.getString(
@@ -275,8 +282,11 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                              final HttpServletRequest request,
                                              final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
         final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         try {
             final String blogSyncExternalBloggingSys =
@@ -366,11 +376,14 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
 
         try {
             final String externalSys = requestJSONObject.getString(
@@ -509,9 +522,11 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
-        checkAuthorized(request, response);
-
         final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         try {
             final String externalSys = requestJSONObject.getString(

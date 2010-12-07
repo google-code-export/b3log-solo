@@ -19,24 +19,29 @@ package org.b3log.solo.filter;
 import com.google.inject.Scopes;
 import com.google.inject.servlet.ServletModule;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.action.ActionModule;
 
 /**
  * Filter module for <a href="http://code.google.com/p/google-guice/">
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 6, 2010
+ * @version 1.0.0.7, Dec 7, 2010
  */
 public final class FilterModule extends ServletModule {
 
     @Override
     protected void configureServlets() {
+        bind(AuthFilter.class).in(Scopes.SINGLETON);
+        for (int i = 1; i < ActionModule.ADMIN_ACTIONS.length; i++) {
+            filter(ActionModule.ADMIN_ACTIONS[i]).through(AuthFilter.class);
+        }
 
         if (!SoloServletListener.isInited()) {
             bind(InitCheckFilter.class).in(Scopes.SINGLETON);
             filter("/*").through(InitCheckFilter.class);
         }
-        
+
         bind(PageCacheFilter.class).in(Scopes.SINGLETON);
         filter("/*").through(PageCacheFilter.class);
 

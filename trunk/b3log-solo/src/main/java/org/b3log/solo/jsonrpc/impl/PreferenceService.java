@@ -165,10 +165,13 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                                        final HttpServletRequest request,
                                        final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
         try {
             final JSONObject preference =
                     requestJSONObject.getJSONObject(PREFERENCE);
@@ -222,7 +225,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
-            final JSONObject oldPreference =  preferenceUtils.getPreference();
+            final JSONObject oldPreference = preferenceUtils.getPreference();
             final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
             preference.put(ADMIN_EMAIL, adminEmail);
 

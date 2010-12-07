@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Dec 5, 2010
+ * @version 1.0.2.3, Dec 7, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -213,8 +213,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
         final JSONObject ret = new JSONObject();
+        if (!isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -332,9 +335,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
-
         final JSONObject ret = new JSONObject();
+        if (!isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
         try {
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -416,9 +421,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                   final HttpServletRequest request,
                                   final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
-
         final JSONObject ret = new JSONObject();
+        if (!isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+
         try {
             final int currentPageNum = requestJSONObject.getInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -505,12 +513,17 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     final HttpServletRequest request,
                                     final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+
+        // TODO: check the article whether is the current user's
+
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         Transaction transaction2 = null;
-        final JSONObject ret = new JSONObject();
-
         try {
             final JSONObject status = new JSONObject();
             ret.put(Keys.STATUS, status);
@@ -593,10 +606,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     final HttpServletRequest request,
                                     final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
         String articleId = null;
         try {
             articleId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -647,10 +663,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                        final HttpServletRequest request,
                                        final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
         String articleId = null;
         try {
             articleId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -719,14 +738,17 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     final HttpServletRequest request,
                                     final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+        // TODO: check the article whether is the current user's
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
         Transaction transaction2 = null;
 
-        final JSONObject ret = new JSONObject();
         String articleId = null;
-
         try {
             final JSONObject status = new JSONObject();
             ret.put(Keys.STATUS, status);
@@ -850,11 +872,14 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                            final HttpServletRequest request,
                                            final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+// TODO: check the article whether is the current user's
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-
-        final JSONObject ret = new JSONObject();
         try {
             final String articleId =
                     requestJSONObject.getString(Keys.OBJECT_ID);

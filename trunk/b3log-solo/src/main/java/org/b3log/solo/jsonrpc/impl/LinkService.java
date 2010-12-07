@@ -186,7 +186,11 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                                final HttpServletRequest request,
                                final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return false;
+        }
 
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
@@ -252,10 +256,13 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
 
         try {
             final JSONObject link =
@@ -320,10 +327,13 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                                  final HttpServletRequest request,
                                  final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
 
         try {
             final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -388,10 +398,13 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                               final HttpServletRequest request,
                               final HttpServletResponse response)
             throws ActionException, IOException {
-        checkAuthorized(request, response);
+        final JSONObject ret = new JSONObject();
+        if (!isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
         final Transaction transaction =
                 AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-        final JSONObject ret = new JSONObject();
 
         try {
             final JSONObject link =

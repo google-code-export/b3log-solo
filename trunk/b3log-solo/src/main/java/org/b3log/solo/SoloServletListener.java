@@ -52,7 +52,7 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.servlet.AbstractServletListener;
-import org.b3log.solo.util.UtilModule;
+import org.b3log.solo.util.UtilsModule;
 import org.b3log.solo.event.EventModule;
 import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
@@ -174,7 +174,7 @@ public final class SoloServletListener extends AbstractServletListener {
                                              new RepositoryModule(),
                                              new EventModule(),
                                              new SyncModule(),
-                                             new UtilModule()));
+                                             new UtilsModule()));
         }
 
         return ret;
