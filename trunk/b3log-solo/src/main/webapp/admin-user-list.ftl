@@ -95,11 +95,14 @@
                         userData[i].userEmail = users[i].userEmail;
                         userData[i].update = "<div class='updateIcon'></div>";
                         userData[i].deleted = "<div class='deleteIcon'></div>";
-                        if (i === 0) {
-                            userData[i].userRole = "<div class='falseIcon'></div>";
+                        if ("adminRole" === users[i].userRole) {
+                            userData[i].deleted = "";
+                            userData[i].isAdmin = "<div class='falseIcon'></div>";
                         } else {
-                            userData[i].userRole = "<div class='trueIcon'></div>";
+                            userData[i].deleted = "<div class='deleteIcon'></div>";
+                            userData[i].isAdmin = "<div class='trueIcon'></div>";
                         }
+                        userData[i].userRole = users[i].userRole;
                         userData[i].id = users[i].oId;
                     }
 
@@ -159,8 +162,17 @@
                                 jsonRpc.adminService.getUser(function (result, error) {
                                     switch (result.sc) {
                                         case "GET_USER_SUCC":
-                                            $("#userNameUpdate").val(result.user.userName).data('oId', event.data.id[0]);
-                                            $("#userEmailUpdate").val(result.user.userEmail);
+                                            var $userEmailUpdate = $("#userEmailUpdate");
+                                            $("#userNameUpdate").val(result.user.userName).data("userInfo", {
+                                               'oId': event.data.id[0],
+                                               "userRole": event.data.userRole[0]
+                                            });
+                                            $userEmailUpdate.val(result.user.userEmail);
+                                            if ("adminRole" === event.data.userRole[0]) {
+                                                $userEmailUpdate.attr("disabled", "disabled");
+                                            } else {
+                                                $userEmailUpdate.removeAttr("disabled");
+                                            }
                                             break;
                                         case "GET_USER_FAIL_":
                                             break;
@@ -180,6 +192,9 @@
                     bindEvent: [{
                             'eventName': 'click',
                             'action': function (event) {
+                                if ("adminRole" === event.data.userRole[0]) {
+                                    return;
+                                }
                                 var isDelete = confirm("${confirmRemoveLabel}");
                                 if (isDelete) {
                                     $("#loadMsg").text("${loadingLabel}");
@@ -209,11 +224,14 @@
                 }, {
                     style: "padding-left: 36px;",
                     name: "${administratorLabel}",
-                    index: "userRole",
+                    index: "isAdmin",
                     width: 89
                 }, {
                     visible: false,
                     index: "id"
+                }, {
+                    visible: false,
+                    index: "userRole"
                 }]
         });
 
@@ -257,10 +275,12 @@
         if (validateUser("Update")) {
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
+            var userInfo = $("#userNameUpdate").data("userInfo");
             var requestJSONObject = {
                 "userName": $("#userNameUpdate").val(),
-                "oId": $("#userNameUpdate").data("oId"),
-                "userEmail": $("#userEmailUpdate").val()
+                "oId": userInfo.oId,
+                "userEmail": $("#userEmailUpdate").val(),
+                "userRole": userInfo.userRole
             };
             jsonRpc.adminService.updateUser(function (result, error) {
                 switch (result.sc) {
@@ -271,6 +291,9 @@
                         break;
                     case "UPDATE_USER_FAIL_DUPLICATED_EMAIL":
                         $("#tipMsg").text("${duplicatedEmailLabel}");
+                        break;
+                    case "UPDATE_USER_FAIL_":
+                        $("#tipMsg").text("${updateFailLabel}");
                         break;
                     default:
                         break;
