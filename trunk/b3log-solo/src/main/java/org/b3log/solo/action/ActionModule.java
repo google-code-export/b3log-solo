@@ -67,7 +67,8 @@ public final class ActionModule extends AbstractActionModule {
         "/admin-page.do",
         "/admin-others.do",
         "/admin-draft-list.do",
-        "/admin-user-list.do"
+        "/admin-user-list.do",
+        "/error-403.do"
     };
 
     /**
