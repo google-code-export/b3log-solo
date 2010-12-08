@@ -10,7 +10,7 @@ body, img, div, h1,h2,h3,h4,h5,h6,table,p,pre,ol,ul,li {
 
 /* Layouting */
 body {
-	background: #453F39 url(../images/bodybg.jpg) repeat-x;
+	background: #453F39 url(images/bodybg.jpg) repeat-x;
 }
 
 #wrapper-home {
@@ -26,100 +26,100 @@ body {
 #header-home {
 	width:940px;
 	height:200px;
-	background: url(../images/masthead_home.jpg) no-repeat;
+	background: url(images/masthead_home.jpg) no-repeat;
 }
 
 #header-tug {
 	width:940px;
 	height:200px;
-	background: url(../images/masthead-tugofwar.jpg) no-repeat;
+	background: url(images/masthead-tugofwar.jpg) no-repeat;
 }
 
 #header-chitchat {
 	width:940px;
 	height:200px;
-	background: url(../images/masthead-chitchat.jpg) no-repeat;
+	background: url(images/masthead-chitchat.jpg) no-repeat;
 }
 
 #header-rinside {
 	width:920px;
 	height:200px;
-	background: url(../images/masthead_rinsingle.jpg) no-repeat;
+	background: url(images/masthead_rinsingle.jpg) no-repeat;
 }
 
 #header-wendyside {
 	width:920px;
 	height:200px;
-	background: url(../images/masthead_wendysingle.jpg) no-repeat;
+	background: url(images/masthead_wendysingle.jpg) no-repeat;
 }
 
 #header-rinsideTW {
 	width:920px;
 	height:200px;
-	background: url(../images/masthead-tugofwarRin.jpg) no-repeat;
+	background: url(images/masthead-tugofwarRin.jpg) no-repeat;
 }
 
 #header-wendysideTW {
 	width:920px;
 	height:200px;
-	background: url(../images/masthead-tugofwarWendy.jpg) no-repeat;
+	background: url(images/masthead-tugofwarWendy.jpg) no-repeat;
 }
 
 #header-rinsideCC {
 	width:920px;
 	height:200px;
-	background: url(../images/masthead-chitchatRin.jpg) no-repeat;
+	background: url(images/masthead-chitchatRin.jpg) no-repeat;
 }
 
 #header-wendysideCC {
 	width:920px;
 	height:200px;
-	background: url(../images/masthead-chitchatWendy.jpg) no-repeat;
+	background: url(images/masthead-chitchatWendy.jpg) no-repeat;
 }
 
 #header-page {
 	width:920px;
 	height:200px;
-	background: url(../images/masthead_pagesingle.jpg) no-repeat;
+	background: url(images/masthead_pagesingle.jpg) no-repeat;
 }
 #header-gallery {
 	width:920px;
 	height:200px;
-	background: url(../images/masthead_gallery.jpg) no-repeat;
+	background: url(images/masthead_gallery.jpg) no-repeat;
 }
 #content-home {
 	width: 940px;
 	height: auto;
 	overflow: auto;
-	background: url(../images/bg_homepanel.jpg) repeat-y;
+	background: url(images/bg_homepanel.jpg) repeat-y;
 }
 
 #content-subnavi {
 	width: 940px;
 	height: auto;
 	overflow: auto;
-	background: url(../images/bg_homepanel.jpg) repeat-y;
+	background: url(images/bg_homepanel.jpg) repeat-y;
 }
 
 #content-rinside {
 	width: 920px;
 	height: auto;
 	overflow: auto;
-	background: url(../images/bg_rinpanel.jpg) repeat-y;
+	background: url(images/bg_rinpanel.jpg) repeat-y;
 }
 
 #content-wendyside {
 	width: 920px;
 	height: auto;
 	overflow: auto;
-	background: url(../images/bg_wendypanel.jpg) repeat-y;
+	background: url(images/bg_wendypanel.jpg) repeat-y;
 }
 
 #content-page {
 	width: 920px;
 	height: auto;
 	overflow: auto;
-	background: url(../images/bg_pagepanel.jpg) repeat-y;
+	background: url(images/bg_pagepanel.jpg) repeat-y;
 }
 
 #prefooter-home {
@@ -127,25 +127,25 @@ body {
 	position: relative;
 	width: 940px;
 	height: 170px;
-	background: url(../images/main_footerbg.jpg) no-repeat;
+	background: url(images/main_footerbg.jpg) no-repeat;
 }
 
 #prefooter-rin {
 	width: 920px;
 	height: 128px;
-	background: url(../images/prefooter_rin.jpg) no-repeat;
+	background: url(images/prefooter_rin.jpg) no-repeat;
 }
 
 #prefooter-wendy {
 	width: 920px;
 	height: 128px;
-	background: url(../images/prefooter_wendy.jpg) no-repeat;
+	background: url(images/prefooter_wendy.jpg) no-repeat;
 }
 
 #prefooter-page {
 	width: 920px;
 	height: 128px;
-	background: url(../images/prefooter_page.jpg) no-repeat;
+	background: url(images/prefooter_page.jpg) no-repeat;
 }
 
 #rss-left {
@@ -154,7 +154,7 @@ body {
 	position:relative;
 	float:left;
 	left: 680px;
-	background: url(../images/rss-rin.jpg) no-repeat;
+	background: url(images/rss-rin.jpg) no-repeat;
 }
 #rss-page {
 	width:130px;
@@ -162,14 +162,14 @@ body {
 	position:relative;
 	float:left;
 	left: 680px;
-	background: url(../images/rss-page.jpg) no-repeat;
+	background: url(images/rss-page.jpg) no-repeat;
 }
 #rss-right {
 	width:130px;
 	height:128px;
 	position:relative;
 	float:left;
-	background: url(../images/rss-wendy.jpg) no-repeat;
+	background: url(images/rss-wendy.jpg) no-repeat;
 }
 
 #rss-hometext {
@@ -216,7 +216,7 @@ body {
 #custom404top {
 	width: 600px;
 	height: 270px;
-	background: url(../images/custom404bg.jpg) no-repeat;
+	background: url(images/custom404bg.jpg) no-repeat;
 }
 
 #home-rinside {
@@ -260,25 +260,25 @@ body {
 #TWtab-rin {
 	width: 580px;
 	height: 108px;
-	background: url(../images/tugofwarRin.jpg) no-repeat;
+	background: url(images/tugofwarRin.jpg) no-repeat;
 }
 
 #TWtab-wendy {
 	width: 580px;
 	height: 108px;
-	background: url(../images/tugofwarWendy.jpg) no-repeat;
+	background: url(images/tugofwarWendy.jpg) no-repeat;
 }
 
 #CCtab-rin {
 	width: 580px;
 	height: 108px;
-	background: url(../images/chitchatRin.jpg) no-repeat;
+	background: url(images/chitchatRin.jpg) no-repeat;
 }
 
 #CCtab-wendy {
 	width: 580px;
 	height: 108px;
-	background: url(../images/chitchatWendy.jpg) no-repeat;
+	background: url(images/chitchatWendy.jpg) no-repeat;
 }
 
 #home-sidebar {
@@ -309,57 +309,57 @@ body {
 #home-tag {
 	width: 180px;
 	height: 61px;
-	background: url(../images/tag_home.jpg) no-repeat;
+	background: url(images/tag_home.jpg) no-repeat;
 }
 #author-tag {
 	width: 180px;
 	height: 61px;
-	background: url(../images/tag_author.jpg) no-repeat;
+	background: url(images/tag_author.jpg) no-repeat;
 }
 #about-tag {
 	width: 180px;
 	height: 61px;
-	background: url(../images/tag_about.jpg) no-repeat;
+	background: url(images/tag_about.jpg) no-repeat;
 }
 #category-tag {
 	width: 180px;
 	height: 61px;
-	background: url(../images/tag_category.jpg) no-repeat;
+	background: url(images/tag_category.jpg) no-repeat;
 }
 #tags-tag {
 	width: 180px;
 	height: 61px;
-	background: url(../images/tag_tags.jpg) no-repeat;
+	background: url(images/tag_tags.jpg) no-repeat;
 }
 #archives-tag {
 	width: 180px;
 	height: 61px;
-	background: url(../images/tag_archives.jpg) no-repeat;
+	background: url(images/tag_archives.jpg) no-repeat;
 }
 #gallery-tag {
 	width: 180px;
 	height: 61px;
-	background: url(../images/tag_gallery.jpg) no-repeat;
+	background: url(images/tag_gallery.jpg) no-repeat;
 }
 #guestbook-tag {
 	width: 180px;
 	height: 61px;
-	background: url(../images/tag_guestbook.jpg) no-repeat;
+	background: url(images/tag_guestbook.jpg) no-repeat;
 }
 #links-tag {
 	width: 180px;
 	height: 61px;
-	background: url(../images/tag_links.jpg) no-repeat;
+	background: url(images/tag_links.jpg) no-repeat;
 }
 #sidebar-titletag {
 	width: 180px;
 	height: 40px;
-	background: url(../images/sidebar_title.jpg) no-repeat;
+	background: url(images/sidebar_title.jpg) no-repeat;
 }
 .sidebar-titletagcolor {
 	width: 180px;
 	height: 40px;
-	background: url(../images/sidebar_titlecolor.jpg) no-repeat;
+	background: url(images/sidebar_titlecolor.jpg) no-repeat;
 }
 .oldposts {
 	float:left;
@@ -434,11 +434,11 @@ body {
 }
 
 .cmtballoon-blue {
-	background-image: url(../images/commentballoon_blue.jpg);
+	background-image: url(images/commentballoon_blue.jpg);
 }
 
 .cmtballoon-pink {
-	background-image: url(../images/commentballoon_pink.jpg);
+	background-image: url(images/commentballoon_pink.jpg);
 }
 
 .cmt-tag {
@@ -574,7 +574,7 @@ ol.commentlist-blue li .commentbubble  {
 }
 
 ol.commentlist-blue li .commentbubble .bubbletop  {
-	background-image: url(../images/comment_blue_top2.jpg);
+	background-image: url(images/comment_blue_top2.jpg);
 	width: 401px;
 	height:15px;
 	padding:0;
@@ -586,7 +586,7 @@ ol.commentlist-blue li .commentbubble .bubblemiddle  {
 	padding-right:15px;
 }
 ol.commentlist-blue li .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_blue_bottom2.jpg);
+	background-image: url(images/comment_blue_bottom2.jpg);
 	width: 401px;
 	height:30px;
 }
@@ -597,12 +597,12 @@ ol.commentlist-blue li.alt .commentbubble  {
 	left: 60px;
 }
 ol.commentlist-blue li.alt .commentbubble .bubbletop{
-	background-image: url(../images/comment_blue_top1.jpg);
+	background-image: url(images/comment_blue_top1.jpg);
 	width: 401px;
 	height:15px;
 }
 ol.commentlist-blue li.alt .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_blue_bottom1.jpg);
+	background-image: url(images/comment_blue_bottom1.jpg);
 	width: 401px;
 	height:30px;
 }
@@ -615,12 +615,12 @@ ol.commentlist-blue li.alt-rin .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-blue li.alt-rin .commentbubble .bubbletop{
-	background-image: url(../images/comment_blue_rin_top1.jpg);
+	background-image: url(images/comment_blue_rin_top1.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-blue li.alt-rin .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_blue_rin_bottom1.jpg);
+	background-image: url(images/comment_blue_rin_bottom1.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -632,12 +632,12 @@ ol.commentlist-blue li.even-rin .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-blue li.even-rin .commentbubble .bubbletop{
-	background-image: url(../images/comment_blue_rin_top2.jpg);
+	background-image: url(images/comment_blue_rin_top2.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-blue li.even-rin .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_blue_rin_bottom2.jpg);
+	background-image: url(images/comment_blue_rin_bottom2.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -649,12 +649,12 @@ ol.commentlist-blue li.alt-wendy .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-blue li.alt-wendy .commentbubble .bubbletop{
-	background-image: url(../images/comment_blue_wendy_top1.jpg);
+	background-image: url(images/comment_blue_wendy_top1.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-blue li.alt-wendy .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_blue_wendy_bottom1.jpg);
+	background-image: url(images/comment_blue_wendy_bottom1.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -666,12 +666,12 @@ ol.commentlist-blue li.even-wendy .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-blue li.even-wendy .commentbubble .bubbletop{
-	background-image: url(../images/comment_blue_wendy_top2.jpg);
+	background-image: url(images/comment_blue_wendy_top2.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-blue li.even-wendy .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_blue_wendy_bottom2.jpg);
+	background-image: url(images/comment_blue_wendy_bottom2.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -700,7 +700,7 @@ ol.commentlist-pink li .commentbubble  {
 }
 
 ol.commentlist-pink li .commentbubble .bubbletop  {
-	background-image: url(../images/comment_pink_top2.jpg);
+	background-image: url(images/comment_pink_top2.jpg);
 	width: 401px;
 	height:15px;
 	padding:0;
@@ -712,7 +712,7 @@ ol.commentlist-pink li .commentbubble .bubblemiddle  {
 	padding-right:15px;
 }
 ol.commentlist-pink li .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_pink_bottom2.jpg);
+	background-image: url(images/comment_pink_bottom2.jpg);
 	width: 401px;
 	height:30px;
 }
@@ -723,12 +723,12 @@ ol.commentlist-pink li.alt .commentbubble  {
 	left: 60px;
 }
 ol.commentlist-pink li.alt .commentbubble .bubbletop{
-	background-image: url(../images/comment_pink_top1.jpg);
+	background-image: url(images/comment_pink_top1.jpg);
 	width: 401px;
 	height:15px;
 }
 ol.commentlist-pink li.alt .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_pink_bottom1.jpg);
+	background-image: url(images/comment_pink_bottom1.jpg);
 	width: 401px;
 	height:30px;
 }
@@ -741,12 +741,12 @@ ol.commentlist-pink li.alt-rin .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-pink li.alt-rin .commentbubble .bubbletop{
-	background-image: url(../images/comment_pink_rin_top1.jpg);
+	background-image: url(images/comment_pink_rin_top1.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-pink li.alt-rin .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_pink_rin_bottom1.jpg);
+	background-image: url(images/comment_pink_rin_bottom1.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -758,12 +758,12 @@ ol.commentlist-pink li.even-rin .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-pink li.even-rin .commentbubble .bubbletop{
-	background-image: url(../images/comment_pink_rin_top2.jpg);
+	background-image: url(images/comment_pink_rin_top2.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-pink li.even-rin .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_pink_rin_bottom2.jpg);
+	background-image: url(images/comment_pink_rin_bottom2.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -775,12 +775,12 @@ ol.commentlist-pink li.alt-wendy .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-pink li.alt-wendy .commentbubble .bubbletop{
-	background-image: url(../images/comment_pink_wendy_top1.jpg);
+	background-image: url(images/comment_pink_wendy_top1.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-pink li.alt-wendy .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_pink_wendy_bottom1.jpg);
+	background-image: url(images/comment_pink_wendy_bottom1.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -792,12 +792,12 @@ ol.commentlist-pink li.even-wendy .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-pink li.even-wendy .commentbubble .bubbletop{
-	background-image: url(../images/comment_pink_wendy_top2.jpg);
+	background-image: url(images/comment_pink_wendy_top2.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-pink li.even-wendy .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_pink_wendy_bottom2.jpg);
+	background-image: url(images/comment_pink_wendy_bottom2.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -825,7 +825,7 @@ ol.commentlist-grey li .commentbubble  {
 }
 
 ol.commentlist-grey li .commentbubble .bubbletop  {
-	background-image: url(../images/comment_grey_top2.jpg);
+	background-image: url(images/comment_grey_top2.jpg);
 	width: 400px;
 	height:15px;
 	padding:0;
@@ -838,7 +838,7 @@ ol.commentlist-grey li .commentbubble .bubblemiddle  {
 	color: #FFFFFF;
 }
 ol.commentlist-grey li .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_grey_bottom2.jpg);
+	background-image: url(images/comment_grey_bottom2.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -849,12 +849,12 @@ ol.commentlist-grey li.alt .commentbubble  {
 	left: 60px;
 }
 ol.commentlist-grey li.alt .commentbubble .bubbletop{
-	background-image: url(../images/comment_grey_top1.jpg);
+	background-image: url(images/comment_grey_top1.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-grey li.alt .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_grey_bottom1.jpg);
+	background-image: url(images/comment_grey_bottom1.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -867,12 +867,12 @@ ol.commentlist-grey li.alt-rin .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-grey li.alt-rin .commentbubble .bubbletop{
-	background-image: url(../images/comment_grey_rin_top1.jpg);
+	background-image: url(images/comment_grey_rin_top1.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-grey li.alt-rin .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_grey_rin_bottom1.jpg);
+	background-image: url(images/comment_grey_rin_bottom1.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -884,12 +884,12 @@ ol.commentlist-grey li.even-rin .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-grey li.even-rin .commentbubble .bubbletop{
-	background-image: url(../images/comment_grey_rin_top2.jpg);
+	background-image: url(images/comment_grey_rin_top2.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-grey li.even-rin .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_grey_rin_bottom2.jpg);
+	background-image: url(images/comment_grey_rin_bottom2.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -901,12 +901,12 @@ ol.commentlist-grey li.alt-wendy .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-grey li.alt-wendy .commentbubble .bubbletop{
-	background-image: url(../images/comment_grey_wendy_top1.jpg);
+	background-image: url(images/comment_grey_wendy_top1.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-grey li.alt-wendy .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_grey_wendy_bottom1.jpg);
+	background-image: url(images/comment_grey_wendy_bottom1.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -918,12 +918,12 @@ ol.commentlist-grey li.even-wendy .commentbubble  {
 	color: #FFFFFF;
 }
 ol.commentlist-grey li.even-wendy .commentbubble .bubbletop{
-	background-image: url(../images/comment_grey_wendy_top2.jpg);
+	background-image: url(images/comment_grey_wendy_top2.jpg);
 	width: 400px;
 	height:15px;
 }
 ol.commentlist-grey li.even-wendy .commentbubble .bubblebottom  {
-	background-image: url(../images/comment_grey_wendy_bottom2.jpg);
+	background-image: url(images/comment_grey_wendy_bottom2.jpg);
 	width: 400px;
 	height:30px;
 }
@@ -986,10 +986,10 @@ ol.commentlist-grey li .commenttext  {
 }
 
 .about-rin {
-	background-image: url(../images/about_bg_rin.jpg);
+	background-image: url(images/about_bg_rin.jpg);
 }
 .about-wendy {
-	background-image: url(../images/about_bg_wendy.jpg);
+	background-image: url(images/about_bg_wendy.jpg);
 }
 .about-rin .tcontent , .about-wendy .tcontent{
 	width: 300px;
@@ -1016,7 +1016,7 @@ ol.commentlist-grey li .commenttext  {
 	position: relative;
 	float:right;
 	top: 10px;
-	background: url(../images/about_tag_rin.jpg) no-repeat;
+	background: url(images/about_tag_rin.jpg) no-repeat;
 }
 .about-wendy span {
 	width: 206px;
@@ -1025,7 +1025,7 @@ ol.commentlist-grey li .commenttext  {
 	position: relative;
 	float:left;
 	top: 15px;
-	background: url(../images/about_tag_wendy.jpg) no-repeat;
+	background: url(images/about_tag_wendy.jpg) no-repeat;
 }
 /*  End page formats */
 /*  Link Page formatting */
@@ -1038,7 +1038,7 @@ ul.link-base {
 .frilinks ul {
 	list-style-type: none;
 	list-style-position: inside;
-	list-style-image: url(../images/icon22.jpg);
+	list-style-image: url(images/icon22.jpg);
 	padding-bottom: 20px;
 }
 .frilinks ul li {
@@ -1117,5 +1117,5 @@ h4 {
 #tape-tug {
 	width:180px;
 	height: 73px;
-	background: url(../images/tugowartitletag.jpg) no-repeat;
+	background: url(images/tugowartitletag.jpg) no-repeat;
 }
