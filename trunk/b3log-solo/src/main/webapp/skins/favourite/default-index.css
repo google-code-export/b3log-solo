@@ -14,7 +14,7 @@ h5{font-size:12px;}
 .main{padding:0 0 15px 35px;width:600px;}
 .footer{color:white;height:88px;line-height:145%;padding:0;position:relative;}
 #logoTitle{outline:none;display:block;font-family:"Microsoft YaHei";height:50px;text-decoration:none;color:white;}
-.sub-title{border-top:1px solid #FFFFFF;color:#FFFFFF;font-size:18px;padding:0 3px;}
+.sub-title{border-top:1px solid #FFFFFF;color:#FFFFFF;font-size:18px;padding:0 15px;}
 #header-navi{background:none repeat scroll 0 0 #FFFFFF;border-bottom:1px solid #A6A6A6;}
 #header-navi li{float:left;list-style:none;margin-left:0px;}
 #header-navi li a{outline:none;background:url("images/menu.gif") no-repeat scroll 0 0 transparent;color:#382E1F;display:block;font-size:11px;height:31px;line-height:31px;margin-left:-10px;padding:0 20px;text-decoration:none;}
