@@ -10,7 +10,6 @@
         <meta name="copyright" content="B3log"/>
         <meta name="revised" content="B3log, 2010"/>
         <meta http-equiv="Window-target" content="_top"/>
-        <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
@@ -19,23 +18,27 @@
         ${htmlHead}
     </head>
     <body>
-        <#include "common-top.ftl">
-        <div class="wrapper">
-            <div class="content">
-                <#include "article-header.ftl">
-                <div class="body">
-                    <div class="left main">
-                        <#include "common-articles.ftl">
-                    </div>
-                    <div class="right">
-                        <#include "article-side.ftl">
-                    </div>
-                    <div class="clear"></div>
+        <div id="wrapper-home">
+            <div id="header-home"><!-- header --></div>
+            <div id="content-home">
+                <div id="home-rinside">
+                    <!-- The Loop -->
+                    <#include "individual-blue.ftl">
+                    <!-- End Loop-->
                 </div>
-                <div class="footer">
-                    <#include "article-footer.ftl">
+                <div id="home-sidebar">
+                    <div id="home-tag"><!--home tag --></div>
+                    <#include "sidebar.ftl">
+                </div>
+
+                <div id="home-wendyside">
+                    <!-- The Loop -->
+                    <#include "individual-pink.ftl">
+                    <!-- End Loop-->
                 </div>
             </div>
+            <#include "prefooter-home.ftl">
+            <#include "footer.ftl">
         </div>
     </body>
 </html>
