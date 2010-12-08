@@ -22,7 +22,6 @@
         </span>
         <div class="clear"></div>
     </div>
-    <div class="lamb"><a href="/"></a></div>
     <div class="thinks"></div>
 </div>
 <script type="text/javascript">
