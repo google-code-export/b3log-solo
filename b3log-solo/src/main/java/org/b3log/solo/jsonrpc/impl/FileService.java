@@ -18,7 +18,6 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.File;
@@ -45,7 +44,7 @@ import org.json.JSONObject;
  * File service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 3, 2010
+ * @version 1.0.0.3, Dec 8, 2010
  */
 public final class FileService extends AbstractGAEJSONRpcService {
 
@@ -179,8 +178,7 @@ public final class FileService extends AbstractGAEJSONRpcService {
         }
         // TODO: check the file whether is the current user's
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = fileRepository.beginTransaction();
 
         try {
             final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);

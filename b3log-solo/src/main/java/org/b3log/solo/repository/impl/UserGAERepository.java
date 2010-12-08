@@ -50,7 +50,7 @@ public final class UserGAERepository extends AbstractGAERepository
     public JSONObject getByEmail(final String email) {
         final Query query = new Query(getName());
         query.addFilter(User.USER_EMAIL, Query.FilterOperator.EQUAL, email);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
             return null;

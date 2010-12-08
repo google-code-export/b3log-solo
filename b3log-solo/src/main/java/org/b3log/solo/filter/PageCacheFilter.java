@@ -16,7 +16,6 @@
 
 package org.b3log.solo.filter;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,8 +33,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.action.util.PageCaches;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.action.ActionModule;
+import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.util.PageCacheKeys;
 import org.b3log.solo.util.Statistics;
 
@@ -43,7 +43,7 @@ import org.b3log.solo.util.Statistics;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 6, 2010
+ * @version 1.0.1.5, Dec 8, 2010
  * @see #shouldSkip(java.lang.String) 
  */
 public final class PageCacheFilter implements Filter {
@@ -63,6 +63,11 @@ public final class PageCacheFilter implements Filter {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * Statistic repository.
+     */
+    @Inject
+    private StatisticRepository statisticRepository;
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -184,8 +189,7 @@ public final class PageCacheFilter implements Filter {
      * Blog view count +1.
      */
     private void incBlogViewCount() {
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = statisticRepository.beginTransaction();
         try {
             statistics.incBlogViewCount();
             transaction.commit();

@@ -55,7 +55,7 @@ public final class LinkGAERepository extends AbstractGAERepository
     public JSONObject getByAddress(final String address) {
         final Query query = new Query(getName());
         query.addFilter(Link.LINK_ADDRESS, Query.FilterOperator.EQUAL, address);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
             return null;
@@ -70,7 +70,7 @@ public final class LinkGAERepository extends AbstractGAERepository
     public int getMaxOrder() throws RepositoryException {
         final Query query = new Query(getName());
         query.addSort(Link.LINK_ORDER, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final List<Entity> links =
                 preparedQuery.asList(FetchOptions.Builder.withDefaults());
         if (links.isEmpty()) {
@@ -90,7 +90,7 @@ public final class LinkGAERepository extends AbstractGAERepository
     public JSONObject getByOrder(final int order) {
         final Query query = new Query(getName());
         query.addFilter(Link.LINK_ORDER, Query.FilterOperator.EQUAL, order);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
             return null;

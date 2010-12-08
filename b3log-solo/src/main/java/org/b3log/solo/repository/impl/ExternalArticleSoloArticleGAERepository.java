@@ -62,7 +62,7 @@ public final class ExternalArticleSoloArticleGAERepository
                         externalArticleId);
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
                         Query.FilterOperator.EQUAL, externalBloggingSys);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
         if (null == entity) {
@@ -111,7 +111,7 @@ public final class ExternalArticleSoloArticleGAERepository
                         externalArticleId);
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
                         Query.FilterOperator.EQUAL, externalBloggingSys);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
         if (null == entity) {
@@ -130,7 +130,7 @@ public final class ExternalArticleSoloArticleGAERepository
                         Query.FilterOperator.EQUAL, soloArticleId);
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
                         Query.FilterOperator.EQUAL, externalBloggingSys);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
 
         if (null == entity) {

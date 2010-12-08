@@ -21,7 +21,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -50,7 +49,7 @@ import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.UtilsModule;
 import org.b3log.solo.event.EventModule;
@@ -188,9 +187,9 @@ public final class SoloServletListener extends AbstractServletListener {
         super.contextInitialized(servletContextEvent);
 
         MemcacheServiceFactory.getMemcacheService().clearAll();
-
-        Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final PreferenceRepository preferenceRepository =
+                getInjector().getInstance(PreferenceRepository.class);
+        Transaction transaction = preferenceRepository.beginTransaction();
         try {
             loadPreference();
             transaction.commit();
@@ -199,8 +198,7 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
-        transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        transaction = preferenceRepository.beginTransaction();
         try {
             initDefaultLinks();
             transaction.commit();

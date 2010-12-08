@@ -68,7 +68,7 @@ public final class ArchiveDateArticleGAERepository
         query.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                       Query.SortDirection.DESCENDING);
 
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final int count = preparedQuery.countEntities(
                 FetchOptions.Builder.withDefaults());
         final int pageCount =
@@ -106,7 +106,7 @@ public final class ArchiveDateArticleGAERepository
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, articleId);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
 
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {

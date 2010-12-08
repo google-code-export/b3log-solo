@@ -16,12 +16,13 @@
 
 package org.b3log.solo.upgrade;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultList;
-import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
@@ -36,6 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
@@ -149,6 +151,11 @@ public final class V021ToV025 extends HttpServlet {
      * Update size in an request.
      */
     private static final int UPDATE_SIZE = 100;
+    /**
+     * GAE datastore service.
+     */
+    private final DatastoreService datastoreService =
+            DatastoreServiceFactory.getDatastoreService();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -168,13 +175,12 @@ public final class V021ToV025 extends HttpServlet {
             upgradeLinks();
             saveAdmin(currentUserName, currentUserEmail);
 
-            Transaction transaction =
-                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+            Transaction transaction = articleRepository.beginTransaction();
             boolean isConsistent = true;
             try {
                 final Query query = new Query(Article.ARTICLE);
-                final PreparedQuery preparedQuery =
-                        AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+                final PreparedQuery preparedQuery = datastoreService.prepare(
+                        query);
                 final QueryResultList<Entity> queryResultList =
                         preparedQuery.asQueryResultList(FetchOptions.Builder.
                         withDefaults());
@@ -203,8 +209,7 @@ public final class V021ToV025 extends HttpServlet {
 
                     if (0 == cnt % UPDATE_SIZE) {
                         transaction.commit();
-                        transaction = AbstractGAERepository.DATASTORE_SERVICE.
-                                beginTransaction();
+                        transaction = articleRepository.beginTransaction();
                     }
                 }
 
@@ -245,12 +250,10 @@ public final class V021ToV025 extends HttpServlet {
      * @throws ServletException upgrades fails
      */
     private void upgradeLinks() throws ServletException {
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = linkRepository.beginTransaction();
         try {
             final Query query = new Query(Link.LINK);
-            final PreparedQuery preparedQuery =
-                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+            final PreparedQuery preparedQuery = datastoreService.prepare(query);
             final QueryResultList<Entity> queryResultList =
                     preparedQuery.asQueryResultList(FetchOptions.Builder.
                     withDefaults());
@@ -278,12 +281,10 @@ public final class V021ToV025 extends HttpServlet {
      * @throws ServletException upgrades fails
      */
     private void upgradeArchiveDates() throws ServletException {
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = archiveDateRepository.beginTransaction();
         try {
             final Query query = new Query(ArchiveDate.ARCHIVE_DATE);
-            final PreparedQuery preparedQuery =
-                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+            final PreparedQuery preparedQuery = datastoreService.prepare(query);
             final QueryResultList<Entity> queryResultList =
                     preparedQuery.asQueryResultList(FetchOptions.Builder.
                     withDefaults());
@@ -318,14 +319,12 @@ public final class V021ToV025 extends HttpServlet {
      */
     private void saveAdmin(final String adminName, final String adminEmail)
             throws ServletException {
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = userRepository.beginTransaction();
         try {
             final Query query = new Query(User.USER);
             query.addFilter(User.USER_ROLE,
                             Query.FilterOperator.EQUAL, Role.ADMIN_ROLE);
-            final PreparedQuery preparedQuery =
-                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+            final PreparedQuery preparedQuery = datastoreService.prepare(query);
             final Entity adminEntity = preparedQuery.asSingleEntity();
             if (null == adminEntity) {
                 final JSONObject admin = new JSONObject();
@@ -350,13 +349,11 @@ public final class V021ToV025 extends HttpServlet {
      * @throws ServletException upgrade fails
      */
     private void upgradeTags() throws ServletException {
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = tagRepository.beginTransaction();
         try {
             final Query query =
                     new Query(Tag.TAG);
-            final PreparedQuery preparedQuery =
-                    AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+            final PreparedQuery preparedQuery = datastoreService.prepare(query);
             final QueryResultList<Entity> queryResultList =
                     preparedQuery.asQueryResultList(FetchOptions.Builder.
                     withDefaults());
@@ -385,8 +382,7 @@ public final class V021ToV025 extends HttpServlet {
      */
     private void upgradePreference(final String currentUserEmail)
             throws ServletException {
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = userRepository.beginTransaction();
         try {
             final JSONObject preference = preferenceUtils.getPreference();
             preference.remove(OLD_ADMIN_EMAIL_PROPERTY_NAME);

@@ -17,7 +17,6 @@
 package org.b3log.solo.action.file;
 
 import com.google.appengine.api.datastore.Blob;
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +34,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.ErrorPage;
@@ -51,7 +50,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 4, 2010
+ * @version 1.0.0.6, Dec 8, 2010
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -164,9 +163,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         final String id = request.getParameter(Keys.OBJECT_ID);
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-
+        final Transaction transaction = fileRepository.beginTransaction();
         try {
             final JSONObject file = fileRepository.get(id);
             if (null == file) {

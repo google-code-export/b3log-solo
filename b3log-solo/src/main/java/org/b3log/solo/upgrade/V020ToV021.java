@@ -16,12 +16,13 @@
 
 package org.b3log.solo.upgrade;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultList;
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Page;
@@ -60,6 +62,11 @@ public final class V020ToV021 extends HttpServlet {
      */
     @Inject
     private PageRepository pageRepository;
+    /**
+     * GAE datastore service.
+     */
+    private final DatastoreService datastoreService =
+            DatastoreServiceFactory.getDatastoreService();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -67,14 +74,14 @@ public final class V020ToV021 extends HttpServlet {
             throws ServletException, IOException {
         if ("0.2.1".equals(SoloServletListener.VERSION)) {
             LOGGER.info("Checking for consistency....");
-            final Transaction transaction =
-                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+            final Transaction transaction = pageRepository.beginTransaction();
             try {
                 final Query query = new Query(Page.PAGE);
                 final PreparedQuery preparedQuery =
-                        AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+                        datastoreService.prepare(query);
                 final QueryResultList<Entity> queryResultList =
-                        preparedQuery.asQueryResultList(FetchOptions.Builder.withDefaults());
+                        preparedQuery.asQueryResultList(FetchOptions.Builder.
+                        withDefaults());
 
                 for (final Entity entity : queryResultList) {
                     if (!entity.hasProperty(Page.PAGE_PERMALINK)) {
