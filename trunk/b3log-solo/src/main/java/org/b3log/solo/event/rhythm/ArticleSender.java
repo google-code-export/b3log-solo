@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.rhythm;
 
 import com.google.appengine.api.urlfetch.HTTPMethod;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending articles to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Nov 15, 2010
+ * @version 1.0.0.7, Dec 8, 2010
  */
 public final class ArticleSender
         extends AbstractEventListener<JSONObject> {
@@ -117,6 +116,8 @@ public final class ArticleSender
                                         article.getString(Article.ARTICLE_TITLE)});
                 return;
             }
+            final String authorEmail =
+                    article.getString(Article.ARTICLE_AUTHOR_EMAIL);
 
             final HTTPRequest httpRequest =
                     new HTTPRequest(ADD_ARTICLE_URL, HTTPMethod.POST);
@@ -124,6 +125,7 @@ public final class ArticleSender
             requestJSONObject.put(VER, SoloServletListener.VERSION);
             requestJSONObject.put(Article.ARTICLE, article);
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
+            requestJSONObject.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
             httpRequest.setPayload(
                     requestJSONObject.toString().getBytes("UTF-8"));
 //            final Future<HTTPResponse> futureResponse =
