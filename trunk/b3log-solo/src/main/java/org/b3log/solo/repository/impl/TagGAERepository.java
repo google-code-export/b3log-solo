@@ -65,7 +65,7 @@ public final class TagGAERepository extends AbstractGAERepository
             throws RepositoryException {
         final Query query = new Query(Tag.TAG);
         query.addFilter(Tag.TAG_TITLE, Query.FilterOperator.EQUAL, tagTitle);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
             return null;
@@ -81,7 +81,7 @@ public final class TagGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
                       Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
                 withLimit(num));

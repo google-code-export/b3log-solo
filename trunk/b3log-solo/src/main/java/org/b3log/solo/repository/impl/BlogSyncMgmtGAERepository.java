@@ -51,7 +51,7 @@ public final class BlogSyncMgmtGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
                         Query.FilterOperator.EQUAL, externalBloggingSystem);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
             return null;

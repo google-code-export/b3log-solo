@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.mail.MailService;
 import com.google.appengine.api.mail.MailService.Message;
 import com.google.appengine.api.mail.MailServiceFactory;
@@ -47,7 +46,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.captcha.CaptchaServlet;
@@ -70,7 +69,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Dec 6, 2010
+ * @version 1.0.3.2, Dec 8, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -380,8 +379,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
         final JSONObject ret = new JSONObject();
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = commentRepository.beginTransaction();
 
         String articleId, commentId;
         try {
@@ -529,8 +527,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
         final JSONObject ret = new JSONObject();
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = commentRepository.beginTransaction();
 
         String pageId, commentId;
         try {
@@ -758,8 +755,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
         // TODO: check the article whether is the current user's
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = commentRepository.beginTransaction();
         try {
             final String commentId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing comment[oId={0}]", commentId);
@@ -829,8 +825,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         }
 
         // TODO: check the article whether is the current user's
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = commentRepository.beginTransaction();
         try {
             final String commentId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing comment[oId={0}]", commentId);

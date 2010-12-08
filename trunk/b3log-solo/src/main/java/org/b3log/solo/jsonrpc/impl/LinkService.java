@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -46,7 +45,7 @@ import org.json.JSONObject;
  * Link service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 6, 2010
+ * @version 1.0.0.6, Dec 8, 2010
  */
 public final class LinkService extends AbstractGAEJSONRpcService {
 
@@ -192,8 +191,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             return false;
         }
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = linkRepository.beginTransaction();
 
         try {
             if (changeDefaultLinksOrder(linkId, linkOrder)) {
@@ -261,8 +259,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = linkRepository.beginTransaction();
 
         try {
             final JSONObject link =
@@ -332,8 +329,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = linkRepository.beginTransaction();
 
         try {
             final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -403,8 +399,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = linkRepository.beginTransaction();
 
         try {
             final JSONObject link =

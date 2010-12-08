@@ -16,12 +16,13 @@
 
 package org.b3log.solo.upgrade;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultList;
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
@@ -64,6 +66,11 @@ public final class V010ToV011 extends HttpServlet {
      * Update size in an request.
      */
     private static final int UPDATE_SIZE = 100;
+    /**
+     * GAE datastore service.
+     */
+    private final DatastoreService datastoreService =
+            DatastoreServiceFactory.getDatastoreService();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -71,13 +78,12 @@ public final class V010ToV011 extends HttpServlet {
             throws ServletException, IOException {
         if ("0.1.1".equals(SoloServletListener.VERSION)) {
             LOGGER.info("Checking for consistency....");
-            Transaction transaction = AbstractGAERepository.DATASTORE_SERVICE.
-                    beginTransaction();
+            Transaction transaction = articleRepository.beginTransaction();
             boolean isConsistent = true;
             try {
                 final Query query = new Query(Article.ARTICLE);
                 final PreparedQuery preparedQuery =
-                        AbstractGAERepository.DATASTORE_SERVICE.prepare(query);
+                        datastoreService.prepare(query);
                 final QueryResultList<Entity> queryResultList =
                         preparedQuery.asQueryResultList(FetchOptions.Builder.
                         withDefaults());
@@ -101,8 +107,7 @@ public final class V010ToV011 extends HttpServlet {
 
                     if (0 == cnt % UPDATE_SIZE) {
                         transaction.commit();
-                        transaction = AbstractGAERepository.DATASTORE_SERVICE.
-                                beginTransaction();
+                        transaction = articleRepository.beginTransaction();
                     }
                 }
 
@@ -121,7 +126,8 @@ public final class V010ToV011 extends HttpServlet {
             final String partialUpgrade = "Upgrade from v010 to v011 partially, "
                                           + "please run this upgrader(visit this"
                                           + " URL) again.";
-            final String upgraded = "Upgraded from v010 to v011 successfully :-)";
+            final String upgraded =
+                    "Upgraded from v010 to v011 successfully :-)";
             if (!isConsistent) {
                 LOGGER.info(partialUpgrade);
                 writer.print(partialUpgrade);

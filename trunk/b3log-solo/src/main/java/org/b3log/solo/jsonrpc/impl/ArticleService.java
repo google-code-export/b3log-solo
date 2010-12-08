@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -49,7 +48,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
@@ -215,8 +214,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = articleRepository.beginTransaction();
         try {
             final JSONObject status = new JSONObject();
             ret.put(Keys.STATUS, status);
@@ -518,7 +516,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         // TODO: check the article whether is the current user's
 
         final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                articleRepository.beginTransaction();
         Transaction transaction2 = null;
         try {
             final JSONObject status = new JSONObject();
@@ -537,7 +535,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
             transaction.commit();
             transaction2 =
-                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                    articleRepository.beginTransaction();
             // Step 4: Remove article
             articleRepository.remove(articleId);
             // Step 5: Dec blog article count statictis
@@ -608,7 +606,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             return ret;
         }
         final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                articleRepository.beginTransaction();
         String articleId = null;
         try {
             articleId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -664,8 +662,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = articleRepository.beginTransaction();
         String articleId = null;
         try {
             articleId = requestJSONObject.getString(Keys.OBJECT_ID);
@@ -741,7 +738,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         }
         // TODO: check the article whether is the current user's
         final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                articleRepository.beginTransaction();
         Transaction transaction2 = null;
 
         String articleId = null;
@@ -769,7 +766,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
             transaction.commit();
             transaction2 =
-                    AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                    articleRepository.beginTransaction();
             // Step 5: Add tags
             final String tagsString =
                     article.getString(ARTICLE_TAGS_REF);
@@ -885,7 +882,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         }
 // TODO: check the article whether is the current user's
         final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                articleRepository.beginTransaction();
         try {
             final String articleId =
                     requestJSONObject.getString(Keys.OBJECT_ID);

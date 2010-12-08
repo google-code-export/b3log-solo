@@ -55,7 +55,7 @@ public final class CommentGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addSort(Keys.OBJECT_ID,
                       Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final QueryResultIterable<Entity> queryResultIterable =
                 preparedQuery.asQueryResultIterable(FetchOptions.Builder.
                 withLimit(num));

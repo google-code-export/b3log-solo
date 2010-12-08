@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
@@ -29,13 +28,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.util.PreferenceUtils;
 import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 3, 2010
+ * @version 1.0.1.6, Dec 8, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -64,6 +64,11 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private PreferenceUtils preferenceUtils;
+    /**
+     * Preference repository.
+     */
+    @Inject
+    private PreferenceRepository preferenceRepository;
 
     /**
      * Gets preference.
@@ -170,8 +175,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = preferenceRepository.beginTransaction();
         try {
             final JSONObject preference =
                     requestJSONObject.getJSONObject(PREFERENCE);

@@ -16,13 +16,12 @@
 
 package org.b3log.solo.util;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.net.URLDecoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.impl.TagsAction;
 import org.b3log.solo.repository.ArticleRepository;
@@ -135,8 +134,7 @@ public final class PageCacheKeys {
      * @param articleId the given article id
      */
     private void incArticleViewCount(final String articleId) {
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = articleRepository.beginTransaction();
         try {
             articleUtils.incArticleViewCount(articleId);
             transaction.commit();

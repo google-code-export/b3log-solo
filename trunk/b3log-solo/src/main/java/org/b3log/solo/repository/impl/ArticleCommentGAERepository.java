@@ -58,7 +58,7 @@ public final class ArticleCommentGAERepository extends AbstractGAERepository
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, articleId);
         query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
 
         final List<JSONObject> ret = new ArrayList<JSONObject>();
         for (final Entity entity : preparedQuery.asIterable()) {
@@ -77,7 +77,7 @@ public final class ArticleCommentGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Comment.COMMENT + "_" + Keys.OBJECT_ID,
                         Query.FilterOperator.EQUAL, commentId);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
 
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {

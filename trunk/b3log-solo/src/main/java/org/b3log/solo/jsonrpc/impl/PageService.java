@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -47,7 +46,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 5, 2010
+ * @version 1.0.0.9, Dec 8, 2010
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
@@ -227,9 +226,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
 
+        final Transaction transaction = pageRepository.beginTransaction();
         try {
             final JSONObject page =
                     requestJSONObject.getJSONObject(Page.PAGE);
@@ -310,9 +308,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
 
+        final Transaction transaction = pageRepository.beginTransaction();
         try {
             final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
@@ -370,9 +367,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-
+        final Transaction transaction = pageRepository.beginTransaction();
         try {
             final JSONObject page =
                     requestJSONObject.getJSONObject(Page.PAGE);
@@ -436,9 +431,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             return false;
         }
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
-
+        final Transaction transaction = pageRepository.beginTransaction();
         try {
             final JSONObject page1 = pageRepository.get(pageId);
             final String page1Id = pageId;

@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.datastore.Transaction;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.util.ArticleUtils;
@@ -187,7 +186,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             return ret;
         }
         final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                blogSyncManagementRepository.beginTransaction();
         try {
             final String externalBloggingSys =
                     requestJSONObject.getString(
@@ -296,7 +295,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             final List<String> importedIds = new ArrayList<String>();
             for (int i = 0; i < articleIds.length(); i++) {
                 final Transaction transaction =
-                        AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                        articleRepository.beginTransaction();
                 try {
                     final String oId = articleIds.getString(i);
                     final JSONObject externalArticle =
@@ -383,7 +382,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
         }
 
         final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+                externalArticleSoloArticleRepository.beginTransaction();
 
         try {
             final String externalSys = requestJSONObject.getString(

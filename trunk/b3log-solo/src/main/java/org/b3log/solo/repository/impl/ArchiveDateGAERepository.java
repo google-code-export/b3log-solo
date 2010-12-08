@@ -57,7 +57,7 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
             query.addFilter(ArchiveDate.ARCHIVE_DATE,
                             Query.FilterOperator.EQUAL,
                             ArchiveDate.DATE_FORMAT.parse(archiveDate));
-            final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(
+            final PreparedQuery preparedQuery = getDatastoreService().prepare(
                     query);
             final Entity entity = preparedQuery.asSingleEntity();
 

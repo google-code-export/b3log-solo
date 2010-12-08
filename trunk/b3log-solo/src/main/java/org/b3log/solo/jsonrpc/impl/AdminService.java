@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.latke.repository.RepositoryException;
-import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.io.File;
@@ -39,7 +38,7 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
@@ -62,7 +61,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Dec 4, 2010
+ * @version 1.0.1.1, Dec 8, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -137,8 +136,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = userRepository.beginTransaction();
         try {
             final String userId = requestJSONObject.getString(Keys.OBJECT_ID);
             userRepository.remove(userId);
@@ -186,8 +184,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = userRepository.beginTransaction();
         try {
             final JSONObject user = new JSONObject();
             final String userEmail =
@@ -370,8 +367,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = userRepository.beginTransaction();
         try {
             final String oldUserId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject oldUser = userRepository.get(oldUserId);
@@ -611,8 +607,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             throws RepositoryException,
                    JSONException {
         LOGGER.info("Initializing admin....");
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = userRepository.beginTransaction();
         final JSONObject ret = new JSONObject();
         try {
             final JSONObject admin = new JSONObject();
@@ -646,8 +641,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     private JSONObject initStatistic() throws RepositoryException,
                                               JSONException {
         LOGGER.info("Initializing statistic....");
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = userRepository.beginTransaction();
         final JSONObject ret = new JSONObject();
         try {
             ret.put(Keys.OBJECT_ID, Statistic.STATISTIC);
@@ -675,8 +669,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     private JSONObject initPreference() {
         LOGGER.info("Initializing preference....");
 
-        final Transaction transaction =
-                AbstractGAERepository.DATASTORE_SERVICE.beginTransaction();
+        final Transaction transaction = userRepository.beginTransaction();
         final JSONObject ret = new JSONObject();
 
         try {

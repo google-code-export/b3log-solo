@@ -56,7 +56,7 @@ public final class PageGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Page.PAGE_PERMALINK,
                         Query.FilterOperator.EQUAL, permalink);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
             return null;
@@ -71,7 +71,7 @@ public final class PageGAERepository extends AbstractGAERepository
     public int getMaxOrder() throws RepositoryException {
         final Query query = new Query(getName());
         query.addSort(Page.PAGE_ORDER, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final List<Entity> links =
                 preparedQuery.asList(FetchOptions.Builder.withDefaults());
         if (links.isEmpty()) {
@@ -91,7 +91,7 @@ public final class PageGAERepository extends AbstractGAERepository
     public JSONObject getByOrder(final int order) {
         final Query query = new Query(getName());
         query.addFilter(Page.PAGE_ORDER, Query.FilterOperator.EQUAL, order);
-        final PreparedQuery preparedQuery = DATASTORE_SERVICE.prepare(query);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
             return null;
