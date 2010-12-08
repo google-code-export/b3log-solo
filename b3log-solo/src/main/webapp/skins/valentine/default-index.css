@@ -1,0 +1,1121 @@
+@CHARSET "UTF-8";
+/* Resetting of  margins/border/paddings + adding of default fonts */
+body, img, div, h1,h2,h3,h4,h5,h6,table,p,pre,ol,ul,li {
+	margin:0;
+	border: 0;
+	padding: 0;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+}
+/* End Reset */
+
+/* Layouting */
+body {
+	background: #453F39 url(../images/bodybg.jpg) repeat-x;
+}
+
+#wrapper-home {
+	width:940px;
+	margin: auto;
+}
+
+#wrapper-sub {
+	width:920px;
+	margin: auto;
+}
+
+#header-home {
+	width:940px;
+	height:200px;
+	background: url(../images/masthead_home.jpg) no-repeat;
+}
+
+#header-tug {
+	width:940px;
+	height:200px;
+	background: url(../images/masthead-tugofwar.jpg) no-repeat;
+}
+
+#header-chitchat {
+	width:940px;
+	height:200px;
+	background: url(../images/masthead-chitchat.jpg) no-repeat;
+}
+
+#header-rinside {
+	width:920px;
+	height:200px;
+	background: url(../images/masthead_rinsingle.jpg) no-repeat;
+}
+
+#header-wendyside {
+	width:920px;
+	height:200px;
+	background: url(../images/masthead_wendysingle.jpg) no-repeat;
+}
+
+#header-rinsideTW {
+	width:920px;
+	height:200px;
+	background: url(../images/masthead-tugofwarRin.jpg) no-repeat;
+}
+
+#header-wendysideTW {
+	width:920px;
+	height:200px;
+	background: url(../images/masthead-tugofwarWendy.jpg) no-repeat;
+}
+
+#header-rinsideCC {
+	width:920px;
+	height:200px;
+	background: url(../images/masthead-chitchatRin.jpg) no-repeat;
+}
+
+#header-wendysideCC {
+	width:920px;
+	height:200px;
+	background: url(../images/masthead-chitchatWendy.jpg) no-repeat;
+}
+
+#header-page {
+	width:920px;
+	height:200px;
+	background: url(../images/masthead_pagesingle.jpg) no-repeat;
+}
+#header-gallery {
+	width:920px;
+	height:200px;
+	background: url(../images/masthead_gallery.jpg) no-repeat;
+}
+#content-home {
+	width: 940px;
+	height: auto;
+	overflow: auto;
+	background: url(../images/bg_homepanel.jpg) repeat-y;
+}
+
+#content-subnavi {
+	width: 940px;
+	height: auto;
+	overflow: auto;
+	background: url(../images/bg_homepanel.jpg) repeat-y;
+}
+
+#content-rinside {
+	width: 920px;
+	height: auto;
+	overflow: auto;
+	background: url(../images/bg_rinpanel.jpg) repeat-y;
+}
+
+#content-wendyside {
+	width: 920px;
+	height: auto;
+	overflow: auto;
+	background: url(../images/bg_wendypanel.jpg) repeat-y;
+}
+
+#content-page {
+	width: 920px;
+	height: auto;
+	overflow: auto;
+	background: url(../images/bg_pagepanel.jpg) repeat-y;
+}
+
+#prefooter-home {
+	clear: both;
+	position: relative;
+	width: 940px;
+	height: 170px;
+	background: url(../images/main_footerbg.jpg) no-repeat;
+}
+
+#prefooter-rin {
+	width: 920px;
+	height: 128px;
+	background: url(../images/prefooter_rin.jpg) no-repeat;
+}
+
+#prefooter-wendy {
+	width: 920px;
+	height: 128px;
+	background: url(../images/prefooter_wendy.jpg) no-repeat;
+}
+
+#prefooter-page {
+	width: 920px;
+	height: 128px;
+	background: url(../images/prefooter_page.jpg) no-repeat;
+}
+
+#rss-left {
+	width:130px;
+	height:128px;
+	position:relative;
+	float:left;
+	left: 680px;
+	background: url(../images/rss-rin.jpg) no-repeat;
+}
+#rss-page {
+	width:130px;
+	height:128px;
+	position:relative;
+	float:left;
+	left: 680px;
+	background: url(../images/rss-page.jpg) no-repeat;
+}
+#rss-right {
+	width:130px;
+	height:128px;
+	position:relative;
+	float:left;
+	background: url(../images/rss-wendy.jpg) no-repeat;
+}
+
+#rss-hometext {
+	width: 200px;
+	height: 40px;
+	position:absolute;
+	float:left;
+	left: 460px;
+	top: 130px;
+	font-size: 8pt;
+}
+
+#rss-lefttext {
+	width: 200px;
+	height: 40px;
+	position:relative;
+	float:left;
+	left: 665px;
+	top: 75px;
+	font-size: 8pt;
+}
+
+#rss-righttext {
+	width: 200px;
+	height: 40px;
+	position:relative;
+	float:left;
+	right: 15px;
+	top: 75px;
+	font-size: 8pt;
+}
+
+#footer p, #custom404 p {
+	text-align: center;
+	font-size: 8pt;
+	color: #FFFFFF;
+}
+
+#custom404 {
+	width: 600px;
+	margin: auto;
+}
+
+#custom404top {
+	width: 600px;
+	height: 270px;
+	background: url(../images/custom404bg.jpg) no-repeat;
+}
+
+#home-rinside {
+	width:310px;
+	height:auto;
+	position: relative;
+	float: left;
+	left: 40px;
+}
+
+#home-wendyside {
+	width:310px;
+	height:auto;
+	position: relative;
+	float: left;
+	left: 100px;
+}
+
+#rin-pagecontents , #single-pagecontents, #wendy-pagecontents {
+	width:580px;
+	height: auto;
+	position: relative;
+	margin-top:20px;
+}
+
+#rin-pagecontents {
+	float: left;
+	left:70px;
+}
+
+#single-pagecontents {
+	float: left;
+	left:70px;
+}
+
+#wendy-pagecontents {
+	float: right;
+	right:70px;
+}
+
+#TWtab-rin {
+	width: 580px;
+	height: 108px;
+	background: url(../images/tugofwarRin.jpg) no-repeat;
+}
+
+#TWtab-wendy {
+	width: 580px;
+	height: 108px;
+	background: url(../images/tugofwarWendy.jpg) no-repeat;
+}
+
+#CCtab-rin {
+	width: 580px;
+	height: 108px;
+	background: url(../images/chitchatRin.jpg) no-repeat;
+}
+
+#CCtab-wendy {
+	width: 580px;
+	height: 108px;
+	background: url(../images/chitchatWendy.jpg) no-repeat;
+}
+
+#home-sidebar {
+	width: 180px;
+	height: auto;
+	position: relative;
+	float: left;
+	left: 70px;
+}
+
+#left-sidebar {
+	width: 180px;
+	height: auto;
+	position: relative;
+	float: left;
+	left: 130px;
+}
+
+#right-sidebar {
+	width: 180px;
+	height: auto;
+		overflow: auto;
+	position: relative;
+	float: left;
+	left: 30px;
+}
+
+#home-tag {
+	width: 180px;
+	height: 61px;
+	background: url(../images/tag_home.jpg) no-repeat;
+}
+#author-tag {
+	width: 180px;
+	height: 61px;
+	background: url(../images/tag_author.jpg) no-repeat;
+}
+#about-tag {
+	width: 180px;
+	height: 61px;
+	background: url(../images/tag_about.jpg) no-repeat;
+}
+#category-tag {
+	width: 180px;
+	height: 61px;
+	background: url(../images/tag_category.jpg) no-repeat;
+}
+#tags-tag {
+	width: 180px;
+	height: 61px;
+	background: url(../images/tag_tags.jpg) no-repeat;
+}
+#archives-tag {
+	width: 180px;
+	height: 61px;
+	background: url(../images/tag_archives.jpg) no-repeat;
+}
+#gallery-tag {
+	width: 180px;
+	height: 61px;
+	background: url(../images/tag_gallery.jpg) no-repeat;
+}
+#guestbook-tag {
+	width: 180px;
+	height: 61px;
+	background: url(../images/tag_guestbook.jpg) no-repeat;
+}
+#links-tag {
+	width: 180px;
+	height: 61px;
+	background: url(../images/tag_links.jpg) no-repeat;
+}
+#sidebar-titletag {
+	width: 180px;
+	height: 40px;
+	background: url(../images/sidebar_title.jpg) no-repeat;
+}
+.sidebar-titletagcolor {
+	width: 180px;
+	height: 40px;
+	background: url(../images/sidebar_titlecolor.jpg) no-repeat;
+}
+.oldposts {
+	float:left;
+	position: absolute;
+	left:406px;
+	top:13px;
+}
+.newposts {
+	clear: left;
+	float: left;
+	position: absolute;
+	left: 435px;
+	top:42px;
+}
+/* End Layouts */
+
+/* Post Layouts*/
+.posttitle-home {
+	width:240px;
+	float: left;
+}
+
+.posttitle-page {
+	width:500px;
+	float: left;
+}
+
+.posttime-blue , .posttime-pink{
+	width: 60px;
+	height: 60px;
+	clear: right;
+	float: right;
+	color: #FFFFFF;
+	font-family:Tohama,Arial, Helvetica, sans-serif;
+	border: 1px solid #999999;
+}
+.posttime-blue {
+	background-color:#0184AF;
+}
+.posttime-pink {
+	background-color:#FF4884;
+}
+.posttime-MY {
+	padding-top:5px;
+	height: 15px;
+	font-size: 9px;
+	text-align: center;
+	border-bottom: 1px solid #FFFFFF;
+}
+.posttime-D {
+	font-weight: bold;
+	font-size: 28px;
+	text-align: center;
+}
+.readmore {
+	float: right;
+	text-align: right;
+	font-size:12px;
+	position:relative;
+	top: 10px;
+}
+.cmtballoon-blue, .cmtballoon-pink {
+	height: 26px;
+	width: 45px;
+	background-repeat: no-repeat;
+	text-align:center;
+	float:left;
+	padding-top: 4px;
+	font-size:12px;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+
+.cmtballoon-blue {
+	background-image: url(../images/commentballoon_blue.jpg);
+}
+
+.cmtballoon-pink {
+	background-image: url(../images/commentballoon_pink.jpg);
+}
+
+.cmt-tag {
+	font-size: 10px;
+	position:relative;
+	float:left;
+	top: 12px;
+}
+.hori-line {
+	width: 100%;
+	height: 50px;
+	border-bottom: 1px solid #FFFFFF;
+}
+.homeentry {
+color: #4D463F;
+}
+.homeentry  ul li{
+	padding-bottom: 15px;
+	padding-right: 20px;
+}
+
+.post-individual {
+	width: 100%;
+	clear:both;
+	margin-bottom: 10px;
+}
+/* End Post Layouts*/
+
+/* Text Formatting */
+a {
+	color: #FF9900;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #FF0000;
+}
+
+p {
+	font-size: 12px;
+
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+blockquote, blockquote p {
+	font-size: 18px;
+	font-weight: bolder;
+	font-family: Georgia,'Times New Roman', Times, serif;
+}
+
+h3.pagetitle {
+	font-family:Tohama,Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bolder;
+	text-transform: uppercase;
+	text-align: center;
+
+}
+
+.postdetails-blue ,.postdetails-pink{
+	font-family:Tohama,Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bolder;
+	text-transform: uppercase;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	text-align: left;
+	clear: both;
+}
+
+.postdetails-blue {
+	color: #0184AF;
+}
+.postdetails-pink {
+	color: #FF4884;
+}
+.homeentry {
+	text-align: justify;
+	font-size: 12px;
+}
+
+.text-link {
+	color: #FFFFFF;
+}
+.text-link2 {
+	color: #4D463F;
+}
+.slogantext {
+	font-weight: normal;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	text-align:center;
+}
+.slogantext-small {
+	font-weight: normal;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+	font-size: 9px;
+	text-align:center;
+}
+.page-navigation {
+	width: 180px;
+	margin: auto;
+	font-weight: normal;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+.alignleft {
+	float: left;
+}
+.alignright {
+	float: right;
+	text-align:right;
+}
+.post-individual ul, .post-individual ol {
+	margin-left: 30px;
+}
+.post-individual ol li{
+	margin-bottom: 10px;
+}
+/* End Text Formatting */
+
+/*  Comments formatting */
+ol.commentlist-pink, ol.commentlist-blue , ol.commentlist-grey{
+	list-style: none;
+	margin: 0;
+}
+ol.commentlist-blue li .commentbubble  {
+	width: 401px;
+	background-color: #ACD9F4;
+	position:relative;
+	left: 150px;
+}
+
+ol.commentlist-blue li .commentbubble .bubbletop  {
+	background-image: url(../images/comment_blue_top2.jpg);
+	width: 401px;
+	height:15px;
+	padding:0;
+	margin:0;
+}
+ol.commentlist-blue li .commentbubble .bubblemiddle  {
+	width: 371px;
+	padding-left: 15px;
+	padding-right:15px;
+}
+ol.commentlist-blue li .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_blue_bottom2.jpg);
+	width: 401px;
+	height:30px;
+}
+ol.commentlist-blue li.alt .commentbubble  {
+	width: 401px;
+	background-color: #C1E2F9;
+	position:relative;
+	left: 60px;
+}
+ol.commentlist-blue li.alt .commentbubble .bubbletop{
+	background-image: url(../images/comment_blue_top1.jpg);
+	width: 401px;
+	height:15px;
+}
+ol.commentlist-blue li.alt .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_blue_bottom1.jpg);
+	width: 401px;
+	height:30px;
+}
+/* custom comment list css */
+ol.commentlist-blue li.alt-rin .commentbubble  {
+	width: 400px;
+	background-color: #20596C;
+	position:relative;
+	left: 30px;
+	color: #FFFFFF;
+}
+ol.commentlist-blue li.alt-rin .commentbubble .bubbletop{
+	background-image: url(../images/comment_blue_rin_top1.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-blue li.alt-rin .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_blue_rin_bottom1.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-blue li.even-rin .commentbubble  {
+	width: 400px;
+	background-color: #20596C;
+	position:relative;
+	left: 150px;
+	color: #FFFFFF;
+}
+ol.commentlist-blue li.even-rin .commentbubble .bubbletop{
+	background-image: url(../images/comment_blue_rin_top2.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-blue li.even-rin .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_blue_rin_bottom2.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-blue li.alt-wendy .commentbubble  {
+	width: 400px;
+	background-color: #9C4D67;
+	position:relative;
+	left: 30px;
+	color: #FFFFFF;
+}
+ol.commentlist-blue li.alt-wendy .commentbubble .bubbletop{
+	background-image: url(../images/comment_blue_wendy_top1.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-blue li.alt-wendy .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_blue_wendy_bottom1.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-blue li.even-wendy .commentbubble  {
+	width: 400px;
+	background-color: #9C4D67;
+	position:relative;
+	left: 150px;
+	color: #FFFFFF;
+}
+ol.commentlist-blue li.even-wendy .commentbubble .bubbletop{
+	background-image: url(../images/comment_blue_wendy_top2.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-blue li.even-wendy .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_blue_wendy_bottom2.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-blue li.alt-rin .commenttext, ol.commentlist-blue li.alt-wendy .commenttext {
+	text-align: left;
+	position: relative;
+	bottom: 10px;
+}
+/* custom comment list css */
+ol.commentlist-blue li.alt .commenttext  {
+	text-align: left;
+	position: relative;
+	bottom: 10px;
+}
+ol.commentlist-blue li .commenttext  {
+	text-align: right;
+	position: relative;
+	bottom: 10px;
+}
+
+ol.commentlist-pink li .commentbubble  {
+	width: 401px;
+	background-color: #FFC6D2;
+	position:relative;
+	left: 150px;
+}
+
+ol.commentlist-pink li .commentbubble .bubbletop  {
+	background-image: url(../images/comment_pink_top2.jpg);
+	width: 401px;
+	height:15px;
+	padding:0;
+	margin:0;
+}
+ol.commentlist-pink li .commentbubble .bubblemiddle  {
+	width: 371px;
+	padding-left: 15px;
+	padding-right:15px;
+}
+ol.commentlist-pink li .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_pink_bottom2.jpg);
+	width: 401px;
+	height:30px;
+}
+ol.commentlist-pink li.alt .commentbubble  {
+	width: 401px;
+	background-color: #FFD6DC;
+	position:relative;
+	left: 60px;
+}
+ol.commentlist-pink li.alt .commentbubble .bubbletop{
+	background-image: url(../images/comment_pink_top1.jpg);
+	width: 401px;
+	height:15px;
+}
+ol.commentlist-pink li.alt .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_pink_bottom1.jpg);
+	width: 401px;
+	height:30px;
+}
+/* custom comment list css */
+ol.commentlist-pink li.alt-rin .commentbubble  {
+	width: 400px;
+	background-color: #20596C;
+	position:relative;
+	left: 30px;
+	color: #FFFFFF;
+}
+ol.commentlist-pink li.alt-rin .commentbubble .bubbletop{
+	background-image: url(../images/comment_pink_rin_top1.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-pink li.alt-rin .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_pink_rin_bottom1.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-pink li.even-rin .commentbubble  {
+	width: 400px;
+	background-color: #20596C;
+	position:relative;
+	left: 150px;
+	color: #FFFFFF;
+}
+ol.commentlist-pink li.even-rin .commentbubble .bubbletop{
+	background-image: url(../images/comment_pink_rin_top2.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-pink li.even-rin .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_pink_rin_bottom2.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-pink li.alt-wendy .commentbubble  {
+	width: 400px;
+	background-color: #9C4D67;
+	position:relative;
+	left: 30px;
+	color: #FFFFFF;
+}
+ol.commentlist-pink li.alt-wendy .commentbubble .bubbletop{
+	background-image: url(../images/comment_pink_wendy_top1.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-pink li.alt-wendy .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_pink_wendy_bottom1.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-pink li.even-wendy .commentbubble  {
+	width: 400px;
+	background-color: #9C4D67;
+	position:relative;
+	left: 150px;
+	color: #FFFFFF;
+}
+ol.commentlist-pink li.even-wendy .commentbubble .bubbletop{
+	background-image: url(../images/comment_pink_wendy_top2.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-pink li.even-wendy .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_pink_wendy_bottom2.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-pink li.alt-rin .commenttext, ol.commentlist-pink li.alt-wendy .commenttext {
+	text-align: left;
+	position: relative;
+	bottom: 10px;
+}
+/* custom comment list css */
+ol.commentlist-pink li.alt .commenttext  {
+	text-align: left;
+	position: relative;
+	bottom: 10px;
+}
+ol.commentlist-pink li .commenttext  {
+	text-align: right;
+	position: relative;
+	bottom: 10px;
+}
+ol.commentlist-grey li .commentbubble  {
+	width: 400px;
+	background-color: #666666;
+	position:relative;
+	left: 150px;
+}
+
+ol.commentlist-grey li .commentbubble .bubbletop  {
+	background-image: url(../images/comment_grey_top2.jpg);
+	width: 400px;
+	height:15px;
+	padding:0;
+	margin:0;
+}
+ol.commentlist-grey li .commentbubble .bubblemiddle  {
+	width: 370px;
+	padding-left: 15px;
+	padding-right:15px;
+	color: #FFFFFF;
+}
+ol.commentlist-grey li .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_grey_bottom2.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-grey li.alt .commentbubble  {
+	width: 400px;
+	background-color: #333333;
+	position:relative;
+	left: 60px;
+}
+ol.commentlist-grey li.alt .commentbubble .bubbletop{
+	background-image: url(../images/comment_grey_top1.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-grey li.alt .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_grey_bottom1.jpg);
+	width: 400px;
+	height:30px;
+}
+/* custom comment list css */
+ol.commentlist-grey li.alt-rin .commentbubble  {
+	width: 400px;
+	background-color: #20596C;
+	position:relative;
+	left: 30px;
+	color: #FFFFFF;
+}
+ol.commentlist-grey li.alt-rin .commentbubble .bubbletop{
+	background-image: url(../images/comment_grey_rin_top1.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-grey li.alt-rin .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_grey_rin_bottom1.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-grey li.even-rin .commentbubble  {
+	width: 400px;
+	background-color: #20596C;
+	position:relative;
+	left: 150px;
+	color: #FFFFFF;
+}
+ol.commentlist-grey li.even-rin .commentbubble .bubbletop{
+	background-image: url(../images/comment_grey_rin_top2.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-grey li.even-rin .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_grey_rin_bottom2.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-grey li.alt-wendy .commentbubble  {
+	width: 400px;
+	background-color: #9C4D67;
+	position:relative;
+	left: 30px;
+	color: #FFFFFF;
+}
+ol.commentlist-grey li.alt-wendy .commentbubble .bubbletop{
+	background-image: url(../images/comment_grey_wendy_top1.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-grey li.alt-wendy .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_grey_wendy_bottom1.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-grey li.even-wendy .commentbubble  {
+	width: 400px;
+	background-color: #9C4D67;
+	position:relative;
+	left: 150px;
+	color: #FFFFFF;
+}
+ol.commentlist-grey li.even-wendy .commentbubble .bubbletop{
+	background-image: url(../images/comment_grey_wendy_top2.jpg);
+	width: 400px;
+	height:15px;
+}
+ol.commentlist-grey li.even-wendy .commentbubble .bubblebottom  {
+	background-image: url(../images/comment_grey_wendy_bottom2.jpg);
+	width: 400px;
+	height:30px;
+}
+ol.commentlist-grey li.alt-rin .commenttext, ol.commentlist-grey li.alt-wendy .commenttext {
+	text-align: left;
+	position: relative;
+	bottom: 10px;
+}
+/* custom comment list css */
+
+ol.commentlist-grey li.alt .commenttext  {
+	text-align: left;
+	position: relative;
+	bottom: 10px;
+}
+ol.commentlist-grey li .commenttext  {
+	text-align: right;
+	position: relative;
+	bottom: 10px;
+}
+
+.commentmetadata {
+	font-size: 10px;
+	font-weight: normal;
+}
+/* End Comments formatting */
+
+/* sidebar navigations  */
+#sidebar {
+	font-weight: normal;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+#sidebar ul {
+	list-style: none;
+	margin-bottom: 15px;
+}
+
+#sidebar ul ul {
+	text-indent: 30px;
+}
+#sidebar ul ul li {
+	height: 25px;
+	line-height: 25px;
+	border-bottom: 1px dashed #DADADA;
+}
+
+/*  End sidebar navigations */
+
+/* Page formats */
+.about-rin , .about-wendy{
+	width: 580px;
+	min-height: 70px;
+	height: auto;
+	overflow: auto;
+	background-repeat: repeat-y;
+	padding: 0;
+	margin: 0;
+	margin-bottom: 2px;
+}
+
+.about-rin {
+	background-image: url(../images/about_bg_rin.jpg);
+}
+.about-wendy {
+	background-image: url(../images/about_bg_wendy.jpg);
+}
+.about-rin .tcontent , .about-wendy .tcontent{
+	width: 300px;
+	padding: 20px;
+	height: auto;
+	overflow: auto;
+	position: relative;
+	font-weight: normal;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+.about-rin .tcontent {
+	float: left;
+	left: 15px;
+}
+.about-wendy .tcontent {
+	float: right;
+	right: 15px;
+}
+.about-rin span {
+	width: 120px;
+	height: 45px;
+	display: block;
+	position: relative;
+	float:right;
+	top: 10px;
+	background: url(../images/about_tag_rin.jpg) no-repeat;
+}
+.about-wendy span {
+	width: 206px;
+	height: 40px;
+	display: block;
+	position: relative;
+	float:left;
+	top: 15px;
+	background: url(../images/about_tag_wendy.jpg) no-repeat;
+}
+/*  End page formats */
+/*  Link Page formatting */
+ul.link-base {
+	font-weight: normal;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	list-style: none;
+}
+.frilinks ul {
+	list-style-type: none;
+	list-style-position: inside;
+	list-style-image: url(../images/icon22.jpg);
+	padding-bottom: 20px;
+}
+.frilinks ul li {
+	padding-top: 2px;
+	height: 20px;
+	border-bottom: 1px dashed #cccccc;
+	line-height:18px;
+}
+.link-container {
+	height: auto;
+	overflow: auto;
+	width: 100%;
+}
+.link-left {
+	position:relative;
+	float: left;
+	width:260px;
+}
+.link-right {
+	position:relative;
+	float: right;
+	width:260px;
+}
+/*  End Link Page formatting */
+/*FLIR  Note H1 and  H2 are reserved for sIFR*/
+h1 {
+	font-weight: normal;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+	word-wrap: break-word;
+}
+h1.blue {
+	font-weight: normal;
+	color: #0184AF;
+}
+
+h1.pink {
+	font-weight: normal;
+	color: #FF4884;
+}
+h2 {
+	font-weight: normal;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+	word-wrap: break-word;
+}
+h2.blue {
+	font-weight: normal;
+	color: #0184AF;
+}
+
+h2.pink {
+	font-weight: normal;
+	color: #FF4884;
+}
+
+h4 {
+	font-weight: normal;
+	font-size: 14pt;
+	font-family:Verdana,Arial, Helvetica, sans-serif;
+	text-transform: uppercase;
+}
+.abtustitle {
+	font-size: 16pt;
+}
+.commentauthor {
+	font-size: 18px;
+	font-weight: bolder;
+}
+.abtusemocontent {
+	font-size: 14pt;
+}
+.grouppost-rin {
+	border: 1px dashed #CCCCCC;
+	background-color: #FFFFFF;
+	padding: 15px;
+}
+#tape-tug {
+	width:180px;
+	height: 73px;
+	background: url(../images/tugowartitletag.jpg) no-repeat;
+}
