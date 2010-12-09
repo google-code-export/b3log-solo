@@ -30,7 +30,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
@@ -50,7 +50,7 @@ public final class InitCheckFilter implements Filter {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {

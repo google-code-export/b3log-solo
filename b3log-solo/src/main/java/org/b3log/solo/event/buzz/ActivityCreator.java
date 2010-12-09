@@ -32,7 +32,7 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Google;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -59,7 +59,7 @@ public final class ActivityCreator
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
 //    static {
 //        MY_BUZZ_FEED_URL = new GoogleUrl(

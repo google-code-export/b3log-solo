@@ -38,9 +38,9 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.TagRefCntComparator;
-import org.b3log.solo.util.TagUtils;
+import org.b3log.solo.util.Tags;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -84,12 +84,12 @@ public final class TagsAction extends AbstractCacheablePageAction {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
     /**
      * Tag utilities.
      */
     @Inject
-    private TagUtils tagUtils;
+    private Tags tagUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

@@ -44,8 +44,8 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.util.ArticleUpdateDateComparator;
-import org.b3log.solo.util.ArticleUtils;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Articles;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,12 +92,12 @@ public final class ArticleAction extends AbstractCacheablePageAction {
      * Article utilities.
      */
     @Inject
-    private ArticleUtils articleUtils;
+    private Articles articleUtils;
     /**
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

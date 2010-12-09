@@ -31,8 +31,8 @@ import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
-import org.b3log.solo.util.ArticleUtils;
-import org.b3log.solo.util.TagUtils;
+import org.b3log.solo.util.Articles;
+import org.b3log.solo.util.Tags;
 import org.b3log.solo.model.Article;
 import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.ArticleRepository;
@@ -42,7 +42,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.Post;
-import org.b3log.solo.util.ArchiveDateUtils;
+import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,12 +70,12 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * Tag utilities.
      */
     @Inject
-    private TagUtils tagUtils;
+    private Tags tagUtils;
     /**
      * Article utilities.
      */
     @Inject
-    private ArticleUtils articleUtils;
+    private Articles articleUtils;
     /**
      * Statistic utilities.
      */
@@ -85,7 +85,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * Archive date utilities.
      */
     @Inject
-    private ArchiveDateUtils archiveDateUtils;
+    private ArchiveDates archiveDateUtils;
     /**
      * External blog article-Solo article repository.
      */

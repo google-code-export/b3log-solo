@@ -29,7 +29,7 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
@@ -63,7 +63,7 @@ public final class AdminIndexAction extends AbstractAdminAction {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

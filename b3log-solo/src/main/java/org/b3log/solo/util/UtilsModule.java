@@ -31,12 +31,12 @@ public final class UtilsModule extends org.b3log.latke.util.UtilModule {
     protected void configure() {
         super.configure();
 
-        bind(ArticleUtils.class).in(Scopes.SINGLETON);
-        bind(TagUtils.class).in(Scopes.SINGLETON);
-        bind(ArchiveDateUtils.class).in(Scopes.SINGLETON);
-        bind(PageUtils.class).in(Scopes.SINGLETON);
-        bind(PreferenceUtils.class).in(Scopes.SINGLETON);
-        bind(CommentUtils.class).in(Scopes.SINGLETON);
+        bind(Articles.class).in(Scopes.SINGLETON);
+        bind(Tags.class).in(Scopes.SINGLETON);
+        bind(ArchiveDates.class).in(Scopes.SINGLETON);
+        bind(Pages.class).in(Scopes.SINGLETON);
+        bind(Preferences.class).in(Scopes.SINGLETON);
+        bind(Comments.class).in(Scopes.SINGLETON);
         bind(Users.class).in(Scopes.SINGLETON);
         bind(Permalinks.class).in(Scopes.SINGLETON);
         bind(Skins.class).in(Scopes.SINGLETON);

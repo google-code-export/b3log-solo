@@ -36,7 +36,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -61,7 +61,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
     /**
      * Count of output entry.
      */

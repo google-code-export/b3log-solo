@@ -35,7 +35,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
@@ -68,7 +68,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
     @Override
     public void init() throws ServletException {

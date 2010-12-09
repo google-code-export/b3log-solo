@@ -18,7 +18,7 @@ package org.b3log.solo.google.auth;
 
 import com.google.inject.Inject;
 import java.util.logging.Logger;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 
 /**
  * Google OAuth utilities.
@@ -65,7 +65,7 @@ public final class OAuths {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
     /**
      * Consumer key.
      */

@@ -41,7 +41,7 @@ import org.b3log.solo.model.ErrorPage;
 import org.b3log.solo.model.File;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
@@ -76,7 +76,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
     @Override
     protected void doPost(final HttpServletRequest request,

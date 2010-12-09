@@ -52,12 +52,12 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.ArchiveDateUtils;
-import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.ArchiveDates;
+import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Permalinks;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.TagUtils;
+import org.b3log.solo.util.Tags;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,12 +99,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * Tag utilities.
      */
     @Inject
-    private TagUtils tagUtils;
+    private Tags tagUtils;
     /**
      * Article utilities.
      */
     @Inject
-    private ArticleUtils articleUtils;
+    private Articles articleUtils;
     /**
      * Statistic utilities.
      */
@@ -114,12 +114,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * Archive date utilities.
      */
     @Inject
-    private ArchiveDateUtils archiveDateUtils;
+    private ArchiveDates archiveDateUtils;
     /**
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
     /**
      * Permalink utilities.
      */

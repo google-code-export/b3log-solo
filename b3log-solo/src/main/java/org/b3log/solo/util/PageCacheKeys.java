@@ -61,7 +61,7 @@ public final class PageCacheKeys {
      * Article utilities.
      */
     @Inject
-    private ArticleUtils articleUtils;
+    private Articles articleUtils;
 
     /**
      * Gets page cache key by the specified URI and query string.

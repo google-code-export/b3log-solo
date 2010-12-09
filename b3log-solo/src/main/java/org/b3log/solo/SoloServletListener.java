@@ -63,7 +63,7 @@ import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.sync.SyncModule;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
@@ -308,8 +308,8 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.info("Loading preference....");
 
         final Injector injector = getInjector();
-        final PreferenceUtils preferenceUtils =
-                injector.getInstance(PreferenceUtils.class);
+        final Preferences preferenceUtils =
+                injector.getInstance(Preferences.class);
         JSONObject preference = null;
 
         try {

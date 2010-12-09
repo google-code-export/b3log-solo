@@ -36,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.solo.model.File;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
@@ -82,7 +82,7 @@ public final class BlobStoreFileAccessServlet extends HttpServlet {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
     @Override
     protected void doPost(final HttpServletRequest request,

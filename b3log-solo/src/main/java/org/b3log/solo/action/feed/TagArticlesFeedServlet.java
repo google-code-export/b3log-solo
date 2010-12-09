@@ -34,7 +34,7 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -69,7 +69,7 @@ public final class TagArticlesFeedServlet extends HttpServlet {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
     /**
      * Count of output entry.
      */
