@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Dec 8, 2010
+ * @version 1.0.1.2, Dec 9, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -646,8 +646,10 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         try {
             ret.put(Keys.OBJECT_ID, Statistic.STATISTIC);
             ret.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 0);
+            ret.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 0);
             ret.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, 0);
             ret.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 0);
+            ret.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 0);
             statisticRepository.add(ret);
             transaction.commit();
         } catch (final Exception e) {

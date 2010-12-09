@@ -44,10 +44,12 @@ import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Statistic;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Preferences;
@@ -94,6 +96,14 @@ import org.json.JSONObject;
  *       Adds a property(named {@value Preference#ARTICLE_UPDATE_HINT_ENABLED}
  *       to {@link Preference preference} entity.
  *     </li>
+ *     <li>
+ *       Adds a property(named {@value Statistic#STATISTIC_PUBLISHED_ARTICLE_COUNT}
+ *       to {@link Statistic statistic} entity.
+ *     </li>
+ *     <li>
+ *       Adds a property(named {@value Statistic#STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT}
+ *       to {@link Statistic statistic} entity.
+ *     </li>
  *   </ul>
  * </p>
  *
@@ -116,6 +126,11 @@ public final class V021ToV025 extends HttpServlet {
      */
     private static final String OLD_ADMIN_EMAIL_PROPERTY_NAME =
             "adminGmail";
+    /**
+     * Statistic repository.
+     */
+    @Inject
+    private StatisticRepository statisticRepository;
     /**
      * Article repository.
      */
@@ -174,6 +189,7 @@ public final class V021ToV025 extends HttpServlet {
                     USER_SERVICE.getCurrentUser().getNickname();
 
             upgradePreference(currentUserEmail);
+            upgradeStatistic();
             upgradeTags();
             upgradeArchiveDates();
             upgradeLinks();
@@ -289,7 +305,7 @@ public final class V021ToV025 extends HttpServlet {
                     preparedQuery.asQueryResultList(FetchOptions.Builder.
                     withDefaults());
             for (final Entity entity : queryResultList) {
-                if (entity.hasProperty(
+                if (!entity.hasProperty(
                         ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
                     final JSONObject archiveDate =
                             AbstractGAERepository.entity2JSONObject(entity);
@@ -351,20 +367,52 @@ public final class V021ToV025 extends HttpServlet {
     private void upgradeTags() throws ServletException {
         final Transaction transaction = tagRepository.beginTransaction();
         try {
-            final Query query =
-                    new Query(Tag.TAG);
+            final Query query = new Query(Tag.TAG);
             final PreparedQuery preparedQuery = datastoreService.prepare(query);
             final QueryResultList<Entity> queryResultList =
                     preparedQuery.asQueryResultList(FetchOptions.Builder.
                     withDefaults());
             for (final Entity entity : queryResultList) {
-                if (entity.hasProperty(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
+                if (!entity.hasProperty(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
                     final JSONObject tag =
                             AbstractGAERepository.entity2JSONObject(entity);
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
                             tag.getInt(Tag.TAG_REFERENCE_COUNT));
                     tagRepository.update(tag.getString(Keys.OBJECT_ID), tag);
                 }
+            }
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, "Upgrade tag fail: {0}", e.getMessage());
+            throw new ServletException("Upgrade fail from v021 to v025");
+        }
+    }
+
+    /**
+     * Upgrades statistic.
+     *
+     * @throws ServletException upgrade fails
+     */
+    private void upgradeStatistic() throws ServletException {
+        final Transaction transaction = tagRepository.beginTransaction();
+        try {
+            final Query query = new Query(Statistic.STATISTIC);
+            final PreparedQuery preparedQuery = datastoreService.prepare(query);
+            final Entity entity = preparedQuery.asSingleEntity();
+            if (!entity.hasProperty(
+                    Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT)) {
+                final JSONObject statistic =
+                        AbstractGAERepository.entity2JSONObject(entity);
+                statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT,
+                              statistic.getInt(
+                        Statistic.STATISTIC_BLOG_ARTICLE_COUNT));
+                statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT,
+                              statistic.getInt(
+                        Statistic.STATISTIC_BLOG_COMMENT_COUNT));
+
+                statisticRepository.update(statistic.getString(Keys.OBJECT_ID),
+                                           statistic);
             }
             transaction.commit();
         } catch (final Exception e) {
@@ -394,7 +442,7 @@ public final class V021ToV025 extends HttpServlet {
                 preference.put(Preference.ENABLE_ARTICLE_UPDATE_HINT,
                                true);
             }
-            
+
             preferenceUtils.setPreference(preference);
             transaction.commit();
         } catch (final Exception e) {

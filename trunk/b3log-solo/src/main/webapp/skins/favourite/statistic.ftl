@@ -9,14 +9,14 @@
             <span>
                 ${articleCount1Label}
                 <span class='error-msg'>
-                    ${statistic.statisticBlogArticleCount}
+                    ${statistic.statisticPublishedBlogArticleCount}
                 </span>
                 &nbsp;&nbsp;
             </span>
             <span>
                 ${commentCount1Label}
                 <span class='error-msg'>
-                    ${statistic.statisticBlogCommentCount}
+                    ${statistic.statisticPublishedBlogCommentCount}
                 </span>
             </span>
         </div>

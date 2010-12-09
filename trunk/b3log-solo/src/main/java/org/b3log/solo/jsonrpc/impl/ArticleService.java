@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Dec 8, 2010
+ * @version 1.0.2.5, Dec 9, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -242,6 +242,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             articleUtils.addTagArticleRelation(tags, article);
             // Step 7: Inc blog article count statictis
             statistics.incBlogArticleCount();
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                statistics.incPublishedBlogArticleCount();
+            }
             // Step 8: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
             // Step 9: Set permalink
@@ -540,6 +543,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             articleRepository.remove(articleId);
             // Step 5: Dec blog article count statictis
             statistics.decBlogArticleCount();
+            statistics.decPublishedBlogArticleCount();
             // Step 6: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
             // Step 7: Fire remove article event
@@ -783,7 +787,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                         oldArticle.getBoolean(ARTICLE_PUT_TOP));
             article.put(ARTICLE_HAD_BEEN_PUBLISHED,
                         oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
-            // Step 7: Set updat date
+            // Step 7: Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
                 if (articleUtils.hadBeenPublished(oldArticle)) {
@@ -806,11 +810,24 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     article.put(ARTICLE_UPDATE_DATE, date);
                 }
             }
-            // Step 8: Update
+            // Step 8: Set statistic
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                if (!oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                    // This article is updated from unpublished to published
+                    statistics.incPublishedBlogArticleCount();
+                    final int blogCmtCnt =
+                            statistics.getPublishedBlogCommentCount();
+                    final int articleCmtCnt =
+                            article.getInt(ARTICLE_COMMENT_COUNT);
+                    statistics.setPublishedBlogCommentCount(
+                            blogCmtCnt + articleCmtCnt);
+                }
+            }
+            // Step 9: Update
             articleRepository.update(articleId, article);
-            // Step 9: Add tag-article relations
+            // Step 10: Add tag-article relations
             articleUtils.addTagArticleRelation(tags, article);
-            // Step 10: Add archive date-article relations
+            // Step 11: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
@@ -891,7 +908,14 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             tagUtils.decTagPublishedRefCount(articleId);
             archiveDateUtils.decArchiveDatePublishedRefCount(articleId);
             articleRepository.update(articleId, article);
-            // TODO: dec statistic blog article/comment cnt
+            statistics.decPublishedBlogArticleCount();
+            final int blogCmtCnt =
+                    statistics.getPublishedBlogCommentCount();
+            final int articleCmtCnt =
+                    article.getInt(ARTICLE_COMMENT_COUNT);
+            statistics.setPublishedBlogCommentCount(
+                    blogCmtCnt - articleCmtCnt);
+
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_PUBLISH_ARTICLE_SUCC);

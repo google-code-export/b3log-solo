@@ -486,6 +486,9 @@ public final class Filler {
             throws Exception {
         final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
+
+        statistic.remove(Statistic.STATISTIC_BLOG_ARTICLE_COUNT);
+        statistic.remove(Statistic.STATISTIC_BLOG_COMMENT_COUNT);
         
         dataModel.put(Statistic.STATISTIC, statistic);
     }

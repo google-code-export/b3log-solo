@@ -19,7 +19,11 @@ package org.b3log.solo.util;
 import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
@@ -27,7 +31,11 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.Filter;
+import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
@@ -40,7 +48,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 6, 2010
+ * @version 1.0.0.9, Dec 9, 2010
  */
 public final class Articles {
 
@@ -331,5 +339,30 @@ public final class Articles {
     public boolean hadBeenPublished(final JSONObject article)
             throws JSONException {
         return article.getBoolean(Article.ARTICLE_HAD_BEEN_PUBLISHED);
+    }
+
+    /**
+     * Gets all unpublished articles.
+     *
+     * @return articles all unpublished articles
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    public List<JSONObject> getUnpublishedArticles()
+            throws RepositoryException, JSONException {
+        final Map<String, SortDirection> sorts =
+                new HashMap<String, SortDirection>();
+        sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+        sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+        final Set<Filter> filters = new HashSet<Filter>();
+        filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
+                               FilterOperator.EQUAL,
+                               true));
+        final JSONObject result =
+                articleRepository.get(1, Integer.MAX_VALUE,
+                                      sorts, filters);
+        final JSONArray articles = result.getJSONArray(Keys.RESULTS);
+
+        return CollectionUtils.jsonArrayToList(articles);
     }
 }
