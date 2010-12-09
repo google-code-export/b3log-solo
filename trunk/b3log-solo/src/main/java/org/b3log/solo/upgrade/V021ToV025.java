@@ -50,7 +50,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
@@ -121,7 +121,7 @@ public final class V021ToV025 extends HttpServlet {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
     /**
      * User service.
      */

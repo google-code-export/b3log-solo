@@ -26,7 +26,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -57,7 +57,7 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
      * Article utilities.
      */
     @Inject
-    private ArticleUtils articleUtils;
+    private Articles articleUtils;
 
     /**
      * Gets the blog statistic.

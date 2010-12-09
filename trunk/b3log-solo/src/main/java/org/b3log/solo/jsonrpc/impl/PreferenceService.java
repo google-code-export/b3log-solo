@@ -36,7 +36,7 @@ import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,7 +63,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
     /**
      * Preference repository.
      */

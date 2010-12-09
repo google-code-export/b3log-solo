@@ -32,7 +32,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,7 +69,7 @@ public final class BuzzOAuth extends HttpServlet {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
     /**
      * OAuth utilities.
      */

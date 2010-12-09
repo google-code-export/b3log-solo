@@ -37,13 +37,13 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Dec 4, 2010
  */
-public final class TagUtils {
+public final class Tags {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(TagUtils.class.getName());
+            Logger.getLogger(Tags.class.getName());
     /**
      * Article repository.
      */

@@ -42,13 +42,13 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.8, Dec 6, 2010
  */
-public final class ArticleUtils {
+public final class Articles {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleUtils.class.getName());
+            Logger.getLogger(Articles.class.getName());
     /**
      * Comment repository.
      */

@@ -43,7 +43,7 @@ import static org.b3log.solo.model.Preference.*;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Dec 6, 2010
  */
-public final class PreferenceUtils {
+public final class Preferences {
 
     /**
      * Preference cache.
@@ -58,7 +58,7 @@ public final class PreferenceUtils {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PreferenceUtils.class.getName());
+            Logger.getLogger(Preferences.class.getName());
     /**
      * Event manager.
      */

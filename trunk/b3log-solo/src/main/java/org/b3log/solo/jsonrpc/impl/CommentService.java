@@ -58,9 +58,9 @@ import org.b3log.solo.model.Google;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.util.ArticleUtils;
-import org.b3log.solo.util.PageUtils;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Articles;
+import org.b3log.solo.util.Pages;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -112,12 +112,12 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * Article utilities.
      */
     @Inject
-    private ArticleUtils articleUtils;
+    private Articles articleUtils;
     /**
      * Page utilities.
      */
     @Inject
-    private PageUtils pageUtils;
+    private Pages pageUtils;
     /**
      * Statistic utilities.
      */
@@ -150,7 +150,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
     /**
      * Gets recent comments with the specified http servlet request and response.

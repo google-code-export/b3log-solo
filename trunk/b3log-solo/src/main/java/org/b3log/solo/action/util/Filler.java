@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
@@ -50,10 +50,10 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.util.ArchiveDateUtils;
-import org.b3log.solo.util.CommentUtils;
-import org.b3log.solo.util.PreferenceUtils;
-import org.b3log.solo.util.TagUtils;
+import org.b3log.solo.util.ArchiveDates;
+import org.b3log.solo.util.Comments;
+import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Tags;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -89,17 +89,17 @@ public final class Filler {
      * Article utilities.
      */
     @Inject
-    private ArticleUtils articleUtils;
+    private Articles articleUtils;
     /**
      * Comment utilities.
      */
     @Inject
-    private CommentUtils commentUtils;
+    private Comments commentUtils;
     /**
      * Tag utilities.
      */
     @Inject
-    private TagUtils tagUtils;
+    private Tags tagUtils;
     /**
      * Link repository.
      */
@@ -114,12 +114,12 @@ public final class Filler {
      * Archive date utilities.
      */
     @Inject
-    private ArchiveDateUtils archiveDateUtils;
+    private ArchiveDates archiveDateUtils;
     /**
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
     /**
      * Statistic repository.
      */

@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
-import org.b3log.solo.util.ArticleUtils;
+import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.action.util.Paginator;
@@ -46,7 +46,7 @@ import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -92,7 +92,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
      * Article utilities.
      */
     @Inject
-    private ArticleUtils articleUtils;
+    private Articles articleUtils;
     /**
      * Language service.
      */
@@ -107,7 +107,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

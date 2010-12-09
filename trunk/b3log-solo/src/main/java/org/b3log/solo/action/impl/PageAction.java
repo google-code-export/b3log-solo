@@ -37,8 +37,8 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.util.PageUtils;
-import org.b3log.solo.util.PreferenceUtils;
+import org.b3log.solo.util.Pages;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
@@ -77,12 +77,12 @@ public final class PageAction extends AbstractCacheablePageAction {
      * Page utilities.
      */
     @Inject
-    private PageUtils pageUtils;
+    private Pages pageUtils;
     /**
      * Preference utilities.
      */
     @Inject
-    private PreferenceUtils preferenceUtils;
+    private Preferences preferenceUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

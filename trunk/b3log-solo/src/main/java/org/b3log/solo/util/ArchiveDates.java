@@ -45,13 +45,13 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.7, Dec 5, 2010
  */
-public final class ArchiveDateUtils {
+public final class ArchiveDates {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArchiveDateUtils.class.getName());
+            Logger.getLogger(ArchiveDates.class.getName());
     /**
      * Archive date repository.
      */

@@ -37,7 +37,7 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.util.PageUtils;
+import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Permalinks;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -64,7 +64,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
      * Page utilities.
      */
     @Inject
-    private PageUtils pageUtils;
+    private Pages pageUtils;
     /**
      * Permalink utilities.
      */
