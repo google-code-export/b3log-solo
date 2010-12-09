@@ -22,6 +22,7 @@ import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,8 +46,10 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.util.comparator.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.comparator.ArticleCreateDateComparator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,7 +57,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Nov 16, 2010
+ * @version 1.0.1.2, Dec 9, 2010
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -186,6 +189,14 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final JSONObject tag = tagRepository.get(tagId);
 
             articleUtils.addTags(articles);
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                Collections.sort(articles, new ArticleUpdateDateComparator());
+            } else {
+                Collections.sort(articles, new ArticleCreateDateComparator());
+            }
+            for (final JSONObject article : articles) {
+                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+            }
             ret.put(Article.ARTICLES, articles);
 
             ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));

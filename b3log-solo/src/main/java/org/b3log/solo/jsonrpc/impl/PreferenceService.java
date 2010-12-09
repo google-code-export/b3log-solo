@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 8, 2010
+ * @version 1.0.1.7, Dec 9, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -99,7 +99,10 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "relevantArticlesDisplayCount": int,
      *         "randomArticlesDisplayCount": int,
      *         "enablePostToBuzz": boolean,
-     *         "adminEmail": ""
+     *         "adminEmail": "",
+     *         "metaKeywords": "",
+     *         "metaDescription": "",
+     *         "enableArticleUpdateHint": boolean
      *     }
      *     "sc": "GET_PREFERENCE_SUCC"
      * }
@@ -150,7 +153,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "randomArticlesDisplayCount": int,
      *         "enablePostToBuzz": boolean,
      *         "metaKeywords": "",
-     *         "metaDescription": ""
+     *         "metaDescription": "",
+     *         "enableArticleUpdateHint": boolean
      *     }
      * }, see {@link org.b3log.solo.model.Preference} for more details
      * </pre>

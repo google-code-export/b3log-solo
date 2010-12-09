@@ -165,6 +165,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>
+                            ${enableArticleUpdateHint1Label}
+                        </th>
+                        <td>
+                            <input id="enableArticleUpdateHint" type="checkbox"
+                                   class="normalInput"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <th colspan="2">
                             <button onclick="changePreference();">${updateLabel}</button>
                         </th>
@@ -244,7 +253,9 @@
                     $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
                     $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
                     $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
+                    preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
                     preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
+                    
                     localeString = preference.localeString;
 
                     $("#skinMain").data("skinDirName", preference.skinDirName);
@@ -324,7 +335,8 @@
                 "externalRelevantArticlesDisplayCount": $("#externalRelevantArticlesDisplayCount").val(),
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
                 "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
-                "enablePostToBuzz": $("#syncBuzz").attr("checked")
+                "enablePostToBuzz": $("#syncBuzz").attr("checked"),
+                "enableArticleUpdateHint": $("#enableArticleUpdateHint").attr("checked")
             }
         }
 

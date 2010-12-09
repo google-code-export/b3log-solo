@@ -43,7 +43,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.util.ArticleUpdateDateComparator;
+import org.b3log.solo.util.comparator.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;

@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Dec 5, 2010
+ * @version 1.0.2.0, Dec 9, 2010
  */
 public final class Filler {
 
@@ -154,7 +154,11 @@ public final class Filler {
 
         final Map<String, SortDirection> sorts =
                 new HashMap<String, SortDirection>();
-        sorts.put(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            sorts.put(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+        } else {
+            sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+        }
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
         final Set<Filter> filters = new HashSet<Filter>();
         filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
@@ -183,7 +187,11 @@ public final class Filler {
         final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
                 jsonArrayToList(result.getJSONArray(Keys.RESULTS));
         for (final JSONObject article : articles) {
-            article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+            } else {
+                article.put(Common.HAS_UPDATED, false);
+            }
         }
 
         articleUtils.addTags(articles);

@@ -21,6 +21,7 @@ import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -46,8 +47,10 @@ import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
+import org.b3log.solo.util.comparator.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.comparator.ArticleCreateDateComparator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -55,7 +58,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 8, 2010
+ * @version 1.0.0.5, Dec 9, 2010
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -169,6 +172,14 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                                        windowSize);
 
             articleUtils.addTags(articles);
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                Collections.sort(articles, new ArticleUpdateDateComparator());
+            } else {
+                Collections.sort(articles, new ArticleCreateDateComparator());
+            }
+            for (final JSONObject article : articles) {
+                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+            }
             ret.put(Article.ARTICLES, articles);
             ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             ret.put(Pagination.PAGINATION_LAST_PAGE_NUM,
@@ -205,7 +216,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return ret;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
