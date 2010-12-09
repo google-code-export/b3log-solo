@@ -16,15 +16,15 @@
 
 package org.b3log.solo.action.util;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.Articles;
@@ -35,6 +35,7 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.SortDirection;
@@ -50,10 +51,12 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Tags;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -126,10 +129,10 @@ public final class Filler {
     @Inject
     private StatisticRepository statisticRepository;
     /**
-     * User service.
+     * User repository.
      */
-    private static final UserService USER_SERVICE =
-            UserServiceFactory.getUserService();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Fills articles in index.ftl.
@@ -457,6 +460,58 @@ public final class Filler {
     }
 
     /**
+     * Fills articles in index.ftl for skin {@literal valentine}. The left part
+     * contains administrator's articles, the right part contains another user's 
+     * articles.
+     *
+     * @param dataModel data model
+     * @param leftCurrentPageNum left part page number
+     * @param rightCurrentPageNum right part current page number
+     * @throws Exception exception
+     */
+    @SuppressWarnings("unchecked")
+    public void fillIndexArticlesForValentine(
+            final Map<String, Object> dataModel,
+            final int leftCurrentPageNum,
+            final int rightCurrentPageNum) throws Exception {
+        LOGGER.finer("Filling article list for skin valentine....");
+        final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
+        final int pageSize =
+                preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+        final int windowSize =
+                preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+
+        final JSONObject result = userRepository.get(1, Integer.MAX_VALUE);
+        final JSONArray users = result.getJSONArray(Keys.RESULTS);
+
+        final String adminEmail =
+                users.getJSONObject(0).getString(User.USER_EMAIL);
+        final List<JSONObject> articlesL =
+                fillPart(preference, leftCurrentPageNum, pageSize, windowSize,
+                         dataModel, Common.LEFT_PART_NAME, adminEmail);
+
+        List<JSONObject> articlesR = new ArrayList<JSONObject>();
+        if (1 < users.length()) {
+            final String anotherUserEmail =
+                    users.getJSONObject(1).getString(User.USER_EMAIL);
+            articlesR = fillPart(preference, leftCurrentPageNum, pageSize,
+                                 windowSize,
+                                 dataModel, Common.RIGHT_PART_NAME,
+                                 anotherUserEmail);
+        }
+        dataModel.put(Article.ARTICLES + Common.RIGHT_PART_NAME, articlesR);
+
+        final List<JSONObject> articles = new ArrayList<JSONObject>();
+        articles.addAll(articlesL);
+        articles.addAll(articlesR);
+        dataModel.put(Article.ARTICLES, articles);
+    }
+
+    /**
      * Fills page navigations.
      *
      * @param dataModel data model
@@ -489,7 +544,80 @@ public final class Filler {
 
         statistic.remove(Statistic.STATISTIC_BLOG_ARTICLE_COUNT);
         statistic.remove(Statistic.STATISTIC_BLOG_COMMENT_COUNT);
-        
+
         dataModel.put(Statistic.STATISTIC, statistic);
+    }
+
+    /**
+     * Fills left(admin) or right part for skin {@literal valentine} with the
+     * specified parameters.
+     *
+     * @param preference the specified preference
+     * @param leftCurrentPageNum the specified current page number
+     * @param pageSize the specified page size
+     * @param windowSize the specified window size
+     * @param dataModel the specified data model
+     * @param partName the specified part name
+     * @param authorEmail the specified authror email
+     * @return the filled articles
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private List<JSONObject> fillPart(final JSONObject preference,
+                                      final int leftCurrentPageNum,
+                                      final int pageSize,
+                                      final int windowSize,
+                                      final Map<String, Object> dataModel,
+                                      final String partName,
+                                      final String authorEmail)
+            throws JSONException, RepositoryException {
+        LOGGER.log(Level.FINEST, "Filling part[name={0}, authorEmail={1}]",
+                   new String[]{partName, authorEmail});
+        final Map<String, SortDirection> sorts =
+                new HashMap<String, SortDirection>();
+        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            sorts.put(Article.ARTICLE_UPDATE_DATE,
+                      SortDirection.DESCENDING);
+        } else {
+            sorts.put(Article.ARTICLE_CREATE_DATE,
+                      SortDirection.DESCENDING);
+        }
+        sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+        final Set<Filter> filters = new HashSet<Filter>();
+        filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
+                               FilterOperator.EQUAL, true)); // Filter unpublished articles
+        filters.add(new Filter(Article.ARTICLE_AUTHOR_EMAIL,
+                               FilterOperator.EQUAL,
+                               authorEmail));
+        final JSONObject result =
+                articleRepository.get(leftCurrentPageNum, pageSize, sorts,
+                                      filters);
+        final int pageCount = result.getJSONObject(Pagination.PAGINATION).
+                getInt(Pagination.PAGINATION_PAGE_COUNT);
+        final List<Integer> pageNums =
+                Paginator.paginate(leftCurrentPageNum, pageSize, pageCount,
+                                   windowSize);
+        if (0 != pageNums.size()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM + partName,
+                          pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM + partName,
+                          pageNums.get(pageNums.size() - 1));
+        }
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT + partName, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS + partName, pageNums);
+        final List<JSONObject> ret =
+                org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
+                getJSONArray(Keys.RESULTS));
+        for (final JSONObject article : ret) {
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+            } else {
+                article.put(Common.HAS_UPDATED, false);
+            }
+        }
+        articleUtils.addTags(ret);
+        dataModel.put(Article.ARTICLES + partName, ret);
+
+        return ret;
     }
 }

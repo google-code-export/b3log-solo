@@ -698,6 +698,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                     userService.getCurrentUser().getEmail());
             ret.put(LOCALE_STRING,
                     Preference.Default.DEFAULT_LANGUAGE);
+            ret.put(ENABLE_ARTICLE_UPDATE_HINT,
+                    Preference.Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
 
             final String skinDirName = Preference.Default.DEFAULT_SKIN_DIR_NAME;
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);

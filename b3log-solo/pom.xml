@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.3.7, Dec 4, 2010
+    Version: 1.0.3.8, Dec 9, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -64,7 +64,7 @@
             <id>DL88250@gmail.com</id>
             <name>Liang Ding</name>
             <email>DL88250@gmail.com</email>
-            <url>http://blog.csdn.net/DL88250</url>
+            <url>http://88250.b3log.org</url>
             <roles>
                 <role>Lead</role>
                 <role>Initial Committer</role>
@@ -78,12 +78,25 @@
             <id>LLY219@gmail.com</id>
             <name>Liyuan Li</name>
             <email>LLY219@gmail.com</email>
-            <url>http://blog.csdn.net/Vanessa219</url>
+            <url>http://vanessa.b3log.org</url>
             <roles>
                 <role>Committer</role>
             </roles>
-            <organization>YTPC</organization>
-            <organizationUrl>http://www.ecooe.com</organizationUrl>
+            <organization>B3log</organization>
+            <organizationUrl>http://www.b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+
+        <developer>
+            <id>lamb52gao@gmail.com</id>
+            <name>Yang Gao</name>
+            <email>lamb52gao@gmail.com</email>
+            <url>http://lamb.b3log.org</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>http://www.b3log.org</organizationUrl>
             <timezone>+8</timezone>
         </developer>
     </developers>

@@ -106,7 +106,16 @@ public final class Common {
     /**
      * Key of author is administrator.
      */
+    // XXX: remove unused key?
     public static final String AUTHOR_IS_ADMIN = "authorIsAdmin";
+    /**
+     * Left part name(for skin {@value valentine}).
+     */
+    public static final String LEFT_PART_NAME = "_l";
+    /**
+     * Right part name(for skin {@value valentine}).
+     */
+    public static final String RIGHT_PART_NAME = "_r";
 
     /**
      * Private default constructor.

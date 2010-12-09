@@ -76,7 +76,6 @@ public final class Preference {
      */
     public static final String MOST_VIEW_ARTICLE_DISPLAY_CNT =
             "mostViewArticleDisplayCount";
-
     /**
      * Article list display count.
      */
@@ -153,7 +152,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.3, Dec 2, 2010
+     * @version 1.0.0.4, Dec 9, 2010
      */
     public static final class Default {
 
@@ -202,6 +201,10 @@ public final class Preference {
          * Default language.
          */
         public static final String DEFAULT_LANGUAGE = "zh_CN";
+        /**
+         * Default enable article update hint.
+         */
+        public static final boolean DEFAULT_ENABLE_ARTICLE_UPDATE_HINT = true;
 
         /**
          * Private default constructor.
