@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.upgrade;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -389,8 +390,8 @@ public final class V021ToV025 extends HttpServlet {
                 preference.put(Preference.ADMIN_EMAIL, currentUserEmail);
             }
 
-            if (!preference.has(Preference.ARTICLE_UPDATE_HINT_ENABLED)) {
-                preference.put(Preference.ARTICLE_UPDATE_HINT_ENABLED,
+            if (!preference.has(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                preference.put(Preference.ENABLE_ARTICLE_UPDATE_HINT,
                                true);
             }
             

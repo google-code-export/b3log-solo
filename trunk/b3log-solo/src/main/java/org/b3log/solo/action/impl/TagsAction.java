@@ -39,7 +39,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.Preferences;
-import org.b3log.solo.util.TagRefCntComparator;
+import org.b3log.solo.util.comparator.TagRefCntComparator;
 import org.b3log.solo.util.Tags;
 import org.json.JSONArray;
 import org.json.JSONObject;
