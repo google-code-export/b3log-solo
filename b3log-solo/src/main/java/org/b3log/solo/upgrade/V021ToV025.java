@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.upgrade;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -90,11 +89,15 @@ import org.json.JSONObject;
  *     <li>
  *       Saves the administrator to {@value User#USER} entities.
  *     </li>
+ *     <li>
+ *       Adds a property(named {@value Preference#ARTICLE_UPDATE_HINT_ENABLED}
+ *       to {@link Preference preference} entity.
+ *     </li>
  *   </ul>
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 8, 2010
+ * @version 1.0.0.9, Dec 9, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -192,15 +195,11 @@ public final class V021ToV025 extends HttpServlet {
                     final String articleId = article.getString(
                             Keys.OBJECT_ID);
 
-                    if (!article.has(Article.ARTICLE_HAD_BEEN_PUBLISHED)) {
-                        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
-                        articleRepository.update(articleId, article);
-                    }
-
                     if (!article.has(Article.ARTICLE_IS_PUBLISHED)) {
                         article.put(Article.ARTICLE_IS_PUBLISHED, true);
                         article.put(Article.ARTICLE_AUTHOR_EMAIL,
                                     currentUserEmail);
+                        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
 
                         articleRepository.update(articleId, article);
                         isConsistent = false;
@@ -389,6 +388,12 @@ public final class V021ToV025 extends HttpServlet {
             if (!preference.has(Preference.ADMIN_EMAIL)) {
                 preference.put(Preference.ADMIN_EMAIL, currentUserEmail);
             }
+
+            if (!preference.has(Preference.ARTICLE_UPDATE_HINT_ENABLED)) {
+                preference.put(Preference.ARTICLE_UPDATE_HINT_ENABLED,
+                               true);
+            }
+            
             preferenceUtils.setPreference(preference);
             transaction.commit();
         } catch (final Exception e) {
