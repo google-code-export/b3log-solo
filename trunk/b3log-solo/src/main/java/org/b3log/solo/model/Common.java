@@ -92,19 +92,19 @@ public final class Common {
      */
     public static final String PAGE_NAVIGATIONS = "pageNavigations";
     /**
-     * Relevant articles.
+     * Key of relevant articles.
      */
     public static final String RELEVANT_ARTICLES = "relevantArticles";
     /**
-     * Random articles.
+     * Key of random articles.
      */
     public static final String RANDOM_ARTICLES = "randomArticles";
     /**
-     * Has updated.
+     * Key of has updated.
      */
     public static final String HAS_UPDATED = "hasUpdated";
     /**
-     * Author is administrator.
+     * Key of author is administrator.
      */
     public static final String AUTHOR_IS_ADMIN = "authorIsAdmin";
 
