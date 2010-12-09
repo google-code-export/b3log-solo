@@ -463,6 +463,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             articleUtils.incArticleCommentCount(articleId);
             // Step 4: Update blog statistic comment count
             statistics.incBlogCommentCount();
+            statistics.incPublishedBlogCommentCount();
             // Step 5: Send an email to admin
             sendNotificationMail(article, comment, originalComment);
             // Step 6: Fire add comment event
@@ -610,6 +611,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             pageUtils.incPageCommentCount(pageId);
             // Step 4: Update blog statistic comment count
             statistics.incBlogCommentCount();
+            statistics.incPublishedBlogCommentCount();
             // Step 5: Send an email to admin
             sendNotificationMail(page, comment, originalComment);
             // Step 6: Fire add comment event
@@ -775,6 +777,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             articleUtils.decArticleCommentCount(articleId);
             // Step 4: Update blog statistic comment count
             statistics.decBlogCommentCount();
+            statistics.decPublishedBlogCommentCount();
             // Step 5: Fire remove comment event
             eventManager.fireEventSynchronously(
                     new Event<String>(EventTypes.REMOVE_COMMENT, articleId));
@@ -845,6 +848,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             pageUtils.decPageCommentCount(pageId);
             // Step 4: Update blog statistic comment count
             statistics.decBlogCommentCount();
+            statistics.decPublishedBlogCommentCount();
             // Step 5: Fire remove comment event
             eventManager.fireEventSynchronously(
                     new Event<String>(EventTypes.REMOVE_COMMENT, pageId));
