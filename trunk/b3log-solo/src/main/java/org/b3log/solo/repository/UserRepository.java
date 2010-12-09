@@ -17,13 +17,14 @@
 package org.b3log.solo.repository;
 
 import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
 
 /**
  * User repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 4, 2010
+ * @version 1.0.0.1, Dec 6, 2010
  */
 public interface UserRepository extends Repository {
 
@@ -34,4 +35,14 @@ public interface UserRepository extends Repository {
      * @return user, returns {@code null} if not found
      */
     JSONObject getByEmail(final String email);
+
+    /**
+     * Determine whether the specified email is administrator's.
+     *
+     * @param email the specified email
+     * @return {@code true} if it is administrator's email, {@code false}
+     * otherwise
+     * @throws RepositoryException repository exception
+     */
+    boolean isAdminEmail(final String email) throws RepositoryException;
 }

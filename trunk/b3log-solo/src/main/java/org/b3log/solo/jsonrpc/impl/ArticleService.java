@@ -16,6 +16,8 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -51,6 +53,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
@@ -125,6 +128,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Permalinks permalinks;
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
     /**
      * Permalink date format(yyyy/MM/dd).
      */
@@ -272,7 +279,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 // Publish it directly
                 article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
             }
-            // Step 11: Update article
+            // Step 11: Set author email
+            final String authorEmail = userService.getCurrentUser().getEmail();
+            article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
+            // Step 12: Update article
             articleRepository.update(articleId, article);
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {

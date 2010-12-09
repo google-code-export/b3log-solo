@@ -20,17 +20,21 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.repository.UserRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * User Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 6, 2010
+ * @version 1.0.0.2, Dec 9, 2010
  */
 public final class UserGAERepository extends AbstractGAERepository
         implements UserRepository {
@@ -59,5 +63,23 @@ public final class UserGAERepository extends AbstractGAERepository
         final Map<String, Object> properties = entity.getProperties();
 
         return new JSONObject(properties);
+    }
+
+    @Override
+    public boolean isAdminEmail(final String email)
+            throws RepositoryException {
+        final JSONObject user = getByEmail(email);
+
+        if (null == user) {
+            return false;
+        }
+
+        try {
+            return Role.ADMIN_ROLE.equals(user.getString(User.USER_ROLE));
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            throw new RepositoryException(e);
+        }
     }
 }

@@ -1,4 +1,7 @@
 <div class="post-individual">
+    <#list articles_r as article>
+    ${article.articleTitle}
+    </#list>
     <div class="posttime-pink">
         <div class="posttime-MY">Dec 2010</div>
         <div class="posttime-D">02</div>

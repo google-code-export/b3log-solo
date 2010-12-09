@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Index action. index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 26, 2010
+ * @version 1.0.0.8, Dec 9, 2010
  */
 public final class IndexAction extends AbstractCacheablePageAction {
 
@@ -98,7 +98,18 @@ public final class IndexAction extends AbstractCacheablePageAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
-            filler.fillIndexArticles(ret, currentPageNum);
+            if ("valentine".equals(preference.getString(Skin.SKIN_DIR_NAME))) {
+                final int leftCurrentPageNum = queryStringJSONObject.optInt(
+                        Pagination.PAGINATION_CURRENT_PAGE_NUM
+                        + Common.LEFT_PART_NAME, 1);
+                final int rightCurrentPageNum = queryStringJSONObject.optInt(
+                        Pagination.PAGINATION_CURRENT_PAGE_NUM
+                        + Common.RIGHT_PART_NAME, 1);
+                filler.fillIndexArticlesForValentine(ret, leftCurrentPageNum,
+                                                     rightCurrentPageNum);
+            } else {
+                filler.fillIndexArticles(ret, currentPageNum);
+            }
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);

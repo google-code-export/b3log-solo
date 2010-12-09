@@ -433,8 +433,7 @@ public final class V021ToV025 extends HttpServlet {
         final Transaction transaction = userRepository.beginTransaction();
         try {
             final JSONObject preference = preferenceUtils.getPreference();
-            preference.remove(OLD_ADMIN_EMAIL_PROPERTY_NAME);
-            if (!preference.has(Preference.ADMIN_EMAIL)) {
+            if (preference.has(OLD_ADMIN_EMAIL_PROPERTY_NAME)) {
                 preference.put(Preference.ADMIN_EMAIL, currentUserEmail);
             }
 
