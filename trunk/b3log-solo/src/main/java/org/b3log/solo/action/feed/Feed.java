@@ -61,7 +61,7 @@ final class Feed {
     /**
      * Time zone id.
      */
-    public static final String TIME_ZONE_ID = "Asia/Shanghai"; // FIXME: Generate from preference locale
+    public static final String TIME_ZONE_ID = "Asia/Shanghai";
     /**
      * Start document.
      */
