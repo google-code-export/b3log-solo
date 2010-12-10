@@ -403,7 +403,7 @@
                             <#if 0 != externalRelevantArticlesDisplayCount>
                             var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
                         $.ajax({
-                            url: "http://b3log-rhythm.appspot.com:80/get-articles-by-tags.do?tags=" + tags
+                            url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
                                 + "&blogHost=${blogHost}&paginationPageSize=${externalRelevantArticlesDisplayCount}",
                             type: "GET",
                             dataType:"jsonp",
