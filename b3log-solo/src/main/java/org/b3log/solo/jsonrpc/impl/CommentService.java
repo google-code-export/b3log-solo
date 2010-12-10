@@ -839,7 +839,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        // TODO: check the article whether is the current user's
         final Transaction transaction = commentRepository.beginTransaction();
         try {
             final String commentId = requestJSONObject.getString(Keys.OBJECT_ID);
