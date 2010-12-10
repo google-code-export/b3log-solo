@@ -42,6 +42,10 @@ import org.b3log.solo.util.Statistics;
 /**
  * Page cache filter.
  *
+ * <p>
+ * All request URI ends with ".ftl" will be redirected to "/".
+ * </p>
+ *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.6, Dec 10, 2010
  * @see #shouldSkip(java.lang.String) 
