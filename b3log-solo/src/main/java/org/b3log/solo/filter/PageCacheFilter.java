@@ -43,7 +43,7 @@ import org.b3log.solo.util.Statistics;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 8, 2010
+ * @version 1.0.1.6, Dec 10, 2010
  * @see #shouldSkip(java.lang.String) 
  */
 public final class PageCacheFilter implements Filter {
@@ -110,6 +110,12 @@ public final class PageCacheFilter implements Filter {
         httpServletResponse.setHeader("Expires", "Mon, 25 Aug 1986 00:00:00 GMT");
 
         final String requestURI = httpServletRequest.getRequestURI();
+        if (requestURI.endsWith(".ftl")) {
+            httpServletResponse.sendRedirect("/");
+
+            return;
+        }
+
         if (shouldSkip(requestURI)) {
             LOGGER.log(Level.FINEST, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
