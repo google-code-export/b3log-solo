@@ -62,6 +62,7 @@ import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,7 +70,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.2, Dec 8, 2010
+ * @version 1.0.3.3, Dec 10, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -128,6 +129,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      */
     private URLFetchService urlFetchService =
             URLFetchServiceFactory.getURLFetchService();
+    /**
+     * User utilities.
+     */
+    @Inject
+    private Users userUtils;
     /**
      * Default user thumbnail.
      */
@@ -239,7 +245,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -307,7 +313,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                         final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -750,12 +756,10 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                              final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-
-        // TODO: check the article whether is the current user's
 
         final Transaction transaction = commentRepository.beginTransaction();
         try {
@@ -771,6 +775,14 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
             final String articleId = articleCommentRelation.getString(
                     Article.ARTICLE + "_" + Keys.OBJECT_ID);
+
+            if (!userUtils.canAccessArticle(articleId)) {
+                ret.put(Keys.STATUS_CODE,
+                        StatusCodes.REMOVE_COMMENT_FAIL_FORBIDDEN);
+
+                return ret;
+            }
+
             // Step 2: Remove comment
             commentRepository.remove(commentId);
             // Step 3: Update article comment count
@@ -822,7 +834,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                           final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }

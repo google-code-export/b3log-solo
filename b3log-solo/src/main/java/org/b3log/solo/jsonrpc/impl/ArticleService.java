@@ -61,6 +61,7 @@ import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Tags;
+import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,7 +70,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Dec 9, 2010
+ * @version 1.0.2.6, Dec 10, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -132,6 +133,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+    /**
+     * User utilities.
+     */
+    @Inject
+    private Users userUtils;
     /**
      * Permalink date format(yyyy/MM/dd).
      */
@@ -216,7 +222,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -343,7 +349,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -429,7 +435,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                   final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -521,12 +527,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-
-        // TODO: check the article whether is the current user's
 
         final Transaction transaction =
                 articleRepository.beginTransaction();
@@ -536,6 +540,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS, status);
 
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
+            if (!userUtils.canAccessArticle(articleId)) {
+                status.put(Keys.CODE, StatusCodes.REMOVE_ARTICLE_FAIL_FORBIDDEN);
+
+                return ret;
+            }
+
             LOGGER.log(Level.FINER, "Removing an article[oId={0}]", articleId);
             // Step 1: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
@@ -615,7 +625,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -672,7 +682,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                        final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -746,11 +756,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-        // TODO: check the article whether is the current user's
+
         final Transaction transaction =
                 articleRepository.beginTransaction();
         Transaction transaction2 = null;
@@ -763,6 +773,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final JSONObject article =
                     requestJSONObject.getJSONObject(ARTICLE);
             articleId = article.getString(Keys.OBJECT_ID);
+
+            if (!userUtils.canAccessArticle(articleId)) {
+                status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
+
+                return ret;
+            }
 
             // Step 1: Set permalink
             final JSONObject oldArticle = articleRepository.get(articleId);
@@ -903,16 +919,24 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isLoggedIn()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-// TODO: check the article whether is the current user's
+
         final Transaction transaction =
                 articleRepository.beginTransaction();
         try {
             final String articleId =
                     requestJSONObject.getString(Keys.OBJECT_ID);
+
+            if (!userUtils.isAdminLoggedIn()) {
+                ret.put(Keys.STATUS_CODE,
+                        StatusCodes.CANCEL_PUBLISH_ARTICLE_FAIL_FORBIDDEN);
+
+                return ret;
+            }
+
             final JSONObject article = articleRepository.get(articleId);
             article.put(ARTICLE_IS_PUBLISHED, false);
             tagUtils.decTagPublishedRefCount(articleId);

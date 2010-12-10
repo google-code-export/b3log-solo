@@ -179,6 +179,9 @@
                                                 $("#tipMsg").text(msg);
                                                 getArticleList(1);
                                                 break;
+                                            case "REMOVE_ARTICLE_FAIL_FORBIDDEN":
+                                                $("#tipMsg").text("${forbiddenLabel}");
+                                                break;
                                             case "REMOVE_ARTICLE_FAIL_":
                                                 $("#tipMsg").text("${removeFailLabel}");
                                                 break;
@@ -361,6 +364,9 @@
             $("#loadMsg").text("${loadingLabel}");
             jsonRpc.commentService.removeCommentOfArticle(function (result, error) {
                 switch (result.sc) {
+                    case "REMOVE_COMMENT_FAIL_FORBIDDEN":
+                        $("#tipMsg").text("${forbiddenLabel}");
+                        break;
                     case "REMOVE_COMMENT_SUCC":
                         getArticleListComment();
                         $("#tipMsg").text("${removeSuccLabel}");
