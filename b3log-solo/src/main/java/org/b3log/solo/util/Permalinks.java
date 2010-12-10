@@ -26,7 +26,7 @@ import org.b3log.solo.repository.PageRepository;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 24, 2010
+ * @version 1.0.0.2, Dec 10, 2010
  */
 public final class Permalinks {
 
@@ -85,7 +85,8 @@ public final class Permalinks {
     public boolean exist(final String permalink) {
         return isReserved(permalink)
                || null != articleRepository.getByPermalink(permalink)
-               || null != pageRepository.getByPermalink(permalink);
+               || null != pageRepository.getByPermalink(permalink)
+               || permalink.endsWith(".ftl");
     }
 
     /**
