@@ -16,11 +16,15 @@
 
 package org.b3log.solo.util;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +34,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 7, 2010
+ * @version 1.0.0.1, Dec 10, 2010
  */
 public class Users {
 
@@ -44,6 +48,84 @@ public class Users {
      */
     @Inject
     private UserRepository userRepository;
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Can the current user access an article specified by the given article id?
+     *
+     * @param articleId the given article id
+     * @return {@code true} if the current user can access the article,
+     * {@code false} otherwise
+     * @throws Exception exception
+     */
+    public boolean canAccessArticle(final String articleId)
+            throws Exception {
+        if (isAdminLoggedIn()) {
+            return true;
+        }
+
+        final JSONObject article = articleRepository.get(articleId);
+        final String currentUserEmail =
+                getCurrentUser().getString(User.USER_EMAIL);
+
+        if (!article.getString(Article.ARTICLE_AUTHOR_EMAIL).
+                equals(currentUserEmail)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether the current request is made by logged in user(including
+     * default user and administrator lists in <i>users</i>).
+     *
+     * @return {@code true} if the current request is made by logged in user,
+     * returns {@code false} otherwise
+     */
+    public boolean isLoggedIn() {
+        final com.google.appengine.api.users.User currentUser =
+                userService.getCurrentUser();
+        if (null == currentUser) {
+            return false;
+        }
+
+        return isSoloUser(currentUser.getEmail());
+    }
+
+    /**
+     * Checks whether the current request is made by logged in administrator.
+     *
+     * @return {@code true} if the current request is made by logged in
+     * administrator, returns {@code false} otherwise
+     */
+    public boolean isAdminLoggedIn() {
+        return userService.isUserLoggedIn() && userService.isUserAdmin();
+    }
+
+    /**
+     * Gets the current user.
+     *
+     * @return the current user, {@code null} if not found
+     */
+    public JSONObject getCurrentUser() {
+        final com.google.appengine.api.users.User currentUser =
+                userService.getCurrentUser();
+        if (null == currentUser) {
+            return null;
+        }
+
+        final String email = currentUser.getEmail();
+        return userRepository.getByEmail(email);
+    }
 
     /**
      * Determines whether the specified email is a user's email of this Solo

@@ -38,6 +38,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -69,6 +70,11 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private PreferenceRepository preferenceRepository;
+    /**
+     * User utilities.
+     */
+    @Inject
+    private Users userUtils;
 
     /**
      * Gets preference.
@@ -175,7 +181,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                                        final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }

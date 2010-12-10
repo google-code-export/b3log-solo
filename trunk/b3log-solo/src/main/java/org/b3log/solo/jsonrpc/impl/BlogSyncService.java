@@ -44,6 +44,7 @@ import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.Post;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -97,6 +98,11 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     @Inject
     private BlogSyncManagementRepository blogSyncManagementRepository;
     /**
+     * User utilities.
+     */
+    @Inject
+    private Users userUtils;
+    /**
      * External blog article retrieval count incremental.
      */
     public static final int EXTERNAL_ARTICLE_RETRIEVAL_COUNT_INCREMENTAL = 2;
@@ -132,7 +138,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                       final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -181,7 +187,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                       final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -282,7 +288,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                              final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -376,7 +382,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -522,7 +528,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }

@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Dec 9, 2010
+ * @version 1.0.1.0, Dec 10, 2010
  */
 public final class Articles {
 

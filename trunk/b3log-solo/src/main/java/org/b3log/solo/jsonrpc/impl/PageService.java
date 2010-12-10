@@ -39,6 +39,7 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Permalinks;
+import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -70,6 +71,11 @@ public final class PageService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Permalinks permalinks;
+    /**
+     * User utilities.
+     */
+    @Inject
+    private Users userUtils;
 
     /**
      * Gets a page by the specified request json object.
@@ -222,7 +228,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -304,7 +310,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -362,7 +368,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
                               final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -426,7 +432,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
                                final HttpServletRequest request,
                                final HttpServletResponse response)
             throws ActionException, IOException {
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return false;
         }

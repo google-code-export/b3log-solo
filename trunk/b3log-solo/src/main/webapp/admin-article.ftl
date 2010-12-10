@@ -240,6 +240,9 @@
 
             jsonRpc.articleService.updateArticle(function (result, error) {
                 switch (result.status.code) {
+                    case "UPDATE_ARTICLE_FAIL_FORBIDDEN":
+                        $("#tipMsg").text("${forbiddenLabel}");
+                        break;
                     case "UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK":
                         var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
                         $("#tipMsg").text(msg);

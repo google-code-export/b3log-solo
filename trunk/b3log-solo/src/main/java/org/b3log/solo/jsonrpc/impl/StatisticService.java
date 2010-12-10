@@ -26,8 +26,8 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
 /**
@@ -54,10 +54,10 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
     @Inject
     private Statistics statistics;
     /**
-     * Article utilities.
+     * User utilities.
      */
     @Inject
-    private Articles articleUtils;
+    private Users userUtils;
 
     /**
      * Gets the blog statistic.
@@ -78,7 +78,7 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
     public JSONObject getBlogStatistic(final HttpServletRequest request,
                                        final HttpServletResponse response)
             throws ActionException, IOException {
-        if (!isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return null;
         }
