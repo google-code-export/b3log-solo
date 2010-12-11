@@ -1,16 +1,33 @@
 <div class="footer-secondary">
     <div class="content">
+        <h4>${recentCommentsLabel}</h4>
+        <div class="arrow-right"></div>
+        <div class="recentComments">
+            <#list recentComments as comment>
+            <#if "http://" == comment.commentURL>
+            ${comment.commentName}<#else>
+            <a target="_blank" href="${comment.commentURL}">
+                ${comment.commentName}</a></#if>:
+            <a class='side-comment' href="${comment.commentSharpURL}">
+                ${comment.commentContent}
+            </a>
+            </#list>
+        </div>
+        <div class="clear"></div>
+        <div class="hr"></div>
         <h4>${mostViewCountArticlesLabel}</h4>
+        <div class="arrow-right"></div>
         <ul id="mostViewCountArticles">
             <#list mostViewCountArticles as article>
             <li>
+                <sup>[${article.articleViewCount}]</sup>
                 <a name="mostView${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
-                    <sup>[${article.articleViewCount}]</sup>
                     ${article.articleTitle}
                 </a>
             </li>
             </#list>
         </ul>
+        <div class="clear"></div>
     </div>
 </div>
 <div class="footer-widgets">
@@ -20,8 +37,8 @@
             <ul>
                 <#list mostCommentArticles as article>
                 <li>
+                    <sup>[${article.articleCommentCount}]</sup>
                     <a name="mostComment${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
-                        <sup>[${article.articleCommentCount}]</sup>
                         ${article.articleTitle}
                     </a>
                 </li>
