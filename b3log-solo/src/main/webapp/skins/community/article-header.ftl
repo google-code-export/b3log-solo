@@ -24,23 +24,41 @@
 <div class="header-navi">
     <div class="header-navi-main">
         <div class="left">
-            <h1 class="title">
-                <a href="/" id="logoTitle" >
-                    ${blogTitle}
-                </a>
-            </h1>
+            <a href="/" class="header-title">
+                ${blogTitle}
+            </a>
             <span class="sub-title">${blogSubtitle}</span>
         </div>
-        <div class="right header-right">
-            <div class="left marginLeft12">
-                <#list pageNavigations as page>
-                <span>
-                    <a href="${page.pagePermalink}">${page.pageTitle}</a>&nbsp;&nbsp;
-                </span>
-                </#list>
-                <a href="/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
-                <a href="/blog-articles-feed.do">${atomLabel}</a><a href="/blog-articles-feed.do"><img src="/images/feed.png" alt="Atom"/></a>
-            </div>
+        <div class="right">
+            <ul class="tabs">
+                <li class="tab">
+                    <a href="/">${homeLabel}</a>
+                </li>
+                <li class="tab">
+                    <a href="/tags.html">${allTagsLabel}</a>
+                </li>
+                <li class="tab" id="header-pages">
+                    <a>
+                        <span class="left">
+                            XXXXXX
+                        </span>
+                        <span class="arrow-dowm-icon"></span>
+                    </a>
+                    <ul class="sub-tabs">
+                        <#list pageNavigations as page>
+                        <li class="sub-tab">
+                            <a href="${page.pagePermalink}">${page.pageTitle}</a>
+                        </li>
+                        </#list>
+                    </ul>
+                </li>
+                <li class="tab">
+                    <a class="left" href="/blog-articles-feed.do">
+                    你好
+                        <img src="/images/feed.png" alt="Atom"/>
+                    </a>
+                </li>
+            </ul>
         </div>
         <div class="clear"></div>
     </div>
