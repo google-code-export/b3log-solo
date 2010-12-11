@@ -7,7 +7,8 @@ Powered by
     <span style="color: red;">O</span>
     <span style="color: blue;">G</span>&nbsp;
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-ver ${version}
+ver ${version}&nbsp;&nbsp;
+Theme by <a href="http://demo.woothemes.com/skeptical/" target="_blank">Skeptical</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 <script type="text/javascript">
     var goingTop = false;
     var goingBottom = false;
@@ -107,10 +108,7 @@ ver ${version}
         }
     }
   
-    var initIndex = function () {
-        // side comment
-        //replaceCommentsEm("#recentComments li .side-comment");
-        
+    var initIndex = function () {        
         // common-top.ftl use state
         jsonRpc.adminService.isLoggedIn(function (result, error) {
             if (result && !error) {

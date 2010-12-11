@@ -165,6 +165,8 @@ a.header-title {
     border-bottom: 1px solid #C2C2C2;
     border-right: 1px solid #C2C2C2;
     padding: 8px 7px 7px 8px;
+    width: 75px;
+    height: 75px;
 }
 
 .recent-comments img:hover {
@@ -205,13 +207,13 @@ a.header-title {
 }
 
 .footer-block li.mostUsedTags a{
-    padding-left: 29px;
+    padding-left: 20px;
 }
 
 .footer-block li img{
     cursor: pointer;
     height: 16px;
-    left: 10px;
+    left: 0px;
     position: relative;
     top: -22px;
     width: 16px;
@@ -229,8 +231,7 @@ a.header-title {
 
 .footer-block li sup {
     float: left;
-    margin-left: 10px;
-    margin-top: 3px;
+    margin: 3px 3px 0 0;
 }
 
 .footer-block li:hover {
