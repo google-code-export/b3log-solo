@@ -8,8 +8,8 @@
         <span style="color: red;">O</span>
         <span style="color: blue;">G</span>&nbsp;
         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-    ver ${version}&nbsp;&nbsp;
-    Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+        ver ${version}&nbsp;&nbsp;
+        Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
 <div class="right goTop">
     <span onclick="goTop();">${goTopLabel}</span>
