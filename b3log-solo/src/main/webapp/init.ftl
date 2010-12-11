@@ -8,7 +8,7 @@
         <link type="text/css" rel="stylesheet" href="/styles/default-init.css"/>
         <link rel="icon" type="image/png" href="favicon.png"/>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
+        <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
     </head>
     <body>
         <div class="wrapper">
