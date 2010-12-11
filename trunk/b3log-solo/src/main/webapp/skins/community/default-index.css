@@ -11,6 +11,10 @@
     background: url("images/icon.png") 0px -35px repeat-x #333333;
 }
 
+.header-navi:after {
+    clear: both;
+}
+
 .header-navi-main {
     width: 940px;
     margin: 0 auto;
@@ -38,9 +42,12 @@ a.header-title {
     position: relative;
 }
 
+#header-pages a {
+    height: 18px;
+}
+
 .arrow-dowm-icon {
-    background: url("images/icon.png") no-repeat scroll -13px -22px transparent;
-    display: block;
+    background: url("images/icon.png") no-repeat scroll -13px -22px;
     float: left;
     height: 13px;
     margin: 7px 0 0 6px;
@@ -50,10 +57,19 @@ a.header-title {
 
 .header-navi-main .tab a {
     color: #FFFFFF;
-    font-weight: bold;
-    text-decoration: none;
     display: block;
-    padding: 16px 16px 13px;
+    font-weight: bold;
+    line-height: 47px;
+    padding: 2px 16px 0;
+    text-decoration: none;
+}
+
+.atom-icon {
+    width: 22px;
+    height: 21px;
+    background: url("images/icon.png") no-repeat;
+    float: left;
+    margin-left: 6px;
 }
 
 .header-navi-main .sub-tabs {
