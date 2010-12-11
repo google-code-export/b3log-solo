@@ -1,4 +1,5 @@
 <div class="header-user">
+    ${noticeBoard}
     <div id="statistic">
         <span>${viewCount1Label}
             <span class='error-msg'>
@@ -20,9 +21,26 @@
             </span>
         </span>
     </div>
+
+    <div class="left footer-block">
+        <h4>${recentCommentsLabel}</h4>
+        <ul id="recentComments">
+            <#list recentComments as comment>
+            <li>
+                <#if "http://" == comment.commentURL>
+                ${comment.commentName}<#else>
+                <a target="_blank" href="${comment.commentURL}">
+                    ${comment.commentName}</a></#if>:
+                <a class='side-comment' title="${comment.commentContent}" href="${comment.commentSharpURL}">
+                    ${comment.commentContent}
+                </a>
+            </li>
+            </#list>
+        </ul>
+    </div>
 </div>
 <div class="header-navi">
-    <div class="header-navi-main">
+    <div class="header-navi-main content">
         <div class="left">
             <a href="/" class="header-title">
                 ${blogTitle}
@@ -37,14 +55,16 @@
                 <li class="tab">
                     <a href="/tags.html">${allTagsLabel}</a>
                 </li>
+                <#if 0 != pageNavigations?size>
                 <li class="tab" id="header-pages">
-                    <a>
+                    <a href="/">
                         <span class="left">
                             XXXXXX
                         </span>
                         <span class="arrow-dowm-icon"></span>
+                        <span class="clear"></span>
                     </a>
-                    <ul class="sub-tabs">
+                    <ul class="sub-tabs none">
                         <#list pageNavigations as page>
                         <li class="sub-tab">
                             <a href="${page.pagePermalink}">${page.pageTitle}</a>
@@ -52,9 +72,12 @@
                         </#list>
                     </ul>
                 </li>
+                </#if>
                 <li class="tab">
-                    <a class="left" href="/blog-articles-feed.do">
-                        <span class="left">${atomLabel}</span><span class="atom-icon"></span>
+                    <a href="/blog-articles-feed.do">
+                        <span class="left">${atomLabel}</span>
+                        <span class="atom-icon"></span>
+                        <span class="clear"></span
                     </a>
                 </li>
             </ul>
