@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
@@ -62,7 +61,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Dec 9, 2010
+ * @version 1.0.1.3, Dec 11, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -124,6 +123,16 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
+     * Checks whether the current request is made by logged in administrator.
+     *
+     * @return {@code true} if the current request is made by logged in user,
+     * returns {@code false} otherwise
+     */
+    public boolean isAdminLoggedIn() {
+        return userUtils.isAdminLoggedIn();
+    }
+
+    /**
      * Removes a user with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
@@ -144,8 +153,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject removeUser(final JSONObject requestJSONObject,
-                                 final HttpServletRequest request,
-                                 final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (userUtils.isAdminLoggedIn()) {
@@ -192,8 +201,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject addUser(final JSONObject requestJSONObject,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -309,8 +318,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @see Pagination
      */
     public JSONObject getUsers(final JSONObject requestJSONObject,
-                               final HttpServletRequest request,
-                               final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -335,7 +344,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             ret.put(Pagination.PAGINATION, pagination);
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
+                    windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
@@ -375,8 +384,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject updateUser(final JSONObject requestJSONObject,
-                                 final HttpServletRequest request,
-                                 final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -413,7 +422,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             final JSONObject mayBeAnother = userRepository.getByEmail(
                     userNewEmail);
             if (null != mayBeAnother
-                && !mayBeAnother.getString(Keys.OBJECT_ID).equals(oldUserId)) {
+                    && !mayBeAnother.getString(Keys.OBJECT_ID).equals(oldUserId)) {
                 // Exists someone else has the save email as requested
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.ADD_USER_FAIL_DUPLICATED_EMAIL);
@@ -450,7 +459,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public String getLogoutURL(final HttpServletRequest request,
-                               final HttpServletResponse response)
+            final HttpServletResponse response)
             throws ActionException, IOException {
         if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -471,8 +480,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public String getLoginURL(final String redirectURL,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         return userService.createLoginURL(redirectURL);
     }
@@ -497,7 +506,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject getPageCache(final HttpServletRequest request,
-                                   final HttpServletResponse response)
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -537,8 +546,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public void clearPageCache(final String uri,
-                               final HttpServletRequest request,
-                               final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -565,7 +574,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public void clearAllPageCache(final HttpServletRequest request,
-                                  final HttpServletResponse response)
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -591,7 +600,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * </pre>
      */
     public JSONObject init(final HttpServletRequest request,
-                           final HttpServletResponse response)
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -620,9 +629,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws JSONException json exception
      */
     private void initAdmin(final HttpServletRequest request,
-                           final HttpServletResponse response)
+            final HttpServletResponse response)
             throws RepositoryException,
-                   JSONException {
+            JSONException {
         LOGGER.info("Initializing admin....");
         final Transaction transaction = userRepository.beginTransaction();
         final JSONObject ret = new JSONObject();
@@ -656,7 +665,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws JSONException json exception
      */
     private JSONObject initStatistic() throws RepositoryException,
-                                              JSONException {
+            JSONException {
         LOGGER.info("Initializing statistic....");
         final Transaction transaction = userRepository.beginTransaction();
         final JSONObject ret = new JSONObject();
@@ -740,7 +749,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             try {
                 final String webRootPath = SoloServletListener.getWebRoot();
                 final String skinPath = webRootPath + Skin.SKINS + "/"
-                                        + skinDirName;
+                        + skinDirName;
                 Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                         new File(skinPath));
             } catch (final IOException e) {
@@ -755,7 +764,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             eventManager.fireEventSynchronously(// for upgrade extensions
                     new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
-                                          ret));
+                    ret));
 
             preferenceRepository.update(preferenceId, ret);
             transaction.commit();
