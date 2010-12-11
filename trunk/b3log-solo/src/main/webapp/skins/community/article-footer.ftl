@@ -109,7 +109,7 @@ ver ${version}
   
     var initIndex = function () {
         // side comment
-        replaceCommentsEm("#recentComments li .side-comment");
+        //replaceCommentsEm("#recentComments li .side-comment");
         
         // common-top.ftl use state
         jsonRpc.adminService.isLoggedIn(function (result, error) {

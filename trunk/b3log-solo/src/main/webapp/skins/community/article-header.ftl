@@ -21,23 +21,6 @@
             </span>
         </span>
     </div>
-
-    <div class="left footer-block">
-        <h4>${recentCommentsLabel}</h4>
-        <ul id="recentComments">
-            <#list recentComments as comment>
-            <li>
-                <#if "http://" == comment.commentURL>
-                ${comment.commentName}<#else>
-                <a target="_blank" href="${comment.commentURL}">
-                    ${comment.commentName}</a></#if>:
-                <a class='side-comment' title="${comment.commentContent}" href="${comment.commentSharpURL}">
-                    ${comment.commentContent}
-                </a>
-            </li>
-            </#list>
-        </ul>
-    </div>
 </div>
 <div class="header-navi">
     <div class="header-navi-main content">
