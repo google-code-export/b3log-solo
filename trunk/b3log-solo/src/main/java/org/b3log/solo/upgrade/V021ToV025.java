@@ -16,13 +16,6 @@
 
 package org.b3log.solo.upgrade;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.QueryResultList;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
@@ -37,8 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
@@ -53,6 +47,7 @@ import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Preferences;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -108,7 +103,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Dec 9, 2010
+ * @version 1.0.1.0, Dec 11, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -170,11 +165,6 @@ public final class V021ToV025 extends HttpServlet {
      * Update size in an request.
      */
     private static final int UPDATE_SIZE = 100;
-    /**
-     * GAE datastore service.
-     */
-    private final DatastoreService datastoreService =
-            DatastoreServiceFactory.getDatastoreService();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -198,19 +188,13 @@ public final class V021ToV025 extends HttpServlet {
             Transaction transaction = articleRepository.beginTransaction();
             boolean isConsistent = true;
             try {
-                final Query query = new Query(Article.ARTICLE);
-                final PreparedQuery preparedQuery = datastoreService.prepare(
-                        query);
-                final QueryResultList<Entity> queryResultList =
-                        preparedQuery.asQueryResultList(FetchOptions.Builder.
-                        withDefaults());
-
+                final Query query = new Query();
+                final JSONObject result = articleRepository.get(query);
+                final JSONArray articles = result.getJSONArray(Keys.RESULTS);
                 int cnt = 0;
-                for (final Entity entity : queryResultList) {
-                    final JSONObject article =
-                            AbstractGAERepository.entity2JSONObject(entity);
-                    final String articleId = article.getString(
-                            Keys.OBJECT_ID);
+                for (int i = 0; i < articles.length(); i++) {
+                    final JSONObject article = articles.getJSONObject(i);
+                    final String articleId = article.getString(Keys.OBJECT_ID);
 
                     if (!article.has(Article.ARTICLE_IS_PUBLISHED)) {
                         article.put(Article.ARTICLE_IS_PUBLISHED, true);
@@ -268,15 +252,12 @@ public final class V021ToV025 extends HttpServlet {
     private void upgradeLinks() throws ServletException {
         final Transaction transaction = linkRepository.beginTransaction();
         try {
-            final Query query = new Query(Link.LINK);
-            final PreparedQuery preparedQuery = datastoreService.prepare(query);
-            final QueryResultList<Entity> queryResultList =
-                    preparedQuery.asQueryResultList(FetchOptions.Builder.
-                    withDefaults());
-            for (final Entity entity : queryResultList) {
-                if (!entity.hasProperty(Link.LINK_ORDER)) {
-                    final JSONObject link =
-                            AbstractGAERepository.entity2JSONObject(entity);
+            final Query query = new Query();
+            final JSONObject result = linkRepository.get(query);
+            final JSONArray links = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < links.length(); i++) {
+                final JSONObject link = links.getJSONObject(i);
+                if (!link.has(Link.LINK_ORDER)) {
                     final int maxOrder = linkRepository.getMaxOrder();
                     link.put(Link.LINK_ORDER, maxOrder + 1);
                     linkRepository.update(link.getString(
@@ -286,7 +267,7 @@ public final class V021ToV025 extends HttpServlet {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.log(Level.SEVERE, "Upgrade link fail: {0}", e.getMessage());
+            LOGGER.log(Level.SEVERE, "Upgrade link fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
     }
@@ -299,16 +280,13 @@ public final class V021ToV025 extends HttpServlet {
     private void upgradeArchiveDates() throws ServletException {
         final Transaction transaction = archiveDateRepository.beginTransaction();
         try {
-            final Query query = new Query(ArchiveDate.ARCHIVE_DATE);
-            final PreparedQuery preparedQuery = datastoreService.prepare(query);
-            final QueryResultList<Entity> queryResultList =
-                    preparedQuery.asQueryResultList(FetchOptions.Builder.
-                    withDefaults());
-            for (final Entity entity : queryResultList) {
-                if (!entity.hasProperty(
+            final Query query = new Query();
+            final JSONObject result = archiveDateRepository.get(query);
+            final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < archiveDates.length(); i++) {
+                final JSONObject archiveDate = archiveDates.getJSONObject(i);
+                if (!archiveDate.has(
                         ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
-                    final JSONObject archiveDate =
-                            AbstractGAERepository.entity2JSONObject(entity);
                     archiveDate.put(
                             ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
                             archiveDate.getInt(
@@ -320,8 +298,7 @@ public final class V021ToV025 extends HttpServlet {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.log(Level.SEVERE, "Upgrade archive date fail: {0}",
-                       e.getMessage());
+            LOGGER.log(Level.SEVERE, "Upgrade archive date fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
     }
@@ -337,24 +314,23 @@ public final class V021ToV025 extends HttpServlet {
             throws ServletException {
         final Transaction transaction = userRepository.beginTransaction();
         try {
-            final Query query = new Query(User.USER);
+            final Query query = new Query();
             query.addFilter(User.USER_ROLE,
-                            Query.FilterOperator.EQUAL, Role.ADMIN_ROLE);
-            final PreparedQuery preparedQuery = datastoreService.prepare(query);
-            final Entity adminEntity = preparedQuery.asSingleEntity();
-            if (null == adminEntity) {
+                            FilterOperator.EQUAL, Role.ADMIN_ROLE);
+            final JSONObject result = userRepository.get(query);
+            final JSONArray users = result.getJSONArray(Keys.RESULTS);
+            if (0 == users.length()) {
                 final JSONObject admin = new JSONObject();
                 admin.put(User.USER_EMAIL, adminEmail);
                 admin.put(User.USER_NAME, adminName);
                 admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
 
                 userRepository.add(admin);
-                transaction.commit();
             }
+            transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.log(Level.SEVERE, "Upgrade archive date fail: {0}",
-                       e.getMessage());
+            LOGGER.log(Level.SEVERE, "Upgrade archive date fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
     }
@@ -367,15 +343,11 @@ public final class V021ToV025 extends HttpServlet {
     private void upgradeTags() throws ServletException {
         final Transaction transaction = tagRepository.beginTransaction();
         try {
-            final Query query = new Query(Tag.TAG);
-            final PreparedQuery preparedQuery = datastoreService.prepare(query);
-            final QueryResultList<Entity> queryResultList =
-                    preparedQuery.asQueryResultList(FetchOptions.Builder.
-                    withDefaults());
-            for (final Entity entity : queryResultList) {
-                if (!entity.hasProperty(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
-                    final JSONObject tag =
-                            AbstractGAERepository.entity2JSONObject(entity);
+            final JSONObject result = tagRepository.get(1, Integer.MAX_VALUE);
+            final JSONArray tags = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < tags.length(); i++) {
+                final JSONObject tag = tags.getJSONObject(i);
+                if (!tag.has(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
                             tag.getInt(Tag.TAG_REFERENCE_COUNT));
                     tagRepository.update(tag.getString(Keys.OBJECT_ID), tag);
@@ -384,7 +356,7 @@ public final class V021ToV025 extends HttpServlet {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.log(Level.SEVERE, "Upgrade tag fail: {0}", e.getMessage());
+            LOGGER.log(Level.SEVERE, "Upgrade tag fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
     }
@@ -395,15 +367,12 @@ public final class V021ToV025 extends HttpServlet {
      * @throws ServletException upgrade fails
      */
     private void upgradeStatistic() throws ServletException {
-        final Transaction transaction = tagRepository.beginTransaction();
+        final Transaction transaction = statisticRepository.beginTransaction();
         try {
-            final Query query = new Query(Statistic.STATISTIC);
-            final PreparedQuery preparedQuery = datastoreService.prepare(query);
-            final Entity entity = preparedQuery.asSingleEntity();
-            if (!entity.hasProperty(
+            final JSONObject statistic =
+                    statisticRepository.get(Statistic.STATISTIC);
+            if (!statistic.has(
                     Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT)) {
-                final JSONObject statistic =
-                        AbstractGAERepository.entity2JSONObject(entity);
                 statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT,
                               statistic.getInt(
                         Statistic.STATISTIC_BLOG_ARTICLE_COUNT));
@@ -417,7 +386,7 @@ public final class V021ToV025 extends HttpServlet {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.log(Level.SEVERE, "Upgrade tag fail: {0}", e.getMessage());
+            LOGGER.log(Level.SEVERE, "Upgrade tag fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
     }
@@ -446,8 +415,7 @@ public final class V021ToV025 extends HttpServlet {
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
-            LOGGER.log(Level.SEVERE, "Upgrade preference fail: {0}",
-                       e.getMessage());
+            LOGGER.log(Level.SEVERE, "Upgrade preference fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
     }
