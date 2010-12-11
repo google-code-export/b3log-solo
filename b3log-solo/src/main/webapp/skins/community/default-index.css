@@ -22,6 +22,18 @@ body {
     width: 15px;
 }
 
+.star-current {
+    background: url("images/favorites.png") no-repeat;
+    width: 128px;
+    height: 128px;
+}
+
+.star {
+    background: url("images/star_none.png") no-repeat;
+    width: 128px;
+    height: 128px;
+}
+
 /* header */
 .header {
 
@@ -29,6 +41,7 @@ body {
 
 .header-user {
     height: 150px;
+    background-color: #DEDEDE;
 }
 
 .header-navi {
@@ -245,4 +258,20 @@ a.header-title {
 /* footer copyright */
 .footer {
     background: url("images/indentline-light.png") repeat-x scroll left top #DEDEDE;
+    position: relative;
+}
+
+.footer a {
+    color: #000000;
+    text-decoration: underline;
+}
+
+.footer div {
+    background: url("images/icon.png") no-repeat -12px -64px;
+    cursor: pointer;
+    padding-left: 15px;
+    padding-top: 0;
+    position: absolute;
+    right: 9px;
+    top: 9px;
 }

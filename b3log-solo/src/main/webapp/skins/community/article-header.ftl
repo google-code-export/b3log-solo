@@ -1,4 +1,6 @@
 <div class="header-user">
+    <div class="star"></div>
+    <div class="star-current"></div>
     ${noticeBoard}
     <div id="statistic">
         <span>${viewCount1Label}
