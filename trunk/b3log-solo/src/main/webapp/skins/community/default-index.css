@@ -1,0 +1,27 @@
+.header {
+
+}
+
+.header-user {
+    height: 150px;
+}
+
+.header-navi {
+    background: url("images/icon.png") 0px -35px repeat-x #333333;
+}
+
+.header-navi-main {
+    width: 940px;
+    margin: 0 auto;
+}
+
+.header-navi-main .title {
+    display: inline-block;
+    padding: 9px 0;
+}
+
+#logoTitle {
+    color: #FFFFFF;
+    font-size: 26px;
+    text-decoration: none;
+}
