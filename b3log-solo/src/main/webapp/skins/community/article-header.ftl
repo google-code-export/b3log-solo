@@ -54,8 +54,7 @@
                 </li>
                 <li class="tab">
                     <a class="left" href="/blog-articles-feed.do">
-                    你好
-                        <img src="/images/feed.png" alt="Atom"/>
+                        <span class="left">${atomLabel}</span><span class="atom-icon"></span>
                     </a>
                 </li>
             </ul>
