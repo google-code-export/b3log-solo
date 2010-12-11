@@ -23,7 +23,7 @@ button:hover,.button:hover{border-color:#BBB;}
 .marginRight12{margin-right:12px;}
 .left{float:left;}
 .right{float:right;}
-.clear{clear:both;height:0px;font-size:0px;line-height:0px;overflow: hidden;}
+.clear{clear:both;height:0px;font-size:0px;line-height:0px;overflow: hidden;border: 0px;background-color: transparent;display: block;}
 .none{display:none;}
 .pointer{cursor:pointer;}
 .noUnderline{text-decoration:none;}

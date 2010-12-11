@@ -1,3 +1,12 @@
+body {
+    background-color: #EFEFEF;
+}
+
+.content {
+    width: 940px;
+    margin: 0 auto;
+}
+
 /* header */
 .header {
 
@@ -8,23 +17,19 @@
 }
 
 .header-navi {
-    background: url("images/icon.png") 0px -35px repeat-x #333333;
-}
-
-.header-navi:after {
-    clear: both;
-}
-
-.header-navi-main {
-    width: 940px;
-    margin: 0 auto;
+    background: url("images/icon.png") 0px -34px repeat-x #333333;
 }
 
 a.header-title {
     color: #FFFFFF;
     font-size: 26px;
     text-decoration: none;
-    margin: 12px 0;
+    line-height: 49px;
+    font-weight: bold;
+}
+
+.sub-title {
+    color: #9BC4CE;
 }
 
 .header-navi-main .tabs {
@@ -32,25 +37,24 @@ a.header-title {
 }
 
 .header-navi-main .tab {
-    background: url("images/icon.png") repeat-x scroll 0 -35px #9BC4CE;
     float: left;
     font-size: 16px;
     margin-left: 1px;
+}
+
+.header-navi-main .tab:hover {
+    background: url("images/icon.png") repeat-x scroll 0 -35px #9BC4CE;
 }
 
 #header-pages {
     position: relative;
 }
 
-#header-pages a {
-    height: 18px;
-}
-
 .arrow-dowm-icon {
-    background: url("images/icon.png") no-repeat scroll -13px -22px;
+    background: url("images/icon.png") no-repeat scroll -13px -23px;
     float: left;
     height: 13px;
-    margin: 7px 0 0 6px;
+    margin: 21px 0 0 6px;
     width: 13px;
     cursor: pointer;
 }
@@ -65,18 +69,19 @@ a.header-title {
 }
 
 .atom-icon {
-    width: 22px;
-    height: 21px;
     background: url("images/icon.png") no-repeat;
     float: left;
-    margin-left: 6px;
+    height: 22px;
+    margin: 13px 0 0 6px;
+    width: 22px;
 }
 
-.header-navi-main .sub-tabs {
+#header-pages:hover .sub-tabs {
     left: 0px;
     list-style: none;
     position: absolute;
     top: 49px;
+    display: block;
 }
 
 .header-navi-main .sub-tab {
@@ -87,11 +92,78 @@ a.header-title {
 }
 
 .header-navi-main .sub-tab a {
-    display: block;
-    padding: 12px 16px;
     min-width: 98px;
+    padding: 0 16px;
+    line-height: 42px;
+    font-size: 14px;
 }
 
 .header-navi-main .sub-tab:hover {
     background-color: #76A0AA;
+}
+
+/* footer widgets */
+.footer-widgets {
+    border-top: 1px solid #E6E6E6;
+    padding: 10px 0;
+}
+
+.footer-block {
+    margin: 20px 20px 0 0;
+    width: 214px;
+}
+
+.footer-block h4{
+    font: bold 18px Arial,Helvetica,sans-serif;
+    padding: 0 0 15px;
+    text-transform: uppercase;
+}
+
+.footer-block ul {
+    list-style: none;
+}
+
+.footer-block li {
+    border-bottom: 1px solid #EEEEEE;
+    margin-left: 0px;
+    height: 29px;
+}
+
+.footer-block li.mostUsedTags a{
+    padding-left: 29px;
+}
+
+.footer-block li img{
+    cursor: pointer;
+    height: 16px;
+    left: 10px;
+    position: relative;
+    top: -22px;
+    width: 16px;
+}
+
+.footer-block li a {
+    color: #555555;
+    display: block;
+    padding: 8px 0 5px 10px;
+    text-decoration: none;
+}
+
+.footer-block li sup {
+    float: left;
+}
+
+.footer-block li a:hover {
+    background: url("images/hover.png") no-repeat scroll -8px -8px;
+}
+
+/* footer secondary */
+.footer-secondary {
+    background-color: #DEDEDE;
+    padding: 40px 0;
+}
+
+/* footer copyright */
+.footer {
+    background-color: #DEDEDE;
 }

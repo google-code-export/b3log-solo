@@ -24,13 +24,12 @@
             <#include "article-header.ftl">
         </div>
         <div class="body">
-            <div class="left side">
-                <#include "article-side.ftl">
-            </div>
-            <div class="right main">
+            <div class="main">
                 <#include "common-articles.ftl">
             </div>
-            <div class="clear"></div>
+        </div>
+        <div>
+            <#include "article-side.ftl">
         </div>
         <div class="footer">
             <#include "article-footer.ftl">
