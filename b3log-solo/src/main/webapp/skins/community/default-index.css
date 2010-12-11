@@ -1,5 +1,6 @@
 body {
     background-color: #EFEFEF;
+    color: #555555;
 }
 
 .content {
@@ -9,13 +10,13 @@ body {
 
 .hr {
     background: url("images/indentline-light.png") repeat-x scroll left top transparent;
-    margin: 40px 0;
+    margin: 20px 0 40px;
     clear: both;
     height: 2px;
 }
 
 .arrow-right {
-    background: url("images/icon.png") 0px -68px no-repeat;
+    background: url("images/icon.png") 0px -65px no-repeat;
     float: left;
     height: 38px;
     width: 15px;
@@ -31,7 +32,7 @@ body {
 }
 
 .header-navi {
-    background: url("images/icon.png") 0px -63px repeat-x #333333;
+    background: url("images/icon.png") 0px -101px repeat-x #333333;
 }
 
 a.header-title {
@@ -57,7 +58,7 @@ a.header-title {
 }
 
 .header-navi-main .tab:hover {
-    background: url("images/icon.png") repeat-x scroll 0 -63px #9BC4CE;
+    background: url("images/icon.png") repeat-x scroll 0 -101px #9BC4CE;
 }
 
 #header-pages {
@@ -132,8 +133,46 @@ a.header-title {
     width: 145px;
 }
 
-.footer-secondary .recentComments {
-    
+.most-view-count-articles, .recent-comments {
+    float: left;
+    width: 700px;
+    margin-left: 65px;
+}
+
+.most-view-count-articles a {
+    color: #000000;
+    font: 18px 微软雅黑;
+    margin-right: 20px;
+    text-decoration: none
+}
+
+.most-view-count-articles a:hover {
+    text-decoration: underline;
+}
+
+.recent-comments div {
+    float: left;
+    margin: 0 0 11px 11px;
+    text-align: center;
+}
+
+.recent-comments div a {
+    display: block;
+}
+
+.recent-comments img {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #C2C2C2;
+    border-right: 1px solid #C2C2C2;
+    padding: 8px 7px 7px 8px;
+}
+
+.recent-comments img:hover {
+    border-color: #5A5A5A;
+}
+
+.footer-secondary .comment-author {
+    color: #000000;
 }
 
 /* footer widgets */
@@ -144,11 +183,12 @@ a.header-title {
 
 .footer-block {
     margin-right: 20px;
-    width: 214px;
+    width: 220px;
 }
 
 .footer-block h4{
-    font: bold 18px Arial,Helvetica,sans-serif;
+    font: bold 18px 微软雅黑;
+    color: #000000;
     padding: 0 0 15px;
     background: url("images/indentline.png") repeat-x scroll left bottom transparent;
 }
@@ -160,6 +200,7 @@ a.header-title {
 .footer-block li {
     margin-left: 0px;
     height: 28px;
+    padding-left: 10px;
     background: url("images/indentline-light.png") repeat-x scroll left bottom transparent;
 }
 
@@ -179,19 +220,24 @@ a.header-title {
 .footer-block li a {
     color: #555555;
     display: block;
-    padding: 6px 0 4px 10px;
+    height: 16px;
+    line-height: 17px;
+    overflow: hidden;
+    padding: 6px 0 4px 0px;
     text-decoration: none;
 }
 
 .footer-block li sup {
-    color: #555555;
     float: left;
     margin-left: 10px;
-    margin-top: 2px;
+    margin-top: 3px;
+}
+
+.footer-block li:hover {
+    background: url("images/icon.png") repeat-x 0px -36px;
 }
 
 .footer-block li a:hover {
-    background: url("images/icon.png") repeat-x 0px -36px;
     text-decoration: underline;
 }
 
