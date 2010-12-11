@@ -1,3 +1,4 @@
+/* header */
 .header {
 
 }
@@ -15,13 +16,66 @@
     margin: 0 auto;
 }
 
-.header-navi-main .title {
-    display: inline-block;
-    padding: 9px 0;
-}
-
-#logoTitle {
+a.header-title {
     color: #FFFFFF;
     font-size: 26px;
     text-decoration: none;
+    margin: 12px 0;
+}
+
+.header-navi-main .tabs {
+    list-style: none;
+}
+
+.header-navi-main .tab {
+    background: url("images/icon.png") repeat-x scroll 0 -35px #9BC4CE;
+    float: left;
+    font-size: 16px;
+    margin-left: 1px;
+}
+
+#header-pages {
+    position: relative;
+}
+
+.arrow-dowm-icon {
+    background: url("images/icon.png") no-repeat scroll -13px -22px transparent;
+    display: block;
+    float: left;
+    height: 13px;
+    margin: 7px 0 0 6px;
+    width: 13px;
+    cursor: pointer;
+}
+
+.header-navi-main .tab a {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+    padding: 16px 16px 13px;
+}
+
+.header-navi-main .sub-tabs {
+    left: 0px;
+    list-style: none;
+    position: absolute;
+    top: 49px;
+}
+
+.header-navi-main .sub-tab {
+    background-color: #9BC4CE;
+    border-bottom: 1px solid #76A0AA;
+    border-top: 1px solid #B4D9E2;
+    margin-left: 0px;
+}
+
+.header-navi-main .sub-tab a {
+    display: block;
+    padding: 12px 16px;
+    min-width: 98px;
+}
+
+.header-navi-main .sub-tab:hover {
+    background-color: #76A0AA;
 }
