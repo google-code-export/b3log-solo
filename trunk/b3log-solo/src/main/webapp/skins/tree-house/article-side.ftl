@@ -45,7 +45,7 @@
         <ul id="mostCommentArticles">
             <#list mostCommentArticles as article>
             <li>
-                <a name="mostComment${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
+                <a title="${article.articleTitle}" href="${article.articlePermalink}">
                     <sup>[${article.articleCommentCount}]</sup>${article.articleTitle}
                 </a>
             </li>
@@ -59,7 +59,7 @@
         <ul id="mostViewCountArticles">
             <#list mostViewCountArticles as article>
             <li>
-                <a name="mostView${article.oId}" title="${article.articleTitle}" href="${article.articlePermalink}">
+                <a title="${article.articleTitle}" href="${article.articlePermalink}">
                     <sup>[${article.articleViewCount}]</sup>${article.articleTitle}
                 </a>
             </li>
@@ -73,7 +73,7 @@
         <ul>
             <#list mostUsedTags as tag>
             <li>
-                <a name="tags${tag.oId}" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
+                <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
                     ${tag.tagTitle}(${tag.tagPublishedRefCount})
                 </a>
                 <img onclick="window.location='/tag-articles-feed.do?oId=${tag.oId}'"
@@ -104,14 +104,12 @@
             <#list archiveDates as archiveDate>
             <li>
                 <#if "en" == localeString?substring(0, 2)>
-                <a name="archiveDates${archiveDate.oId}"
-                   href="/archive-date-articles.do?oId=${archiveDate.oId}"
+                <a href="/archive-date-articles.do?oId=${archiveDate.oId}"
                    title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
                     ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})
                 </a>
                 <#else>
-                <a name="archiveDates${archiveDate.oId}"
-                   href="/archive-date-articles.do?oId=${archiveDate.oId}"
+                <a href="/archive-date-articles.do?oId=${archiveDate.oId}"
                    title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
                     ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})
                 </a>
