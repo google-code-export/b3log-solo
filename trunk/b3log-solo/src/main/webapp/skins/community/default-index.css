@@ -4,6 +4,13 @@ body {
     min-width: 960px;
 }
 
+a,a:link{color:#000000;text-decoration: none;}
+a:active,a:link,a:visited{
+    color: #000000;
+    text-decoration: none;
+}
+a:hover {text-decoration: underline;}
+
 .content {
     width: 940px;
     margin: 0 auto;
@@ -161,12 +168,7 @@ a.header-title {
 
 .article-header ul li a {
     color: #FFFFFF;
-    text-decoration: none;
     display: block;
-}
-
-.article-header ul li a:hover {
-    text-decoration: underline;
 }
 
 .article-body {
@@ -185,10 +187,6 @@ a.header-title {
     margin: 0 0 20px;
 }
 
-.article-body h2.title a {
-    color: #000000;
-}
-
 .article-body h2.title sup {
     font-size: 12px;
 }
@@ -198,13 +196,8 @@ a.header-title {
     color: #333333;
     font-size: 12px;
     padding: 8px 18px 8px 12px;
-    text-decoration: none;
     margin: 20px 0;
     float: left;
-}
-
-.read-more a:hover {
-    text-decoration: underline;
 }
 
 .read-more-icon {
@@ -237,14 +230,9 @@ a.header-title {
 }
 
 .article-footer a {
-    text-decoration: none;
     color: #888888;
     margin-bottom: 2px;
     display: block;
-}
-
-.article-footer a:hover {
-    text-decoration: underline;
 }
 
 .pagination {
@@ -272,6 +260,34 @@ a.header-title {
     width: 696px;
 }
 
+.article-detail-body .tags {
+    margin: 20px 0;
+}
+
+.article-detail-footer {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E3E3E3;
+    border-right: 1px solid #E3E3E3;
+    margin: 40px 0 40px 181px;
+    padding:20px;
+    width: 696px;
+}
+
+.article-detail-footer>a{
+    font-weight: bold;
+}
+.article-relative {
+    margin-top: 20px;
+}
+
+.article-relative h5 {
+    font-size: 14px;
+}
+
+.article-relative a {
+    color: #555555;
+}
+
 /* footer secondary */
 .footer-secondary {
     background: url("images/indentline-light.png") repeat-x scroll left top #DEDEDE;
@@ -295,14 +311,8 @@ a.header-title {
 }
 
 .most-view-count-articles a {
-    color: #000000;
     font: 18px 微软雅黑;
     margin-right: 20px;
-    text-decoration: none
-}
-
-.most-view-count-articles a:hover {
-    text-decoration: underline;
 }
 
 .recent-comments div {
@@ -326,10 +336,6 @@ a.header-title {
 
 .recent-comments img:hover {
     border-color: #5A5A5A;
-}
-
-.footer-secondary .comment-author {
-    color: #000000;
 }
 
 /* footer widgets */
@@ -381,7 +387,6 @@ a.header-title {
     line-height: 17px;
     overflow: hidden;
     padding: 6px 0 4px 0px;
-    text-decoration: none;
 }
 
 .footer-block li sup {
@@ -393,10 +398,6 @@ a.header-title {
     background: url("images/icon.png") repeat-x 0px -36px;
 }
 
-.footer-block li a:hover {
-    text-decoration: underline;
-}
-
 /* footer copyright */
 .footer {
     background: url("images/indentline-light.png") repeat-x scroll left top #DEDEDE;
@@ -405,7 +406,6 @@ a.header-title {
 
 .footer a {
     color: #000000;
-    text-decoration: underline;
 }
 
 .footer div {

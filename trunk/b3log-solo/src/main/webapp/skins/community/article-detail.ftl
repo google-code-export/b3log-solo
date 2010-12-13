@@ -76,42 +76,41 @@
                         </#if>
                     </h2>
                     ${article.articleContent}
-                    <img src="" alt="${tagsLabel}"/>
-                    <#list articleTags as articleTag>
-                    <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
-                        ${articleTag.tagTitle}
-                    </a>
-                    </#list>
-                    ${createDateLabel}:
-                    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm")}
+                    <div class="tags">
+                        <img width="16px" height="16px" src="/skins/community/images/tags.gif" alt="${tagsLabel}"/>
+                        ${tags1Label}
+                        <#list articleTags as articleTag>
+                        <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
+                            ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
+                        </#list>
+                    </div>
                 </div>
                 <div class="clear"></div>
-                <div class="pagination">
+                <div class="article-detail-footer">
                     <#if nextArticlePermalink??>
-                    <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                    <a href="${nextArticlePermalink}" class="left">${nextArticle1Label} ${nextArticleTitle}</a>
                     </#if>
                     <#if previousArticlePermalink??>
-                    <br/>
-                    <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                    <a href="${previousArticlePermalink}" class="right">${previousArticle1Label} ${previousArticleTitle}</a>
                     </#if>
+                    <div class="clear"></div><div id="randomArticles" class="article-relative left"></div>
+                    <#if 0 != relevantArticles?size>
+                    <div class="article-relative right" style="width: 48%;">
+                        <h5>${relevantArticles1Label}</h5>
+                        <ul class="marginLeft12">
+                            <#list relevantArticles as relevantArticle>
+                            <li>
+                                <a href="${relevantArticle.articlePermalink}">
+                                    ${relevantArticle.articleTitle}
+                                </a>
+                            </li>
+                            </#list>
+                        </ul>
+                    </div>
+                    </#if>
+                    <div class="clear"></div>
+                    <div id="externalRelevantArticles"></div>
                 </div>
-                <#if 0 != relevantArticles?size>
-                <div class="article-relative left" style="width: 50%;">
-                    <h5>${relevantArticles1Label}</h5>
-                    <ul class="marginLeft12">
-                        <#list relevantArticles as relevantArticle>
-                        <li>
-                            <a href="${relevantArticle.articlePermalink}">
-                                ${relevantArticle.articleTitle}
-                            </a>
-                        </li>
-                        </#list>
-                    </ul>
-                </div>
-                </#if>
-                <div id="randomArticles" class="article-relative left"></div>
-                <div class="clear"></div>
-                <div id="externalRelevantArticles"></div>
             </div>
             <div class="comments" id="comments" name="comments">
                 <#list articleComments as comment>
