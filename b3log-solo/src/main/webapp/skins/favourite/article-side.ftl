@@ -123,18 +123,32 @@
 </div>
 <script type="text/javascript">
 var comm = function(){
-    $(".side-comment").each(function () {
-        var $it = $(this);
-        var content=$.trim($it.text());
-        //alert(content+"|"+countChinese(content)+"|"+countNonAlphabet(content)+"|"+content.length);
-        var count = countChinese(content)*2+(content.length-countChinese(content));
-        //alert(count);
-        if(count>=30){
-            var newc=content.substring(0,15)+"[...]";
+        $(".side-comment").each(function () {
+            var $it = $(this);
+            var content=$.trim($it.text());
+            var count=0;
+            var n=0;
+            var newc="";
+            while(count<30){
+                var str = content.charAt(n++);
+                count+=countChinese(str)+1;
+                newc+=str;
+            }
             $it.text(newc);
-            //alert(newc);
-        }
-    });
+        });
+//    $(".side-comment").each(function () {
+//        var $it = $(this);
+//        var content=$.trim($it.text());
+//        //alert(content.charAt(0));
+//        //alert(content+"|"+countChinese(content)+"|"+countNonAlphabet(content)+"|"+content.length);
+//        var count = countChinese(content)*2+(content.length-countChinese(content));
+//        //alert(count);
+//        if(count>=30){
+//            var newc=content.substring(0,15)+"[...]";
+//            $it.text(newc);
+//            //alert(newc);
+//        }
+//    });
 }
 comm();
 function countChinese(str){
