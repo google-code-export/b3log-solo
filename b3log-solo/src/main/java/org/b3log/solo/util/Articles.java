@@ -40,6 +40,7 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +49,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Dec 10, 2010
+ * @version 1.0.1.1, Dec 13, 2010
  */
 public final class Articles {
 
@@ -87,6 +88,27 @@ public final class Articles {
      */
     @Inject
     private Statistics statistics;
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+
+    /**
+     * Gets the specified article's author. The specified article has a property
+     * {@value Article#ARTICLE_AUTHOR_EMAIL}, this method will use this property
+     * to get a user from users.
+     *
+     * @param article the specified article
+     * @return user, {@code null} if not found
+     * @throws JSONException json exception
+     */
+    public JSONObject getAuthor(final JSONObject article)
+            throws JSONException {
+        final String email = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
+
+        return userRepository.getByEmail(email);
+    }
 
     /**
      * Article comment count +1 for an article specified by the given article id.
