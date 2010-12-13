@@ -21,7 +21,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -38,17 +37,13 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.util.comparator.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Preferences;
-import org.b3log.solo.util.comparator.ArticleCreateDateComparator;
 import org.json.JSONObject;
 
 /**
@@ -148,35 +143,39 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
             final int pageCount = result.getJSONObject(
                     Pagination.PAGINATION).getInt(
                     Pagination.PAGINATION_PAGE_COUNT);
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(
-                    result.getJSONArray(Keys.RESULTS));
-
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
 
-            LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
-            final JSONObject tag = userRepository.get(authorId);
-
-            articleUtils.addTags(articles);
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                Collections.sort(articles, new ArticleUpdateDateComparator());
-            } else {
-                Collections.sort(articles, new ArticleCreateDateComparator());
+            if (0 != pageNums.size()) {
+                ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
+                        pageNums.get(0));
+                ret.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                        pageNums.get(pageNums.size() - 1));
             }
-            for (final JSONObject article : articles) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
-            }
-            ret.put(Article.ARTICLES, articles);
-
-            ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
-            ret.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                    pageNums.get(pageNums.size() - 1));
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-            ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
-            ret.put(Keys.OBJECT_ID, authorId);
-            ret.put(Tag.TAG, tag);
+
+            final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
+                    jsonArrayToList(result.getJSONArray(Keys.RESULTS));
+            for (final JSONObject article : articles) {
+                if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                    article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(
+                            article));
+                } else {
+                    article.put(Common.HAS_UPDATED, false);
+                }
+
+                // Puts author name
+                final String authorName = author.getString(User.USER_NAME);
+                article.put(Common.AUTHOR_NAME, authorName);
+                article.put(Common.AUTHOR_ID, authorId);
+            }
+
+            articleUtils.addTags(articles);
+
+            ret.put(Article.ARTICLES, articles);
+
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 

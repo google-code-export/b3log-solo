@@ -81,7 +81,6 @@ public final class ArticleGAERepository extends AbstractGAERepository
         final JSONObject pagination = new JSONObject();
         try {
             ret.put(Pagination.PAGINATION, pagination);
-            pagination.put(Pagination.PAGINATION, pagination);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             final int offset = pageSize * (currentPageNum - 1);
             final QueryResultList<Entity> queryResultList =
