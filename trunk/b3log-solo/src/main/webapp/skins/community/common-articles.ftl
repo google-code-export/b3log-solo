@@ -15,7 +15,7 @@
                 <span class="left">
                     by&nbsp;
                 </span>
-                <a class="left" title="${article.authorName}" href="mailto:${article.articleAuthorEmail}">
+                <a class="left" title="${article.authorName}" href="/author-articles.do?oId=${article.authorId}">
                     ${article.authorName}
                 </a>
                 <span class="clear"/>
@@ -61,22 +61,20 @@
         </div>
     </div>
     <div class="article-footer">
-        <div class="tags">
-            <h3>${tagsLabel}</h3>
-            <ul>
-                <#list article.articleTags as articleTag>
-                <li>
-                    <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
-                        ${articleTag.tagTitle}
-                    </a>
-                </li>
-                </#list>
-                <li>
-                    ${createDateLabel}:
-                    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm")}
-                </li>
-            </ul>
-        </div>
+        <h3>${tagsLabel}</h3>
+        <ul>
+            <#list article.articleTags as articleTag>
+            <li>
+                <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
+                    ${articleTag.tagTitle}
+                </a>
+            </li>
+            </#list>
+            <li>
+                ${createDateLabel}:
+                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm")}
+            </li>
+        </ul>
     </div>
     <div class="clear"></div>
 </div>

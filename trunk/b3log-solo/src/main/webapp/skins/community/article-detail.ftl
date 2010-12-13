@@ -44,8 +44,8 @@
                             <span class="left">
                                 by&nbsp;
                             </span>
-                            <a class="left" title="{article.authorName}" href="mailto:{article.articleAuthorEmail}">
-                                {article.authorName}
+                            <a class="left" title="${article.authorName}" href="/author-articles.do?oId=${article.authorId}">
+                                ${article.authorName}
                             </a>
                             <span class="clear"/>
                         </li>
@@ -60,9 +60,8 @@
                             </a>
                         </li>
                     </ul>
-
                 </div>
-                <div class="article-body">
+                <div class="article-body article-detail-body">
                     <h2 class="title">
                         <a class="noUnderline" href="${article.articlePermalink}">${article.articleTitle}</a>
                         <#if article.hasUpdated>
@@ -77,27 +76,17 @@
                         </#if>
                     </h2>
                     ${article.articleContent}
-                </div>
-                <div class="article-footer">
-                    <div class="tags">
-                        <h3>${tagsLabel}</h3>
-                        <ul>
-                            <#list articleTags as articleTag>
-                            <li>
-                                <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
-                                    ${articleTag.tagTitle}
-                                </a>
-                            </li>
-                            </#list>
-                            <li>
-                                ${createDateLabel}:
-                                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm")}
-                            </li>
-                        </ul>
-                    </div>
+                    <img src="" alt="${tagsLabel}"/>
+                    <#list articleTags as articleTag>
+                    <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
+                        ${articleTag.tagTitle}
+                    </a>
+                    </#list>
+                    ${createDateLabel}:
+                    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm")}
                 </div>
                 <div class="clear"></div>
-                <div class="left">
+                <div class="pagination">
                     <#if nextArticlePermalink??>
                     <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
                     </#if>
@@ -105,11 +94,6 @@
                     <br/>
                     <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                     </#if>
-                </div>
-                <div class="right">
-                    <span class="article-create-date left">
-                        ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
-                    </span>
                 </div>
                 <#if 0 != relevantArticles?size>
                 <div class="article-relative left" style="width: 50%;">
