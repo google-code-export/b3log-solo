@@ -1,6 +1,7 @@
 body {
     background-color: #EFEFEF;
     color: #555555;
+    min-width: 960px;
 }
 
 .content {
@@ -53,10 +54,9 @@ body {
 
 a.header-title {
     color: #FFFFFF;
-    font-size: 26px;
     text-decoration: none;
     line-height: 49px;
-    font-weight: bold;
+    font: bold 26px/47px 微软雅黑,Arial,Helvetica;
 }
 
 .sub-title {
@@ -162,6 +162,7 @@ a.header-title {
 .article-header ul li a {
     color: #FFFFFF;
     text-decoration: none;
+    display: block;
 }
 
 .article-header ul li a:hover {
@@ -174,13 +175,13 @@ a.header-title {
     border-right: 1px solid #E3E3E3;
     margin-right:20px;
     padding: 20px 20px 0;
-    width: 479px;
+    width: 499px;
     float: left;
     overflow: hidden;
 }
 
 .article-body h2.title {
-    font: bold 30px/24px Arial,Helvetica,sans-serif;
+    font: bold 30px/29px Arial,Helvetica,sans-serif;
     margin: 0 0 20px;
 }
 
@@ -215,8 +216,55 @@ a.header-title {
 }
 
 .article-footer {
-    width: 220px;
+    width: 200px;
     float: left;
+}
+
+.article-footer .tags h3 {
+    background: url("images/indentline-light.png") repeat-x scroll left bottom transparent;
+    font-size: 17px;
+    padding: 25px 0 10px;
+}
+
+.article-footer .tags ul {
+    list-style: none;
+}
+
+.article-footer .tags li {
+    margin-left: 0px;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 8px 5px;
+}
+
+.article-footer .tags a {
+    text-decoration: none;
+    color: #888888;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.article-footer .tags a:hover {
+    text-decoration: underline;
+}
+
+.pagination {
+    background-color: #FFFFFF;
+    border-right: 1px solid #E3E3E3;
+    border-bottom: 1px solid #E3E3E3;
+    margin: 0 0 20px 181px;
+    text-align: center;
+    padding: 12px 20px;
+    width: 499px;
+}
+
+.pagination a {
+    color: #555555;
+    padding: 0 3px;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    text-decoration: underline;
 }
 
 /* footer secondary */
@@ -361,6 +409,6 @@ a.header-title {
     padding-left: 15px;
     padding-top: 0;
     position: absolute;
-    right: 9px;
+    right: 214px;
     top: 9px;
 }

@@ -13,20 +13,25 @@
             <div class="clear"></div>
             <ul>
                 <li>
-                    by
+                    <span class="left">
+                        by&nbsp;
+                    </span>
+                    <a class="left" title="${article.authorName}" href="mailto:${article.articleAuthorEmail}">
+                       ${article.authorName}
+                    </a>
+                    <span class="clear"/>
                 </li>
                 <li>
                     <a href="${article.articlePermalink}" title="${viewLabel}">
-                        ${viewLabel}(${article.articleViewCount})
+                        ${viewLabel} (${article.articleViewCount})
                     </a>
                 </li>
                 <li>
                     <a title="${commentLabel}" href="${article.articlePermalink}#comments">
-                        ${commentLabel}(${article.articleCommentCount})
+                        ${commentLabel} (${article.articleCommentCount})
                     </a>
                 </li>
             </ul>
-            <div class="clear"></div>
         </div>
         <div class="article-body">
             <h2 class="title">
@@ -57,19 +62,21 @@
             </div>
         </div>
         <div class="article-footer">
-            <div class="article-tags">
-                ${tags1Label}
-                <#list article.articleTags as articleTag>
-                <span>
-                    <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
-                        ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
-                </span>
-                </#list>
-            </div>
-            <div class="right">
-                <span class="article-create-date left">
-                    &nbsp;${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp
-                </span>
+            <div class="tags">
+                <h3>${tagsLabel}</h3>
+                <ul>
+                    <#list article.articleTags as articleTag>
+                    <li>
+                        <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
+                            ${articleTag.tagTitle}
+                        </a>
+                    </li>
+                    </#list>
+                    <li>
+                        ${createDateLabel}: 
+                        ${article.articleCreateDate?string("yyyy-MM-dd HH:mm")} 
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="clear"></div>
@@ -88,7 +95,7 @@
         <a id="nextPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationLastPageNum}">${nextPagePabel}</a>
         <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}">${lastPageLabel}</a>
         </#if>
-        &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
+        ${sumLabel} ${paginationPageCount} ${pageLabel}
     </div>
     </#if>
 </div>
