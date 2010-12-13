@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 9, 2010
+ * @version 1.0.1.7, Dec 13, 2010
  */
 public final class Common {
 
@@ -116,6 +116,10 @@ public final class Common {
      * Right part name(for skin {@value valentine}).
      */
     public static final String RIGHT_PART_NAME = "_r";
+    /**
+     * Author name.
+     */
+    public static final String AUTHOR_NAME = "authorName";
 
     /**
      * Private default constructor.

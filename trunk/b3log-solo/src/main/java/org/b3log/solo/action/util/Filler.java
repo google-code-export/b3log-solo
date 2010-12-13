@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
@@ -47,6 +46,7 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.PageRepository;
@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Dec 9, 2010
+ * @version 1.0.2.1, Dec 13, 2010
  */
 public final class Filler {
 
@@ -133,6 +133,10 @@ public final class Filler {
      */
     @Inject
     private UserRepository userRepository;
+    /**
+     * {@code true} for published.
+     */
+    private static final boolean PUBLISHED = true;
 
     /**
      * Fills articles in index.ftl.
@@ -166,7 +170,7 @@ public final class Filler {
         final Set<Filter> filters = new HashSet<Filter>();
         filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
                                FilterOperator.EQUAL,
-                               true)); // Filter unpublished articles
+                               PUBLISHED));
         final JSONObject result =
                 articleRepository.get(currentPageNum, pageSize,
                                       sorts, filters);
@@ -195,6 +199,11 @@ public final class Filler {
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }
+
+            // Puts author name
+            final JSONObject author = articleUtils.getAuthor(article);
+            final String authorName = author.getString(User.USER_NAME);
+            article.put(Common.AUTHOR_NAME, authorName);
         }
 
         articleUtils.addTags(articles);
@@ -585,7 +594,7 @@ public final class Filler {
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
         final Set<Filter> filters = new HashSet<Filter>();
         filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
-                               FilterOperator.EQUAL, true)); // Filter unpublished articles
+                               FilterOperator.EQUAL, PUBLISHED));
         filters.add(new Filter(Article.ARTICLE_AUTHOR_EMAIL,
                                FilterOperator.EQUAL,
                                authorEmail));
