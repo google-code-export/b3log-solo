@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
@@ -189,7 +188,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * {
      *     "userName": "",
      *     "userEmail": "",
-     *     "userRole": ""
+     *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead,
+     *                       if not speciffied
      * }
      * </pre>
      * @param request the specified http servlet request
@@ -230,8 +230,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             final String userName = requestJSONObject.getString(User.USER_NAME);
             user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
-            user.put(User.USER_ROLE, Role.DEFAULT_ROLE);
-
+            final String roleName = requestJSONObject.optString(
+                    User.USER_ROLE, Role.DEFAULT_ROLE);
+            user.put(User.USER_ROLE, roleName);
             userRepository.add(user);
             transaction.commit();
 
@@ -639,7 +640,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                    JSONException {
         LOGGER.info("Initializing admin....");
         final Transaction transaction = userRepository.beginTransaction();
-        final JSONObject ret = new JSONObject();
         try {
             final JSONObject admin = new JSONObject();
 
