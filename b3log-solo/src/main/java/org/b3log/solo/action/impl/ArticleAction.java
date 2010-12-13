@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractCacheablePageAction;
+import org.b3log.latke.model.User;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.TagArticleRepository;
@@ -55,7 +56,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 7, 2010
+ * @version 1.0.1.6, Dec 13, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -154,6 +155,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
 
+            final JSONObject author = articleUtils.getAuthor(article);
+            final String authorName =  author.getString(User.USER_NAME);
+            article.put(Common.AUTHOR_NAME, authorName);
+            final String authorId = author.getString(Keys.OBJECT_ID);
+            article.put(Common.AUTHOR_ID, authorId);
             ret.put(Article.ARTICLE, article);
 
             final List<JSONObject> articleTags = articleUtils.getTags(articleId);
