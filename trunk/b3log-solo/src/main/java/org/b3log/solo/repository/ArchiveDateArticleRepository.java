@@ -33,9 +33,9 @@ public interface ArchiveDateArticleRepository extends Repository {
      *
      * @param archiveDateId the specified archive date id
      * @param currentPageNum the specified current page number, MUST greater
-     * then 0
+     * then {@code 0}
      * @param pageSize the specified page size(count of a page contains objects),
-     * MUST greater then 0
+     * MUST greater then {@code 0}
      * @return for example
      * <pre>
      * {
