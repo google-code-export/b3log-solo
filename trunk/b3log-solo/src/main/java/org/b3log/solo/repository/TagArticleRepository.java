@@ -65,9 +65,7 @@ public interface TagArticleRepository extends Repository {
      *         "tag_oId": tagId,
      *         "article_oId": ""
      *     }, ....]
-     * }, if not found any objects by the specified current page number and
-     * page size, returns pagination info as the only attribute of the returned
-     * json object
+     * }
      * </pre>
      * @throws RepositoryException repository exception
      */
