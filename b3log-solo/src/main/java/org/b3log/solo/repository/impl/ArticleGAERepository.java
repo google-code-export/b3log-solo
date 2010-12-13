@@ -16,12 +16,14 @@
 
 package org.b3log.solo.repository.impl;
 
+import com.google.appengine.api.datastore.QueryResultIterable;
+import java.util.ArrayList;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.QueryResultIterable;
-import java.util.ArrayList;
+import com.google.appengine.api.datastore.QueryResultList;
+import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -29,10 +31,12 @@ import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.BlogSync;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,7 +44,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Dec 8, 2010
+ * @version 1.0.2.0, Dec 13, 2010
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -54,6 +58,49 @@ public final class ArticleGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return Article.ARTICLE;
+    }
+
+    @Override
+    public JSONObject getByAuthorEmail(final String authorEmail,
+                                       final int currentPageNum,
+                                       final int pageSize)
+            throws RepositoryException {
+        final Query query = new Query(getName());
+        query.addFilter(Article.ARTICLE_AUTHOR_EMAIL,
+                        Query.FilterOperator.EQUAL, authorEmail);
+        query.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                      Query.SortDirection.DESCENDING);
+
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final int count = preparedQuery.countEntities(
+                FetchOptions.Builder.withDefaults());
+        final int pageCount =
+                (int) Math.ceil((double) count / (double) pageSize);
+
+        final JSONObject ret = new JSONObject();
+        final JSONObject pagination = new JSONObject();
+        try {
+            ret.put(Pagination.PAGINATION, pagination);
+            pagination.put(Pagination.PAGINATION, pagination);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            final int offset = pageSize * (currentPageNum - 1);
+            final QueryResultList<Entity> queryResultList =
+                    preparedQuery.asQueryResultList(
+                    withOffset(offset).limit(pageSize));
+            final JSONArray results = new JSONArray();
+            ret.put(Keys.RESULTS, results);
+            for (final Entity entity : queryResultList) {
+                final Map<String, Object> properties = entity.getProperties();
+                final JSONObject e = new JSONObject(properties);
+
+                results.put(e);
+            }
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
+
+        return ret;
     }
 
     @Override

@@ -33,6 +33,7 @@ import org.b3log.solo.action.gae.LiveServlet;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
 import org.b3log.solo.action.impl.AdminErrorAction;
+import org.b3log.solo.action.impl.AuthorArticlesAction;
 import org.b3log.solo.action.impl.InitAction;
 import org.b3log.solo.action.impl.PageAction;
 import org.b3log.solo.filter.FilterModule;
@@ -49,7 +50,7 @@ import org.b3log.solo.upgrade.UpgradeModule;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Dec 6, 2010
+ * @version 1.0.2.1, Dec 13, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -149,5 +150,8 @@ public final class ActionModule extends AbstractActionModule {
 
         bind(LiveServlet.class).in(Scopes.SINGLETON);
         serve("/live.do").with(LiveServlet.class);
+
+        bind(AuthorArticlesAction.class).in(Scopes.SINGLETON);
+        serve("/author-articles.do").with(AuthorArticlesAction.class);
     }
 }

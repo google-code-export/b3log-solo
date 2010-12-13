@@ -120,6 +120,10 @@ public final class Common {
      * Author name.
      */
     public static final String AUTHOR_NAME = "authorName";
+    /**
+     * Author id.
+     */
+    public static final String AUTHOR_ID = "authorId";
 
     /**
      * Private default constructor.
