@@ -250,8 +250,11 @@ a.header-title {
     padding: 0 3px;
     text-decoration: none;
 }
+.pagination a.selected {
+    font-weight: bold;
+}
 
-.pagination a:hover {
+.pagination a:hover, .pagination a.selected {
     text-decoration: underline;
 }
 
@@ -286,6 +289,11 @@ a.header-title {
 
 .article-relative a {
     color: #555555;
+}
+
+#comments {
+    background: url("images/indentline-light.png") repeat-x scroll left top transparent;
+    padding: 40px 20px;
 }
 
 /* footer secondary */
