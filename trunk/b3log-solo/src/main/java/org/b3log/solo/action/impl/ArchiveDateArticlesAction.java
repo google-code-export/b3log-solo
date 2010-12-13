@@ -38,6 +38,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
@@ -58,7 +59,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 9, 2010
+ * @version 1.0.0.6, Dec 14, 2010
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -164,6 +165,13 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                                                              + "_"
                                                              + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
+                // Puts author name
+                final JSONObject author = articleUtils.getAuthor(article);
+                final String authorName = author.getString(User.USER_NAME);
+                article.put(Common.AUTHOR_NAME, authorName);
+                final String authorId = author.getString(Keys.OBJECT_ID);
+                article.put(Common.AUTHOR_ID, authorId);
+
                 articles.add(article);
             }
 

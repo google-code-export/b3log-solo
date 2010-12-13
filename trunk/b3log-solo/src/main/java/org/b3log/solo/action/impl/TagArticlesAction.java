@@ -39,6 +39,7 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
@@ -57,7 +58,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Dec 9, 2010
+ * @version 1.0.1.3, Dec 14, 2010
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -172,6 +173,12 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
+                // Puts author name
+                final JSONObject author = articleUtils.getAuthor(article);
+                final String authorName = author.getString(User.USER_NAME);
+                article.put(Common.AUTHOR_NAME, authorName);
+                final String authorId = author.getString(Keys.OBJECT_ID);
+                article.put(Common.AUTHOR_ID, authorId);
                 articles.add(article);
             }
 
