@@ -112,7 +112,7 @@
                     <div id="externalRelevantArticles"></div>
                 </div>
             </div>
-            <div class="comments" id="comments" name="comments">
+            <div id="comments" name="comments">
                 <#list articleComments as comment>
                 <div id="commentItem${comment.oId}">
                     <div class="comment-panel">
