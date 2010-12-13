@@ -204,6 +204,8 @@ public final class Filler {
             final JSONObject author = articleUtils.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
             article.put(Common.AUTHOR_NAME, authorName);
+            final String authorId = author.getString(Keys.OBJECT_ID);
+            article.put(Common.AUTHOR_ID, authorId);
         }
 
         articleUtils.addTags(articles);
