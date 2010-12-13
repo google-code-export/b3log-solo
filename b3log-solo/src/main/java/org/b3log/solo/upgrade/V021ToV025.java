@@ -103,7 +103,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Dec 11, 2010
+ * @version 1.0.1.1, Dec 13, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -204,13 +204,30 @@ public final class V021ToV025 extends HttpServlet {
 
                         articleRepository.update(articleId, article);
                         isConsistent = false;
-                        cnt++;
                     }
+
+                    if (!article.has(Article.ARTICLE_AUTHOR_EMAIL)) {
+                        article.put(Article.ARTICLE_AUTHOR_EMAIL,
+                                    currentUserEmail);
+
+                        articleRepository.update(articleId, article);
+                        isConsistent = false;
+                    }
+
+                    if (!article.has(Article.ARTICLE_HAD_BEEN_PUBLISHED)) {
+                        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
+
+                        articleRepository.update(articleId, article);
+                        isConsistent = false;
+                    }
+
 
                     if (0 == cnt % UPDATE_SIZE) {
                         transaction.commit();
                         transaction = articleRepository.beginTransaction();
                     }
+
+                    cnt++;
                 }
 
                 if (transaction.isActive()) {
