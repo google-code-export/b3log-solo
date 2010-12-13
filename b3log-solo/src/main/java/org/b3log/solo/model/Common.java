@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Dec 13, 2010
+ * @version 1.0.1.8, Dec 14, 2010
  */
 public final class Common {
 
@@ -75,6 +75,10 @@ public final class Common {
      * archive-date-articles.
      */
     public static final String ARCHIVED_DATE_ARTICLES = "archive-date-articles";
+    /**
+     * author-articles.
+     */
+    public static final String AUTHOR_ARTICLES = "author-articles";
     /**
      * Action name.
      */

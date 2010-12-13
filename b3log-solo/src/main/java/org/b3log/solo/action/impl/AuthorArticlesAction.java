@@ -173,8 +173,9 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
             }
 
             articleUtils.addTags(articles);
-
             ret.put(Article.ARTICLES, articles);
+            ret.put(Common.ACTION_NAME, Common.AUTHOR_ARTICLES);
+            ret.put(Keys.OBJECT_ID, authorId);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
