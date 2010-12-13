@@ -25,9 +25,35 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Dec 3, 2010
+ * @version 1.0.1.1, Dec 13, 2010
  */
 public interface ArticleRepository extends Repository {
+
+    /**
+     * Gets articles by the specified author email, current page number and
+     * page size.
+     *
+     * @param authorEmail the specified author email
+     * @param currentPageNum the specified current page number, MUST greater
+     * then {@code 0}
+     * @param pageSize the specified page size(count of a page contains objects),
+     * MUST greater then {@code 0}
+     * @return for example
+     * <pre>
+     * {
+     *     "pagination": {
+     *       "paginationPageCount": 88250
+     *     },
+     *     "rslts": [{
+     *         // article keys....
+     *     }, ....]
+     * }
+     * </pre>
+     * @throws RepositoryException repository exception
+     */
+    JSONObject getByAuthorEmail(final String authorEmail,
+                                final int currentPageNum,
+                                final int pageSize) throws RepositoryException;
 
     /**
      * Gets an article by the specified permalink.

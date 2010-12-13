@@ -47,7 +47,7 @@ import org.b3log.solo.util.Statistics;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 10, 2010
+ * @version 1.0.1.7, Dec 13, 2010
  * @see #shouldSkip(java.lang.String) 
  */
 public final class PageCacheFilter implements Filter {
