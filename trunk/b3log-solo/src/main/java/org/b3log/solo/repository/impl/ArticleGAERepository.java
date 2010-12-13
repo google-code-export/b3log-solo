@@ -68,8 +68,6 @@ public final class ArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Article.ARTICLE_AUTHOR_EMAIL,
                         Query.FilterOperator.EQUAL, authorEmail);
-        query.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                      Query.SortDirection.DESCENDING);
 
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final int count = preparedQuery.countEntities(
@@ -89,10 +87,9 @@ public final class ArticleGAERepository extends AbstractGAERepository
             final JSONArray results = new JSONArray();
             ret.put(Keys.RESULTS, results);
             for (final Entity entity : queryResultList) {
-                final Map<String, Object> properties = entity.getProperties();
-                final JSONObject e = new JSONObject(properties);
+                final JSONObject jsonObject = entity2JSONObject(entity);
 
-                results.put(e);
+                results.put(jsonObject);
             }
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
