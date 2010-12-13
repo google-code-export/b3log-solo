@@ -220,30 +220,30 @@ a.header-title {
     float: left;
 }
 
-.article-footer .tags h3 {
+.article-footer h3 {
     background: url("images/indentline-light.png") repeat-x scroll left bottom transparent;
     font-size: 17px;
     padding: 25px 0 10px;
 }
 
-.article-footer .tags ul {
+.article-footer ul {
     list-style: none;
 }
 
-.article-footer .tags li {
+.article-footer li {
     margin-left: 0px;
     border-bottom: 1px solid #E0E0E0;
     padding: 8px 5px;
 }
 
-.article-footer .tags a {
+.article-footer a {
     text-decoration: none;
     color: #888888;
     margin-bottom: 2px;
     display: block;
 }
 
-.article-footer .tags a:hover {
+.article-footer a:hover {
     text-decoration: underline;
 }
 
@@ -265,6 +265,11 @@ a.header-title {
 
 .pagination a:hover {
     text-decoration: underline;
+}
+
+/* article detail */
+.article-detail-body {
+    width: 696px;
 }
 
 /* footer secondary */
