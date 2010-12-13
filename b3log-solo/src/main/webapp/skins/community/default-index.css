@@ -24,14 +24,16 @@ body {
 
 .star-current {
     background: url("images/favorites.png") no-repeat;
-    width: 128px;
-    height: 128px;
+    float: left;
+    height: 64px;
+    width: 64px;
 }
 
 .star {
-    background: url("images/star_none.png") no-repeat;
-    width: 128px;
-    height: 128px;
+    background-image: url("images/star_none.png");
+    float: left;
+    height: 64px;
+    width: 64px;
 }
 
 /* header */
@@ -46,6 +48,7 @@ body {
 
 .header-navi {
     background: url("images/icon.png") 0px -101px repeat-x #333333;
+    margin-bottom: 50px;
 }
 
 a.header-title {
@@ -130,19 +133,105 @@ a.header-title {
     background-color: #76A0AA;
 }
 
+/* article list */
+.article {
+    margin-bottom: 40px;
+}
+
+.article-header {
+    color: #9F9F9F;
+    float: left;
+    font-size: 12px;
+    padding-top: 15px;
+    width: 180px;
+}
+
+.article-header ul {
+    background-color: #333333;
+    list-style: none;
+    width: 160px;
+}
+
+.article-header ul li {
+    background: url("images/indentline.png") repeat-x scroll left bottom transparent;
+    font-weight: bold;
+    padding: 7px 15px 8px;
+    margin-left: 0px;
+}
+
+.article-header ul li a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.article-header ul li a:hover {
+    text-decoration: underline;
+}
+
+.article-body {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E3E3E3;
+    border-right: 1px solid #E3E3E3;
+    margin-right:20px;
+    padding: 20px 20px 0;
+    width: 479px;
+    float: left;
+    overflow: hidden;
+}
+
+.article-body h2.title {
+    font: bold 30px/24px Arial,Helvetica,sans-serif;
+    margin: 0 0 20px;
+}
+
+.article-body h2.title a {
+    color: #000000;
+}
+
+.article-body h2.title sup {
+    font-size: 12px;
+}
+
+.read-more a {
+    background-color:#F2F2F2;
+    color: #333333;
+    font-size: 12px;
+    padding: 8px 18px 8px 12px;
+    text-decoration: none;
+    margin: 20px 0;
+    float: left;
+}
+
+.read-more a:hover {
+    text-decoration: underline;
+}
+
+.read-more-icon {
+    background: url("images/icon.png") no-repeat 0 -22px;
+    float: left;
+    height: 12px;
+    margin: 2px 0 0 6px;
+    width: 12px;
+}
+
+.article-footer {
+    width: 220px;
+    float: left;
+}
+
 /* footer secondary */
 .footer-secondary {
     background: url("images/indentline-light.png") repeat-x scroll left top #DEDEDE;
     padding: 40px 0;
 }
 
-.footer-secondary h4 {
+.footer-secondary h4, .article-date {
     background-color: #333333;
     color: #FFFFFF;
     float: left;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
-    padding:8px 0 7px 15px;
+    padding: 9px 0 8px 15px;
     width: 145px;
 }
 
