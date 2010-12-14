@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 10, 2010
+ * @version 1.0.0.2, Dec 13, 2010
  */
 public class Users {
 
@@ -57,6 +58,22 @@ public class Users {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Determines whether if exists multiple users in current Solo.
+     *
+     * @return {@code true} if exists, {@code false} otherwise
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public boolean hasMultipleUsers() throws JSONException,
+                                             RepositoryException {
+        final JSONArray users =
+                userRepository.get(1, Integer.MAX_VALUE).
+                getJSONArray(Keys.RESULTS);
+
+        return 1 == users.length();
+    }
 
     /**
      * Can the current user access an article specified by the given article id?
