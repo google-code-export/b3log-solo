@@ -136,7 +136,7 @@
                             </div>
                             <div class="clear"></div>
                         </div>
-                        <div class="comment-body">
+                        <div>
                             <div class="left comment-picture">
                                 <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                             </div>
@@ -148,109 +148,103 @@
                     </div>
                 </div>
                 </#list>
-                <div class="comment-title">
-                    ${postCommentsLabel}
-                </div>
-                <div class="comment-body">
-                    <table class="comment" cellpadding="0" cellspacing="0" width="100%">
-                        <tbody>
-                            <tr>
-                                <th width="200px">
-                                    <div>
-                                        ${commentNameLabel}
-                                    </div>
-                                    <span class="arrow-right"></span>
-                                </th>
-                                <td colspan="2">
-                                    <input id="commentName"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <div>
-                                        ${commentEmailLabel}
-                                    </div>
-                                    <span class="arrow-right"></span>
-                                </th>
-                                <td colspan="2">
-                                    <input id="commentEmail"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <div>
-                                        ${commentURLLabel}
-                                    </div>
-                                    <span class="arrow-right"></span>
-                                </th>
-                                <td colspan="2">
-                                    <div id="commentURLLabel">
-                                        http://
-                                    </div>
-                                    <input id="commentURL"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <div>
-                                        ${commentEmotionsLabel}
-                                    </div>
-                                    <span class="arrow-right"></span>
-                                </th>
-                                <td id="emotions" colspan="2">
-                                    <img class="[em00]" src="/skins/classic/emotions/em00.png" alt="${em00Label}" title="${em00Label}" />
-                                    <img class="[em01]" src="/skins/classic/emotions/em01.png" alt="${em01Label}" title="${em01Label}" />
-                                    <img class="[em02]" src="/skins/classic/emotions/em02.png" alt="${em02Label}" title="${em02Label}" />
-                                    <img class="[em03]" src="/skins/classic/emotions/em03.png" alt="${em03Label}" title="${em03Label}" />
-                                    <img class="[em04]" src="/skins/classic/emotions/em04.png" alt="${em04Label}" title="${em04Label}" />
-                                    <img class="[em05]" src="/skins/classic/emotions/em05.png" alt="${em05Label}" title="${em05Label}" />
-                                    <img class="[em06]" src="/skins/classic/emotions/em06.png" alt="${em06Label}" title="${em06Label}" />
-                                    <img class="[em07]" src="/skins/classic/emotions/em07.png" alt="${em07Label}" title="${em07Label}" />
-                                    <img class="[em08]" src="/skins/classic/emotions/em08.png" alt="${em08Label}" title="${em08Label}" />
-                                    <img class="[em09]" src="/skins/classic/emotions/em09.png" alt="${em09Label}" title="${em09Label}" />
-                                    <img class="[em10]" src="/skins/classic/emotions/em10.png" alt="${em10Label}" title="${em10Label}" />
-                                    <img class="[em11]" src="/skins/classic/emotions/em11.png" alt="${em11Label}" title="${em11Label}" />
-                                    <img class="[em12]" src="/skins/classic/emotions/em12.png" alt="${em12Label}" title="${em12Label}" />
-                                    <img class="[em13]" src="/skins/classic/emotions/em13.png" alt="${em13Label}" title="${em13Label}" />
-                                    <img class="[em14]" src="/skins/classic/emotions/em14.png" alt="${em14Label}" title="${em14Label}" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th valign="top">
-                                    <div>
-                                        ${commentContentLabel}
-                                    </div>
-                                    <span class="arrow-right"></span>
-                                </th>
-                                <td colspan="2">
-                                    <textarea rows="10" id="comment"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <div>
-                                        ${captchaLabel}
-                                    </div>
-                                    <span class="arrow-right"></span>
-                                </th>
-                                <td>
-                                    <input id="commentValidate"/>
-                                    <img id="captcha" alt="validate" src="/captcha.do"></img>
-                                </td>
-                                <th>
-                                    <span class="error-msg" id="commentErrorTip"/>
-                                </th>
-                            </tr>
-                            <tr>
-                                <td colspan="3" align="right">
-                                    <button onclick="submitComment();">${submmitCommentLabel}</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <table class="comment" cellpadding="0" cellspacing="0" width="100%">
+                    <tbody>
+                        <tr>
+                            <th width="200px">
+                                <div>
+                                    ${commentNameLabel}
+                                </div>
+                                <span class="arrow-right"></span>
+                            </th>
+                            <td colspan="2">
+                                <input id="commentName"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div>
+                                    ${commentEmailLabel}
+                                </div>
+                                <span class="arrow-right"></span>
+                            </th>
+                            <td colspan="2">
+                                <input id="commentEmail"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div>
+                                    ${commentURLLabel}
+                                </div>
+                                <span class="arrow-right"></span>
+                            </th>
+                            <td colspan="2">
+                                <div id="commentURLLabel">
+                                    http://
+                                </div>
+                                <input id="commentURL"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div>
+                                    ${commentEmotionsLabel}
+                                </div>
+                                <span class="arrow-right"></span>
+                            </th>
+                            <td id="emotions" colspan="2">
+                                <img class="[em00]" src="/skins/community/emotions/em00.png" alt="${em00Label}" title="${em00Label}" />
+                                <img class="[em01]" src="/skins/community/emotions/em01.png" alt="${em01Label}" title="${em01Label}" />
+                                <img class="[em02]" src="/skins/community/emotions/em02.png" alt="${em02Label}" title="${em02Label}" />
+                                <img class="[em03]" src="/skins/community/emotions/em03.png" alt="${em03Label}" title="${em03Label}" />
+                                <img class="[em04]" src="/skins/community/emotions/em04.png" alt="${em04Label}" title="${em04Label}" />
+                                <img class="[em05]" src="/skins/community/emotions/em05.png" alt="${em05Label}" title="${em05Label}" />
+                                <img class="[em06]" src="/skins/community/emotions/em06.png" alt="${em06Label}" title="${em06Label}" />
+                                <img class="[em07]" src="/skins/community/emotions/em07.png" alt="${em07Label}" title="${em07Label}" />
+                                <img class="[em08]" src="/skins/community/emotions/em08.png" alt="${em08Label}" title="${em08Label}" />
+                                <img class="[em09]" src="/skins/community/emotions/em09.png" alt="${em09Label}" title="${em09Label}" />
+                                <img class="[em10]" src="/skins/community/emotions/em10.png" alt="${em10Label}" title="${em10Label}" />
+                                <img class="[em11]" src="/skins/community/emotions/em11.png" alt="${em11Label}" title="${em11Label}" />
+                                <img class="[em12]" src="/skins/community/emotions/em12.png" alt="${em12Label}" title="${em12Label}" />
+                                <img class="[em13]" src="/skins/community/emotions/em13.png" alt="${em13Label}" title="${em13Label}" />
+                                <img class="[em14]" src="/skins/community/emotions/em14.png" alt="${em14Label}" title="${em14Label}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">
+                                <div>
+                                    ${commentContentLabel}
+                                </div>
+                                <span class="arrow-right"></span>
+                            </th>
+                            <td colspan="2">
+                                <textarea rows="10" id="comment"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div>
+                                    ${captchaLabel}
+                                </div>
+                                <span class="arrow-right"></span>
+                            </th>
+                            <td>
+                                <input id="commentValidate"/>
+                                <img id="captcha" alt="validate" src="/captcha.do"></img>
+                            </td>
+                            <th>
+                                <span class="error-msg" id="commentErrorTip"/>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td colspan="3" align="right">
+                                <button onclick="submitComment();">${submmitCommentLabel}</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="clear"></div>
         </div>
         <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript">
@@ -289,7 +283,7 @@
                     + '</div><div class="clear"></div></div><div class="comment-body">'
                     + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
                     + '" src="' + result.commentThumbnailURL + '"/>'
-                    + '</div><div class="comment-content">' + articleUtil.replaceEmotions($("#comment" + state).val(), "classic") + '</div><div class="clear"></div>'
+                    + '</div><div class="comment-content">' + articleUtil.replaceEmotions($("#comment" + state).val(), "community") + '</div><div class="clear"></div>'
                     + '</div></div></div>';
 
                 articleUtil.addCommentAjax(commentHTML, state);
