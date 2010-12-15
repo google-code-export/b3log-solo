@@ -11,7 +11,7 @@ h5{font-size:12px;}
 .header{background:url("images/header.jpg") no-repeat scroll 0 0 transparent;border-bottom:1px solid #A6A6A6;height:65px;padding:25px 30px 0;}
 .body{background:url("images/sidesep.gif") repeat-y scroll right center #FFFFFF;min-height:400px;}
 .side-navi{background:url("images/sidebar_shadow.gif") repeat-x scroll 50% 0 #F7F7F7;font-size:95%;line-height:145%;padding-top:8px;width:300px;}
-.main{background:url("images/main_shadow.gif") repeat-x scroll center top #FFFFFF;padding:13px 15px 15px;width:605px;}
+.main{overflow:hidden;background:url("images/main_shadow.gif") repeat-x scroll center top #FFFFFF;padding:13px 15px 15px;width:605px;}
 .footer{background:url("images/footer.jpg") no-repeat scroll 0 0 transparent;border-top:1px solid #CCCCCC;font-size:11px;height:88px;line-height:145%;padding:0;}
 #logoTitle{outline:none;color:#FFFFFF;display:block;font-family:"Trajan Pro";height:30px;text-decoration:none;}
 .sub-title{border-top:1px solid #FFFFFF;color:#FFFFFF;font-size:10px;padding:0 3px;}
