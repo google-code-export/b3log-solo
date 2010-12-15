@@ -27,7 +27,7 @@ a:hover {text-decoration: underline;}
     background: url("images/icon.png") 0px -65px no-repeat;
     float: left;
     height: 38px;
-    width: 15px;
+    width: 14px;
 }
 
 .star-current {
@@ -296,13 +296,49 @@ a.header-title {
     padding: 40px 20px;
 }
 
+.comment th {
+    padding: 10px 0px 10px 0;
+    text-align: left;
+}
+
+.comment input {
+    color: #666666;
+    padding: 10px 7px;
+    background-color: #FFFFFF;
+    border-top: 1px solid #E3E3E3;
+    border-right: 1px solid #E3E3E3;
+    font: 14px/14px Arial,Helvetica,sans-serif;
+    border-left: 0px;
+    width: 683px;
+}
+
+#commentURLLabel, #commentURLLabelReply {
+    background-color: #FFFFFF;
+    border-left: 0 none;
+    border-right: 0 none;
+    border-top: 1px solid #E3E3E3;
+    color: #666666;
+    float: left;
+    font: 14px/14px Arial,Helvetica,sans-serif;
+    padding: 12px 0 10px 7px;
+}
+
+#commentURL {
+    padding-left: 0px;
+    width: 647px;
+}
+
+#commentValidate {
+    width: 200px;
+}
+
 /* footer secondary */
 .footer-secondary {
     background: url("images/indentline-light.png") repeat-x scroll left top #DEDEDE;
     padding: 40px 0;
 }
 
-.footer-secondary h4, .article-date {
+.footer-secondary h4, .article-date, .comment th div{
     background-color: #333333;
     color: #FFFFFF;
     float: left;
@@ -321,6 +357,10 @@ a.header-title {
 .most-view-count-articles a {
     font: 18px 微软雅黑;
     margin-right: 20px;
+}
+
+.most-view-count-articles span{
+    white-space:nowrap;
 }
 
 .recent-comments div {
