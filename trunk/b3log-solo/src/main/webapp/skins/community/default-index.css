@@ -301,7 +301,7 @@ a.header-title {
     text-align: left;
 }
 
-.comment input {
+.comment input, .comment textarea {
     color: #666666;
     padding: 10px 7px;
     background-color: #FFFFFF;
@@ -330,6 +330,12 @@ a.header-title {
 
 #commentValidate {
     width: 200px;
+}
+
+#emotions img {
+    height: 24px;
+    width: 24px;
+    cursor: pointer;
 }
 
 /* footer secondary */
