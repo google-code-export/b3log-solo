@@ -4,10 +4,12 @@
         <div class="arrow-right"></div>
         <div class="most-view-count-articles">
             <#list mostViewCountArticles as article>
-            <sup>[${article.articleViewCount}]</sup>
-            <a title="${article.articleTitle}" href="${article.articlePermalink}">
-                <b>${article.articleTitle}</b>
-            </a>
+            <span>
+                <sup>[${article.articleViewCount}]</sup>
+                <a title="${article.articleTitle}" href="${article.articlePermalink}">
+                    <b>${article.articleTitle}</b>
+                </a>
+            </span>
             </#list>
         </div>
         <div class="clear"></div>

@@ -152,27 +152,36 @@
                     ${postCommentsLabel}
                 </div>
                 <div class="comment-body">
-                    <table class="form">
+                    <table class="comment" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                             <tr>
-                                <th>
-                                    ${commentName1Label}
+                                <th width="200px">
+                                    <div>
+                                        ${commentNameLabel}
+                                    </div>
+                                    <span class="arrow-right"></span>
                                 </th>
                                 <td colspan="2">
-                                    <input class="normalInput" id="commentName"/>
+                                    <input id="commentName"/>
                                 </td>
                             </tr>
                             <tr>
                                 <th>
-                                    ${commentEmail1Label}
+                                    <div>
+                                        ${commentEmailLabel}
+                                    </div>
+                                    <span class="arrow-right"></span>
                                 </th>
                                 <td colspan="2">
-                                    <input class="normalInput" id="commentEmail"/>
+                                    <input id="commentEmail"/>
                                 </td>
                             </tr>
                             <tr>
                                 <th>
-                                    ${commentURL1Label}
+                                    <div>
+                                        ${commentURLLabel}
+                                    </div>
+                                    <span class="arrow-right"></span>
                                 </th>
                                 <td colspan="2">
                                     <div id="commentURLLabel">
@@ -183,9 +192,12 @@
                             </tr>
                             <tr>
                                 <th>
-                                    ${commentEmotions1Label}
+                                    <div>
+                                        ${commentEmotionsLabel}
+                                    </div>
+                                    <span class="arrow-right"></span>
                                 </th>
-                                <td id="emotions">
+                                <td id="emotions" colspan="2">
                                     <img class="[em00]" src="/skins/classic/emotions/em00.png" alt="${em00Label}" title="${em00Label}" />
                                     <img class="[em01]" src="/skins/classic/emotions/em01.png" alt="${em01Label}" title="${em01Label}" />
                                     <img class="[em02]" src="/skins/classic/emotions/em02.png" alt="${em02Label}" title="${em02Label}" />
@@ -205,7 +217,10 @@
                             </tr>
                             <tr>
                                 <th valign="top">
-                                    ${commentContent1Label}
+                                    <div>
+                                        ${commentContentLabel}
+                                    </div>
+                                    <span class="arrow-right"></span>
                                 </th>
                                 <td colspan="2">
                                     <textarea rows="10" id="comment"></textarea>
@@ -213,10 +228,13 @@
                             </tr>
                             <tr>
                                 <th>
-                                    ${captcha1Label}
+                                    <div>
+                                        ${captchaLabel}
+                                    </div>
+                                    <span class="arrow-right"></span>
                                 </th>
                                 <td>
-                                    <input class="normalInput" id="commentValidate"/>
+                                    <input id="commentValidate"/>
                                     <img id="captcha" alt="validate" src="/captcha.do"></img>
                                 </td>
                                 <th>
@@ -285,15 +303,15 @@
                     $("#replyForm").remove();
 
                     var commentFormHTML = "<table class='form comment-reply' id='replyForm'><tbody><tr><th>${commentName1Label}"
-                        + "</th><td colspan='2'><input class='normalInput' id='commentNameReply'/>"
+                        + "</th><td colspan='2'><input id='commentNameReply'/>"
                         + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
-                        + "<input class='normalInput' id='commentEmailReply'/></td></tr><tr>"
+                        + "<input id='commentEmailReply'/></td></tr><tr>"
                         + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
                         + "http://</div><input id='commentURLReply'/>"
                         + "</td></tr><tr><th>${commentEmotions1Label}</th><td id='emotionsReply'>" + $("#emotions").html()
                         + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
                         + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                        + "<th>${captcha1Label}</th><td><input class='normalInput' id='commentValidateReply'/>"
+                        + "<th>${captcha1Label}</th><td><input id='commentValidateReply'/>"
                         + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
                         + "<span class='error-msg' id='commentErrorTipReply'/>"
                         + "</th></tr><tr><td colspan='3' align='right'>"
@@ -309,14 +327,6 @@
                     });
 
                     articleUtil.insertEmotions("Reply");
-
-                    $("#commentURLReply").focus(function (event) {
-                        if ($.browser.version !== "7.0") {
-                            $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
-                        }
-                    }).blur(function () {
-                        $("#commentURLLabelReply").css({"border":"2px inset #CCCCCC","border-right":"0px"});
-                    }).width($("#commentReply").width() - $("#commentURLLabelReply").width());
 
                     $("#commentNameReply").focus();
                 }
@@ -403,15 +413,6 @@
             }
 
             var loadAction = function () {
-                // comment url
-                $("#commentURL").focus(function (event) {
-                    if ($.browser.version !== "7.0") {
-                        $("#commentURLLabel").css({"border":"2px solid #73A6FF","border-right":"0px"});
-                    }
-                }).blur(function () {
-                    $("#commentURLLabel").css({"border":"2px inset #CCCCCC","border-right":"0px"});
-                }).width($("#comment").width() - $("#commentURLLabel").width());
-
                 // emotions
                 articleUtil.insertEmotions();
                 replaceCommentsEm("#comments .comment-content");
