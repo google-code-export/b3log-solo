@@ -1,5 +1,5 @@
 <#list articles as article>
-<div class="article">
+<div class="marginBottom40">
     <div class="article-header">
         <div class="article-date">
             <#if article.hasUpdated>
@@ -32,7 +32,7 @@
             </li>
         </ul>
     </div>
-    <div class="article-body">
+    <div class="article-main">
         <h2 class="title">
             <a class="noUnderline" href="${article.articlePermalink}">
                 ${article.articleTitle}
@@ -48,7 +48,7 @@
             </sup>
             </#if>
         </h2>
-        <div>
+        <div class="article-body">
             ${article.articleAbstract}
         </div>
         <div class="read-more">

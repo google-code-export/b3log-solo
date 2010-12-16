@@ -20,29 +20,22 @@
     </head>
     <body>
         <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
-                </div>
-                <div class="right main">
-                    <h2>${tag1Label}
-                        <span id="tagArticlesTag">
-                            ${tag.tagTitle}
-                        </span>(${tag.tagPublishedRefCount})
-                    </h2>
-                    <#include "common-articles.ftl">
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
-            </div>
+        <div class="header">
+            <#include "article-header.ftl">
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
+        <div class="content">
+            <h2>${tag1Label}
+                <span id="tagArticlesTag">
+                    ${tag.tagTitle}
+                </span>(${tag.tagPublishedRefCount})
+            </h2>
+            <#include "common-articles.ftl">
+        </div>
+        <div>
+            <#include "article-side.ftl">
+        </div>
+        <div class="footer">
+            <#include "article-footer.ftl">
+        </div>
     </body>
 </html>

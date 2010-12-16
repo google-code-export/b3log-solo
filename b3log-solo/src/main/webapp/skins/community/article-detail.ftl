@@ -28,7 +28,7 @@
             <#include "article-header.ftl">
         </div>
         <div class="content">
-            <div class="article">
+            <div class="marginBottom40">
                 <div class="article-header">
                     <div class="article-date">
                         <#if article.hasUpdated>
@@ -61,7 +61,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="article-body article-detail-body">
+                <div class="article-main article-detail-body">
                     <h2 class="title">
                         <a href="${article.articlePermalink}">${article.articleTitle}</a>
                         <#if article.hasUpdated>
@@ -75,7 +75,9 @@
                         </sup>
                         </#if>
                     </h2>
-                    ${article.articleContent}
+                    <div class="article-body">
+                        ${article.articleContent}
+                    </div>
                     <div class="tags">
                         <img width="16px" height="16px" src="/skins/community/images/tags.gif" alt="${tagsLabel}"/>
                         ${tags1Label}

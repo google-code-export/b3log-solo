@@ -52,13 +52,12 @@
             </div>
         </div>
         <div class="content">
-            <h1 class="error-title">${sorryLabel}</h1>
             <div class="error-panel">
-                <h1>${notFoundLabel}</h1>
-                ${returnTo1Label}<a href="http://${blogHost}">${blogTitle}</a>
+                <h2>${notFoundLabel}</h2>
+                ${returnTo1Label} <a href="http://${blogHost}">${blogTitle}</a>
             </div>
         </div>
-        <div class="footer">
+        <div class="footer error-footer">
             <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
             Powered by
             <a href="http://b3log-solo.googlecode.com" target="_blank" style="text-decoration: none;">
