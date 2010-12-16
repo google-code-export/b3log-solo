@@ -17,16 +17,26 @@
 package org.b3log.solo.action.feed;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 /**
  * Feed.
  *
+ * <p>
+ * See <a href="http://tools.ietf.org/html/rfc4287">RFC 4278</a> for more
+ * details.
+ * </p>
+ *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 1, 2010
+ * @version 1.0.0.1, Dec 16, 2010
+ * @see Entry
+ * @see Category
  */
 final class Feed {
 
@@ -272,12 +282,58 @@ final class Feed {
 }
 
 /**
+ * Category.
+ *
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.0, Dec 16, 2010
+ */
+final class Category {
+
+    /**
+     * Term variable.
+     */
+    private static final String TERM_VARIABLE = "${term}";
+    /**
+     * Category element.
+     */
+    private static final String CATEGORY_ELEMENT =
+            "<category term=\"" + TERM_VARIABLE + "\" />";
+    /**
+     * Term.
+     */
+    private String term;
+
+    /**
+     * Gets the term.
+     *
+     * @return term
+     */
+    public String getTerm() {
+        return term;
+    }
+
+    /**
+     * Sets the term with the specified term.
+     *
+     * @param term the specified term
+     */
+    public void setTerm(final String term) {
+        this.term = term;
+    }
+
+    @Override
+    public String toString() {
+        return CATEGORY_ELEMENT.replace(TERM_VARIABLE, term);
+    }
+}
+
+/**
  * Entry.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 1, 2010
+ * @version 1.0.0.1, Dec 16, 2010
  */
-class Entry {
+final class Entry {
 
     /**
      * Link variable.
@@ -293,6 +349,36 @@ class Entry {
      */
     private static final String END_TITLE_ELEMENT =
             "</title>";
+    /**
+     * Start author element.
+     */
+    private static final String START_AUTHOR_ELEMENT =
+            "<author>";
+    /**
+     * End author element.
+     */
+    private static final String END_AUTHOR_ELEMENT =
+            "</author>";
+    /**
+     * Start name element.
+     */
+    private static final String START_NAME_ELEMENT =
+            "<name>";
+    /**
+     * End name element.
+     */
+    private static final String END_NAME_ELEMENT =
+            "</name>";
+    /**
+     * Start URI element.
+     */
+    private static final String START_URI_ELEMENT =
+            "<uri>";
+    /**
+     * End URI element.
+     */
+    private static final String END_URI_ELEMENT =
+            "</uri>";
     /**
      * Start entry element.
      */
@@ -358,6 +444,54 @@ class Entry {
      * Link.
      */
     private String link;
+    /**
+     * Author.
+     */
+    private String author;
+    /**
+     * URI.
+     */
+    private String uri;
+    /**
+     * Categories.
+     */
+    private Set<Category> categories = new HashSet<Category>();
+
+    /**
+     * Gets the URI.
+     *
+     * @return URI
+     */
+    public String getURI() {
+        return uri;
+    }
+
+    /**
+     * Sets the URI with the specified URI.
+     *
+     * @param uri the specified URI
+     */
+    public void setURI(final String uri) {
+        this.uri = uri;
+    }
+
+    /**
+     * Gets the author.
+     *
+     * @return author
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    /**
+     * Sets the author with the specified author.
+     *
+     * @param author the specified author
+     */
+    public void setAuthor(final String author) {
+        this.author = author;
+    }
 
     /**
      * Gets the id.
@@ -449,15 +583,45 @@ class Entry {
         this.summary = summary;
     }
 
+    /**
+     * Gets the categories.
+     * 
+     * @return categories
+     */
+    public Set<Category> getCatetories() {
+        return Collections.unmodifiableSet(categories);
+    }
+
+    /**
+     * Adds the specified category.
+     *
+     * @param category the specified category
+     */
+    public void addCatetory(final Category category) {
+        categories.add(category);
+    }
+
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(START_ENTRY_ELEMENT);
-
-        stringBuilder.append(START_TITLE_ELEMENT);
+        stringBuilder.append(START_ENTRY_ELEMENT).append(START_TITLE_ELEMENT);
         stringBuilder.append(title);
         stringBuilder.append(END_TITLE_ELEMENT);
+
+        stringBuilder.append(START_AUTHOR_ELEMENT);
+        stringBuilder.append(START_NAME_ELEMENT);
+        stringBuilder.append(author);
+        stringBuilder.append(END_NAME_ELEMENT);
+        stringBuilder.append(START_URI_ELEMENT);
+        stringBuilder.append(uri);
+        stringBuilder.append(END_URI_ELEMENT);
+        stringBuilder.append(END_AUTHOR_ELEMENT);
+
+
+        for (final Category category : categories) {
+            stringBuilder.append(category.toString());
+        }
 
         stringBuilder.append(LINK_ELEMENT.replace(LINK_VARIABLE, link));
 
