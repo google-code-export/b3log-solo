@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 3, 2010
+ * @version 1.0.0.1, Dec 16, 2010
  */
 public final class Comments {
 
@@ -68,6 +68,9 @@ public final class Comments {
             final String commentId = comment.getString(Keys.OBJECT_ID);
             final JSONObject articleCommentRelation =
                     articleCommentRepository.getByCommentId(commentId);
+            if (null == articleCommentRelation) {
+                continue; // This comment is a page comment or comment has been removed just
+            }
             final String articleId = articleCommentRelation.getString(
                     Article.ARTICLE + "_" + Keys.OBJECT_ID);
             if (!articleRepository.isPublished(articleId)) {
