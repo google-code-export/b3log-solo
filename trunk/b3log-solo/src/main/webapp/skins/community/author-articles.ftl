@@ -24,9 +24,6 @@
             <#include "article-header.ftl">
         </div>
         <div class="content">
-            <h2>
-                By: XXXXXX
-            </h2>
             <#include "common-articles.ftl">
         </div>
         <div>
