@@ -83,12 +83,14 @@ a.header-title {
 
 .header-navi-main .tabs {
     list-style: none;
+    height: 49px;
 }
 
 .header-navi-main .tab {
     float: left;
     font-size: 16px;
     margin-left: 1px;
+    height: 49px;
 }
 
 .header-navi-main .tab:hover {
@@ -103,7 +105,7 @@ a.header-title {
     background: url("images/icon.png") no-repeat scroll -13px -22px;
     float: left;
     height: 13px;
-    margin: 21px 0 0 6px;
+    margin: 8px 0 0  6px;
     width: 13px;
     cursor: pointer;
 }
@@ -112,8 +114,8 @@ a.header-title {
     color: #FFFFFF;
     display: block;
     font-weight: bold;
-    line-height: 47px;
-    padding: 2px 16px 0;
+    line-height: 22px;
+    padding: 15px 16px 12px;
     text-decoration: none;
 }
 
@@ -121,7 +123,7 @@ a.header-title {
     background: url("images/icon.png") no-repeat;
     float: left;
     height: 22px;
-    margin: 13px 0 0 6px;
+    margin-left: 6px;
     width: 22px;
 }
 

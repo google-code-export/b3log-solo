@@ -62,7 +62,7 @@
                     <a href="/blog-articles-feed.do">
                         <span class="left">${atomLabel}</span>
                         <span class="atom-icon"></span>
-                        <span class="clear"></span
+                        <span class="clear"></span>
                     </a>
                 </li>
             </ul>

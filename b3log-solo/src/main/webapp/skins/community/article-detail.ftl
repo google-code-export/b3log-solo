@@ -239,7 +239,7 @@
                         </tr>
                         <tr>
                             <td colspan="3" align="right">
-                                <button onclick="submitComment();">${submmitCommentLabel}</button>
+                                <button class="button" onclick="submitComment();">${submmitCommentLabel}</button>
                             </td>
                         </tr>
                     </tbody>
