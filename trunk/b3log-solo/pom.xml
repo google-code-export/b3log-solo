@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.3.9, Dec 11, 2010
+    Version: 1.0.4.0, Dec 16, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -20,7 +20,7 @@
     </description>
     <inceptionYear>2010</inceptionYear>
 
-    <!-- Version -->
+    <!-- Properties -->
     <properties>
         <org.b3log.latke.version>0.3.6</org.b3log.latke.version>
         <org.b3log.latke-repository-gae.version>
@@ -40,6 +40,7 @@
         <maven-checkstyle-plugin.version>2.5</maven-checkstyle-plugin.version>
         <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
         <maven-gae-plugin.version>0.7.3</maven-gae-plugin.version>
+        <gae.dev_sever.port>8080</gae.dev_sever.port>
         <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
         <!-- Unit Test -->
         <testng.version>5.9</testng.version>
@@ -387,6 +388,7 @@
                     <serverId>appengine.google.com</serverId>
                     <sdkDir>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</sdkDir>
                     <appDir>${project.build.directory}/${project.build.finalName}</appDir>
+                    <port>${gae.dev_sever.port}</port>
                 </configuration>
             </plugin>
 
