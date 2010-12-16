@@ -399,6 +399,10 @@ a.header-title {
     margin: 10px 0;
 }
 
+.comment #captchaReply {
+    margin-left: 10px;
+}
+
 #commentURLLabel, #commentURLLabelReply {
     background-color: #FFFFFF;
     border-left: 0 none;
