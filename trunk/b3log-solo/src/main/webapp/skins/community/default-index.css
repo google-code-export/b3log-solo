@@ -64,6 +64,11 @@ input[type='button']:hover {
     background-color: #333333;
     background:  -moz-linear-gradient(center top , #333333 20%, #212121 100%) repeat scroll 0 0 transparent;
 }
+
+.marginBottom40 {
+    margin-bottom: 40px;
+}
+
 /* header */
 .header-user {
     height: 150px;
@@ -159,10 +164,6 @@ a.header-title {
 }
 
 /* article list */
-.article {
-    margin-bottom: 40px;
-}
-
 .article-header {
     color: #9F9F9F;
     float: left;
@@ -189,7 +190,7 @@ a.header-title {
     display: block;
 }
 
-.article-body {
+.article-main {
     background-color: #FFFFFF;
     border-bottom: 1px solid #E3E3E3;
     border-right: 1px solid #E3E3E3;
@@ -200,12 +201,12 @@ a.header-title {
     overflow: hidden;
 }
 
-.article-body h2.title {
+.article-main h2.title {
     font: bold 30px/29px Arial,Helvetica,sans-serif;
     margin: 0 0 20px;
 }
 
-.article-body h2.title sup {
+.article-main h2.title sup {
     font-size: 12px;
 }
 
@@ -558,4 +559,23 @@ a.header-title {
     position: absolute;
     right: 214px;
     top: 9px;
+}
+
+/* error */
+.error-footer {
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+}
+
+.error-panel {
+    border-right: 1px solid #E3E3E3;
+    border-bottom: 1px solid #E3E3E3;
+    background-color: #FFFFFF;
+    padding: 20px;
+}
+
+.error-panel h2 {
+    font: bold 30px/24px;
+    margin: 0 0 20px;
 }

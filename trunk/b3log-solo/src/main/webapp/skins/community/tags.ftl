@@ -20,26 +20,19 @@
     </head>
     <body>
         <#include "common-top.ftl">
+        <div class="header">
+            <#include "article-header.ftl">
+        </div>
         <div class="content">
-            <div class="header">
-                <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
-                </div>
-                <div class="right main">
-                    <div id="tagsPanel">
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
+            <div id="tagsPanel" class="marginBottom40">
             </div>
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
+        <div>
+            <#include "article-side.ftl">
+        </div>
+        <div class="footer">
+            <#include "article-footer.ftl">
+        </div>
         <script type="text/javascript">
             var randomColor = function () {
                 var arrHex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
