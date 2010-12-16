@@ -44,7 +44,7 @@
                 <li class="tab" id="header-pages">
                     <a href="/">
                         <span class="left">
-                            XXXXXX
+                            ${pageLabel}
                         </span>
                         <span class="arrow-dowm-icon"></span>
                         <span class="clear"></span>

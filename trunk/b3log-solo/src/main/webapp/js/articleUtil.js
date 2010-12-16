@@ -37,7 +37,7 @@ $.extend(ArticleUtil.prototype, {
         });
     },
 
-    validateComment: function (state, tip) {
+    validateComment: function (state) {
         if (state === undefined) {
             state = '';
         }

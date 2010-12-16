@@ -29,50 +29,52 @@
                 </a>
                 <span class="right">
                     <span class="left">${userName}&nbsp;|&nbsp;</span>
-                    <span id="admin"></span>
+                    <span class='left homeIcon' onclick="window.location='/';" title='${indexLabel}'></span>
+                    <span class='left'>&nbsp;|&nbsp;</span>
+                    <span onclick='adminUtil.adminLogout();' class='left logoutIcon' title='${logoutLabel}'></span>
                 </span>
                 <div class="clear"></div>
             </div>
             <div id="allPanel">
                 <div class="left side">
                     <ul id="sideNavi">
-                        <li id="articleTab" onclick="changeList(this);clearAtricle();">
+                        <li id="articleTab" onclick="adminUtil.changeList(this);adminUtil.clearAtricle();">
                             <div class="left postIcon"></div>
                             <span>&nbsp;${postArticleLabel}</span>
                         </li>
-                        <li id="article-listTab" onclick="changeList(this);">
+                        <li id="article-listTab" onclick="adminUtil.changeList(this);">
                             <div class="left articlesIcon"></div>
                             <span>&nbsp;${articleListLabel}</span>
                         </li>
-                        <li id="draft-listTab" onclick="changeList(this);">
+                        <li id="draft-listTab" onclick="adminUtil.changeList(this);">
                             <div class="left draftsIcon"></div>
                             <span>&nbsp;${draftListLabel}</span>
                         </li>
-                        <li id="file-listTab" onclick="changeList(this);">
+                        <li id="file-listTab" onclick="adminUtil.changeList(this);">
                             <div class="left fileIcon"></div>
                             <span>&nbsp;${fileListLabel}</span>
                         </li>
-                        <li id="pageTab" onclick="changeList(this);">
+                        <li id="pageTab" onclick="adminUtil.changeList(this);">
                             <div class="left pageIcon"></div>
                             <span>&nbsp;${pageMgmtLabel}</span>
                         </li>
-                        <li id="link-listTab" onclick="changeList(this);">
+                        <li id="link-listTab" onclick="adminUtil.changeList(this);">
                             <div class="left linkIcon"></div>
                             <span>&nbsp;${linkManagementLabel}</span>
                         </li>
-                        <li id="article-syncTab" onclick="changeList(this);">
+                        <li id="article-syncTab" onclick="adminUtil.changeList(this);">
                             <div class="left blogSyncIcon"></div>
                             <span>&nbsp;${blogSyncLabel}</span>
                         </li>
-                        <li id="preferenceTab" onclick="changeList(this);">
+                        <li id="preferenceTab" onclick="adminUtil.changeList(this);">
                             <div class="left preferenceIcon"></div>
                             <span>&nbsp;${preferenceLabel}</span>
                         </li>
-                        <li id="user-listTab" onclick="changeList(this);">
+                        <li id="user-listTab" onclick="adminUtil.changeList(this);">
                             <div class="left usersIcon"></div>
                             <span>&nbsp;${userManageLabel}</span>
                         </li>
-                        <li id="othersTab" onclick="changeList(this);">
+                        <li id="othersTab" onclick="adminUtil.changeList(this);">
                             <div class="left othersIcon"></div>
                             <span>&nbsp;${othersLabel}</span>
                         </li>
@@ -116,131 +118,14 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="js/adminUtil.js"></script>
         <script type="text/javascript">
-            var PAGE_SIZE = 18,
-            WINDOW_SIZE = 10;
+            var adminUtil = new AdminUtil({
+                "userRole": "${userRole}",
+                "loadingLabel": "${loadingLabel}"
+            });
 
-            var adminLogin = function () {
-                var loginURL = jsonRpc.adminService.getLoginURL("/admin-index.do");
-                window.location.href = loginURL;
-            }
-
-            var adminLogout = function () {
-                var logoutURL = jsonRpc.adminService.getLogoutURL();
-                window.location.href = logoutURL;
-            }
-            
-            var changeList = function (it) {
-                var tabs = ['article', 'article-list', 'draft-list', 'link-list', 'preference',
-                    'article-sync', 'page', 'file-list', 'others', 'user-list'];
-                for (var i = 0; i < tabs.length; i++) {
-                    if (it.id === tabs[i] + "Tab") {
-                        if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
-                            $("#loadMsg").text("${loadingLabel}");
-                            $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
-                        } else {
-                            switch (tabs[i]) {
-                                case "others":
-                                    getCacheState();
-                                    break;
-                                case "article-list":
-                                    getArticleList(1);
-                                    break;
-                                case "draft-list":
-                                    getDraftList(1);
-                                    break;
-                                case "page":
-                                    getPageList(1);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        $("#" + tabs[i] + "Panel").show();
-                        $("#" + tabs[i] + "Tab").addClass("selected");
-                    } else {
-                        $("#" + tabs[i] + "Panel").hide();
-                        $("#" + tabs[i] + "Tab").removeClass("selected");
-                    }
-                }
-            }
-
-            var clearAtricle = function () {
-                $("#title").removeData("articleStatus").val("");
-                beforeInitArticle();
-                if (tinyMCE.get("articleContent")) {
-                    tinyMCE.get('articleContent').setContent("");
-                } else {
-                    $("#articleContent").val("");
-                }
-                if (tinyMCE.get('abstract')) {
-                    tinyMCE.get('abstract').setContent("");
-                } else {
-                    $("#abstract").val("");
-                }
-                $("#tag").val("");
-                $("#permalink").val("");
-            }
-
-            var init = function () {
-                // role
-                if ("${userRole}" !== "adminRole") {
-                    var unUsed = ['link-list', 'preference', 'file-list', 'article-sync', 'page', 'others', 'user-list'];
-                    for (var i = 0; i < unUsed.length; i++) {
-                        $("#" + unUsed[i] + "Tab").remove();
-                        $("#" + unUsed[i] + "Panel").remove();
-                    }
-                }
-
-                // tipMsg
-                setInterval(function () {
-                    if($("#tipMsg").text() !== "") {
-                        setTimeout(function () {
-                            $("#tipMsg").text("");
-                        }, 8000);
-                    }
-                }, 6000);
-
-                // resize
-                var $main = $("#main");
-                var leftWidth = $(".side").width() + $.bowknot.strToInt($main.css("padding-left"))
-                    + $.bowknot.strToInt($main.css("padding-right")) + 17;
-
-                var windowWidth = document.documentElement.clientWidth - leftWidth;
-                if (windowWidth < 700) {
-                    windowWidth = 700;
-                }
-                $("#main").css("width", windowWidth);
-                $(window).resize(function () {
-                    var windowWidth = document.documentElement.clientWidth - leftWidth;
-                    if (windowWidth < 700) {
-                        windowWidth = 700;
-                    }
-                    $("#main").css("width", windowWidth);
-                });
-
-                // sideNavi action
-                $("#sideNavi li").mouseover(function () {
-                    $(this).addClass('hover');
-                }).mouseout(function () {
-                    $(this).removeClass('hover');
-                });
-
-                // login state
-                var isLoggedIn = jsonRpc.adminService.isLoggedIn();
-                if (isLoggedIn) {
-                    var loginHTML = "<div class='left homeIcon' onclick=\"window.location='/';\" title='${indexLabel}'></div>"
-                        + "<div class='left'>&nbsp;|&nbsp;</div>"
-                        + "<div onclick='adminLogout();' class='left logoutIcon' title='${logoutLabel}'></div>";
-                    $("#admin").append(loginHTML);
-                } else {
-                    $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
-                }
-                $("#articlePanel").load("admin-article.do",function () {
-                    $("#loadMsg").text("");
-                });
-            }
-            init();
+            adminUtil.init();
         </script>
     </body>
 </html>

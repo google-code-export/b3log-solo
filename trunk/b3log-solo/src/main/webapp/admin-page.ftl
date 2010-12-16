@@ -51,8 +51,8 @@
         pageListCurrentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": PAGE_SIZE,
-            "paginationWindowSize": WINDOW_SIZE
+            "paginationPageSize": adminUtil.PAGE_SIZE,
+            "paginationWindowSize": adminUtil.WINDOW_SIZE
         };
         jsonRpc.pageService.getPages(function (result, error) {
             switch (result.sc) {
@@ -239,7 +239,7 @@
         $("#pagePagination").paginate({
             bindEvent: "getPageList",
             pageCount: 1,
-            windowSize: WINDOW_SIZE,
+            windowSize: adminUtil.WINDOW_SIZE,
             currentPage: 1,
             style: "google",
             isGoTo: false,
@@ -348,7 +348,7 @@
                         } else {
                             $("#pageContent").val("");
                         }
-                        if (pagePagesLength === PAGE_SIZE) {
+                        if (pagePagesLength === adminUtil.PAGE_SIZE) {
                             pageListPageCount++;
                         }
                         getPageList(pageListPageCount);
