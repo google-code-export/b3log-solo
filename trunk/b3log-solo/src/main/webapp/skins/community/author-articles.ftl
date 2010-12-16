@@ -23,10 +23,11 @@
         <div class="header">
             <#include "article-header.ftl">
         </div>
-        <div class="body">
-            <div class="main">
-                <#include "common-articles.ftl">
-            </div>
+        <div class="content">
+            <h2>
+                By: XXXXXX
+            </h2>
+            <#include "common-articles.ftl">
         </div>
         <div>
             <#include "article-side.ftl">
