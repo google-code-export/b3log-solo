@@ -12,7 +12,7 @@
         <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreDefault.css"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/tree-house/default-index.css"/>
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
