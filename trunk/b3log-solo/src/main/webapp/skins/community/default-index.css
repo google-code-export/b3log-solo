@@ -308,7 +308,8 @@ a.header-title {
 
 #comments {
     background: url("images/indentline-light.png") repeat-x scroll left top transparent;
-    padding: 30px 0px;
+    padding-top: 30px;
+    position: relative;
 }
 #comments>div{
     margin-top: 10px;
@@ -348,6 +349,20 @@ a.header-title {
 #comments .comment-content .reply a:hover {
     background-color: #E6E6E6;
     text-decoration: none;
+}
+
+.comment-body-ref {
+    position: absolute;
+    border: 1px solid #E3E3E3;
+    background-color: #FFFFFF;
+    padding: 10px 0 0 10px;
+}
+
+#comments .comment-body-ref .comment-content{
+    border-width: 0px;
+    margin-bottom: 0;
+    width: 629px;
+    padding: 10px;
 }
 
 .comment-title {
@@ -440,7 +455,7 @@ a.header-title {
 
 .recent-comments div {
     float: left;
-    margin: 0 0 11px 11px;
+    margin-left:11px;
     text-align: center;
 }
 
