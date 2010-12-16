@@ -40,6 +40,7 @@
                             + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle
                             + "' class='noUnderline'>"+ articles[i].articleViewCount + "</a>";;
                         articleData[i].id = articles[i].oId;
+                        articleData[i].author = articles[i].articleAuthorEmail;
                     }
                     articleDataTemp = articleData;
                     $("#articleList").table("update",{
@@ -77,6 +78,11 @@
                     index: "tags",
                     minWidth: 110,
                     style: "padding-left: 6px; overflow: hidden;font-size:11px; "
+                }, {
+                    name: "${commentNameLabel}",
+                    index: "author",
+                    width: 130,
+                    style: "padding-left: 6px; overflow: hidden;"
                 }, {
                     textAlign: "center",
                     name: "${createDateLabel}",

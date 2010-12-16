@@ -28,6 +28,7 @@
                     <span style="color: orangered; font-weight: bold;">Solo</span>
                 </a>
                 <span class="right">
+                    <span class="left">${userName}&nbsp;|&nbsp;</span>
                     <span id="admin"></span>
                 </span>
                 <div class="clear"></div>
@@ -182,6 +183,15 @@
             }
 
             var init = function () {
+                // role
+                if ("${roleName}" !== "admin") {
+                    var unUsed = ['link-list', 'preference', 'file-list', 'article-sync', 'page', 'others', 'user-list'];
+                    for (var i = 0; i < unUsed.length; i++) {
+                        $("#" + unUsed[i] + "Tab").remove();
+                        $("#" + unUsed[i] + "Panel").remove();
+                    }
+                }
+
                 // tipMsg
                 setInterval(function () {
                     if($("#tipMsg").text() !== "") {
