@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.model;
 
 /**
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Dec 14, 2010
+ * @version 1.0.1.9, Dec 16, 2010
  */
 public final class Common {
 
@@ -128,6 +127,10 @@ public final class Common {
      * Author id.
      */
     public static final String AUTHOR_ID = "authorId";
+    /**
+     * Key of is administrator logged in.
+     */
+    public static final String IS_ADMIN_LOGGED_IN = "isAdminLoggedIn";
 
     /**
      * Private default constructor.

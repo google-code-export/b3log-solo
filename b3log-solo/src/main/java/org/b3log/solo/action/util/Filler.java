@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.util;
 
 import com.google.inject.Inject;
@@ -56,6 +55,7 @@ import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Tags;
+import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Dec 13, 2010
+ * @version 1.0.2.2, Dec 16, 2010
  */
 public final class Filler {
 
@@ -93,6 +93,11 @@ public final class Filler {
      */
     @Inject
     private Articles articleUtils;
+    /**
+     * User utilities.
+     */
+    @Inject
+    private Users userUtils;
     /**
      * Comment utilities.
      */
@@ -415,6 +420,23 @@ public final class Filler {
     }
 
     /**
+     * Fills common-top.ftl.
+     *
+     * @param dataModel data model
+     * @throws Exception exception
+     */
+    private void fillCommonTop(final Map<String, Object> dataModel)
+            throws Exception {
+        final JSONObject preference = preferenceUtils.getPreference();
+        if (null == preference) {
+            throw new Exception("Not found preference");
+        }
+
+        final boolean isAdminLoggedIn = userUtils.isAdminLoggedIn();
+        dataModel.put(Common.IS_ADMIN_LOGGED_IN, isAdminLoggedIn);
+    }
+
+    /**
      * Fills article-header.ftl.
      *
      * @param dataModel data model
@@ -423,7 +445,8 @@ public final class Filler {
     public void fillBlogHeader(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
+        if (null
+            == preference) {
             throw new Exception("Not found preference");
         }
 
@@ -440,6 +463,7 @@ public final class Filler {
         dataModel.put(Preference.META_DESCRIPTION,
                       preference.getString(Preference.META_DESCRIPTION));
 
+        fillCommonTop(dataModel);
         fillPageNavigations(dataModel);
         fillStatistic(dataModel);
     }
