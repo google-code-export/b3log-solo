@@ -18,7 +18,7 @@
                 <a class="left" title="${article.authorName}" href="/author-articles.do?oId=${article.authorId}">
                     ${article.authorName}
                 </a>
-                <span class="clear"/>
+                <span class="clear"></span>
             </li>
             <li>
                 <a href="${article.articlePermalink}" title="${viewLabel}">

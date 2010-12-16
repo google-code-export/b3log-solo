@@ -1,5 +1,6 @@
 <div class="footer-secondary">
     <div class="content">
+        <#if 0 != mostViewCountArticles?size>
         <h4>${mostViewCountArticlesLabel}</h4>
         <div class="arrow-right"></div>
         <div class="most-view-count-articles">
@@ -13,6 +14,8 @@
             </#list>
         </div>
         <div class="clear"></div>
+        </#if>
+        <#if 0 != recentComments?size>
         <div class="hr"></div>
         <h4>${recentCommentsLabel}</h4>
         <div class="arrow-right"></div>
@@ -31,6 +34,7 @@
             </#list>
         </div>
         <div class="clear"></div>
+        </#if>
     </div>
 </div>
 <div class="footer-widgets">
