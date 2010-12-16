@@ -32,7 +32,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.action.ActionModule;
@@ -48,8 +47,8 @@ import org.b3log.solo.util.Statistics;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Dec 13, 2010
- * @see AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
+ * @version 1.0.1.8, Dec 16, 2010
+ * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
  * java.util.Map, freemarker.template.Template)
