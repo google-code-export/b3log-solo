@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Dec 10, 2010
+ * @version 1.0.2.7, Dec 16, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -813,6 +813,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                         oldArticle.getBoolean(ARTICLE_PUT_TOP));
             article.put(ARTICLE_HAD_BEEN_PUBLISHED,
                         oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
+            article.put(ARTICLE_AUTHOR_EMAIL,
+                        oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
             // Step 7: Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
