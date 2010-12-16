@@ -70,6 +70,7 @@ button:hover,.button:hover{border-color:#BBB;}
 .usersIcon{background-position:-112px -32px;}
 .goTopIcon{background-position:-64px -32px;top:45%;position:fixed;right:20px;}
 .goBottomIcon{background-position:-80px -32px;bottom:40%;position:fixed;right:20px;}
+.article-body{overflow:hidden;}
 .article-body blockquote{border:1px dotted #98A47F;margin:12px;padding:12px;font-style:italic;}
 .article-body h1{font-size:2em;margin:.67em 0}
 .article-body h2{font-size:1.5em;margin:.75em 0}

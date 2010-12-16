@@ -80,8 +80,8 @@
         userListCurrentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": PAGE_SIZE,
-            "paginationWindowSize": WINDOW_SIZE
+            "paginationPageSize": adminUtil.PAGE_SIZE,
+            "paginationWindowSize": adminUtil.WINDOW_SIZE
         };
         jsonRpc.adminService.getUsers(function (result, error) {
             switch (result.sc) {
@@ -164,8 +164,8 @@
                                         case "GET_USER_SUCC":
                                             var $userEmailUpdate = $("#userEmailUpdate");
                                             $("#userNameUpdate").val(result.user.userName).data("userInfo", {
-                                               'oId': event.data.id[0],
-                                               "userRole": event.data.userRole[0]
+                                                'oId': event.data.id[0],
+                                                "userRole": event.data.userRole[0]
                                             });
                                             $userEmailUpdate.val(result.user.userEmail);
                                             if ("adminRole" === event.data.userRole[0]) {
@@ -238,7 +238,7 @@
         $("#userPagination").paginate({
             bindEvent: "getUserList",
             pageCount: 1,
-            windowSize: WINDOW_SIZE,
+            windowSize: adminUtil.WINDOW_SIZE,
             currentPage: 1,
             style: "google",
             isGoTo: false,
@@ -316,7 +316,7 @@
                     case "ADD_USER_SUCC":
                         $("#userName").val("");
                         $("#userEmail").val("");
-                        if (usersLength === PAGE_SIZE) {
+                        if (usersLength === adminUtil.PAGE_SIZE) {
                             userListPageCount++;
                         }
                         getUserList(userListPageCount);

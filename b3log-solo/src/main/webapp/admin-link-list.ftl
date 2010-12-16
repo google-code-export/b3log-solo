@@ -119,8 +119,8 @@
         linkListCurrentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": PAGE_SIZE,
-            "paginationWindowSize": WINDOW_SIZE
+            "paginationPageSize": adminUtil.PAGE_SIZE,
+            "paginationWindowSize": adminUtil.WINDOW_SIZE
         };
         jsonRpc.linkService.getLinks(function (result, error) {
             switch (result.sc) {
@@ -209,7 +209,7 @@
                     case "ADD_LINK_SUCC":
                         $("#linkTitle").val("");
                         $("#linkAddress").val("");
-                        if (linksLength === PAGE_SIZE) {
+                        if (linksLength === adminUtil.PAGE_SIZE) {
                             linkListPageCount++;
                         }
                         getLinkList(linkListPageCount);
@@ -317,7 +317,7 @@
         $("#linkPagination").paginate({
             bindEvent: "getLinkList",
             pageCount: 1,
-            windowSize: WINDOW_SIZE,
+            windowSize: adminUtil.WINDOW_SIZE,
             currentPage: 1,
             style: "google",
             isGoTo: false,

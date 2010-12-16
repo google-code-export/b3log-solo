@@ -12,8 +12,8 @@
         articleListCurrentPage = pageNum;
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": PAGE_SIZE,
-            "paginationWindowSize": WINDOW_SIZE,
+            "paginationPageSize": adminUtil.PAGE_SIZE,
+            "paginationWindowSize": adminUtil.WINDOW_SIZE,
             "articleIsPublished": true
         };
 
@@ -296,7 +296,7 @@
         $("#articlePagination").paginate({
             bindEvent: "getArticleList",
             pageCount: 1,
-            windowSize: WINDOW_SIZE,
+            windowSize: adminUtil.WINDOW_SIZE,
             currentPage: 1,
             style: "google",
             isGoTo: false,
