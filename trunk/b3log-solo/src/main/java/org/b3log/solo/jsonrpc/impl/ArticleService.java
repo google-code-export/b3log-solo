@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.users.UserService;
@@ -47,6 +46,7 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.SortDirection;
@@ -54,6 +54,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
@@ -70,7 +71,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Dec 16, 2010
+ * @version 1.0.2.8, Dec 16, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -477,10 +478,18 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
+                final JSONObject author = articleUtils.getAuthor(article);
+                final String authorName = author.getString(User.USER_NAME);
+                article.put(Common.AUTHOR_NAME, authorName);
+
                 // Remove unused properties
                 article.remove(ARTICLE_CONTENT);
                 article.remove(ARTICLE_ABSTRACT);
                 article.remove(ARTICLE_UPDATE_DATE);
+                article.remove(ARTICLE_AUTHOR_EMAIL);
+                article.remove(ARTICLE_HAD_BEEN_PUBLISHED);
+                article.remove(ARTICLE_IS_PUBLISHED);
+
             }
             ret.put(ARTICLES, articles);
 
