@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.4.0, Dec 16, 2010
+    Version: 1.0.4.1, Dec 17, 2010
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -11,7 +11,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>solo</artifactId>
     <packaging>war</packaging>
-    <version>0.2.1</version>
+    <version>0.2.5</version>
     <name>B3log Solo</name>
     <url>http://b3log-solo.googlecode.com</url>
     <description>
@@ -22,12 +22,12 @@
 
     <!-- Properties -->
     <properties>
-        <org.b3log.latke.version>0.3.6</org.b3log.latke.version>
+        <org.b3log.latke.version>0.3.7</org.b3log.latke.version>
         <org.b3log.latke-repository-gae.version>
-            0.3.6
+            0.3.7
         </org.b3log.latke-repository-gae.version>
         <org.b3log.latke-cache-gae.version>
-            0.3.6
+            0.3.7
         </org.b3log.latke-cache-gae.version>
         <xmlrpc-client.version>3.1.3</xmlrpc-client.version>
         <commons-fileupload.version>1.2.2</commons-fileupload.version>

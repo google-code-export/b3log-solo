@@ -50,7 +50,7 @@ import org.b3log.solo.upgrade.UpgradeModule;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Dec 13, 2010
+ * @version 1.0.2.2, Dec 16, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -76,7 +76,8 @@ public final class ActionModule extends AbstractActionModule {
      * Public default constructor.
      */
     public ActionModule() {
-        putJabsorbInitParam("gzip_threshold", "-1");
+        // Compress response if it larger than 200k
+        putJabsorbInitParam("gzip_threshold", "200");
     }
 
     /**

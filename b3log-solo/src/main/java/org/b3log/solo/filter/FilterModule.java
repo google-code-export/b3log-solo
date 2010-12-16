@@ -26,7 +26,7 @@ import org.b3log.solo.action.ActionModule;
  * Guice</a> configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 7, 2010
+ * @version 1.0.0.8, Dec 16, 2010
  */
 public final class FilterModule extends ServletModule {
 
@@ -41,6 +41,9 @@ public final class FilterModule extends ServletModule {
             bind(InitCheckFilter.class).in(Scopes.SINGLETON);
             filter("/*").through(InitCheckFilter.class);
         }
+
+        bind(GZIPFilter.class).in(Scopes.SINGLETON);
+        filter("/*").through(GZIPFilter.class);
 
         bind(PageCacheFilter.class).in(Scopes.SINGLETON);
         filter("/*").through(PageCacheFilter.class);
