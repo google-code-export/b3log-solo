@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import java.util.logging.Level;
@@ -25,11 +24,13 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.model.User;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
 /**
@@ -64,6 +65,11 @@ public final class AdminIndexAction extends AbstractAdminAction {
      */
     @Inject
     private Preferences preferenceUtils;
+    /**
+     * User utilities.
+     */
+    @Inject
+    private Users userUtils;
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -87,6 +93,12 @@ public final class AdminIndexAction extends AbstractAdminAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+
+            final JSONObject currentUser = userUtils.getCurrentUser();
+            final String userName = currentUser.getString(User.USER_NAME);
+            final String roleName = currentUser.getString(User.USER_ROLE);
+            ret.put(User.USER_NAME, userName);
+            ret.put(User.USER_ROLE, roleName);
 
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
