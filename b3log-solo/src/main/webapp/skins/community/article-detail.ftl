@@ -47,7 +47,7 @@
                             <a class="left" title="${article.authorName}" href="/author-articles.do?oId=${article.authorId}">
                                 ${article.authorName}
                             </a>
-                            <span class="clear"/>
+                            <span class="clear"></span>
                         </li>
                         <li>
                             <a href="${article.articlePermalink}" title="${viewLabel}">
@@ -63,7 +63,7 @@
                 </div>
                 <div class="article-body article-detail-body">
                     <h2 class="title">
-                        <a class="noUnderline" href="${article.articlePermalink}">${article.articleTitle}</a>
+                        <a href="${article.articlePermalink}">${article.articleTitle}</a>
                         <#if article.hasUpdated>
                         <sup class="red">
                             ${updatedLabel}
@@ -115,39 +115,35 @@
             <div id="comments" name="comments">
                 <#list articleComments as comment>
                 <div id="commentItem${comment.oId}">
-                    <div class="comment-panel">
-                        <div class="comment-title">
+                    <img class="left" alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                    <div class="comment-content left">
+                        <div class="comment-top">
                             <#if "http://" == comment.commentURL>
-                            <a name="${comment.oId}" class="left">${comment.commentName}</a>
+                            <a name="${comment.oId}" class="left">${comment.commentName}</a>&nbsp;
                             <#else>
                             <a name="${comment.oId}" href="${comment.commentURL}"
-                               target="_blank" class="left">${comment.commentName}</a>
+                               target="_blank" class="left">${comment.commentName}</a>&nbsp;
                             </#if>
                             <#if comment.isReply>
-                            &nbsp;@&nbsp;<a
-                                href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
-                                onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                            @
+                            <a href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
+                               onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
+                               onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">
+                                ${comment.commentOriginalCommentName}</a>
                             </#if>
-                            <div class="right">
-                                ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                <a class="noUnderline"
-                                   href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
-                            </div>
-                            <div class="clear"></div>
+                            ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
                         </div>
-                        <div>
-                            <div class="left comment-picture">
-                                <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
-                            </div>
-                            <div class="comment-content">
-                                ${comment.commentContent}
-                            </div>
-                            <div class="clear"></div>
+                        ${comment.commentContent}
+                        <div class="reply">
+                            <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                         </div>
                     </div>
+                    <div class="clear"></div>
                 </div>
                 </#list>
+                <div class="comment-title">
+                    ${postCommentsLabel}
+                </div>
                 <table class="comment" cellpadding="0" cellspacing="0" width="100%">
                     <tbody>
                         <tr>
@@ -158,7 +154,7 @@
                                 <span class="arrow-right"></span>
                             </th>
                             <td colspan="2">
-                                <input id="commentName"/>
+                                <input type="text" id="commentName"/>
                             </td>
                         </tr>
                         <tr>
@@ -169,7 +165,7 @@
                                 <span class="arrow-right"></span>
                             </th>
                             <td colspan="2">
-                                <input id="commentEmail"/>
+                                <input type="text" id="commentEmail"/>
                             </td>
                         </tr>
                         <tr>
@@ -183,7 +179,7 @@
                                 <div id="commentURLLabel">
                                     http://
                                 </div>
-                                <input id="commentURL"/>
+                                <input type="text" id="commentURL"/>
                             </td>
                         </tr>
                         <tr>
@@ -230,16 +226,16 @@
                                 <span class="arrow-right"></span>
                             </th>
                             <td>
-                                <input id="commentValidate"/>
+                                <input type="text" id="commentValidate"/>
                                 <img id="captcha" alt="validate" src="/captcha.do"></img>
                             </td>
                             <th>
-                                <span class="error-msg" id="commentErrorTip"/>
+                                <span class="right error-msg" id="commentErrorTip"/>
                             </th>
                         </tr>
                         <tr>
-                            <td colspan="3" align="right">
-                                <button class="button" onclick="submitComment();">${submmitCommentLabel}</button>
+                            <td colspan="3">
+                                <input type="button" onclick="submitComment();" value="${submmitCommentLabel}"/>
                             </td>
                         </tr>
                     </tbody>
@@ -262,7 +258,9 @@
                     state = "";
                 }
                     
-                var commentHTML = '<div id="commentItem' + result.oId + '"><div class="comment-panel"><div class="comment-title">';
+                var commentHTML = '<div id="commentItem' + result.oId + '">'
+                    + '<img class="left" alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL 
+                    + '"/><div class="comment-content left"><div class="comment-top">';
 
                 if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
                     commentHTML += '<a name="' + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
@@ -272,19 +270,16 @@
                 }
 
                 if (state !== "") {
-                    var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId).find(".comment-title a").first().text();
+                    var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId + " .comment-top a").first().text();
                     commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + articleUtil.currentCommentId + '"'
                         + 'onmouseover="showComment(this, \'' + articleUtil.currentCommentId + '\');"'
                         + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                 }
 
-                commentHTML += '<div class="right">' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
-                    + '&nbsp;<a class="noUnderline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
-                    + '</div><div class="clear"></div></div><div class="comment-body">'
-                    + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
-                    + '" src="' + result.commentThumbnailURL + '"/>'
-                    + '</div><div class="comment-content">' + articleUtil.replaceEmotions($("#comment" + state).val(), "community") + '</div><div class="clear"></div>'
-                    + '</div></div></div>';
+                commentHTML += '&nbsp;' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
+                    + '</div>' + articleUtil.replaceEmotions($("#comment" + state).val(), "community")
+                    + '<div class="reply"><a href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
+                    + '</div></div><div class="clear"></div></div>';
 
                 articleUtil.addCommentAjax(commentHTML, state);
             }
@@ -296,20 +291,21 @@
                 } else {
                     $("#replyForm").remove();
 
-                    var commentFormHTML = "<table class='form comment-reply' id='replyForm'><tbody><tr><th>${commentName1Label}"
-                        + "</th><td colspan='2'><input id='commentNameReply'/>"
-                        + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
-                        + "<input id='commentEmailReply'/></td></tr><tr>"
-                        + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
-                        + "http://</div><input id='commentURLReply'/>"
-                        + "</td></tr><tr><th>${commentEmotions1Label}</th><td id='emotionsReply'>" + $("#emotions").html()
-                        + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
-                        + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                        + "<th>${captcha1Label}</th><td><input id='commentValidateReply'/>"
-                        + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
-                        + "<span class='error-msg' id='commentErrorTipReply'/>"
-                        + "</th></tr><tr><td colspan='3' align='right'>"
-                        + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
+                    var commentFormHTML = "<table width='100%' cellspacing='0' cellpadding='0' class='comment' id='replyForm'><tbody>"
+                        + "<tr><th width='200px'><div>${commentNameLabel}</div><span class='arrow-right'></span></th>"
+                        + "<td colspan='2'><input type='text' id='commentNameReply'/></td></tr>"
+                        + "<tr><th><div>${commentEmailLabel}</div><span class='arrow-right'></span></th>"
+                        + "<td colspan='2'><input type='text' id='commentEmailReply'/></td></tr>"
+                        + "<tr><th><div>${commentURL1Label}</div><span class='arrow-right'></span></th>"
+                        + "<td colspan='2'><div id='commentURLLabelReply'>http://</div><input type='text' id='commentURLReply'/></td></tr>"
+                        + "<tr><th><div>${commentEmotionsLabel}</div><span class='arrow-right'></span></th>"
+                        + "<td id='emotionsReply'>" + $("#emotions").html() + "</td></tr>"
+                        + "<tr><th valign='top'><div>${commentContentLabel}</div><span class='arrow-right'></span></th>"
+                        + "<td colspan='2'><textarea rows='10' cols='96' id='commentReply'></textarea></td></tr>"
+                        + "<tr><th><div>${captchaLabel}</div><span class='arrow-right'></span></th>"
+                        + "<td><input type='text' id='commentValidateReply'/><img id='captchaReply' alt='validate' src='/captcha.do?"
+                        + new Date().getTime() + "'></img></td><th><span class='error-msg right' id='commentErrorTipReply'/></th></tr>"
+                        + "<tr><td colspan='3'><input type='button' onclick=\"submitCommentReply('" + id + "');\" value='${submmitCommentLabel}'/>"
                         + "</td></tr></tbody></table>";
 
                     $("#commentItem" + id).append(commentFormHTML);
