@@ -40,7 +40,7 @@
                             + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle
                             + "' class='noUnderline'>"+ articles[i].articleViewCount + "</a>";;
                         articleData[i].id = articles[i].oId;
-                        articleData[i].author = articles[i].articleAuthorEmail;
+                        articleData[i].author = articles[i].authorName;
                     }
                     articleDataTemp = articleData;
                     $("#articleList").table("update",{
@@ -81,7 +81,7 @@
                 }, {
                     name: "${commentNameLabel}",
                     index: "author",
-                    width: 130,
+                    width: 100,
                     style: "padding-left: 6px; overflow: hidden;"
                 }, {
                     textAlign: "center",

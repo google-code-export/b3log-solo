@@ -20,7 +20,7 @@ var ArticleUtil = function (tip) {
 };
 
 $.extend(ArticleUtil.prototype, {
-    commentUtil: {
+    articleUtil: {
         version:"0.0.0.2",
         author: "lly219@gmail.com"
     },

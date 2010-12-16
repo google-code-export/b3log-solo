@@ -32,6 +32,7 @@
                             + articles[i].articleCommentCount + "</div>";
                         articleData[i].articleViewCount = articles[i].articleViewCount;
                         articleData[i].id = articles[i].oId;
+                        articleData[i].author = articles[i].authorName;
                     }
                     $("#draftList").table("update",{
                         data: articleData
@@ -68,6 +69,11 @@
                     index: "tags",
                     minWidth: 110,
                     style: "padding-left: 6px; overflow: hidden;font-size:11px; "
+                }, {
+                    name: "${commentNameLabel}",
+                    index: "author",
+                    width: 100,
+                    style: "padding-left: 6px; overflow: hidden;"
                 }, {
                     textAlign: "center",
                     name: "${createDateLabel}",
