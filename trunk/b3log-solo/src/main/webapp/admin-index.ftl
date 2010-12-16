@@ -184,7 +184,7 @@
 
             var init = function () {
                 // role
-                if ("${roleName}" !== "admin") {
+                if ("${userRole}" !== "adminRole") {
                     var unUsed = ['link-list', 'preference', 'file-list', 'article-sync', 'page', 'others', 'user-list'];
                     for (var i = 0; i < unUsed.length; i++) {
                         $("#" + unUsed[i] + "Tab").remove();
