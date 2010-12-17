@@ -22,7 +22,7 @@ var AdminUtil = function (tip) {
 
 $.extend(AdminUtil.prototype, {
     adminUtil: {
-        version:"0.0.0.1",
+        version:"0.0.0.2",
         author: "lly219@gmail.com"
     },
     
@@ -129,6 +129,19 @@ $.extend(AdminUtil.prototype, {
        
         $("#articlePanel").load("admin-article.do",function () {
             $("#loadMsg").text("");
+        });
+    },
+
+    // others
+    removeUnusedTags: function () {
+        var tip = this.tip;
+        $("#tipMsg").text("");
+        jsonRpc.tagService.removeUnusedTags(function (result, error) {
+            if (result.sc === "REMOVE_UNUSED_TAGS_SUCC") {
+                $("#tipMsg").text(tip.removeSuccLabel);
+            } else {
+                $("#tipMsg").text(tip.removeFailLabel);
+            }
         });
     }
 });

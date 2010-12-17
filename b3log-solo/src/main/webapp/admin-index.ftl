@@ -122,7 +122,9 @@
         <script type="text/javascript">
             var adminUtil = new AdminUtil({
                 "userRole": "${userRole}",
-                "loadingLabel": "${loadingLabel}"
+                "loadingLabel": "${loadingLabel}",
+                "removeSuccLabel": "${removeSuccLabel}",
+                "removeFailLabel": "${removeFailLabel}"
             });
 
             adminUtil.init();

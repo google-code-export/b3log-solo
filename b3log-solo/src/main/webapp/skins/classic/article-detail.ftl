@@ -119,18 +119,20 @@
                         <div id="commentItem${comment.oId}">
                             <div class="comment-panel">
                                 <div class="comment-title">
-                                    <#if "http://" == comment.commentURL>
-                                    <a name="${comment.oId}" class="left">${comment.commentName}</a>
-                                    <#else>
-                                    <a name="${comment.oId}" href="${comment.commentURL}"
-                                       target="_blank" class="left">${comment.commentName}</a>
-                                    </#if>
-                                    <#if comment.isReply>
-                                    &nbsp;@&nbsp;<a
-                                        href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
-                                        onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                        onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
-                                    </#if>
+                                    <div class="left">
+                                        <#if "http://" == comment.commentURL>
+                                        <a name="${comment.oId}">${comment.commentName}</a>
+                                        <#else>
+                                        <a name="${comment.oId}" href="${comment.commentURL}"
+                                           target="_blank">${comment.commentName}</a>
+                                        </#if>
+                                        <#if comment.isReply>
+                                        &nbsp;@&nbsp;<a
+                                            href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
+                                            onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
+                                            onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                        </#if>
+                                    </div>
                                     <div class="right">
                                         ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
                                         <a class="noUnderline"
@@ -254,13 +256,13 @@
                         state = "";
                     }
                     
-                    var commentHTML = '<div id="commentItem' + result.oId + '"><div class="comment-panel"><div class="comment-title">';
+                    var commentHTML = '<div id="commentItem' + result.oId + '"><div class="comment-panel"><div class="comment-title"><div class="left">';
 
                     if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-                        commentHTML += '<a name="' + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
+                        commentHTML += '<a name="' + result.oId + '">' + $("#commentName" + state).val() + '</a>';
                     } else {
                         commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
-                            + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
+                            + result.oId + '">' + $("#commentName" + state).val() + '</a>';
                     }
 
                     if (state !== "") {
@@ -270,7 +272,7 @@
                             + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                     }
 
-                    commentHTML += '<div class="right">' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
+                    commentHTML += '</div><div class="right">' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
                         + '&nbsp;<a class="noUnderline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
                         + '</div><div class="clear"></div></div><div class="comment-body">'
                         + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
