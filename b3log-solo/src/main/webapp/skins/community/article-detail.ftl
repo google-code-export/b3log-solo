@@ -238,7 +238,7 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input type="button" onclick="submitComment();" value="${submmitCommentLabel}"/>
+                            <input type="button" onclick="articleUtil.submitComment('${article.oId}');" value="${submmitCommentLabel}"/>
                         </td>
                     </tr>
                 </tbody>
@@ -252,14 +252,13 @@
                 mailInvalid: "${mailInvalidLabel}",
                 commentContentCannotEmpty: "${commentContentCannotEmptyLabel}",
                 captchaCannotEmpty: "${captchaCannotEmptyLabel}",
-                randomArticles: "${randomArticles1Label}"
+                randomArticles: "${randomArticles1Label}",
+                "captchaErrorLabel": "${captchaErrorLabel}",
+                "loadingLabel": "${loadingLabel}"
             });
                 
             var addComment = function (result, state) {
-                if (state === undefined) {
-                    state = "";
-                }
-                    
+                alert(1);
                 var commentHTML = '<div id="commentItem' + result.oId + '">'
                     + '<img class="left" alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL 
                     + '"/><div class="comment-content left"><div class="comment-top">';
@@ -295,11 +294,11 @@
 
                     var commentFormHTML = "<table width='100%' cellspacing='0' cellpadding='0' class='comment' id='replyForm'><tbody>"
                         + "<tr><th width='200px'><div>${commentNameLabel}</div><span class='arrow-right'></span></th>"
-                        + "<td colspan='2'><input type='text' id='commentNameReply'/></td></tr>"
+                        + "<td colspan='2'><input type='text' id='commentNameReply' value='" + articleUtil.readCookie("commentName") + "'/></td></tr>"
                         + "<tr><th><div>${commentEmailLabel}</div><span class='arrow-right'></span></th>"
-                        + "<td colspan='2'><input type='text' id='commentEmailReply'/></td></tr>"
+                        + "<td colspan='2'><input type='text' id='commentEmailReply' value='" + articleUtil.readCookie("commentEmail") + "'/></td></tr>"
                         + "<tr><th><div>${commentURL1Label}</div><span class='arrow-right'></span></th>"
-                        + "<td colspan='2'><div id='commentURLLabelReply'>http://</div><input type='text' id='commentURLReply'/></td></tr>"
+                        + "<td colspan='2'><div id='commentURLLabelReply'>http://</div><input type='text' id='commentURLReply' value='" + articleUtil.readCookie("commentURL") + "'/></td></tr>"
                         + "<tr><th><div>${commentEmotionsLabel}</div><span class='arrow-right'></span></th>"
                         + "<td id='emotionsReply'>" + $("#emotions").html() + "</td></tr>"
                         + "<tr><th valign='top'><div>${commentContentLabel}</div><span class='arrow-right'></span></th>"
@@ -307,87 +306,28 @@
                         + "<tr><th><div>${captchaLabel}</div><span class='arrow-right'></span></th>"
                         + "<td><input type='text' id='commentValidateReply'/><img id='captchaReply' alt='validate' src='/captcha.do?"
                         + new Date().getTime() + "'></img></td><th><span class='error-msg right' id='commentErrorTipReply'/></th></tr>"
-                        + "<tr><td colspan='3'><input type='button' onclick=\"submitCommentReply('" + id + "');\" value='${submmitCommentLabel}'/>"
+                        + "<tr><td colspan='3'><input type='button' onclick=\"articleUtil.submitComment('${article.oId}', '" + id + "', 'Reply');\" value='${submmitCommentLabel}'/>"
                         + "</td></tr></tbody></table>";
 
                     $("#commentItem" + id).append(commentFormHTML);
 
                     $("#commentValidateReply").keypress(function (event) {
                         if (event.keyCode === 13) {
-                            submitCommentReply(id);
+                            articleUtil.submitComment('${article.oId}', id, 'Reply');
                         }
                     });
 
                     articleUtil.insertEmotions("Reply");
 
-                    $("#commentNameReply").focus();
+                    if (articleUtil.readCookie("commentName")  === null) {
+                        $("#commentNameReply").focus();
+                    } else {
+                        $("#commentReply").focus();
+                    }
                 }
                 articleUtil.currentCommentId = id;
             }
-
-            var submitCommentReply = function (id) {
-                if (articleUtil.validateComment("Reply")) {
-                    $("#commentErrorTipReply").html("${loadingLabel}");
-                    var requestJSONObject = {
-                        "oId": "${article.oId}",
-                        "commentContent": $("#commentReply").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "commentEmail": $("#commentEmailReply").val(),
-                        "commentURL": "http://" + $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "captcha": $("#commentValidateReply").val(),
-                        "commentOriginalCommentId": id
-                    };
-
-                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
-                        if (result && !error) {
-                            switch (result.sc) {
-                                case "COMMENT_ARTICLE_SUCC":
-                                    addComment(result, "Reply");
-                                    break;
-                                case "CAPTCHA_ERROR":
-                                    $("#commentErrorTipReply").html("${captchaErrorLabel}");
-                                    $("#captchaReply").attr("src", "/captcha.do?code=" + Math.random());
-                                    $("#commentValidateReply").val("").focus();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }, requestJSONObject);
-                }
-            }
-
-            var submitComment = function () {
-                if (articleUtil.validateComment()) {
-                    $("#commentErrorTip").html("${loadingLabel}");
-                    var requestJSONObject = {
-                        "oId": "${article.oId}",
-                        "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "commentEmail": $("#commentEmail").val(),
-                        "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
-                        "captcha": $("#commentValidate").val()
-                    };
-
-                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
-                        if (result && !error) {
-                            switch (result.sc) {
-                                case "COMMENT_ARTICLE_SUCC":
-                                    addComment(result);
-                                    break;
-                                case "CAPTCHA_ERROR":
-                                    $("#commentErrorTip").html("${captchaErrorLabel}");
-                                    $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
-                                    $("#commentValidate").val("").focus();
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }, requestJSONObject);
-                }
-            }
-
+            
             var showComment = function (it, id) {
                 if ( $("#commentItemRef" + id).length > 0) {
                     $("#commentItemRef" + id).show();
@@ -468,7 +408,7 @@
         </div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
-            articleUtil.loadTool("${article.oId}");
+            articleUtil.loadTool();
         </script>
     </body>
 </html>
