@@ -38,9 +38,6 @@ $.extend(ArticleUtil.prototype, {
     },
 
     validateComment: function (state) {
-        if (state === undefined) {
-            state = '';
-        }
         var commentName = $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
         commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
         if (2 > commentName.length || commentName.length > 20) {
@@ -80,9 +77,6 @@ $.extend(ArticleUtil.prototype, {
         if (state === "") {
             $("#commentErrorTip").html("");
             $("#comment").val("");
-            $("#commentEmail").val("");
-            $("#commentURL").val("");
-            $("#commentName").val("");
             $("#commentValidate").val("");
             $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
         } else {
@@ -145,9 +139,13 @@ $.extend(ArticleUtil.prototype, {
         // submit comment
         $("#commentValidate").keypress(function (event) {
             if (event.keyCode === 13) {
-                submitComment();
+                articleUtil.submitComment();
             }
         });
+
+        $("#commentEmail").val(this.readCookie("commentEmail"));
+        $("#commentURL").val(this.readCookie("commentURL"));
+        $("#commentName").val(this.readCookie("commentName"));
     },
 
     loadRandomArticles: function () {
@@ -174,7 +172,7 @@ $.extend(ArticleUtil.prototype, {
         });
     },
 
-    loadTool: function (articleId) {
+    loadTool: function () {
         // Stack initialize
         var openspeed = 300;
         var closespeed = 300;
@@ -233,6 +231,48 @@ $.extend(ArticleUtil.prototype, {
                 marginRight: '0'
             });
         });
+    },
+
+    submitComment: function (articleId, commentId, statue) {
+        if (!statue) {
+            statue = '';
+        }
+        var tip = this.tip;
+        if (this.validateComment(statue)) {
+            $("#commentErrorTip" + statue).html(this.tip.loadingLabel);
+            var requestJSONObject = {
+                "oId": articleId,
+                "commentContent": $("#comment" + statue).val().replace(/(^\s*)|(\s*$)/g, ""),
+                "commentEmail": $("#commentEmail" + statue).val(),
+                "commentURL": "http://" + $("#commentURL" + statue).val().replace(/(^\s*)|(\s*$)/g, ""),
+                "commentName": $("#commentName" + statue).val().replace(/(^\s*)|(\s*$)/g, ""),
+                "captcha": $("#commentValidate" + statue).val()
+            };
+
+            if (statue === "") {
+                requestJSONObject.commentOriginalCommentId = commentId;
+            }
+            jsonRpc.commentService.addCommentToArticle(function (result, error) {
+                if (result && !error) {
+                    switch (result.sc) {
+                        case "COMMENT_ARTICLE_SUCC":
+                            addComment(result, statue);
+                            break;
+                        case "CAPTCHA_ERROR":
+                            $("#commentErrorTip" + statue).html(tip.captchaErrorLabel);
+                            $("#captcha" + statue).attr("src", "/captcha.do?code=" + Math.random());
+                            $("#commentValidate" + statue).val("").focus();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }, requestJSONObject);
+
+            this.createCookie("commentName", requestJSONObject.commentName, 365);
+            this.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
+            this.createCookie("commentURL", $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""), 365);
+        }
     },
 
     createCookie: function (name,value,days) {
