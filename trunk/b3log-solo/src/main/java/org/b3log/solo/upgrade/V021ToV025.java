@@ -58,46 +58,46 @@ import org.json.JSONObject;
  *   <ul>
  *     <li>
  *       Adds a property(named {@value Article#ARTICLE_IS_PUBLISHED}) to
- *       {@link Article article} entity
+ *       entity {@link Article article}
  *     </li>
  *     <li>
  *       Adds a property(named {@value Article#ARTICLE_AUTHOR_EMAIL}) to
- *       {@link Article article} entity
+ *       entity {@link Article article}
  *     </li>
  *     <li>
  *       Renames property name from {@value #OLD_ADMIN_EMAIL_PROPERTY_NAME} to
- *       {@value Preference#ADMIN_EMAIL} of {@link Preference preference} entity.
+ *       entity {@value Preference#ADMIN_EMAIL} of {@link Preference preference}
  *     </li>
  *     <li>
  *       Adds a property(named {@value Tag#TAG_PUBLISHED_REFERENCE_COUNT}) to
- *       {@link Tag tag} entity
+ *       entity {@link Tag tag}
  *     </li>
  *     <li>
  *       Adds a property(named {@value ArchiveDate#ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT})
- *       to {@link ArchiveDate archive date} entity
+ *       to entity {@link ArchiveDate archive date}
  *     </li>
  *     <li>
  *       Adds a property(named {@value Article#ARTICLE_HAD_BEEN_PUBLISHED})
- *       to {@link Article article} entity
+ *       to entity {@link Article article}
  *     </li>
  *     <li>
  *       Adds a property(named {@value Link#LINK_ORDER})
- *       to {@link Link link} entity
+ *       to entity {@link Link link}
  *     </li>
  *     <li>
- *       Saves the administrator to {@value User#USER} entities.
+ *       Saves the administrator to {@value User#USER} entities
  *     </li>
  *     <li>
- *       Adds a property(named {@value Preference#ARTICLE_UPDATE_HINT_ENABLED}
- *       to {@link Preference preference} entity.
+ *       Adds a property(named {@value Preference#ENABLE_ARTICLE_UPDATE_HINT}
+ *       to entity {@link Preference preference}
  *     </li>
  *     <li>
  *       Adds a property(named {@value Statistic#STATISTIC_PUBLISHED_ARTICLE_COUNT}
- *       to {@link Statistic statistic} entity.
+ *       to entity {@link Statistic statistic}
  *     </li>
  *     <li>
  *       Adds a property(named {@value Statistic#STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT}
- *       to {@link Statistic statistic} entity.
+ *       to entity {@link Statistic statistic}
  *     </li>
  *   </ul>
  * </p>
