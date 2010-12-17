@@ -61,6 +61,6 @@ _细节_：<br/>
 如果开启“有更新”配置，前台页面（文章列表、文章）将显示“有更新”，并将该文章排序靠前。
 ===评论===
 ===多用户===
- *“置顶”/“取消置顶”功能只有管理员可以使用
+ * “置顶”/“取消置顶”功能只有管理员可以使用
  * 非管理员用户只能更新、删除自己的文章，删除自己文章的评论
  * 一旦用户不只有管理员用户时，Solo 将认为启用了多用户，此时[http://code.google.com/p/b3log-solo/wiki/SupportedBloggingServiceForArticleImport 文章导入]、[http://code.google.com/p/b3log-solo/wiki/SupportedBloggingServiceForSyncMgmt 同步管理]将不可用
