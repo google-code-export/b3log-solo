@@ -8,18 +8,9 @@
         <span style="color: orangered; font-weight: bold;">Solo</span>
     </a>
     <span class="right">
-        <span id="admin"></span>
+        <span id="admin">
+            <span class="left">${currentUser.userName}&nbsp;| &nbsp;</span>
+        </span>
     </span>
     <div class="clear"></div>
 </div>
-<script type="text/javascript">
-    var adminLogin = function () {
-        var loginURL = jsonRpc.adminService.getLoginURL("/admin-index.do");
-        window.location.href = loginURL;
-    }
-
-    var adminLogout = function () {
-        var logoutURL = jsonRpc.adminService.getLogoutURL();
-        window.location.href = logoutURL;
-    }
-</script>

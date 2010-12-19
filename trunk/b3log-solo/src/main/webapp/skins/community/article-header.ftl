@@ -1,30 +1,42 @@
+<#if 1 != users?size>
 <div class="header-user">
-    ${currentUser.oId}
-    <div class="star"></div>
-    <div class="star-current"></div>
-    ${noticeBoard}
-    <div id="statistic">
-        <span>${viewCount1Label}
-            <span class='error-msg'>
-                ${statistic.statisticBlogViewCount}
+    <div class=" content">
+        <#list users as user>
+        <div class="star">
+            <a href="/author-articles.do?oId=${user.oId}">
+                ${user.userName}
+            </a>
+        </div>
+        </#list>
+        <div class="clear"></div>
+        <div class="left none">
+            ${noticeBoard}
+        </div>
+        <div class="right none">
+            <span>${viewCount1Label}
+                <span class='error-msg'>
+                    ${statistic.statisticBlogViewCount}
+                </span>
+                &nbsp;&nbsp;
             </span>
-            &nbsp;&nbsp;
-        </span>
-        <span>
-            ${articleCount1Label}
-            <span class='error-msg'>
-                ${statistic.statisticPublishedBlogArticleCount}
+            <span>
+                ${articleCount1Label}
+                <span class='error-msg'>
+                    ${statistic.statisticPublishedBlogArticleCount}
+                </span>
+                &nbsp;&nbsp;
             </span>
-            &nbsp;&nbsp;
-        </span>
-        <span>
-            ${commentCount1Label}
-            <span class='error-msg'>
-                ${statistic.statisticPublishedBlogCommentCount}
+            <span>
+                ${commentCount1Label}
+                <span class='error-msg'>
+                    ${statistic.statisticPublishedBlogCommentCount}
+                </span>
             </span>
-        </span>
+        </div>
+        <div class="clear"></div>
     </div>
 </div>
+</#if>
 <div class="header-navi">
     <div class="header-navi-main content">
         <div class="left">
@@ -71,3 +83,11 @@
         <div class="clear"></div>
     </div>
 </div>
+<script type="text/javascript">
+    $("#users a").each(function () {
+        var it = this;
+        if (window.location.search === it.search) {
+            it.className = "star-current";
+        }
+    });
+</script>

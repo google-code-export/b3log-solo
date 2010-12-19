@@ -140,6 +140,9 @@ $.extend(ArticleUtil.prototype, {
     },
 
     load: function () {
+        // emotions
+        this.insertEmotions();
+        
         // code high lighter
         SyntaxHighlighter.autoloader(
             'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
@@ -159,13 +162,14 @@ $.extend(ArticleUtil.prototype, {
             }
         });
 
+        // cookie
         $("#commentEmail").val(Cookie.readCookie("commentEmail"));
         $("#commentURL").val(Cookie.readCookie("commentURL"));
         $("#commentName").val(Cookie.readCookie("commentName"));
     },
 
     loadRandomArticles: function () {
-        var randomArticlesLabel = this.tip.randomArticlesLabel;
+        var randomArticles1Label = this.tip.randomArticles1Label;
         // getRandomArticles
         jsonRpc.articleService.getRandomArticles(function (result, error) {
             if (result && !error) {
@@ -182,7 +186,7 @@ $.extend(ArticleUtil.prototype, {
                     listHtml += randomArticleLiHtml;
                 }
 
-                var randomArticleListHtml = "<h5>" + randomArticlesLabel + "</h5>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
+                var randomArticleListHtml = "<h5>" + randomArticles1Label + "</h5>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
                 $("#randomArticles").append(randomArticleListHtml);
             }
         });
@@ -287,7 +291,11 @@ $.extend(ArticleUtil.prototype, {
         if (!statue) {
             statue = '';
         }
-        var tip = this.tip;
+        var tip = this.tip, 
+        type = "Article";
+        if (tip.randomArticles1Label === undefined) {
+            type = "Page";
+        }
         if (this.validateComment(statue)) {
             $("#commentErrorTip" + statue).html(this.tip.loadingLabel);
             var requestJSONObject = {
@@ -302,10 +310,10 @@ $.extend(ArticleUtil.prototype, {
             if (statue === "") {
                 requestJSONObject.commentOriginalCommentId = commentId;
             }
-            jsonRpc.commentService.addCommentToArticle(function (result, error) {
+            jsonRpc.commentService["addCommentTo" + type](function (result, error) {
                 if (result && !error) {
                     switch (result.sc) {
-                        case "COMMENT_ARTICLE_SUCC":
+                        case "COMMENT_" + type.toUpperCase() + "_SUCC":
                             addComment(result, statue);
                             break;
                         case "CAPTCHA_ERROR":
