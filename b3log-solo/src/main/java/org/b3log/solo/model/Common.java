@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Dec 16, 2010
+ * @version 1.0.2.0, Dec 19, 2010
  */
 public final class Common {
 
@@ -132,6 +132,10 @@ public final class Common {
      * Key of is administrator logged in.
      */
     public static final String IS_ADMIN_LOGGED_IN = "isAdminLoggedIn";
+    /**
+     * Key of current user.
+     */
+    public static final String CURRENT_USER = "currentUser";
 
     /**
      * Private default constructor.
