@@ -71,7 +71,6 @@ input[type='button']:hover {
 
 /* header */
 .header-user {
-    height: 150px;
     background-color: #DEDEDE;
 }
 
@@ -87,7 +86,7 @@ a.header-title {
     font: bold 26px/47px 微软雅黑,Arial,Helvetica;
 }
 
-.sub-title {
+.sub-title, .error-msg {
     color: #9BC4CE;
 }
 

@@ -326,7 +326,6 @@
 
             var loadAction = function () {
                 // emotions
-                articleUtil.insertEmotions();
                 articleUtil.replaceCommentsEm("#comments .comment-content");
 
                 articleUtil.load();

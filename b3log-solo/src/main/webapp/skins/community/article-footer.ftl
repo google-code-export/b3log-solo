@@ -20,11 +20,11 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a> & <a hre
         jsonRpc.adminService.isLoggedIn(function (result, error) {
             if (result && !error) {
                 var loginHTML = "";
-                <#if isAdminLoggedIn>
+                    <#if isAdminLoggedIn>
                     loginHTML = "<span class='left' onclick='clearAllCache();'>${clearAllCacheLabel}&nbsp;|&nbsp;</span>"
-                        + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>";
-                </#if>
-                loginHTML += "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='${adminLabel}'></div>"
+                    + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>";
+                    </#if>
+                    loginHTML += "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='${adminLabel}'></div>"
                     + "<div class='left'>&nbsp;|&nbsp;</div>"
                     + "<div onclick='adminLogout();' class='left logoutIcon' title='${logoutLabel}'></div>";
                
@@ -44,5 +44,15 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a> & <a hre
     var clearAllCache = function () {
         jsonRpc.adminService.clearAllPageCache();
         window.location.reload();
+    }
+    
+    var adminLogin = function () {
+        var loginURL = jsonRpc.adminService.getLoginURL("/admin-index.do");
+        window.location.href = loginURL;
+    }
+
+    var adminLogout = function () {
+        var logoutURL = jsonRpc.adminService.getLogoutURL();
+        window.location.href = logoutURL;
     }
 </script>
