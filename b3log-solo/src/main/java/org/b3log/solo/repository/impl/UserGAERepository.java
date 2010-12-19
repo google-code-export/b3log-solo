@@ -19,7 +19,6 @@ package org.b3log.solo.repository.impl;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -34,7 +33,7 @@ import org.json.JSONObject;
  * User Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 9, 2010
+ * @version 1.0.0.3, Dec 19, 2010
  */
 public final class UserGAERepository extends AbstractGAERepository
         implements UserRepository {
@@ -60,9 +59,7 @@ public final class UserGAERepository extends AbstractGAERepository
             return null;
         }
 
-        final Map<String, Object> properties = entity.getProperties();
-
-        return new JSONObject(properties);
+        return entity2JSONObject(entity);
     }
 
     @Override
