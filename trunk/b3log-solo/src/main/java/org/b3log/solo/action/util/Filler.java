@@ -467,7 +467,7 @@ public final class Filler {
                 userRepository.get(1, Integer.MAX_VALUE);
         final JSONArray users = result.getJSONArray(Keys.RESULTS);
         final List<JSONObject> userList = CollectionUtils.jsonArrayToList(users);
-        dataModel.put(User.USERS, users);
+        dataModel.put(User.USERS, userList);
         for (final JSONObject user : userList) {
             user.remove(User.USER_EMAIL);
         }
