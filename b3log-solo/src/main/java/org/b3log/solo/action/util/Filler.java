@@ -472,6 +472,10 @@ public final class Filler {
             user.remove(User.USER_EMAIL);
         }
 
+        final JSONObject currentUser = userUtils.getCurrentUser();
+        currentUser.remove(User.USER_EMAIL);
+        dataModel.put(Common.CURRENT_USER, currentUser);
+
         fillCommonTop(dataModel);
         fillPageNavigations(dataModel);
         fillStatistic(dataModel);
