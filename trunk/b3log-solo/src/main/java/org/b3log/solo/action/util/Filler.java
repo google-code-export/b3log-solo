@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.util;
 
 import com.google.inject.Inject;
@@ -38,6 +37,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Link;
@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Dec 16, 2010
+ * @version 1.0.2.3, Dec 19, 2010
  */
 public final class Filler {
 
@@ -463,6 +463,14 @@ public final class Filler {
                       preference.getString(Preference.META_KEYWORDS));
         dataModel.put(Preference.META_DESCRIPTION,
                       preference.getString(Preference.META_DESCRIPTION));
+        final JSONObject result =
+                userRepository.get(1, Integer.MAX_VALUE);
+        final JSONArray users = result.getJSONArray(Keys.RESULTS);
+        final List<JSONObject> userList = CollectionUtils.jsonArrayToList(users);
+        dataModel.put(User.USERS, users);
+        for (final JSONObject user : userList) {
+            user.remove(User.USER_EMAIL);
+        }
 
         fillCommonTop(dataModel);
         fillPageNavigations(dataModel);
