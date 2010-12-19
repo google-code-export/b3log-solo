@@ -32,37 +32,30 @@
             <div class="comments" id="comments" name="comments">
                 <#list pageComments as comment>
                 <div id="commentItem${comment.oId}">
-                    <div class="comment-panel">
-                        <div class="comment-title">
+                    <img class="left" alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                    <div class="comment-content left">
+                        <div class="comment-top">
                             <#if "http://" == comment.commentURL>
-                            <a name="${comment.oId}" class="left">${comment.commentName}</a>
+                            <a name="${comment.oId}" class="left">${comment.commentName}</a>&nbsp;
                             <#else>
                             <a name="${comment.oId}" href="${comment.commentURL}"
-                               target="_blank" class="left">${comment.commentName}</a>
+                               target="_blank" class="left">${comment.commentName}</a>&nbsp;
                             </#if>
                             <#if comment.isReply>
-                            &nbsp;@&nbsp;<a
-                                href="http://${blogHost}/page.do?oId=${page.oId}#${comment.commentOriginalCommentId}"
-                                onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                            @
+                            <a href="http://${blogHost}/pagePermalink#${comment.commentOriginalCommentId}"
+                               onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
+                               onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">
+                                ${comment.commentOriginalCommentName}</a>
                             </#if>
-                            <div class="right">
-                                ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                <a class="noUnderline"
-                                   href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
-                            </div>
-                            <div class="clear"></div>
+                            ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
                         </div>
-                        <div class="comment-body">
-                            <div class="left comment-picture">
-                                <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
-                            </div>
-                            <div class="comment-content">
-                                ${comment.commentContent}
-                            </div>
-                            <div class="clear"></div>
+                        ${comment.commentContent}
+                        <div class="reply">
+                            <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                         </div>
                     </div>
+                    <div class="clear"></div>
                 </div>
                 </#list>
             </div>
@@ -329,7 +322,7 @@
                 
                 // emotions
                 articleUtil.insertEmotions();
-                replaceCommentsEm("#comments .comment-content");
+                articleUtil.replaceCommentsEm("#comments .comment-content");
             }
             loadAction();
         </script>
