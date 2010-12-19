@@ -238,7 +238,7 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input type="button" onclick="articleUtil.submitComment('${article.oId}');" value="${submmitCommentLabel}"/>
+                            <input type="button" onclick="articleUtil.submitComment();" value="${submmitCommentLabel}"/>
                         </td>
                     </tr>
                 </tbody>
@@ -247,18 +247,21 @@
         <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript">
             var articleUtil = new ArticleUtil({
-                nameTooLong: "${nameTooLongLabel}",
-                mailCannotEmpty: "${mailCannotEmptyLabel}",
-                mailInvalid: "${mailInvalidLabel}",
-                commentContentCannotEmpty: "${commentContentCannotEmptyLabel}",
-                captchaCannotEmpty: "${captchaCannotEmptyLabel}",
-                randomArticles: "${randomArticles1Label}",
+                "nameTooLongLabel": "${nameTooLongLabel}",
+                "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
+                "mailInvalidLabel": "${mailInvalidLabel}",
+                "commentContentCannotEmptyLabel": "${commentContentCannotEmptyLabel}",
+                "captchaCannotEmptyLabel": "${captchaCannotEmptyLabel}",
+                "randomArticles1Label": "${randomArticles1Label}",
                 "captchaErrorLabel": "${captchaErrorLabel}",
-                "loadingLabel": "${loadingLabel}"
+                "loadingLabel": "${loadingLabel}",
+                "oId": "${article.oId}",
+                "blogHost": "${blogHost}",
+                "externalRelevantArticlesDisplayCount": "${externalRelevantArticlesDisplayCount}",
+                "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
             });
                 
             var addComment = function (result, state) {
-                alert(1);
                 var commentHTML = '<div id="commentItem' + result.oId + '">'
                     + '<img class="left" alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL 
                     + '"/><div class="comment-content left"><div class="comment-top">';
@@ -286,46 +289,23 @@
             }
 
             var replyTo = function (id) {
-                if (id === articleUtil.currentCommentId) {
-                    $("#commentNameReply").focus();
-                    return;
-                } else {
-                    $("#replyForm").remove();
-
-                    var commentFormHTML = "<table width='100%' cellspacing='0' cellpadding='0' class='comment' id='replyForm'><tbody>"
-                        + "<tr><th width='200px'><div>${commentNameLabel}</div><span class='arrow-right'></span></th>"
-                        + "<td colspan='2'><input type='text' id='commentNameReply' value='" + articleUtil.readCookie("commentName") + "'/></td></tr>"
-                        + "<tr><th><div>${commentEmailLabel}</div><span class='arrow-right'></span></th>"
-                        + "<td colspan='2'><input type='text' id='commentEmailReply' value='" + articleUtil.readCookie("commentEmail") + "'/></td></tr>"
-                        + "<tr><th><div>${commentURL1Label}</div><span class='arrow-right'></span></th>"
-                        + "<td colspan='2'><div id='commentURLLabelReply'>http://</div><input type='text' id='commentURLReply' value='" + articleUtil.readCookie("commentURL") + "'/></td></tr>"
-                        + "<tr><th><div>${commentEmotionsLabel}</div><span class='arrow-right'></span></th>"
-                        + "<td id='emotionsReply'>" + $("#emotions").html() + "</td></tr>"
-                        + "<tr><th valign='top'><div>${commentContentLabel}</div><span class='arrow-right'></span></th>"
-                        + "<td colspan='2'><textarea rows='10' cols='96' id='commentReply'></textarea></td></tr>"
-                        + "<tr><th><div>${captchaLabel}</div><span class='arrow-right'></span></th>"
-                        + "<td><input type='text' id='commentValidateReply'/><img id='captchaReply' alt='validate' src='/captcha.do?"
-                        + new Date().getTime() + "'></img></td><th><span class='error-msg right' id='commentErrorTipReply'/></th></tr>"
-                        + "<tr><td colspan='3'><input type='button' onclick=\"articleUtil.submitComment('${article.oId}', '" + id + "', 'Reply');\" value='${submmitCommentLabel}'/>"
-                        + "</td></tr></tbody></table>";
-
-                    $("#commentItem" + id).append(commentFormHTML);
-
-                    $("#commentValidateReply").keypress(function (event) {
-                        if (event.keyCode === 13) {
-                            articleUtil.submitComment('${article.oId}', id, 'Reply');
-                        }
-                    });
-
-                    articleUtil.insertEmotions("Reply");
-
-                    if (articleUtil.readCookie("commentName")  === null) {
-                        $("#commentNameReply").focus();
-                    } else {
-                        $("#commentReply").focus();
-                    }
-                }
-                articleUtil.currentCommentId = id;
+                var commentFormHTML = "<table width='100%' cellspacing='0' cellpadding='0' class='comment' id='replyForm'><tbody>"
+                    + "<tr><th width='200px'><div>${commentNameLabel}</div><span class='arrow-right'></span></th>"
+                    + "<td colspan='2'><input type='text' id='commentNameReply' value='" + Cookie.readCookie("commentName") + "'/></td></tr>"
+                    + "<tr><th><div>${commentEmailLabel}</div><span class='arrow-right'></span></th>"
+                    + "<td colspan='2'><input type='text' id='commentEmailReply' value='" + Cookie.readCookie("commentEmail") + "'/></td></tr>"
+                    + "<tr><th><div>${commentURL1Label}</div><span class='arrow-right'></span></th>"
+                    + "<td colspan='2'><div id='commentURLLabelReply'>http://</div><input type='text' id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/></td></tr>"
+                    + "<tr><th><div>${commentEmotionsLabel}</div><span class='arrow-right'></span></th>"
+                    + "<td id='emotionsReply'>" + $("#emotions").html() + "</td></tr>"
+                    + "<tr><th valign='top'><div>${commentContentLabel}</div><span class='arrow-right'></span></th>"
+                    + "<td colspan='2'><textarea rows='10' cols='96' id='commentReply'></textarea></td></tr>"
+                    + "<tr><th><div>${captchaLabel}</div><span class='arrow-right'></span></th>"
+                    + "<td><input type='text' id='commentValidateReply'/><img id='captchaReply' alt='validate' src='/captcha.do?"
+                    + new Date().getTime() + "'></img></td><th><span class='error-msg right' id='commentErrorTipReply'/></th></tr>"
+                    + "<tr><td colspan='3'><input type='button' onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\" value='${submmitCommentLabel}'/>"
+                    + "</td></tr></tbody></table>";
+                articleUtil.addReplyForm(id, commentFormHTML);
             }
             
             var showComment = function (it, id) {
@@ -347,45 +327,12 @@
             var loadAction = function () {
                 // emotions
                 articleUtil.insertEmotions();
-                replaceCommentsEm("#comments .comment-content");
+                articleUtil.replaceCommentsEm("#comments .comment-content");
 
                 articleUtil.load();
                 articleUtil.loadRandomArticles();
-                    
-                // externalRelevantArticles
                     <#if 0 != externalRelevantArticlesDisplayCount>
-                    var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
-                $.ajax({
-                    url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
-                        + "&blogHost=${blogHost}&paginationPageSize=${externalRelevantArticlesDisplayCount}",
-                    type: "GET",
-                    dataType:"jsonp",
-                    jsonp: "callback",
-                    error: function(){
-                        alert("Error loading articles from Rhythm");
-                    },
-                    success: function(data, textStatus){
-                        var articles = data.articles;
-                        if (0 === articles.length) {
-                            return;
-                        }
-                        var listHtml = "";
-                        for (var i = 0; i < articles.length; i++) {
-                            var article = articles[i];
-                            var title = article.articleTitle;
-                            var articleLiHtml = "<li>"
-                                + "<a target='_blank' href='" + article.articlePermalink + "'>"
-                                +  title + "</a></li>"
-                            listHtml += articleLiHtml
-                        }
-
-                        var externalRelevantArticlesDiv = $("#externalRelevantArticles");
-                        var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
-                            + "<ul class='marginLeft12'>"
-                            + listHtml + "</ul>";
-                        $("#externalRelevantArticles").append(randomArticleListHtml).addClass("article-relative");
-                    }
-                });
+                    articleUtil.loadExternalRelevantArticles("<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>");
                     </#if>
                 }
             loadAction();
