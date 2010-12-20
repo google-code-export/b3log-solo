@@ -90,11 +90,14 @@
                     var userData = [];
                     usersLength = users.length;
 
-                    // 用户超过一个时，文章同步功能不可使用。
                     if (1 < usersLength) {
+                        // Disable article sync mgmt if exists more than one users
                         $("#article-syncTab").hide();
-                    } else {
+                    } else if (1 === usersLength) {
+                        // Enable article sync mgmt if exists one user exactly
                         $("#article-syncTab").show();
+                    } else {
+                        alert("A error occurs, please report this issue on http://code.google.com/p/b3log-solo/issues/list");
                     }
                     
                     for (var i = 0; i < users.length; i++) {
