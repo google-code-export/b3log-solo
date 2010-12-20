@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 13, 2010
+ * @version 1.0.1.6, Dec 20, 2010
  */
 public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
@@ -327,6 +327,8 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                     importedIds.add(oId);
 
                     statistics.incBlogArticleCount();
+                    statistics.incPublishedBlogArticleCount();
+                    
                     archiveDateUtils.archiveDate(soloArticle);
 
                     transaction.commit();
