@@ -89,20 +89,14 @@
                     var users = result.users;
                     var userData = [];
                     usersLength = users.length;
-                    if (1 < usersLength) { // Enabled multiple user support
-                        if ($("#article-syncTab")) {
-                            // Disable function article sync
-                            $("#article-syncTab").remove();
-                            $("#article-syncPanel").remove();
-                        }
+
+                    // 用户超过一个时，文章同步功能不可使用。
+                    if (1 < usersLength) {
+                        $("#article-syncTab").hide();
+                        $("#article-syncPanel").hide();
                     } else {
-                        if (0 >= $("#article-syncTab").length) { // Not found
-                            // Enable function article sync
-                            $("<li id=\"article-syncTab\" onclick=\"adminUtil.changeList(this);\">"
-                                + "<div class=\"left blogSyncIcon\"></div>"
-                                + "<span>&nbsp;${blogSyncLabel}</span>"
-                                + "</li>").insertAfter("#link-listTab");
-                        }
+                        $("#article-syncTab").show();
+                        $("#article-syncPanel").show();
                     }
                     
                     for (var i = 0; i < users.length; i++) {
