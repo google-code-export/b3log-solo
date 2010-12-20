@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action;
 
 import com.google.inject.Scopes;
@@ -34,6 +33,7 @@ import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
 import org.b3log.solo.action.impl.AdminErrorAction;
 import org.b3log.solo.action.impl.AuthorArticlesAction;
+import org.b3log.solo.action.impl.CheckLoggedInServlet;
 import org.b3log.solo.action.impl.InitAction;
 import org.b3log.solo.action.impl.PageAction;
 import org.b3log.solo.filter.FilterModule;
@@ -50,12 +50,12 @@ import org.b3log.solo.upgrade.UpgradeModule;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Dec 16, 2010
+ * @version 1.0.2.3, Dec 20, 2010
  */
 public final class ActionModule extends AbstractActionModule {
 
     /**
-     * Admin action serve URLs.
+     * Administrator action serve URLs.
      */
     public static final String[] ADMIN_ACTIONS = new String[]{
         "/admin-index.do",
@@ -68,8 +68,7 @@ public final class ActionModule extends AbstractActionModule {
         "/admin-page.do",
         "/admin-others.do",
         "/admin-draft-list.do",
-        "/admin-user-list.do",
-        "/error-403.do"
+        "/admin-user-list.do"
     };
 
     /**
@@ -154,5 +153,8 @@ public final class ActionModule extends AbstractActionModule {
 
         bind(AuthorArticlesAction.class).in(Scopes.SINGLETON);
         serve("/author-articles.do").with(AuthorArticlesAction.class);
+
+        bind(CheckLoggedInServlet.class).in(Scopes.SINGLETON);
+        serve("/check-login.do").with(CheckLoggedInServlet.class);
     }
 }
