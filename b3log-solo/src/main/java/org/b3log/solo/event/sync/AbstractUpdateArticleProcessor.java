@@ -35,6 +35,7 @@ import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.MetaWeblogPost;
 import org.b3log.solo.sync.Post;
 import org.b3log.solo.sync.SyncException;
+import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,7 +44,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Nov 3, 2010
+ * @version 1.0.0.6, Dec 20, 2010
  */
 public abstract class AbstractUpdateArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -63,6 +64,11 @@ public abstract class AbstractUpdateArticleProcessor
      */
     @Inject
     private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository;
+    /**
+     * User utilities.
+     */
+    @Inject
+    private Users userUtils;
 
     /**
      * Constructs a {@link BlogSyncMgmtUpdateArticleProcessor} object with the
@@ -119,6 +125,15 @@ public abstract class AbstractUpdateArticleProcessor
                 ret.put(Keys.STATUS_CODE,
                         BlogSyncStatusCodes.BLOG_SYNC_NO_NEED_TO_SYNC);
 
+                return ret;
+            }
+
+            final boolean hasMultipleUsers = userUtils.hasMultipleUsers();
+            if (hasMultipleUsers) {
+                LOGGER.log(Level.FINER,
+                           "Disabled article sync management caused by has multiple users");
+                ret.put(Keys.STATUS_CODE,
+                        BlogSyncStatusCodes.BLOG_SYNC_NO_NEED_TO_SYNC);
                 return ret;
             }
 
