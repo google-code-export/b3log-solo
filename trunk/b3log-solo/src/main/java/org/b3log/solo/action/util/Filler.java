@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Dec 20, 2010
+ * @version 1.0.2.5, Dec 20, 2010
  */
 public final class Filler {
 
@@ -200,20 +200,7 @@ public final class Filler {
 
         final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
                 jsonArrayToList(result.getJSONArray(Keys.RESULTS));
-        for (final JSONObject article : articles) {
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
-            } else {
-                article.put(Common.HAS_UPDATED, false);
-            }
-
-            // Puts author name
-            final JSONObject author = articleUtils.getAuthor(article);
-            final String authorName = author.getString(User.USER_NAME);
-            article.put(Common.AUTHOR_NAME, authorName);
-            final String authorId = author.getString(Keys.OBJECT_ID);
-            article.put(Common.AUTHOR_ID, authorId);
-        }
+        putArticleExProperties(articles, preference);
 
         articleUtils.addTags(articles);
 
@@ -549,7 +536,7 @@ public final class Filler {
         if (1 < users.length()) {
             final String anotherUserEmail =
                     users.getJSONObject(1).getString(User.USER_EMAIL);
-            articlesR = fillPart(preference, leftCurrentPageNum, pageSize,
+            articlesR = fillPart(preference, rightCurrentPageNum, pageSize,
                                  windowSize,
                                  dataModel, Common.RIGHT_PART_NAME,
                                  anotherUserEmail);
@@ -557,8 +544,11 @@ public final class Filler {
         dataModel.put(Article.ARTICLES + Common.RIGHT_PART_NAME, articlesR);
 
         final List<JSONObject> articles = new ArrayList<JSONObject>();
+
         articles.addAll(articlesL);
         articles.addAll(articlesR);
+        putArticleExProperties(articles, preference);
+
         dataModel.put(Article.ARTICLES, articles);
     }
 
@@ -604,7 +594,7 @@ public final class Filler {
      * specified parameters.
      *
      * @param preference the specified preference
-     * @param leftCurrentPageNum the specified current page number
+     * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
      * @param windowSize the specified window size
      * @param dataModel the specified data model
@@ -615,7 +605,7 @@ public final class Filler {
      * @throws RepositoryException repository exception
      */
     private List<JSONObject> fillPart(final JSONObject preference,
-                                      final int leftCurrentPageNum,
+                                      final int currentPageNum,
                                       final int pageSize,
                                       final int windowSize,
                                       final Map<String, Object> dataModel,
@@ -641,12 +631,12 @@ public final class Filler {
                                FilterOperator.EQUAL,
                                authorEmail));
         final JSONObject result =
-                articleRepository.get(leftCurrentPageNum, pageSize, sorts,
+                articleRepository.get(currentPageNum, pageSize, sorts,
                                       filters);
         final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                 getInt(Pagination.PAGINATION_PAGE_COUNT);
         final List<Integer> pageNums =
-                Paginator.paginate(leftCurrentPageNum, pageSize, pageCount,
+                Paginator.paginate(currentPageNum, pageSize, pageCount,
                                    windowSize);
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM + partName,
@@ -670,5 +660,40 @@ public final class Filler {
         dataModel.put(Article.ARTICLES + partName, ret);
 
         return ret;
+    }
+
+    /**
+     * Puts ext properties for the specified articles.
+     *
+     * <p>
+     * Article ext properties:
+     * <ul>
+     *   <li>{@value Common#HAS_UPDATED}: boolean</li>
+     *   <li>{@value Common#AUTHOR_ID}: ""</li>
+     *   <li>{@value Common#AUTHOR_NAME}: ""</li>
+     * </ul>
+     * </p>
+     *
+     * @param articles the specified articles
+     * @param preference the specified preference
+     * @throws JSONException json exception
+     */
+    private void putArticleExProperties(final List<JSONObject> articles,
+                                        final JSONObject preference)
+            throws JSONException {
+        for (final JSONObject article : articles) {
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+            } else {
+                article.put(Common.HAS_UPDATED, false);
+            }
+
+            // Puts author name
+            final JSONObject author = articleUtils.getAuthor(article);
+            final String authorName = author.getString(User.USER_NAME);
+            article.put(Common.AUTHOR_NAME, authorName);
+            final String authorId = author.getString(Keys.OBJECT_ID);
+            article.put(Common.AUTHOR_ID, authorId);
+        }
     }
 }
