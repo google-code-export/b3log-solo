@@ -472,12 +472,15 @@ a,a:link {
 	color: #FF9900;
 	text-decoration: none;
 }
-a:hover {
-	color: #FF0000;
-}
+
 a:visited {
     color: #FF9900;
 }
+
+a:hover {
+	color: #FF0000;
+}
+
 p {
 	font-size: 12px;
 
