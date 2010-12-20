@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.util.Map;
 import java.util.logging.Level;
@@ -53,6 +54,10 @@ public final class CheckLoggedInAction extends AbstractAction {
      */
     @Inject
     private Users userUtils;
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -74,6 +79,12 @@ public final class CheckLoggedInAction extends AbstractAction {
             ret.put(Common.IS_LOGGED_IN, false);
 
             if (null == currentUser) {
+                if (userService.isUserLoggedIn()
+                    && userService.isUserAdmin()) { // Only should happen while init Solo
+                    ret.put(Common.IS_LOGGED_IN, true);
+                    ret.put(Common.IS_ADMIN, true);
+                }
+
                 return ret;
             }
 
