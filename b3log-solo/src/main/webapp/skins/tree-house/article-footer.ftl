@@ -9,6 +9,7 @@ Powered by
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
 ver ${version}&nbsp;&nbsp;
 Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+<script type="text/javascript" src="/js/util.js"></script>
 <script type="text/javascript">
     var goTop = function () {
         window.scrollTo(0, 0);
@@ -25,36 +26,12 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
         window.scrollTo(0, scrollHeight - clientHeight - 350);
         
     }
-
-
-
-    var clearCache = function () {
-        jsonRpc.adminService.clearPageCache(window.location.pathname);
-        window.location.reload();
-    }
-
-    var clearAllCache = function () {
-        jsonRpc.adminService.clearAllPageCache();
-        window.location.reload();
-    }
-    
-    var initIndex = function () {
-        // side comment
-        replaceCommentsEm("#recentComments li a");
-        
-        // common-top.ftl use state
-        jsonRpc.adminService.isLoggedIn(function (result, error) {
-            if (result && !error) {
-                var loginHTML = "<span class='left' onclick='clearAllCache();'>${clearAllCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='${adminLabel}'></div>"
-                    + "<div class='left'>&nbsp;|&nbsp;</div>"
-                    + "<div onclick='adminLogout();' class='left logoutIcon' title='${logoutLabel}'></div>";
-                $("#admin").append(loginHTML);
-            } else {
-                $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
-            }
-        });
-    }
-    initIndex();
+    var util = new Util({
+        "clearAllCacheLabel": "${clearAllCacheLabel}",
+        "clearCacheLabel": "${clearCacheLabel}",
+        "adminLabel": "${adminLabel}",
+        "logoutLabel": "${logoutLabel}"
+    });
+    util.init();
+    replaceCommentsEm("#recentComments li a");
 </script>
