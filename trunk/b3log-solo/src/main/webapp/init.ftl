@@ -56,23 +56,24 @@
                         }
                     }
                 });
-                initInit();
+            }
+            initInit();
 
-                var initSys = function () {
-                    if(confirm("${confirmRemoveLabel}")){
-                        var rslt = jsonRpc.adminService.init();
-                        if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
-                            window.location.href = "/admin-index.do";
-                        } else {
-                            alert("init error!");
-                        }
+            var initSys = function () {
+                if(confirm("${confirmRemoveLabel}")){
+                    var rslt = jsonRpc.adminService.init();
+                    if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
+                        window.location.href = "/admin-index.do";
+                    } else {
+                        alert("init error!");
                     }
                 }
+            }
 
-                var login = function () {
-                    var loginURL = jsonRpc.adminService.getLoginURL("/init.do");
-                    window.location.href = loginURL;
-                }
+            var login = function () {
+                var loginURL = jsonRpc.adminService.getLoginURL("/init.do");
+                window.location.href = loginURL;
+            }
         </script>
     </body>
 </html>
