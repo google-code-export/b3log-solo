@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Workaround for keeping JVM instance on GAE to avoid auto-restart.
+ * Workaround for keeping JVM instance on GAE to avoid instance recycling.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Sep 25, 2010
