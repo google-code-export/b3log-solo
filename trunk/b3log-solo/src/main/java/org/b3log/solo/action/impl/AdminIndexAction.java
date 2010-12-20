@@ -106,7 +106,7 @@ public final class AdminIndexAction extends AbstractAdminAction {
             filler.fillBlogFooter(ret);
 
             final boolean hasMultipleUsers = userUtils.hasMultipleUsers();
-            ret.put(Common.ENABLED_MULTIPLE_USER_SUPPORT, "" + hasMultipleUsers);
+            ret.put(Common.ENABLED_MULTIPLE_USER_SUPPORT, hasMultipleUsers);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
