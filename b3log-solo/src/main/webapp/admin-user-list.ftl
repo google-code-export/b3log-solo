@@ -89,6 +89,21 @@
                     var users = result.users;
                     var userData = [];
                     usersLength = users.length;
+                    if (1 < usersLength) {
+                        if ($("#article-syncTab")) {
+                            // Disable function article sync
+                            $("#article-syncTab").remove();
+                            $("#article-syncPanel").remove();
+                        }
+                    } else {
+                        if (0 >= $("#article-syncTab").length) { // Not found
+                            $("<li id=\"article-syncTab\" onclick=\"adminUtil.changeList(this);\">"
+                                + "<div class=\"left blogSyncIcon\"></div>"
+                                + "<span>&nbsp;${blogSyncLabel}</span>"
+                                + "</li>").insertAfter("#link-listTab");
+                        }
+                    }
+                    
                     for (var i = 0; i < users.length; i++) {
                         userData[i] = {};
                         userData[i].userName = users[i].userName;
