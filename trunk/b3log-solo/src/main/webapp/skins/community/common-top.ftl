@@ -8,10 +8,10 @@
         <span style="color: orangered; font-weight: bold;">Solo</span>
     </a>
     <span class="right">
+        <#if currentUser??>
+        <span class="left">${currentUser.userName}&nbsp;| &nbsp;</span>
+        </#if>
         <span id="admin">
-            <#if currentUser??>
-            <span class="left">${currentUser.userName}&nbsp;| &nbsp;</span>
-            </#if>
         </span>
     </span>
     <div class="clear"></div>

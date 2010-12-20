@@ -9,12 +9,14 @@ a, a:link {
     text-decoration: none;
 }
 
-a:active, a:link, a:visited {
+a:active, a:visited {
     color: #000000;
     text-decoration: none;
 }
 
-a:hover {text-decoration: underline;}
+a:hover {
+    text-decoration: underline;
+}
 
 .content {
     width: 940px;
@@ -33,7 +35,7 @@ a:hover {text-decoration: underline;}
 }
 
 .arrow-right {
-    background: url("images/icon.png") 0px -65px no-repeat;
+    background: url("images/icon.png") 0px -64px no-repeat;
     float: left;
     height: 38px;
     width: 14px;
@@ -66,7 +68,7 @@ input[type='button']:hover {
 }
 
 .header-navi {
-    background: url("images/icon.png") 0px -117px repeat-x #333333;
+    background: url("images/icon.png") 0px -118px repeat-x #333333;
     margin-bottom: 50px;
 }
 
@@ -94,7 +96,7 @@ a.header-title {
 }
 
 .header-navi-main .tab:hover {
-    background: url("images/icon.png") repeat-x scroll 0 -117px #9BC4CE;
+    background: url("images/icon.png") repeat-x scroll 0 -118px #9BC4CE;
 }
 
 #header-pages {
@@ -410,7 +412,7 @@ a.header-title {
     width: 145px;
 }
 
-.most-view-count-articles, .recent-comments {
+.most-view-count-articles, .recent-comments, .notice {
     float: left;
     width: 700px;
     margin-left: 65px;
@@ -421,10 +423,6 @@ a.header-title {
 .most-view-count-articles a {
     font: 18px 微软雅黑;
     margin-right: 20px;
-}
-
-.most-view-count-articles span{
-    white-space:nowrap;
 }
 
 .recent-comments div {
@@ -514,13 +512,14 @@ a.header-title {
 .footer {
     background: url("images/indentline-light.png") repeat-x scroll left top #DEDEDE;
     position: relative;
+    text-align: left;
 }
 
 .footer a {
     color: #000000;
 }
 
-.footer div {
+.footer .goTop {
     background: url("images/icon.png") no-repeat -12px -64px;
     cursor: pointer;
     padding-left: 15px;
@@ -571,7 +570,7 @@ a.header-title {
 }
 
 .tag-icon {
-    background-position: 0px -101px;
+    background-position: 0px -102px;
     margin-right: 6px;
     height: 16px;
     width: 16px;
@@ -587,26 +586,38 @@ a.header-title {
     height: 58px;
     width: 64px;
     background-image: url("images/author-header.png");
-    float: left;
+    float: right;
     white-space:normal;
     text-align: center;
     word-break:break-all;
     padding-top: 6px;
     word-wrap:break-word;
+    font-weight: bold;
 }
+
 .star-current-icon {
     background-position: 0px -64px;
+}
+
+a.star-current-icon {
+    color: #333333;
 }
 
 .star-icon {
     background-position: 0 -192px;
 }
 
+a.star-icon {
+    color: orange;
+}
+
 .moon-icon {
     float: right;
+    margin-top: 4px;
 }
 
 .moon-current-icon {
     float: right;
     background-position: 0 -128px;
+    margin: 1px 0 3px 0;
 }

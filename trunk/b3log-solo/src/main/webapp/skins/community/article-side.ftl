@@ -1,11 +1,20 @@
 <div class="footer-secondary">
     <div class="content">
+        <h4>
+            ${noticeBoardLabel}
+        </h4>
+        <div class="arrow-right"></div>
+        <div class="notice">
+            ${noticeBoard}
+        </div>
+        <div class="clear"></div>
         <#if 0 != mostViewCountArticles?size>
+        <div class="hr"></div>
         <h4>${mostViewCountArticlesLabel}</h4>
         <div class="arrow-right"></div>
         <div class="most-view-count-articles">
             <#list mostViewCountArticles as article>
-            <span>
+            <span class="nowrap">
                 <sup>[${article.articleViewCount}]</sup>
                 <a title="${article.articleTitle}" href="${article.articlePermalink}">
                     <b>${article.articleTitle}</b>
