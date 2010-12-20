@@ -468,15 +468,16 @@ color: #4D463F;
 /* End Post Layouts*/
 
 /* Text Formatting */
-a {
+a,a:link {
 	color: #FF9900;
 	text-decoration: none;
 }
-
 a:hover {
 	color: #FF0000;
 }
-
+a:visited {
+    color: #FF9900;
+}
 p {
 	font-size: 12px;
 
@@ -1082,6 +1083,7 @@ h2 {
 	font-weight: normal;
 	font-family:Verdana,Arial, Helvetica, sans-serif;
 	word-wrap: break-word;
+        font-size: 200%;
 }
 h2.blue {
 	font-weight: normal;
