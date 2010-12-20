@@ -1,14 +1,12 @@
 <#if 1 != users?size>
 <div class="header-user">
     <div class="content">
-        <#list users as user>
-        <div>
-            <a class="star-icon" href="/author-articles.do?oId=${user.oId}">
-                ${user.userName}
-            </a>
-        </div>
-        </#list>
         <div class="moon-current-icon"></div>
+        <#list users as user>
+        <a class="star-icon" href="/author-articles.do?oId=${user.oId}">
+            ${user.userName}
+        </a>
+        </#list>
         <div class="clear"></div>
     </div>
 </div>
@@ -59,41 +57,3 @@
         <div class="clear"></div>
     </div>
 </div>
-<div class="left none">
-    ${noticeBoard}
-</div>
-<div class="right none">
-    <span>${viewCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticBlogViewCount}
-        </span>
-        &nbsp;&nbsp;
-    </span>
-    <span>
-        ${articleCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticPublishedBlogArticleCount}
-        </span>
-        &nbsp;&nbsp;
-    </span>
-    <span>
-        ${commentCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticPublishedBlogCommentCount}
-        </span>
-    </span>
-</div>
-<div class="clear"></div>
-<script type="text/javascript">
-    var isAuthorArticle = false;
-    $(".header-user a").each(function () {
-        var it = this;
-        if (window.location.search === it.search) {
-            it.className = "star-current-icon";
-            isAuthorArticle = true;
-        }
-    });
-    if (isAuthorArticle) {
-        $(".moon-current-icon").removeClass().addClass("moon-icon");
-    }
-</script>

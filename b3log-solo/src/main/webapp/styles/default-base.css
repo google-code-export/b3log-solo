@@ -21,6 +21,7 @@ button:hover,.button:hover{border-color:#BBB;}
 .marginLeft12{margin-left:12px;}
 .marginLeft6{margin-left:6px;}
 .marginRight12{margin-right:12px;}
+.nowrap{white-space:nowrap;}
 .left{float:left;}
 .right{float:right;}
 .clear{clear:both;height:0px;font-size:0px;line-height:0px;overflow: hidden;border: 0px;background-color: transparent;display: block;}
