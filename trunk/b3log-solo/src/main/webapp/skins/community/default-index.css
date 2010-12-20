@@ -34,20 +34,6 @@ a:hover {text-decoration: underline;}
     width: 14px;
 }
 
-.star-current {
-    background: url("images/favorites.png") no-repeat;
-    float: left;
-    height: 64px;
-    width: 64px;
-}
-
-.star {
-    background-image: url("images/star_none.png");
-    float: left;
-    height: 64px;
-    width: 64px;
-}
-
 input[type='button'] {
     -moz-border-radius: 5px 5px 5px 5px;
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 1px 2px rgba(0, 0, 0, 0.29);
@@ -75,7 +61,7 @@ input[type='button']:hover {
 }
 
 .header-navi {
-    background: url("images/icon.png") 0px -101px repeat-x #333333;
+    background: url("images/icon.png") 0px -117px repeat-x #333333;
     margin-bottom: 50px;
 }
 
@@ -103,20 +89,11 @@ a.header-title {
 }
 
 .header-navi-main .tab:hover {
-    background: url("images/icon.png") repeat-x scroll 0 -101px #9BC4CE;
+    background: url("images/icon.png") repeat-x scroll 0 -117px #9BC4CE;
 }
 
 #header-pages {
     position: relative;
-}
-
-.arrow-dowm-icon {
-    background: url("images/icon.png") no-repeat scroll -13px -22px;
-    float: left;
-    height: 13px;
-    margin: 8px 0 0  6px;
-    width: 13px;
-    cursor: pointer;
 }
 
 .header-navi-main .tab a {
@@ -126,14 +103,6 @@ a.header-title {
     line-height: 22px;
     padding: 15px 16px 12px;
     text-decoration: none;
-}
-
-.atom-icon {
-    background: url("images/icon.png") no-repeat;
-    float: left;
-    height: 22px;
-    margin-left: 6px;
-    width: 22px;
 }
 
 #header-pages:hover .sub-tabs {
@@ -216,14 +185,6 @@ a.header-title {
     padding: 8px 18px 8px 12px;
     margin: 20px 0;
     float: left;
-}
-
-.read-more-icon {
-    background: url("images/icon.png") no-repeat 0 -22px;
-    float: left;
-    height: 12px;
-    margin: 2px 0 0 6px;
-    width: 12px;
 }
 
 .article-footer {
@@ -581,4 +542,66 @@ a.header-title {
 .error-panel h2 {
     font: bold 30px/24px;
     margin: 0 0 20px;
+}
+
+/* icon */
+.read-more-icon, .arrow-dowm-icon, .tag-icon, .atom-icon {
+    background-image: url("images/icon.png");
+    background-repeat: no-repeat;
+    float: left;
+}
+.read-more-icon {
+    background-position: 0 -22px;
+    height: 12px;
+    margin: 2px 0 0 6px;
+    width: 12px;
+}
+
+.arrow-dowm-icon {
+    background-position: -13px -22px;
+    height: 13px;
+    margin: 8px 0 0  6px;
+    width: 13px;
+    cursor: pointer;
+}
+
+.tag-icon {
+    background-position: 0px -101px;
+    margin-right: 6px;
+    height: 16px;
+    width: 16px;
+}
+
+.atom-icon {
+    height: 22px;
+    margin-left: 6px;
+    width: 22px;
+}
+
+.star-current-icon, .star-icon, .moon-icon, .moon-current-icon {
+    height: 58px;
+    width: 64px;
+    background-image: url("images/author-header.png");
+    float: left;
+    white-space:normal;
+    text-align: center;
+    word-break:break-all;
+    padding-top: 6px;
+    word-wrap:break-word;
+}
+.star-current-icon {
+    background-position: 0px -64px;
+}
+
+.star-icon {
+    background-position: 0 -192px;
+}
+
+.moon-icon {
+    float: right;
+}
+
+.moon-current-icon {
+    float: right;
+    background-position: 0 -128px;
 }

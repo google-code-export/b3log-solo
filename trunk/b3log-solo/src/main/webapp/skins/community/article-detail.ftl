@@ -79,7 +79,7 @@
                         ${article.articleContent}
                     </div>
                     <div class="tags">
-                        <img width="16px" height="16px" src="/skins/community/images/tags.gif" alt="${tagsLabel}"/>
+                        <span class="tag-icon" title="${tagsLabel}"></span>
                         ${tags1Label}
                         <#list articleTags as articleTag>
                         <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
