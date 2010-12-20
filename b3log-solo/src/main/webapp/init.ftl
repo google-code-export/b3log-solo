@@ -44,31 +44,35 @@
         </div>
         <script type="text/javascript">
             var initInit = function () {
-                var isAdminLoggedIn = jsonRpc.adminService.isAdminLoggedIn();
-                if (!isAdminLoggedIn) {
-                    $(".introContent").html("<h1>" + $(".introContent h2").html() + "</h1>"
-                        + "<img src='/images/arrow.png' title='B3log' alt='B3log'/><button onclick='login();'>${loginLabel}</button>")
-                    .removeClass("introContent").addClass("introContentLogin");
-                    $($(".introContentLogin h1 span")[0]).css("font-size", "36px");
-                }
-            }
-            initInit();
+                $.ajax({
+                    type: "POST",
+                    url: "/check-login.do",
+                    success: function(result){
+                        if (!result.isLoggedIn) {
+                            $(".introContent").html("<h1>" + $(".introContent h2").html() + "</h1>"
+                                + "<img src='/images/arrow.png' title='B3log' alt='B3log'/><button onclick='login();'>${loginLabel}</button>")
+                            .removeClass("introContent").addClass("introContentLogin");
+                            $($(".introContentLogin h1 span")[0]).css("font-size", "36px");
+                        }
+                    }
+                });
+                initInit();
 
-            var initSys = function () {
-                if(confirm("${confirmRemoveLabel}")){
-                    var rslt = jsonRpc.adminService.init();
-                    if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
-                        window.location.href = "/admin-index.do";
-                    } else {
-                        alert("init error!");
+                var initSys = function () {
+                    if(confirm("${confirmRemoveLabel}")){
+                        var rslt = jsonRpc.adminService.init();
+                        if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
+                            window.location.href = "/admin-index.do";
+                        } else {
+                            alert("init error!");
+                        }
                     }
                 }
-            }
 
-            var login = function () {
-                var loginURL = jsonRpc.adminService.getLoginURL("/init.do");
-                window.location.href = loginURL;
-            }
+                var login = function () {
+                    var loginURL = jsonRpc.adminService.getLoginURL("/init.do");
+                    window.location.href = loginURL;
+                }
         </script>
     </body>
 </html>
