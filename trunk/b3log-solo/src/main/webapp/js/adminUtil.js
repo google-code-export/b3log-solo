@@ -33,7 +33,7 @@ $.extend(AdminUtil.prototype, {
 
     changeList: function (it) {
         var tabs = ['article', 'article-list', 'draft-list', 'link-list', 'preference',
-        'article-sync', 'page', 'file-list', 'others', 'user-list'];
+            'article-sync', 'page', 'file-list', 'others', 'user-list'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i] + "Tab") {
                 if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
@@ -84,7 +84,7 @@ $.extend(AdminUtil.prototype, {
     },
 
     init: function () {
-        // role
+        // Removes functions with the current user role
         if (this.tip.userRole !== "adminRole") {
             var unUsed = ['link-list', 'preference', 'file-list', 'article-sync', 'page', 'others', 'user-list'];
             for (var i = 0; i < unUsed.length; i++) {
@@ -105,7 +105,7 @@ $.extend(AdminUtil.prototype, {
         // resize
         var $main = $("#main");
         var leftWidth = $(".side").width() + $.bowknot.strToInt($main.css("padding-left"))
-        + $.bowknot.strToInt($main.css("padding-right")) + 17;
+            + $.bowknot.strToInt($main.css("padding-right")) + 17;
 
         var windowWidth = document.documentElement.clientWidth - leftWidth;
         if (windowWidth < 700) {
