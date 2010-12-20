@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Dec 19, 2010
+ * @version 1.0.2.4, Dec 20, 2010
  */
 public final class Filler {
 
@@ -474,8 +474,10 @@ public final class Filler {
         }
 
         final JSONObject currentUser = userUtils.getCurrentUser();
-        currentUser.remove(User.USER_EMAIL);
-        dataModel.put(Common.CURRENT_USER, currentUser);
+        if (null != currentUser) {
+            currentUser.remove(User.USER_EMAIL);
+            dataModel.put(Common.CURRENT_USER, currentUser);
+        }
 
         fillCommonTop(dataModel);
         fillPageNavigations(dataModel);
