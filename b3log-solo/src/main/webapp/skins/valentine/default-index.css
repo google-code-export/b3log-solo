@@ -522,7 +522,7 @@ h3.pagetitle {
 	font-size: 12px;
 }
 
-.text-link {
+.cmtballoon-blue .text-link,.cmtballoon-pink .text-link{
 	color: #FFFFFF;
 }
 .text-link2 {
