@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Dec 20, 2010
+ * @version 1.0.2.6, Dec 20, 2010
  */
 public final class Filler {
 
@@ -420,9 +420,6 @@ public final class Filler {
         if (null == preference) {
             throw new Exception("Not found preference");
         }
-
-        final boolean isAdminLoggedIn = userUtils.isAdminLoggedIn();
-        dataModel.put(Common.IS_ADMIN_LOGGED_IN, isAdminLoggedIn);
     }
 
     /**
