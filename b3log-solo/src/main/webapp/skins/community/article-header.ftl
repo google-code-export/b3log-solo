@@ -2,12 +2,13 @@
 <div class="header-user">
     <div class="content">
         <#list users as user>
-        <div class="star">
-            <a href="/author-articles.do?oId=${user.oId}">
+        <div>
+            <a class="star-icon" href="/author-articles.do?oId=${user.oId}">
                 ${user.userName}
             </a>
         </div>
         </#list>
+        <div class="moon-current-icon"></div>
         <div class="clear"></div>
     </div>
 </div>
@@ -84,10 +85,15 @@
 </div>
 <div class="clear"></div>
 <script type="text/javascript">
+    var isAuthorArticle = false;
     $(".header-user a").each(function () {
         var it = this;
         if (window.location.search === it.search) {
-            it.className = "star-current";
+            it.className = "star-current-icon";
+            isAuthorArticle = true;
         }
     });
+    if (isAuthorArticle) {
+        $(".moon-current-icon").removeClass().addClass("moon-icon");
+    }
 </script>
