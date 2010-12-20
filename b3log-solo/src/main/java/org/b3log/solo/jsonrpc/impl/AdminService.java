@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 19, 2010
+ * @version 1.0.1.6, Dec 20, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -111,27 +111,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Users userUtils;
-
-    /**
-     * Checks whether the current request is made by logged in user(including
-     * default user and administrator lists in <i>users</i>).
-     *
-     * @return {@code true} if the current request is made by logged in user,
-     * returns {@code false} otherwise
-     */
-    public boolean isLoggedIn() {
-        return userUtils.isLoggedIn();
-    }
-
-    /**
-     * Checks whether the current request is made by logged in administrator.
-     *
-     * @return {@code true} if the current request is made by logged in user,
-     * returns {@code false} otherwise
-     */
-    public boolean isAdminLoggedIn() {
-        return userUtils.isAdminLoggedIn();
-    }
 
     /**
      * Removes a user with the specified request json object.
