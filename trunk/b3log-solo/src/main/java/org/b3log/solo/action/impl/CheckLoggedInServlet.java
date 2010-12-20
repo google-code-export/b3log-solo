@@ -77,6 +77,7 @@ public final class CheckLoggedInServlet extends AbstractAction {
                 return ret;
             }
 
+            ret.put(Common.IS_LOGGED_IN, true);
             ret.put(Common.IS_ADMIN,
                     Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
 
