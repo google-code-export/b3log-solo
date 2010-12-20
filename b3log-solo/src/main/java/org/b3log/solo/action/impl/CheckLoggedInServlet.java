@@ -80,6 +80,7 @@ public final class CheckLoggedInServlet extends AbstractAction {
             ret.put(Common.IS_LOGGED_IN, true);
             ret.put(Common.IS_ADMIN,
                     Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
+            ret.put(User.USER_NAME, currentUser.getString(User.USER_NAME));
 
             return ret;
         } catch (final JSONException e) {
