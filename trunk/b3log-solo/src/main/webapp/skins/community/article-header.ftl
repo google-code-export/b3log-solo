@@ -1,6 +1,6 @@
 <#if 1 != users?size>
 <div class="header-user">
-    <div class=" content">
+    <div class="content">
         <#list users as user>
         <div class="star">
             <a href="/author-articles.do?oId=${user.oId}">
@@ -8,31 +8,6 @@
             </a>
         </div>
         </#list>
-        <div class="clear"></div>
-        <div class="left none">
-            ${noticeBoard}
-        </div>
-        <div class="right none">
-            <span>${viewCount1Label}
-                <span class='error-msg'>
-                    ${statistic.statisticBlogViewCount}
-                </span>
-                &nbsp;&nbsp;
-            </span>
-            <span>
-                ${articleCount1Label}
-                <span class='error-msg'>
-                    ${statistic.statisticPublishedBlogArticleCount}
-                </span>
-                &nbsp;&nbsp;
-            </span>
-            <span>
-                ${commentCount1Label}
-                <span class='error-msg'>
-                    ${statistic.statisticPublishedBlogCommentCount}
-                </span>
-            </span>
-        </div>
         <div class="clear"></div>
     </div>
 </div>
@@ -83,8 +58,33 @@
         <div class="clear"></div>
     </div>
 </div>
+<div class="left none">
+    ${noticeBoard}
+</div>
+<div class="right none">
+    <span>${viewCount1Label}
+        <span class='error-msg'>
+            ${statistic.statisticBlogViewCount}
+        </span>
+        &nbsp;&nbsp;
+    </span>
+    <span>
+        ${articleCount1Label}
+        <span class='error-msg'>
+            ${statistic.statisticPublishedBlogArticleCount}
+        </span>
+        &nbsp;&nbsp;
+    </span>
+    <span>
+        ${commentCount1Label}
+        <span class='error-msg'>
+            ${statistic.statisticPublishedBlogCommentCount}
+        </span>
+    </span>
+</div>
+<div class="clear"></div>
 <script type="text/javascript">
-    $("#users a").each(function () {
+    $(".header-user a").each(function () {
         var it = this;
         if (window.location.search === it.search) {
             it.className = "star-current";
