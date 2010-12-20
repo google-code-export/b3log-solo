@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Get articles by author action. author-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 13, 2010
+ * @version 1.0.1.4, Dec 20, 2010
  */
 public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
@@ -158,19 +158,7 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
                     jsonArrayToList(result.getJSONArray(Keys.RESULTS));
-            for (final JSONObject article : articles) {
-                if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                    article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(
-                            article));
-                } else {
-                    article.put(Common.HAS_UPDATED, false);
-                }
-
-                // Puts author name
-                final String authorName = author.getString(User.USER_NAME);
-                article.put(Common.AUTHOR_NAME, authorName);
-                article.put(Common.AUTHOR_ID, authorId);
-            }
+            filler.putArticleExProperties(articles, preference);
 
             articleUtils.addTags(articles);
             ret.put(Article.ARTICLES, articles);
