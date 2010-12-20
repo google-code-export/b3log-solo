@@ -9,7 +9,9 @@
     </a>
     <span class="right">
         <span id="admin">
+            <#if currentUser??>
             <span class="left">${currentUser.userName}&nbsp;| &nbsp;</span>
+            </#if>
         </span>
     </span>
     <div class="clear"></div>
