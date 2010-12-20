@@ -97,6 +97,7 @@
                         }
                     } else {
                         if (0 >= $("#article-syncTab").length) { // Not found
+                            // Enable function article sync
                             $("<li id=\"article-syncTab\" onclick=\"adminUtil.changeList(this);\">"
                                 + "<div class=\"left blogSyncIcon\"></div>"
                                 + "<span>&nbsp;${blogSyncLabel}</span>"
