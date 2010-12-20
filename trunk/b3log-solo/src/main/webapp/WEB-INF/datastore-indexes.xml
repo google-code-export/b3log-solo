@@ -74,5 +74,10 @@
         <property name="page_oId" direction="asc"/>
         <property name="oId" direction="desc"/>
     </datastore-index>
+
+    <datastore-index kind="article" ancestor="false" source="manual">
+        <property name="articleAuthorEmail" direction="asc"/>
+        <property name="articleUpdateDate" direction="asc"/>
+    </datastore-index>
     
 </datastore-indexes>
