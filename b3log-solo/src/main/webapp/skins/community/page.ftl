@@ -159,6 +159,12 @@
                 </tbody>
             </table>
         </div>
+        <div>
+            <#include "article-side.ftl">
+        </div>
+        <div class="footer">
+            <#include "article-footer.ftl">
+        </div>
         <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript">
             var pageUtil = new ArticleUtil({
@@ -238,17 +244,11 @@
 
             var loadAction = function () {
                 pageUtil.load();
-                
+
                 // emotions
                 pageUtil.replaceCommentsEm("#comments .comment-content");
             }
             loadAction();
         </script>
-        <div>
-            <#include "article-side.ftl">
-        </div>
-        <div class="footer">
-            <#include "article-footer.ftl">
-        </div>
     </body>
 </html>

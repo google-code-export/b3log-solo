@@ -286,10 +286,11 @@ a.header-title {
 #comments>div{
     margin-top: 10px;
 }
+
 #comments>div>img {
     height: 80px;
     width: 80px;
-    margin: 0 10px 10px 0;
+    margin: 1px 10px 10px 0;
 }
 
 #comments .comment-content {

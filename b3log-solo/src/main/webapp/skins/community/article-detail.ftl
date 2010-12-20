@@ -244,7 +244,24 @@
                 </tbody>
             </table>
         </div>
+        <div>
+            <#include "article-side.ftl">
+        </div>
+        <div class="footer">
+            <#include "article-footer.ftl">
+        </div>
+        <div class="stack addthis_toolbox">
+            <img src="/images/stack.png" alt="stack"/>
+            <ul id="stack" class="custom_images">
+                <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="/images/buzz.png" alt="Share to Buzz" /></a></li>
+                <li><a class="addthis_button_twitter"><span>Twitter</span><img src="/images/twitter.png" alt="Share to Twitter" /></a></li>
+                <li><a class="addthis_button_delicious"><span>Delicious</span><img src="/images/delicious.png" alt="Share to Delicious" /></a></li>
+                <li><a class="addthis_button_facebook"><span>Facebook</span><img src="/images/facebook.png" alt="Share to Facebook" /></a></li>
+                <li><a class="addthis_button_more"><span>More...</span><img src="/images/addthis.png" alt="More..." /></a></li>
+            </ul>
+        </div>
         <script type="text/javascript" src="/js/articleUtil.js"></script>
+        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             var articleUtil = new ArticleUtil({
                 "nameTooLongLabel": "${nameTooLongLabel}",
@@ -260,10 +277,10 @@
                 "externalRelevantArticlesDisplayCount": "${externalRelevantArticlesDisplayCount}",
                 "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
             });
-                
+
             var addComment = function (result, state) {
                 var commentHTML = '<div id="commentItem' + result.oId + '">'
-                    + '<img class="left" alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL 
+                    + '<img class="left" alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL
                     + '"/><div class="comment-content left"><div class="comment-top">';
 
                 if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
@@ -307,7 +324,7 @@
                     + "</td></tr></tbody></table>";
                 articleUtil.addReplyForm(id, commentFormHTML);
             }
-            
+
             var showComment = function (it, id) {
                 if ( $("#commentItemRef" + id).length > 0) {
                     $("#commentItemRef" + id).show();
@@ -335,25 +352,7 @@
                     </#if>
                 }
             loadAction();
-        </script>
-        <div>
-            <#include "article-side.ftl">
-        </div>
-        <div class="footer">
-            <#include "article-footer.ftl">
-        </div>
-        <div class="stack addthis_toolbox">
-            <img src="/images/stack.png" alt="stack"/>
-            <ul id="stack" class="custom_images">
-                <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="/images/buzz.png" alt="Share to Buzz" /></a></li>
-                <li><a class="addthis_button_twitter"><span>Twitter</span><img src="/images/twitter.png" alt="Share to Twitter" /></a></li>
-                <li><a class="addthis_button_delicious"><span>Delicious</span><img src="/images/delicious.png" alt="Share to Delicious" /></a></li>
-                <li><a class="addthis_button_facebook"><span>Facebook</span><img src="/images/facebook.png" alt="Share to Facebook" /></a></li>
-                <li><a class="addthis_button_more"><span>More...</span><img src="/images/addthis.png" alt="More..." /></a></li>
-            </ul>
-        </div>
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
-        <script type="text/javascript">
+            
             articleUtil.loadTool();
         </script>
     </body>
