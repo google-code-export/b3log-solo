@@ -72,7 +72,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, Dec 16, 2010
+ * @version 1.0.2.9, Dec 20, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -942,7 +942,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String articleId =
                     requestJSONObject.getString(Keys.OBJECT_ID);
 
-            if (!userUtils.isAdminLoggedIn()) {
+            if (!userUtils.canAccessArticle(articleId)) {
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.CANCEL_PUBLISH_ARTICLE_FAIL_FORBIDDEN);
 
