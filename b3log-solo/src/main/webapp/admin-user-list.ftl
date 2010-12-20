@@ -89,7 +89,7 @@
                     var users = result.users;
                     var userData = [];
                     usersLength = users.length;
-                    if (1 < usersLength) {
+                    if (1 < usersLength) { // Enabled multiple user support
                         if ($("#article-syncTab")) {
                             // Disable function article sync
                             $("#article-syncTab").remove();
