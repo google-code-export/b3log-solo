@@ -30,32 +30,19 @@
         </span>
     </div>
     <div class="clear"></div>
-    <div class="goTop" onclick="goTop();">${goTopLabel}</div>
+    <div class="goTop" onclick="util.goTop();">${goTopLabel}</div>
 </div>
+<script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
 <script type="text/javascript">
-    var goTop = function () {
-        window.scrollTo(0, 0);
-    }
-  
-    var initIndex = function () {        
-        // common-top.ftl use state
-        jsonRpc.adminService.isLoggedIn(function (result, error) {
-            if (result && !error) {
-                var loginHTML = "";
-                    <#if isAdminLoggedIn>
-                    loginHTML = "<span class='left' onclick='clearAllCache();'>${clearAllCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>";
-                    </#if>
-                    loginHTML += "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='${adminLabel}'></div>"
-                    + "<div class='left'>&nbsp;|&nbsp;</div>"
-                    + "<div onclick='adminLogout();' class='left logoutIcon' title='${logoutLabel}'></div>";
-               
-                $("#admin").append(loginHTML);
-            } else {
-                $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
-            }
-        });
+    var util = new Util({
+        "clearAllCacheLabel": "${clearAllCacheLabel}",
+        "clearCacheLabel": "${clearCacheLabel}",
+        "adminLabel": "${adminLabel}",
+        "logoutLabel": "${logoutLabel}"
+    });
 
+    var init = function () {
         // article header: user list.
         var isAuthorArticle = false;
         $(".header-user a").each(function () {
@@ -68,26 +55,9 @@
         if (isAuthorArticle) {
             $(".moon-current-icon").removeClass().addClass("moon-icon");
         }
-    }
-    initIndex();
-    
-    var clearCache = function () {
-        jsonRpc.adminService.clearPageCache(window.location.pathname);
-        window.location.reload();
+
+        util.init();
     }
 
-    var clearAllCache = function () {
-        jsonRpc.adminService.clearAllPageCache();
-        window.location.reload();
-    }
-    
-    var adminLogin = function () {
-        var loginURL = jsonRpc.adminService.getLoginURL("/admin-index.do");
-        window.location.href = loginURL;
-    }
-
-    var adminLogout = function () {
-        var logoutURL = jsonRpc.adminService.getLogoutURL();
-        window.location.href = logoutURL;
-    }
+    init();
 </script>
