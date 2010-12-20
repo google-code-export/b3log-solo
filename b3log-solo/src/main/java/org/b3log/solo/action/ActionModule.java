@@ -34,7 +34,7 @@ import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
 import org.b3log.solo.action.impl.AdminErrorAction;
 import org.b3log.solo.action.impl.AuthorArticlesAction;
-import org.b3log.solo.action.impl.CheckLoggedInServlet;
+import org.b3log.solo.action.impl.CheckLoggedInAction;
 import org.b3log.solo.action.impl.InitAction;
 import org.b3log.solo.action.impl.PageAction;
 import org.b3log.solo.filter.FilterModule;
@@ -155,7 +155,7 @@ public final class ActionModule extends AbstractActionModule {
         bind(AuthorArticlesAction.class).in(Scopes.SINGLETON);
         serve("/author-articles.do").with(AuthorArticlesAction.class);
 
-        bind(CheckLoggedInServlet.class).in(Scopes.SINGLETON);
-        serve("/check-login.do").with(CheckLoggedInServlet.class);
+        bind(CheckLoggedInAction.class).in(Scopes.SINGLETON);
+        serve("/check-login.do").with(CheckLoggedInAction.class);
     }
 }

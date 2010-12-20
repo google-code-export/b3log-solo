@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Dec 20, 2010
  */
-public final class CheckLoggedInServlet extends AbstractAction {
+public final class CheckLoggedInAction extends AbstractAction {
 
     /**
      * Default serial version uid.
@@ -47,7 +47,7 @@ public final class CheckLoggedInServlet extends AbstractAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(CheckLoggedInServlet.class.getName());
+            Logger.getLogger(CheckLoggedInAction.class.getName());
     /**
      * User utilities.
      */
