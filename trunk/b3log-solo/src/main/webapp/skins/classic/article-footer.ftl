@@ -8,7 +8,8 @@ Powered by
     <span style="color: blue;">G</span>&nbsp;
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
 ver ${version}&nbsp;&nbsp;
-    Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+<script type="text/javascript" src="/js/util.js"></script>
 <script type="text/javascript">
     var goingTop = false;
     var goingBottom = false;
@@ -108,33 +109,12 @@ ver ${version}&nbsp;&nbsp;
         }
     }
   
-    var initIndex = function () {
-        // side comment
-        replaceCommentsEm("#recentComments li .side-comment");
-        
-        // common-top.ftl use state
-        jsonRpc.adminService.isLoggedIn(function (result, error) {
-            if (result && !error) {
-                var loginHTML = "<span class='left' onclick='clearAllCache();'>${clearAllCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='${adminLabel}'></div>"
-                    + "<div class='left'>&nbsp;|&nbsp;</div>"
-                    + "<div onclick='adminLogout();' class='left logoutIcon' title='${logoutLabel}'></div>";
-                $("#admin").append(loginHTML);
-            } else {
-                $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
-            }
-        });
-    }
-    initIndex();
-    
-    var clearCache = function () {
-        jsonRpc.adminService.clearPageCache(window.location.pathname);
-        window.location.reload();
-    }
-
-    var clearAllCache = function () {
-        jsonRpc.adminService.clearAllPageCache();
-        window.location.reload();
-    }
+    var util = new Util({
+        "clearAllCacheLabel": "${clearAllCacheLabel}",
+        "clearCacheLabel": "${clearCacheLabel}",
+        "adminLabel": "${adminLabel}",
+        "logoutLabel": "${logoutLabel}"
+    });
+    util.init();
+    replaceCommentsEm("#recentComments li .side-comment");
 </script>

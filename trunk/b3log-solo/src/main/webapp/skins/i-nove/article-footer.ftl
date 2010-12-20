@@ -8,35 +8,29 @@
         <span style="color: red;">O</span>
         <span style="color: blue;">G</span>&nbsp;
         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-        ver ${version}&nbsp;&nbsp;
-        Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+    ver ${version}&nbsp;&nbsp;
+    Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
 <div class="right goTop">
     <span onclick="goTop();">${goTopLabel}</span>
 </div>
+<script type="text/javascript" src="/js/util.js"></script>
 <script type="text/javascript">
     var goTop = function () {
         window.scrollTo(0, 0);
     }
+
+    var util = new Util({
+        "clearAllCacheLabel": "${clearAllCacheLabel}",
+        "clearCacheLabel": "${clearCacheLabel}",
+        "adminLabel": "${adminLabel}",
+        "logoutLabel": "${logoutLabel}"
+    });
     
     var initIndex = function () {
         // side comment
         replaceCommentsEm(".side-navi .navi-comments .side-comment");
-        
-        // common-top.ftl use state
-        jsonRpc.adminService.isLoggedIn(function (result, error) {
-            if (result && !error) {
-                var loginHTML = "<span class='left' onclick='clearAllCache();'>${clearAllCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='${adminLabel}'></div>"
-                    + "<div class='left'>&nbsp;|&nbsp;</div>"
-                    + "<div onclick='adminLogout();' class='left logoutIcon' title='${logoutLabel}'></div>";
-                $("#admin").append(loginHTML);
-            } else {
-                $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
-            }
-        });
-
+        util.init();
         // set selected navi
         $("#header-navi li").each(function (i) {
             if (i < $("#header-navi li").length - 1) {
@@ -53,14 +47,4 @@
         });
     }
     initIndex();
-    
-    var clearCache = function () {
-        jsonRpc.adminService.clearPageCache(window.location.pathname);
-        window.location.reload();
-    }
-
-    var clearAllCache = function () {
-        jsonRpc.adminService.clearAllPageCache();
-        window.location.reload();
-    }
 </script>
