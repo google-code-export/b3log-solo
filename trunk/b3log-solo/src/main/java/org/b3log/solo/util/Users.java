@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 13, 2010
+ * @version 1.0.0.3, Dec 20, 2010
  */
 public class Users {
 
@@ -72,7 +72,7 @@ public class Users {
                 userRepository.get(1, Integer.MAX_VALUE).
                 getJSONArray(Keys.RESULTS);
 
-        return 1 == users.length();
+        return 1 != users.length();
     }
 
     /**

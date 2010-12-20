@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Dec 19, 2010
+ * @version 1.0.2.1, Dec 20, 2010
  */
 public final class Common {
 
@@ -136,6 +136,11 @@ public final class Common {
      * Key of current user.
      */
     public static final String CURRENT_USER = "currentUser";
+    /**
+     * Key of enabled multiple user support.
+     */
+    public static final String ENABLED_MULTIPLE_USER_SUPPORT =
+            "enabledMultipleUserSupport";
 
     /**
      * Private default constructor.
