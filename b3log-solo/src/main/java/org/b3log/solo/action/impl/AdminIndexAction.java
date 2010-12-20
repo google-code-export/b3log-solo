@@ -29,6 +29,7 @@ import org.b3log.latke.model.User;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Users;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
  * Admin index action. admin-index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 8, 2010
+ * @version 1.0.0.4, Dec 20, 2010
  */
 public final class AdminIndexAction extends AbstractAdminAction {
 
@@ -103,6 +104,9 @@ public final class AdminIndexAction extends AbstractAdminAction {
 
             filler.fillBlogHeader(ret);
             filler.fillBlogFooter(ret);
+
+            final boolean hasMultipleUsers = userUtils.hasMultipleUsers();
+            ret.put(Common.ENABLED_MULTIPLE_USER_SUPPORT, "" + hasMultipleUsers);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
