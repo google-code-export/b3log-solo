@@ -4,11 +4,16 @@ body {
     min-width: 960px;
 }
 
-a,a:link{color:#000000;text-decoration: none;}
-a:active,a:link,a:visited{
+a, a:link {
+    color:#000000;
+    text-decoration: none;
+}
+
+a:active, a:link, a:visited {
     color: #000000;
     text-decoration: none;
 }
+
 a:hover {text-decoration: underline;}
 
 .content {
