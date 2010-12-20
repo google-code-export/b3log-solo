@@ -129,14 +129,13 @@
 
             adminUtil.init();
             // Removes functions if enabled multiple users support
-            var enabledMulUserSupport = "${enabledMultipleUserSupport}";
-            if (enabledMulUserSupport) {
+                <#if enabledMultipleUserSupport>
                 var unUsed = ['article-sync'];
-                for (var i = 0; i < unUsed.length; i++) {
-                    $("#" + unUsed[i] + "Tab").remove();
-                    $("#" + unUsed[i] + "Panel").remove();
-                }
+            for (var i = 0; i < unUsed.length; i++) {
+                $("#" + unUsed[i] + "Tab").remove();
+                $("#" + unUsed[i] + "Panel").remove();
             }
+                </#if>
         </script>
     </body>
 </html>
