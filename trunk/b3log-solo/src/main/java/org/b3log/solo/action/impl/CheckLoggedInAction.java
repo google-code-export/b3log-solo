@@ -82,6 +82,8 @@ public final class CheckLoggedInAction extends AbstractAction {
             if (null == currentUser) {
                 if (userService.isUserLoggedIn()
                     && userService.isUserAdmin()) { // Only should happen while init Solo
+                    // Because of there is no any user in datastore before init Solo
+                    // although the administrator has been logged in for init
                     ret.put(Common.IS_LOGGED_IN, true);
                     ret.put(Common.IS_ADMIN, true);
                 }
