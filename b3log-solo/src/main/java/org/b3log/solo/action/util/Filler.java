@@ -669,8 +669,8 @@ public final class Filler {
      * @param preference the specified preference
      * @throws JSONException json exception
      */
-    private void putArticleExProperties(final List<JSONObject> articles,
-                                        final JSONObject preference)
+    public void putArticleExProperties(final List<JSONObject> articles,
+                                       final JSONObject preference)
             throws JSONException {
         for (final JSONObject article : articles) {
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
