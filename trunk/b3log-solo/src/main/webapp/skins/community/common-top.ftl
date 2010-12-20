@@ -7,12 +7,7 @@
         <span style="color: blue;">G</span>&nbsp;
         <span style="color: orangered; font-weight: bold;">Solo</span>
     </a>
-    <span class="right">
-        <#if currentUser??>
-        <span class="left">${currentUser.userName}&nbsp;| &nbsp;</span>
-        </#if>
-        <span id="admin">
-        </span>
+    <span class="right" id="admin">
     </span>
     <div class="clear"></div>
 </div>
