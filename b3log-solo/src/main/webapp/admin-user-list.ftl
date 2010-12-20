@@ -93,10 +93,8 @@
                     // 用户超过一个时，文章同步功能不可使用。
                     if (1 < usersLength) {
                         $("#article-syncTab").hide();
-                        $("#article-syncPanel").hide();
                     } else {
                         $("#article-syncTab").show();
-                        $("#article-syncPanel").show();
                     }
                     
                     for (var i = 0; i < users.length; i++) {
