@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.filter;
 
 import com.google.inject.Inject;
@@ -47,7 +46,7 @@ import org.b3log.solo.util.Statistics;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Dec 16, 2010
+ * @version 1.0.1.9, Dec 20, 2010
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -194,6 +193,7 @@ public final class PageCacheFilter implements Filter {
                || requestURI.equals("/blog-articles-feed.do")
                || requestURI.equals("/file-access.do")
                || requestURI.equals("/init.do")
+               || requestURI.equals("/check-login.do")
                || equalAdminActions(requestURI)
                || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")
