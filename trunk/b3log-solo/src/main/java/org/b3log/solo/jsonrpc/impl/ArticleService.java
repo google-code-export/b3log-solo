@@ -218,20 +218,22 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
+
         if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
 
-        if (userUtils.isCollaborateAdmin()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
-
         final Transaction transaction = articleRepository.beginTransaction();
+        final JSONObject status = new JSONObject();
         try {
-            final JSONObject status = new JSONObject();
             ret.put(Keys.STATUS, status);
+            if (userUtils.isCollaborateAdmin()) {
+                status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
+
+                return ret;
+            }
+
 
             final JSONObject article =
                     requestJSONObject.getJSONObject(ARTICLE);
@@ -766,12 +768,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
 
-        if (userUtils.isCollaborateAdmin()) {
+        if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -780,11 +778,17 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 articleRepository.beginTransaction();
         Transaction transaction2 = null;
 
-        String articleId = null;
+        final JSONObject status = new JSONObject();
         try {
-            final JSONObject status = new JSONObject();
             ret.put(Keys.STATUS, status);
 
+            if (userUtils.isCollaborateAdmin()) {
+                status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
+
+                return ret;
+            }
+
+            String articleId = null;
             final JSONObject article =
                     requestJSONObject.getJSONObject(ARTICLE);
             articleId = article.getString(Keys.OBJECT_ID);
