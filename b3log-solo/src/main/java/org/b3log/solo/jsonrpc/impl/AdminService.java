@@ -41,10 +41,12 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
+import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Cache;
+import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.util.PageCacheKeys;
@@ -117,6 +119,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private ArticleService articleService;
+    /**
+     * Comment service.
+     */
+    @Inject
+    private CommentService commentService;
 
     /**
      * Removes a user with the specified request json object.
@@ -618,6 +625,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Publishes the first article "Hello World".
      *
+     * <p>
+     *   <b>Note</b>: The article "Hello World" and its comment is no i18N,
+     *   all contents are English.
+     * </p>
+     *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws RepositoryException repository exception
@@ -649,10 +661,28 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
             article.put(Article.ARTICLE_IS_PUBLISHED, true);
 
-            final JSONObject requestJSONObject = new JSONObject();
+            JSONObject requestJSONObject = new JSONObject();
             requestJSONObject.put(Article.ARTICLE, article);
+            final String articleId = articleService.addArticle(
+                    requestJSONObject, request,
+                    response).getString(Keys.OBJECT_ID);
 
-            articleService.addArticle(requestJSONObject, request, response);
+            requestJSONObject = new JSONObject();
+            final String captchaForInit = "captchaForInit";
+            request.getSession().setAttribute(CaptchaServlet.CAPTCHA,
+                                              captchaForInit);
+            requestJSONObject.put(CaptchaServlet.CAPTCHA, captchaForInit);
+            requestJSONObject.put(Keys.OBJECT_ID, articleId);
+            requestJSONObject.put(Comment.COMMENT_NAME, "88250");
+            requestJSONObject.put(Comment.COMMENT_EMAIL, "DL88250@gmail.com");
+            requestJSONObject.put(Comment.COMMENT_URL, "http://88250.b3log.org");
+            requestJSONObject.put(
+                    Comment.COMMENT_CONTENT,
+                    "Hi, this is a comment. To delete a comment, just log in and "
+                    + "view the post's comments. There you will have the option "
+                    + "to edit or delete them.");
+            commentService.addCommentToArticle(requestJSONObject,
+                                               request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException("Hello World error?!");
