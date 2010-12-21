@@ -16,8 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -132,10 +130,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     @Inject
     private Permalinks permalinks;
     /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
-    /**
      * User utilities.
      */
     @Inject
@@ -229,6 +223,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
+        if (userUtils.isCollaborateAdmin()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+
         final Transaction transaction = articleRepository.beginTransaction();
         try {
             final JSONObject status = new JSONObject();
@@ -288,7 +287,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
             }
             // Step 11: Set author email
-            final String authorEmail = userService.getCurrentUser().getEmail();
+            final String authorEmail =
+                    userUtils.getCurrentUser().getString(User.USER_EMAIL);
             article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
             // Step 12: Update article
             articleRepository.update(articleId, article);
@@ -767,6 +767,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+
+        if (userUtils.isCollaborateAdmin()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
