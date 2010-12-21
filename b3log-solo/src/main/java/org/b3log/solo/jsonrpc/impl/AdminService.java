@@ -635,6 +635,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             final String content = "Welcome to B3log. This is your first post. "
                                    + "Edit or delete it, then start blogging!";
             article.put(Article.ARTICLE_ABSTRACT, content);
+            article.put(Article.ARTICLE_CONTENT, content);
             article.put(Article.ARTICLE_TAGS_REF, "B3log");
             article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
             article.put(Article.ARTICLE_IS_PUBLISHED, true);
