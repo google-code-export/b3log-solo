@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.event.comment;
 
 import com.google.appengine.api.mail.MailService;
@@ -134,7 +135,7 @@ public final class ArticleCommentReplyNotifier
             final String commentURL = comment.getString(Comment.COMMENT_URL);
             String commenter = null;
             if (!"http://".equals(commentURL)) {
-                commenter = "<a target=\"_blank\" " + "href=\" + commentURL"
+                commenter = "<a target=\"_blank\" " + "href=\"" + commentURL
                             + "\">" + commentName + "</a>";
             } else {
                 commenter = commentName;
