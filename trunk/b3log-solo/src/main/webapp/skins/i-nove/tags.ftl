@@ -14,8 +14,6 @@
         <link type="text/css" rel="stylesheet" href="/skins/i-nove/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         ${htmlHead}
     </head>
     <body>
@@ -39,78 +37,13 @@
             </div>
         </div>
         <script type="text/javascript">
-            var randomColor = function () {
-                var arrHex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
-                var strHex = "#";
-                var index;
-                for(var i = 0; i < 6; i++) {
-                    index = Math.round(Math.random() * 15);
-                    strHex += arrHex[index];
-                }
-                return strHex;
-            }
-
-            var getMaxCount = function (tags) {
-                var maxCount = 0;
-                for (var i = 0; i < tags.length; i++) {
-                    if (tags[i].tagCount > maxCount) {
-                        maxCount = tags[i].tagCount;
-                    }
-                }
-
-                return maxCount;
-            }
-
-            var getStyle = function (maxCount, currentCount) {
-                var styleHTML = {
-                    padding: "",
-                    font: "",
-                    color: ""
-                };
-                styleHTML.padding =  "padding:" + parseInt(16 * currentCount / maxCount) + "px;";
-
-                styleHTML.color = "color:" + randomColor() + ";";
-
-                fontSize = parseInt(36 * currentCount / maxCount);
-                if (fontSize < 10) {
-                    fontSize = 10;
-                }
-                styleHTML.font = "font-size:" + fontSize + "px;";
-                if (maxCount === currentCount) {
-                    styleHTML.font += "font-weight:bold;";
-                }
-                return styleHTML;
-            }
-
-            var setTagsPanel = function () {
-                var tags = [<#list tags as tag>{
-                        tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",
-                        tagName: "${tag.tagTitle}",
-                        tagCount: ${tag.tagPublishedRefCount},
-                        tagId: ${tag.oId}
-                    }<#if tag_has_next>,</#if>
-                        </#list>],
-                tagsHTML = "";
-
-                var maxCount = getMaxCount(tags);
-
-                for (var i = 0; i < tags.length; i++) {
-                    var style = getStyle(maxCount, tags[i].tagCount);
-                    tagsHTML += "<a title='" + tags[i].tagCount + "' class='tagPanel' style='"
-                        + style.font + style.color + style.padding + "' href='/tags/"
-                        + tags[i].tagNameURLEncoded +"'>" + tags[i].tagName + "</a>";
-                }
-                $("#tagsPanel").append(tagsHTML + "<div class='clear'></div>");
-                $("#tagsPanel a").each(function () {
-                    $(this).hover(function () {
-                        var $it = $(this);
-                        //$it.css({"margin": parseFloat($it.css("padding-top"))*10});
-                    }, function () {
-
-                    });
-                });
-            }
-            setTagsPanel();
+            util.setTagsPanel([<#list tags as tag>{
+                    tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",
+                    tagName: "${tag.tagTitle}",
+                    tagCount: ${tag.tagPublishedRefCount},
+                    tagId: ${tag.oId}
+                }<#if tag_has_next>,</#if>
+                    </#list>]);
         </script>
     </body>
 </html>
