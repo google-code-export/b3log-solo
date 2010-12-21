@@ -246,7 +246,7 @@
                 articleUtil.load();
 
                 // emotions
-                articleUtil.replaceCommentsEm("#comments .comment-content", "community");
+                util.replaceCommentsEm("#comments .comment-content", "community");
             }
             loadAction();
         </script>

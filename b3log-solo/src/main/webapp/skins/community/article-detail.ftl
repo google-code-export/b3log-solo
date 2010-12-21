@@ -343,7 +343,7 @@
 
             var loadAction = function () {
                 // emotions
-                articleUtil.replaceCommentsEm("#comments .comment-content", "community");
+                util.replaceCommentsEm("#comments .comment-content", "community");
 
                 articleUtil.load();
                 articleUtil.loadTool();

@@ -21,7 +21,7 @@ var Util = function (tip) {
 $.extend(Util.prototype, {
     goTop:function (type) {
         switch (type) {
-            case "simple":
+            case undefined:
                 window.scrollTo(0, 0);
                 break;
             default:
@@ -30,8 +30,31 @@ $.extend(Util.prototype, {
         }
     },
 
+    goBottom: function (type) {
+        switch (type) {
+            case undefined:
+                window.scrollTo(0, 0);
+                break;
+            case "tree-house":
+                var clientHeight  = 0, scrollHeight = 0;
+                if(document.body.clientHeight && document.documentElement.clientHeight) {
+                    clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                } else {
+                    clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
+                }
+                scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+                window.scrollTo(0, scrollHeight - clientHeight - 350);
+                break;
+            default :
+                alert("has no type!");
+                break;
+        }
+    },
+
     init: function () {
         var tip = this.tip;
+
+        // common-top
         $.ajax({
             type: "POST",
             url: "/check-login.do",
@@ -41,13 +64,13 @@ $.extend(Util.prototype, {
 
                     if (result.isAdmin) {
                         loginHTML += "<span class='left' onclick='util.clearAllCache();'>"
-                        + tip.clearAllCacheLabel + "&nbsp;|&nbsp;</span>"
-                        + "<span class='left' onclick='util.clearCache();'>"
-                        + tip.clearCacheLabel + "&nbsp;|&nbsp;</span>";
+                            + tip.clearAllCacheLabel + "&nbsp;|&nbsp;</span>"
+                            + "<span class='left' onclick='util.clearCache();'>"
+                            + tip.clearCacheLabel + "&nbsp;|&nbsp;</span>";
                     }
                     loginHTML += "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='"
-                    + tip.adminLabel + "'></div>" + "<div class='left'>&nbsp;|&nbsp;</div>"
-                    + "<div onclick='util.adminLogout();' class='left logoutIcon' title='" + tip.logoutLabel+ "'></div>";
+                        + tip.adminLabel + "'></div>" + "<div class='left'>&nbsp;|&nbsp;</div>"
+                        + "<div onclick='util.adminLogout();' class='left logoutIcon' title='" + tip.logoutLabel+ "'></div>";
                 
                     $("#admin").append(loginHTML);
                 } else {
@@ -58,6 +81,9 @@ $.extend(Util.prototype, {
                 
             }
         });
+
+        // paginate
+        this.setCurrentPage();
     },
 
     clearCache: function () {
@@ -78,5 +104,111 @@ $.extend(Util.prototype, {
     adminLogout: function () {
         var logoutURL = jsonRpc.adminService.getLogoutURL();
         window.location.href = logoutURL;
+    },
+
+    replaceCommentsEm: function (selector, skinName) {
+        var $commentContents = $(selector);
+        for (var i = 0; i < $commentContents.length; i++) {
+            var str = $commentContents[i].innerHTML;
+            var ems = str.split("[em");
+            var content = ems[0];
+            for (var j = 1; j < ems.length; j++) {
+                var key = ems[j].substr(0, 2),
+                emImgHTML = "<img src='/skins/" + skinName + "/emotions/em" + key
+                    + ".png'/>";
+                content += emImgHTML + ems[j].slice(3);
+            }
+            $commentContents[i].innerHTML = content;
+        }
+    },
+
+    setCurrentPage: function (selector) {
+        if ($(".pagination").length >= 1) {
+            var local = window.location.search.substring(1),
+            currentPage = "1";
+            var paramURL = local.split("&");
+            for (var i = 0; i < paramURL.length; i++) {
+                if (paramURL[i].split("=")[0] === "paginationCurrentPageNum") {
+                    currentPage = paramURL[i].split("=")[1];
+                }
+            }
+
+            $(".pagination a").each(function () {
+                var $it = $(this);
+                $it.removeClass("selected");
+                if ($it.text() === currentPage) {
+                    $it.addClass("selected");
+                }
+            });
+
+            if ($("#nextPage").length > 0) {
+                $("#nextPage").attr("href", $("#nextPage").attr("href").replace("{paginationLastPageNum}", parseInt(currentPage) + 1));
+            }
+            if ($("#previousPage").length > 0) {
+                $("#previousPage").attr("href", $("#previousPage").attr("href").replace("{paginationFirstPageNum}", parseInt(currentPage) - 1));
+            }
+        }
+    },
+
+    // tags
+    randomColor: function () {
+        var arrHex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
+        var strHex = "#";
+        var index;
+        for(var i = 0; i < 6; i++) {
+            index = Math.round(Math.random() * 15);
+            strHex += arrHex[index];
+        }
+        return strHex;
+    },
+
+    getMaxCount: function (tags) {
+        var maxCount = 0;
+        for (var i = 0; i < tags.length; i++) {
+            if (tags[i].tagCount > maxCount) {
+                maxCount = tags[i].tagCount;
+            }
+        }
+
+        return maxCount;
+    },
+
+    getStyle: function (maxCount, currentCount) {
+        var styleHTML = {
+            padding: "",
+            font: "",
+            color: ""
+        };
+        styleHTML.padding =  "padding:" + parseInt(16 * currentCount / maxCount) + "px;";
+
+        styleHTML.color = "color:" + this.randomColor() + ";";
+
+        var fontSize = parseInt(36 * currentCount / maxCount);
+        if (fontSize < 12) {
+            fontSize = 12;
+        }
+        styleHTML.font = "font-size:" + fontSize + "px;";
+        if (maxCount === currentCount) {
+            styleHTML.font += "font-weight:bold;";
+        }
+        return styleHTML;
+    },
+
+    setTagsPanel: function (tags) {
+        var tagsHTML = "";
+
+        if (tags.length === 0) {
+            return;
+        }
+
+        var maxCount = this.getMaxCount(tags);
+
+        for (var i = 0; i < tags.length; i++) {
+            var style = this.getStyle(maxCount, tags[i].tagCount);
+            tagsHTML += "<a title='" + tags[i].tagCount + "' class='tagPanel' style='"
+                + style.font + style.color + style.padding + "' href='/tags/"
+                + tags[i].tagNameURLEncoded +"'>" + tags[i].tagName + "</a> ";
+        }
+        $("#tagsPanel").html(tagsHTML + "<div class='clear'></div>");
     }
 });

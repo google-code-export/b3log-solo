@@ -273,10 +273,12 @@ a.header-title {
 
 .article-relative h5 {
     font-size: 14px;
+    line-height: 25px;
 }
 
 .article-relative a {
     color: #555555;
+    line-height: 20px;
 }
 
 #comments {
