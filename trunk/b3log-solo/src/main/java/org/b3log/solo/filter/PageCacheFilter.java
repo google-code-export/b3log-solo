@@ -32,6 +32,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.action.ActionModule;
@@ -47,7 +48,7 @@ import org.b3log.solo.util.Statistics;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Dec 20, 2010
+ * @version 1.0.2.0, Dec 22, 2010
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -140,8 +141,9 @@ public final class PageCacheFilter implements Filter {
                    new Object[]{cache.getCachedCount(), cache.getMaxCount()});
         final Object cachedPageContentObject = cache.get(pageCacheKey);
         if (null == cachedPageContentObject) {
-            chain.doFilter(request, response); // Method afterDoFreeMarkerTemplateAction
-            // of cacheable page action has put the key and content into cache
+            httpServletRequest.setAttribute(Keys.PAGE_CACHE_KEY,
+                                            pageCacheKey);
+            chain.doFilter(request, response);
 
             final long endimeMillis = System.currentTimeMillis();
             final String dateString = DateFormatUtils.format(

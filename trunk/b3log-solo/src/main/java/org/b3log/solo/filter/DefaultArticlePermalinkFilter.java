@@ -16,7 +16,6 @@
 
 package org.b3log.solo.filter;
 
-import com.google.appengine.api.utils.SystemProperty;
 import org.apache.commons.lang.StringUtils;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +38,7 @@ import org.b3log.latke.Keys;
  * </p>
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 21, 2010
+ * @version 1.0.0.5, Dec 22, 2010
  */
 public final class DefaultArticlePermalinkFilter implements Filter {
 
@@ -83,9 +82,6 @@ public final class DefaultArticlePermalinkFilter implements Filter {
         final RequestDispatcher requestDispatcher =
                 httpServletRequest.getRequestDispatcher("/article-detail.do");
         request.setAttribute(Keys.OBJECT_ID, articleId);
-        request.setAttribute(Keys.PAGE_CACHE_KEY,
-                             SystemProperty.instanceReplicaId.get()
-                             + "/article-detail.do?oId="+ articleId);
         requestDispatcher.forward(request, response);
     }
 
