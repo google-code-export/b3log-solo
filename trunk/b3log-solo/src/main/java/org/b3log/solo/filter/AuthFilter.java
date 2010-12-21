@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.filter;
 
 import com.google.appengine.api.users.User;
@@ -86,14 +85,15 @@ public final class AuthFilter implements Filter {
         try {
             final User currentUser = userService.getCurrentUser();
             if (null == currentUser) {
-                LOGGER.warning("This request has been forbidden!");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                 return;
             }
 
             final String currentUserEmail = currentUser.getEmail();
-            if (users.isSoloUser(currentUserEmail)) {
+            if (users.isSoloUser(currentUserEmail)
+                || userService.isUserAdmin()) {
+                // The administrator may be added via GAE Admin Console Permissions
                 chain.doFilter(request, response);
 
                 return;
