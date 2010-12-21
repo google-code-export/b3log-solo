@@ -64,4 +64,4 @@ _细节_：<br/>
  * “置顶”/“取消置顶”功能只有管理员可以使用
  * 非管理员用户只能更新、删除自己的文章，删除自己文章的评论
  * 一旦用户不只有管理员用户时，Solo 将认为启用了多用户，此时[http://code.google.com/p/b3log-solo/wiki/SupportedBloggingServiceForArticleImport 文章导入]、[http://code.google.com/p/b3log-solo/wiki/SupportedBloggingServiceForSyncMgmt 同步管理]将不可用
- * 通过 GAE 控制台权限功能加入的管理员也可以登录 Solo，并有着与 Solo 管理员同样的操作权限。但该管理员不能进行文章（包括草稿）撰写。
+ * 通过 GAE 控制台权限功能加入的管理员也可以登录 Solo，并有着与 Solo 管理员同样的操作权限。但该管理员不能进行文章（包括草稿）创建与修改。
