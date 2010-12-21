@@ -24,6 +24,10 @@ import org.b3log.latke.servlet.filter.AbstractGZIPFilter;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Dec 16, 2010
+ * @deprecated By default, GAE will compress the response(if accept)
+ * automatically via Gzip(see <a href="http://code.google.com/appengine/docs/java/runtime.html#Responses">
+ * the docs</a> for more details), so this filter may be
+ * removed in feature.
  */
 public final class GZIPFilter extends AbstractGZIPFilter {
 

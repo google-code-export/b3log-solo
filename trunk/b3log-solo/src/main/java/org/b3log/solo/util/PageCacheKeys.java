@@ -16,6 +16,7 @@
 
 package org.b3log.solo.util;
 
+import com.google.appengine.api.utils.SystemProperty;
 import com.google.inject.Inject;
 import java.net.URLDecoder;
 import java.util.logging.Level;
@@ -66,6 +67,22 @@ public final class PageCacheKeys {
     /**
      * Gets page cache key by the specified URI and query string.
      *
+     * <p>
+     * In cluster environment(multiple application instance replicas), the memory
+     * cache may be individual(depends on underlying memory cache strategy).
+     * </p>
+     *
+     * <p>
+     * <a href="http://code.google.com/appengine">Google App Engine</a>
+     * will setup an application instance replicas sometimes(high traffic, redeploy
+     * application, etc), so the cache service (provided by
+     * <a href="http://code.google.com/appengine/docs/java/memcache/">
+     * memcache service</a>) may be used in these instances individually. For
+     * consistency reason, this method will add the <i>instance id</i> as the
+     * prefix of the key. The <i>instance id</i> may be {@code null} if only one
+     * instance is serving.
+     * </p>
+     *
      * @param uri the specified URI
      * @param queryString the specified query string
      * @return cache key
@@ -73,18 +90,17 @@ public final class PageCacheKeys {
     // XXX: Performance issue
     public String getPageCacheKey(final String uri,
                                   final String queryString) {
-        String ret = null;
+        String ret = SystemProperty.instanceReplicaId.get() + "_";
 
         try {
             if ("/tags.html".equals(uri) || "/tags.do".equals(uri)) {
-                return TagsAction.CACHE_KEY;
+                return ret + TagsAction.CACHE_KEY;
             }
 
             final JSONObject article = articleRepository.getByPermalink(uri);
             if (null != article) {
                 final String articleId = article.getString(Keys.OBJECT_ID);
-                ret = "/article-detail.do?oId="
-                      + articleId;
+                ret += "/article-detail.do?oId=" + articleId;
                 incArticleViewCount(articleId);
 
                 return ret;
@@ -101,8 +117,8 @@ public final class PageCacheKeys {
                 }
                 final JSONObject tag = tagRepository.getByTitle(tagTitle);
                 if (null != tag) {
-                    ret = "/tag-articles.do?oId="
-                          + tag.getString(Keys.OBJECT_ID);
+                    ret += "/tag-articles.do?oId="
+                           + tag.getString(Keys.OBJECT_ID);
 
                     return ret;
                 }
@@ -110,7 +126,7 @@ public final class PageCacheKeys {
 
             final JSONObject page = pageRepository.getByPermalink(uri);
             if (null != page) {
-                ret = "/page.do?oId=" + page.getString(Keys.OBJECT_ID);
+                ret += "/page.do?oId=" + page.getString(Keys.OBJECT_ID);
 
                 return ret;
             }

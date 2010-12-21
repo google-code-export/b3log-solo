@@ -137,8 +137,7 @@ public final class PageCacheFilter implements Filter {
         final Cache<String, Object> cache = PageCaches.getCache();
         LOGGER.log(Level.FINER, "Request[pageCacheKey={0}]", pageCacheKey);
         LOGGER.log(Level.FINEST, "Page cache[cachedCount={0}, maxCount={1}]",
-                   new Object[]{cache.getCachedCount(),
-                                cache.getMaxCount()});
+                   new Object[]{cache.getCachedCount(), cache.getMaxCount()});
         final Object cachedPageContentObject = cache.get(pageCacheKey);
         if (null == cachedPageContentObject) {
             chain.doFilter(request, response); // Method afterDoFreeMarkerTemplateAction

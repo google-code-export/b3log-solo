@@ -16,6 +16,7 @@
 
 package org.b3log.solo.filter;
 
+import com.google.appengine.api.utils.SystemProperty;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -35,7 +36,7 @@ import org.b3log.solo.action.impl.TagsAction;
  * Tags filter. tags.html.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Nov 24, 2010
+ * @version 1.0.0.1, Dec 21, 2010
  */
 public final class TagsFilter implements Filter {
 
@@ -70,7 +71,9 @@ public final class TagsFilter implements Filter {
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
         try {
-            request.setAttribute(Keys.PAGE_CACHE_KEY, TagsAction.CACHE_KEY);
+            request.setAttribute(Keys.PAGE_CACHE_KEY,
+                                 SystemProperty.instanceReplicaId.get()
+                                 + TagsAction.CACHE_KEY);
 
             final RequestDispatcher requestDispatcher =
                     httpServletRequest.getRequestDispatcher("/tags.do");
