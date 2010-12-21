@@ -16,7 +16,6 @@
         <link type="text/css" rel="stylesheet" href="/skins/classic/default-index.css"/>
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         ${htmlHead}
     </head>
     <body>
@@ -226,7 +225,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="3" align="right">
-                                            <button onclick="submitComment();">${submmitCommentLabel}</button>
+                                            <button onclick="articleUtil.submitComment();">${submmitCommentLabel}</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -315,7 +314,7 @@
                     + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
                     + "<span class='error-msg' id='commentErrorTipReply'/>"
                     + "</th></tr><tr><td colspan='3' align='right'>"
-                    + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
+                    + "<button onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
                     + "</td></tr></tbody></table>";
                 articleUtil.addReplyForm(id, commentFormHTML);
 
@@ -356,7 +355,7 @@
                 }).width($("#comment").width() - $("#commentURLLabel").width());
 
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content", "community");
+                util.replaceCommentsEm("#comments .comment-content", "classic");
 
                 articleUtil.load();
                 articleUtil.loadRandomArticles();

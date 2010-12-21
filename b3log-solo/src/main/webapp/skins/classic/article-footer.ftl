@@ -9,7 +9,9 @@ Powered by
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
 ver ${version}&nbsp;&nbsp;
 Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 <script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
 <script type="text/javascript">
     var goingTop = false;
     var goingBottom = false;
@@ -116,5 +118,5 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         "logoutLabel": "${logoutLabel}"
     });
     util.init();
-    replaceCommentsEm("#recentComments li .side-comment");
+    util.replaceCommentsEm("#recentComments li .side-comment", "classic");
 </script>
