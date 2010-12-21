@@ -14,7 +14,6 @@
         <link type="text/css" rel="stylesheet" href="/skins/community/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         ${htmlHead}
     </head>
     <body>
@@ -42,7 +41,7 @@
                             @
                             <a href="http://${blogHost}/pagePermalink#${comment.commentOriginalCommentId}"
                                onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                               onmouseout="pageUtil.hideComment('${comment.commentOriginalCommentId}')">
+                               onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">
                                 ${comment.commentOriginalCommentName}</a>
                             </#if>
                             ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -152,7 +151,7 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input type="button" onclick="pageUtil.submitComment();" value="${submmitCommentLabel}"/>
+                            <input type="button" onclick="articleUtil.submitComment();" value="${submmitCommentLabel}"/>
                         </td>
                     </tr>
                 </tbody>
@@ -168,7 +167,7 @@
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript">
-            var pageUtil = new ArticleUtil({
+            var articleUtil = new ArticleUtil({
                 "nameTooLongLabel": "${nameTooLongLabel}",
                 "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
                 "mailInvalidLabel": "${mailInvalidLabel}",
@@ -193,18 +192,18 @@
                 }
 
                 if (state !== "") {
-                    var commentOriginalCommentName = $("#commentItem" + pageUtil.currentCommentId + " .comment-top a").first().text();
-                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + pageUtil.currentCommentId + '"'
-                        + 'onmouseover="showComment(this, \'' + pageUtil.currentCommentId + '\');"'
-                        + 'onmouseout="pageUtil.hideComment(\'' + pageUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                    var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId + " .comment-top a").first().text();
+                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + articleUtil.currentCommentId + '"'
+                        + 'onmouseover="showComment(this, \'' + articleUtil.currentCommentId + '\');"'
+                        + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                 }
 
-                commentHTML += '&nbsp;' + pageUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
-                    + '</div><div class="comment-content">' + pageUtil.replaceEmotions($("#comment" + state).val(), "community")
+                commentHTML += '&nbsp;' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
+                    + '</div><div class="comment-content">' + articleUtil.replaceEmotions($("#comment" + state).val(), "community")
                     + '</div><div class="reply"><a href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
                     + '</div></div><div class="clear"></div></div>';
 
-                pageUtil.addCommentAjax(commentHTML, state);
+                articleUtil.addCommentAjax(commentHTML, state);
             }
 
             var replyTo = function (id) {
@@ -222,9 +221,9 @@
                     + "<tr><th><div>${captchaLabel}</div><span class='arrow-right'></span></th>"
                     + "<td><input type='text' id='commentValidateReply'/><img id='captchaReply' alt='validate' src='/captcha.do?"
                     + new Date().getTime() + "'></img></td><th><span class='error-msg right' id='commentErrorTipReply'/></th></tr>"
-                    + "<tr><td colspan='3'><input type='button' onclick=\"pageUtil.submitComment('" + id + "', 'Reply');\" value='${submmitCommentLabel}'/>"
+                    + "<tr><td colspan='3'><input type='button' onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\" value='${submmitCommentLabel}'/>"
                     + "</td></tr></tbody></table>";
-                pageUtil.addReplyForm(id, commentFormHTML);
+                articleUtil.addReplyForm(id, commentFormHTML);
             }
 
             var showComment = function (it, id) {
@@ -244,10 +243,10 @@
             }
 
             var loadAction = function () {
-                pageUtil.load();
+                articleUtil.load();
 
                 // emotions
-                pageUtil.replaceCommentsEm("#comments .comment-content", "community");
+                articleUtil.replaceCommentsEm("#comments .comment-content", "community");
             }
             loadAction();
         </script>

@@ -16,7 +16,6 @@
         <link type="text/css" rel="stylesheet" href="/skins/community/default-index.css"/>
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         ${htmlHead}
     </head>
     <body>
@@ -347,14 +346,13 @@
                 articleUtil.replaceCommentsEm("#comments .comment-content", "community");
 
                 articleUtil.load();
+                articleUtil.loadTool();
                 articleUtil.loadRandomArticles();
                     <#if 0 != externalRelevantArticlesDisplayCount>
                     articleUtil.loadExternalRelevantArticles("<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>");
                     </#if>
                 }
             loadAction();
-            
-            articleUtil.loadTool();
         </script>
     </body>
 </html>
