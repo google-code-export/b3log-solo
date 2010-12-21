@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -24,11 +23,15 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
+import com.google.appengine.api.utils.SystemProperty;
+import com.google.appengine.api.utils.SystemProperty.Environment.Value;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 import com.google.inject.Stage;
 import java.io.BufferedInputStream;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -71,7 +74,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.4, Dec 6, 2010
+ * @version 1.0.3.5, Dec 21, 2010
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -166,15 +169,28 @@ public final class SoloServletListener extends AbstractServletListener {
         final Injector ret = super.getInjector();
 
         if (null == ret) {
+            final Value gaeEnvValue =
+                    SystemProperty.environment.value();
             LOGGER.info("Initializing Guice....");
-            setInjector(Guice.createInjector(Stage.PRODUCTION,
-                                             new ActionModule(), // Only on servlet module
-                                             new JSONRpcServiceModule(),
-                                             new RepositoryModule(),
-                                             new EventModule(),
-                                             new SyncModule(),
-                                             new UtilsModule()));
+            final Collection<Module> modules = createModules();
+
+            if (SystemProperty.Environment.Value.Production
+                == gaeEnvValue) {
+                LOGGER.info("B3log Solo runs on [production] environment");
+                setInjector(Guice.createInjector(Stage.PRODUCTION,
+                                                 modules));
+            } else {
+                LOGGER.info("B3log Solo runs on [development] environment");
+                setInjector(Guice.createInjector(Stage.DEVELOPMENT,
+                                                 modules));
+            }
         }
+
+        LOGGER.log(Level.INFO,
+                   "Application[id={0}, version={1}, instanceReplicaId={2}]",
+                   new Object[]{SystemProperty.applicationId.get(),
+                                SystemProperty.applicationVersion.get(),
+                                SystemProperty.instanceReplicaId.get()});
 
         return ret;
     }
@@ -182,7 +198,7 @@ public final class SoloServletListener extends AbstractServletListener {
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Latkes.setRunsOnEnv(RunsOnEnv.GAE);
-        LOGGER.info("Latke is running on Google app enigne.");
+        LOGGER.info("Latke runs on Google app enigne.");
 
         super.contextInitialized(servletContextEvent);
 
@@ -429,5 +445,23 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.WARNING, "B3log Solo has not been initialized");
             return false;
         }
+    }
+
+    /**
+     * Creates all modules used in B3log Solo.
+     *
+     * @return modules
+     */
+    private Collection<Module> createModules() {
+        final Collection<Module> ret = new HashSet<Module>();
+
+        ret.add(new ActionModule());
+        ret.add(new JSONRpcServiceModule());
+        ret.add(new RepositoryModule());
+        ret.add(new EventModule());
+        ret.add(new SyncModule());
+        ret.add(new UtilsModule());
+
+        return ret;
     }
 }
