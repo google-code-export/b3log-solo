@@ -234,7 +234,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
-
             final JSONObject article =
                     requestJSONObject.getJSONObject(ARTICLE);
             // Step 1: Add tags
