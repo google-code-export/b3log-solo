@@ -1,3 +1,4 @@
+<#if articles_r?size<=0>Pink is Null</#if>
 <#list articles_r as article>
 <div class="post-individual">
     <div class="posttime-pink">

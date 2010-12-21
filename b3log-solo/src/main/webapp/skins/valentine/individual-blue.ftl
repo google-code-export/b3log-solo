@@ -1,3 +1,4 @@
+<#if articles_l?size<=0>Blue is Null</#if>
 <#list articles_l as article>
 <div class="post-individual">
     <div class="posttime-blue">
