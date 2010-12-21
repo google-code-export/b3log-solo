@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.upgrade;
 
 import com.google.appengine.api.users.UserService;
@@ -103,7 +102,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Dec 13, 2010
+ * @version 1.0.1.2, Dec 21, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -267,7 +266,7 @@ public final class V021ToV025 extends HttpServlet {
      * @throws ServletException upgrades fails
      */
     private void upgradeLinks() throws ServletException {
-        final Transaction transaction = linkRepository.beginTransaction();
+        Transaction transaction = null;
         try {
             final Query query = new Query();
             final JSONObject result = linkRepository.get(query);
@@ -275,13 +274,14 @@ public final class V021ToV025 extends HttpServlet {
             for (int i = 0; i < links.length(); i++) {
                 final JSONObject link = links.getJSONObject(i);
                 if (!link.has(Link.LINK_ORDER)) {
+                    linkRepository.beginTransaction();
                     final int maxOrder = linkRepository.getMaxOrder();
                     link.put(Link.LINK_ORDER, maxOrder + 1);
                     linkRepository.update(link.getString(
                             Keys.OBJECT_ID), link);
+                    transaction.commit();
                 }
             }
-            transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.log(Level.SEVERE, "Upgrade link fail.", e);
