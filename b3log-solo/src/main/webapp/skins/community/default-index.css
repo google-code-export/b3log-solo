@@ -76,23 +76,24 @@ a.header-title {
     color: #FFFFFF;
     text-decoration: none;
     line-height: 49px;
-    font: bold 26px/47px 微软雅黑,Arial,Helvetica;
+    font: bold 35px/53px 微软雅黑,Arial,Helvetica;
 }
 
-.sub-title, .error-msg {
+.sub-title {
     color: #9BC4CE;
+    margin-left: 10px;
 }
 
 .header-navi-main .tabs {
     list-style: none;
-    height: 49px;
+    height: 57px;
 }
 
 .header-navi-main .tab {
     float: left;
     font-size: 16px;
     margin-left: 1px;
-    height: 49px;
+    height: 57px;
 }
 
 .header-navi-main .tab:hover {
@@ -108,7 +109,7 @@ a.header-title {
     display: block;
     font-weight: bold;
     line-height: 22px;
-    padding: 15px 16px 12px;
+    padding: 19px 16px 16px;
     text-decoration: none;
 }
 
@@ -116,7 +117,7 @@ a.header-title {
     left: 0px;
     list-style: none;
     position: absolute;
-    top: 49px;
+    top: 57px;
     display: block;
 }
 
@@ -177,7 +178,7 @@ a.header-title {
 }
 
 .article-main h2.title {
-    font: bold 30px/29px Arial,Helvetica,sans-serif;
+    font: bold 30px Arial,Helvetica,sans-serif;
     margin: 0 0 20px;
 }
 
@@ -293,7 +294,7 @@ a.header-title {
     margin: 1px 10px 10px 0;
 }
 
-#comments .comment-content {
+#comments .comment-panel {
     background: none repeat scroll 0 0 #FFFFFF;
     border-bottom: 1px solid #E3E3E3;
     border-right: 1px solid #E3E3E3;
@@ -306,11 +307,11 @@ a.header-title {
     margin-bottom: 10px;
 }
 
-#comments .comment-content .reply {
+#comments .comment-panel .reply {
     margin-top: 20px;
 }
 
-#comments .comment-content .reply a {
+#comments .comment-panel .reply a {
     -moz-border-radius: 5px 5px 5px 5px;
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 1px 2px rgba(0, 0, 0, 0.29);
     background-color: #EEEEEE;
@@ -319,7 +320,7 @@ a.header-title {
     padding: 2px 10px;
 }
 
-#comments .comment-content .reply a:hover {
+#comments .comment-panel .reply a:hover {
     background-color: #E6E6E6;
     text-decoration: none;
 }
@@ -331,7 +332,7 @@ a.header-title {
     padding: 10px 0 0 10px;
 }
 
-#comments .comment-body-ref .comment-content{
+#comments .comment-body-ref .comment-panel{
     border-width: 0px;
     margin-bottom: 0;
     width: 629px;
@@ -512,8 +513,12 @@ a.header-title {
 /* footer copyright */
 .footer {
     background: url("images/indentline-light.png") repeat-x scroll left top #DEDEDE;
-    position: relative;
     text-align: left;
+}
+
+.footer .content {
+    position: relative;
+    line-height: 22px;
 }
 
 .footer a {
@@ -526,11 +531,18 @@ a.header-title {
     padding-left: 15px;
     padding-top: 0;
     position: absolute;
-    right: 214px;
-    top: 9px;
+    right: 0px;
+    height: 17px;
+    line-height: 17px;
+    top: 0px;
 }
 
 /* error */
+.error-msg {
+    color: #333333;
+    font-weight: bold;
+}
+
 .error-footer {
     bottom: 0;
     position: fixed;

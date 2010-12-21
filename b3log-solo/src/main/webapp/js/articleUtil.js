@@ -84,12 +84,12 @@ $.extend(ArticleUtil.prototype, {
         }
     },
 
-    replaceEmotions: function (commentContentHTML, skin) {
+    replaceEmotions: function (commentContentHTML, skinName) {
         var commentContents = commentContentHTML.split("[em");
         commentContentHTML = commentContents[0];
         for (var j = 1; j < commentContents.length; j++) {
             var key = commentContents[j].substr(0, 2),
-            emImgHTML = "<img src='/skins/" + skin + "/emotions/em" + key + ".png'/>";
+            emImgHTML = "<img src='/skins/" + skinName + "/emotions/em" + key + ".png'/>";
             commentContentHTML += emImgHTML + commentContents[j].slice(3);
         }
         return commentContentHTML;
@@ -307,9 +307,10 @@ $.extend(ArticleUtil.prototype, {
                 "captcha": $("#commentValidate" + statue).val()
             };
 
-            if (statue === "") {
+            if (statue === "Reply") {
                 requestJSONObject.commentOriginalCommentId = commentId;
             }
+            
             jsonRpc.commentService["addCommentTo" + type](function (result, error) {
                 if (result && !error) {
                     switch (result.sc) {
