@@ -9,23 +9,10 @@ Powered by
     <span style="color: orangered; font-weight: bold;">Solo</span></a>,
 ver ${version}&nbsp;&nbsp;
 Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 <script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
 <script type="text/javascript">
-    var goTop = function () {
-        window.scrollTo(0, 0);
-    }
-
-    var goBottom = function () {
-        var clientHeight  = 0, scrollHeight = 0;
-        if(document.body.clientHeight && document.documentElement.clientHeight) {
-            clientHeight = (document.body.clientHeight < document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-        } else {
-            clientHeight = (document.body.clientHeight > document.documentElement.clientHeight) ? document.body.clientHeight : document.documentElement.clientHeight;
-        }
-        scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-        window.scrollTo(0, scrollHeight - clientHeight - 350);
-        
-    }
     var util = new Util({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
@@ -33,5 +20,5 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
         "logoutLabel": "${logoutLabel}"
     });
     util.init();
-    replaceCommentsEm("#recentComments li a");
+    util.replaceCommentsEm("#recentComments li a", "tree-house");
 </script>
