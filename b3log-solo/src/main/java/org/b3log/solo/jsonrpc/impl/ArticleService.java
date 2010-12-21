@@ -640,7 +640,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            try {
+                ret.put(Keys.STATUS_CODE,
+                        StatusCodes.PUT_TOP_ARTICLE_FAIL_FORBIDDEN);
+            } catch (final JSONException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
+
             return ret;
         }
         final Transaction transaction =
@@ -697,7 +703,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            try {
+                ret.put(Keys.STATUS_CODE,
+                        StatusCodes.CANCEL_TOP_ARTICLE_FAIL_FORBIDDEN);
+            } catch (final JSONException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
             return ret;
         }
         final Transaction transaction = articleRepository.beginTransaction();

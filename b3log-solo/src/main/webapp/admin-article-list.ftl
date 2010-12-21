@@ -231,6 +231,9 @@
                                             case "PUT_TOP_ARTICLE_FAIL_":
                                                 $("#tipMsg").text("${putTopFailLabel}");
                                                 break;
+                                            case "PUT_TOP_ARTICLE_FAIL_FORBIDDEN":
+                                                $("#tipMsg").text("${forbiddenLabel}");
+                                                break;
                                             default:
                                                 $("#tipMsg").text("");
                                                 break;
@@ -253,6 +256,9 @@
                                                 break;
                                             case "CANCEL_TOP_ARTICLE_FAIL_":
                                                 $("#tipMsg").text("${cancelTopFailLabel}");
+                                                break;
+                                            case "CANCEL_TOP_ARTICLE_FAIL_FORBIDDEN":
+                                                $("#tipMsg").text("${forbiddenLabel}");
                                                 break;
                                             default:
                                                 $("#tipMsg").text("");
