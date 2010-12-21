@@ -12,37 +12,13 @@
     </span>
     <div class="clear"></div>
 </div>
+<script type="text/javascript" src="/js/util.js"></script>
 <script type="text/javascript">
-     var initIndex = function () {
-        // common-top.ftl use state
-        jsonRpc.adminService.isLoggedIn(function (result, error) {
-            if (result && !error) {
-                var loginHTML = "<span class='left' onclick='clearAllCache();'>${clearAllCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<span class='left' onclick='clearCache();'>${clearCacheLabel}&nbsp;|&nbsp;</span>"
-                    + "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='${adminLabel}'></div>"
-                    + "<div class='left'>&nbsp;|&nbsp;</div>"
-                    + "<div onclick='adminLogout();' class='left logoutIcon' title='${logoutLabel}'></div>";
-                $("#admin").append(loginHTML);
-            } else {
-                $("#admin").append("<div class='left loginIcon' onclick='adminLogin();' title='${loginLabel}'></div>");
-            }
-        });
-    }
-    initIndex();
-    var adminLogin = function () {
-        var loginURL = jsonRpc.adminService.getLoginURL("/admin-index.do");
-        window.location.href = loginURL;
-    }
-    var adminLogout = function () {
-        var logoutURL = jsonRpc.adminService.getLogoutURL();
-        window.location.href = logoutURL;
-    }
-    var clearCache = function () {
-        jsonRpc.adminService.clearPageCache(window.location.pathname);
-        window.location.reload();
-    }
-    var clearAllCache = function () {
-        jsonRpc.adminService.clearAllPageCache();
-        window.location.reload();
-    }
+    var util = new Util({
+        "clearAllCacheLabel": "${clearAllCacheLabel}",
+        "clearCacheLabel": "${clearCacheLabel}",
+        "adminLabel": "${adminLabel}",
+        "logoutLabel": "${logoutLabel}"
+    });
+    util.init();
 </script>
