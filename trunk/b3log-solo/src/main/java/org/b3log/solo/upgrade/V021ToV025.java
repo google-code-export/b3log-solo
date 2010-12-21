@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.upgrade;
 
 import com.google.appengine.api.users.UserService;
@@ -274,7 +275,7 @@ public final class V021ToV025 extends HttpServlet {
             for (int i = 0; i < links.length(); i++) {
                 final JSONObject link = links.getJSONObject(i);
                 if (!link.has(Link.LINK_ORDER)) {
-                    linkRepository.beginTransaction();
+                    transaction = linkRepository.beginTransaction();
                     final int maxOrder = linkRepository.getMaxOrder();
                     link.put(Link.LINK_ORDER, maxOrder + 1);
                     linkRepository.update(link.getString(
@@ -283,7 +284,9 @@ public final class V021ToV025 extends HttpServlet {
                 }
             }
         } catch (final Exception e) {
-            transaction.rollback();
+            if (null != transaction && transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, "Upgrade link fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
