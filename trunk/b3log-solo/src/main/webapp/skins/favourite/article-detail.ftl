@@ -17,9 +17,6 @@
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
-        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         ${htmlHead}
     </head>
     <body>
@@ -47,26 +44,26 @@
                                 </#if>
                             </h2>
                             <div class="posttime-blue">
-                                 <div class="posttime-MY">
+                                <div class="posttime-MY">
                                     <#if article.hasUpdated>
                                     ${article.articleUpdateDate?string("MMM yyyy")}
                                     <#else>
                                     ${article.articleCreateDate?string("MMM yyyy")}
                                     </#if>
-                                 </div>
-                                 <div class="posttime-D">
+                                </div>
+                                <div class="posttime-D">
                                     <#if article.hasUpdated>
                                     ${article.articleUpdateDate?string("dd")}
                                     <#else>
                                     ${article.articleCreateDate?string("dd")}
                                     </#if>
-                                 </div>
+                                </div>
                             </div>
                             <div class="article-body">
                                 <div class="note">
                                     <div class="corner"></div>
                                     <div class="substance">
-                                    ${article.articleContent}
+                                        ${article.articleContent}
                                     </div>
                                 </div>
                             </div>
@@ -89,13 +86,13 @@
                                     <span class="count">${article.articleCommentCount}</span>
                                 </a>
                                 <div class="right">
-                                <a href="#comments" class="right">
-                                    ${replyLabel}
-                                </a>
+                                    <a href="#comments" class="right">
+                                        ${replyLabel}
+                                    </a>
                                 </div>
                                 <div class="clear"></div>
                             </div>
-                            
+
                             <div class="article-relative">
                                 <#if nextArticlePermalink??>
                                 <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
@@ -227,217 +224,6 @@
                     <div class="clear"></div>
                 </div>
                 <div class="roundbottom"></div>
-                <script type="text/javascript" src="/js/articleUtil.js"></script>
-                <script type="text/javascript">
-                    var articleUtil = new ArticleUtil({
-                        nameTooLong: "${nameTooLongLabel}",
-                        mailCannotEmpty: "${mailCannotEmptyLabel}",
-                        mailInvalid: "${mailInvalidLabel}",
-                        commentContentCannotEmpty: "${commentContentCannotEmptyLabel}",
-                        captchaCannotEmpty: "${captchaCannotEmptyLabel}",
-                        randomArticles: "${randomArticles1Label}"
-                    });
-
-                    var addComment = function (result, state) {
-                        if (state === undefined) {
-                            state = "";
-                        }
-
-                        var commentHTML = '<div id="commentItem' + result.oId
-                            + '" class="comment-body"><div class="comment-panel"><div class="left comment-author">'
-                            + '<div><img alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL + '"/></div>';
-
-                        if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-                            commentHTML += '<a name="' + result.oId + '">' + $("#commentName" + state).val() + '</a>';
-                        } else {
-                            commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
-                                + result.oId + '">' + $("#commentName" + state).val() + '</a>';
-                        }
-                        commentHTML += '</div><div class="left comment-info"><div class="left">' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss');
-                        if (state !== "") {
-                            var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId).find(".comment-author a").text();
-                            commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + articleUtil.currentCommentId + '"'
-                                + 'onmouseover="showComment(this, \'' + articleUtil.currentCommentId + '\');"'
-                                + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
-                        }
-                        commentHTML += '</div><div class="right"> <a class="noUnderline" href="javascript:replyTo(\''
-                            + result.oId + '\');">${replyLabel}</a>'
-                            +'</div><div class="clear"></div><div class="comment-content">'
-                            + articleUtil.replaceEmotions($("#comment" + state).val(), "favourite")
-                            + '</div></div><div class="clear"></div></div></div>';
-
-                        articleUtil.addCommentAjax(commentHTML, state);
-                        $("#comments").addClass("comments");
-                    }
-
-                    var replyTo = function (id) {
-                        if (id === articleUtil.currentCommentId) {
-                            $("#commentNameReply").focus();
-                            return;
-                        } else {
-                            $("#replyForm").remove();
-
-                            var commentFormHTML = "<table class='marginTop12 comment-form' id='replyForm'><tbody><tr>"
-                                + "<td width='208px'><input class='normalInput' id='commentNameReply'/>"
-                                + "</td><td colspan='2' width='400px'>${commentNameLabel}</td></tr><tr><td>"
-                                + "<input class='normalInput' id='commentEmailReply'/></td><td colspan='2'>${commentEmailLabel}</td></tr><tr>"
-                                + "<td><div id='commentURLLabelReply'>http://</div><input id='commentURLReply'/>"
-                                + "</td><td colspan='2'>${commentURLLabel}</td></tr><tr><td id='emotionsReply' colspan='3'>"
-                                + $("#emotions").html() + "</td></tr><tr><td colspan='3'>"
-                                + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                                + "<td><input class='normalInput' id='commentValidateReply'/>"
-                                + "</td><td><img id='captchaReply' alt='validate' src='/captcha.do?"
-                                + new Date().getTime() + "'></img></td><th align='right'>"
-                                + "<span class='error-msg' id='commentErrorTipReply'/>"
-                                + "</th></tr><tr><td colspan='3' align='right'>"
-                                + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
-                                + "</td></tr></tbody></table>";
-
-                            $("#commentItem" + id).append(commentFormHTML);
-
-                            $("#commentValidateReply").keypress(function (event) {
-                                if (event.keyCode === 13) {
-                                    submitCommentReply(id);
-                                }
-                            });
-
-                            articleUtil.insertEmotions("Reply");
-
-                            $("#commentNameReply").focus();
-                        }
-                        articleUtil.currentCommentId = id;
-                    }
-
-                    var submitCommentReply = function (id) {
-                        if (articleUtil.validateComment("Reply")) {
-                            $("#commentErrorTipReply").html("${loadingLabel}");
-                            var requestJSONObject = {
-                                "oId": "${article.oId}",
-                                "commentContent": $("#commentReply").val().replace(/(^\s*)|(\s*$)/g, ""),
-                                "commentEmail": $("#commentEmailReply").val(),
-                                "commentURL": "http://" + $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
-                                "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
-                                "captcha": $("#commentValidateReply").val(),
-                                "commentOriginalCommentId": id
-                            };
-
-                            jsonRpc.commentService.addCommentToArticle(function (result, error) {
-                                if (result && !error) {
-                                    switch (result.sc) {
-                                        case "COMMENT_ARTICLE_SUCC":
-                                            addComment(result, "Reply");
-                                            break;
-                                        case "CAPTCHA_ERROR":
-                                            $("#commentErrorTipReply").html("${captchaErrorLabel}");
-                                            $("#captchaReply").attr("src", "/captcha.do?code=" + Math.random());
-                                            $("#commentValidateReply").val("").focus();
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            }, requestJSONObject);
-                        }
-                    }
-
-                    var submitComment = function () {
-                        if (articleUtil.validateComment()) {
-                            $("#commentErrorTip").html("${loadingLabel}");
-                            var requestJSONObject = {
-                                "oId": "${article.oId}",
-                                "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
-                                "commentEmail": $("#commentEmail").val(),
-                                "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
-                                "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
-                                "captcha": $("#commentValidate").val()
-                            };
-
-                            jsonRpc.commentService.addCommentToArticle(function (result, error) {
-                                if (result && !error) {
-                                    switch (result.sc) {
-                                        case "COMMENT_ARTICLE_SUCC":
-                                            addComment(result);
-                                            break;
-                                        case "CAPTCHA_ERROR":
-                                            $("#commentErrorTip").html("${captchaErrorLabel}");
-                                            $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
-                                            $("#commentValidate").val("").focus();
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            }, requestJSONObject);
-                        }
-                    }
-
-                    var showComment = function (it, id) {
-                        if ( $("#commentItemRef" + id).length > 0) {
-                            $("#commentItemRef" + id).show();
-                        } else {
-                            var $refComment = $("#commentItem" + id + " .comment-panel").clone();
-                            $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
-                            $refComment.find(".comment-info .right").remove();
-                            $("#comments").append($refComment);
-                        }
-                        var position =  $(it).position();
-                        $("#commentItemRef" + id).css({
-                            "top": (position.top + 18) + "px",
-                            "left": "217px"
-                        });
-                    }
-
-                    var loadAction = function () {
-                        if ($("#comments div").length === 0) {
-                            $("#comments").removeClass("comments");
-                        }
-
-                        // emotions
-                        articleUtil.insertEmotions();
-                        replaceCommentsEm("#comments .comment-content");
-
-                        articleUtil.load();
-                        articleUtil.loadRandomArticles();
-
-                        // externalRelevantArticles
-                            <#if 0 != externalRelevantArticlesDisplayCount>
-                            var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
-                        $.ajax({
-                            url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
-                                + "&blogHost=${blogHost}&paginationPageSize=${externalRelevantArticlesDisplayCount}",
-                            type: "GET",
-                            dataType:"jsonp",
-                            jsonp: "callback",
-                            error: function(){
-                                alert("Error loading articles from Rhythm");
-                            },
-                            success: function(data, textStatus){
-                                var articles = data.articles;
-                                if (0 === articles.length) {
-                                    return;
-                                }
-                                var listHtml = "";
-                                for (var i = 0; i < articles.length; i++) {
-                                    var article = articles[i];
-                                    var title = article.articleTitle;
-                                    var articleLiHtml = "<li>"
-                                        + "<a target='_blank' href='" + article.articlePermalink + "'>"
-                                        +  title + "</a></li>"
-                                    listHtml += articleLiHtml
-                                }
-
-                                var externalRelevantArticlesDiv = $("#externalRelevantArticles");
-                                externalRelevantArticlesDiv.attr("class", "article-relative");
-                                var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
-                                    + "<ul class='marginLeft12'>"
-                                    + listHtml + "</ul>";
-                                externalRelevantArticlesDiv.append(randomArticleListHtml);
-                            }
-                        });
-                            </#if>
-                        }
-                    loadAction();
-                </script>
                 <div class="stack addthis_toolbox">
                     <img src="/images/stack.png" alt="stack"/>
                     <ul id="stack" class="custom_images">
@@ -455,8 +241,219 @@
             <#include "article-footer.ftl">
         </div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
+        <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
+        <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript">
-            articleUtil.loadTool("${article.oId}");
+            var articleUtil = new ArticleUtil({
+                nameTooLong: "${nameTooLongLabel}",
+                mailCannotEmpty: "${mailCannotEmptyLabel}",
+                mailInvalid: "${mailInvalidLabel}",
+                commentContentCannotEmpty: "${commentContentCannotEmptyLabel}",
+                captchaCannotEmpty: "${captchaCannotEmptyLabel}",
+                randomArticles: "${randomArticles1Label}"
+            });
+
+            var addComment = function (result, state) {
+                if (state === undefined) {
+                    state = "";
+                }
+
+                var commentHTML = '<div id="commentItem' + result.oId
+                    + '" class="comment-body"><div class="comment-panel"><div class="left comment-author">'
+                    + '<div><img alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL + '"/></div>';
+
+                if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
+                    commentHTML += '<a name="' + result.oId + '">' + $("#commentName" + state).val() + '</a>';
+                } else {
+                    commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
+                        + result.oId + '">' + $("#commentName" + state).val() + '</a>';
+                }
+                commentHTML += '</div><div class="left comment-info"><div class="left">' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss');
+                if (state !== "") {
+                    var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId).find(".comment-author a").text();
+                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + articleUtil.currentCommentId + '"'
+                        + 'onmouseover="showComment(this, \'' + articleUtil.currentCommentId + '\');"'
+                        + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                }
+                commentHTML += '</div><div class="right"> <a class="noUnderline" href="javascript:replyTo(\''
+                    + result.oId + '\');">${replyLabel}</a>'
+                    +'</div><div class="clear"></div><div class="comment-content">'
+                    + articleUtil.replaceEmotions($("#comment" + state).val(), "favourite")
+                    + '</div></div><div class="clear"></div></div></div>';
+
+                articleUtil.addCommentAjax(commentHTML, state);
+                $("#comments").addClass("comments");
+            }
+
+            var replyTo = function (id) {
+                if (id === articleUtil.currentCommentId) {
+                    $("#commentNameReply").focus();
+                    return;
+                } else {
+                    $("#replyForm").remove();
+
+                    var commentFormHTML = "<table class='marginTop12 comment-form' id='replyForm'><tbody><tr>"
+                        + "<td width='208px'><input class='normalInput' id='commentNameReply'/>"
+                        + "</td><td colspan='2' width='400px'>${commentNameLabel}</td></tr><tr><td>"
+                        + "<input class='normalInput' id='commentEmailReply'/></td><td colspan='2'>${commentEmailLabel}</td></tr><tr>"
+                        + "<td><div id='commentURLLabelReply'>http://</div><input id='commentURLReply'/>"
+                        + "</td><td colspan='2'>${commentURLLabel}</td></tr><tr><td id='emotionsReply' colspan='3'>"
+                        + $("#emotions").html() + "</td></tr><tr><td colspan='3'>"
+                        + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
+                        + "<td><input class='normalInput' id='commentValidateReply'/>"
+                        + "</td><td><img id='captchaReply' alt='validate' src='/captcha.do?"
+                        + new Date().getTime() + "'></img></td><th align='right'>"
+                        + "<span class='error-msg' id='commentErrorTipReply'/>"
+                        + "</th></tr><tr><td colspan='3' align='right'>"
+                        + "<button onclick=\"submitCommentReply('" + id + "');\">${submmitCommentLabel}</button>"
+                        + "</td></tr></tbody></table>";
+
+                    $("#commentItem" + id).append(commentFormHTML);
+
+                    $("#commentValidateReply").keypress(function (event) {
+                        if (event.keyCode === 13) {
+                            submitCommentReply(id);
+                        }
+                    });
+
+                    articleUtil.insertEmotions("Reply");
+
+                    $("#commentNameReply").focus();
+                }
+                articleUtil.currentCommentId = id;
+            }
+
+            var submitCommentReply = function (id) {
+                if (articleUtil.validateComment("Reply")) {
+                    $("#commentErrorTipReply").html("${loadingLabel}");
+                    var requestJSONObject = {
+                        "oId": "${article.oId}",
+                        "commentContent": $("#commentReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentEmail": $("#commentEmailReply").val(),
+                        "commentURL": "http://" + $("#commentURLReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentName": $("#commentNameReply").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "captcha": $("#commentValidateReply").val(),
+                        "commentOriginalCommentId": id
+                    };
+
+                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
+                        if (result && !error) {
+                            switch (result.sc) {
+                                case "COMMENT_ARTICLE_SUCC":
+                                    addComment(result, "Reply");
+                                    break;
+                                case "CAPTCHA_ERROR":
+                                    $("#commentErrorTipReply").html("${captchaErrorLabel}");
+                                    $("#captchaReply").attr("src", "/captcha.do?code=" + Math.random());
+                                    $("#commentValidateReply").val("").focus();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }, requestJSONObject);
+                }
+            }
+
+            var submitComment = function () {
+                if (articleUtil.validateComment()) {
+                    $("#commentErrorTip").html("${loadingLabel}");
+                    var requestJSONObject = {
+                        "oId": "${article.oId}",
+                        "commentContent": $("#comment").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentEmail": $("#commentEmail").val(),
+                        "commentURL": "http://" + $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentName": $("#commentName").val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "captcha": $("#commentValidate").val()
+                    };
+
+                    jsonRpc.commentService.addCommentToArticle(function (result, error) {
+                        if (result && !error) {
+                            switch (result.sc) {
+                                case "COMMENT_ARTICLE_SUCC":
+                                    addComment(result);
+                                    break;
+                                case "CAPTCHA_ERROR":
+                                    $("#commentErrorTip").html("${captchaErrorLabel}");
+                                    $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
+                                    $("#commentValidate").val("").focus();
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }, requestJSONObject);
+                }
+            }
+
+            var showComment = function (it, id) {
+                if ( $("#commentItemRef" + id).length > 0) {
+                    $("#commentItemRef" + id).show();
+                } else {
+                    var $refComment = $("#commentItem" + id + " .comment-panel").clone();
+                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
+                    $refComment.find(".comment-info .right").remove();
+                    $("#comments").append($refComment);
+                }
+                var position =  $(it).position();
+                $("#commentItemRef" + id).css({
+                    "top": (position.top + 18) + "px",
+                    "left": "217px"
+                });
+            }
+
+            var loadAction = function () {
+                if ($("#comments div").length === 0) {
+                    $("#comments").removeClass("comments");
+                }
+
+                // emotions
+                articleUtil.insertEmotions();
+                replaceCommentsEm("#comments .comment-content");
+
+                articleUtil.load();
+                articleUtil.loadRandomArticles();
+
+                // externalRelevantArticles
+                    <#if 0 != externalRelevantArticlesDisplayCount>
+                    var tags = "<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>";
+                $.ajax({
+                    url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
+                        + "&blogHost=${blogHost}&paginationPageSize=${externalRelevantArticlesDisplayCount}",
+                    type: "GET",
+                    dataType:"jsonp",
+                    jsonp: "callback",
+                    error: function(){
+                        alert("Error loading articles from Rhythm");
+                    },
+                    success: function(data, textStatus){
+                        var articles = data.articles;
+                        if (0 === articles.length) {
+                            return;
+                        }
+                        var listHtml = "";
+                        for (var i = 0; i < articles.length; i++) {
+                            var article = articles[i];
+                            var title = article.articleTitle;
+                            var articleLiHtml = "<li>"
+                                + "<a target='_blank' href='" + article.articlePermalink + "'>"
+                                +  title + "</a></li>"
+                            listHtml += articleLiHtml
+                        }
+
+                        var externalRelevantArticlesDiv = $("#externalRelevantArticles");
+                        externalRelevantArticlesDiv.attr("class", "article-relative");
+                        var randomArticleListHtml = "<h5>${externalRelevantArticles1Label}</h5>"
+                            + "<ul class='marginLeft12'>"
+                            + listHtml + "</ul>";
+                        externalRelevantArticlesDiv.append(randomArticleListHtml);
+                    }
+                });
+                    </#if>
+                }
+            loadAction();
+            articleUtil.loadTool();
         </script>
     </body>
 </html>

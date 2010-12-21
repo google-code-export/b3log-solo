@@ -451,7 +451,7 @@
         </div>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
-            articleUtil.loadTool("${article.oId}");
+            articleUtil.loadTool();
         </script>
     </body>
 </html>
