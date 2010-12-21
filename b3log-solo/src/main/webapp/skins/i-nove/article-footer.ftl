@@ -12,39 +12,33 @@
     Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
 <div class="right goTop">
-    <span onclick="goTop();">${goTopLabel}</span>
+    <span onclick="util.goTop();">${goTopLabel}</span>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 <script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
 <script type="text/javascript">
-    var goTop = function () {
-        window.scrollTo(0, 0);
-    }
-
     var util = new Util({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
         "logoutLabel": "${logoutLabel}"
     });
+    util.init();
+    util.replaceCommentsEm(".side-navi .navi-comments .side-comment", "i-nove");
     
-    var initIndex = function () {
-        // side comment
-        replaceCommentsEm(".side-navi .navi-comments .side-comment");
-        util.init();
-        // set selected navi
-        $("#header-navi li").each(function (i) {
-            if (i < $("#header-navi li").length - 1) {
-                var $it = $(this),
-                locationURL = window.location.pathname + window.location.search;
-                if (i === 0 && (locationURL.indexOf("/index.do") > -1 || locationURL === "/")) {
-                    $it.addClass("selected");
-                    return;
-                }
-                if (locationURL.indexOf($it.find("a").attr("href")) > -1 && i !== 0) {
-                    $it.addClass("selected");
-                }
+    // set selected navi
+    $("#header-navi li").each(function (i) {
+        if (i < $("#header-navi li").length - 1) {
+            var $it = $(this),
+            locationURL = window.location.pathname + window.location.search;
+            if (i === 0 && (locationURL.indexOf("/index.do") > -1 || locationURL === "/")) {
+                $it.addClass("selected");
+                return;
             }
-        });
-    }
-    initIndex();
+            if (locationURL.indexOf($it.find("a").attr("href")) > -1 && i !== 0) {
+                $it.addClass("selected");
+            }
+        }
+    });
 </script>

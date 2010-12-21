@@ -12,14 +12,3 @@
     </span>
     <div class="clear"></div>
 </div>
-<script type="text/javascript">
-    var adminLogin = function () {
-        var loginURL = jsonRpc.adminService.getLoginURL("/admin-index.do");
-        window.location.href = loginURL;
-    }
-
-    var adminLogout = function () {
-        var logoutURL = jsonRpc.adminService.getLogoutURL();
-        window.location.href = logoutURL;
-    }
-</script>

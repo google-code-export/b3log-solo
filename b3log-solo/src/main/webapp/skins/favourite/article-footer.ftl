@@ -13,15 +13,13 @@
         Theme by <a style="color:white;" href="http://www.iprimidieci.com/" target="_blank">Primi</a> & <a style="color:white;" href="http://lamb.b3log.org" target="_blank">Lamb</a>.
     </div>
     <div class="right goTop">
-        <span onclick="goTop();">${goTopLabel}</span>
+        <span onclick="util.goTop();">${goTopLabel}</span>
     </div>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 <script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
 <script type="text/javascript">
-    var goTop = function () {
-        window.scrollTo(0, 0);
-    }
-    
     var util = new Util({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
@@ -29,5 +27,5 @@
         "logoutLabel": "${logoutLabel}"
     });
     util.init();
-    replaceCommentsEm(".side-navi .navi-comments .side-comment");
+    util.replaceCommentsEm(".side-navi .navi-comments .side-comment", "i-nove");
 </script>
