@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 20, 2010
+ * @version 1.0.0.4, Dec 21, 2010
  */
 public class Users {
 
@@ -102,6 +102,28 @@ public class Users {
     }
 
     /**
+     * Determines whether the current logged in user is a collaborate
+     * administrator(added via GAE Admin Console Permissions).
+     *
+     * @return {@code true} if it is, {@code false} otherwise
+     */
+    public boolean isCollaborateAdmin() {
+        final boolean isUserLoggedIn = userService.isUserLoggedIn();
+        if (!isUserLoggedIn) {
+            return false;
+        }
+
+        final boolean isUserAdmin = userService.isUserAdmin();
+        if (!isUserAdmin) {
+            return false;
+        }
+
+        final com.google.appengine.api.users.User currentUser =
+                userService.getCurrentUser();
+        return !isSoloUser(currentUser.getEmail());
+    }
+
+    /**
      * Checks whether the current request is made by logged in user(including
      * default user and administrator lists in <i>users</i>).
      *
@@ -115,7 +137,7 @@ public class Users {
             return false;
         }
 
-        return isSoloUser(currentUser.getEmail());
+        return isSoloUser(currentUser.getEmail()) || userService.isUserAdmin();
     }
 
     /**

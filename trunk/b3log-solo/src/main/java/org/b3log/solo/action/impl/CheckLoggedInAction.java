@@ -28,6 +28,7 @@ import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.util.Users;
 import org.json.JSONException;
@@ -37,7 +38,7 @@ import org.json.JSONObject;
  * Checks whether if a user logged in.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 20, 2010
+ * @version 1.0.0.1, Dec 21, 2010
  */
 public final class CheckLoggedInAction extends AbstractAction {
 
@@ -94,7 +95,14 @@ public final class CheckLoggedInAction extends AbstractAction {
             ret.put(Common.IS_LOGGED_IN, true);
             ret.put(Common.IS_ADMIN,
                     Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
-            ret.put(User.USER_NAME, currentUser.getString(User.USER_NAME));
+
+            String userName = currentUser.getString(User.USER_NAME);
+            if (Strings.isEmptyOrNull(userName)) {
+                // The administrators may be added via GAE Admin Console Permissions
+                userName = userService.getCurrentUser().getNickname();
+                ret.put(Common.IS_ADMIN, true);
+            }
+            ret.put(User.USER_NAME, userName);
 
             return ret;
         } catch (final JSONException e) {
