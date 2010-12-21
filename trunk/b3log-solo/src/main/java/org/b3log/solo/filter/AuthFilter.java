@@ -86,6 +86,7 @@ public final class AuthFilter implements Filter {
         try {
             final User currentUser = userService.getCurrentUser();
             if (null == currentUser) {
+                LOGGER.warning("This request has been forbidden!");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                 return;
