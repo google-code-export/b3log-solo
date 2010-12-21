@@ -30,7 +30,7 @@
                 <#list pageComments as comment>
                 <div id="commentItem${comment.oId}">
                     <img class="left" alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
-                    <div class="comment-content left">
+                    <div class="comment-panel left">
                         <div class="comment-top">
                             <#if "http://" == comment.commentURL>
                             <a name="${comment.oId}" class="left">${comment.commentName}</a>&nbsp;
@@ -47,7 +47,9 @@
                             </#if>
                             ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
                         </div>
-                        ${comment.commentContent}
+                        <div class="comment-content">
+                            ${comment.commentContent}
+                        </div>
                         <div class="reply">
                             <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                         </div>
@@ -181,7 +183,7 @@
             var addComment = function (result, state) {
                 var commentHTML = '<div id="commentItem' + result.oId + '">'
                     + '<img class="left" alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL
-                    + '"/><div class="comment-content left"><div class="comment-top">';
+                    + '"/><div class="comment-panel left"><div class="comment-top">';
 
                 if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
                     commentHTML += '<a name="' + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
@@ -198,8 +200,8 @@
                 }
 
                 commentHTML += '&nbsp;' + pageUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
-                    + '</div>' + pageUtil.replaceEmotions($("#comment" + state).val(), "community")
-                    + '<div class="reply"><a href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
+                    + '</div><div class="comment-content">' + pageUtil.replaceEmotions($("#comment" + state).val(), "community")
+                    + '</div><div class="reply"><a href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
                     + '</div></div><div class="clear"></div></div>';
 
                 pageUtil.addCommentAjax(commentHTML, state);
@@ -245,7 +247,7 @@
                 pageUtil.load();
 
                 // emotions
-                pageUtil.replaceCommentsEm("#comments .comment-content");
+                pageUtil.replaceCommentsEm("#comments .comment-content", "community");
             }
             loadAction();
         </script>
