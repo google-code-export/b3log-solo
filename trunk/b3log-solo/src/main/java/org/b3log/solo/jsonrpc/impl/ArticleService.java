@@ -572,10 +572,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             transaction2 =
                     articleRepository.beginTransaction();
             // Step 4: Remove article
+            final JSONObject article = articleRepository.get(articleId);
             articleRepository.remove(articleId);
             // Step 5: Dec blog article count statictis
             statistics.decBlogArticleCount();
-            statistics.decPublishedBlogArticleCount();
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                statistics.decPublishedBlogArticleCount();
+            }
             // Step 6: Un-archive date-article relations
             archiveDateUtils.unArchiveDate(articleId);
             // Step 7: Fire remove article event
