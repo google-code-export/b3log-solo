@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
@@ -197,7 +196,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject user = new JSONObject();
             final String userEmail =
-                    requestJSONObject.getString(User.USER_EMAIL).trim();
+                    requestJSONObject.getString(User.USER_EMAIL).
+                    trim().toLowerCase();
             final JSONObject duplicatedUser =
                     userRepository.getByEmail(userEmail);
             if (null != duplicatedUser) {
