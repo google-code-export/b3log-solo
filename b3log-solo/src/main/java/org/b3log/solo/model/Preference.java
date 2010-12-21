@@ -152,7 +152,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.4, Dec 9, 2010
+     * @version 1.0.0.5, Dec 21, 2010
      */
     public static final class Default {
 
@@ -188,7 +188,7 @@ public final class Preference {
         /**
          * Default blog subtitle.
          */
-        public static final String DEFAULT_BLOG_SUBTITLE = "GAE 上的个人博客";
+        public static final String DEFAULT_BLOG_SUBTITLE = "GAE 开源博客";
         /**
          * Default skin directory name.
          */
