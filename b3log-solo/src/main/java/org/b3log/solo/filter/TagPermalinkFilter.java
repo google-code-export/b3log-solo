@@ -16,7 +16,6 @@
 
 package org.b3log.solo.filter;
 
-import com.google.appengine.api.utils.SystemProperty;
 import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +39,7 @@ import org.json.JSONObject;
  * Tag permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 21, 2010
+ * @version 1.0.0.2, Dec 22, 2010
  */
 public final class TagPermalinkFilter implements Filter {
 
@@ -95,9 +94,6 @@ public final class TagPermalinkFilter implements Filter {
             final RequestDispatcher requestDispatcher =
                     httpServletRequest.getRequestDispatcher("/tag-articles.do");
             request.setAttribute(Keys.OBJECT_ID, tagId);
-            request.setAttribute(Keys.PAGE_CACHE_KEY,
-                                 SystemProperty.instanceReplicaId.get()
-                                 + "/tag-articles.do?oId=" + tagId);
             requestDispatcher.forward(request, response);
         } catch (final Exception e) {
             ((HttpServletResponse) response).sendError(
