@@ -632,7 +632,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             article.put(Article.ARTICLE_TITLE, "Hello World!");
             final String content =
-                    "Welcome to <a target=\"_blank\" "
+                    "Welcome to <a style=\"text-decoration: none;\" target=\"_blank\" "
                     + "href=\"http://b3log-solo.googlecode.com\">"
                     + "<span style=\"color: orange;\">B</span>"
                     + "<span style=\"font-size: 9px; color: blue;\">"
