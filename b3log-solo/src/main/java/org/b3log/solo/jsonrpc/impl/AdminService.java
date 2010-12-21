@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
@@ -605,7 +604,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             initStatistic();
             initPreference();
             initAdmin(request, response);
-            
+
             helloWorld(request, response);
             ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
         } catch (final Exception e) {
@@ -632,8 +631,17 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             final JSONObject article = new JSONObject();
 
             article.put(Article.ARTICLE_TITLE, "Hello World!");
-            final String content = "Welcome to B3log. This is your first post. "
-                                   + "Edit or delete it, then start blogging!";
+            final String content =
+                    "Welcome to <a target=\"_blank\" "
+                    + "href=\"http://b3log-solo.googlecode.com\">"
+                    + "<span style=\"color: orange;\">B</span>"
+                    + "<span style=\"font-size: 9px; color: blue;\">"
+                    + "<sup>3</sup></span><span style=\"color: green;\">L</span>"
+                    + "<span style=\"color: red;\">O</span>"
+                    + "<span style=\"color: blue;\">G</span> "
+                    + " <span style=\"color: orangered; font-weight: bold;\">Solo</span>"
+                    + "</a>. This is your first post. Edit or delete it, "
+                    + "then start blogging!";
             article.put(Article.ARTICLE_ABSTRACT, content);
             article.put(Article.ARTICLE_CONTENT, content);
             article.put(Article.ARTICLE_TAGS_REF, "B3log");
@@ -642,7 +650,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             final JSONObject requestJSONObject = new JSONObject();
             requestJSONObject.put(Article.ARTICLE, article);
-            
+
             articleService.addArticle(requestJSONObject, request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
