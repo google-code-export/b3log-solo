@@ -185,13 +185,13 @@ public final class SoloServletListener extends AbstractServletListener {
                 setInjector(Guice.createInjector(Stage.DEVELOPMENT,
                                                  modules));
             }
-        }
 
-        LOGGER.log(Level.INFO,
-                   "Application[id={0}, version={1}, instanceReplicaId={2}]",
-                   new Object[]{SystemProperty.applicationId.get(),
-                                SystemProperty.applicationVersion.get(),
-                                SystemProperty.instanceReplicaId.get()});
+            LOGGER.log(Level.INFO,
+                       "Application[id={0}, version={1}, instanceReplicaId={2}]",
+                       new Object[]{SystemProperty.applicationId.get(),
+                                    SystemProperty.applicationVersion.get(),
+                                    SystemProperty.instanceReplicaId.get()});
+        }
 
         return ret;
     }
