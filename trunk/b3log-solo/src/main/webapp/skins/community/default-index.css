@@ -355,13 +355,10 @@ a.header-title {
     color: #666666;
     padding: 11px 7px 9px;
     background-color: #FFFFFF;
-    border-top: 1px solid #E3E3E3;
-    border-right: 1px solid #E3E3E3;
     font: 14px/14px Arial,Helvetica,sans-serif;
-    border-left: 0px;
     width: 723px;
     overflow: auto;
-    border-bottom-width: 0px;
+    border: 1px solid #DDDDDD;
 }
 
 .comment textarea {
@@ -374,9 +371,8 @@ a.header-title {
 
 #commentURLLabel, #commentURLLabelReply {
     background-color: #FFFFFF;
-    border-left: 0 none;
-    border-right: 0 none;
-    border-top: 1px solid #E3E3E3;
+    border: 1px solid #DDDDDD;
+    border-right: 0px;
     color: #666666;
     float: left;
     font: 14px/14px Arial,Helvetica,sans-serif;
@@ -386,6 +382,7 @@ a.header-title {
 #commentURL, #commentURLReply {
     padding-left: 0px;
     width: 687px;
+    border-left: 0px;
 }
 
 #commentValidate, #commentValidateReply {
