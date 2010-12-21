@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.repository.impl;
 
 import com.google.appengine.api.datastore.Entity;
@@ -52,7 +51,8 @@ public final class UserGAERepository extends AbstractGAERepository
     @Override
     public JSONObject getByEmail(final String email) {
         final Query query = new Query(getName());
-        query.addFilter(User.USER_EMAIL, Query.FilterOperator.EQUAL, email);
+        query.addFilter(User.USER_EMAIL, Query.FilterOperator.EQUAL,
+                        email.toLowerCase());
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final Entity entity = preparedQuery.asSingleEntity();
         if (null == entity) {
