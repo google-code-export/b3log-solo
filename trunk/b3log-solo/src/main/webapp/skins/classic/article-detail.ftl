@@ -107,7 +107,7 @@
                             </ul>
                         </div>
                         </#if>
-                        <div id="randomArticles" class="article-relative left"></div>
+                        <div id="randomArticles" class="left"></div>
                         <div class="clear"></div>
                         <div id="externalRelevantArticles"></div>
                     </div>

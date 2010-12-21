@@ -171,7 +171,7 @@ $.extend(ArticleUtil.prototype, {
                 }
 
                 var randomArticleListHtml = "<h5>" + randomArticles1Label + "</h5>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
-                $("#randomArticles").append(randomArticleListHtml);
+                $("#randomArticles").append(randomArticleListHtml).addClass("article-relative");
             }
         });
     },

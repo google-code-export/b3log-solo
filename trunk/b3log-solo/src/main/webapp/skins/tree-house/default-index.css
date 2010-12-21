@@ -54,10 +54,10 @@ h5{font-size:12px;}
 img.comment-picture{width:60px;height:60px;padding:0px 6px 4px 0;}
 .comment-reply{margin:0 auto 24px auto;}
 #commentURLLabel, #commentURLLabelReply{border-width:2px 0px 2px 2px;border-style:inset none inset inset;border-color:#CCCCCC;float:left;height:24px;line-height:24px;background-color:#FFFFFF;*margin-top:1px;}
-#commentURL, #commentURLReply{border-left:0px;}
+#commentURL, #commentURLReply{border-left:0px;width:287px;}
 #comment, #commentReply{width:321px;}
 .form textarea, .form input{outline:none;color:#42423D;font-family:Helvetica,Arial,sans-serif;}
-.error-msg{color:#EC0A8B;font-weight:bold;}
+.error-msg{color:#EC0A8B;font-weight:bold;white-space:normal;}
 #sideNavi .line{background:url("images/bg-branch-small.png") no-repeat;height:69px;margin-top:12px;}
 #sideNavi .block{margin-left:64px;}
 #sideNavi h3{background:url("images/bg-heading.png") no-repeat scroll 0 0 transparent;color:#EC0A8B;font-size:15px;height:30px;padding:38px 0 0 12px;}

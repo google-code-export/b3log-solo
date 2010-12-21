@@ -91,7 +91,7 @@
                     <#if previousArticlePermalink??>
                     <a href="${previousArticlePermalink}" class="right">${previousArticle1Label} ${previousArticleTitle}</a>
                     </#if>
-                    <div class="clear"></div><div id="randomArticles" class="article-relative left"></div>
+                    <div class="clear"></div><div id="randomArticles" class="left"></div>
                     <#if 0 != relevantArticles?size>
                     <div class="article-relative right" style="width: 48%;">
                         <h5>${relevantArticles1Label}</h5>
