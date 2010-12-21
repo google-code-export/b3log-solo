@@ -82,11 +82,17 @@ public final class CheckLoggedInAction extends AbstractAction {
 
             if (null == currentUser) {
                 if (userService.isUserLoggedIn()
-                    && userService.isUserAdmin()) { // Only should happen while init Solo
-                    // Because of there is no any user in datastore before init Solo
-                    // although the administrator has been logged in for init
+                    && userService.isUserAdmin()) {
+                    // Only should happen with the following cases:
+                    // 1. Init Solo
+                    //    Because of there is no any user in datastore before init Solo
+                    //    although the administrator has been logged in for init
+                    // 2. The collaborate administrator
                     ret.put(Common.IS_LOGGED_IN, true);
                     ret.put(Common.IS_ADMIN, true);
+                    final com.google.appengine.api.users.User admin =
+                            userService.getCurrentUser();
+                    ret.put(User.USER_NAME, admin.getNickname());
                 }
 
                 return ret;
