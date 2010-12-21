@@ -197,7 +197,7 @@ public class Users {
             throws JSONException {
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
-            if (user.getString(User.USER_EMAIL).equals(email)) {
+            if (user.getString(User.USER_EMAIL).equalsIgnoreCase(email)) {
                 return true;
             }
         }
