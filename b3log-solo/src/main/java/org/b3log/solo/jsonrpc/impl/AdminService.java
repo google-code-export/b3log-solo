@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
@@ -43,6 +42,7 @@ import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Cache;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
@@ -111,6 +111,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Users userUtils;
+    /**
+     * Article service.
+     */
+    @Inject
+    private ArticleService articleService;
 
     /**
      * Removes a user with the specified request json object.
@@ -599,12 +604,48 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             initStatistic();
             initPreference();
             initAdmin(request, response);
+            
+            helloWorld(request, response);
             ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
         } catch (final Exception e) {
             LOGGER.severe("Initialize B3log Solo error");
         }
 
         return ret;
+    }
+
+    /**
+     * Publishes the first article "Hello World".
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    private void helloWorld(final HttpServletRequest request,
+                            final HttpServletResponse response)
+            throws RepositoryException, JSONException {
+        LOGGER.info("Hello World!");
+
+        try {
+            final JSONObject article = new JSONObject();
+
+            article.put(Article.ARTICLE_TITLE, "Hello World!");
+            final String content = "Welcome to B3log. This is your first post. "
+                                   + "Edit or delete it, then start blogging!";
+            article.put(Article.ARTICLE_ABSTRACT, content);
+            article.put(Article.ARTICLE_TAGS_REF, "B3log");
+            article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
+            article.put(Article.ARTICLE_IS_PUBLISHED, true);
+
+            final JSONObject requestJSONObject = new JSONObject();
+            requestJSONObject.put(Article.ARTICLE, article);
+            
+            articleService.addArticle(requestJSONObject, request, response);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RuntimeException("Hello World error?!");
+        }
     }
 
     /**
@@ -617,8 +658,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     private void initAdmin(final HttpServletRequest request,
                            final HttpServletResponse response)
-            throws RepositoryException,
-                   JSONException {
+            throws RepositoryException, JSONException {
         LOGGER.info("Initializing admin....");
         final Transaction transaction = userRepository.beginTransaction();
         try {
