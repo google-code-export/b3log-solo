@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.mail.MailService;
@@ -70,7 +69,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.3, Dec 10, 2010
+ * @version 1.0.3.4, Dec 21, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -148,10 +147,10 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * Comment mail HTML body.
      */
     private static final String COMMENT_MAIL_HTML_BODY =
-            "{articleOrPage} [<a href=\""
-            + "{articleOrPageURL}\">" + "{title}</a>]"
-            + " received a new comment [<a href=\"http://{commentSharpURL}\">"
-            + "{commentContent}</a>]";
+            "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">"
+            + "{title}</a>]" + " received a new comment:</p>"
+            + "{commenter}: <a href=\"http://{commentSharpURL}\">"
+            + "{commentContent}</a>";
     /**
      * Preference utilities.
      */
@@ -704,14 +703,14 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         String articleOrPageURL = null;
         String mailBody = null;
         if (isArticle) {
-            mailSubject = blogTitle + ": New comment about article ["
+            mailSubject = blogTitle + ": New comment on article ["
                           + title + "]";
             articleOrPageURL = "http://" + blogHost + articleOrPage.getString(
                     Article.ARTICLE_PERMALINK);
             mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}",
                                                       "Article");
         } else {
-            mailSubject = blogTitle + ": New comment about page ["
+            mailSubject = blogTitle + ": New comment on page ["
                           + title + "]";
             articleOrPageURL = "http://" + blogHost + "/page.do?oId="
                                + articleOrPage.getString(Keys.OBJECT_ID);
@@ -719,11 +718,22 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         }
 
         message.setSubject(mailSubject);
+        final String commentName = comment.getString(Comment.COMMENT_NAME);
+        final String commentURL = comment.getString(Comment.COMMENT_URL);
+        String commenter = null;
+        if (!"http://".equals(commentURL)) {
+            commenter = "<a target=\"_blank\" " + "href=\" + commentURL"
+                        + "\">" + commentName + "</a>";
+        } else {
+            commenter = commentName;
+        }
+
         mailBody = mailBody.replace(
                 "{articleOrPageURL}", articleOrPageURL).
                 replace("{title}", title).
                 replace("{commentContent}", commentContent).
-                replace("{commentSharpURL}", blogHost + commentSharpURL);
+                replace("{commentSharpURL}", blogHost + commentSharpURL).
+                replace("{commenter}", commenter);
         message.setHtmlBody(mailBody);
         LOGGER.log(Level.FINER,
                    "Sending a mail[mailSubject={0}, mailBody=[{1}] to admins",

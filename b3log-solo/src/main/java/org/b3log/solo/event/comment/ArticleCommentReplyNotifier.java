@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.comment;
 
 import com.google.appengine.api.mail.MailService;
@@ -40,7 +39,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing article comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 3, 2010
+ * @version 1.0.0.8, Dec 21, 2010
  */
 public final class ArticleCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -112,7 +111,7 @@ public final class ArticleCommentReplyNotifier
             if (null == preference) {
                 throw new EventException("Not found preference");
             }
-            
+
             final String blogTitle =
                     preference.getString(Preference.BLOG_TITLE);
             final String adminEmail =
@@ -131,13 +130,21 @@ public final class ArticleCommentReplyNotifier
             final String blogHost = preference.getString(Preference.BLOG_HOST);
             final String articleLink = "http://" + blogHost + article.getString(
                     Article.ARTICLE_PERMALINK);
-            final String mailBody = "Your comment on article[<a href='"
-                                    + articleLink + "'>" + articleTitle
-                                    + "</a>] received an reply: <p>"
-                                    + commentContent + "</p><p>"
-                                    + "See <a href='http://" + blogHost
-                                    + commentSharpURL
-                                    + "'>here</a> for original post.</p>";
+            final String commentName = comment.getString(Comment.COMMENT_NAME);
+            final String commentURL = comment.getString(Comment.COMMENT_URL);
+            String commenter = null;
+            if (!"http://".equals(commentURL)) {
+                commenter = "<a target=\"_blank\" " + "href=\" + commentURL"
+                            + "\">" + commentName + "</a>";
+            } else {
+                commenter = commentName;
+            }
+            final String mailBody =
+                    "Your comment on article[<a href='" + articleLink + "'>"
+                    + articleTitle + "</a>] received an reply: <p>" + commenter
+                    + ": " + commentContent + "</p><p>" + "See <a href='http://"
+                    + blogHost + commentSharpURL
+                    + "'>here</a> for original post.</p>";
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.FINER,
                        "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
