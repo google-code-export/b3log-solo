@@ -95,34 +95,3 @@
     ${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
 </#if>
-<script type="text/javascript">
-    (function () {
-        var local = window.location.search.substring(1),
-        currentPage = "";
-        if (local === "") {
-            currentPage = "1";
-        } else {
-            var paramURL = local.split("&");
-            for (var i = 0; i < paramURL.length; i++) {
-                if (paramURL[i].split("=")[0] === "paginationCurrentPageNum") {
-                    currentPage = paramURL[i].split("=")[1];
-                }
-            }
-        }
-
-        $(".pagination a").each(function () {
-            var $it = $(this);
-            $it.removeClass("selected");
-            if ($it.text() === currentPage) {
-                $it.addClass("selected");
-            }
-        });
-
-        if ($("#nextPage").length > 0) {
-            $("#nextPage").attr("href", $("#nextPage").attr("href").replace("{paginationLastPageNum}", parseInt(currentPage) + 1));
-        }
-        if ($("#previousPage").length > 0) {
-            $("#previousPage").attr("href", $("#previousPage").attr("href").replace("{paginationFirstPageNum}", parseInt(currentPage) - 1));
-        }
-    })();
-</script>
