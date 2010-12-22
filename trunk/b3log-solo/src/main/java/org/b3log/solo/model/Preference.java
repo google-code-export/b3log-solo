@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 9, 2010
+ * @version 1.0.1.6, Dec 22, 2010
  */
 public final class Preference {
 
@@ -141,6 +141,11 @@ public final class Preference {
      */
     public static final String ENABLE_ARTICLE_UPDATE_HINT =
             "enableArticleUpdateHint";
+    /**
+     * Key of current version number.
+     */
+    public static final String CURRENT_VERSION_NUMBER =
+            "currentVersionNumber";
 
     /**
      * Private default constructor.
