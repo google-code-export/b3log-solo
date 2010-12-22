@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Dec 16, 2010
+ * @version 1.0.1.3, Dec 22, 2010
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -94,10 +94,10 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                     Preference.BLOG_SUBTITLE);
             final String blogHost = preference.getString(Preference.BLOG_HOST);
 
-            feed.setTitle(blogTitle);
-            feed.setSubtitle(blogSubtitle);
+            feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
+            feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
             feed.setUpdated(new Date());
-            feed.setAuthor(blogTitle);
+            feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink("http://" + blogHost);
 
             final Map<String, SortDirection> sorts =
@@ -114,7 +114,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                 final JSONObject article = articles.getJSONObject(i);
                 final Entry entry = new Entry();
                 feed.addEntry(entry);
-                final String title = article.getString(Article.ARTICLE_TITLE);
+                final String title = StringEscapeUtils.escapeXml(
+                        article.getString(Article.ARTICLE_TITLE));
                 entry.setTitle(title);
                 final String summary =
                         StringEscapeUtils.escapeXml(article.getString(
@@ -129,7 +130,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
                         Article.ARTICLE_PERMALINK);
                 entry.setLink(link);
                 final String authorName =
-                        articleUtils.getAuthor(article).getString(User.USER_NAME);
+                        StringEscapeUtils.escapeXml(
+                        articleUtils.getAuthor(article).getString(User.USER_NAME));
                 entry.setAuthor(authorName);
 
                 final String tagsString =
