@@ -7,7 +7,7 @@
     </div>
     <div class="line"></div>
     <div class="item navi-comments">
-        <h4 id="recentComments">${recentCommentsLabel}</h4>
+        <h4>${recentCommentsLabel}</h4>
         <ul>
              <#list recentComments as comment>
             <li>
