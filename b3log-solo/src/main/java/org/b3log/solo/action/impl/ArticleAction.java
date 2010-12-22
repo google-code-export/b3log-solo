@@ -56,7 +56,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 13, 2010
+ * @version 1.0.1.7, Dec 22, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -153,10 +153,14 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     Article.ARTICLE_ABSTRACT)).text();
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
 
-            article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+            } else {
+                article.put(Common.HAS_UPDATED, false);
+            }
 
             final JSONObject author = articleUtils.getAuthor(article);
-            final String authorName =  author.getString(User.USER_NAME);
+            final String authorName = author.getString(User.USER_NAME);
             article.put(Common.AUTHOR_NAME, authorName);
             final String authorId = author.getString(Keys.OBJECT_ID);
             article.put(Common.AUTHOR_ID, authorId);
@@ -255,7 +259,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     result.getJSONArray(Keys.RESULTS);
 
             final int relationSize = displayCnt < tagArticleRelations.length()
-                                     ? displayCnt : tagArticleRelations.length();
+                    ? displayCnt : tagArticleRelations.length();
             for (int i = 0; i < relationSize; i++) {
                 final JSONObject tagArticleRelation =
                         tagArticleRelations.getJSONObject(i);

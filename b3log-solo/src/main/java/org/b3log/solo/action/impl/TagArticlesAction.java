@@ -202,7 +202,12 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                 Collections.sort(articles, new ArticleCreateDateComparator());
             }
             for (final JSONObject article : articles) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+                if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                    article.put(Common.HAS_UPDATED,
+                                articleUtils.hasUpdated(article));
+                } else {
+                    article.put(Common.HAS_UPDATED, false);
+                }
             }
             ret.put(Article.ARTICLES, articles);
 
