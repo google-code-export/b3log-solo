@@ -144,7 +144,7 @@ public final class PageCommentReplyNotifier
             final String mailBody =
                     "Your comment on page[<a href='" + pageLink + "'>"
                     + pageTitle + "</a>] received an reply: <p>" + commenter
-                    + ": <a href=\"" + blogHost + commentSharpURL + "\">"
+                    + ": <a href=\"http://" + blogHost + commentSharpURL + "\">"
                     + commentContent + "</a></p>";
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.FINER,
