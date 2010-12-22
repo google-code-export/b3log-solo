@@ -143,7 +143,7 @@ public final class ArticleCommentReplyNotifier
             final String mailBody =
                     "Your comment on article[<a href='" + articleLink + "'>"
                     + articleTitle + "</a>] received an reply: <p>" + commenter
-                    + ": <a href=\"" + blogHost + commentSharpURL + "\">"
+                    + ": <a href=\"http://" + blogHost + commentSharpURL + "\">"
                     + commentContent + "</a></p>";
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.FINER,
