@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 21, 2010
+ * @version 1.0.0.5, Dec 22, 2010
  */
 public final class PageCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -102,9 +102,6 @@ public final class PageCommentReplyNotifier
             final String originalCommentEmail =
                     originalComment.getString(Comment.COMMENT_EMAIL);
             if (originalCommentEmail.equalsIgnoreCase(commentEmail)) {
-                LOGGER.log(Level.FINE,
-                           "Do not send reply notification mail to itself[{0}]",
-                           originalCommentEmail);
                 return;
             }
 
@@ -117,7 +114,9 @@ public final class PageCommentReplyNotifier
                     preference.getString(Preference.BLOG_TITLE);
             final String adminEmail =
                     preference.getString(Preference.ADMIN_EMAIL);
-
+            if (commentEmail.equalsIgnoreCase(adminEmail)) {
+                return;
+            }
 
             final String commentContent =
                     comment.getString(Comment.COMMENT_CONTENT);
@@ -145,9 +144,8 @@ public final class PageCommentReplyNotifier
             final String mailBody =
                     "Your comment on page[<a href='" + pageLink + "'>"
                     + pageTitle + "</a>] received an reply: <p>" + commenter
-                    + ": " + commentContent + "</p><p>" + "See <a href='http://"
-                    + blogHost + commentSharpURL
-                    + "'>here</a> for original post.</p>";
+                    + ": <a href=\"" + blogHost + commentSharpURL + "\">"
+                    + commentContent + "</a></p>";
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.FINER,
                        "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
