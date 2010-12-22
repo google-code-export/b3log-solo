@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.repository.impl;
 
 import com.google.appengine.api.datastore.QueryResultIterable;
@@ -24,6 +23,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultList;
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Dec 20, 2010
+ * @version 1.0.2.2, Dec 22, 2010
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -316,8 +316,13 @@ public final class ArticleGAERepository extends AbstractGAERepository
         }
 
         final Iterable<Entity> entities = preparedQuery.asIterable();
-        final List<Integer> fetchIndexes =
-                CollectionUtils.getRandomIntegers(0, count - 1, fetchSize);
+        List<Integer> fetchIndexes = Collections.emptyList();
+        try {
+            fetchIndexes = CollectionUtils.getRandomIntegers(0, count - 1,
+                                                             fetchSize);
+        } catch (final IllegalArgumentException e) {
+            LOGGER.warning(e.getMessage());
+        }
 
         int index = 0;
         for (final Entity entity : entities) { // XXX: performance issue
