@@ -107,8 +107,7 @@ public final class ArticleSender
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST);
-            if (Preference.Default.DEFAULT_BLOG_HOST.equals(
-                    blogHost)
+            if (Preference.Default.DEFAULT_BLOG_HOST.equals(blogHost)
                 || "localhost".equals(blogHost.split(":")[0])) {
                 LOGGER.log(Level.INFO,
                            "Blog Solo runs on local server, so should not send "
