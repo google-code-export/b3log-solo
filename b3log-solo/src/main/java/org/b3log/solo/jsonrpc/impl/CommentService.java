@@ -409,7 +409,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final String commentName =
                     requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail =
-                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim();
+                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().
+                    toLowerCase();
             final String commentURL =
                     requestJSONObject.optString(Comment.COMMENT_URL);
             String commentContent =
@@ -558,7 +559,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final String commentName =
                     requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail =
-                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim();
+                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().
+                    toLowerCase();
             final String commentURL =
                     requestJSONObject.optString(Comment.COMMENT_URL);
             String commentContent =
