@@ -428,8 +428,9 @@ a.header-title {
 
 .recent-comments div {
     float: left;
-    margin-left:11px;
+    margin: 0 0 10px 11px;
     text-align: center;
+    width: 91px;
 }
 
 .recent-comments div a {
