@@ -82,6 +82,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         final ServletFileUpload upload = new ServletFileUpload();
         FileItemIterator iterator = null;
 
