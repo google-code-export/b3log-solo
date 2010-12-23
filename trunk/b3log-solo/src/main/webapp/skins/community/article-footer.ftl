@@ -1,7 +1,8 @@
 <div class="content">
-    <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a>
-    <br/>
     <div class="left">
+        <div>
+            <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a>
+        </div>
         Powered by
         <a href="http://b3log-solo.googlecode.com" target="_blank" style="text-decoration: none;">
             <span style="color: orange;">B</span>
@@ -14,23 +15,26 @@
         Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a> & <a href="http://demo.woothemes.com/skeptical/" target="_blank">Skeptical</a>.
     </div>
     <div class="right nowrap">
-        ${viewCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticBlogViewCount}
-        </span>
-        &nbsp;&nbsp;
-        ${articleCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticPublishedBlogArticleCount}
-        </span>
-        &nbsp;&nbsp;
-        ${commentCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticPublishedBlogCommentCount}
-        </span>
+        <div class="goTop right" onclick="util.goTop();">${goTopLabel}</div>
+        <br/>
+        <div class="right">
+            ${viewCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticBlogViewCount}
+            </span>
+            &nbsp;&nbsp;
+            ${articleCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticPublishedBlogArticleCount}
+            </span>
+            &nbsp;&nbsp;
+            ${commentCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticPublishedBlogCommentCount}
+            </span>
+        </div>
     </div>
     <div class="clear"></div>
-    <div class="goTop" onclick="util.goTop();">${goTopLabel}</div>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 <script type="text/javascript" src="/js/util.js"></script>
@@ -61,4 +65,34 @@
     }
 
     init();
+
+    var maxLength = parseInt("${mostCommentArticles?size}");
+    var footerBlock = function () {
+        $(".footer-block").each(function (num) {
+            var $lis = $(this).find("li");
+            if ($lis.length > maxLength) {
+                for (var i = maxLength; i < $lis.length; i++) {
+                    $lis.get(i).style.display = "none";
+                }
+                $(this).find("h4").append("<span class='down-icon' onmouseover=\"showFooterBlock(this, " + num + ");\"></span>");
+            }
+        });
+    }
+    footerBlock();
+
+    var showFooterBlock = function (it, num) {
+        var $li = $($(".footer-block").get(num)).find("li");
+        for (var i = maxLength; i < $li.length; i++) {
+            if (it.className === "down-icon") {
+                $($li.get(i)).slideDown("normal");
+            } else {
+                $($li.get(i)).slideUp("normal");
+            }
+        }
+        if (it.className === "down-icon") {
+            it.className = "up-icon";
+        } else {
+            it.className = "down-icon";
+        }
+    }
 </script>

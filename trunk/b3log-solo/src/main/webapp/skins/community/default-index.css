@@ -68,7 +68,7 @@ input[type='button']:hover {
 }
 
 .header-navi {
-    background: url("images/icon.png") 0px -118px repeat-x #333333;
+    background: url("images/icon.png") 0px -130px repeat-x #333333;
     margin-bottom: 50px;
 }
 
@@ -97,7 +97,7 @@ a.header-title {
 }
 
 .header-navi-main .tab:hover {
-    background: url("images/icon.png") repeat-x scroll 0 -118px #9BC4CE;
+    background: url("images/icon.png") repeat-x scroll 0 -130px #9BC4CE;
 }
 
 #header-pages {
@@ -464,6 +464,7 @@ a.header-title {
 .footer-block h4{
     font: bold 18px 微软雅黑;
     color: #000000;
+    height: 25px;
     padding: 0 0 15px;
     background: url("images/indentline.png") repeat-x scroll left bottom transparent;
 }
@@ -517,7 +518,6 @@ a.header-title {
 }
 
 .footer .content {
-    position: relative;
     line-height: 22px;
 }
 
@@ -529,12 +529,8 @@ a.header-title {
     background: url("images/icon.png") no-repeat -12px -64px;
     cursor: pointer;
     padding-left: 15px;
-    padding-top: 0;
-    position: absolute;
-    right: 0px;
     height: 17px;
     line-height: 17px;
-    top: 0px;
 }
 
 /* error */
@@ -562,7 +558,7 @@ a.header-title {
 }
 
 /* icon */
-.read-more-icon, .arrow-dowm-icon, .tag-icon, .atom-icon {
+.read-more-icon, .arrow-dowm-icon, .tag-icon, .atom-icon, .up-icon, .down-icon {
     background-image: url("images/icon.png");
     background-repeat: no-repeat;
     float: left;
@@ -593,6 +589,22 @@ a.header-title {
     height: 22px;
     margin-left: 6px;
     width: 22px;
+}
+
+.up-icon {
+    background-position: -11px -118px;
+    height: 12px;
+    margin: 6px 0 0 10px;
+    width: 11px;
+    cursor: pointer;
+}
+
+.down-icon {
+    background-position: 0 -118px;
+    height: 12px;
+    margin: 6px 0 0 10px;
+    width: 11px;
+    cursor: pointer;
 }
 
 .star-current-icon, .star-icon, .moon-icon, .moon-current-icon {
