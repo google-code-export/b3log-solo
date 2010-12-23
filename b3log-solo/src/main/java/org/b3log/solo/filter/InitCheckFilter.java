@@ -70,7 +70,6 @@ public final class InitCheckFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        LOGGER.finer("Doing init check filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
 

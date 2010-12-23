@@ -72,7 +72,6 @@ public final class TagPermalinkFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        LOGGER.finer("Doing tag permalink filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();

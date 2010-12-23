@@ -70,7 +70,6 @@ public final class PagePermalinkFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        LOGGER.finer("Doing page permalink filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();

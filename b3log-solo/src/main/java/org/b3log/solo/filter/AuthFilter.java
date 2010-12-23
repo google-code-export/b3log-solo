@@ -80,7 +80,6 @@ public final class AuthFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        LOGGER.finer("Doing auth filter....");
         final HttpServletResponse httpServletResponse =
                 (HttpServletResponse) response;
 
