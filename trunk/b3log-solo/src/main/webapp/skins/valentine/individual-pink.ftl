@@ -51,3 +51,19 @@
     <div class="hori-line"><!-- HR --></div>
 </div>
 </#list>
+<#if 0 != paginationPageCount_r>
+<div class="pagination">
+    <#if paginationPageNums_r?first != 1>
+    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum_r=1">${firstPageLabel}</a>
+    <a id="previousPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum_r={paginationFirstPageNum_r}">${previousPageLabel}</a>
+    </#if>
+    <#list paginationPageNums_r as paginationPageNum_r>
+    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum_r=${paginationPageNum_r}">${paginationPageNum_r}</a>
+    </#list>
+    <#if paginationPageNums_r?last!=paginationPageCount_r>
+    <a id="nextPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum_r={paginationLastPageNum_r}">${nextPagePabel}</a>
+    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum_r=${paginationPageCount_r}">${lastPageLabel}</a>
+    </#if>
+    &nbsp;&nbsp;${sumLabel} ${paginationPageCount_r} ${pageLabel}
+</div>
+</#if>

@@ -523,6 +523,7 @@ h3.pagetitle {
 .homeentry {
 	text-align: justify;
 	font-size: 12px;
+        word-wrap: break-word;
 }
 
 .cmtballoon-blue .text-link,.cmtballoon-pink .text-link{
@@ -1123,4 +1124,8 @@ h4 {
 	width:180px;
 	height: 73px;
 	background: url(images/tugowartitletag.jpg) no-repeat;
+}
+.pagination {
+    margin: 16px;
+    text-align: center;
 }
