@@ -62,7 +62,8 @@
             </ul>
         </div>
         <div class="left footer-block">
-            <h4>${popTagsLabel}</h4>
+            <h4><span class="left">${popTagsLabel}</span></h4>
+            <span class="clear"></span>
             <ul>
                 <#list mostUsedTags as tag>
                 <li class="mostUsedTags">
@@ -76,7 +77,8 @@
             </ul>
         </div>
         <div class="left footer-block">
-            <h4>${linkLabel}</h4>
+            <h4><span class="left">${linkLabel}</span></h4>
+            <span class="clear"></span>
             <ul id="sideLink">
                 <#list links as link>
                 <li>
@@ -88,7 +90,8 @@
             </ul>
         </div>
         <div class="left footer-block" style="margin-right: 0px;">
-            <h4>${archiveLabel}</h4>
+            <h4><span class="left">${archiveLabel}</span></h4>
+            <span class="clear"></span>
             <ul>
                 <#list archiveDates as archiveDate>
                 <li>
