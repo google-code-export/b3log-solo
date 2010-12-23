@@ -32,3 +32,5 @@
  # 更新 GAE 相关资源。右键项目，run as maven build... --> Goals: gae:unpack
  # 运行项目。右键项目，run as maven build... --> Goals: gae:run
  # 部署项目，run as maven build... --> Goals: gae:deploy
+==开发框架==
+[https://docs.google.com/document/pub?id=1qFuH3A2JFifyCdTYyV8tkPLV0_-Q9QTPrIBWyZz7J0I Latke 快速上手指南（草稿）]
