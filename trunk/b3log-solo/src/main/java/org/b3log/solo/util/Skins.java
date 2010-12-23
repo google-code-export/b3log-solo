@@ -19,18 +19,26 @@ package org.b3log.solo.util;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Preference;
+import static org.b3log.solo.model.Skin.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 22, 2010
+ * @version 1.0.0.1, Dec 24, 2010
  */
 public final class Skins {
 
@@ -38,6 +46,55 @@ public final class Skins {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Skins.class.getName());
+
+    /**
+     * Loads skins for the specified preference.
+     *
+     * @param preference the specified preference
+     * @throws JSONException json exception
+     */
+    public void loadSkins(final JSONObject preference) throws JSONException {
+        LOGGER.info("Loading skins....");
+
+        final String skinDirName = preference.getString(SKIN_DIR_NAME);
+        preference.put(SKIN_DIR_NAME, skinDirName);
+
+        final String skinName = getSkinName(skinDirName);
+        preference.put(SKIN_NAME, skinName);
+        LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
+
+        final Set<String> skinDirNames = getSkinDirNames();
+        LOGGER.log(Level.FINER, "Loaded skins[dirNames={0}]", skinDirNames);
+        final JSONArray skinArray = new JSONArray();
+        for (final String dirName : skinDirNames) {
+            final JSONObject skin = new JSONObject();
+            skinArray.put(skin);
+
+            final String name = getSkinName(dirName);
+            skin.put(SKIN_NAME, name);
+            skin.put(SKIN_DIR_NAME, dirName);
+        }
+
+        preference.put(SKINS, skinArray.toString());
+
+        try {
+            final String webRootPath = SoloServletListener.getWebRoot();
+            final String skinPath = webRootPath + SKINS + "/" + skinDirName;
+            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
+                    new File(skinPath));
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        final String localeString = preference.getString(
+                Preference.LOCALE_STRING);
+        if ("zh_CN".equals(localeString)) {
+            Templates.CONFIGURATION.setTimeZone(
+                    TimeZone.getTimeZone("Asia/Shanghai"));
+        }
+
+        LOGGER.info("Loaded skins....");
+    }
 
     /**
      * Gets all skin directory names. Scans the

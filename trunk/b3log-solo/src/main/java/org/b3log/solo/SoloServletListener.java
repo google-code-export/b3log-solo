@@ -66,7 +66,7 @@ import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.sync.SyncModule;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
@@ -323,22 +323,23 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.info("Loading preference....");
 
         final Injector injector = getInjector();
-        final Preferences preferenceUtils =
-                injector.getInstance(Preferences.class);
+        final PreferenceRepository preferenceRepository =
+                injector.getInstance(PreferenceRepository.class);
         JSONObject preference = null;
 
         try {
-            preference = preferenceUtils.getPreference();
+            preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) {
                 LOGGER.log(Level.SEVERE,
                            "Can't not init default skin, please init B3log Solo first");
                 return;
             }
 
+            final Skins skins = injector.getInstance(Skins.class);
+            skins.loadSkins(preference);
+
             final EventManager eventManager =
                     getInjector().getInstance(EventManager.class);
-            final PreferenceRepository preferenceRepository =
-                    injector.getInstance(PreferenceRepository.class);
 
             eventManager.fireEventSynchronously(// for upgrade extensions
                     new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
