@@ -23,7 +23,6 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.appengine.api.utils.SystemProperty.Environment.Value;
 import com.google.inject.Guice;
@@ -203,7 +202,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         super.contextInitialized(servletContextEvent);
 
-        MemcacheServiceFactory.getMemcacheService().clearAll();
         final PreferenceRepository preferenceRepository =
                 getInjector().getInstance(PreferenceRepository.class);
         Transaction transaction = preferenceRepository.beginTransaction();
