@@ -97,7 +97,6 @@ public final class PageCacheFilter implements Filter {
                          final FilterChain chain) throws IOException,
                                                          ServletException {
         final long startTimeMillis = System.currentTimeMillis();
-        LOGGER.finest("Doing page cache filter....");
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         httpServletRequest.getContentType();
