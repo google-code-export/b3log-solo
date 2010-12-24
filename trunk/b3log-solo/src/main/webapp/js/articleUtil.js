@@ -57,7 +57,7 @@ $.extend(ArticleUtil.prototype, {
         } else if (document.selection) { // IE
             var i = 0,
             oS = document.selection.createRange(),
-            oR = document.body.createTextRange();   // Don't: oR = textarea.createTextRange()
+            oR = document.body.createTextRange(); 
             oR.moveToElementText(textarea);
             oS.getBookmark();
             for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i ++) {
