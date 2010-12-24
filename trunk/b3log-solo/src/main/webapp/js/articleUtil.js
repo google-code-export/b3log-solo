@@ -31,10 +31,42 @@ $.extend(ArticleUtil.prototype, {
         }
         
         $("#emotions" + name + " img").click(function () {
-            // TODO: should be insert it at the after of cursor
-            var key = this.className;
-            $("#comment" + name).val($("#comment" + name).val() + key).focus();
+            var $comment = $("#comment" + name);
+            var endPosition = articleUtil.getCursorEndPosition($comment[0]);
+            var key = this.className,
+            textValue  = $comment[0].value;
+            textValue = textValue.substring(0, endPosition) + key + textValue.substring(endPosition, textValue.length);
+            $("#comment" + name).val(textValue);
+
+            if ($.browser.msie) {
+                endPosition -= textValue.split('\n').length - 1;
+                var oR = $comment[0].createTextRange();
+                oR.collapse(true);
+                oR.moveStart('character', endPosition + 6);
+                oR.select();
+            } else {
+                $comment[0].setSelectionRange(endPosition + 6, endPosition + 6);
+            }
         });
+    },
+
+    getCursorEndPosition: function (textarea) {
+        textarea.focus();
+        if (textarea.setSelectionRange) { // W3C
+            return textarea.selectionEnd;
+        } else if (document.selection) { // IE
+            var i = 0,
+            oS = document.selection.createRange(),
+            oR = document.body.createTextRange();   // Don't: oR = textarea.createTextRange()
+            oR.moveToElementText(textarea);
+            oS.getBookmark();
+            for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i ++) {
+                if (textarea.value.charAt(i) == '\n') {
+                    i ++;
+                }
+            }
+            return i;
+        }
     },
 
     validateComment: function (state) {
@@ -275,7 +307,7 @@ $.extend(ArticleUtil.prototype, {
         if (!statue) {
             statue = '';
         }
-        var tip = this.tip, 
+        var tip = this.tip,
         type = "Article";
         if (tip.randomArticles1Label === undefined) {
             type = "Page";
