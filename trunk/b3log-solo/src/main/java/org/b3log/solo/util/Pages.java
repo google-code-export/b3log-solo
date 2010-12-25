@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
  * Page utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 29, 2010
+ * @version 1.0.0.1, Dec 25, 2010
  */
 public final class Pages {
 
@@ -86,6 +87,9 @@ public final class Pages {
                                                   + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
+            final String content = comment.getString(Comment.COMMENT_CONTENT).
+                    replaceAll(CommentService.ENTER_ESC, "<br/>");
+            comment.put(Comment.COMMENT_CONTENT, content);
             comment.remove(Comment.COMMENT_EMAIL); // Remove email
 
             if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {

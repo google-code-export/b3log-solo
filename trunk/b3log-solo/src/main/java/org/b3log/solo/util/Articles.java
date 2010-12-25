@@ -36,6 +36,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.ArticleRepository;
@@ -49,7 +50,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Dec 13, 2010
+ * @version 1.0.1.2, Dec 25, 2010
  */
 public final class Articles {
 
@@ -260,6 +261,9 @@ public final class Articles {
                                                      + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
+            final String content = comment.getString(Comment.COMMENT_CONTENT)
+                    .replaceAll(CommentService.ENTER_ESC, "<br/>");
+            comment.put(Comment.COMMENT_CONTENT, content);
             comment.remove(Comment.COMMENT_EMAIL); // Remove email
 
             if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
