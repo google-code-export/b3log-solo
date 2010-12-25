@@ -46,6 +46,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
@@ -66,7 +67,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Dec 20, 2010
+ * @version 1.0.2.7, Dec 25, 2010
  */
 public final class Filler {
 
@@ -381,6 +382,9 @@ public final class Filler {
 
         // Erase email for security reason
         for (final JSONObject comment : recentComments) {
+            final String content = comment.getString(Comment.COMMENT_CONTENT).
+                    replaceAll(CommentService.ENTER_ESC, "&nbsp;");
+            comment.put(Comment.COMMENT_CONTENT, content);
             comment.remove(Comment.COMMENT_EMAIL);
         }
 

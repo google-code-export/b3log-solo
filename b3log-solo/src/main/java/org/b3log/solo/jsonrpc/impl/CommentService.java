@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.4, Dec 21, 2010
+ * @version 1.0.3.5, Dec 25, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -152,6 +152,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             + "{title}</a>]" + " received a new comment:</p>"
             + "{commenter}: <a href=\"http://{commentSharpURL}\">"
             + "{commentContent}</a>";
+    /**
+     * Enter escape.
+     */
+    public static final String ENTER_ESC = "_esc_enter_88250_";
+
     /**
      * Preference utilities.
      */
@@ -414,7 +419,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final String commentURL =
                     requestJSONObject.optString(Comment.COMMENT_URL);
             String commentContent =
-                    requestJSONObject.getString(Comment.COMMENT_CONTENT);
+                    requestJSONObject.getString(Comment.COMMENT_CONTENT).
+                    replaceAll("\\n", ENTER_ESC);
             commentContent = StringEscapeUtils.escapeHtml(commentContent);
             final String originalCommentId = requestJSONObject.optString(
                     Comment.COMMENT_ORIGINAL_COMMENT_ID);
@@ -564,7 +570,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final String commentURL =
                     requestJSONObject.optString(Comment.COMMENT_URL);
             String commentContent =
-                    requestJSONObject.getString(Comment.COMMENT_CONTENT);
+                    requestJSONObject.getString(Comment.COMMENT_CONTENT).
+                    replaceAll("\\n", ENTER_ESC);
             commentContent = StringEscapeUtils.escapeHtml(commentContent);
             final String originalCommentId = requestJSONObject.optString(
                     Comment.COMMENT_ORIGINAL_COMMENT_ID);
