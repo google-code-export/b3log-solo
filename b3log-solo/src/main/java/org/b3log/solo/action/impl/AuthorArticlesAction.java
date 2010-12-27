@@ -21,6 +21,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,13 +45,15 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.comparator.ArticleCreateDateComparator;
+import org.b3log.solo.util.comparator.ArticleUpdateDateComparator;
 import org.json.JSONObject;
 
 /**
  * Get articles by author action. author-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 20, 2010
+ * @version 1.0.1.5, Dec 27, 2010
  */
 public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
@@ -161,6 +164,11 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
             filler.putArticleExProperties(articles, preference);
 
             articleUtils.addTags(articles);
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                Collections.sort(articles, new ArticleUpdateDateComparator());
+            } else {
+                Collections.sort(articles, new ArticleCreateDateComparator());
+            }
             ret.put(Article.ARTICLES, articles);
             ret.put(Common.ACTION_NAME, Common.AUTHOR_ARTICLES);
             ret.put(Keys.OBJECT_ID, authorId);
