@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.mail.MailService;
@@ -269,6 +268,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                                          + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
+                final String content = comment.getString(Comment.COMMENT_CONTENT).
+                        replaceAll(CommentService.ENTER_ESC, "<br/>");
+                comment.put(Comment.COMMENT_CONTENT, content);
                 comments.add(comment);
             }
 
