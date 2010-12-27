@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all cache model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct Dec 27, 2010
+ * @version 1.0.0.2, Dec 27, 2010
  */
 public final class Cache {
 
