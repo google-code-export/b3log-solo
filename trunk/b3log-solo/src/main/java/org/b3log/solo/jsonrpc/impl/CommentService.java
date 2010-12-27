@@ -377,7 +377,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      *     "commentSharpURL": "",
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
-     *
      * }
      * </pre>
      * @throws ActionException action exception
