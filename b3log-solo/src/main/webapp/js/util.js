@@ -60,7 +60,7 @@ $.extend(Util.prototype, {
             url: "/check-login.do",
             success: function(result){
                 if (result.isLoggedIn) {
-                    var loginHTML = "<span class='left'>" + result.userName + "&nbsp;| &nbsp;</span>";
+                    var loginHTML = "<div class='left'>" + result.userName + "&nbsp;| &nbsp;</div>";
 
                     if (result.isAdmin) {
                         loginHTML += "<span class='left' onclick='util.clearAllCache();'>"
