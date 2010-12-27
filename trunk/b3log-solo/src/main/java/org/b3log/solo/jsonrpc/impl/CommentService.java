@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.5, Dec 25, 2010
+ * @version 1.0.3.6, Dec 27, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -156,7 +156,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * Enter escape.
      */
     public static final String ENTER_ESC = "_esc_enter_88250_";
-
     /**
      * Preference utilities.
      */
@@ -528,8 +527,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      *     "commentSharpURL": "",
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
-     *
-     * }
      * }
      * </pre>
      * @throws ActionException action exception
@@ -1024,6 +1021,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             throws JSONException {
         final String pageId = page.getString(Keys.OBJECT_ID);
 
-        return "/page.do?oId=" + pageId + "#" + commentId;
+        return page.getString(Page.PAGE_PERMALINK) + "#" + commentId;
     }
 }
