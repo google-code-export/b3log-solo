@@ -104,8 +104,8 @@ $.extend(AdminUtil.prototype, {
 
         // resize
         var $main = $("#main");
-        var leftWidth = $(".side").width() + $.bowknot.strToInt($main.css("padding-left"))
-            + $.bowknot.strToInt($main.css("padding-right")) + 17;
+        var leftWidth = $(".side").width() + parseInt($main.css("padding-left"))
+            + parseInt($main.css("padding-right")) + 17;
 
         var windowWidth = document.documentElement.clientWidth - leftWidth;
         if (windowWidth < 700) {
