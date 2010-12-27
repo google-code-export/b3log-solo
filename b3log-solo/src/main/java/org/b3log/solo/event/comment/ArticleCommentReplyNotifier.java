@@ -114,9 +114,6 @@ public final class ArticleCommentReplyNotifier
                     preference.getString(Preference.BLOG_TITLE);
             final String adminEmail =
                     preference.getString(Preference.ADMIN_EMAIL);
-            if (commentEmail.equalsIgnoreCase(adminEmail)) {
-                return;
-            }
 
             final String commentContent =
                     comment.getString(Comment.COMMENT_CONTENT);
