@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Dec 25, 2010
+ * @version 1.0.1.3, Dec 27, 2010
  */
 public final class Articles {
 
@@ -214,6 +214,14 @@ public final class Articles {
         final int articleCommentCount = articleCommentRelations.size();
         blogCommentCount -= articleCommentCount;
         statistics.setBlogCommentCount(blogCommentCount);
+
+        final JSONObject article = articleRepository.get(articleId);
+        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+            int publishedBlogCommentCount =
+                    statistics.getPublishedBlogCommentCount();
+            publishedBlogCommentCount -= articleCommentCount;
+            statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
+        }
     }
 
     /**
