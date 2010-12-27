@@ -267,8 +267,10 @@ a.header-title {
 .article-detail-footer>a{
     font-weight: bold;
 }
+
 .article-relative {
     margin-top: 20px;
+    width: 360px;
 }
 
 .article-relative h5 {
