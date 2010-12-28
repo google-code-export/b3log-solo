@@ -2,4 +2,5 @@
    * 安装
      * [pre_installation 前提准备]
      * [local_test 本地测试]
+     * [deploy_gae 部署至 GAE]
  * [DeveloperGuide 开发手册]
