@@ -9,4 +9,9 @@
    * 其他
      * [has_update “有更新”]
      * [multi_users 多用户]
- * [dev_guide 开发手册]
+ * 开发手册
+   * [pre_dev 前提准备]
+   * 开发环境
+     * [mvn Maven2+]
+     * [ide IDE]
+     * [latke 开发框架]
