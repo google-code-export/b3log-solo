@@ -2,4 +2,4 @@
 
 =B3log Solo 用户手册=
 
-请仔细对照《B3log Solo 用户手册》进行操作，开始基于 Google App Engine 的个人免费博客之旅。 
+请仔细对照《B3log Solo 用户手册》进行操作，开始基于 [http://code.google.com/appengine/ Google App Engine] 的独立免费博客之旅。 
