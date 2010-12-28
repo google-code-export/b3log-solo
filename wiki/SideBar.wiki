@@ -1,2 +1,4 @@
 ﻿ * [UserGuide 用户手册]
+   * [安装]
+     * [pre_installation 前提准备]
  * [DeveloperGuide 开发手册]
