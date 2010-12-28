@@ -1,6 +1,0 @@
-#summary 前提准备
-
-===前提准备===
- # 正确安装 [http://www.oracle.com/technetwork/java/javase/downloads/index.html JDK]，在命令行下可以使用 `javac` 命令
- # 下载 [http://code.google.com/appengine/downloads.html Google App Engine SDK for Java]，解压。设解压目录为 `${gae.home}`。
- # 下载 B3log Solo，直接解压，设解压目录为 `${solo.war}`。
