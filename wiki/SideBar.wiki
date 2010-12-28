@@ -3,4 +3,6 @@
      * [pre_installation 前提准备]
      * [local_test 本地测试]
      * [deploy_gae 部署至 GAE]
+   * 配置
+     * [configuration 基本配置]
  * [DeveloperGuide 开发手册]
