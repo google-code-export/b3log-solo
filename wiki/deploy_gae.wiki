@@ -1,4 +1,4 @@
-#summary B3log Solo 部署至 GAE
+#summary 部署至 GAE
 
 ===部署至 GAE===
 <ol>
