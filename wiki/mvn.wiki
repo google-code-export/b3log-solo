@@ -1,0 +1,5 @@
+﻿#summary Maven2+
+
+===Maven2+===
+ * Maven 2.2.1: http://maven.apache.org/download.html
+将Maven 的全局 settings.xml 修改如下载的[http://lamb.b3log.org/datastore-file-access.do?oId=1291005995109 文件]所示。

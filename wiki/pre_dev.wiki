@@ -1,0 +1,7 @@
+﻿#summary 前提准备
+
+==前提准备==
+在开始搭建开发环境之前，您必须掌握如下知识或技能：
+ * 能够使用 Java 开发应用程序 
+ * 对 [http://code.google.com/appengine/docs/java/overview.html Google App Engine（for Java）]有一定了解
+ * 熟悉 [http://maven.apache.org Maven2+]
