@@ -9,4 +9,4 @@
    * 其他
      * [has_update “有更新”]
      * [multi_users 多用户]
- * [DeveloperGuide 开发手册]
+ * [dev_guide 开发手册]
