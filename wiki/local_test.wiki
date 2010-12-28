@@ -1,4 +1,4 @@
-#summary B3log Solo 本地测试
+#summary 本地测试
 
 ===本地测试===
 （Windows）在命令行下 `cd` 进入 `${gae.home}/bin/` 目录，执行：
