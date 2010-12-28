@@ -1,4 +1,4 @@
-#summary B3log Solo 开发手册
+#summary 开发手册
 #labels Featured
 #sidebar SideBar
 =B3log Solo 开发手册=
