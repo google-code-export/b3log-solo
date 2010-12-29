@@ -147,6 +147,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
+            ret.put(Article.ARTICLE, article);
 
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.getString(
@@ -164,7 +165,9 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             article.put(Common.AUTHOR_NAME, authorName);
             final String authorId = author.getString(Keys.OBJECT_ID);
             article.put(Common.AUTHOR_ID, authorId);
-            ret.put(Article.ARTICLE, article);
+
+            article.put(Article.ARTICLE_SIGN_REF,
+                        articleUtils.getSign(articleId, preference));
 
             final List<JSONObject> articleTags = articleUtils.getTags(articleId);
             ret.put(Article.ARTICLE_TAGS_REF, articleTags);
