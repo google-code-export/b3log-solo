@@ -182,7 +182,8 @@
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
                     "articleTags": $.bowknot.trimUnique(tagArray).toString(),
                     "articlePermalink": $("#permalink").val(),
-                    "articleIsPublished": articleIsPublished
+                    "articleIsPublished": articleIsPublished,
+                    "articleSign_oId": $("#articleSigns").val()
                 }
             };
 
@@ -243,7 +244,8 @@
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
                     "articleTags": $.bowknot.trimUnique(tagArray).toString(),
                     "articlePermalink": $("#permalink").val(),
-                    "articleIsPublished": tag
+                    "articleIsPublished": tag,
+                    "articleSign_oId": $("#articleSigns").val()
                 }
             };
 
