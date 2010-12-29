@@ -48,10 +48,7 @@
             ${sign1Label}
         </th>
         <td>
-            <select>
-                <option>
-                    
-                </option>
+            <select id="articleSigns">
             </select>
         </td>
     </tr>

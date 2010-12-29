@@ -125,7 +125,8 @@
                 "userRole": "${userRole}",
                 "loadingLabel": "${loadingLabel}",
                 "removeSuccLabel": "${removeSuccLabel}",
-                "removeFailLabel": "${removeFailLabel}"
+                "removeFailLabel": "${removeFailLabel}",
+                "getSuccLabel": "${getSuccLabel}"
             });
 
             adminUtil.init();
