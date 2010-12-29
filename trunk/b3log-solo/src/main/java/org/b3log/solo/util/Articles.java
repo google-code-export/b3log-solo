@@ -41,6 +41,7 @@ import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.CommentRepository;
@@ -53,7 +54,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 29, 2010
+ * @version 1.0.1.5, Dec 29, 2010
  */
 public final class Articles {
 
@@ -296,6 +297,27 @@ public final class Articles {
         }
 
         return ret;
+    }
+
+    /**
+     * Adds relation of the specified article and sign.
+     *
+     * @param signId the specified sign id
+     * @param articleId the specified article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void addArticleSignRelation(final String signId,
+                                       final String articleId)
+            throws JSONException, RepositoryException {
+        final JSONObject articleSignRelation = new JSONObject();
+
+        articleSignRelation.put(Sign.SIGN + "_" + Keys.OBJECT_ID,
+                                signId);
+        articleSignRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                                articleId);
+
+        articleSignRepository.add(articleSignRelation);
     }
 
     /**

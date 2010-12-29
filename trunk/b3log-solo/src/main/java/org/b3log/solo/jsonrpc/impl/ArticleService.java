@@ -52,9 +52,9 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Sign;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Permalinks;
@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, Dec 20, 2010
+ * @version 1.0.3.0, Dec 29, 2010
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -281,17 +281,23 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     + permalink + "]");
             }
             article.put(ARTICLE_PERMALINK, permalink);
-            // Step 10: Set had been published status
+            // Step 10: Add article-sign relation
+            final String signId =
+                    article.optString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+            if (!Strings.isEmptyOrNull(signId)) {
+                articleUtils.addArticleSignRelation(signId, articleId);
+            }
+            // Step 11: Set had been published status
             article.put(ARTICLE_HAD_BEEN_PUBLISHED, false);
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 // Publish it directly
                 article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
             }
-            // Step 11: Set author email
+            // Step 12: Set author email
             final String authorEmail =
                     userUtils.getCurrentUser().getString(User.USER_EMAIL);
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
-            // Step 12: Update article
+            article.put(ARTICLE_AUTHOR_EMAIL, authorEmail);
+            // Step 13: Update article
             articleRepository.update(articleId, article);
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
@@ -336,11 +342,20 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *     "articleTitle": "",
      *     "articleAbstract": "",
      *     "articleContent": "",
+     *     "articlePermalink": "",
      *     "articleIsPublished": boolean
      *     "articleTags": [{
      *         "oId": "",
      *         "tagTitle": ""
      *     }, ....],
+     *     "articleSign": {
+     *         "oId": "",
+     *         "signHTML": ""
+     *     },
+     *     "signs": [{
+     *         "oId": "",
+     *         "signHTML": ""
+     *     }, ....]
      *     "sc": "GET_ARTICLE_SUCC"
      * }
      * </pre>
@@ -374,9 +389,26 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
                 tags.put(tag);
             }
-
             article.put(ARTICLE_TAGS_REF, tags);
-            // XXX: Remove unused properties
+
+            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject sign = articleUtils.getSign(articleId, preference);
+            article.put(ARTICLE_SIGN_REF, sign);
+
+            final JSONArray signs =
+                    new JSONArray(preference.getString(Preference.SIGNS));
+            article.put(Sign.SIGNS, signs);
+
+            // Remove unused properties
+            article.remove(ARTICLE_AUTHOR_EMAIL);
+            article.remove(ARTICLE_COMMENT_COUNT);
+            article.remove(ARTICLE_CREATE_DATE);
+            article.remove(ARTICLE_HAD_BEEN_PUBLISHED);
+            article.remove(ARTICLE_IS_PUBLISHED);
+            article.remove(ARTICLE_PUT_TOP);
+            article.remove(ARTICLE_UPDATE_DATE);
+            article.remove(ARTICLE_VIEW_COUNT);
+
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLE_SUCC);
 
             LOGGER.log(Level.FINER, "Got an article[oId={0}]", articleId);
@@ -835,18 +867,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 6: Fill auto properties
-            final Date createDate = (Date) oldArticle.get(ARTICLE_CREATE_DATE);
-            article.put(ARTICLE_CREATE_DATE, createDate);
-            article.put(ARTICLE_COMMENT_COUNT,
-                        oldArticle.getInt(ARTICLE_COMMENT_COUNT));
-            article.put(ARTICLE_VIEW_COUNT,
-                        oldArticle.getInt(ARTICLE_VIEW_COUNT));
-            article.put(ARTICLE_PUT_TOP,
-                        oldArticle.getBoolean(ARTICLE_PUT_TOP));
-            article.put(ARTICLE_HAD_BEEN_PUBLISHED,
-                        oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
-            article.put(ARTICLE_AUTHOR_EMAIL,
-                        oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
+            fillAutoProperties(oldArticle, article);
             // Step 7: Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
@@ -889,6 +910,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             articleUtils.addTagArticleRelation(tags, article);
             // Step 11: Add archive date-article relations
             archiveDateUtils.archiveDate(article);
+            // Step 12: Add article-sign relation
+            final String signId =
+                    article.optString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+            if (!Strings.isEmptyOrNull(signId)) {
+                articleUtils.addArticleSignRelation(signId, articleId);
+            }
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 // Fire update article event
@@ -926,6 +953,35 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         PageCaches.removeAll();
 
         return ret;
+    }
+
+    /**
+     * Fills 'auto' properties for the specified article and old article.
+     *
+     * <p>
+     * Some properties of an article are not been changed while article updating,
+     * these properties are called 'auto' properties.
+     * </p>
+     *
+     * @param oldArticle the specified old article
+     * @param article the specified article
+     * @throws JSONException json exception
+     */
+    private void fillAutoProperties(final JSONObject oldArticle,
+                                    final JSONObject article) throws
+            JSONException {
+
+        final Date createDate =
+                (Date) oldArticle.get(ARTICLE_CREATE_DATE);
+        article.put(ARTICLE_CREATE_DATE, createDate);
+        article.put(ARTICLE_COMMENT_COUNT,
+                    oldArticle.getInt(ARTICLE_COMMENT_COUNT));
+        article.put(ARTICLE_VIEW_COUNT, oldArticle.getInt(ARTICLE_VIEW_COUNT));
+        article.put(ARTICLE_PUT_TOP, oldArticle.getBoolean(ARTICLE_PUT_TOP));
+        article.put(ARTICLE_HAD_BEEN_PUBLISHED,
+                    oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
+        article.put(ARTICLE_AUTHOR_EMAIL,
+                    oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
     }
 
     /**
