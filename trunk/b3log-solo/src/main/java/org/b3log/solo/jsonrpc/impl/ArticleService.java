@@ -55,6 +55,7 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
+import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Permalinks;
@@ -94,6 +95,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private TagArticleRepository tagArticleRepository;
+    /**
+     * Article-Sign repository.
+     */
+    @Inject
+    private ArticleSignRepository articleSignRepository;
     /**
      * Event manager.
      */
@@ -915,6 +921,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String signId =
                     article.optString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             if (!Strings.isEmptyOrNull(signId)) {
+                final JSONObject articleSignRelation =
+                        articleSignRepository.getByArticleId(articleId);
+                if (null != articleSignRelation) {
+                    articleSignRepository.remove(
+                            articleSignRelation.getString(Keys.OBJECT_ID));
+                }
                 articleUtils.addArticleSignRelation(signId, articleId);
             }
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
