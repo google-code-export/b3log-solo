@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
@@ -39,7 +40,9 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
@@ -50,7 +53,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 27, 2010
+ * @version 1.0.1.4, Dec 29, 2010
  */
 public final class Articles {
 
@@ -69,6 +72,11 @@ public final class Articles {
      */
     @Inject
     private ArticleCommentRepository articleCommentRepository;
+    /**
+     * Article-Sign repository.
+     */
+    @Inject
+    private ArticleSignRepository articleSignRepository;
     /**
      * Tag-Article repository.
      */
@@ -269,8 +277,8 @@ public final class Articles {
                                                      + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
-            final String content = comment.getString(Comment.COMMENT_CONTENT)
-                    .replaceAll(CommentService.ENTER_ESC, "<br/>");
+            final String content = comment.getString(Comment.COMMENT_CONTENT).
+                    replaceAll(CommentService.ENTER_ESC, "<br/>");
             comment.put(Comment.COMMENT_CONTENT, content);
             comment.remove(Comment.COMMENT_EMAIL); // Remove email
 
@@ -285,6 +293,37 @@ public final class Articles {
             }
 
             ret.add(comment);
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets sign of an article specified by the article id.
+     *
+     * @param articleId the specified article id
+     * @param preference the specified preference
+     * @return article sign, returns the default sign(which oId is "1") if not
+     * found, returns {@code null} if not found the default sign
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    public JSONObject getSign(final String articleId,
+                              final JSONObject preference)
+            throws JSONException, RepositoryException {
+        final JSONObject ret =
+                articleSignRepository.getByArticleId(articleId);
+        if (null == ret) {
+            final JSONArray signs = new JSONArray(
+                    preference.getString(Preference.SIGNS));
+            for (int i = 0; i < signs.length(); i++) {
+                final JSONObject sign = signs.getJSONObject(i);
+                if ("1".equals(sign.getString(Keys.OBJECT_ID))) {
+                    LOGGER.log(Level.FINEST, "Used default article sign[{0}]",
+                               sign);
+                    return sign;
+                }
+            }
         }
 
         return ret;
