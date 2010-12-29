@@ -288,6 +288,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             if (!Strings.isEmptyOrNull(signId)) {
                 articleUtils.addArticleSignRelation(signId, articleId);
             }
+            article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             // Step 11: Set had been published status
             article.put(ARTICLE_HAD_BEEN_PUBLISHED, false);
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
@@ -918,6 +919,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             if (!Strings.isEmptyOrNull(signId)) {
                 articleUtils.addArticleSignRelation(signId, articleId);
             }
+            article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 // Fire update article event
