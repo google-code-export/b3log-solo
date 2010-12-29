@@ -16,6 +16,7 @@
 
 package org.b3log.solo.model;
 
+import org.b3log.latke.Keys;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -229,6 +230,7 @@ public final class Preference {
             try {
                 for (int i = 0; i < signLength; i++) {
                     final JSONObject sign = new JSONObject();
+                    sign.put(Keys.OBJECT_ID, i);
                     signs.put(sign);
 
                     sign.put(Sign.SIGN_HTML, "");
