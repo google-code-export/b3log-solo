@@ -167,7 +167,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             article.put(Common.AUTHOR_ID, authorId);
 
             article.put(Article.ARTICLE_SIGN_REF,
-                        articleUtils.getSignId(articleId, preference));
+                        articleUtils.getSign(articleId, preference));
 
             final List<JSONObject> articleTags = articleUtils.getTags(articleId);
             ret.put(Article.ARTICLE_TAGS_REF, articleTags);

@@ -215,8 +215,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject addArticle(final JSONObject requestJSONObject,
-                                 final HttpServletRequest request,
-                                 final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
 
@@ -267,7 +267,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             String permalink = article.optString(ARTICLE_PERMALINK);
             if (Strings.isEmptyOrNull(permalink)) {
                 permalink = "/articles/" + PERMALINK_FORMAT.format(date) + "/"
-                            + articleId + ".html";
+                        + articleId + ".html";
             }
 
             if (!permalink.startsWith("/")) {
@@ -276,10 +276,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             if (permalinks.exist(permalink)) {
                 status.put(Keys.CODE,
-                           StatusCodes.ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK);
+                        StatusCodes.ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK);
 
                 throw new Exception("Add article fail, caused by duplicated permalink["
-                                    + permalink + "]");
+                        + permalink + "]");
             }
             article.put(ARTICLE_PERMALINK, permalink);
             // Step 10: Add article-sign relation
@@ -362,8 +362,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject getArticle(final JSONObject requestJSONObject,
-                                 final HttpServletRequest request,
-                                 final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isLoggedIn()) {
@@ -391,8 +391,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_TAGS_REF, tags);
 
             final JSONObject preference = preferenceUtils.getPreference();
-            final String signId = articleUtils.getSignId(articleId,
-                                                         preference);
+            final String signId = articleUtils.getSign(
+                    articleId, preference).getString(Keys.OBJECT_ID);
             article.put(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, signId);
 
             final JSONArray signs =
@@ -466,8 +466,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @see Pagination
      */
     public JSONObject getArticles(final JSONObject requestJSONObject,
-                                  final HttpServletRequest request,
-                                  final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isLoggedIn()) {
@@ -491,11 +491,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             sorts.put(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
             final Set<Filter> filters = new HashSet<Filter>();
             filters.add(new Filter(ARTICLE_IS_PUBLISHED,
-                                   FilterOperator.EQUAL,
-                                   articleIsPublished));
+                    FilterOperator.EQUAL,
+                    articleIsPublished));
             final JSONObject result =
                     articleRepository.get(currentPageNum, pageSize,
-                                          sorts, filters);
+                    sorts, filters);
 
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -504,7 +504,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Pagination.PAGINATION, pagination);
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
+                    windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
@@ -566,8 +566,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject removeArticle(final JSONObject requestJSONObject,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isLoggedIn()) {
@@ -619,7 +619,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             try {
                 eventManager.fireEventSynchronously(
                         new Event<JSONObject>(EventTypes.REMOVE_ARTICLE,
-                                              eventData));
+                        eventData));
             } catch (final EventException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
@@ -667,8 +667,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject putTopArticle(final JSONObject requestJSONObject,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -695,7 +695,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.log(Level.SEVERE, "Can't put the article[oId{0}] to top",
-                       articleId);
+                    articleId);
             try {
                 ret.put(Keys.STATUS_CODE, StatusCodes.PUT_TOP_ARTICLE_FAIL_);
             } catch (final JSONException ex) {
@@ -730,8 +730,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject cancelTopArticle(final JSONObject requestJSONObject,
-                                       final HttpServletRequest request,
-                                       final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -756,8 +756,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         } catch (final Exception e) {
             transaction.rollback();
             LOGGER.log(Level.SEVERE,
-                       "Can't cancel the article[oId{0}] from top",
-                       articleId);
+                    "Can't cancel the article[oId{0}] from top",
+                    articleId);
             try {
                 ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_TOP_ARTICLE_FAIL_);
             } catch (final JSONException ex) {
@@ -810,8 +810,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject updateArticle(final JSONObject requestJSONObject,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
 
@@ -927,7 +927,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 try {
                     eventManager.fireEventSynchronously(
                             new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
-                                                  eventData));
+                            eventData));
                 } catch (final EventException e) {
                     LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
@@ -970,20 +970,20 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws JSONException json exception
      */
     private void fillAutoProperties(final JSONObject oldArticle,
-                                    final JSONObject article) throws
+            final JSONObject article) throws
             JSONException {
 
         final Date createDate =
                 (Date) oldArticle.get(ARTICLE_CREATE_DATE);
         article.put(ARTICLE_CREATE_DATE, createDate);
         article.put(ARTICLE_COMMENT_COUNT,
-                    oldArticle.getInt(ARTICLE_COMMENT_COUNT));
+                oldArticle.getInt(ARTICLE_COMMENT_COUNT));
         article.put(ARTICLE_VIEW_COUNT, oldArticle.getInt(ARTICLE_VIEW_COUNT));
         article.put(ARTICLE_PUT_TOP, oldArticle.getBoolean(ARTICLE_PUT_TOP));
         article.put(ARTICLE_HAD_BEEN_PUBLISHED,
-                    oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
+                oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
         article.put(ARTICLE_AUTHOR_EMAIL,
-                    oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
+                oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
     }
 
     /**
@@ -1007,8 +1007,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws IOException io exception
      */
     public JSONObject cancelPublishArticle(final JSONObject requestJSONObject,
-                                           final HttpServletRequest request,
-                                           final HttpServletResponse response)
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isLoggedIn()) {
@@ -1077,9 +1077,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * @throws Exception if duplicated permalink occurs
      */
     private String getPermalinkForUpdateArticle(final JSONObject oldArticle,
-                                                final JSONObject article,
-                                                final Date createDate,
-                                                final JSONObject status)
+            final JSONObject article,
+            final Date createDate,
+            final JSONObject status)
             throws Exception {
         final String articleId = article.getString(Keys.OBJECT_ID);
         String ret = article.optString(ARTICLE_PERMALINK).trim();
@@ -1095,12 +1095,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
 
             if (!oldPermalink.equals(ret)
-                && permalinks.exist(ret)) {
+                    && permalinks.exist(ret)) {
                 status.put(Keys.CODE,
-                           StatusCodes.UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK);
+                        StatusCodes.UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK);
 
                 throw new Exception("Update article fail, caused by duplicated permalink["
-                                    + ret + "]");
+                        + ret + "]");
             }
         }
 

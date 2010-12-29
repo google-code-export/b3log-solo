@@ -197,7 +197,7 @@ $.extend(AdminUtil.prototype, {
                     var signs = result.article.signs,
                     signHTML = "";
                     for (var j = 0; j < signs.length; j++) {
-                        if (result.article.articleSign.oId === signs[j].oId) {
+                        if (parseInt(result.article.articleSign_oId) === signs[j].oId) {
                             signHTML = "<option value='" + signs[j].oId
                             + "'>" + signs[j].signHTML + "</option>" + signHTML;
                         } else {
