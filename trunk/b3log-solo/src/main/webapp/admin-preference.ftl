@@ -7,7 +7,7 @@
             ${skinLabel}
         </span>
         <span id="signs" onclick="changePreferenceTab(this);">
-            ${sign1Label}
+            ${signLabel}
         </span>
         <!--
         <span id="syncGoogle" onclick="changePreferenceTab(this);">

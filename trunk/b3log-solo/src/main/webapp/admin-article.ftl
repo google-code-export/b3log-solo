@@ -45,7 +45,7 @@
     </tr>
     <tr>
         <th>
-            ${signLabel}
+            ${sign1Label}
         </th>
         <td>
             <select>
