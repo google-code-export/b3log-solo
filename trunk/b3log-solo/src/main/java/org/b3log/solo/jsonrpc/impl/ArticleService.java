@@ -350,10 +350,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "oId": "",
      *         "tagTitle": ""
      *     }, ....],
-     *     "articleSign": {
-     *         "oId": "",
-     *         "signHTML": ""
-     *     },
+     *     "articleSign_oId": "",
      *     "signs": [{
      *         "oId": "",
      *         "signHTML": ""
@@ -394,8 +391,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_TAGS_REF, tags);
 
             final JSONObject preference = preferenceUtils.getPreference();
-            final JSONObject sign = articleUtils.getSign(articleId, preference);
-            article.put(ARTICLE_SIGN_REF, sign);
+            final String signId = articleUtils.getSignId(articleId,
+                                                         preference);
+            article.put(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, signId);
 
             final JSONArray signs =
                     new JSONArray(preference.getString(Preference.SIGNS));

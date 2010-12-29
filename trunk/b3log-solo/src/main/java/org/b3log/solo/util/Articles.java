@@ -321,16 +321,16 @@ public final class Articles {
     }
 
     /**
-     * Gets sign of an article specified by the article id.
+     * Gets sign id of an article specified by the article id.
      *
      * @param articleId the specified article id
      * @param preference the specified preference
      * @return article sign, returns the default sign(which oId is "0") if not
-     * found, returns {@code null} if not found the default sign
+     * found
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
      */
-    public JSONObject getSign(final String articleId,
+    public String getSignId(final String articleId,
                               final JSONObject preference)
             throws JSONException, RepositoryException {
         final JSONObject ret =
@@ -343,12 +343,12 @@ public final class Articles {
                 if ("0".equals(sign.getString(Keys.OBJECT_ID))) {
                     LOGGER.log(Level.FINEST, "Used default article sign[{0}]",
                                sign);
-                    return sign;
+                    return sign.getString(Keys.OBJECT_ID);
                 }
             }
         }
 
-        return ret;
+        return ret.getString(Keys.OBJECT_ID);
     }
 
     /**
