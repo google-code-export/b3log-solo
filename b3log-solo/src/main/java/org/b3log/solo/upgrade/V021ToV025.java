@@ -88,26 +88,30 @@ import org.json.JSONObject;
  *       Saves the administrator to {@value User#USER} entities
  *     </li>
  *     <li>
- *       Adds a property(named {@value Preference#ENABLE_ARTICLE_UPDATE_HINT}
+ *       Adds a property(named {@value Preference#ENABLE_ARTICLE_UPDATE_HINT})
  *       to entity {@link Preference preference}
  *     </li>
  *     <li>
- *       Adds a property(named {@value Preference#CURRENT_VERSION_NUMBER}
+ *       Adds a property(named {@value Preference#CURRENT_VERSION_NUMBER})
  *       to entity {@link Preference preference}
  *     </li>
  *     <li>
- *       Adds a property(named {@value Statistic#STATISTIC_PUBLISHED_ARTICLE_COUNT}
+ *       Adds a property(named {@value Statistic#STATISTIC_PUBLISHED_ARTICLE_COUNT})
  *       to entity {@link Statistic statistic}
  *     </li>
  *     <li>
- *       Adds a property(named {@value Statistic#STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT}
+ *       Adds a property(named {@value Statistic#STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT})
  *       to entity {@link Statistic statistic}
+ *     </li>
+ *     <li>
+ *       Adds a property(named {@value Preference#SIGNS}) to entity
+ *       {@link Preference preference}
  *     </li>
  *   </ul>
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 22, 2010
+ * @version 1.0.1.4, Dec 29, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -174,7 +178,7 @@ public final class V021ToV025 extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
-        if ("0.2.5".equals(SoloServletListener.VERSION)) {
+        if ("0.2.5 Beta2".equals(SoloServletListener.VERSION)) {
             LOGGER.info("Checking for consistency....");
 
             final String currentUserEmail =
@@ -428,11 +432,17 @@ public final class V021ToV025 extends HttpServlet {
             final JSONObject preference = preferenceUtils.getPreference();
             if (preference.has(OLD_ADMIN_EMAIL_PROPERTY_NAME)) {
                 preference.put(Preference.ADMIN_EMAIL, currentUserEmail);
+                preference.remove(OLD_ADMIN_EMAIL_PROPERTY_NAME);
             }
 
             if (!preference.has(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 preference.put(Preference.ENABLE_ARTICLE_UPDATE_HINT,
-                               true);
+                               Preference.Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
+            }
+
+            if (!preference.has(Preference.SIGNS)) {
+                preference.put(Preference.SIGNS,
+                               Preference.Default.DEFAULT_SIGNS);
             }
 
             preference.put(Preference.CURRENT_VERSION_NUMBER,

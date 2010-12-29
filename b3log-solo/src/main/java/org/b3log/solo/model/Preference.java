@@ -16,11 +16,14 @@
 
 package org.b3log.solo.model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 22, 2010
+ * @version 1.0.1.7, Dec 29, 2010
  */
 public final class Preference {
 
@@ -146,6 +149,10 @@ public final class Preference {
      */
     public static final String CURRENT_VERSION_NUMBER =
             "currentVersionNumber";
+    /**
+     * Key of signs.
+     */
+    public static final String SIGNS = "signs";
 
     /**
      * Private default constructor.
@@ -157,7 +164,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.5, Dec 21, 2010
+     * @version 1.0.0.6, Dec 29, 2010
      */
     public static final class Default {
 
@@ -210,6 +217,28 @@ public final class Preference {
          * Default enable article update hint.
          */
         public static final boolean DEFAULT_ENABLE_ARTICLE_UPDATE_HINT = true;
+        /**
+         * Default signs.
+         */
+        public static final String DEFAULT_SIGNS;
+
+        static {
+            final JSONArray signs = new JSONArray();
+
+            final int signLength = 3;
+            try {
+                for (int i = 0; i < signLength; i++) {
+                    final JSONObject sign = new JSONObject();
+                    signs.put(sign);
+
+                    sign.put(Sign.SIGN_HTML, "");
+                }
+
+                DEFAULT_SIGNS = signs.toString();
+            } catch (final Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         /**
          * Private default constructor.
