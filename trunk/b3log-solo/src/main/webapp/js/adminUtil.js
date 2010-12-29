@@ -66,7 +66,7 @@ $.extend(AdminUtil.prototype, {
         }
     },
 
-    clearAtricle: function () {
+    clearArticle: function () {
         $("#title").removeData("articleStatus").val("");
         beforeInitArticle();
         if (tinyMCE.get("articleContent")) {
@@ -81,6 +81,15 @@ $.extend(AdminUtil.prototype, {
         }
         $("#tag").val("");
         $("#permalink").val("");
+
+        jsonRpc.preferenceService.getSigns(function (result, error) {
+            var signHTML = "";
+            for (var j = 0; j < result.length; j++) {
+                signHTML += "<option value='" + result[j].oId
+                + "'>" + result[j].signHTML + "</option>";
+            }
+            $("#articleSigns").html(signHTML);
+        });
     },
 
     init: function () {
@@ -197,7 +206,7 @@ $.extend(AdminUtil.prototype, {
                         }
 
                     }
-                    $("#articleSigns").append(signHTML);
+                    $("#articleSigns").html(signHTML);
 
                     beforeInitArticle();
                     $("#tipMsg").text(tip.getSuccLabel);

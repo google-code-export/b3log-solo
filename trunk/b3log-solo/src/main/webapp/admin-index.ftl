@@ -39,7 +39,7 @@
             <div id="allPanel">
                 <div class="left side">
                     <ul id="sideNavi">
-                        <li id="articleTab" onclick="adminUtil.changeList(this);adminUtil.clearAtricle();">
+                        <li id="articleTab" onclick="adminUtil.changeList(this);adminUtil.clearArticle();">
                             <div class="left postIcon"></div>
                             <span>&nbsp;${postArticleLabel}</span>
                         </li>
