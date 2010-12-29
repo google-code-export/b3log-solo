@@ -107,7 +107,7 @@
                                             // set default value for article.
                                             $("#title").val(result.article.articleTitle).data("articleStatus", {
                                                 "isArticle": true,
-                                                'oId': event.data.id[0]
+                                                "oId": event.data.id[0]
                                             });
                                             if (tinyMCE.get('articleContent')) {
                                                 tinyMCE.get('articleContent').setContent(result.article.articleContent);
