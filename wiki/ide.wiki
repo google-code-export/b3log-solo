@@ -3,9 +3,9 @@
 ===IDE===
 [http://b3log-solo.googlecode.com B3log Solo] 是使用 [http://maven.apache.org Maven2] 进行的项目构建，所以并不依赖于任何一款 Java IDE，只要支持 [http://maven.apache.org Maven] 的 IDE 都可以进行开发。
 ====`NetBeans`_（推荐的）_====
- * `NetBeans` 6.9.1: http://netbeans.org/downloads/index.html
+ * `NetBeans`:  http://netbeans.org/downloads/index.html
 =====配置=====
- # 工具->选项->其他->Maven->外部&Maven主页->浏览 把Maven的路径加上
+ # 工具->选项->其他->Maven->外部&Maven主页->浏览 把 Maven 的路径加上
  # 用 SVN 把项目迁出 http://b3log-solo.googlecode.com/svn/trunk/
  # 更新 GAE 相关资源。右键项目，定制-> gae:unpack
  # 运行项目。右键项目，定制-> gae:run
