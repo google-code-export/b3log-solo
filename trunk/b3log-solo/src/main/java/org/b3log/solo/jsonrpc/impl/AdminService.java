@@ -680,7 +680,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                     Comment.COMMENT_CONTENT,
                     "Hi, this is a comment. To delete a comment, just log in and "
                     + "view the post's comments. There you will have the option "
-                    + "to edit or delete them.");
+                    + "to delete them.");
             commentService.addCommentToArticle(requestJSONObject,
                                                request, response);
         } catch (final Exception e) {
