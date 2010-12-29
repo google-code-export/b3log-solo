@@ -333,22 +333,13 @@ public final class Articles {
     public String getSignId(final String articleId,
                               final JSONObject preference)
             throws JSONException, RepositoryException {
-        final JSONObject ret =
+        final JSONObject relation =
                 articleSignRepository.getByArticleId(articleId);
-        if (null == ret) {
-            final JSONArray signs = new JSONArray(
-                    preference.getString(Preference.SIGNS));
-            for (int i = 0; i < signs.length(); i++) {
-                final JSONObject sign = signs.getJSONObject(i);
-                if ("0".equals(sign.getString(Keys.OBJECT_ID))) {
-                    LOGGER.log(Level.FINEST, "Used default article sign[{0}]",
-                               sign);
-                    return sign.getString(Keys.OBJECT_ID);
-                }
-            }
+        if (null == relation) {
+            return "0";
         }
 
-        return ret.getString(Keys.OBJECT_ID);
+        return relation.getString(Sign.SIGN + "_" + Keys.OBJECT_ID);
     }
 
     /**
