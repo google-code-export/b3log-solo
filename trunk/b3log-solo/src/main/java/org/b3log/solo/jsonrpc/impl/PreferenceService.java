@@ -78,8 +78,42 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
     private Users userUtils;
 
     /**
+     * Gets signs.
+     *
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * [{
+     *     "oId": "",
+     *     "signHTML": ""
+     *  }, ...]
+     * </pre>
+     * @throws ActionException action exception
+     */
+    public JSONArray getSigns(
+            final HttpServletResponse response) throws ActionException {
+        JSONArray ret = new JSONArray();
+
+        try {
+            if (!userUtils.isLoggedIn()) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return ret;
+            }
+
+            final JSONObject preference = preferenceUtils.getPreference();
+            ret = new JSONArray(preference.getString(Preference.SIGNS));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets preference.
      *
+     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -120,14 +154,17 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      * </pre>
      * @throws ActionException action exception
      */
-    public JSONObject getPreference() throws ActionException {
+    public JSONObject getPreference(
+            final HttpServletResponse response) throws ActionException {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
-            if (null == preference) {
-                throw new ActionException("Not found preference");
+            if (!userUtils.isAdminLoggedIn()) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return ret;
             }
+
+            final JSONObject preference = preferenceUtils.getPreference();
 
             ret.put(PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_PREFERENCE_SUCC);
