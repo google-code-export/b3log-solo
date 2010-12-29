@@ -303,7 +303,7 @@ public final class Articles {
      *
      * @param articleId the specified article id
      * @param preference the specified preference
-     * @return article sign, returns the default sign(which oId is "1") if not
+     * @return article sign, returns the default sign(which oId is "0") if not
      * found, returns {@code null} if not found the default sign
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
@@ -318,7 +318,7 @@ public final class Articles {
                     preference.getString(Preference.SIGNS));
             for (int i = 0; i < signs.length(); i++) {
                 final JSONObject sign = signs.getJSONObject(i);
-                if ("1".equals(sign.getString(Keys.OBJECT_ID))) {
+                if ("0".equals(sign.getString(Keys.OBJECT_ID))) {
                     LOGGER.log(Level.FINEST, "Used default article sign[{0}]",
                                sign);
                     return sign;
