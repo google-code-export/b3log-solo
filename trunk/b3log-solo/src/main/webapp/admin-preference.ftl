@@ -7,7 +7,7 @@
             ${skinLabel}
         </span>
         <span id="signs" onclick="changePreferenceTab(this);">
-            ${signLabel}
+            ${sign1Label}
         </span>
         <!--
         <span id="syncGoogle" onclick="changePreferenceTab(this);">
@@ -193,12 +193,44 @@
             <div class="clear"></div>
         </div>
         <div id="signsPanel" class="none">
-            <button onclick="changePreference();" class="right">${updateLabel}</button>
-            <div class="clear"></div>
-            <div id="signsMain"><!-- TODO: Vanessa, sign config -->
-            </div>
-            <button onclick="changePreference();" class="right">${updateLabel}</button>
-            <div class="clear"></div>
+            <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
+                <tbody>
+                    <tr>
+                        <th colspan="2">
+                            <button onclick="changePreference();" class="right">${updateLabel}</button>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th valign="top" width="80">
+                            ${signLabel}1:
+                        </th>
+                        <td>
+                            <textarea rows="8" id="preferenceSign0"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th valign="top">
+                            ${signLabel}2:
+                        </th>
+                        <td>
+                            <textarea rows="8" id="preferenceSign1"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th valign="top">
+                            ${signLabel}3:
+                        </th>
+                        <td>
+                            <textarea rows="8" id="preferenceSign2"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            <button onclick="changePreference();" class="right">${updateLabel}</button>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div id="syncGooglePanel" class="none">
             <table class="form" width="99%" cellpadding="0" cellspacing="9px">
@@ -245,6 +277,7 @@
         jsonRpc.preferenceService.getPreference(function (result, error) {
             switch (result.sc) {
                 case "GET_PREFERENCE_SUCC":
+                    // preference
                     var preference = result.preference;
                     $("#metaKeywords").val(preference.metaKeywords),
                     $("#metaDescription").val(preference.metaDescription),
@@ -269,6 +302,7 @@
                     
                     localeString = preference.localeString;
 
+                    // skin
                     $("#skinMain").data("skinDirName", preference.skinDirName);
                     var skins = eval('(' + preference.skins + ')');
                     var skinsHTML = "";
@@ -291,6 +325,13 @@
                         $(this).addClass("selected");
                         $("#skinMain").data("skinDirName", this.title);
                     });
+
+                    // sign
+                    var signs = eval('(' + preference.signs + ')');
+                    for (var i = 0; i < signs.length; i++) {
+                        var oId = signs[i].oId;
+                        $("#signsPanel textarea").get(oId).value = signs[i].signHTML;
+                    }
                     break;
                 default:
                     break;
@@ -323,6 +364,17 @@
                 return;
             }
         }
+
+        var signs = [{
+                "oId": 0,
+                "signHTML": $("#preferenceSign0").val()
+            }, {
+                "oId": 1,
+                "signHTML": $("#preferenceSign1").val()
+            }, {
+                "oId": 2,
+                "signHTML": $("#preferenceSign2").val()
+            }];
         
         var requestJSONObject = {
             "preference": {
@@ -347,7 +399,8 @@
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
                 "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
                 "enablePostToBuzz": $("#syncBuzz").attr("checked"),
-                "enableArticleUpdateHint": $("#enableArticleUpdateHint").attr("checked")
+                "enableArticleUpdateHint": $("#enableArticleUpdateHint").attr("checked"),
+                "signs": signs
             }
         }
 

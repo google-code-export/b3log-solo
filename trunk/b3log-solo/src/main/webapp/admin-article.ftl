@@ -44,6 +44,18 @@
         </td>
     </tr>
     <tr>
+        <th>
+            ${signLabel}
+        </th>
+        <td>
+            <select>
+                <option>
+                    
+                </option>
+            </select>
+        </td>
+    </tr>
+    <tr>
         <th colspan="2">
             <button class="marginRight12" id="saveArticle">${saveLabel}</button>
             <button id="submitArticle">${publishLabel}</button>
