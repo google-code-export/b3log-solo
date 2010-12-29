@@ -187,8 +187,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleAbstract": "",
      *         "articleContent": "",
      *         "articleTags": "tag1,tag2,tag3",
-     *         "articlePermalink": "",
-     *         "articleIsPublished": boolean
+     *         "articlePermalink": "", // optional
+     *         "articleIsPublished": boolean,
+     *         "articleSign_oId": "" // optional
      *     }
      * }
      * </pre>
@@ -783,8 +784,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleAbstract": "",
      *         "articleContent": "",
      *         "articleTags": "tag1,tag2,tag3",
-     *         "articlePermalink": "",
-     *         "articleIsPublished": boolean
+     *         "articlePermalink": "", // optional
+     *         "articleIsPublished": boolean,
+     *         "articleSign_oId": "" // optional
      *     }
      * }
      * </pre>
