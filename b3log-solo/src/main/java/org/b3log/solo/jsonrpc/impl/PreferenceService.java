@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
@@ -35,6 +34,7 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Dec 9, 2010
+ * @version 1.0.1.8, Dec 29, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -94,10 +94,10 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "localeString": ""
      *         "skinName": "",
      *         "skinDirName": "",
-     *         "skins: [{
+     *         "skins": "[{
      *             "skinName": "",
      *             "skinDirName": ""
-     *         }, ....],
+     *         }, ....]",
      *         "noticeBoard": "",
      *         "htmlHead": "",
      *         "googleOAuthConsumerSecret": "",
@@ -108,7 +108,11 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "adminEmail": "",
      *         "metaKeywords": "",
      *         "metaDescription": "",
-     *         "enableArticleUpdateHint": boolean
+     *         "enableArticleUpdateHint": boolean,
+     *         "signs": "[{
+     *             "oId": "",
+     *             "signHTML": ""
+     *         }, ...]"
      *     }
      *     "sc": "GET_PREFERENCE_SUCC"
      * }
@@ -160,7 +164,11 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "enablePostToBuzz": boolean,
      *         "metaKeywords": "",
      *         "metaDescription": "",
-     *         "enableArticleUpdateHint": boolean
+     *         "enableArticleUpdateHint": boolean,
+     *         "signs": [{
+     *             "oId": "",
+     *             "signHTML": ""
+     *         }, ...]
      *     }
      * }, see {@link org.b3log.solo.model.Preference} for more details
      * </pre>
@@ -190,6 +198,27 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             final JSONObject preference =
                     requestJSONObject.getJSONObject(PREFERENCE);
 
+            final String blogHost = preference.getString(BLOG_HOST).
+                    toLowerCase().trim(); // blog host check
+            LOGGER.log(Level.FINE, "Blog Host[{0}]", blogHost);
+            final boolean containColon = blogHost.contains(":");
+            final boolean containScheme = blogHost.contains("http://");
+            final boolean containSlash = blogHost.contains("/");
+            if (!containColon || containScheme || containSlash) {
+                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
+                transaction.rollback();
+
+                return ret;
+            }
+            final String domain = blogHost.split(":")[0].trim();
+            final String port = blogHost.split(":")[1].trim();
+            if (!"localhost".equals(domain) && !"80".equals(port)) {
+                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
+                transaction.rollback();
+
+                return ret;
+            }
+
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             final String skinName = skins.getSkinName(skinDirName);
             preference.put(Skin.SKIN_NAME, skinName);
@@ -218,26 +247,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                         TimeZone.getTimeZone("Asia/Shanghai"));
             }
 
-            final String blogHost = preference.getString(BLOG_HOST).
-                    toLowerCase().trim(); // blog host check
-            LOGGER.log(Level.FINE, "Blog Host[{0}]", blogHost);
-            final boolean containColon = blogHost.contains(":");
-            final boolean containScheme = blogHost.contains("http://");
-            final boolean containSlash = blogHost.contains("/");
-            if (!containColon || containScheme || containSlash) {
-                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
-                transaction.rollback();
-
-                return ret;
-            }
-            final String domain = blogHost.split(":")[0].trim();
-            final String port = blogHost.split(":")[1].trim();
-            if (!"localhost".equals(domain) && !"80".equals(port)) {
-                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
-                transaction.rollback();
-
-                return ret;
-            }
+            preference.put(Preference.SIGNS,
+                           preference.getJSONArray(Preference.SIGNS).toString());
 
             final JSONObject oldPreference = preferenceUtils.getPreference();
             final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
