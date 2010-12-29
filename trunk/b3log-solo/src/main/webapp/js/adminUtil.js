@@ -33,7 +33,7 @@ $.extend(AdminUtil.prototype, {
 
     changeList: function (it) {
         var tabs = ['article', 'article-list', 'draft-list', 'link-list', 'preference',
-            'article-sync', 'page', 'file-list', 'others', 'user-list'];
+        'article-sync', 'page', 'file-list', 'others', 'user-list'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i] + "Tab") {
                 if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
@@ -105,7 +105,7 @@ $.extend(AdminUtil.prototype, {
         // resize
         var $main = $("#main");
         var leftWidth = $(".side").width() + parseInt($main.css("padding-left"))
-            + parseInt($main.css("padding-right")) + 17;
+        + parseInt($main.css("padding-right")) + 17;
 
         var windowWidth = document.documentElement.clientWidth - leftWidth;
         if (windowWidth < 700) {
@@ -143,5 +143,71 @@ $.extend(AdminUtil.prototype, {
                 $("#tipMsg").text(tip.removeFailLabel);
             }
         });
+    },
+
+    // article list and draft list
+    updateArticle: function (event, isArticle) {
+        var tip = this.tip;
+        $("#loadMsg").text(tip.loadingLabel);
+        $("#articleTab").click();
+        var requestJSONObject = {
+            "oId": event.data.id[0]
+        };
+        jsonRpc.articleService.getArticle(function (result, error) {
+            switch (result.sc) {
+                case "GET_ARTICLE_SUCC":
+                    // set default value for article.
+                    $("#title").val(result.article.articleTitle).data("articleStatus", {
+                        "isArticle": isArticle,
+                        'oId': event.data.id[0]
+                    });
+                    if (tinyMCE.get('articleContent')) {
+                        tinyMCE.get('articleContent').setContent(result.article.articleContent);
+                    } else {
+                        $("#articleContent").val(result.article.articleContent);
+                    }
+                    if (tinyMCE.get('abstract')) {
+                        tinyMCE.get('abstract').setContent(result.article.articleAbstract);
+                    } else {
+                        $("#abstract").val(result.article.articleAbstract);
+                    }
+
+                    var tags = result.article.articleTags,
+                    tagsString = '';
+                    for (var i = 0; i < tags.length; i++) {
+                        if (0 === i) {
+                            tagsString = tags[i].tagTitle;
+                        } else {
+                            tagsString += "," + tags[i].tagTitle;
+                        }
+                    }
+                    $("#tag").val(tagsString);
+                    $("#permalink").val(result.article.articlePermalink);
+
+                    // signs
+                    var signs = result.article.signs,
+                    signHTML = "";
+                    for (var j = 0; j < signs.length; j++) {
+                        if (result.article.articleSign.oId === signs[j].oId) {
+                            signHTML = "<option value='" + signs[j].oId
+                            + "'>" + signs[j].signHTML + "</option>" + signHTML;
+                        } else {
+                            signHTML += "<option value='" + signs[j].oId
+                            + "'>" + signs[j].signHTML + "</option>";
+                        }
+
+                    }
+                    $("#articleSigns").append(signHTML);
+
+                    beforeInitArticle();
+                    $("#tipMsg").text(tip.getSuccLabel);
+                    break;
+                case "GET_ARTICLE_FAIL_":
+                    break;
+                default:
+                    break;
+            }
+            $("#loadMsg").text("");
+        }, requestJSONObject);
     }
 });
