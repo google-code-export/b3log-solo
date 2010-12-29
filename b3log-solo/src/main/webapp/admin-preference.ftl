@@ -6,6 +6,9 @@
         <span id="skins" onclick="changePreferenceTab(this);">
             ${skinLabel}
         </span>
+        <span id="signs" onclick="changePreferenceTab(this);">
+            ${signLabel}
+        </span>
         <!--
         <span id="syncGoogle" onclick="changePreferenceTab(this);">
             ${googleLabel}
@@ -50,7 +53,7 @@
                             ${metaKeywords1Label}
                         </th>
                         <th>
-                            <input id="metaKeywords"></input>
+                            <input id="metaKeywords" />
                         </th>
                     </tr>
                     <tr>
@@ -58,7 +61,7 @@
                             ${metaDescription1Label}
                         </th>
                         <th>
-                            <input id="metaDescription"></input>
+                            <input id="metaDescription" />
                         </th>
                     </tr>
                     <tr>
@@ -189,6 +192,14 @@
             <button onclick="changePreference();" class="right">${updateLabel}</button>
             <div class="clear"></div>
         </div>
+        <div id="signsPanel" class="none">
+            <button onclick="changePreference();" class="right">${updateLabel}</button>
+            <div class="clear"></div>
+            <div id="signsMain"><!-- TODO: Vanessa, sign config -->
+            </div>
+            <button onclick="changePreference();" class="right">${updateLabel}</button>
+            <div class="clear"></div>
+        </div>
         <div id="syncGooglePanel" class="none">
             <table class="form" width="99%" cellpadding="0" cellspacing="9px">
                 <tbody>
@@ -291,7 +302,7 @@
     getPreference();
     
     var changePreferenceTab = function (it) {
-        var tabs = ['preferences', 'skins', 'syncGoogle'];
+        var tabs = ['preferences', 'skins', 'signs', 'syncGoogle'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i]) {
                 $("#" + tabs[i] + "Panel").show();
