@@ -47,9 +47,11 @@
         <th>
             ${sign1Label}
         </th>
-        <td>
-            <select id="articleSigns">
-            </select>
+        <td class="signs">
+            <button id="articleSign1">${signLabel} 1</button>
+            <button id="articleSign2">${signLabel} 2</button>
+            <button id="articleSign3">${signLabel} 3</button>
+            <button id="articleSign0">${noSignLabel}</button>
         </td>
     </tr>
     <tr>
@@ -174,7 +176,14 @@
         if (validateArticle()) {
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
-            var tagArray = $("#tag").val().split(",");
+            var tagArray = $("#tag").val().split(","),
+            signId = 0;
+            $(".signs button").each(function (i) {
+                if (this.className === "selected") {
+                    signId = i;
+                }
+            });
+
             var requestJSONObject = {
                 "article": {
                     "articleTitle": $("#title").val(),
@@ -183,7 +192,7 @@
                     "articleTags": $.bowknot.trimUnique(tagArray).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
-                    "articleSign_oId": $("#articleSigns").val()
+                    "articleSign_oId": signId
                 }
             };
 
@@ -235,7 +244,14 @@
         if (validateArticle()) {
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
-            var tagArray = $("#tag").val().split(",");
+            var tagArray = $("#tag").val().split(","),
+            signId = 0;
+            $(".signs button").each(function (i) {
+                if (this.className === "selected") {
+                    signId = i;
+                }
+            });
+            
             var requestJSONObject = {
                 "article": {
                     "oId": articleStatus.oId,
@@ -245,7 +261,7 @@
                     "articleTags": $.bowknot.trimUnique(tagArray).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": tag,
-                    "articleSign_oId": $("#articleSigns").val()
+                    "articleSign_oId": signId
                 }
             };
 
