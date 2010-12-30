@@ -30,10 +30,10 @@
                 <#include "article-header.ftl">
             </div>
             <div class="body">
-                <div class="left side">
+                <div class="right side">
                     <#include "article-side.ftl">
                 </div>
-                <div class="right main">
+                <div class="left main">
                     <div>
                         <h2 class="marginLeft12">${archive1Label}
                             <#if "en" == localeString?substring(0, 2)>

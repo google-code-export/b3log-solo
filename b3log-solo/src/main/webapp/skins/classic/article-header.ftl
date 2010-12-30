@@ -3,42 +3,37 @@
         <a href="/" id="logoTitle" >
             ${blogTitle}
         </a>
+        <span class="sub-title">${blogSubtitle}</span>
     </h1>
-    <span class="sub-title">${blogSubtitle}</span>
 </div>
-<div class="side left">
+<div class="left marginLeft12">
+    <#list pageNavigations as page>
+    <span>
+        <a href="${page.pagePermalink}">${page.pageTitle}</a>&nbsp;&nbsp;
+    </span>
+    </#list>
+    <a href="/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
+    <a href="/blog-articles-feed.do">${atomLabel}</a><a href="/blog-articles-feed.do"><img src="/images/feed.png" alt="Atom"/></a>
 </div>
-<div class="right header-right">
-    <div class="left marginLeft12">
-        <#list pageNavigations as page>
-        <span>
-            <a href="${page.pagePermalink}">${page.pageTitle}</a>&nbsp;&nbsp;
+<div class="right" id="statistic">
+    <span>${viewCount1Label}
+        <span class='error-msg'>
+            ${statistic.statisticBlogViewCount}
         </span>
-        </#list>
-        <a href="/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
-        <a href="/blog-articles-feed.do">${atomLabel}</a><a href="/blog-articles-feed.do"><img src="/images/feed.png" alt="Atom"/></a>
-    </div>
-    <div class="right" id="statistic">
-        <span>${viewCount1Label}
-            <span class='error-msg'>
-                ${statistic.statisticBlogViewCount}
-            </span>
-            &nbsp;&nbsp;
+        &nbsp;&nbsp;
+    </span>
+    <span>
+        ${articleCount1Label}
+        <span class='error-msg'>
+            ${statistic.statisticPublishedBlogArticleCount}
         </span>
-        <span>
-            ${articleCount1Label}
-            <span class='error-msg'>
-                ${statistic.statisticPublishedBlogArticleCount}
-            </span>
-            &nbsp;&nbsp;
+        &nbsp;&nbsp;
+    </span>
+    <span>
+        ${commentCount1Label}
+        <span class='error-msg'>
+            ${statistic.statisticPublishedBlogCommentCount}
         </span>
-        <span>
-            ${commentCount1Label}
-            <span class='error-msg'>
-                ${statistic.statisticPublishedBlogCommentCount}
-            </span>
-        </span>
-    </div>
-    <div class="clear"></div>
+    </span>
 </div>
 <div class="clear"></div>
