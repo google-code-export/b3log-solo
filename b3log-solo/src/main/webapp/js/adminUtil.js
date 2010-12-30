@@ -81,31 +81,6 @@ $.extend(AdminUtil.prototype, {
         }
         $("#tag").val("");
         $("#permalink").val("");
-
-        jsonRpc.preferenceService.getSigns(function (result, error) {
-            $(".signs button").each(function (i) {
-                // Sets signs.
-                if (i === 0) {
-                    $("#articleSign" + i).addClass("selected");
-                } else {
-                    $("#articleSign" + result[i].oId).tip({
-                        content: result[i].signHTML,
-                        appendId: "adminMain",
-                        position: "top"
-                    })
-                }
-
-                // Binds checkbox event.
-                $(this).click(function () {
-                    if (this.className !== "selected") {
-                        $(".signs button").each(function () {
-                            this.className = "";
-                        });
-                        this.className = "selected";
-                    }
-                });
-            });
-        });
     },
 
     init: function () {
@@ -158,9 +133,35 @@ $.extend(AdminUtil.prototype, {
         }).mouseout(function () {
             $(this).removeClass('hover');
         });
-       
+
+        // Preload article.
         $("#articlePanel").load("admin-article.do",function () {
             $("#loadMsg").text("");
+
+            // Inits Signs.
+            jsonRpc.preferenceService.getSigns(function (result, error) {
+                $(".signs button").each(function (i) {
+                    // Sets signs.
+                    if (i === result.length) {
+                        $("#articleSign0").addClass("selected");
+                    } else {
+                        $("#articleSign" + result[i].oId).tip({
+                            content: result[i].signHTML,
+                            position: "top"
+                        });
+                    }
+
+                    // Binds checkbox event.
+                    $(this).click(function () {
+                        if (this.className !== "selected") {
+                            $(".signs button").each(function () {
+                                this.className = "";
+                            });
+                            this.className = "selected";
+                        }
+                    });
+                });
+            });
         });
     },
 

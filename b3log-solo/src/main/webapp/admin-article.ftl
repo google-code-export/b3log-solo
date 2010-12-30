@@ -245,10 +245,10 @@
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
             var tagArray = $("#tag").val().split(","),
-            signId = 0;
+            signId = "";
             $(".signs button").each(function (i) {
                 if (this.className === "selected") {
-                    signId = i;
+                   signId = this.id.substr(this.id.length - 1, 1);
                 }
             });
             

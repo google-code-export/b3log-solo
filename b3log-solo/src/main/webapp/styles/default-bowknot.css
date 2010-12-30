@@ -25,4 +25,4 @@
 .bowknot-none{display:none;}
 .bowknot-clear{clear:both;height:0;font-size:0;line-height:0;}
 .bowknot-left{float:left;}
-.tip-panel{-moz-box-shadow:0 4px 10px #8B8B8B;-webkit-box-shadow:0 4px 10px #8B8B8B;box-shadow:0 4px 10px #8B8B8B;position: absolute;background-color: #FFFFFF;display: none;padding: 3px;max-height: 500px;max-width: 500px;overflow: hidden;}
+.tip-panel{z-index: 1;-moz-box-shadow:0 4px 10px #8B8B8B;-webkit-box-shadow:0 4px 10px #8B8B8B;box-shadow:0 4px 10px #8B8B8B;position: absolute;background-color: #FFFFFF;display: none;padding: 3px;max-height: 500px;max-width: 500px;overflow: hidden;}
