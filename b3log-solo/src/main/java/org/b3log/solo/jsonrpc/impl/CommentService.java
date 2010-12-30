@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.6, Dec 27, 2010
+ * @version 1.0.3.7, Dec 30, 2010
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -667,7 +667,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             throws IOException, JSONException {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String commentId = comment.getString(Keys.OBJECT_ID);
-        final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
+        final String commentContent = comment.getString(Comment.COMMENT_CONTENT).
+                replaceAll(ENTER_ESC, "<br/>");
         final JSONObject preference = preferenceUtils.getPreference();
         if (null == preference) {
             throw new IOException("Not found preference");
