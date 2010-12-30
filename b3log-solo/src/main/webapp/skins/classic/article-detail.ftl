@@ -25,9 +25,6 @@
                 <#include "article-header.ftl">
             </div>
             <div class="body">
-                <div class="right side">
-                    <#include "article-side.ftl">
-                </div>
                 <div class="left main">
                     <div>
                         <div class="article">
@@ -238,6 +235,9 @@
                         </div>
                         <div class="clear"></div>
                     </div>
+                </div>
+                <div class="right side">
+                    <#include "article-side.ftl">
                 </div>
                 <div class="clear"></div>
             </div>

@@ -23,12 +23,12 @@
                 <#include "article-header.ftl">
             </div>
             <div class="body">
-                <div class="right side">
-                    <#include "article-side.ftl">
-                </div>
                 <div class="left main">
                     <div id="tagsPanel" class="marginLeft12">
                     </div>
+                </div>
+                <div class="right side">
+                    <#include "article-side.ftl">
                 </div>
                 <div class="clear"></div>
             </div>
