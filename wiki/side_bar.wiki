@@ -9,6 +9,7 @@
    * 其他
      * [has_update “有更新”]
      * [multi_users 多用户]
+     * [article_sign 文章签名档]
  * 开发手册
    * [pre_dev 前提准备]
    * 开发环境
