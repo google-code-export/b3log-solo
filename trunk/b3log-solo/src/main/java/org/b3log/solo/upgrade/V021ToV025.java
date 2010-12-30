@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.upgrade;
 
 import com.google.appengine.api.users.UserService;
@@ -443,7 +442,8 @@ public final class V021ToV025 extends HttpServlet {
             final int signLength = 4;
             if (!preference.has(Preference.SIGNS)
                 || signLength
-                   != new JSONArray(Preference.Default.DEFAULT_SIGNS).length()) {
+                   != new JSONArray(preference.getString(Preference.SIGNS)).
+                    length()) {
                 preference.put(Preference.SIGNS,
                                Preference.Default.DEFAULT_SIGNS);
             }
