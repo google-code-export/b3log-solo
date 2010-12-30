@@ -63,6 +63,9 @@
                                 </div>
                                 <div class="article-body">
                                     ${article.articleContent}
+                                    <div class="marginTop12">
+                                        ${article.articleSign.signHTML}
+                                    </div>
                                 </div>
                                 <div class="article-details-footer">
                                     <div class="left">
