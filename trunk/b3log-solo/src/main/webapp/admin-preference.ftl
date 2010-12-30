@@ -205,7 +205,7 @@
                             ${signLabel}1:
                         </th>
                         <td>
-                            <textarea rows="8" id="preferenceSign0"></textarea>
+                            <textarea rows="8" id="preferenceSign1"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -213,7 +213,7 @@
                             ${signLabel}2:
                         </th>
                         <td>
-                            <textarea rows="8" id="preferenceSign1"></textarea>
+                            <textarea rows="8" id="preferenceSign2"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -221,7 +221,7 @@
                             ${signLabel}3:
                         </th>
                         <td>
-                            <textarea rows="8" id="preferenceSign2"></textarea>
+                            <textarea rows="8" id="preferenceSign3"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -329,8 +329,10 @@
                     // sign
                     var signs = eval('(' + preference.signs + ')');
                     for (var i = 0; i < signs.length; i++) {
-                        var oId = signs[i].oId;
-                        $("#signsPanel textarea").get(oId).value = signs[i].signHTML;
+                        var oId = parseInt(signs[i].oId);
+                        if (oId !== 0) {
+                            $("#preferenceSign" + oId).val(signs[i].signHTML);
+                        }
                     }
                     break;
                 default:
@@ -367,13 +369,16 @@
 
         var signs = [{
                 "oId": 0,
-                "signHTML": $("#preferenceSign0").val()
+                "signHTML": ""
             }, {
                 "oId": 1,
                 "signHTML": $("#preferenceSign1").val()
             }, {
                 "oId": 2,
                 "signHTML": $("#preferenceSign2").val()
+            }, {
+                "oId": 3,
+                "signHTML": $("#preferenceSign3").val()
             }];
         
         var requestJSONObject = {
@@ -410,6 +415,11 @@
                     $("#tipMsg").text("${updateSuccLabel}");
                     if ($("#localeString").val() !== localeString) {
                         window.location.reload();
+                    }
+
+                    // update article signs
+                    for (var i = 1; i < signs.length; i++) {
+                        $("#articleSign" + signs[i].oId).tip("option", "content", signs[i].signHTML);
                     }
                     break;
                 case "UPDATE_PREFERENCE_FAIL_":
