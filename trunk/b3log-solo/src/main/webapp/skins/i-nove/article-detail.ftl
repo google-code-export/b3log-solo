@@ -58,9 +58,11 @@
                             </div>
                             <div class="article-body">
                                 ${article.articleContent}
+                                <#if "" != article.articleSign.signHTML?trim>
                                 <div class="marginTop12">
                                     ${article.articleSign.signHTML}
                                 </div>
+                                </#if>
                             </div>
                             <div class="margin5 paddingTop12">
                                 <a class="left" href="${article.articlePermalink}">

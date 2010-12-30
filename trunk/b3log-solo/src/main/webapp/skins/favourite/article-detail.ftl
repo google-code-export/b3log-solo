@@ -63,9 +63,11 @@
                                     <div class="corner"></div>
                                     <div class="substance">
                                         ${article.articleContent}
+                                        <#if "" != article.articleSign.signHTML?trim>
                                         <div class="marginTop12">
                                             ${article.articleSign.signHTML}
                                         </div>
+                                        </#if>
                                     </div>
                                 </div>
                             </div>
