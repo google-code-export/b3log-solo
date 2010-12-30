@@ -109,6 +109,13 @@ $.extend(AdminUtil.prototype, {
     },
 
     init: function () {
+        if ($.browser.msie) {
+            if ($.browser.version === "6.0") {
+                alert("Let's kill IE 6!");
+                return;
+            }
+        }
+
         // Removes functions with the current user role
         if (this.tip.userRole !== "adminRole") {
             var unUsed = ['link-list', 'preference', 'file-list', 'article-sync', 'page', 'others', 'user-list'];
