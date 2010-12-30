@@ -83,12 +83,28 @@ $.extend(AdminUtil.prototype, {
         $("#permalink").val("");
 
         jsonRpc.preferenceService.getSigns(function (result, error) {
-            var signHTML = "";
-            for (var j = 0; j < result.length; j++) {
-                signHTML += "<option value='" + result[j].oId
-                + "'>" + result[j].signHTML + "</option>";
-            }
-            $("#articleSigns").html(signHTML);
+            $(".signs button").each(function (i) {
+                // Sets signs.
+                if (i === 0) {
+                    $("#articleSign" + i).addClass("selected");
+                } else {
+                    $("#articleSign" + result[i].oId).tip({
+                        content: result[i].signHTML,
+                        appendId: "adminMain",
+                        position: "top"
+                    })
+                }
+
+                // Binds checkbox event.
+                $(this).click(function () {
+                    if (this.className !== "selected") {
+                        $(".signs button").each(function () {
+                            this.className = "";
+                        });
+                        this.className = "selected";
+                    }
+                });
+            });
         });
     },
 
@@ -194,19 +210,14 @@ $.extend(AdminUtil.prototype, {
                     $("#permalink").val(result.article.articlePermalink);
 
                     // signs
-                    var signs = result.article.signs,
-                    signHTML = "";
-                    for (var j = 0; j < signs.length; j++) {
-                        if (parseInt(result.article.articleSign_oId) === signs[j].oId) {
-                            signHTML = "<option value='" + signs[j].oId
-                            + "'>" + signs[j].signHTML + "</option>" + signHTML;
+                    var signs = result.article.signs;
+                    $(".signs button").each(function (i) {
+                        if (parseInt(result.article.articleSign_oId) === parseInt(signs[i].oId)) {
+                            $("#articleSign" + signs[i].oId).addClass("selected");
                         } else {
-                            signHTML += "<option value='" + signs[j].oId
-                            + "'>" + signs[j].signHTML + "</option>";
+                            $("#articleSign" + signs[i].oId).removeClass("selected");
                         }
-
-                    }
-                    $("#articleSigns").html(signHTML);
+                    });
 
                     beforeInitArticle();
                     $("#tipMsg").text(tip.getSuccLabel);
