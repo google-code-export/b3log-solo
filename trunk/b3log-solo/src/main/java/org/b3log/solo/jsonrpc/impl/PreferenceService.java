@@ -91,7 +91,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      */
     public JSONArray getSigns(
             final HttpServletResponse response) throws ActionException {
-        JSONArray ret = new JSONArray();
+        final JSONArray ret = new JSONArray();
 
         try {
             if (!userUtils.isLoggedIn()) {
