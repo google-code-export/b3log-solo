@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.comment;
 
 import com.google.appengine.api.mail.MailService;
@@ -29,6 +28,7 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 27, 2010
+ * @version 1.0.0.7, Dec 30, 2010
  */
 public final class PageCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -116,7 +116,8 @@ public final class PageCommentReplyNotifier
                     preference.getString(Preference.ADMIN_EMAIL);
 
             final String commentContent =
-                    comment.getString(Comment.COMMENT_CONTENT);
+                    comment.getString(Comment.COMMENT_CONTENT).
+                    replaceAll(CommentService.ENTER_ESC, "<br/>");
             final String commentSharpURL =
                     comment.getString(Comment.COMMENT_SHARP_URL);
             final Message message = new Message();
