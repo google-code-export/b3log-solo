@@ -27,7 +27,7 @@
                     <#include "article-side.ftl">
                 </div>
                 <div class="right main">
-                    <div id="tagsPanel">
+                    <div id="tagsPanel" class="marginLeft12">
                     </div>
                 </div>
                 <div class="clear"></div>
