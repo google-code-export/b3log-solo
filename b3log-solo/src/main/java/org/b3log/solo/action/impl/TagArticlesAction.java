@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import java.util.logging.Level;
@@ -47,10 +46,9 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.util.comparator.ArticleUpdateDateComparator;
+import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.comparator.ArticleCreateDateComparator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -58,7 +56,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 14, 2010
+ * @version 1.0.1.4, Dec 30, 2010
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -197,9 +195,11 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
             articleUtils.addTags(articles);
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                Collections.sort(articles, new ArticleUpdateDateComparator());
+                Collections.sort(articles,
+                                 Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
             } else {
-                Collections.sort(articles, new ArticleCreateDateComparator());
+                Collections.sort(articles,
+                                 Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
             for (final JSONObject article : articles) {
                 if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {

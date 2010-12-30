@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util.comparator;
 
 import java.util.Comparator;
@@ -25,10 +24,16 @@ import org.json.JSONObject;
  * Article comparator by create date.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 9, 2010
+ * @version 1.0.0.1, Dec 30, 2010
  */
 public final class ArticleCreateDateComparator
         implements Comparator<JSONObject> {
+
+    /**
+     * Package default constructor.
+     */
+    ArticleCreateDateComparator() {
+    }
 
     @Override
     public int compare(final JSONObject article1, final JSONObject article2) {

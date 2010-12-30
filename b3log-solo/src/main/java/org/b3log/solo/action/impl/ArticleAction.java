@@ -44,9 +44,9 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.util.comparator.ArticleUpdateDateComparator;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +56,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Dec 22, 2010
+ * @version 1.0.1.8, Dec 30, 2010
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -303,7 +303,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             ret.add(articles.get(index));
         }
 
-        Collections.sort(ret, new ArticleUpdateDateComparator());
+        Collections.sort(ret, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
 
         return ret;
     }
