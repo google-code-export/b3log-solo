@@ -27,11 +27,13 @@
                     <#include "article-side.ftl">
                 </div>
                 <div class="right main">
-                    <h2>${tag1Label}
-                        <span id="tagArticlesTag">
-                            ${tag.tagTitle}
-                        </span>(${tag.tagPublishedRefCount})
-                    </h2>
+                    <div>
+                        <h2 class="marginLeft12">${tag1Label}
+                            <span id="tagArticlesTag">
+                                ${tag.tagTitle}
+                            </span>(${tag.tagPublishedRefCount})
+                        </h2>
+                    </div>
                     <#include "common-articles.ftl">
                 </div>
                 <div class="clear"></div>

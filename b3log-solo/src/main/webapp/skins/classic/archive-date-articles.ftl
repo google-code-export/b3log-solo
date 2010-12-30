@@ -34,13 +34,15 @@
                     <#include "article-side.ftl">
                 </div>
                 <div class="right main">
-                    <h2>${archive1Label}
-                        <#if "en" == localeString?substring(0, 2)>
-                        ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
-                        <#else>
-                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
-                        </#if>
-                    </h2>
+                    <div>
+                        <h2 class="marginLeft12">${archive1Label}
+                            <#if "en" == localeString?substring(0, 2)>
+                            ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
+                            <#else>
+                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
+                            </#if>
+                        </h2>
+                    </div>
                     <#include "common-articles.ftl">
                 </div>
                 <div class="clear"></div>
