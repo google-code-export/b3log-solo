@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.model;
 
 import org.b3log.latke.Keys;
@@ -165,7 +164,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.6, Dec 29, 2010
+     * @version 1.0.0.7, Dec 30, 2010
      */
     public static final class Default {
 
@@ -226,7 +225,7 @@ public final class Preference {
         static {
             final JSONArray signs = new JSONArray();
 
-            final int signLength = 3;
+            final int signLength = 4;
             try {
                 for (int i = 0; i < signLength; i++) {
                     final JSONObject sign = new JSONObject();
@@ -235,6 +234,9 @@ public final class Preference {
 
                     sign.put(Sign.SIGN_HTML, "");
                 }
+
+                // Sign(id=0) is the 'empty' sign, used for article user needn't
+                // a sign
 
                 DEFAULT_SIGNS = signs.toString();
             } catch (final Exception e) {
