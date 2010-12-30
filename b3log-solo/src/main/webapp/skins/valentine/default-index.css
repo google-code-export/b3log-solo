@@ -1129,3 +1129,6 @@ h4 {
     margin: 16px;
     text-align: center;
 }
+#footer .copyright {
+    padding: 60px 0 0 380px;
+}
