@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
@@ -65,7 +64,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Dec 29, 2010
+ * @version 1.0.1.8, Dec 30, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -609,11 +608,16 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         }
 
         try {
-            initStatistic();
-            initPreference();
-            initAdmin(request, response);
+            final JSONObject statistic =
+                    statisticRepository.get(Statistic.STATISTIC);
+            if (null == statistic) {
+                initStatistic();
+                initPreference();
+                initAdmin(request, response);
 
-            helloWorld(request, response);
+                helloWorld(request, response);
+            }
+            
             ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
         } catch (final Exception e) {
             LOGGER.severe("Initialize B3log Solo error");
