@@ -63,6 +63,9 @@
                                     <div class="corner"></div>
                                     <div class="substance">
                                         ${article.articleContent}
+                                        <div class="marginTop12">
+                                            ${article.articleSign.signHTML}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

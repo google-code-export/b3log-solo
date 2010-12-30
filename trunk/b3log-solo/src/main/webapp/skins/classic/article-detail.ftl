@@ -67,10 +67,9 @@
                             </div>
                             <div class="article-body">
                                 ${article.articleContent}
-                            </div>
-                            <div style="color: red; font-weight: bold;">
-                                TODO: Vanessa, article sign region for all skins
-                                ${article.articleSign.signHTML}
+                                <div class="marginTop12">
+                                    ${article.articleSign.signHTML}
+                                </div>
                             </div>
                             <div class="article-details-footer">
                                 <div class="left">

@@ -58,6 +58,9 @@
                             </div>
                             <div class="article-body">
                                 ${article.articleContent}
+                                <div class="marginTop12">
+                                    ${article.articleSign.signHTML}
+                                </div>
                             </div>
                             <div class="margin5 paddingTop12">
                                 <a class="left" href="${article.articlePermalink}">
