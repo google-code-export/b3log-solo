@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import com.google.inject.Inject;
@@ -101,7 +100,11 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             }
 
             final JSONObject preference = preferenceUtils.getPreference();
-            ret = new JSONArray(preference.getString(Preference.SIGNS));
+            final JSONArray allSigns = // includes the empty sign(id=0)
+                    new JSONArray(preference.getString(Preference.SIGNS));
+            for (int i = 1; i < allSigns.length(); i++) { // excludes the empty sign
+                ret.put(allSigns.getJSONObject(i));
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
