@@ -265,8 +265,6 @@
                 
                 // emotions
                 util.replaceCommentsEm("#comments .comment-content", "classic");
-
-                articleUtil.load();
             }
             loadAction();
         </script>
