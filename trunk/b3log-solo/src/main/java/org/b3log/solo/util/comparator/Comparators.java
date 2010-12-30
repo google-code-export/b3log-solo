@@ -15,34 +15,33 @@
  */
 package org.b3log.solo.util.comparator;
 
-import java.util.Comparator;
-import org.b3log.solo.model.Tag;
-import org.json.JSONObject;
-
 /**
- * Tag comparator by reference count.
+ * Comparators utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 30, 2010
+ * @version 1.0.0.0, Dec 30, 2010
  */
-public final class TagRefCntComparator
-        implements Comparator<JSONObject> {
+public final class Comparators {
 
     /**
-     * Package default constructor.
+     * Article create date comparator.
      */
-    TagRefCntComparator() {
-    }
+    public static final ArticleCreateDateComparator ARTICLE_CREATE_DATE_COMPARATOR =
+            new ArticleCreateDateComparator();
+    /**
+     * Article update date comparator.
+     */
+    public static final ArticleUpdateDateComparator ARTICLE_UPDATE_DATE_COMPARATOR =
+            new ArticleUpdateDateComparator();
+    /**
+     * Tag reference count comparator.
+     */
+    public static final TagRefCntComparator TAG_REF_CNT_COMPARATOR =
+            new TagRefCntComparator();
 
-    @Override
-    public int compare(final JSONObject tag1, final JSONObject tag2) {
-        try {
-            final Integer refCnt1 = tag1.getInt(Tag.TAG_REFERENCE_COUNT);
-            final Integer refCnt2 = tag2.getInt(Tag.TAG_REFERENCE_COUNT);
-
-            return refCnt1.compareTo(refCnt2);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
+    /**
+     * Private default constructor.
+     */
+    private Comparators() {
     }
 }

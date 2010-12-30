@@ -39,8 +39,8 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.Preferences;
-import org.b3log.solo.util.comparator.TagRefCntComparator;
 import org.b3log.solo.util.Tags;
+import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 4, 2010
+ * @version 1.0.0.8, Dec 30, 2010
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -120,7 +120,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
             final List<JSONObject> tags =
                     CollectionUtils.jsonArrayToList(tagArray);
             tagUtils.removeForUnpublishedArticles(tags);
-            Collections.sort(tags, new TagRefCntComparator());
+            Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
             
             ret.put(Tag.TAGS, tags);
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);

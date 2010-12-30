@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import java.util.logging.Level;
@@ -44,16 +43,15 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
-import org.b3log.solo.util.comparator.ArticleCreateDateComparator;
-import org.b3log.solo.util.comparator.ArticleUpdateDateComparator;
 import org.json.JSONObject;
 
 /**
  * Get articles by author action. author-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 27, 2010
+ * @version 1.0.1.6, Dec 30, 2010
  */
 public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
@@ -165,9 +163,11 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
             articleUtils.addTags(articles);
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                Collections.sort(articles, new ArticleUpdateDateComparator());
+                Collections.sort(articles,
+                                 Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
             } else {
-                Collections.sort(articles, new ArticleCreateDateComparator());
+                Collections.sort(articles,
+                                 Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
             ret.put(Article.ARTICLES, articles);
             ret.put(Common.ACTION_NAME, Common.AUTHOR_ARTICLES);

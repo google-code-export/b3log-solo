@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import org.b3log.latke.Keys;
@@ -48,10 +47,9 @@ import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
-import org.b3log.solo.util.comparator.ArticleUpdateDateComparator;
+import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.comparator.ArticleCreateDateComparator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -59,7 +57,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 14, 2010
+ * @version 1.0.0.7, Dec 30, 2010
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -181,9 +179,11 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
 
             articleUtils.addTags(articles);
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                Collections.sort(articles, new ArticleUpdateDateComparator());
+                Collections.sort(articles,
+                                 Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
             } else {
-                Collections.sort(articles, new ArticleCreateDateComparator());
+                Collections.sort(articles,
+                                 Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
             for (final JSONObject article : articles) {
                 if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
