@@ -2,11 +2,12 @@ a, a:link{color:#0000CC;}
 a:active{color:red;}
 a:visited{color:#551A8B;}
 h5{font-size:12px;}
-.content{margin:0 auto;min-width:980px;width:82%;}
+.content{margin:0 auto;max-width:1160px;}
 .header{height:120px;}
 .header-right{border-left:2px hidden #E5ECF9;min-width:766px;padding-left:12px;width:78%;}
-.side{min-width:188px;width:20%;}
-.main{border-left:2px solid #E5ECF9;min-width:766px;padding-left:12px;width:78%;}
+.side{border-right:2px solid #E5ECF9;padding-right:12px;width:330px;}
+.main{margin-left: -344px;width: 100%;}
+.main>div{padding-left: 344px;}
 #logoTitle{font-family:"Microsoft YaHei";font-size:32px;line-height:64px;text-decoration:none;}
 #statistic span{font-size:11px;}
 .article, .comments{padding:12px 0 24px 12px;}
