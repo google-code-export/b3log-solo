@@ -325,7 +325,7 @@ public final class Articles {
      *
      * @param articleId the specified article id
      * @param preference the specified preference
-     * @return article sign, returns the default sign(which oId is "0") if not
+     * @return article sign, returns the default sign(which oId is "1") if not
      * found
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
@@ -341,7 +341,7 @@ public final class Articles {
         if (null == relation) {
             for (int i = 0; i < signs.length(); i++) {
                 final JSONObject ret = signs.getJSONObject(i);
-                if ("0".equals(ret.getString(Keys.OBJECT_ID))) {
+                if ("1".equals(ret.getString(Keys.OBJECT_ID))) {
                     LOGGER.log(Level.FINEST, "Used default article sign[{0}]",
                             ret);
                     return ret;
