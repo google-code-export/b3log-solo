@@ -54,7 +54,7 @@
                                             ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
                                             <#if comment.isReply>
                                             &nbsp;@&nbsp;<a
-                                                href="http://${blogHost}/pagePermalink#${comment.commentOriginalCommentId}"
+                                                href="http://${blogHost}${page.pagePermalink}#${comment.commentOriginalCommentId}"
                                                 onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
                                                 onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                             </#if>

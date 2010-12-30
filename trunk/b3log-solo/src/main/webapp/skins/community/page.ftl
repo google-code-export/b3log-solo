@@ -39,7 +39,7 @@
                             </#if>
                             <#if comment.isReply>
                             @
-                            <a href="http://${blogHost}/pagePermalink#${comment.commentOriginalCommentId}"
+                            <a href="http://${blogHost}${page.pagePermalink}#${comment.commentOriginalCommentId}"
                                onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
                                onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">
                                 ${comment.commentOriginalCommentName}</a>
