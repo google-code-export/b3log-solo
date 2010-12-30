@@ -111,7 +111,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 29, 2010
+ * @version 1.0.1.5, Dec 30, 2010
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -440,7 +440,8 @@ public final class V021ToV025 extends HttpServlet {
                                Preference.Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
             }
 
-            if (!preference.has(Preference.SIGNS)) {
+            if (!preference.has(Preference.SIGNS)
+                || 4 != new JSONArray(Preference.Default.DEFAULT_SIGNS).length()) {
                 preference.put(Preference.SIGNS,
                                Preference.Default.DEFAULT_SIGNS);
             }
