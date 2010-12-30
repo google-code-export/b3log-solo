@@ -19,6 +19,7 @@
         ${htmlHead}
     </head>
     <body>
+        <#include "common-top.ftl">
         <div id="wrapper-home">
             <div id="header-home"><!-- header --></div>
             <div id="content-home">
@@ -41,6 +42,5 @@
             <#include "prefooter-home.ftl">
             <#include "footer.ftl">
         </div>
-        <#include "common-top.ftl">
     </body>
 </html>
