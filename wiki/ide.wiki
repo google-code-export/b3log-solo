@@ -20,3 +20,18 @@
  # 更新 GAE 相关资源。右键项目，run as maven build... --> Goals: gae:unpack
  # 运行项目。右键项目，run as maven build... --> Goals: gae:run
  # 部署项目，run as maven build... --> Goals: gae:deploy
+====`Intellij IDEA`====
+ * Intellij IDEA: http://www.jetbrains.com/idea/
+====`Intellij IDEA svn 使用`====
+ * 第一步：选择Subversion
+http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_1.png
+ * 第二步：在弹出窗口输入项目地址。
+http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_2.png
+ * 第三步：选择项目后，点击checkout。
+http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_3.png
+ * 第四步：创建新的文件夹存放项目，输入文件夹名，点击OK！
+http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_4.png
+ * 第五步：双击刚才创建好的b3log solo文件夹
+http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_5.png
+ * 第六步：点击ok!好了，开始你的b3log solo之旅吧！！！
+http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_6.png
