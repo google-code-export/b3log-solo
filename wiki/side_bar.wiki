@@ -6,6 +6,7 @@
    * 配置
      * [basic_configuration 基本配置]
    * [upgrade 升级]
+   * 皮肤
    * 其他
      * [has_update “有更新”]
      * [multi_users 多用户]
