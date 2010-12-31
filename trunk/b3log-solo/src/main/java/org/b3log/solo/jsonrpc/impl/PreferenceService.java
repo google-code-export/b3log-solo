@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Dec 29, 2010
+ * @version 1.0.1.9, Dec 31, 2010
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -239,6 +239,16 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject preference =
                     requestJSONObject.getJSONObject(PREFERENCE);
+
+            if ("valentine".equals(preference.getString(Skin.SKIN_DIR_NAME))) {
+                if (!userUtils.hasMultipleUsers()) {
+                    ret.put(Keys.STATUS_CODE,
+                            StatusCodes.UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS);
+                    transaction.rollback();
+
+                    return ret;
+                }
+            }
 
             final String blogHost = preference.getString(BLOG_HOST).
                     toLowerCase().trim(); // blog host check
