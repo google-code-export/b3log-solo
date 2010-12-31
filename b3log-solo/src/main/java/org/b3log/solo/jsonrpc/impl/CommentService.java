@@ -151,7 +151,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">"
             + "{title}</a>]" + " received a new comment:</p>"
             + "{commenter}: <span><a href=\"http://{commentSharpURL}\">"
-            + "{commentContent}</a></span></p>";
+            + "{commentContent}</a></span>";
     /**
      * Enter escape.
      */
