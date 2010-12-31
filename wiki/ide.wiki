@@ -31,18 +31,18 @@ http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_2.png
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_3.png
  * 第四步：创建新的文件夹存放项目，输入文件夹名，点击 OK。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_4.png
- * 第五步：双击刚才创建好的B3log Solo文件夹。
+ * 第五步：双击刚才创建好的 B3log Solo文件夹。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_5.png
- * 第六步：点击 OK ！好了，开始你的B3log Solo之旅吧！！！
+ * 第六步：点击 OK ！好了，开始你的 B3log Solo之旅吧！！！
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_svn_6.png
 ====`Intellij IDEA GAE 开发配置`====
- * 第一步：打开项目，因为 Intellij IDEA 对 Maven 支持很好，可以直接打开 POM.xml文件。
+ * 第一步：打开项目，因为 Intellij IDEA 对 Maven 支持很好，可以直接打开 pom.xml 文件。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_open_project.png
  * 第二步：打开项目后，需要配置一下相关环境，鼠标选择 B3log Solo -> 右键 Open Module Settings。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_module_setting.png
  * 第三步: 双击 Google App Engine，选择 Web 点击 OK。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_add_facets.png
- * 第四步：配置你的 GAE SDK ，输入你 Google 账号。
+ * 第四步：配置你的 GAE SDK ，输入你 AppEngine 账号。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_account.png
  * 第五步：现在开始你可以自己扩展你的 B3log Solo了，需要部署的时候，只需要很简单的一个操作 Upload App Engine Application。当然，别忘了修改你的 Application ID。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_deploy.png
