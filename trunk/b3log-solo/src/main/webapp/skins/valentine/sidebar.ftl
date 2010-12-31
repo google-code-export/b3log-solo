@@ -33,7 +33,7 @@
                         <img alt="${tag.tagTitle}" src="/images/feed.png"/>
                     </a>
                     <a title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('UTF-8')}">
-                        ${tag.tagTitle}</a>(${tag.tagPublishedRefCount})
+                        ${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
                 </li>
                 </#list>
             </ul>
