@@ -5,7 +5,7 @@
      * [deploy_gae 部署至 GAE]
    * 配置
      * [basic_configuration 基本配置]
-     * [upgrade 升级]
+ * [upgrade 升级]
    * 其他
      * [has_update “有更新”]
      * [multi_users 多用户]
