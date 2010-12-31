@@ -44,8 +44,7 @@ http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_module_setting.png
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_add_facets.png
  * 第四步：配置你的 GAE SDK ，输入你 Google 账号。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_account.png
- * 第五步：现在开始你可以自己扩展你的 B3Log Solo了，需要部署的时候，只需要很简单的一个操作。当然，别忘了修改你的 Application ID。
+ * 第五步：现在开始你可以自己扩展你的 B3log Solo了，需要部署的时候，只需要很简单的一个操作 Upload App Engine Application。当然，别忘了修改你的 Application ID。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_deploy.png
  * 你也可以使用 Maven 做任何操作。附一张 Intellij IDEA Maven 截图。
 http://b3log-solo.googlecode.com/svn/wiki/src/images/idea_maven.png
-
