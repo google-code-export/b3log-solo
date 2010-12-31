@@ -55,6 +55,7 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
@@ -65,7 +66,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Dec 30, 2010
+ * @version 1.0.1.9, Dec 31, 2010
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -115,6 +116,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     @Inject
     private Users userUtils;
     /**
+     * Preference utilities.
+     */
+    @Inject
+    private Preferences preferenceUtils;
+    /**
      * Article service.
      */
     @Inject
@@ -158,6 +164,22 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         final Transaction transaction = userRepository.beginTransaction();
         try {
             final String userId = requestJSONObject.getString(Keys.OBJECT_ID);
+
+            final int userLength =
+                    userRepository.get(1, Integer.MAX_VALUE).getJSONArray(
+                    Keys.RESULTS).length();
+            if (2 == userLength) {
+                if ("valentine".equals(
+                        preferenceUtils.getPreference().getString(
+                        Skin.SKIN_DIR_NAME))) {
+                    transaction.rollback();
+
+                    ret.put(Keys.STATUS_CODE,
+                            StatusCodes.REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS);
+                    return ret;
+                }
+            }
+
             userRepository.remove(userId);
             transaction.commit();
 
@@ -618,7 +640,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
                 helloWorld(request, response);
             }
-            
+
             ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
         } catch (final Exception e) {
             LOGGER.severe("Initialize B3log Solo error");

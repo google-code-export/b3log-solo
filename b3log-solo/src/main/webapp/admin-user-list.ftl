@@ -220,8 +220,8 @@
                                                 getUserList(1);
                                                 $("#tipMsg").text("${removeSuccLabel}");
                                                 break;
-                                            case "REMOVE_USER_FAIL_":
-                                                $("#tipMsg").text("${removeFailLabel}");
+                                            case "REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS":
+                                                $("#tipMsg").text("${removeUserFailSkinNeedMulUsersLabel}");
                                                 break;
                                             default:
                                                 break;

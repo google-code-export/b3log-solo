@@ -20,7 +20,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Dec 21, 2010
+ * @version 1.0.2.1, Dec 31, 2010
  */
 public enum StatusCodes {
 
@@ -141,6 +141,11 @@ public enum StatusCodes {
      */
     UPDATE_PREFERENCE_FAIL_,
     /**
+     * Indicates update preference fails, caused by needing multiple users.
+     */
+    UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS,
+
+    /**
      * Indicates get preference successfully.
      */
     GET_PREFERENCE_SUCC,
@@ -232,6 +237,11 @@ public enum StatusCodes {
      * Indicates removes a user successfully.
      */
     REMOVE_USER_SUCC,
+    /**
+     * Indicates removes a user fails, caused by the current skin need multiple
+     * users.
+     */
+    REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS,
     /**
      * Indicates updates a user successfully.
      */

@@ -425,6 +425,9 @@
                 case "UPDATE_PREFERENCE_FAIL_":
                     $("#tipMsg").text("${updatePreferenceFailLabel}");
                     break;
+                case "UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS":
+                    $("#tipMsg").text("${updatePreferenceFailNeedMulUsersLabel}");
+                    break;
                 default:
                     break;
             }
