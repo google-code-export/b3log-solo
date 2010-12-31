@@ -150,8 +150,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     private static final String COMMENT_MAIL_HTML_BODY =
             "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">"
             + "{title}</a>]" + " received a new comment:</p>"
-            + "{commenter}: <a href=\"http://{commentSharpURL}\">"
-            + "{commentContent}</a>";
+            + "{commenter}: <span><a href=\"http://{commentSharpURL}\">"
+            + "{commentContent}</a></span></p>";
     /**
      * Enter escape.
      */
