@@ -12,4 +12,24 @@
         ver ${version}&nbsp;&nbsp;
         Theme by <a style="color:white;" href="http://www.iprimidieci.com/" target="_blank">Primi</a> & <a style="color:white;" href="http://lamb.b3log.org" target="_blank">Lamb</a>.
     </div>
+    <div class="right nowrap statistic">
+        <div class="goTop right" onclick="util.goTop();">${goTopLabel}</div>
+        <br/>
+        <div class="right">
+            ${viewCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticBlogViewCount}
+            </span>
+            &nbsp;&nbsp;
+            ${articleCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticPublishedBlogArticleCount}
+            </span>
+            &nbsp;&nbsp;
+            ${commentCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticPublishedBlogCommentCount}
+            </span>
+        </div>
+    </div>
 </div>
