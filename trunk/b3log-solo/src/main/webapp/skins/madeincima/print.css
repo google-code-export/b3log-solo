@@ -1,0 +1,18 @@
+/* --------------------------------------------------
+file: print.css
+version: 1.0
+author: Andrea Cima Serniotti
+---------------------------------------------------*/
+
+body{font-size:12pt;background:transparent}
+h1{color:#000;text-decoration:none;border-bottom:1px solid #ccc;padding-bottom:5pt}
+a{text-decoration:none;color:#000}
+hr,#search,.alt,#global-nav,#magic,.section,form,#sidebar,#service-menu,#twitter,#respond,.video,#switcher{display:none}
+#footer{border-top:1px solid #ccc;margin-top:30px}
+
+
+#main img{float:none;margin:0 20px 10px 0;padding:2px;border:1px solid #d7d7d6}
+
+table{border-collapse:collapse}
+caption{text-align:left;font-weight:bold;margin-top:10px; padding-bottom:10px}
+th,td{border:1px solid #ccc; padding:5px 10px}
