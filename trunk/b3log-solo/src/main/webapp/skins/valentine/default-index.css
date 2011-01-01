@@ -1137,3 +1137,33 @@ h4 {
     padding: 30px 50px 20px 0;
     color: white;
 }
+#tagsPanel .tagPanel {
+    text-decoration: none;
+}
+#tagsPanel .tagPanel {
+    -moz-border-radius: 6px 6px 6px 6px;
+    border: 2px solid;
+    cursor: pointer;
+    float: left;
+    margin: 3px;
+}
+.error-panel {
+    margin: 0 auto;
+    width: 500px;
+}
+.error-panel a {
+    background: none repeat scroll 0 0 #9CD941;
+    border-color: #D0F29D #398A38 #398A38 #D0F29D;
+    border-style: solid;
+    border-width: 1px;
+    color: #000000;
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 3px;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+.error-title {
+    font-size: 200%;
+    line-height: 72px;
+}

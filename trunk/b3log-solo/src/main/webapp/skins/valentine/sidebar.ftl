@@ -83,6 +83,9 @@
         <img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"
              alt="由 Google App Engine 提供支持" />
     </p>
+    <p align="center">
+        <img height="55" width="140" alt="B3log Logo" src="http://code.google.com/p/b3log-solo/logo?cct=1287802701" />
+    </p>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
 </div>
