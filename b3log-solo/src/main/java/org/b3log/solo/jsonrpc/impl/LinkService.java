@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, B3log Team
+ * Copyright (c) 2009, 2010, 2011, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Link;
@@ -46,7 +45,7 @@ import org.json.JSONObject;
  * Link service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 8, 2010
+ * @version 1.0.0.7, Jan 1, 2011
  */
 public final class LinkService extends AbstractGAEJSONRpcService {
 
@@ -200,10 +199,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
-            if (changeDefaultLinksOrder(linkId, linkOrder)) {
-                return false;
-            }
-
             final JSONObject link1 = linkRepository.get(linkId);
             final String link1Id = linkId;
             final JSONObject link2 = linkRepository.getByOrder(linkOrder);
@@ -272,14 +267,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                     requestJSONObject.getJSONObject(Link.LINK);
             final String linkId = link.getString(Keys.OBJECT_ID);
             final JSONObject oldLink = linkRepository.get(linkId);
-            final String linkAddress = oldLink.getString(Link.LINK_ADDRESS);
-            if (SoloServletListener.DEFAULT_LINK_88250.equals(
-                    linkAddress)
-                || SoloServletListener.DEFAULT_LINK_VANESSA.equals(
-                    linkAddress)) {
-                throw new Exception("Can't not remove default links");
-            }
-
             link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
 
             linkRepository.update(linkId, link);
@@ -340,15 +327,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         try {
             final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing a link[oId={0}]", linkId);
-            final JSONObject link = linkRepository.get(linkId);
-            final String linkAddress = link.getString(Link.LINK_ADDRESS);
-            if (SoloServletListener.DEFAULT_LINK_88250.equals(
-                    linkAddress)
-                || SoloServletListener.DEFAULT_LINK_VANESSA.equals(
-                    linkAddress)) {
-                throw new Exception("Can't not remove default links");
-            }
-
             linkRepository.remove(linkId);
 
             PageCaches.removeAll();
@@ -425,36 +403,5 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
-    }
-
-    /**
-     * Determines whether change the default links with the specified link id
-     * and link order.
-     * 
-     * @param linkId the specified link id
-     * @param linkOrder the specified link order
-     * @return {@code true} if changes the default links, {@code false} 
-     * otherwise
-     * @throws Exception exception
-     */
-    private boolean changeDefaultLinksOrder(final String linkId,
-                                            final int linkOrder)
-            throws Exception {
-        if (linkOrder <= 1) {
-            return true;
-        }
-
-        if (2 == linkOrder) { // Move down vanessa's link
-            final JSONObject vanessaLink =
-                    linkRepository.getByOrder(
-                    SoloServletListener.DEFAULT_LINK_VANESSA_ORDER);
-            final JSONObject link = linkRepository.get(linkId);
-            if (link.getString(Keys.OBJECT_ID).equals(vanessaLink.getString(
-                    Keys.OBJECT_ID))) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

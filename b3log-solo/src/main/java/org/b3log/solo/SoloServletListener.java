@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, B3log Team
+ * Copyright (c) 2009, 2010, 2011, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,6 @@ import java.util.zip.ZipFile;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RunsOnEnv;
 import org.b3log.latke.cache.Cache;
@@ -60,10 +59,8 @@ import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
 import static org.b3log.solo.model.Preference.*;
-import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.sync.SyncModule;
 import org.b3log.solo.util.Skins;
@@ -74,7 +71,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.6, Dec 29, 2010
+ * @version 1.0.3.7, Jan 1, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -123,18 +120,6 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final Map<String, String> EN_MONTHS =
             new HashMap<String, String>();
-    /**
-     * 88250's link.
-     */
-    public static final String DEFAULT_LINK_88250 = "http://88250.b3log.org";
-    /**
-     * Vanessa's link.
-     */
-    public static final String DEFAULT_LINK_VANESSA = "http://vanessa.b3log.org";
-    /**
-     * Vanessa's link order.
-     */
-    public static final int DEFAULT_LINK_VANESSA_ORDER = 1;
 
     static {
         EN_MONTHS.put("01", "January");
@@ -204,18 +189,9 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final PreferenceRepository preferenceRepository =
                 getInjector().getInstance(PreferenceRepository.class);
-        Transaction transaction = preferenceRepository.beginTransaction();
+        final Transaction transaction = preferenceRepository.beginTransaction();
         try {
             loadPreference();
-            transaction.commit();
-        } catch (final Exception e) {
-            transaction.rollback();
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-
-        transaction = preferenceRepository.beginTransaction();
-        try {
-            initDefaultLinks();
             transaction.commit();
         } catch (final Exception e) {
             transaction.rollback();
@@ -249,71 +225,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
-    }
-
-    /**
-     * Initializes default links if not found.
-     *
-     * <ul>
-     *   <li>简约设计の艺术</li>
-     *   http://88250.b3log.org
-     *   <li>Vanessa</li>
-     *   http://vanessa.b3log.org
-     * </ul>
-     */
-    private void initDefaultLinks() {
-        LOGGER.info("Checking default links....");
-
-        try {
-            final Injector injector = getInjector();
-            final LinkRepository linkRepository =
-                    injector.getInstance(LinkRepository.class);
-
-            final String address1Of88250 =
-                    "http://b3log-88250.appspot.com";
-            JSONObject linkTo88250 = linkRepository.getByAddress(
-                    address1Of88250);
-            if (null != linkTo88250) {
-                linkRepository.remove(linkTo88250.getString(Keys.OBJECT_ID));
-            }
-            final String address2Of88250 = DEFAULT_LINK_88250;
-            linkTo88250 = linkRepository.getByAddress(address2Of88250);
-            if (null != linkTo88250) {
-                linkRepository.remove(linkTo88250.getString(Keys.OBJECT_ID));
-            }
-
-            linkTo88250 = new JSONObject();
-            linkTo88250.put(Link.LINK_TITLE, "简约设计\u306e艺术").
-                    put(Link.LINK_ADDRESS, address2Of88250).
-                    put(Link.LINK_ORDER, 0);
-            linkRepository.add(linkTo88250);
-            LOGGER.info("Added a link[title=简约设计\u306e艺术] to your links");
-
-            final String address1OfVanessa =
-                    "http://b3log-vanessa.appspot.com";
-            final String address2OfVanessa = DEFAULT_LINK_VANESSA;
-            JSONObject linkToVanessa =
-                    linkRepository.getByAddress(address1OfVanessa);
-            if (null != linkToVanessa) {
-                linkRepository.remove(linkToVanessa.getString(Keys.OBJECT_ID));
-            }
-            linkToVanessa = linkRepository.getByAddress(address2OfVanessa);
-            if (null != linkToVanessa) {
-                linkRepository.remove(linkToVanessa.getString(Keys.OBJECT_ID));
-            }
-
-            linkToVanessa = new JSONObject();
-            linkToVanessa.put(Link.LINK_TITLE, "Vanessa").
-                    put(Link.LINK_ADDRESS, address2OfVanessa).
-                    put(Link.LINK_ORDER, DEFAULT_LINK_VANESSA_ORDER);
-
-            linkRepository.add(linkToVanessa);
-            LOGGER.info("Added a link[title=Vanessa] to your links");
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARNING, e.getMessage());
-        }
-
-        LOGGER.info("Checked default links....");
     }
 
     /**
