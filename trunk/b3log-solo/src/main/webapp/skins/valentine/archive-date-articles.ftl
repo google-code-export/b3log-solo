@@ -1,10 +1,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>${page.pageTitle} - ${blogTitle}</title>
+        <title>
+            <#if "en" == localeString?substring(0, 2)>
+            ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
+            <#else>
+            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
+            </#if>
+            - ${blogTitle}
+        </title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="${metaKeywords}"/>
-        <meta name="description" content="${metaDescription}"/>
+        <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
         <meta name="author" content="B3log Team"/>
         <meta name="generator" content="B3log"/>
         <meta name="copyright" content="B3log"/>
@@ -20,22 +27,26 @@
     </head>
     <body>
         <#include "common-top.ftl">
-        <div id="wrapper-sub">
-            <div id="header-page"><!-- header --></div>
-            <div id="content-page">
-                <div id="single-pagecontents">
-                ${page.pageContent}
+        <div id="wrapper-home">
+            <div id="header-home"><!-- header --></div>
+            <div id="content-home">
+                <div id="home-rinside">
+                    <!-- The Loop -->
+                    <#include "individual-blue.ftl">
+                    <!-- End Loop-->
                 </div>
-                <div id="left-sidebar">
-                    <div id="about-tag"><!--about tag --></div>
+                <div id="home-sidebar">
+                    <div id="home-tag"><!--home tag --></div>
                     <#include "sidebar.ftl">
                 </div>
+
+                <div id="home-wendyside">
+                    <!-- The Loop -->
+                    <#include "individual-pink.ftl">
+                    <!-- End Loop-->
+                </div>
             </div>
-            <div id="prefooter-page">
-                <div id="rss-page"><!-- RSS Icon--></div>
-                <div id="rss-lefttext"><a href="http://lambsand.appspot.com/feed">Subscribe to RSS</a></div>
-            </div>
-            <!-- start footer -->
+            <#include "prefooter-home.ftl">
             <#include "footer.ftl">
         </div>
     </body>
