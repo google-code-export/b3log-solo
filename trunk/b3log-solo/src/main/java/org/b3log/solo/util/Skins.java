@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Preference;
 import static org.b3log.solo.model.Skin.*;
 import org.json.JSONArray;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 24, 2010
+ * @version 1.0.0.2, Jan 1, 2011
  */
 public final class Skins {
 
@@ -89,8 +90,11 @@ public final class Skins {
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         if ("zh_CN".equals(localeString)) {
-            Templates.CONFIGURATION.setTimeZone(
-                    TimeZone.getTimeZone("Asia/Shanghai"));
+            // TODO: issue 132: http://code.google.com/p/b3log-solo/issues/detail?id=132
+            final TimeZone timeZone = TimeZone.getTimeZone("Asia/Shanghai");
+            TimeZone.setDefault(timeZone);
+            ArchiveDate.DATE_FORMAT.setTimeZone(timeZone);
+            Templates.CONFIGURATION.setTimeZone(timeZone);
         }
 
         LOGGER.info("Loaded skins....");

@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import com.google.inject.Inject;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
@@ -43,7 +40,7 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 5, 2010
+ * @version 1.0.0.8, Jan 1, 2011
  */
 public final class ArchiveDates {
 
@@ -92,18 +89,11 @@ public final class ArchiveDates {
                 createDateString);
         if (null == archiveDate) {
             archiveDate = new JSONObject();
-            try {
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE,
-                                ArchiveDate.DATE_FORMAT.parse(createDateString));
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 0);
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                                0);
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE, createDate);
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 0);
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 0);
 
-                archiveDateRepository.add(archiveDate);
-            } catch (final ParseException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                throw new RepositoryException(e);
-            }
+            archiveDateRepository.add(archiveDate);
         }
 
         final JSONObject newArchiveDate = new JSONObject(
