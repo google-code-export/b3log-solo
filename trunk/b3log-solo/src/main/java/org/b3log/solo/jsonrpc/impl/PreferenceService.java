@@ -20,7 +20,6 @@ import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +38,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Dec 31, 2010
+ * @version 1.0.2.0, Jan 2, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -76,6 +76,11 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Users userUtils;
+    /**
+     * Time zone utilities.
+     */
+    @Inject
+    private TimeZones timeZoneUtils;
 
     /**
      * Gets signs.
@@ -130,7 +135,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "blogSubtitle": "",
      *         "mostCommentArticleDisplayCount": int,
      *         "blogHost": "",
-     *         "localeString": ""
+     *         "localeString": "",
+     *         "timeZoneId": "",
      *         "skinName": "",
      *         "skinDirName": "",
      *         "skins": "[{
@@ -197,6 +203,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "skinDirName": "",
      *         "blogHost": "",
      *         "localeString": "",
+     *         "timeZoneId": "",
      *         "noticeBoard": "",
      *         "htmlHead": "",
      *         "googleOAuthConsumerSecret": "",
@@ -292,12 +299,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
             preference.put(Skin.SKINS, skinArray.toString());
 
-            final String localeString = preference.getString(
-                    LOCALE_STRING);
-            if ("zh_CN".equals(localeString)) {
-                Templates.CONFIGURATION.setTimeZone(
-                        TimeZone.getTimeZone("Asia/Shanghai"));
-            }
+            final String timeZoneId = preference.getString(TIME_ZONE_ID);
+            timeZoneUtils.setTimeZone(timeZoneId);
 
             preference.put(Preference.SIGNS,
                            preference.getJSONArray(Preference.SIGNS).toString());

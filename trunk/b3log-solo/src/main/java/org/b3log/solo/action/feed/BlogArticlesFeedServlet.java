@@ -39,6 +39,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,7 +47,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Dec 22, 2010
+ * @version 1.0.1.4, Jan 2, 2011
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -73,6 +74,11 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
      */
     @Inject
     private Articles articleUtils;
+    /**
+     * Time zone utilities.
+     */
+    @Inject
+    private TimeZones timeZoneUtils;
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -96,7 +102,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
-            feed.setUpdated(new Date());
+            feed.setUpdated(timeZoneUtils.getTime(
+                    preference.getString(Preference.TIME_ZONE_ID)));
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink("http://" + blogHost);
 

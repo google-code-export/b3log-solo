@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Dec 29, 2010
+ * @version 1.0.1.8, Jan 2, 2011
  */
 public final class Preference {
 
@@ -103,6 +103,10 @@ public final class Preference {
      */
     public static final String LOCALE_STRING = "localeString";
     /**
+     * Time zone id.
+     */
+    public static final String TIME_ZONE_ID = "timeZoneId";
+    /**
      * Notice board.
      */
     public static final String NOTICE_BOARD = "noticeBoard";
@@ -165,7 +169,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.7, Dec 30, 2010
+     * @version 1.0.0.8, Jan 2, 2011
      */
     public static final class Default {
 
@@ -214,6 +218,12 @@ public final class Preference {
          * Default language.
          */
         public static final String DEFAULT_LANGUAGE = "zh_CN";
+        /**
+         * Default time zone.
+         * 
+         * @see java.util.TimeZone#getAvailableIDs() 
+         */
+        public static final String DEFAULT_TIME_ZONE = "Asia/Shanghai";
         /**
          * Default enable article update hint.
          */

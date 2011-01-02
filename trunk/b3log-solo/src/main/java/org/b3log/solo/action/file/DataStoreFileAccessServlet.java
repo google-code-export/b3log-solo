@@ -42,6 +42,7 @@ import org.b3log.solo.model.File;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.TimeZones;
 import org.json.JSONObject;
 
 /**
@@ -50,7 +51,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 8, 2010
+ * @version 1.0.0.7, Jan 2, 2011
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -77,6 +78,11 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
      */
     @Inject
     private Preferences preferenceUtils;
+    /**
+     * Time zone utilities.
+     */
+    @Inject
+    private TimeZones timeZoneUtils;
 
     @Override
     protected void doPost(final HttpServletRequest request,
@@ -137,7 +143,9 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                     file.put(File.FILE_CONTENT, blob);
 
                     file.put(File.FILE_DOWNLOAD_COUNT, 0);
-                    final Date createDate = new Date();
+                    final String timeZoneId =
+                            preference.getString(Preference.TIME_ZONE_ID);
+                    final Date createDate = timeZoneUtils.getTime(timeZoneId);
                     file.put(File.FILE_UPLOAD_DATE, createDate);
                     final String fileName = item.getName();
                     file.put(File.FILE_NAME, fileName);

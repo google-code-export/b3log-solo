@@ -16,6 +16,7 @@
 
 package org.b3log.solo.util;
 
+import com.google.inject.Inject;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
@@ -23,12 +24,10 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Preference;
 import static org.b3log.solo.model.Skin.*;
 import org.json.JSONArray;
@@ -39,10 +38,15 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 1, 2011
+ * @version 1.0.0.3, Jan 2, 2011
  */
 public final class Skins {
 
+    /**
+     * Time zone utilities.
+     */
+    @Inject
+    private TimeZones timeZoneUtils;
     /**
      * Logger.
      */
@@ -90,11 +94,7 @@ public final class Skins {
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         if ("zh_CN".equals(localeString)) {
-            // TODO: issue 132: http://code.google.com/p/b3log-solo/issues/detail?id=132
-            final TimeZone timeZone = TimeZone.getTimeZone("Asia/Shanghai");
-            TimeZone.setDefault(timeZone);
-            ArchiveDate.DATE_FORMAT.setTimeZone(timeZone);
-            Templates.CONFIGURATION.setTimeZone(timeZone);
+            timeZoneUtils.setTimeZone("Asia/Shanghai");
         }
 
         LOGGER.info("Loaded skins....");
