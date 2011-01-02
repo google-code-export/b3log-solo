@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
  * Abstract admin action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 3, 2010
+ * @version 1.0.0.4, Jan 2, 2011
  */
 public abstract class AbstractAdminAction extends AbstractAction {
 
@@ -106,6 +107,22 @@ public abstract class AbstractAdminAction extends AbstractAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+
+            // For admin-preference.ftl only
+            final StringBuilder timeZoneIdOptions = new StringBuilder();
+            final String[] availableIDs = TimeZone.getAvailableIDs();
+            for (int i = 0; i < availableIDs.length; i++) {
+                final String id = availableIDs[i];
+                String option = null;
+                if (id.equals(preference.getString(Preference.TIME_ZONE_ID))) {
+                    option = "<option value=\"" + id + "\" selected=\"true\">"
+                             + id + "</option>";
+                } else {
+                    option = "<option value=\"" + id + "\">" + id + "</option>";
+                }
+                timeZoneIdOptions.append(option);
+            }
+            ret.put("timeZoneIdOptions", timeZoneIdOptions.toString());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException("Language model fill error");

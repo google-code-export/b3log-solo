@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -38,7 +37,7 @@ import org.b3log.solo.sync.util.PageReader;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 3, 2010
+ * @version 1.0.0.7, Jan 2, 2011
  */
 public final class CnBlogsBlog extends AbstractMetaWeblog {
 
@@ -47,14 +46,6 @@ public final class CnBlogsBlog extends AbstractMetaWeblog {
      */
     private static final Logger LOGGER =
             Logger.getLogger(CnBlogsBlog.class.getName());
-
-    static {
-        final TimeZone cstTimeZone = TimeZone.getTimeZone("CST");
-        CST_DATE_FORMAT.setTimeZone(cstTimeZone);
-
-        final TimeZone utcTimeZone = TimeZone.getTimeZone("UTC");
-        UTC_DATE_FORMAT.setTimeZone(utcTimeZone);
-    }
 
     @Override
     public String getApiAddress() {

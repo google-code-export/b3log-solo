@@ -62,6 +62,7 @@ import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Tags;
+import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -140,6 +141,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Users userUtils;
+    /**
+     * Time zone utilities.
+     */
+    @Inject
+    private TimeZones timeZoneUtils;
     /**
      * Permalink date format(yyyy/MM/dd).
      */
@@ -252,7 +258,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_COMMENT_COUNT, 0);
             article.put(ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
-            final Date date = new Date();
+            final JSONObject preference = preferenceUtils.getPreference();
+            final String timeZoneId =
+                    preference.getString(Preference.TIME_ZONE_ID);
+            final Date date = timeZoneUtils.getTime(timeZoneId);
             article.put(ARTICLE_UPDATE_DATE, date);
             article.put(ARTICLE_CREATE_DATE, date);
             // Step 4: Set put top to false
@@ -866,23 +875,24 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // XXX: GAE transaction isolation
             // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
             transaction.commit();
-            transaction2 =
-                    articleRepository.beginTransaction();
+            transaction2 = articleRepository.beginTransaction();
             // Step 5: Add tags
-            final String tagsString =
-                    article.getString(ARTICLE_TAGS_REF);
+            final String tagsString = article.getString(ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tagUtils.tag(tagTitles, article);
             // Step 6: Fill auto properties
             fillAutoProperties(oldArticle, article);
             // Step 7: Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
+            final JSONObject preference = preferenceUtils.getPreference();
+            final String timeZoneId =
+                    preference.getString(Preference.TIME_ZONE_ID);
+            final Date date = timeZoneUtils.getTime(timeZoneId);
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
                 if (articleUtils.hadBeenPublished(oldArticle)) {
                     // Edit update date only for published article
-                    article.put(ARTICLE_UPDATE_DATE, new Date());
+                    article.put(ARTICLE_UPDATE_DATE, date);
                 } else { // This article is a draft and this is the first time to publish it
-                    final Date date = new Date();
                     article.put(ARTICLE_CREATE_DATE, date);
                     article.put(ARTICLE_UPDATE_DATE, date);
                     article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
@@ -890,10 +900,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             } else { // Save as draft
                 if (articleUtils.hadBeenPublished(oldArticle)) {
                     // Save update date only for published article
-                    article.put(ARTICLE_UPDATE_DATE, new Date());
+                    article.put(ARTICLE_UPDATE_DATE, date);
                 } else {
                     // Reset create/update date to indicate this is an new draft
-                    final Date date = new Date();
                     article.put(ARTICLE_CREATE_DATE, date);
                     article.put(ARTICLE_UPDATE_DATE, date);
                 }

@@ -17,7 +17,6 @@
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
-import java.util.TimeZone;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.latke.repository.RepositoryException;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -57,6 +56,7 @@ import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Dec 31, 2010
+ * @version 1.0.2.0, Jan 2, 2011
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -130,6 +130,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private CommentService commentService;
+    /**
+     * Time zone utilities.
+     */
+    @Inject
+    private TimeZones timeZoneUtils;
 
     /**
      * Removes a user with the specified request json object.
@@ -823,6 +828,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             ret.put(Preference.CURRENT_VERSION_NUMBER,
                     SoloServletListener.VERSION);
             ret.put(SIGNS, Preference.Default.DEFAULT_SIGNS);
+            ret.put(TIME_ZONE_ID, Preference.Default.DEFAULT_TIME_ZONE);
 
             final String skinDirName = Preference.Default.DEFAULT_SKIN_DIR_NAME;
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
@@ -853,8 +859,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 throw new RuntimeException(e);
             }
 
-            Templates.CONFIGURATION.setTimeZone(
-                    TimeZone.getTimeZone("Asia/Shanghai"));
+            timeZoneUtils.setTimeZone("Asia/Shanghai");
 
             ret.put(Keys.OBJECT_ID, preferenceId);
             preferenceRepository.add(ret);

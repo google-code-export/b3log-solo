@@ -96,6 +96,16 @@
                         </td>
                     </tr>
                     <tr>
+                        <th width="234px">
+                            ${timeZoneId1Label}
+                        </th>
+                        <td>
+                            <select id="timeZoneId">
+                                ${timeZoneIdOptions}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <th>
                             ${indexTagDisplayCnt1Label}
                         </th>
@@ -291,6 +301,7 @@
                     $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
                     $("#blogHost").val(preference.blogHost);
                     $("#localeString").val(preference.localeString);
+                    $("#timeZoneId").val(preference.timeZoneId);
                     $("#noticeBoard").val(preference.noticeBoard);
                     $("#htmlHead").val(preference.htmlHead);
                     $("#secret").val(preference.googleOAuthConsumerSecret);
@@ -397,6 +408,7 @@
                 "skinDirName": $("#skinMain").data("skinDirName"),
                 "blogHost": $("#blogHost").val(),
                 "localeString": $("#localeString").val(),
+                "timeZoneId": $("#timeZoneId").val(),
                 "noticeBoard": $("#noticeBoard").val(),
                 "htmlHead": $("#htmlHead").val(),
                 "googleOAuthConsumerSecret": $("#secret").val(),

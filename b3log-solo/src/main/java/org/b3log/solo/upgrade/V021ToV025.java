@@ -107,11 +107,15 @@ import org.json.JSONObject;
  *       Adds a property(named {@value Preference#SIGNS}) to entity
  *       {@link Preference preference}
  *     </li>
+ *     <li>
+ *       Adds a property(named {@value Preference#TIME_ZONE_ID}) to entity
+ *       {@link Preference preference}
+ *     </li>
  *   </ul>
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 30, 2010
+ * @version 1.0.1.6, Jan 2, 2011
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -447,6 +451,11 @@ public final class V021ToV025 extends HttpServlet {
                     length()) { // patch on patch - -~
                 preference.put(Preference.SIGNS,
                                Preference.Default.DEFAULT_SIGNS);
+            }
+
+            if (!preference.has(Preference.TIME_ZONE_ID)) {
+                preference.put(Preference.TIME_ZONE_ID,
+                               Preference.Default.DEFAULT_TIME_ZONE);
             }
 
             preference.put(Preference.CURRENT_VERSION_NUMBER,

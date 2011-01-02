@@ -62,6 +62,7 @@ import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -161,6 +162,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Preferences preferenceUtils;
+    /**
+     * Time zone utilities.
+     */
+    @Inject
+    private TimeZones timeZoneUtils;
 
     /**
      * Gets recent comments with the specified http servlet request and response.
@@ -432,7 +438,10 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            final Date date = new Date();
+            final JSONObject preference = preferenceUtils.getPreference();
+            final String timeZoneId =
+                    preference.getString(Preference.TIME_ZONE_ID);
+            final Date date = timeZoneUtils.getTime(timeZoneId);
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, date);
             if (!Strings.isEmptyOrNull(originalCommentId)) {
@@ -581,7 +590,10 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            final Date date = new Date();
+            final JSONObject preference = preferenceUtils.getPreference();
+            final String timeZoneId =
+                    preference.getString(Preference.TIME_ZONE_ID);
+            final Date date = timeZoneUtils.getTime(timeZoneId);
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, date);
             if (!Strings.isEmptyOrNull(originalCommentId)) {
