@@ -95,10 +95,14 @@ public final class CheckLoggedInAction extends AbstractAction {
                     ret.put(User.USER_NAME, admin.getNickname());
                 }
 
+                ret.put(Common.LOGIN_URL,
+                        userService.createLoginURL("/admin-index.do"));
+
                 return ret;
             }
 
             ret.put(Common.IS_LOGGED_IN, true);
+            ret.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
             ret.put(Common.IS_ADMIN,
                     Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
 
