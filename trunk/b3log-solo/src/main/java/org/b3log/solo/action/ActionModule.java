@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action;
 
 import com.google.inject.Scopes;
@@ -37,6 +36,7 @@ import org.b3log.solo.action.impl.AdminErrorAction;
 import org.b3log.solo.action.impl.AuthorArticlesAction;
 import org.b3log.solo.action.impl.ClearCacheAction;
 import org.b3log.solo.action.impl.CheckLoggedInAction;
+import org.b3log.solo.action.impl.GetRandomArticlesAction;
 import org.b3log.solo.action.impl.InitAction;
 import org.b3log.solo.action.impl.PageAction;
 import org.b3log.solo.filter.FilterModule;
@@ -165,5 +165,8 @@ public final class ActionModule extends AbstractActionModule {
 
         bind(ClearCacheAction.class).in(Scopes.SINGLETON);
         serve("/clear-cache.do").with(ClearCacheAction.class);
+
+        bind(GetRandomArticlesAction.class).in(Scopes.SINGLETON);
+        serve("/get-random-articles.do").with(GetRandomArticlesAction.class);
     }
 }
