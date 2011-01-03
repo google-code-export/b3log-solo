@@ -81,6 +81,13 @@ $.extend(AdminUtil.prototype, {
         }
         $("#tag").val("");
         $("#permalink").val("");
+        $(".signs button").each(function (i) {
+            if (i === $(".signs button").length - 1) {
+                this.className = "selected";
+            } else {
+                this.className = "";
+            }
+        });
     },
 
     init: function () {
@@ -182,7 +189,7 @@ $.extend(AdminUtil.prototype, {
     updateArticle: function (event, isArticle) {
         var tip = this.tip;
         $("#loadMsg").text(tip.loadingLabel);
-        $("#articleTab").click();
+        this.changeList(document.getElementById("articleTab"));
         var requestJSONObject = {
             "oId": event.data.id[0]
         };
