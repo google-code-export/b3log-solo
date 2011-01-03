@@ -12,13 +12,3 @@
     </span>
     <div class="clear"></div>
 </div>
-<script type="text/javascript" src="/js/util.js"></script>
-<script type="text/javascript">
-    var util = new Util({
-        "clearAllCacheLabel": "${clearAllCacheLabel}",
-        "clearCacheLabel": "${clearCacheLabel}",
-        "adminLabel": "${adminLabel}",
-        "logoutLabel": "${logoutLabel}"
-    });
-    util.init();
-</script>
