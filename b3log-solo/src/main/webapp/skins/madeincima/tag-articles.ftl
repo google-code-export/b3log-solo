@@ -10,7 +10,6 @@
         <meta name="copyright" content="B3log"/>
         <meta name="revised" content="B3log, 2010"/>
         <meta http-equiv="Window-target" content="_top"/>
-
         <!-- Stylesheets -->
         <link rel="stylesheet" href="/skins/${skinDirName}/style.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="/skins/${skinDirName}/jquery.lightbox-0.5.css" type="text/css" media="screen" />
@@ -45,22 +44,10 @@
         <link rel="stylesheet" href="/skins/${skinDirName}/wp-syntax.css" type="text/css" media="screen" />
         <style type="text/css">.broken_link, a.broken_link {text-decoration: line-through}</style>
         <link rel="stylesheet" href="/skins/${skinDirName}/print.css" type="text/css" media="print" />
-
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="tag-articles-feed.do?oId=${oId}" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
-
-        <!--  js ---->
-        <script type="text/javascript">
-            var currentSkinRoot = "/skins/${skinDirName}/";
-        </script>
-        <script type="text/javascript" src="/skins/${skinDirName}/js/jquery.lightbox-0.5.js"></script>
-        <script type="text/javascript" src="/skins/${skinDirName}/js/cookies.js"></script>
-        <script type="text/javascript" src="/skins/${skinDirName}/js/utility.js"></script>
-
         ${htmlHead}
     </head>
     <body class="home blog">

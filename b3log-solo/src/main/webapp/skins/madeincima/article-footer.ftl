@@ -1,5 +1,4 @@
 <div id="footer">
-
     <div id="twitter">
         <h2 class="alt"></h2>
         <p></p>
@@ -18,14 +17,19 @@
         ver ${version}
     </div>
 </div>
-
-
 <ul id="service-menu">
     <li id="contact-me"><a href="http://www.madeincima.eu/contact/">Contact</a></li>
     <li id="about-me"><a href="http://www.madeincima.eu/about/">About</a></li>
 </ul>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+<script type="text/javascript">
+    var currentSkinRoot = "/skins/${skinDirName}/";
+</script>
+<script type="text/javascript" src="/skins/${skinDirName}/js/jquery.lightbox-0.5.js"></script>
+<script type="text/javascript" src="/skins/${skinDirName}/js/cookies.js"></script>
+<script type="text/javascript" src="/skins/${skinDirName}/js/utility.js"></script>
 <script type="text/javascript" src="/js/util.js"></script>
-<script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
+<script type="text/javascript" src="/js/lib/json2.js"></script>
 <script type="text/javascript">
     var util = new Util({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
@@ -33,23 +37,6 @@
         "adminLabel": "${adminLabel}",
         "logoutLabel": "${logoutLabel}"
     });
-
-    var init = function () {
-        // article header: user list.
-        var isAuthorArticle = false;
-        $(".header-user a").each(function () {
-            var it = this;
-            if (window.location.search === it.search) {
-                it.className = "star-current-icon";
-                isAuthorArticle = true;
-            }
-        });
-        if (isAuthorArticle) {
-            $(".moon-current-icon").removeClass().addClass("moon-icon");
-        }
-
-        util.init();
-    }
-
-    init();
+    util.init();
+    util.replaceCommentsEm("#recentComments li .side-comment", "madeincima");
 </script>
