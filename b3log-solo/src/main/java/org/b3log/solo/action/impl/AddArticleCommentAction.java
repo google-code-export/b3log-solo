@@ -188,7 +188,7 @@ public final class AddArticleCommentAction extends AbstractAction {
      * {
      *     "oId": generatedCommentId,
      *     "sc": "COMMENT_ARTICLE_SUCC",
-     *     "commentDate": java.util.Date,
+     *     "commentDate": "", // yyyy/MM/dd hh:mm:ss
      *     "commentSharpURL": "",
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
@@ -198,8 +198,8 @@ public final class AddArticleCommentAction extends AbstractAction {
      */
     @Override
     public JSONObject doAjaxAction(final JSONObject requestJSONObject,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
+                                   final HttpServletRequest request,
+                                   final HttpServletResponse response)
             throws ActionException {
         final JSONObject ret = new JSONObject();
         final Transaction transaction = commentRepository.beginTransaction();
@@ -248,7 +248,7 @@ public final class AddArticleCommentAction extends AbstractAction {
                     preference.getString(Preference.TIME_ZONE_ID);
             final Date date = timeZoneUtils.getTime(timeZoneId);
             comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, date);
+            ret.put(Comment.COMMENT_DATE, Comment.DATE_FORMAT.format(date));
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment =
                         commentRepository.get(originalCommentId);

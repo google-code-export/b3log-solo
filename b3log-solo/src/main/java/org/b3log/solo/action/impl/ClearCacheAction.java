@@ -16,8 +16,6 @@
 
 package org.b3log.solo.action.impl;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;

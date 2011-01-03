@@ -176,7 +176,7 @@ public final class AddPageCommentAction extends AbstractAction {
      * {
      *     "oId": generatedCommentId,
      *     "sc": "COMMENT_PAGE_SUCC"
-     *     "commentDate": java.util.Date,
+     *     "commentDate": "", // yyyy/MM/dd hh:mm:ss
      *     "commentSharpURL": "",
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
@@ -236,7 +236,7 @@ public final class AddPageCommentAction extends AbstractAction {
                     preference.getString(Preference.TIME_ZONE_ID);
             final Date date = timeZoneUtils.getTime(timeZoneId);
             comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, date);
+            ret.put(Comment.COMMENT_DATE, Comment.DATE_FORMAT.format(date));
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment =
                         commentRepository.get(originalCommentId);

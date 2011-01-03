@@ -20,12 +20,13 @@ import java.util.Date;
 import java.util.TimeZone;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.ArchiveDate;
+import org.b3log.solo.model.Comment;
 
 /**
  * Time zone utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 2, 2011
+ * @version 1.0.0.1, Jan 3, 2011
  */
 public final class TimeZones {
 
@@ -61,6 +62,7 @@ public final class TimeZones {
         TimeZone.setDefault(timeZone);
         System.setProperty("user.timezone", timeZoneId);
         ArchiveDate.DATE_FORMAT.setTimeZone(timeZone);
+        Comment.DATE_FORMAT.setTimeZone(timeZone);
         Templates.CONFIGURATION.setTimeZone(timeZone);
     }
 }
