@@ -83,6 +83,9 @@
             if (articleStatus.isArticle) {
                 $("#unSubmitArticle").show();
                 $("#submitArticle").hide();
+            } else {
+                $("#submitArticle").show();
+                $("#unSubmitArticle").hide();
             }
         } else {
             $("#submitArticle").show();
@@ -248,7 +251,7 @@
             signId = "";
             $(".signs button").each(function (i) {
                 if (this.className === "selected") {
-                   signId = this.id.substr(this.id.length - 1, 1);
+                    signId = this.id.substr(this.id.length - 1, 1);
                 }
             });
             
