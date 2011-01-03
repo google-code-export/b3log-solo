@@ -76,13 +76,13 @@ $.extend(Util.prototype, {
                     }
                     loginHTML += "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='"
                     + tip.adminLabel + "'></div>" + "<div class='left'>&nbsp;|&nbsp;</div>"
-                    + "<div onclick='window.location.href="
-                    + result.logoutURL + ";' class='left logoutIcon' title='" + tip.logoutLabel+ "'></div>";
+                    + "<div onclick=\"window.location.href='"
+                    + result.logoutURL + "';\" class='left logoutIcon' title='" + tip.logoutLabel+ "'></div>";
                 
                     $("#admin").append(loginHTML);
                 } else {
-                    $("#admin").append("<div class='left loginIcon' onclick='window.location.href="
-                        + result.loginURL + ";' title='" + tip.loginLabel + "'></div>");
+                    $("#admin").append("<div class='left loginIcon' onclick=\"window.location.href='"
+                        + result.loginURL + "';\" title='" + tip.loginLabel + "'></div>");
                 }
             },
             error: function (event, XMLHttpRequest, ajaxOptions, thrownError) {
