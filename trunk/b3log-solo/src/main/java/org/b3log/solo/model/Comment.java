@@ -16,6 +16,9 @@
 
 package org.b3log.solo.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * This class defines all comment model relevant keys.
  *
@@ -70,6 +73,11 @@ public final class Comment {
      */
     public static final String COMMENT_ORIGINAL_COMMENT_NAME =
             "commentOriginalCommentName";
+    /**
+     * Date format(yyyy/MM/dd hh:mm:ss).
+     */
+    public static final DateFormat DATE_FORMAT =
+            new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
 
     /**
      * Private default constructor.
