@@ -188,7 +188,7 @@
                 commentHTML += '</div><div class="right"> <a class="noUnderline" href="javascript:replyTo(\''
                     + result.oId + '\');">${replyLabel}</a>'
                     +'</div><div class="clear"></div><div class="comment-content">'
-                    + articleUtil.replaceEmotions($("#comment" + state).val(), "i-nove")
+                    + articleUtil.replaceEmotions($("#comment" + state).val().replace(/\n/g,"<br/>").replace(/</g, "&lt;").replace(/>/g, "&gt;"), "i-nove")
                     + '</div></div><div class="clear"></div></div></div>';
 
                 articleUtil.addCommentAjax(commentHTML, state);
