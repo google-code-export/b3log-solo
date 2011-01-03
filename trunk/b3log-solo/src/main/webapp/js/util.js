@@ -69,18 +69,20 @@ $.extend(Util.prototype, {
                     var loginHTML = "<div class='left'>" + result.userName + "&nbsp;| &nbsp;</div>";
 
                     if (result.isAdmin) {
-                        loginHTML += "<span class='left' onclick='util.clearAllCache();'>"
-                            + tip.clearAllCacheLabel + "&nbsp;|&nbsp;</span>"
-                            + "<span class='left' onclick='util.clearCache();'>"
-                            + tip.clearCacheLabel + "&nbsp;|&nbsp;</span>";
+                        loginHTML += "<span class='left' onclick=\"util.clearCache('all');\">"
+                        + tip.clearAllCacheLabel + "&nbsp;|&nbsp;</span>"
+                        + "<span class='left' onclick='util.clearCache();'>"
+                        + tip.clearCacheLabel + "&nbsp;|&nbsp;</span>";
                     }
                     loginHTML += "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='"
-                        + tip.adminLabel + "'></div>" + "<div class='left'>&nbsp;|&nbsp;</div>"
-                        + "<div onclick='util.adminLogout();' class='left logoutIcon' title='" + tip.logoutLabel+ "'></div>";
+                    + tip.adminLabel + "'></div>" + "<div class='left'>&nbsp;|&nbsp;</div>"
+                    + "<div onclick='window.location.href="
+                    + result.logoutURL + ";' class='left logoutIcon' title='" + tip.logoutLabel+ "'></div>";
                 
                     $("#admin").append(loginHTML);
                 } else {
-                    $("#admin").append("<div class='left loginIcon' onclick='util.adminLogin();' title='" + tip.loginLabel + "'></div>");
+                    $("#admin").append("<div class='left loginIcon' onclick='window.location.href="
+                        + result.loginURL + ";' title='" + tip.loginLabel + "'></div>");
                 }
             },
             error: function (event, XMLHttpRequest, ajaxOptions, thrownError) {
@@ -92,24 +94,22 @@ $.extend(Util.prototype, {
         this.setCurrentPage();
     },
 
-    clearCache: function () {
-        jsonRpc.adminService.clearPageCache(window.location.pathname);
-        window.location.reload();
-    },
-
-    clearAllCache: function () {
-        jsonRpc.adminService.clearAllPageCache();
-        window.location.reload();
-    },
-
-    adminLogin: function () {
-        var loginURL = jsonRpc.adminService.getLoginURL("/admin-index.do");
-        window.location.href = loginURL;
-    },
-
-    adminLogout: function () {
-        var logoutURL = jsonRpc.adminService.getLogoutURL();
-        window.location.href = logoutURL;
+    clearCache: function (all) {
+        var isAll = "";
+        if (all === "all") {
+            isAll = all;
+        } else {
+            isAll = "";
+        }
+        
+        $.ajax({
+            type: "POST",
+            url: "/clear-cache.do",
+            data: isAll,
+            success: function(result){
+                window.location.reload();
+            }
+        });
     },
 
     replaceCommentsEm: function (selector, skinName) {
@@ -121,7 +121,7 @@ $.extend(Util.prototype, {
             for (var j = 1; j < ems.length; j++) {
                 var key = ems[j].substr(0, 2),
                 emImgHTML = "<img src='/skins/" + skinName + "/emotions/em" + key
-                    + ".png'/>";
+                + ".png'/>";
                 content += emImgHTML + ems[j].slice(3);
             }
             $commentContents[i].innerHTML = content;
@@ -212,8 +212,8 @@ $.extend(Util.prototype, {
         for (var i = 0; i < tags.length; i++) {
             var style = this.getStyle(maxCount, tags[i].tagCount);
             tagsHTML += "<a title='" + tags[i].tagCount + "' class='tagPanel' style='"
-                + style.font + style.color + style.padding + "' href='/tags/"
-                + tags[i].tagNameURLEncoded +"'>" + tags[i].tagName + "</a> ";
+            + style.font + style.color + style.padding + "' href='/tags/"
+            + tags[i].tagNameURLEncoded +"'>" + tags[i].tagName + "</a> ";
         }
         $("#tagsPanel").html(tagsHTML + "<div class='clear'></div>");
     }
