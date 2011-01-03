@@ -77,7 +77,7 @@ public final class Comment {
      * Date format(yyyy/MM/dd hh:mm:ss).
      */
     public static final DateFormat DATE_FORMAT =
-            new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+            new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     /**
      * Private default constructor.
