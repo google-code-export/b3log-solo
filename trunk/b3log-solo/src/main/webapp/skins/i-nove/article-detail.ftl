@@ -270,7 +270,7 @@
                     commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
                         + result.oId + '">' + $("#commentName" + state).val() + '</a>';
                 }
-                commentHTML += '</div><div class="left comment-info"><div class="left">' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss');
+                commentHTML += '</div><div class="left comment-info"><div class="left">' + result.commentDate;
                 if (state !== "") {
                     var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId).find(".comment-author a").text();
                     commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + articleUtil.currentCommentId + '"'
