@@ -46,7 +46,6 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
@@ -383,7 +382,7 @@ public final class Filler {
         // Erase email for security reason
         for (final JSONObject comment : recentComments) {
             final String content = comment.getString(Comment.COMMENT_CONTENT).
-                    replaceAll(CommentService.ENTER_ESC, "&nbsp;");
+                    replaceAll(SoloServletListener.ENTER_ESC, "&nbsp;");
             comment.put(Comment.COMMENT_CONTENT, content);
             comment.remove(Comment.COMMENT_EMAIL);
         }

@@ -41,6 +41,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.action.captcha.CaptchaServlet;
+import org.b3log.solo.action.impl.AddArticleCommentAction;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Article;
@@ -66,7 +67,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Jan 2, 2011
+ * @version 1.0.2.1, Jan 3, 2011
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -126,10 +127,10 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     @Inject
     private ArticleService articleService;
     /**
-     * Comment service.
+     * Add article comment action.
      */
     @Inject
-    private CommentService commentService;
+    private AddArticleCommentAction addArticleCommentAction;
     /**
      * Time zone utilities.
      */
@@ -713,8 +714,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                     "Hi, this is a comment. To delete a comment, just log in and "
                     + "view the post's comments. There you will have the option "
                     + "to delete them.");
-            commentService.addCommentToArticle(requestJSONObject,
-                                               request, response);
+            addArticleCommentAction.doAjaxAction(requestJSONObject,
+                                                 request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException("Hello World error?!");

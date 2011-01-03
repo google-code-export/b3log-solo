@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.7, Jan 1, 2011
+ * @version 1.0.3.8, Jan 3, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -120,7 +120,11 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final Map<String, String> EN_MONTHS =
             new HashMap<String, String>();
-
+    /**
+     * Enter escape.
+     */
+    public static final String ENTER_ESC = "_esc_enter_88250_";
+    
     static {
         EN_MONTHS.put("01", "January");
         EN_MONTHS.put("02", "February");

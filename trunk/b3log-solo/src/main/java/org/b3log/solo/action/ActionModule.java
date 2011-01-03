@@ -29,6 +29,8 @@ import org.b3log.solo.action.feed.BlogArticlesFeedServlet;
 import org.b3log.solo.action.feed.TagArticlesFeedServlet;
 import org.b3log.solo.action.file.BlobStoreFileAccessServlet;
 import org.b3log.solo.action.file.DataStoreFileAccessServlet;
+import org.b3log.solo.action.impl.AddArticleCommentAction;
+import org.b3log.solo.action.impl.AddPageCommentAction;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
 import org.b3log.solo.action.impl.AdminErrorAction;
@@ -50,7 +52,7 @@ import org.b3log.solo.upgrade.UpgradeModule;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Dec 24, 2010
+ * @version 1.0.2.5, Jan 3, 2011
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -153,5 +155,11 @@ public final class ActionModule extends AbstractActionModule {
 
         bind(CheckLoggedInAction.class).in(Scopes.SINGLETON);
         serve("/check-login.do").with(CheckLoggedInAction.class);
+
+        bind(AddArticleCommentAction.class).in(Scopes.SINGLETON);
+        serve("/add-article-comment.do").with(AddArticleCommentAction.class);
+
+        bind(AddPageCommentAction.class).in(Scopes.SINGLETON);
+        serve("/add-page-comment.do").with(AddPageCommentAction.class);
     }
 }
