@@ -153,41 +153,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             new SimpleDateFormat("yyyy/MM/dd");
 
     /**
-     * Gets the random articles.
-     *
-     * @return a list of articles, returns an empty list if not found
-     * @throws ActionException action exception
-     */
-    public List<JSONObject> getRandomArticles() throws ActionException {
-        try {
-            final JSONObject preference = preferenceUtils.getPreference();
-            if (null == preference) {
-                throw new ActionException("Not found preference");
-            }
-
-            final int displayCnt =
-                    preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
-            final List<JSONObject> ret =
-                    articleRepository.getRandomly(displayCnt);
-            for (final JSONObject article : ret) {
-                article.remove(Keys.OBJECT_ID);
-                article.remove(ARTICLE_ABSTRACT);
-                article.remove(ARTICLE_COMMENT_COUNT);
-                article.remove(ARTICLE_CONTENT);
-                article.remove(ARTICLE_CREATE_DATE);
-                article.remove(ARTICLE_TAGS_REF);
-                article.remove(ARTICLE_UPDATE_DATE);
-                article.remove(ARTICLE_VIEW_COUNT);
-            }
-
-            return ret;
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-    }
-
-    /**
      * Adds an article from the specified request json object and http servlet
      * request.
      *
