@@ -478,43 +478,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Gets the URL of user logout.
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return logout URL, returns {@code null} if the user is not logged in
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public String getLogoutURL(final HttpServletRequest request,
-                               final HttpServletResponse response)
-            throws ActionException, IOException {
-        if (!userUtils.isLoggedIn()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return null;
-        }
-
-        return userService.createLogoutURL("/");
-    }
-
-    /**
-     * Gets the URL of user login.
-     *
-     * @param redirectURL redirect URL after logged in
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return login URL
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public String getLoginURL(final String redirectURL,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
-            throws ActionException, IOException {
-        return userService.createLoginURL(redirectURL);
-    }
-
-    /**
      * Gets page cache states with the specified http servlet request and http
      * servlet response.
      *
