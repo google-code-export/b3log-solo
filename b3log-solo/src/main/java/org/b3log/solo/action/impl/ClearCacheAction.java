@@ -56,10 +56,6 @@ public final class ClearCacheAction extends AbstractAction {
     @Inject
     private Users userUtils;
     /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
-    /**
      * Page cache utilities.
      */
     @Inject
