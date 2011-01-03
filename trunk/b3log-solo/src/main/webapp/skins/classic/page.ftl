@@ -202,7 +202,7 @@
                     + '</div><div class="clear"></div></div><div class="comment-body">'
                     + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
                     + '" src="' + result.commentThumbnailURL + '"/>'
-                    + '</div><div class="comment-content">' + articleUtil.replaceEmotions($("#comment" + state).val(), "classic") + '</div><div class="clear"></div>'
+                    + '</div><div class="comment-content">' + articleUtil.replaceEmotions($("#comment" + state).val().replace(/\n/g,"<br/>").replace(/</g, "&lt;").replace(/>/g, "&gt;"), "classic") + '</div><div class="clear"></div>'
                     + '</div></div></div>';
 
                 articleUtil.addCommentAjax(commentHTML, state);

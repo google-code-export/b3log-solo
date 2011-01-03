@@ -98,7 +98,6 @@ $.extend(ArticleUtil.prototype, {
     },
 
     addCommentAjax: function (commentHTML, state) {
-        commentHTML = commentHTML.replace(/\n/g,"<br/>");
         if ($("#comments .comments-header").length > 0) {
             $("#comments .comments-header").after(commentHTML);
         } else if ($("#comments>div").first().length === 1) {
