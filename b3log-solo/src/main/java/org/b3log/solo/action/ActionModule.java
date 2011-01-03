@@ -35,6 +35,7 @@ import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
 import org.b3log.solo.action.impl.AdminErrorAction;
 import org.b3log.solo.action.impl.AuthorArticlesAction;
+import org.b3log.solo.action.impl.ClearCacheAction;
 import org.b3log.solo.action.impl.CheckLoggedInAction;
 import org.b3log.solo.action.impl.InitAction;
 import org.b3log.solo.action.impl.PageAction;
@@ -161,5 +162,8 @@ public final class ActionModule extends AbstractActionModule {
 
         bind(AddPageCommentAction.class).in(Scopes.SINGLETON);
         serve("/add-page-comment.do").with(AddPageCommentAction.class);
+
+        bind(ClearCacheAction.class).in(Scopes.SINGLETON);
+        serve("/clear-cache.do").with(ClearCacheAction.class);
     }
 }

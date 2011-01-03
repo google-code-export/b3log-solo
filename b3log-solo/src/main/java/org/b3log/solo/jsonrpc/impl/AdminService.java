@@ -49,7 +49,6 @@ import org.b3log.solo.model.Cache;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.util.PageCacheKeys;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Statistic;
@@ -106,11 +105,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      */
     @Inject
     private Skins skins;
-    /**
-     * Page cache utilities.
-     */
-    @Inject
-    private PageCacheKeys pageCacheKeys;
     /**
      * User utilities.
      */
@@ -525,55 +519,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
-    }
-
-    /**
-     * Clears a page cache specified by the given URI.
-     *
-     * @param uri the specified URI
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public void clearPageCache(final String uri,
-                               final HttpServletRequest request,
-                               final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
-        LOGGER.log(Level.FINE, "URI[{0}]", uri);
-
-        String pageCacheKey = uri;
-        pageCacheKey = pageCacheKeys.getPageCacheKey(uri, null);
-
-        LOGGER.log(Level.FINER, "pageCacheKey[{0}]", pageCacheKey);
-
-        PageCaches.remove(pageCacheKey);
-    }
-
-    /**
-     * Clears all page cache.
-     * 
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public void clearAllPageCache(final HttpServletRequest request,
-                                  final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
-
-        PageCaches.removeAll();
     }
 
     /**
