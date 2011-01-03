@@ -59,7 +59,6 @@
                 <div id="content">
                     <div class="main">
                         <#include "common-articles.ftl">
-                        <script type="text/javascript" src="/skins/${skinDirName}/js/enMonth.js"></script>
                     </div>
                     <div id="sidebar">
                         <#include "article-side.ftl">
