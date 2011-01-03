@@ -188,8 +188,10 @@ $.extend(ArticleUtil.prototype, {
     loadRandomArticles: function () {
         var randomArticles1Label = this.tip.randomArticles1Label;
         // getRandomArticles
-        jsonRpc.articleService.getRandomArticles(function (result, error) {
-            if (result && !error) {
+        $.ajax({
+            url: "/get-random-articles.do",
+            type: "POST",
+            success: function(result, textStatus){
                 var randomArticles = result.list;
                 if (0 === randomArticles.length) {
                     return;
