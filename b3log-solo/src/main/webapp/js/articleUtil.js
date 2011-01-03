@@ -327,10 +327,11 @@ $.extend(ArticleUtil.prototype, {
             if (statue === "Reply") {
                 requestJSONObject.commentOriginalCommentId = commentId;
             }
+            
             $.ajax({
                 type: "POST",
                 url: "/add-" + type + "-comment.do",
-                data: requestJSONObject,
+                data: JSON.stringify(requestJSONObject),
                 success: function(result){
                     switch (result.sc) {
                         case "COMMENT_" + type.toUpperCase() + "_SUCC":
