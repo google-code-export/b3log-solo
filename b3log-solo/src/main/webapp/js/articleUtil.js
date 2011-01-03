@@ -309,9 +309,9 @@ $.extend(ArticleUtil.prototype, {
             statue = '';
         }
         var tip = this.tip,
-        type = "Article";
+        type = "article";
         if (tip.randomArticles1Label === undefined) {
-            type = "Page";
+            type = "page";
         }
         if (this.validateComment(statue)) {
             $("#commentErrorTip" + statue).html(this.tip.loadingLabel);
@@ -327,9 +327,11 @@ $.extend(ArticleUtil.prototype, {
             if (statue === "Reply") {
                 requestJSONObject.commentOriginalCommentId = commentId;
             }
-            
-            jsonRpc.commentService["addCommentTo" + type](function (result, error) {
-                if (result && !error) {
+            $.ajax({
+                type: "POST",
+                url: "/add-" + type + "-comment.do",
+                data: requestJSONObject,
+                success: function(result){
                     switch (result.sc) {
                         case "COMMENT_" + type.toUpperCase() + "_SUCC":
                             addComment(result, statue);
@@ -343,11 +345,11 @@ $.extend(ArticleUtil.prototype, {
                             break;
                     }
                 }
-            }, requestJSONObject);
+            });
 
             Cookie.createCookie("commentName", requestJSONObject.commentName, 365);
             Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
-            Cookie.createCookie("commentURL", $("#commentURL").val().replace(/(^\s*)|(\s*$)/g, ""), 365);
+            Cookie.createCookie("commentURL", requestJSONObject.commentURL, 365);
         }
     },
 
