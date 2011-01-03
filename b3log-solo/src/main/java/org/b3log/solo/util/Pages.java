@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.solo.jsonrpc.impl.CommentService;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
@@ -88,7 +88,7 @@ public final class Pages {
 
             final JSONObject comment = commentRepository.get(commentId);
             final String content = comment.getString(Comment.COMMENT_CONTENT).
-                    replaceAll(CommentService.ENTER_ESC, "<br/>");
+                    replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
             comment.put(Comment.COMMENT_CONTENT, content);
             comment.remove(Comment.COMMENT_EMAIL); // Remove email
 

@@ -28,8 +28,8 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
@@ -118,7 +118,7 @@ public final class ArticleCommentReplyNotifier
 
             final String commentContent =
                     comment.getString(Comment.COMMENT_CONTENT).
-                    replaceAll(CommentService.ENTER_ESC, "<br/>");
+                    replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
             final String commentSharpURL =
                     comment.getString(Comment.COMMENT_SHARP_URL);
             final Message message = new Message();
