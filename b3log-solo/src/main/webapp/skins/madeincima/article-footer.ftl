@@ -22,6 +22,7 @@
     <li id="about-me"><a href="http://www.madeincima.eu/about/">About</a></li>
 </ul>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+<script type="text/javascript" src="/skins/${skinDirName}/js/enMonth.js"></script>
 <script type="text/javascript">
     var currentSkinRoot = "/skins/${skinDirName}/";
 </script>

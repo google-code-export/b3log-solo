@@ -61,7 +61,6 @@
             <div id="content">                
                 <div class="main">
                     <#include "article-detail-main.ftl">
-                    <script type="text/javascript" src="/skins/${skinDirName}/js/enMonth.js"></script>
                 </div>
                 <div id="sidebar">
                     <#include "article-side.ftl">
@@ -81,7 +80,9 @@
                     <li><a class="addthis_button_more"><span>More...</span><img src="/images/addthis.png" alt="More..." /></a></li>
                 </ul>
             </div>
-        </div> <script type="text/javascript" src="/js/articleUtil.js"></script>
+        </div> 
+        <script type="text/javascript" src="/skins/${skinDirName}/js/enMonth.js"></script>
+        <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
