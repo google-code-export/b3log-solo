@@ -205,7 +205,7 @@
                         + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                 }
 
-                commentHTML += '<div class="right">' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
+                commentHTML += '<div class="right">' + result.commentDate
                     + '&nbsp;<a class="noUnderline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
                     + '</div><div class="clear"></div></div><div><img alt="' + $("#commentName" + state).val()
                     + '" src="' + result.commentThumbnailURL + '" class="comment-picture left"/>'

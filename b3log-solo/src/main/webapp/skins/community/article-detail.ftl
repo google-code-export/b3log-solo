@@ -302,7 +302,7 @@
                         + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                 }
 
-                commentHTML += '&nbsp;' + articleUtil.getDate(result.commentDate.time, 'yyyy-mm-dd hh:mm:ss')
+                commentHTML += '&nbsp;' + result.commentDate
                     + '</div><div class="comment-content">' + articleUtil.replaceEmotions($("#comment" + state).val(), "community")
                     + '</div><div class="reply"><a href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
                     + '</div></div><div class="clear"></div></div>';
