@@ -97,7 +97,9 @@ $.extend(Util.prototype, {
     clearCache: function (all) {
         var isAll = "";
         if (all === "all") {
-            isAll = all;
+            isAll = JSON.stringify({
+                "all": all
+            });
         } else {
             isAll = "";
         }

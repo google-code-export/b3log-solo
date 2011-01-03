@@ -2,7 +2,6 @@
     <div id="main-aux">
         <div id="patch"></div>
         <div id="main-aux1">
-
             <div class="post-cont">
                 <div class="headline">
                     <h2>

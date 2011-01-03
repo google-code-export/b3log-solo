@@ -192,7 +192,7 @@ $.extend(ArticleUtil.prototype, {
             url: "/get-random-articles.do",
             type: "POST",
             success: function(result, textStatus){
-                var randomArticles = result.list;
+                var randomArticles = result;
                 if (0 === randomArticles.length) {
                     return;
                 }
@@ -352,7 +352,7 @@ $.extend(ArticleUtil.prototype, {
 
             Cookie.createCookie("commentName", requestJSONObject.commentName, 365);
             Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
-            Cookie.createCookie("commentURL", requestJSONObject.commentURL, 365);
+            Cookie.createCookie("commentURL", $("#commentURL" + statue).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
         }
     },
 
