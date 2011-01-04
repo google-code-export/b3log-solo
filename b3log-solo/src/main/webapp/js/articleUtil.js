@@ -191,7 +191,7 @@ $.extend(ArticleUtil.prototype, {
             url: "/get-random-articles.do",
             type: "POST",
             success: function(result, textStatus){
-                var randomArticles = result;
+                var randomArticles = result.randomArticles;
                 if (0 === randomArticles.length) {
                     return;
                 }
