@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
@@ -115,7 +116,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Jan 2, 2011
+ * @version 1.0.1.7, Jan 4, 2011
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -271,6 +272,8 @@ public final class V021ToV025 extends HttpServlet {
 
             LOGGER.info("Checked for consistency");
         }
+
+        PageCaches.removeAll();
     }
 
     /**
