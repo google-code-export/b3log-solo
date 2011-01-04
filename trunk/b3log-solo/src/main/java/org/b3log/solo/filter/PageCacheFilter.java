@@ -48,7 +48,7 @@ import org.b3log.solo.util.Statistics;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Dec 22, 2010
+ * @version 1.0.2.1, Jan 4, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -195,6 +195,10 @@ public final class PageCacheFilter implements Filter {
                || requestURI.equals("/file-access.do")
                || requestURI.equals("/init.do")
                || requestURI.equals("/check-login.do")
+               || requestURI.equals("/clear-cache.do")
+               || requestURI.equals("/add-article-comment.do")
+               || requestURI.equals("/add-page-comment.do")
+               || requestURI.equals("/get-random-articles.do")
                || equalAdminActions(requestURI)
                || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")
