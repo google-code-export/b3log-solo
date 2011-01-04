@@ -180,10 +180,10 @@
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
             var tagArray = $("#tag").val().split(","),
-            signId = 0;
-            $(".signs button").each(function (i) {
+            signId = "";
+            $(".signs button").each(function () {
                 if (this.className === "selected") {
-                    signId = i;
+                    signId = this.id.substr(this.id.length - 1, 1);
                 }
             });
 
@@ -249,7 +249,7 @@
             $("#tipMsg").text("");
             var tagArray = $("#tag").val().split(","),
             signId = "";
-            $(".signs button").each(function (i) {
+            $(".signs button").each(function () {
                 if (this.className === "selected") {
                     signId = this.id.substr(this.id.length - 1, 1);
                 }
