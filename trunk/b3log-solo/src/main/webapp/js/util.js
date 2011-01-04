@@ -95,19 +95,23 @@ $.extend(Util.prototype, {
     },
 
     clearCache: function (all) {
-        var isAll = "";
+        var data = {};
         if (all === "all") {
-            isAll = JSON.stringify({
-                "all": all
-            });
+            data = {
+                "all": "all",
+                "URI": ""
+            };
         } else {
-            isAll = "";
+            data = {
+                "all": "",
+                "URI": window.location.pathname
+            };
         }
         
         $.ajax({
             type: "POST",
             url: "/clear-cache.do",
-            data: isAll,
+            data: JSON.stringify(data),
             success: function(result){
                 window.location.reload();
             }
