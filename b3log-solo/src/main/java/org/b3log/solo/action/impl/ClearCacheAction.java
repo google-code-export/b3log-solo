@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import com.google.inject.Inject;
@@ -23,12 +22,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.util.PageCacheKeys;
 import org.b3log.solo.util.Users;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -72,21 +74,31 @@ public final class ClearCacheAction extends AbstractAction {
                                       final HttpServletRequest request,
                                       final HttpServletResponse response)
             throws ActionException {
-        final String all = data.optString("all");
+        final JSONObject ret = new JSONObject();
 
+        final String all = data.optString("all");
         try {
             if (Strings.isEmptyOrNull(all)) { // Just clears single page cache
-                clearPageCache(request.getRequestURI(), request, response);
+                final String uri = data.getString(Common.URI);
+                clearPageCache(uri, request, response);
             } else { // Clears all page caches
                 clearAllPageCache(request, response);
             }
+
+            ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            return new JSONObject(false);
+            try {
+                ret.put(Keys.STATUS_CODE, false);
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+
+                throw new ActionException(ex);
+            }
         }
 
-        return new JSONObject(true);
+        return ret;
     }
 
     /**
@@ -106,8 +118,6 @@ public final class ClearCacheAction extends AbstractAction {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
-
-        LOGGER.log(Level.FINE, "URI[{0}]", uri);
 
         String pageCacheKey = uri;
         pageCacheKey = pageCacheKeys.getPageCacheKey(uri, null);

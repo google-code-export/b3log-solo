@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Jan 3, 2011
+ * @version 1.0.2.4, Jan 4, 2011
  */
 public final class Common {
 
@@ -153,6 +153,10 @@ public final class Common {
      * Key of is administrator.
      */
     public static final String IS_ADMIN = "isAdmin";
+    /**
+     * Key of URI.
+     */
+    public static final String URI = "URI";
 
     /**
      * Private default constructor.
