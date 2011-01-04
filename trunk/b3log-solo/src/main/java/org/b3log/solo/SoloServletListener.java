@@ -124,7 +124,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * Enter escape.
      */
     public static final String ENTER_ESC = "_esc_enter_88250_";
-    
+
     static {
         EN_MONTHS.put("01", "January");
         EN_MONTHS.put("02", "February");
@@ -158,13 +158,11 @@ public final class SoloServletListener extends AbstractServletListener {
         final Injector ret = super.getInjector();
 
         if (null == ret) {
-            final Value gaeEnvValue =
-                    SystemProperty.environment.value();
+            final Value gaeEnvValue = SystemProperty.environment.value();
             LOGGER.info("Initializing Guice....");
             final Collection<Module> modules = createModules();
 
-            if (SystemProperty.Environment.Value.Production
-                == gaeEnvValue) {
+            if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
                 LOGGER.info("B3log Solo runs on [production] environment");
                 setInjector(Guice.createInjector(Stage.PRODUCTION,
                                                  modules));
