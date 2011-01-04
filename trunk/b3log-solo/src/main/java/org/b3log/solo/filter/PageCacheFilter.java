@@ -48,7 +48,7 @@ import org.b3log.solo.util.Statistics;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jan 4, 2011
+ * @version 1.0.2.2, Jan 4, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -221,26 +221,26 @@ public final class PageCacheFilter implements Filter {
         }
     }
 
+    @Override
+    public void destroy() {
+    }
+
     /**
      * Determines whether the specified request URI is equals to admin action
      * URI patterns.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return {@code true} if it is equals to, {@code false} otherwise
      * @see org.b3log.solo.action.ActionModule#ADMIN_ACTIONS
      */
-    public static boolean equalAdminActions(final String requestURI) {
+    private static boolean equalAdminActions(final String requestURI) {
         for (int i = 0; i < ActionModule.ADMIN_ACTIONS.length; i++) {
-            if (!ActionModule.ADMIN_ACTIONS[i].equals(requestURI)) {
-                return false;
+            if (ActionModule.ADMIN_ACTIONS[i].equals(requestURI)) {
+                return true;
             }
         }
 
-        return true;
-    }
-
-    @Override
-    public void destroy() {
+        return false;
     }
 
     /**
