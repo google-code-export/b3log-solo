@@ -11,7 +11,7 @@
      * [multi_users 多用户]
      * [article_sign 文章签名档]
      * [skin 皮肤]
-    * [external_articles 站外相关阅读]
+     * [external_articles 站外相关阅读]
  * 开发手册
    * [pre_dev 前提准备]
    * 开发环境
