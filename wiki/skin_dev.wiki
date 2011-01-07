@@ -1,3 +1,12 @@
 #summary 皮肤开发
 
-===皮肤开发===
+==皮肤开发==
+
+===开发步骤===
+ # 在 /skins 下新建一个文件夹
+ # 在新建文件夹中创建 skin.properties 文件
+ # skin.properties 给 name 和 memo 赋值
+      * name：皮肤名称
+      * memo：备注，可记录所仿皮肤的站点或名称等信息
+
+===注意事项===
