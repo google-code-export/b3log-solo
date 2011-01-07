@@ -97,7 +97,6 @@
         beforeInitArticle();
 
         // tag auto completed
-        // TODO: add to beforeInitArticle()
         jsonRpc.tagService.getTags(function (result, error) {
             if (result.length > 0) {
                 var tags = [];
@@ -233,6 +232,27 @@
                             $("#tipMsg").text("${addSuccLabel}");
                             $("#draft-listTab").click();
                         }
+                        
+                        // reset article form
+                        if (tinyMCE.get("articleContent")) {
+                            tinyMCE.get('articleContent').setContent("");
+                        } else {
+                            $("#articleContent").val("");
+                        }
+                        if (tinyMCE.get('abstract')) {
+                            tinyMCE.get('abstract').setContent("");
+                        } else {
+                            $("#abstract").val("");
+                        }
+                        $("#tag").val("");
+                        $("#permalink").val("");
+                        $(".signs button").each(function (i) {
+                            if (i === $(".signs button").length - 1) {
+                                this.className = "selected";
+                            } else {
+                                this.className = "";
+                            }
+                        });
                         break;
                     default:
                         $("#tipMsg").text("${addFailLabel}");
@@ -302,6 +322,26 @@
                             $("#tipMsg").text("${updateSuccLabel}");
                             $("#draft-listTab").click();
                         }
+                        // reset article form
+                        if (tinyMCE.get("articleContent")) {
+                            tinyMCE.get('articleContent').setContent("");
+                        } else {
+                            $("#articleContent").val("");
+                        }
+                        if (tinyMCE.get('abstract')) {
+                            tinyMCE.get('abstract').setContent("");
+                        } else {
+                            $("#abstract").val("");
+                        }
+                        $("#tag").val("");
+                        $("#permalink").val("");
+                        $(".signs button").each(function (i) {
+                            if (i === $(".signs button").length - 1) {
+                                this.className = "selected";
+                            } else {
+                                this.className = "";
+                            }
+                        });
                         break;
                     default:
                         $("#tipMsg").text("${updateFailLabel}");
