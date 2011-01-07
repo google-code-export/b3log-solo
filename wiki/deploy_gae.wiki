@@ -3,7 +3,7 @@
 ===部署至 GAE===
 <ol>
 <li>创建 GAE 应用</li>
-假设 ID 为`${application-id}`,（没有 GAE 帐号的话请点击<a href="http://appengine.google.com/">这里</a>申请）
+假设 ID 为 `${application-id}`,（没有 GAE 帐号的话请点击<a href="http://appengine.google.com/">这里</a>申请）
 <li>配置 Solo</li>
 将 `${solo.war}/WEB-INF/appengine-web.xml` 文件里的
 {{{
