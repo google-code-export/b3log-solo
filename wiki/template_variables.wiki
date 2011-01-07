@@ -1,3 +1,7 @@
 #summary 模板变量
 
 ===模板变量===
+
+archive-date-articles.ftl：
+||*变量名*||*类型*||*说明*||
+||archiveDate||JSONObject||存档日期对象||
