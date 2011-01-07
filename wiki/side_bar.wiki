@@ -18,4 +18,4 @@
      * [mvn Maven2+]
      * [ide IDE]
      * [latke 开发框架]
-   * 皮肤开发
+   * [skin-dev 皮肤开发]
