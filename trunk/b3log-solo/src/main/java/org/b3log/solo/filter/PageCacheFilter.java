@@ -33,12 +33,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.ActionModule;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.PageCacheKeys;
 import org.b3log.solo.util.Statistics;
+import org.json.JSONObject;
 
 /**
  * Page cache filter.
@@ -77,6 +83,16 @@ public final class PageCacheFilter implements Filter {
      */
     @Inject
     private StatisticRepository statisticRepository;
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+    /**
+     * Article utilities.
+     */
+    @Inject
+    private Articles articleUtils;
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -138,7 +154,8 @@ public final class PageCacheFilter implements Filter {
         LOGGER.log(Level.FINER, "Request[pageCacheKey={0}]", pageCacheKey);
         LOGGER.log(Level.FINEST, "Page cache[cachedCount={0}, maxCount={1}]",
                    new Object[]{cache.getCachedCount(), cache.getMaxCount()});
-        final Object cachedPageContentObject = cache.get(pageCacheKey);
+        final JSONObject cachedPageContentObject =
+                (JSONObject) cache.get(pageCacheKey);
         if (null == cachedPageContentObject) {
             httpServletRequest.setAttribute(Keys.PAGE_CACHE_KEY,
                                             pageCacheKey);
@@ -154,22 +171,51 @@ public final class PageCacheFilter implements Filter {
             writer.flush();
             writer.close();
         } else {
-            LOGGER.log(Level.FINEST,
-                       "Writes resposne for page[pageCacheKey={0}] from cache",
-                       pageCacheKey);
-            response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
-            final PrintWriter writer = response.getWriter();
-            String cachedPageContent = (String) cachedPageContentObject;
-            final long endimeMillis = System.currentTimeMillis();
-            final String dateString = DateFormatUtils.format(
-                    endimeMillis, "yyyy/MM/dd HH:mm:ss");
-            cachedPageContent += String.format(
-                    "<!-- Cached by B3log Solo(%1$d ms), %2$s -->",
-                    endimeMillis - startTimeMillis, dateString);
-            writer.write(cachedPageContent);
-            writer.flush();
-            writer.close();
+            try {
+                LOGGER.log(Level.FINEST,
+                           "Writes resposne for page[pageCacheKey={0}] from cache",
+                           pageCacheKey);
+                response.setContentType("text/html");
+                response.setCharacterEncoding("UTF-8");
+                final PrintWriter writer = response.getWriter();
+                String cachedPageContent =
+                        cachedPageContentObject.getString(
+                        AbstractCacheablePageAction.CACHED_CONTENT);
+                final String cachedType = cachedPageContentObject.optString(
+                        AbstractCacheablePageAction.CACHED_TYPE);
+                if (!Strings.isEmptyOrNull(cachedType)) {
+                    final String oId = cachedPageContentObject.getString(
+                            AbstractCacheablePageAction.CACHED_OID);
+                    LOGGER.log(Level.FINEST,
+                               "Cached value[key={0}, oId={1}, type={2}]",
+                               new Object[]{pageCacheKey, oId, cachedType});
+                    if (Strings.isEmptyOrNull(oId)) {
+                        httpServletResponse.sendError(
+                                HttpServletResponse.SC_NOT_FOUND);
+
+                        return;
+                    }
+
+                    if (Article.ARTICLE.equals(cachedType)) {
+                        incArticleViewCount(oId);
+                        LOGGER.log(Level.INFO,
+                                   "Inced article view count[articleOid={0}]",
+                                   oId);
+                    }
+                }
+
+                final long endimeMillis = System.currentTimeMillis();
+                final String dateString = DateFormatUtils.format(
+                        endimeMillis, "yyyy/MM/dd HH:mm:ss");
+                cachedPageContent += String.format(
+                        "<!-- Cached by B3log Solo(%1$d ms), %2$s -->",
+                        endimeMillis - startTimeMillis, dateString);
+                writer.write(cachedPageContent);
+                writer.flush();
+                writer.close();
+            } catch (final Exception e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
         }
 
         incBlogViewCount();
@@ -261,5 +307,21 @@ public final class PageCacheFilter implements Filter {
         }
 
         return ret;
+    }
+
+    /**
+     * View count +1 for an article specified by the given article id.
+     * .
+     * @param articleId the given article id
+     */
+    private void incArticleViewCount(final String articleId) {
+        final Transaction transaction = articleRepository.beginTransaction();
+        try {
+            articleUtils.incArticleViewCount(articleId);
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 }

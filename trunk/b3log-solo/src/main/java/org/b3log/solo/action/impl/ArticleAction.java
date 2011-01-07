@@ -36,6 +36,7 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
@@ -56,7 +57,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Dec 30, 2010
+ * @version 1.0.1.9, Jan 7, 2011
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -105,6 +106,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
+        request.setAttribute(CACHED_TYPE, Article.ARTICLE);
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -144,6 +146,9 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
                 return ret;
             }
+
+            request.setAttribute(CACHED_OID, articleId);
+            incArticleViewCount(articleId);
 
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
@@ -314,5 +319,21 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * View count +1 for an article specified by the given article id.
+     * .
+     * @param articleId the given article id
+     */
+    private void incArticleViewCount(final String articleId) {
+        final Transaction transaction = articleRepository.beginTransaction();
+        try {
+            articleUtils.incArticleViewCount(articleId);
+            transaction.commit();
+        } catch (final Exception e) {
+            transaction.rollback();
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 }
