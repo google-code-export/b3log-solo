@@ -7,5 +7,5 @@
  * archive-date-articles.ftl：
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
-  <tr><td>archiveDate</td><td>JSONObject</td><td>存档日期对象</td><td</td></tr>
+  <tr><td>archiveDate</td><td>JSONObject</td><td>存档日期对象</td><td></td></tr>
  </table>
