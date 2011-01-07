@@ -6,7 +6,16 @@
  # 在 /skins 下新建一个文件夹
  # 在新建文件夹中创建 skin.properties 文件
  # skin.properties 给 name 和 memo 赋值
-      * name：皮肤名称
-      * memo：备注，可记录所仿皮肤的站点或名称等信息
+    * name：皮肤名称
+    * memo：备注，可记录所仿皮肤的站点或名称等信息
+ # 创建 default-index.css 文件，在其中写入该皮肤的外联样式
+ # 在新建文件夹中创建 emotions，images，js（有 JavaScript 文件时才需创建） 目录
+    * emotions：存放该皮肤的评论头像，命名为 em00.png - em14.png
+    * images：存放该皮肤所需要使用到的图片
+    * js：存放 /js 中没有，但该皮肤需要使用到的 JavaScript 文件
+ # 参照 /classic 中的 ftl 文件进行创建及相应的修改
 
 ===注意事项===
+ * 皮肤修改过程中，id 最好不要进行更改
+ * 部分公用方法被提取到 /js/util.js 和 /js/articleUtil.js 
+ * 如有任何疑问请与 [http://vanessa.b3log.org Vanessa] 联系
