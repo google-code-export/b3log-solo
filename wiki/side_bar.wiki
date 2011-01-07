@@ -19,3 +19,4 @@
      * [ide IDE]
      * [latke 开发框架]
    * [skin_dev 皮肤开发]
+     * [template_variables 模板变量]
