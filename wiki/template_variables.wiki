@@ -2,6 +2,8 @@
 
 ===模板变量===
 
+如果模板变量的类型是 JSONObject，其字段属性参考 org.b3log.solo.model 包下的类。
+
  * archive-date-articles.ftl：
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th></tr>
