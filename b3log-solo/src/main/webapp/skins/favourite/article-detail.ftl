@@ -78,7 +78,7 @@
                                 </a>
                                 <div class="left">
                                     <span class="tagsIcon" title="${tagLabel}"></span>
-                                    <#list articleTags?split(",") as articleTag>
+                                    <#list article.articleTags?split(",") as articleTag>
                                     <span class="count">
                                         <a href="/tags/${articleTag?url('UTF-8')}">
                                             ${articleTag}</a><#if articleTag_has_next>,</#if>
@@ -339,7 +339,7 @@
                 articleUtil.loadRandomArticles();
                 articleUtil.loadTool();
                     <#if 0 != externalRelevantArticlesDisplayCount>
-                    articleUtil.loadExternalRelevantArticles("<#list article.articleTags as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
+                    articleUtil.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
                     </#if>
                 }
             loadAction();
