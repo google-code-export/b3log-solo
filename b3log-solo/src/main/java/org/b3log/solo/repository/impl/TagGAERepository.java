@@ -30,6 +30,10 @@ import java.util.logging.Logger;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RunsOnEnv;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.json.JSONException;
@@ -39,7 +43,7 @@ import org.json.JSONObject;
  * Tag Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 3, 2010
+ * @version 1.0.0.6, Jan 9, 2011
  */
 public final class TagGAERepository extends AbstractGAERepository
         implements TagRepository {
@@ -54,6 +58,28 @@ public final class TagGAERepository extends AbstractGAERepository
      */
     @Inject
     private TagArticleGAERepository tagArticleRepository;
+    /**
+     * Cache.
+     */
+    private static final Cache<String, Object> CACHE;
+    /**
+     * Key of most used tag cache count.
+     */
+    private static final String KEY_MOST_USED_TAG_CACHE_CNT =
+            "mostUsedTagCacheCnt";
+
+    static {
+        final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
+        if (!runsOnEnv.equals(RunsOnEnv.GAE)) {
+            throw new RuntimeException(
+                    "GAE repository can only runs on Google App Engine, please "
+                    + "check your configuration and make sure "
+                    + "Latkes.setRunsOnEnv(RunsOnEnv.GAE) was invoked before "
+                    + "using GAE repository.");
+        }
+
+        CACHE = CacheFactory.getCache("TagGAERepositoryCache");
+    }
 
     @Override
     public String getName() {
@@ -78,18 +104,34 @@ public final class TagGAERepository extends AbstractGAERepository
 
     @Override
     public List<JSONObject> getMostUsedTags(final int num) {
-        final Query query = new Query(getName());
-        query.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                      Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final QueryResultIterable<Entity> queryResultIterable =
-                preparedQuery.asQueryResultIterable(FetchOptions.Builder.
-                withLimit(num));
+        final String cacheKey = KEY_MOST_USED_TAG_CACHE_CNT + "["
+                                + num + "]";
+        @SuppressWarnings("unchecked")
+        List<JSONObject> ret =
+                (List<JSONObject>) CACHE.get(cacheKey);
+        if (null != ret) {
+            LOGGER.log(Level.FINEST, "Got the most used tags from cache");
+        } else {
+            ret = new ArrayList<JSONObject>();
 
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        for (final Entity entity : queryResultIterable) {
-            final JSONObject tag = entity2JSONObject(entity);
-            ret.add(tag);
+            final Query query = new Query(getName());
+            query.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                          Query.SortDirection.DESCENDING);
+            final PreparedQuery preparedQuery = getDatastoreService().prepare(
+                    query);
+            final QueryResultIterable<Entity> queryResultIterable =
+                    preparedQuery.asQueryResultIterable(FetchOptions.Builder.
+                    withLimit(num));
+
+            for (final Entity entity : queryResultIterable) {
+                final JSONObject tag = entity2JSONObject(entity);
+                ret.add(tag);
+            }
+
+            CACHE.put(cacheKey, ret);
+
+            LOGGER.log(Level.FINEST,
+                       "Got the most used tags, then put it into cache");
         }
 
         return ret;

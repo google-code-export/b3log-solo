@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Jan 2, 2011
+ * @version 1.0.2.1, Jan 9, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -296,6 +296,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINE, "Skin path[{0}]", skinPath);
             Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                     new File(skinPath));
+            Templates.CACHE.clear();
 
             preference.put(Skin.SKINS, skinArray.toString());
 

@@ -45,6 +45,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.comparator.Comparators;
@@ -57,7 +58,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Jan 7, 2011
+ * @version 1.0.2.0, Jan 9, 2011
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -80,6 +81,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
      */
     @Inject
     private TagArticleRepository tagArticleRepository;
+    /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
     /**
      * Filler.
      */
@@ -174,9 +180,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             article.put(Article.ARTICLE_SIGN_REF,
                         articleUtils.getSign(articleId, preference));
 
-            final List<JSONObject> articleTags = articleUtils.getTags(articleId);
-            ret.put(Article.ARTICLE_TAGS_REF, articleTags);
-
             final JSONObject previous =
                     articleRepository.getPreviousArticle(articleId);
             if (null != previous) {
@@ -207,8 +210,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     articleUtils.getComments(articleId);
             ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
 
-            final List<JSONObject> relevantArticles =
-                    getRelevantArticles(articleId, articleTags);
+            final List<JSONObject> relevantArticles = getRelevantArticles(
+                    articleId, article.getString(Article.ARTICLE_TAGS_REF));
             ret.put(Common.RELEVANT_ARTICLES, relevantArticles);
 
             ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
@@ -237,17 +240,17 @@ public final class ArticleAction extends AbstractCacheablePageAction {
     }
 
     /**
-     * Gets the relevant articles by the specified article tags excludes the
-     * specified article id.
+     * Gets the relevant articles by the specified article tags string excludes
+     * the specified article id.
      *
      * @param articleId the specified article id
-     * @param articleTags the specified article tags
+     * @param articleTagsString the specified article tags string
      * @return a list of articles, returns an empty list if not found
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
      */
     private List<JSONObject> getRelevantArticles(
-            final String articleId, final List<JSONObject> articleTags)
+            final String articleId, final String articleTagsString)
             throws JSONException, RepositoryException {
         final JSONObject preference = preferenceUtils.getPreference();
         if (null == preference) {
@@ -256,11 +259,14 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
         final int displayCnt =
                 preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
-
-        // XXX: should average by tag?
+        final String[] tagTitles = articleTagsString.split(",");
+        final int maxTagCnt = displayCnt > tagTitles.length
+                ? tagTitles.length : displayCnt;
         final List<JSONObject> articles = new ArrayList<JSONObject>();
-        for (final JSONObject articleTag : articleTags) {
-            final String tagId = articleTag.getString(Keys.OBJECT_ID);
+        for (int i = 0; i < maxTagCnt; i++) {  // XXX: should average by tag?
+            final String tagTitle = tagTitles[i];
+            final JSONObject tag = tagRepository.getByTitle(tagTitle);
+            final String tagId = tag.getString(Keys.OBJECT_ID);
             final JSONObject result =
                     tagArticleRepository.getByTagId(tagId, 1, displayCnt);
             final JSONArray tagArticleRelations =
@@ -268,9 +274,9 @@ public final class ArticleAction extends AbstractCacheablePageAction {
 
             final int relationSize = displayCnt < tagArticleRelations.length()
                     ? displayCnt : tagArticleRelations.length();
-            for (int i = 0; i < relationSize; i++) {
+            for (int j = 0; j < relationSize; j++) {
                 final JSONObject tagArticleRelation =
-                        tagArticleRelations.getJSONObject(i);
+                        tagArticleRelations.getJSONObject(j);
                 final String relatedArticleId =
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
