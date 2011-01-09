@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Get articles by author action. author-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 30, 2010
+ * @version 1.0.1.7, Jan 9, 2011
  */
 public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
@@ -162,7 +162,6 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
                     jsonArrayToList(result.getJSONArray(Keys.RESULTS));
             filler.putArticleExProperties(articles, preference);
 
-            articleUtils.addTags(articles);
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles,
                                  Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);

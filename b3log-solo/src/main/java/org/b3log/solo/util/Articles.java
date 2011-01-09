@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Dec 29, 2010
+ * @version 1.0.1.6, Jan 9, 2011
  */
 public final class Articles {
 
@@ -384,38 +384,6 @@ public final class Articles {
         }
 
         return ret;
-    }
-
-    /**
-     * Adds tags for every article of the specified articles.
-     *
-     * @param articles the specified articles
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
-     */
-    public void addTags(final List<JSONObject> articles)
-            throws RepositoryException, JSONException {
-        for (final JSONObject article : articles) {
-            final String articleId = article.getString(Keys.OBJECT_ID);
-            final List<JSONObject> tagArticleRelations =
-                    tagArticleRepository.getByArticleId(articleId);
-
-            final List<JSONObject> tags = new ArrayList<JSONObject>();
-            for (int i = 0; i < tagArticleRelations.size(); i++) {
-                final JSONObject tagArticleRelation =
-                        tagArticleRelations.get(i);
-                final String tagId =
-                        tagArticleRelation.getString(Tag.TAG + "_"
-                        + Keys.OBJECT_ID);
-                final JSONObject tag = tagRepository.get(tagId);
-                tags.add(tag);
-            }
-
-            article.put(Article.ARTICLE_TAGS_REF,
-                    /* Avoid convert to JSONArray, which FreeMarker can't
-                     * process in <#list/> */
-                    (Object) tags);
-        }
     }
 
     /**

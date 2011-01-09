@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 30, 2010
+ * @version 1.0.0.8, Jan 9, 2011
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -178,7 +178,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
 
-            articleUtils.addTags(articles);
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles,
                                  Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);

@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Dec 25, 2010
+ * @version 1.0.2.8, Jan 9, 2011
  */
 public final class Filler {
 
@@ -201,8 +201,6 @@ public final class Filler {
         final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
                 jsonArrayToList(result.getJSONArray(Keys.RESULTS));
         putArticleExProperties(articles, preference);
-
-        articleUtils.addTags(articles);
 
         dataModel.put(Article.ARTICLES, articles);
     }
@@ -650,7 +648,7 @@ public final class Filler {
                 article.put(Common.HAS_UPDATED, false);
             }
         }
-        articleUtils.addTags(ret);
+        
         dataModel.put(Article.ARTICLES + partName, ret);
 
         return ret;

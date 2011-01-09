@@ -42,10 +42,10 @@
         </a>
         <div class="left">
             <span class="tagsIcon" title="${tagLabel}"></span>
-            <#list article.articleTags as articleTag>
+            <#list article.articleTags?split(",") as articleTag>
             <span>
-                <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
-                    ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
+                <a href="/tags/${articleTag?url('UTF-8')}">
+                    ${articleTag}</a><#if articleTag_has_next>,</#if>
             </span>
             </#list>
         </div>

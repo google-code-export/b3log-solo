@@ -63,10 +63,10 @@
     <div class="article-footer">
         <h3>${tagsLabel}</h3>
         <ul>
-            <#list article.articleTags as articleTag>
+            <#list article.articleTags?split(",") as articleTag>
             <li>
-                <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
-                    ${articleTag.tagTitle}
+                <a href="/tags/${articleTag?url('UTF-8')}">
+                    ${articleTag}
                 </a>
             </li>
             </#list>
