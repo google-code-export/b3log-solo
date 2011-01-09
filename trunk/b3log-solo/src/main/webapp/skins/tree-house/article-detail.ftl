@@ -52,7 +52,7 @@
                                         </a>
                                     </h2>
                                     <em class="article-tags left marginTop12 marginLeft6">
-                                        <#list articleTags?split(",") as articleTag>
+                                        <#list article.articleTags?split(",") as articleTag>
                                         <a href="/tags/${articleTag?url('UTF-8')}">
                                             ${articleTag}
                                         </a>
@@ -372,7 +372,7 @@
                 articleUtil.loadRandomArticles();
                 articleUtil.loadTool();
                     <#if 0 != externalRelevantArticlesDisplayCount>
-                    articleUtil.loadExternalRelevantArticles("<#list article.articleTags as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
+                    articleUtil.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
                     </#if>
                 }
             loadAction();
