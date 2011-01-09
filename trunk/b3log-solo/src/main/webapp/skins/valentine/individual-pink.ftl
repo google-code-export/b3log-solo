@@ -33,9 +33,9 @@
     </div>
     <p class="postdetails-pink">Posted by: ${article.authorName}<br />
         Tags: 
-            <#list article.articleTags as articleTag>
-                <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
-                    ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
+            <#list article.articleTags?split(",") as articleTag>
+                <a href="/tags/${articleTag?url('UTF-8')}">
+                    ${articleTag}</a><#if articleTag_has_next>,</#if>
             </#list>
     </p>
 

@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Dec 30, 2010
+ * @version 1.0.1.5, Jan 9, 2011
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -194,7 +194,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
             final JSONObject tag = tagRepository.get(tagId);
 
-            articleUtils.addTags(articles);
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles,
                                  Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);

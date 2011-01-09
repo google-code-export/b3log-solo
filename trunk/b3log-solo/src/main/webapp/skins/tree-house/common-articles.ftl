@@ -33,9 +33,9 @@
     </div>
     <div class="right article-main">
         <em class="article-tags">
-            <#list article.articleTags as articleTag>
-            <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
-                ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
+            <#list article.articleTags?split(",") as articleTag>
+            <a href="/tags/${articleTag?url('UTF-8')}">
+                ${articleTag}</a><#if articleTag_has_next>,</#if>
             </#list>
         </em>
         <div class="article-abstract">
