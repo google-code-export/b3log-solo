@@ -3,7 +3,7 @@
     <head> 
         <title>${article.articleTitle} - ${blogTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="keywords" content="<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>"/>
+        <meta name="keywords" content="<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>"/>
         <meta name="description" content="${article.articleAbstract}"/>
         <meta name="author" content="B3log Team"/>
         <meta name="generator" content="B3log"/>
@@ -78,10 +78,10 @@
                                 </a>
                                 <div class="left">
                                     <span class="tagsIcon" title="${tagLabel}"></span>
-                                    <#list articleTags as articleTag>
+                                    <#list articleTags?split(",") as articleTag>
                                     <span class="count">
-                                        <a href="/tags/${articleTag.tagTitle?url('UTF-8')}">
-                                            ${articleTag.tagTitle}</a><#if articleTag_has_next>,</#if>
+                                        <a href="/tags/${articleTag?url('UTF-8')}">
+                                            ${articleTag}</a><#if articleTag_has_next>,</#if>
                                     </span>
                                     </#list>
                                 </div>
@@ -339,7 +339,7 @@
                 articleUtil.loadRandomArticles();
                 articleUtil.loadTool();
                     <#if 0 != externalRelevantArticlesDisplayCount>
-                    articleUtil.loadExternalRelevantArticles("<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>");
+                    articleUtil.loadExternalRelevantArticles("<#list article.articleTags as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
                     </#if>
                 }
             loadAction();

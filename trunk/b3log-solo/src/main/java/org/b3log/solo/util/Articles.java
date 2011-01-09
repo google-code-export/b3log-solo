@@ -361,32 +361,6 @@ public final class Articles {
     }
 
     /**
-     * Gets tags of an article specified by the article id.
-     *
-     * @param articleId the specified article id
-     * @return a list of tags, returns an empty list if not found
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
-     */
-    public List<JSONObject> getTags(final String articleId)
-            throws RepositoryException, JSONException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        final List<JSONObject> tagArticleRelations =
-                tagArticleRepository.getByArticleId(articleId);
-        for (int i = 0; i < tagArticleRelations.size(); i++) {
-            final JSONObject tagArticleRelation =
-                    tagArticleRelations.get(i);
-            final String tagId =
-                    tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID);
-
-            final JSONObject tag = tagRepository.get(tagId);
-            ret.add(tag);
-        }
-
-        return ret;
-    }
-
-    /**
      * Determines the specified article has updated.
      *
      * @param article the specified article

@@ -3,7 +3,7 @@
     <head>
         <title>${article.articleTitle} - ${blogTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="keywords" content="<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>"/>
+        <meta name="keywords" content="<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>"/>
         <meta name="description" content="${article.articleAbstract}"/>
         <meta name="author" content="B3log Team"/>
         <meta name="generator" content="B3log"/>
@@ -190,7 +190,7 @@
 
                 // externalRelevantArticles
                     <#if 0 != externalRelevantArticlesDisplayCount>
-                    articleUtil.loadExternalRelevantArticles("<#list articleTags as articleTag>${articleTag.tagTitle}<#if articleTag_has_next>,</#if></#list>");
+                    articleUtil.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
                     </#if>
                     articleUtil.loadTool();
 
