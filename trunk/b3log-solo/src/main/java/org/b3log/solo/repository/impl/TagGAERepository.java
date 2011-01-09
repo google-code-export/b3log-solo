@@ -63,7 +63,7 @@ public final class TagGAERepository extends AbstractGAERepository
      */
     private static final Cache<String, Object> CACHE;
     /**
-     * Key of most used tag cache count.
+     * Key of the most used tag cache count.
      */
     private static final String KEY_MOST_USED_TAG_CACHE_CNT =
             "mostUsedTagCacheCnt";
