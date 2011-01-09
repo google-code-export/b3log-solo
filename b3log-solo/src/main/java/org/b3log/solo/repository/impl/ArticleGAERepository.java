@@ -32,6 +32,10 @@ import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RunsOnEnv;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
@@ -45,7 +49,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Jan 4, 2011
+ * @version 1.0.2.4, Jan 9, 2011
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -55,6 +59,33 @@ public final class ArticleGAERepository extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArticleGAERepository.class.getName());
+    /**
+     * Cache.
+     */
+    private static final Cache<String, Object> CACHE;
+    /**
+     * Key of the most comment articles cache count.
+     */
+    private static final String KEY_MOST_CMT_ARTICLES_CACHE_CNT =
+            "mostCmtArticlesCacheCnt";
+    /**
+     * Key of the recent articles cache count.
+     */
+    private static final String KEY_RECENT_ARTICLES_CACHE_CNT =
+            "mostRecentArticlesCacheCnt";
+
+    static {
+        final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
+        if (!runsOnEnv.equals(RunsOnEnv.GAE)) {
+            throw new RuntimeException(
+                    "GAE repository can only runs on Google App Engine, please "
+                    + "check your configuration and make sure "
+                    + "Latkes.setRunsOnEnv(RunsOnEnv.GAE) was invoked before "
+                    + "using GAE repository.");
+        }
+
+        CACHE = CacheFactory.getCache("ArticleGAERepositoryCache");
+    }
 
     @Override
     public String getName() {
@@ -104,34 +135,58 @@ public final class ArticleGAERepository extends AbstractGAERepository
 
     @Override
     public JSONObject getByPermalink(final String permalink) {
-        final Query query = new Query(getName());
-        query.addFilter(Article.ARTICLE_PERMALINK,
-                        Query.FilterOperator.EQUAL, permalink);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
-        if (null == entity) {
-            return null;
+        final String cacheKey = "getByPermalink[" + permalink + "]";
+        JSONObject ret = (JSONObject) CACHE.get(cacheKey);
+
+        if (null == ret) {
+            final Query query = new Query(getName());
+            query.addFilter(Article.ARTICLE_PERMALINK,
+                            Query.FilterOperator.EQUAL, permalink);
+            final PreparedQuery preparedQuery = getDatastoreService().prepare(
+                    query);
+            final Entity entity = preparedQuery.asSingleEntity();
+            if (null == entity) {
+                return null;
+            }
+
+            final Map<String, Object> properties = entity.getProperties();
+
+            ret = new JSONObject(properties);
+
+            CACHE.put(cacheKey, ret);
         }
 
-        final Map<String, Object> properties = entity.getProperties();
-
-        return new JSONObject(properties);
+        return ret;
     }
 
     @Override
     public List<JSONObject> getRecentArticles(final int fetchSize) {
-        final Query query = new Query(getName());
-        query.addSort(Article.ARTICLE_UPDATE_DATE,
-                      Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final QueryResultIterable<Entity> queryResultIterable =
-                preparedQuery.asQueryResultIterable(FetchOptions.Builder.
-                withLimit(fetchSize));
+        final String cacheKey = KEY_RECENT_ARTICLES_CACHE_CNT + "["
+                                + fetchSize + "]";
+        @SuppressWarnings("unchecked")
+        List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
+        if (null != ret) {
+            LOGGER.log(Level.FINEST, "Got the recent articles from cache");
+        } else {
+            ret = new ArrayList<JSONObject>();
+            final Query query = new Query(getName());
+            query.addSort(Article.ARTICLE_UPDATE_DATE,
+                          Query.SortDirection.DESCENDING);
+            final PreparedQuery preparedQuery = getDatastoreService().prepare(
+                    query);
+            final QueryResultIterable<Entity> queryResultIterable =
+                    preparedQuery.asQueryResultIterable(FetchOptions.Builder.
+                    withLimit(fetchSize));
 
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        for (final Entity entity : queryResultIterable) {
-            final JSONObject article = entity2JSONObject(entity);
-            ret.add(article);
+            for (final Entity entity : queryResultIterable) {
+                final JSONObject article = entity2JSONObject(entity);
+                ret.add(article);
+            }
+
+            CACHE.put(cacheKey, ret);
+
+            LOGGER.log(Level.FINEST,
+                       "Got the recent articles, then put it into cache");
         }
 
         return ret;
@@ -139,22 +194,37 @@ public final class ArticleGAERepository extends AbstractGAERepository
 
     @Override
     public List<JSONObject> getMostCommentArticles(final int num) {
-        final Query query = new Query(getName());
-        query.addSort(Article.ARTICLE_COMMENT_COUNT,
-                      Query.SortDirection.DESCENDING).
-                addSort(Article.ARTICLE_UPDATE_DATE,
-                        Query.SortDirection.DESCENDING);
-        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                        Query.FilterOperator.EQUAL, true);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final QueryResultIterable<Entity> queryResultIterable =
-                preparedQuery.asQueryResultIterable(FetchOptions.Builder.
-                withLimit(num));
+        final String cacheKey = KEY_MOST_CMT_ARTICLES_CACHE_CNT + "["
+                                + num + "]";
+        @SuppressWarnings("unchecked")
+        List<JSONObject> ret =
+                (List<JSONObject>) CACHE.get(cacheKey);
+        if (null != ret) {
+            LOGGER.log(Level.FINEST, "Got the most comment articles from cache");
+        } else {
+            ret = new ArrayList<JSONObject>();
+            final Query query = new Query(getName());
+            query.addSort(Article.ARTICLE_COMMENT_COUNT,
+                          Query.SortDirection.DESCENDING).
+                    addSort(Article.ARTICLE_UPDATE_DATE,
+                            Query.SortDirection.DESCENDING);
+            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                            Query.FilterOperator.EQUAL, true);
+            final PreparedQuery preparedQuery = getDatastoreService().prepare(
+                    query);
+            final QueryResultIterable<Entity> queryResultIterable =
+                    preparedQuery.asQueryResultIterable(FetchOptions.Builder.
+                    withLimit(num));
 
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        for (final Entity entity : queryResultIterable) {
-            final JSONObject article = entity2JSONObject(entity);
-            ret.add(article);
+            for (final Entity entity : queryResultIterable) {
+                final JSONObject article = entity2JSONObject(entity);
+                ret.add(article);
+            }
+
+            CACHE.put(cacheKey, ret);
+
+            LOGGER.log(Level.FINEST,
+                       "Got the most comment articles, then put it into cache");
         }
 
         return ret;
