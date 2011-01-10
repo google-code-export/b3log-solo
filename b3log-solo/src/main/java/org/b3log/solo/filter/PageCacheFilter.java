@@ -198,9 +198,6 @@ public final class PageCacheFilter implements Filter {
 
                     if (Article.ARTICLE.equals(cachedType)) {
                         incArticleViewCount(oId);
-                        LOGGER.log(Level.INFO,
-                                   "Inced article view count[articleOid={0}]",
-                                   oId);
                     }
                 }
 
