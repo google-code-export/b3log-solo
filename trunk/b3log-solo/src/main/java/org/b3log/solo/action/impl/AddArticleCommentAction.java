@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Adds article comment action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 3, 2011
+ * @version 1.0.0.1, Jan 10, 2011
  */
 public final class AddArticleCommentAction extends AbstractAction {
 
@@ -465,27 +465,33 @@ public final class AddArticleCommentAction extends AbstractAction {
             final URL googleProfileURL =
                     new URL(Google.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
                                                                     id));
-            final HTTPResponse response =
-                    urlFetchService.fetch(googleProfileURL);
-            final int statusCode = response.getResponseCode();
+            try {
+                final HTTPResponse response =
+                        urlFetchService.fetch(googleProfileURL);
+                final int statusCode = response.getResponseCode();
 
-            if (HttpServletResponse.SC_OK == statusCode) {
-                final byte[] content = response.getContent();
-                final String profileJSONString = new String(content, "UTF-8");
-                LOGGER.log(Level.FINEST, "Google profile[jsonString={0}]",
-                           profileJSONString);
-                final JSONObject profile = new JSONObject(profileJSONString);
-                final JSONObject profileData = profile.getJSONObject("data");
-                thumbnailURL = profileData.getString("thumbnailUrl");
-                comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
-                           thumbnailURL);
+                if (HttpServletResponse.SC_OK == statusCode) {
+                    final byte[] content = response.getContent();
+                    final String profileJSONString =
+                            new String(content, "UTF-8");
+                    LOGGER.log(Level.FINEST, "Google profile[jsonString={0}]",
+                               profileJSONString);
+                    final JSONObject profile = new JSONObject(profileJSONString);
+                    final JSONObject profileData = profile.getJSONObject("data");
+                    thumbnailURL = profileData.getString("thumbnailUrl");
+                    comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
+                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
+                               thumbnailURL);
 
-                return;
-            } else {
+                    return;
+                } else {
+                    LOGGER.log(Level.WARNING,
+                               "Can not fetch google profile[userId={0}, statusCode={1}]",
+                               new Object[]{id, statusCode});
+                }
+            } catch (final Exception e) {
                 LOGGER.log(Level.WARNING,
-                           "Can not fetch google profile[userId={0}, statusCode={1}]",
-                           new Object[]{id, statusCode});
+                           "Can not fetch google profile[userId=" + id + "", e);
             }
         }
 
@@ -495,7 +501,6 @@ public final class AddArticleCommentAction extends AbstractAction {
         final URL gravatarURL =
                 new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
                         + size + "&r=G");
-
         try {
             final HTTPResponse response = urlFetchService.fetch(gravatarURL);
             final int statusCode = response.getResponseCode();

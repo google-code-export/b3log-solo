@@ -22,6 +22,8 @@ import org.b3log.latke.event.AbstractEventModule;
 //import org.b3log.solo.event.buzz.ActivityCreator;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
+import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
+import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.preference.DisplayCntLoader;
 import org.b3log.solo.event.preference.GoogleSettingsLoader;
 import org.b3log.solo.event.preference.HTMLHeadLoader;
@@ -43,7 +45,7 @@ import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
  * configurations.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Nov 18, 2010
+ * @version 1.0.1.8, Jan 10, 2011
  */
 public final class EventModule extends AbstractEventModule {
 
@@ -85,5 +87,7 @@ public final class EventModule extends AbstractEventModule {
         bind(PageCommentReplyNotifier.class).asEagerSingleton();
 //        bind(ActivityCreator.class).asEagerSingleton();
         bind(ArticleSender.class).asEagerSingleton();
+        bind(AddArticleGoogleBlogSearchPinger.class).asEagerSingleton();
+        bind(UpdateArticleGoogleBlogSearchPinger.class).asEagerSingleton();
     }
 }
