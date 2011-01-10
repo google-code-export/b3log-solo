@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jan 4, 2011
+ * @version 1.0.2.4, Jan 10, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -245,6 +245,7 @@ public final class PageCacheFilter implements Filter {
                || requestURI.equals("/add-article-comment.do")
                || requestURI.equals("/add-page-comment.do")
                || requestURI.equals("/get-random-articles.do")
+               || requestURI.equals("/article-random-double-gen.do")
                || equalAdminActions(requestURI)
                || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")

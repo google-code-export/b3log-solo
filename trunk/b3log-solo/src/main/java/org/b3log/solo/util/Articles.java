@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Jan 9, 2011
+ * @version 1.0.1.7, Jan 10, 2011
  */
 public final class Articles {
 
@@ -157,6 +157,11 @@ public final class Articles {
     /**
      * Article view count +1 for an article specified by the given article id.
      *
+     * <p>
+     * The property(named {@value Article#ARTICLE_RANDOM_DOUBLE}) of the
+     * specified article will be regenerated.
+     * </p>
+     *
      * @param articleId the given article id
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
@@ -166,8 +171,12 @@ public final class Articles {
         final JSONObject article = articleRepository.get(articleId);
         final JSONObject newArticle = new JSONObject(
                 article, JSONObject.getNames(article));
+        
         final int viewCnt = article.getInt(Article.ARTICLE_VIEW_COUNT);
         newArticle.put(Article.ARTICLE_VIEW_COUNT, viewCnt + 1);
+        
+        newArticle.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+        
         articleRepository.update(articleId, newArticle);
     }
 

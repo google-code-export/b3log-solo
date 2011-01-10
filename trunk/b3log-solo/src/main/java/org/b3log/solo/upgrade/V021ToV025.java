@@ -112,11 +112,15 @@ import org.json.JSONObject;
  *       Adds a property(named {@value Preference#TIME_ZONE_ID}) to entity
  *       {@link Preference preference}
  *     </li>
+ *     <li>
+ *       Adds a property(named {@value Article#ARTICLE_RANDOM_DOUBLE})
+ *       to entity {@link Article article}
+ *     </li>
  *   </ul>
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Jan 4, 2011
+ * @version 1.0.1.8, Jan 10, 2011
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -229,6 +233,13 @@ public final class V021ToV025 extends HttpServlet {
 
                     if (!article.has(Article.ARTICLE_HAD_BEEN_PUBLISHED)) {
                         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
+
+                        articleRepository.update(articleId, article);
+                        isConsistent = false;
+                    }
+
+                    if (!article.has(Article.ARTICLE_RANDOM_DOUBLE)) {
+                        article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
                         articleRepository.update(articleId, article);
                         isConsistent = false;

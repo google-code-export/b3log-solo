@@ -72,7 +72,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, Dec 29, 2010
+ * @version 1.0.3.1, Jan 10, 2011
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -264,10 +264,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.put(ARTICLE_PERMALINK, permalink);
             // Step 10: Add article-sign relation
             final String signId =
-                    article.optString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-            if (!Strings.isEmptyOrNull(signId)) {
-                articleUtils.addArticleSignRelation(signId, articleId);
-            }
+                    article.getString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+            articleUtils.addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             // Step 11: Set had been published status
             article.put(ARTICLE_HAD_BEEN_PUBLISHED, false);
@@ -279,7 +277,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String authorEmail =
                     userUtils.getCurrentUser().getString(User.USER_EMAIL);
             article.put(ARTICLE_AUTHOR_EMAIL, authorEmail);
-            // Step 13: Update article
+            // Step 13: Set random double
+            article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
+            // Step 14: Update article
             articleRepository.update(articleId, article);
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
@@ -388,6 +388,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.remove(ARTICLE_PUT_TOP);
             article.remove(ARTICLE_UPDATE_DATE);
             article.remove(ARTICLE_VIEW_COUNT);
+            article.remove(ARTICLE_RANDOM_DOUBLE);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLE_SUCC);
 
@@ -503,7 +504,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 article.remove(ARTICLE_AUTHOR_EMAIL);
                 article.remove(ARTICLE_HAD_BEEN_PUBLISHED);
                 article.remove(ARTICLE_IS_PUBLISHED);
-
+                article.remove(ARTICLE_RANDOM_DOUBLE);
             }
             ret.put(ARTICLES, articles);
 
@@ -885,25 +886,23 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                             blogCmtCnt + articleCmtCnt);
                 }
             }
-            // Step 9: Update
-            articleRepository.update(articleId, article);
-            // Step 10: Add tag-article relations
-            articleUtils.addTagArticleRelation(tags, article);
-            // Step 11: Add archive date-article relations
-            archiveDateUtils.archiveDate(article);
-            // Step 12: Add article-sign relation
+            // Step 9: Add article-sign relation
             final String signId =
-                    article.optString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+                    article.getString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             final JSONObject articleSignRelation =
                     articleSignRepository.getByArticleId(articleId);
             if (null != articleSignRelation) {
                 articleSignRepository.remove(
                         articleSignRelation.getString(Keys.OBJECT_ID));
             }
-            if (!Strings.isEmptyOrNull(signId)) {
-                articleUtils.addArticleSignRelation(signId, articleId);
-            }
+            articleUtils.addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+            // Step 10: Update
+            articleRepository.update(articleId, article);
+            // Step 11: Add tag-article relations
+            articleUtils.addTagArticleRelation(tags, article);
+            // Step 12: Add archive date-article relations
+            archiveDateUtils.archiveDate(article);
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 // Fire update article event
@@ -951,6 +950,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * these properties are called 'auto' properties.
      * </p>
      *
+     * <p>
+     * The property(named {@value Article#ARTICLE_RANDOM_DOUBLE}) of the
+     * specified article will be regenerated.
+     * </p>
+     *
      * @param oldArticle the specified old article
      * @param article the specified article
      * @throws JSONException json exception
@@ -970,6 +974,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
         article.put(ARTICLE_AUTHOR_EMAIL,
                     oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
+        article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
     }
 
     /**

@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Gets random articles action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 3, 2011
+ * @version 1.0.0.1, Jan 11, 2011
  */
 public final class GetRandomArticlesAction extends AbstractAction {
 
@@ -103,8 +103,11 @@ public final class GetRandomArticlesAction extends AbstractAction {
                     preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
             final List<JSONObject> ret =
                     articleRepository.getRandomly(displayCnt);
+
+            // Remove unused properties
             for (final JSONObject article : ret) {
                 article.remove(Keys.OBJECT_ID);
+                article.remove(ARTICLE_AUTHOR_EMAIL);
                 article.remove(ARTICLE_ABSTRACT);
                 article.remove(ARTICLE_COMMENT_COUNT);
                 article.remove(ARTICLE_CONTENT);
@@ -112,6 +115,7 @@ public final class GetRandomArticlesAction extends AbstractAction {
                 article.remove(ARTICLE_TAGS_REF);
                 article.remove(ARTICLE_UPDATE_DATE);
                 article.remove(ARTICLE_VIEW_COUNT);
+                article.remove(ARTICLE_RANDOM_DOUBLE);
             }
 
             return ret;
