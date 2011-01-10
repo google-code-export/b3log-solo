@@ -35,7 +35,7 @@
     <cron>
         <url>/article-random-double-gen.do?cnt=5</url>
         <description>Regenerate article random double.</description>
-        <schedule>every 10 minutes</schedule>
+        <schedule>every 1 minutes</schedule>
     </cron>
 
 </cronentries>
