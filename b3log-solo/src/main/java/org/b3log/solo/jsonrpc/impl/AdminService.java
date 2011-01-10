@@ -601,6 +601,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             article.put(Article.ARTICLE_TAGS_REF, "B3log");
             article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
             article.put(Article.ARTICLE_IS_PUBLISHED, true);
+            article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
 
             JSONObject requestJSONObject = new JSONObject();
             requestJSONObject.put(Article.ARTICLE, article);

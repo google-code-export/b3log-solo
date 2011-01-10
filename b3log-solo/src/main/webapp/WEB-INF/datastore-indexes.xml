@@ -84,5 +84,10 @@
         <property name="articleIsPublished" direction="asc"/>
         <property name="oId" direction="desc"/>
     </datastore-index>
+
+    <datastore-index kind="article" ancestor="false" source="auto">
+        <property name="articleIsPublished" direction="asc"/>
+        <property name="articleRandomDouble" direction="asc"/>
+    </datastore-index>
     
 </datastore-indexes>

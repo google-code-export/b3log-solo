@@ -21,7 +21,7 @@
     Description: Cron job for GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.0.0.3, Dec 24, 2010
+    Version: 1.0.0.4, Jan 10, 2011
     Author: Liang Ding
 -->
 <cronentries>
@@ -29,6 +29,12 @@
     <cron>
         <url>/</url>
         <description>Avoiding Solo to shutdown on GAE.</description>
+        <schedule>every 1 minutes</schedule>
+    </cron>
+
+    <cron>
+        <url>/article-random-double-gen.do?cnt=20</url>
+        <description>Regenerate article random double.</description>
         <schedule>every 1 minutes</schedule>
     </cron>
 

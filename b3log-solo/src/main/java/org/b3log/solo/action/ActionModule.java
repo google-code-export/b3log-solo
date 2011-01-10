@@ -34,6 +34,7 @@ import org.b3log.solo.action.impl.AddPageCommentAction;
 import org.b3log.solo.action.impl.ArchiveDateArticlesAction;
 import org.b3log.solo.action.impl.AdminDoNothingAction;
 import org.b3log.solo.action.impl.AdminErrorAction;
+import org.b3log.solo.action.impl.ArticleRandomDoubleUpdateServlet;
 import org.b3log.solo.action.impl.AuthorArticlesAction;
 import org.b3log.solo.action.impl.ClearCacheAction;
 import org.b3log.solo.action.impl.CheckLoggedInAction;
@@ -54,7 +55,7 @@ import org.b3log.solo.upgrade.UpgradeModule;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Jan 3, 2011
+ * @version 1.0.2.6, Jan 10, 2011
  */
 public final class ActionModule extends AbstractActionModule {
 
@@ -169,5 +170,9 @@ public final class ActionModule extends AbstractActionModule {
 
         bind(GetRandomArticlesAction.class).in(Scopes.SINGLETON);
         serve("/get-random-articles.do").with(GetRandomArticlesAction.class);
+
+        bind(ArticleRandomDoubleUpdateServlet.class).in(Scopes.SINGLETON);
+        serve("/article-random-double-gen.do").with(
+                ArticleRandomDoubleUpdateServlet.class);
     }
 }

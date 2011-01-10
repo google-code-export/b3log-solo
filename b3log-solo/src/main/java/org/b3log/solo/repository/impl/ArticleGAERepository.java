@@ -24,7 +24,6 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultList;
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -39,7 +38,6 @@ import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.BlogSync;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +47,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Jan 9, 2011
+ * @version 1.0.2.5, Jan 10, 2011
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -383,34 +381,45 @@ public final class ArticleGAERepository extends AbstractGAERepository
     public List<JSONObject> getRandomly(final int fetchSize)
             throws RepositoryException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
-        final Query query = new Query(getName());
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final int count = preparedQuery.countEntities(
-                FetchOptions.Builder.withDefaults());
-
-        if (0 == count) {
+        if (0 == count()) {
             return ret;
         }
 
-        final Iterable<Entity> entities = preparedQuery.asIterable();
-        List<Integer> fetchIndexes = Collections.emptyList();
-        try {
-            fetchIndexes = CollectionUtils.getRandomIntegers(0, count - 1,
-                                                             fetchSize);
-        } catch (final IllegalArgumentException e) {
-            LOGGER.warning(e.getMessage());
+        final double mid = Math.random();
+        LOGGER.log(Level.FINEST, "Random mid[{0}]", mid);
+
+        Query query = new Query(getName());
+        query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
+                        Query.FilterOperator.GREATER_THAN_OR_EQUAL, mid);
+        query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
+                        Query.FilterOperator.LESS_THAN_OR_EQUAL, 1D);
+        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                        Query.FilterOperator.EQUAL, true);
+        PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        QueryResultList<Entity> entities = preparedQuery.asQueryResultList(
+                FetchOptions.Builder.withLimit(fetchSize));
+        
+        for (final Entity entity : entities) {
+            final JSONObject jsonObject = entity2JSONObject(entity);
+            ret.add(jsonObject);
         }
 
-        int index = 0;
-        for (final Entity entity : entities) { // XXX: performance issue
-            if (fetchIndexes.contains(index)) {
-                if ((Boolean) entity.getProperty(Article.ARTICLE_IS_PUBLISHED)) {
-                    final JSONObject jsonObject = entity2JSONObject(entity);
-                    ret.add(jsonObject);
-                }
+        final int reminingSize = fetchSize - entities.size();
+        if (0 != reminingSize) { // Query for remains
+            query = new Query(getName());
+            query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
+                            Query.FilterOperator.GREATER_THAN_OR_EQUAL, 0D);
+            query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
+                            Query.FilterOperator.LESS_THAN_OR_EQUAL, mid);
+            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                            Query.FilterOperator.EQUAL, true);
+            preparedQuery = getDatastoreService().prepare(query);
+            entities = preparedQuery.asQueryResultList(FetchOptions.Builder.
+                    withLimit(reminingSize));
+            for (final Entity entity : entities) {
+                final JSONObject jsonObject = entity2JSONObject(entity);
+                ret.add(jsonObject);
             }
-
-            index++;
         }
 
         return ret;
