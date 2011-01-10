@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.rhythm;
 
 import com.google.appengine.api.urlfetch.HTTPMethod;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending articles to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 22, 2010
+ * @version 1.0.0.9, Jan 10, 2011
  */
 public final class ArticleSender
         extends AbstractEventListener<JSONObject> {
@@ -107,9 +106,10 @@ public final class ArticleSender
                 throw new EventException("Not found preference");
             }
 
-            final String blogHost = preference.getString(Preference.BLOG_HOST);
+            final String blogHost =
+                    preference.getString(Preference.BLOG_HOST).toLowerCase();
             if (Preference.Default.DEFAULT_BLOG_HOST.equals(blogHost)
-                || "localhost".equals(blogHost.split(":")[0])) {
+                || "localhost".equals(blogHost.split(":")[0].trim())) {
                 LOGGER.log(Level.INFO,
                            "Blog Solo runs on local server, so should not send "
                            + "this article[oId={0}, title={1}] to Rhythm",
