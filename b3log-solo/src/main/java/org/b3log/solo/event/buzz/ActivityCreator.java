@@ -229,7 +229,7 @@ public final class ActivityCreator
 //    }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_COMMENT}.
+     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
      *
      * @return event type
      */
