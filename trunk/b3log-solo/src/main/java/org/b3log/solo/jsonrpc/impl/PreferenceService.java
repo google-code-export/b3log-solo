@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jan 9, 2011
+ * @version 1.0.2.2, Jan 10, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -277,6 +277,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
                 return ret;
             }
+            preference.put(BLOG_HOST, blogHost);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             final String skinName = skins.getSkinName(skinDirName);
