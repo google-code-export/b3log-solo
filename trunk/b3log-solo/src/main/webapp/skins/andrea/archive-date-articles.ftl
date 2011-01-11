@@ -18,38 +18,39 @@
         <meta name="copyright" content="B3log"/>
         <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/i-nove/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
     </head>
     <body>
         <#include "common-top.ftl">
-        <div class="content">
-            <div class="header">
+        <div class="wrapper">
+            <div class="content">
                 <#include "article-header.ftl">
-            </div>
-            <div class="body">
-                <div class="left side">
-                    <#include "article-side.ftl">
+                <div class="body">
+                    <div class="left main">
+                        <div class="kind-title">
+                            ${archive1Label}
+                        </div>
+                        <div class="kind-panel">
+                            <#if "en" == localeString?substring(0, 2)>
+                            ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
+                            <#else>
+                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
+                            </#if>
+                        </div>
+                        <#include "common-articles.ftl">
+                    </div>
+                    <div class="right">
+                        <#include "article-side.ftl">
+                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="right main">
-                    <h2>${archive1Label}
-                        <#if "en" == localeString?substring(0, 2)>
-                        ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
-                        <#else>
-                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
-                        </#if>
-                    </h2>
-                    <#include "common-articles.ftl">
+                <div class="footer">
+                    <#include "article-footer.ftl">
                 </div>
-                <div class="clear"></div>
-            </div>
-            <div class="footer">
-                <#include "article-footer.ftl">
             </div>
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
     </body>
 </html>

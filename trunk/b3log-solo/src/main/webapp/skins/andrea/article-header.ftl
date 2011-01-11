@@ -1,27 +1,59 @@
-<div id="global-nav" style="padding-top: 30px;">
+<div class="header">
     <h1 class="title">
-        <span id="logoTitle" >
+        <a href="/" id="logoTitle" >
             ${blogTitle}
-        </span>
+        </a>
     </h1>
     <span class="sub-title">${blogSubtitle}</span>
-    <ul class="blog">
-        <li id="blog"><a href="http://${blogHost}" title="${blogTitle}">${blogTitle}</a></li>
-        <li id="work"><a href="/tags.html" title="${allTagsLabel}">${allTagsLabel}</a></li>
-        <li id="goodies"><a href="/blog-articles-feed.do" title="${atomLabel}">${atomLabel}</a></li>
-    </ul>
 </div>
-
-<div class="right header-right">
-    <div class="left marginLeft12">
-        <#list pageNavigations as page>
-        <span>
-            <a href="${page.pagePermalink}">${page.pageTitle}</a>&nbsp;&nbsp;
-        </span>
-        </#list>
+<div id="header-navi">
+    <div class="left">
+        <ul>
+            <li>
+                <a class="home" href="/"></a>
+            </li>
+            <#list pageNavigations as page>
+            <li>
+                <a href="${page.pagePermalink}">
+                    ${page.pageTitle}
+                </a>
+            </li>
+            </#list>
+            <li>
+                <a href="/tags.html">${allTagsLabel}</a>
+            </li>
+            <li>
+                <a href="/blog-articles-feed.do">
+                    ${atomLabel}
+                    <img src="/images/feed.png" alt="Atom"/>
+                </a>
+            </li>
+            <li>
+                <a class="lastNavi" href="javascript:void(0);"></a>
+            </li>
+        </ul>
     </div>
-    
+    <div class="right" id="statistic">
+        <span>
+            ${viewCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticBlogViewCount}
+            </span>
+            &nbsp;&nbsp;
+        </span>
+        <span>
+            ${articleCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticPublishedBlogArticleCount}
+            </span>
+            &nbsp;&nbsp;
+        </span>
+        <span>
+            ${commentCount1Label}
+            <span class='error-msg'>
+                ${statistic.statisticPublishedBlogCommentCount}
+            </span>
+        </span>
+    </div>
     <div class="clear"></div>
 </div>
-<div class="clear"></div>
-<a id="magic">Pure CSS. Check it out!</a>
