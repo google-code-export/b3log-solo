@@ -27,7 +27,7 @@ button:hover,.button:hover{border-color:#BBB;}
 .clear{clear:both;height:0px;font-size:0px;line-height:0px;overflow: hidden;border: 0px;background-color: transparent;display: block;}
 .none{display:none;}
 .pointer{cursor:pointer;}
-.noUnderline{text-decoration:none;}
+.no-underline{text-decoration:none;}
 .red{color:red;}
 .contentBody{padding:3px 12px;margin-bottom:12px;}
 .form th{text-align:right;white-space:nowrap;}

@@ -132,7 +132,7 @@
                     for (var i = 0; i < links.length; i++) {
                         linkData[i] = {};
                         linkData[i].linkTitle = links[i].linkTitle;
-                        linkData[i].linkAddress = "<a target='_blank' class='noUnderline' href='" + links[i].linkAddress + "'>"
+                        linkData[i].linkAddress = "<a target='_blank' class='no-underline' href='" + links[i].linkAddress + "'>"
                             + links[i].linkAddress + "</a>";
                         linkData[i].update = "<div class='updateIcon'></div>";
                         linkData[i].deleted = "<div class='deleteIcon'></div>";

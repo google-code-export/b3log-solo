@@ -54,7 +54,7 @@
                                                 </#if>
                                                 <div class="right">
                                                     ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                                    <a class="noUnderline"
+                                                    <a class="no-underline"
                                                        href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                                                 </div>
                                                 <div class="clear"></div>
@@ -206,7 +206,7 @@
                 }
 
                 commentHTML += '<div class="right">' + result.commentDate
-                    + '&nbsp;<a class="noUnderline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
+                    + '&nbsp;<a class="no-underline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
                     + '</div><div class="clear"></div></div><div><img alt="' + $("#commentName" + state).val()
                     + '" src="' + result.commentThumbnailURL + '" class="comment-picture left"/>'
                     + '<div class="comment-content">' + articleUtil.replaceEmotions($("#comment" + state).val().replace(/\n/g,"<br/>").replace(/</g, "&lt;").replace(/>/g, "&gt;"), "tree-house") + '</div>'

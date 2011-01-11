@@ -34,7 +34,7 @@
     </div>
     <div class="article-main">
         <h2 class="title">
-            <a class="noUnderline" href="${article.articlePermalink}">
+            <a class="no-underline" href="${article.articlePermalink}">
                 ${article.articleTitle}
             </a>
             <#if article.hasUpdated>

@@ -65,7 +65,7 @@
                         pageData[i] = {};
                         pageData[i].pageTitle = pages[i].pageTitle;
                         pageData[i].pageOrder = pages[i].pageOrder;
-                        pageData[i].pagePermalink = "<a class='noUnderline' href='" + pages[i].pagePermalink + "' target='_blank'>"
+                        pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                             + pages[i].pagePermalink + "</a>";
                         pageData[i].update = "<div class='updateIcon'></div>";
                         pageData[i].deleted = "<div class='deleteIcon'></div>";

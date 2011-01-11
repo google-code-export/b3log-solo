@@ -11,7 +11,7 @@
             </div>
             <div class="article-title">
                 <h2>
-                    <a class="noUnderline" href="${article.articlePermalink}">
+                    <a class="no-underline" href="${article.articlePermalink}">
                         ${article.articleTitle}
                     </a>
                     <#if article.hasUpdated>
