@@ -7,7 +7,7 @@
         </h1>
         <span class="sub-title">${blogSubtitle}</span>
     </div>
-    <div class="left">
+    <div class="right">
         <ul>
             <li>
                 <a class="home" href="/"></a>

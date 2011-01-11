@@ -23,18 +23,19 @@
     util.init();
     util.replaceCommentsEm(".side-navi .navi-comments .side-comment", "i-nove");
     
-    // set selected navi
-    $("#header-navi li").each(function (i) {
-        if (i < $("#header-navi li").length - 1) {
-            var $it = $(this),
-            locationURL = window.location.pathname + window.location.search;
-            if (i === 0 && (locationURL.indexOf("/index.do") > -1 || locationURL === "/")) {
-                $it.addClass("selected");
-                return;
-            }
-            if (locationURL.indexOf($it.find("a").attr("href")) > -1 && i !== 0) {
-                $it.addClass("selected");
-            }
+    // init brush
+    var buildBrush = function () {
+        if ($.browser.msie) {
+            $("#brush").height(document.documentElement.scrollHeight - 550).css("background-position",
+            parseInt((document.documentElement.scrollWidth - 910) / 2 - 51) + "px -150px");
+        } else {
+            $("#brush").height(document.documentElement.scrollHeight - 600).css("background-position",
+            parseInt((document.documentElement.scrollWidth - 910) / 2 - 51) + "px -150px");
         }
+    }
+    buildBrush();
+    $(window).resize(function () {
+        buildBrush();
     });
+
 </script>

@@ -19,24 +19,27 @@
     <body>
         <#include "common-top.ftl">
         <div class="wrapper">
-            <div class="content">
-                <#include "article-header.ftl">
-                <div>
-                    <div class="left">
-                        <div class="main-content">
-                            <#include "common-articles.ftl">
-                        </div>
-                        <div class="main-footer"></div>
+            <#include "article-header.ftl">
+            <div>
+                <div class="main">
+                    <div class="main-content">
+                        <#include "common-articles.ftl">
                     </div>
-                    <div class="side-navi">
-                        <#include "article-side.ftl">
-                    </div>
-                    <div class="clear"></div>
+                    <div class="main-footer"></div>
                 </div>
+                <div class="side-navi">
+                    <#include "article-side.ftl">
+                </div>
+                <div class="brush">
+                    <div class="brush-icon"></div>
+                    <div id="brush"></div>
+                </div>
+                <div class="clear"></div>
                 <div class="footer">
                     <#include "article-footer.ftl">
                 </div>
             </div>
         </div>
+        <#include "side-tool.ftl">
     </body>
 </html>
