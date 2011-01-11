@@ -1,4 +1,4 @@
-<div class="left copyright">
+<div class="copyright">
     © 2010 - <a href="http://${blogHost}">${blogTitle}</a><br/>
     Powered by
     <a class="b3log" href="http://b3log-solo.googlecode.com" target="_blank">
@@ -10,9 +10,6 @@
         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
     ver ${version}<br/>
     Theme by <a href="http://www.madeincima.eu/" target="_blank">Andrea</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
-</div>
-<div class="right goTop">
-    <span onclick="util.goTop();">${goTopLabel}</span>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 <script type="text/javascript" src="/js/util.js"></script>
