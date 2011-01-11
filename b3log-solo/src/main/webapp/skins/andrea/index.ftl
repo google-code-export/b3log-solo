@@ -11,7 +11,7 @@
         <meta name="revised" content="B3log, 2010"/>
         <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/i-nove/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/andrea/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
@@ -21,11 +21,14 @@
         <div class="wrapper">
             <div class="content">
                 <#include "article-header.ftl">
-                <div class="body">
-                    <div class="left main">
-                        <#include "common-articles.ftl">
+                <div>
+                    <div class="left">
+                        <div class="main-content">
+                            <#include "common-articles.ftl">
+                        </div>
+                        <div class="main-footer"></div>
                     </div>
-                    <div class="right">
+                    <div class="side-navi">
                         <#include "article-side.ftl">
                     </div>
                     <div class="clear"></div>
