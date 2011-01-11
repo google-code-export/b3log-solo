@@ -1,15 +1,15 @@
 <div class="left copyright">
-    <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
+    © 2010 - <a href="http://${blogHost}">${blogTitle}</a><br/>
     Powered by
-    <a href="http://b3log-solo.googlecode.com" target="_blank">
+    <a class="b3log" href="http://b3log-solo.googlecode.com" target="_blank">
         <span style="color: orange;">B</span>
         <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
         <span style="color: green;">L</span>
         <span style="color: red;">O</span>
         <span style="color: blue;">G</span>&nbsp;
         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-    ver ${version}&nbsp;&nbsp;
-    Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+    ver ${version}<br/>
+    Theme by <a href="http://www.madeincima.eu/" target="_blank">Andrea</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
 <div class="right goTop">
     <span onclick="util.goTop();">${goTopLabel}</span>
