@@ -27,7 +27,7 @@
                     <div class="left main">
                         <div class="article">
                             <h2 class="article-title">
-                                <a class="noUnderline" href="${article.articlePermalink}">${article.articleTitle}</a>
+                                <a class="no-underline" href="${article.articlePermalink}">${article.articleTitle}</a>
                                 <#if article.hasUpdated>
                                 <sup class="red">
                                     ${updatedLabel}
@@ -133,7 +133,7 @@
                                             </#if>
                                         </div>
                                         <div class="right">
-                                            <a class="noUnderline"
+                                            <a class="no-underline"
                                                href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                                         </div>
                                         <div class="clear">
@@ -277,7 +277,7 @@
                         + 'onmouseover="showComment(this, \'' + articleUtil.currentCommentId + '\');"'
                         + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                 }
-                commentHTML += '</div><div class="right"> <a class="noUnderline" href="javascript:replyTo(\''
+                commentHTML += '</div><div class="right"> <a class="no-underline" href="javascript:replyTo(\''
                     + result.oId + '\');">${replyLabel}</a>'
                     +'</div><div class="clear"></div><div class="comment-content">'
                     + articleUtil.replaceEmotions($("#comment" + state).val().replace(/\n/g,"<br/>").replace(/</g, "&lt;").replace(/>/g, "&gt;"), "i-nove")

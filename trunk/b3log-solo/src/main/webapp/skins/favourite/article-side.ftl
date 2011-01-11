@@ -75,7 +75,7 @@
         <ul class="navi-tags">
             <#list mostUsedTags as tag>
             <li>
-                <a href="/tag-articles-feed.do?oId=${tag.oId}" class="noUnderline">
+                <a href="/tag-articles-feed.do?oId=${tag.oId}" class="no-underline">
                     <img alt="${tag.tagTitle}" src="/images/feed.png"/>
                 </a>
                 <a title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('UTF-8')}">

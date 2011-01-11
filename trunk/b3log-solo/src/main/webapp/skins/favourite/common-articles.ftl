@@ -1,7 +1,7 @@
 <#list articles as article>
 <div class="article">
     <h2 class="article-title">
-        <a class="noUnderline" href="${article.articlePermalink}">
+        <a class="no-underline" href="${article.articlePermalink}">
             ${article.articleTitle}
         </a>
         <#if article.hasUpdated>

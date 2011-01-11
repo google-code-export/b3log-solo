@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="article-title">
                                     <h2>
-                                        <a class="noUnderline" href="${article.articlePermalink}">${article.articleTitle}</a>
+                                        <a class="no-underline" href="${article.articlePermalink}">${article.articleTitle}</a>
                                         <#if article.hasUpdated>
                                         <sup class="red">
                                             ${updatedLabel}
@@ -134,7 +134,7 @@
                                         </div>
                                         <div class="right">
                                             ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                            <a class="noUnderline"
+                                            <a class="no-underline"
                                                href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                                         </div>
                                         <div class="clear"></div>
@@ -297,7 +297,7 @@
                 }
 
                 commentHTML += '</div><div class="right">' + result.commentDate
-                    + '&nbsp;<a class="noUnderline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
+                    + '&nbsp;<a class="no-underline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
                     + '</div><div class="clear"></div></div><div class="comment-body">'
                     + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
                     + '" src="' + result.commentThumbnailURL + '"/>'
