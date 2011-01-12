@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import java.util.logging.Level;
@@ -166,6 +165,9 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
+
+            final String authorName = author.getString(User.USER_NAME);
+            ret.put(Common.AUTHOR_NAME, authorName);
 
             filler.fillSide(ret);
             filler.fillBlogHeader(ret);
