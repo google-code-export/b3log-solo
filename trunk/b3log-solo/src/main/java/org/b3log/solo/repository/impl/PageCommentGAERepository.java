@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Page-Comment relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 29, 2010
+ * @version 1.0.0.1, Jan 12, 2011
  */
 public final class PageCommentGAERepository extends AbstractGAERepository
         implements PageCommentRepository {
@@ -87,5 +87,41 @@ public final class PageCommentGAERepository extends AbstractGAERepository
         final Map<String, Object> properties = entity.getProperties();
 
         return new JSONObject(properties);
+    }
+
+    /**
+     * Gets the {@link PageCommentGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static PageCommentGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private PageCommentGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final PageCommentGAERepository SINGLETON =
+                new PageCommentGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

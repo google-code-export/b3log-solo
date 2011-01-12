@@ -16,7 +16,6 @@
 
 package org.b3log.solo.util;
 
-import com.google.inject.Inject;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,6 +27,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.TagGAERepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Tag utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 11, 2011
+ * @version 1.0.0.4, Jan 12, 2011
  */
 public final class Tags {
 
@@ -53,8 +53,8 @@ public final class Tags {
     /**
      * Tag repository.
      */
-    @Inject
-    private TagRepository tagRepository;
+    private TagRepository tagRepository =
+            TagGAERepository.getInstance();
 
     /**
      * Tags the specified article with the specified tag titles.

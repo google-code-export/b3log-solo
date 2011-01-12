@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
-import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.action.util.Paginator;
@@ -45,6 +44,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.UserGAERepository;
 import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Get articles by author action. author-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Jan 11, 2011
+ * @version 1.0.1.9, Jan 12, 2011
  */
 public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
@@ -74,18 +74,12 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
     /**
      * User repository.
      */
-    @Inject
-    private UserRepository userRepository;
+    private UserRepository userRepository = UserGAERepository.getInstance();
     /**
      * Filler.
      */
     @Inject
     private Filler filler;
-    /**
-     * Article utilities.
-     */
-    @Inject
-    private Articles articleUtils;
     /**
      * Language service.
      */

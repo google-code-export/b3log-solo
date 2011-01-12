@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Tag Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 9, 2011
+ * @version 1.0.0.7, Jan 12, 2011
  */
 public final class TagGAERepository extends AbstractGAERepository
         implements TagRepository {
@@ -159,5 +159,41 @@ public final class TagGAERepository extends AbstractGAERepository
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link TagGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static TagGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private TagGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final TagGAERepository SINGLETON =
+                new TagGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

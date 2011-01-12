@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Article-Sign relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 29, 2010
+ * @version 1.0.0.1, Jan 12, 2011
  */
 public final class ArticleSignGAERepository extends AbstractGAERepository
         implements ArticleSignRepository {
@@ -87,5 +87,41 @@ public final class ArticleSignGAERepository extends AbstractGAERepository
         final Map<String, Object> properties = entity.getProperties();
 
         return new JSONObject(properties);
+    }
+
+    /**
+     * Gets the {@link ArticleSignGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static ArticleSignGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private ArticleSignGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final ArticleSignGAERepository SINGLETON =
+                new ArticleSignGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

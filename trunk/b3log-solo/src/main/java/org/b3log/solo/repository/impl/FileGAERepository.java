@@ -25,7 +25,7 @@ import org.b3log.solo.repository.FileRepository;
  * File Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 1, 2010
+ * @version 1.0.0.2, Jan 12, 2011
  */
 public final class FileGAERepository extends AbstractGAERepository
         implements FileRepository {
@@ -39,5 +39,41 @@ public final class FileGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return File.FILE;
+    }
+
+    /**
+     * Gets the {@link FileGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static FileGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private FileGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final FileGAERepository SINGLETON =
+                new FileGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

@@ -30,10 +30,10 @@ import org.b3log.solo.repository.ArchiveDateRepository;
 import org.json.JSONObject;
 
 /**
- * Archive date relation Google App Engine repository.
+ * Archive date Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 3, 2010
+ * @version 1.0.0.2, Jan 12, 2011
  */
 public final class ArchiveDateGAERepository extends AbstractGAERepository
         implements ArchiveDateRepository {
@@ -71,6 +71,42 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
         } catch (final ParseException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
+        }
+    }
+
+    /**
+     * Gets the {@link ArchiveDateGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static ArchiveDateGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private ArchiveDateGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final ArchiveDateGAERepository SINGLETON =
+                new ArchiveDateGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
         }
     }
 }

@@ -26,13 +26,14 @@ import org.json.JSONObject;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import static org.b3log.solo.model.Preference.*;
 
 /**
  * Preference utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 24, 2010
+ * @version 1.0.0.4, Jan 12, 2011
  */
 public final class Preferences {
 
@@ -43,8 +44,8 @@ public final class Preferences {
     /**
      * Preference repository.
      */
-    @Inject
-    private PreferenceRepository preferenceRepository;
+    private PreferenceRepository preferenceRepository =
+            PreferenceGAERepository.getInstance();
     /**
      * Logger.
      */
@@ -53,8 +54,7 @@ public final class Preferences {
     /**
      * Event manager.
      */
-    @Inject
-    private EventManager eventManager;
+    private EventManager eventManager = EventManager.getInstance();
     /**
      * Skin utilities.
      */

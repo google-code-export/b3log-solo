@@ -47,6 +47,7 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
@@ -121,7 +122,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Jan 11, 2011
+ * @version 1.0.2.0, Jan 12, 2011
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -167,8 +168,8 @@ public final class V021ToV025 extends HttpServlet {
     /**
      * Archive date repository.
      */
-    @Inject
-    private ArchiveDateRepository archiveDateRepository;
+    private ArchiveDateRepository archiveDateRepository =
+            ArchiveDateGAERepository.getInstance();
     /**
      * Link repository.
      */

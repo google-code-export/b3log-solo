@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Archive date-Article relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 3, 2010
+ * @version 1.0.0.5, Jan 12, 2011
  */
 public final class ArchiveDateArticleGAERepository
         extends AbstractGAERepository
@@ -116,5 +116,41 @@ public final class ArchiveDateArticleGAERepository
         final Map<String, Object> properties = entity.getProperties();
 
         return new JSONObject(properties);
+    }
+
+    /**
+     * Gets the {@link ArchiveDateArticleGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static ArchiveDateArticleGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private ArchiveDateArticleGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final ArchiveDateArticleGAERepository SINGLETON =
+                new ArchiveDateArticleGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

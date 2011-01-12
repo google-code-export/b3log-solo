@@ -25,7 +25,7 @@ import org.b3log.solo.repository.PreferenceRepository;
  * Preference Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 14, 2010
+ * @version 1.0.0.1, Jan 12, 2011
  */
 public final class PreferenceGAERepository extends AbstractGAERepository
         implements PreferenceRepository {
@@ -39,5 +39,41 @@ public final class PreferenceGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return Preference.PREFERENCE;
+    }
+
+    /**
+     * Gets the {@link PreferenceGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static PreferenceGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private PreferenceGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final PreferenceGAERepository SINGLETON =
+                new PreferenceGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

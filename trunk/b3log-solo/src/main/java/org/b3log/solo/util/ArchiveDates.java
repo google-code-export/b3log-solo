@@ -16,7 +16,6 @@
 
 package org.b3log.solo.util;
 
-import com.google.inject.Inject;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +34,8 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 11, 2011
+ * @version 1.0.0.9, Jan 12, 2011
  */
 public final class ArchiveDates {
 
@@ -56,13 +57,13 @@ public final class ArchiveDates {
     /**
      * Archive date repository.
      */
-    @Inject
-    private ArchiveDateRepository archiveDateRepository;
+    private ArchiveDateRepository archiveDateRepository =
+            ArchiveDateGAERepository.getInstance();
     /**
      * Archive date-Article repository.
      */
-    @Inject
-    private ArchiveDateArticleRepository archiveDateArticleRepository;
+    private ArchiveDateArticleRepository archiveDateArticleRepository =
+            ArchiveDateArticleGAERepository.getInstance();
     /**
      * Article repository.
      */

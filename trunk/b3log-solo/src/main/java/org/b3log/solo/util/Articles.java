@@ -45,7 +45,11 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArticleSignGAERepository;
+import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +58,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Jan 11, 2011
+ * @version 1.0.1.9, Jan 12, 2011
  */
 public final class Articles {
 
@@ -66,23 +70,23 @@ public final class Articles {
     /**
      * Comment repository.
      */
-    @Inject
-    private CommentRepository commentRepository;
+    private CommentRepository commentRepository =
+            CommentGAERepository.getInstance();
     /**
      * Article-Comment repository.
      */
-    @Inject
-    private ArticleCommentRepository articleCommentRepository;
+    private ArticleCommentRepository articleCommentRepository =
+            ArticleCommentGAERepository.getInstance();
     /**
      * Article-Sign repository.
      */
-    @Inject
-    private ArticleSignRepository articleSignRepository;
+    private ArticleSignRepository articleSignRepository =
+            ArticleSignGAERepository.getInstance();
     /**
      * Tag-Article repository.
      */
-    @Inject
-    private TagArticleRepository tagArticleRepository;
+    private TagArticleRepository tagArticleRepository =
+            TagArticleGAERepository.getInstance();
     /**
      * Article repository.
      */

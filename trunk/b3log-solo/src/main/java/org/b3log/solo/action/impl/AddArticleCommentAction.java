@@ -59,6 +59,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
@@ -71,7 +72,7 @@ import org.json.JSONObject;
  * Adds article comment action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 11, 2011
+ * @version 1.0.0.3, Jan 12, 2011
  */
 public final class AddArticleCommentAction extends AbstractAction {
 
@@ -92,8 +93,8 @@ public final class AddArticleCommentAction extends AbstractAction {
     /**
      * Comment repository.
      */
-    @Inject
-    private CommentRepository commentRepository;
+    private CommentRepository commentRepository =
+            CommentGAERepository.getInstance();
     /**
      * Article utilities.
      */

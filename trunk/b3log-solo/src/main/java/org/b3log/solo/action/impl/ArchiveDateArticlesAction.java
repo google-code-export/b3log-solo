@@ -49,6 +49,8 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
@@ -59,7 +61,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Jan 11, 2011
+ * @version 1.0.1.1, Jan 12, 2011
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -75,8 +77,8 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
     /**
      * Archive date repository.
      */
-    @Inject
-    private ArchiveDateRepository archiveDateRepository;
+    private ArchiveDateRepository archiveDateRepository =
+            ArchiveDateGAERepository.getInstance();
     /**
      * Article repository.
      */
@@ -85,8 +87,8 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
     /**
      * Archive date-Article repository.
      */
-    @Inject
-    private ArchiveDateArticleRepository archiveDateArticleRepository;
+    private ArchiveDateArticleRepository archiveDateArticleRepository =
+            ArchiveDateArticleGAERepository.getInstance();
     /**
      * Filler.
      */

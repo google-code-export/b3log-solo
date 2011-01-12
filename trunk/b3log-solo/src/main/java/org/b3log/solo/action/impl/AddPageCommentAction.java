@@ -57,6 +57,8 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
@@ -68,7 +70,7 @@ import org.json.JSONObject;
  * Adds article comment action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 10, 2011
+ * @version 1.0.0.2, Jan 12, 2011
  */
 public final class AddPageCommentAction extends AbstractAction {
 
@@ -84,13 +86,13 @@ public final class AddPageCommentAction extends AbstractAction {
     /**
      * Page repository.
      */
-    @Inject
-    private PageRepository pageRepository;
+    private PageRepository pageRepository =
+            PageGAERepository.getInstance();
     /**
      * Comment repository.
      */
-    @Inject
-    private CommentRepository commentRepository;
+    private CommentRepository commentRepository =
+            CommentGAERepository.getInstance();
     /**
      * Preference utilities.
      */
@@ -119,8 +121,7 @@ public final class AddPageCommentAction extends AbstractAction {
     /**
      * Mail service.
      */
-    private MailService mailService =
-            MailServiceFactory.getMailService();
+    private MailService mailService = MailServiceFactory.getMailService();
     /**
      * URL fetch service.
      */

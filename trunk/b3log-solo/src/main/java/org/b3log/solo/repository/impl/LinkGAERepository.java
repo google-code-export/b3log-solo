@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Link Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 5, 2010
+ * @version 1.0.0.3, Jan 12, 2011
  */
 public final class LinkGAERepository extends AbstractGAERepository
         implements LinkRepository {
@@ -99,5 +99,41 @@ public final class LinkGAERepository extends AbstractGAERepository
         final Map<String, Object> properties = entity.getProperties();
 
         return new JSONObject(properties);
+    }
+
+    /**
+     * Gets the {@link LinkGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static LinkGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private LinkGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final LinkGAERepository SINGLETON =
+                new LinkGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

@@ -16,7 +16,6 @@
 
 package org.b3log.solo.util;
 
-import com.google.inject.Inject;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -25,6 +24,7 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 11, 2011
+ * @version 1.0.0.3, Jan 12, 2011
  */
 public final class Comments {
 
@@ -45,8 +45,8 @@ public final class Comments {
     /**
      * Article-Comment repository.
      */
-    @Inject
-    private ArticleCommentRepository articleCommentRepository;
+    private ArticleCommentRepository articleCommentRepository =
+            ArticleCommentGAERepository.getInstance();
     /**
      * Article repository.
      */

@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Upgrader for <b>v010</b> to <b>v011</b>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 11, 2011
+ * @version 1.0.0.4, Jan 12, 2011
  */
 public final class V010ToV011 extends HttpServlet {
 

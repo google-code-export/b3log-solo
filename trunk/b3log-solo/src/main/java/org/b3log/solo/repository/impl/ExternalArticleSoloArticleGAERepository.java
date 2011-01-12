@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * External blog article-Solo article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 13, 2010
+ * @version 1.0.0.4, Jan 12, 2011
  */
 public final class ExternalArticleSoloArticleGAERepository
         extends AbstractGAERepository
@@ -138,5 +138,41 @@ public final class ExternalArticleSoloArticleGAERepository
         }
 
         return entity2JSONObject(entity);
+    }
+
+    /**
+     * Gets the {@link ExternalArticleSoloArticleGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static ExternalArticleSoloArticleGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private ExternalArticleSoloArticleGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final ExternalArticleSoloArticleGAERepository SINGLETON =
+                new ExternalArticleSoloArticleGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

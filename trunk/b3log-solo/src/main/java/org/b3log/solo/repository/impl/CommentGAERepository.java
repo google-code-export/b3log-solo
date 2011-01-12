@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Comment Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 9, 2011
+ * @version 1.0.0.4, Jan 12, 2011
  */
 public final class CommentGAERepository extends AbstractGAERepository
         implements CommentRepository {
@@ -108,5 +108,41 @@ public final class CommentGAERepository extends AbstractGAERepository
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link CommentGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static CommentGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private CommentGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final CommentGAERepository SINGLETON =
+                new CommentGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

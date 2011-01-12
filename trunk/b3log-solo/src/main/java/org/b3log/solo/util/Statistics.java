@@ -16,11 +16,11 @@
 
 package org.b3log.solo.util;
 
-import com.google.inject.Inject;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 10, 2010
+ * @version 1.0.0.3, Jan 12, 2011
  */
 public final class Statistics {
 
@@ -40,8 +40,8 @@ public final class Statistics {
     /**
      * Statistic repository.
      */
-    @Inject
-    private StatisticRepository statisticRepository;
+    private StatisticRepository statisticRepository =
+            StatisticGAERepository.getInstance();
 
     /**
      * Get blog comment count.
