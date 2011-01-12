@@ -234,7 +234,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
         @SuppressWarnings("unchecked")
         List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
         if (null != ret) {
-            LOGGER.log(Level.FINEST, "Got the most comment articles from cache");
+            LOGGER.log(Level.FINEST, "Got the most viewed articles from cache");
         } else {
             ret = new ArrayList<JSONObject>();
             final Query query = new Query(getName());
