@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>${tag.tagTitle} - ${blogTitle}</title>
+        <title>${blogTitle}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="${metaKeywords}"/>
         <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
@@ -14,7 +14,7 @@
         <link type="text/css" rel="stylesheet" href="/skins/andrea/default-index.css"/>
         <link href='http://fonts.googleapis.com/css?family=Neucha' rel='stylesheet' type='text/css'/>
         <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie' rel='stylesheet' type='text/css'/>
-        <link href="tag-articles-feed.do?oId=${oId}" title="ATOM" type="application/atom+xml" rel="alternate" />
+        <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
     </head>
@@ -26,9 +26,7 @@
             <div>
                 <div class="main">
                     <div class="main-content">
-                        <h2>
-                            ${tag1Label}${tag.tagTitle}(${tag.tagPublishedRefCount})
-                        </h2>
+                        <h2>${author1Label}${authorName}</h2>
                         <#include "common-articles.ftl">
                     </div>
                     <div class="main-footer"></div>

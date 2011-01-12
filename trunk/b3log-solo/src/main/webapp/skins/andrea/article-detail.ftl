@@ -13,18 +13,21 @@
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css"/>
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/i-nove/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/andrea/default-index.css"/>
+        <link href='http://fonts.googleapis.com/css?family=Neucha' rel='stylesheet' type='text/css'/>
+        <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie' rel='stylesheet' type='text/css'/>
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
     </head>
     <body>
         <#include "common-top.ftl">
+        <#include "side-tool.ftl">
         <div class="wrapper">
-            <div class="content">
-                <#include "article-header.ftl">
-                <div class="body">
-                    <div class="left main">
+            <#include "article-header.ftl">
+            <div>
+                <div class="main">
+                    <div class="main-content">
                         <div class="article">
                             <h2 class="article-title">
                                 <a class="no-underline" href="${article.articlePermalink}">${article.articleTitle}</a>
@@ -219,25 +222,31 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="right">
-                        <#include "article-side.ftl">
-                    </div>
-                    <div class="clear"></div>
+                    <div class="main-footer"></div>
                 </div>
+                <div class="side-navi">
+                    <#include "article-side.ftl">
+                </div>
+                <div class="brush">
+                    <div class="brush-icon"></div>
+                    <div id="brush"></div>
+                </div>
+                <div class="clear"></div>
                 <div class="footer">
                     <#include "article-footer.ftl">
                 </div>
-                <div class="stack addthis_toolbox">
-                    <img src="/images/stack.png" alt="stack"/>
-                    <ul id="stack" class="custom_images">
-                        <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="/images/buzz.png" alt="Share to Buzz" /></a></li>
-                        <li><a class="addthis_button_twitter"><span>Twitter</span><img src="/images/twitter.png" alt="Share to Twitter" /></a></li>
-                        <li><a class="addthis_button_delicious"><span>Delicious</span><img src="/images/delicious.png" alt="Share to Delicious" /></a></li>
-                        <li><a class="addthis_button_facebook"><span>Facebook</span><img src="/images/facebook.png" alt="Share to Facebook" /></a></li>
-                        <li><a class="addthis_button_more"><span>More...</span><img src="/images/addthis.png" alt="More..." /></a></li>
-                    </ul>
-                </div>
             </div>
+        </div>
+
+        <div class="stack addthis_toolbox">
+            <img src="/images/stack.png" alt="stack"/>
+            <ul id="stack" class="custom_images">
+                <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="/images/buzz.png" alt="Share to Buzz" /></a></li>
+                <li><a class="addthis_button_twitter"><span>Twitter</span><img src="/images/twitter.png" alt="Share to Twitter" /></a></li>
+                <li><a class="addthis_button_delicious"><span>Delicious</span><img src="/images/delicious.png" alt="Share to Delicious" /></a></li>
+                <li><a class="addthis_button_facebook"><span>Facebook</span><img src="/images/facebook.png" alt="Share to Facebook" /></a></li>
+                <li><a class="addthis_button_more"><span>More...</span><img src="/images/addthis.png" alt="More..." /></a></li>
+            </ul>
         </div>
         <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>

@@ -28,9 +28,9 @@
                 ${article.articleCreateDate?string("yyyy HH:mm:ss")}
                 </#if>
                 by
-                <a title="${article.authorName}" href="/author-articles.do?oId=${article.authorId}">
+                <a class="underline" title="${article.authorName}" href="/author-articles.do?oId=${article.authorId}">
                     ${article.authorName}</a> |
-                <a href="${article.articlePermalink}#comments">
+                <a class="underline" href="${article.articlePermalink}#comments">
                     ${article.articleCommentCount}${commentLabel}
                 </a>
             </div>
@@ -39,7 +39,7 @@
         <div class="article-abstract">
             ${article.articleAbstract}
             <br/>
-            <a class="right" href="${article.articlePermalink}">
+            <a class="right underline" href="${article.articlePermalink}">
                 ${readmore2Label}...
             </a>
             <span class="clear"></span>

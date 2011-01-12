@@ -13,6 +13,11 @@ a, a:link, a:visited {
     text-decoration: underline;
 }
 
+a:hover {
+    text-decoration: none;
+    color: rgba(190, 7, 0, 0.75);
+}
+
 /* common */
 .error-msg {
     color: #BE0700;
@@ -110,6 +115,14 @@ a, a:link, a:visited {
     background-color: #D4D4D4;
 }
 
+.main-content > h2 {
+    color: #BE0700;
+    font-size: 20px;
+    line-height: 20px;
+    margin-bottom: 18px;
+    font-family: 'Neucha','微软雅黑';
+}
+
 .main-footer {
     background: url('images/bgs.png') 0 -185px;
     height: 14px;
@@ -143,6 +156,11 @@ a, a:link, a:visited {
 }
 
 /* common articles */
+.article a.underline:hover {
+    text-decoration: underline;
+    color: #BE0700;
+}
+
 .article .date {
     width: 40px;
     float: left;
@@ -166,10 +184,16 @@ a, a:link, a:visited {
     width: 34px;
 }
 
+.article h2 {
+    margin-bottom: 3px;
+    width: 495px;
+}
+
 .article h2 a {
     color: #363636;
+    font-size: 24px;
+    line-height: 24px;
     text-decoration: none;
-    font-size: 22px;
 }
 
 .article h2 a:hover {
@@ -385,4 +409,15 @@ a, a:link, a:visited {
     text-decoration: none;
     width: 11px;
     word-wrap: break-word;
+}
+
+/* others */
+#tagsPanel a:hover {
+    border: 1px solid;
+}
+
+#tagsPanel a {
+    display: block;
+    float: left;
+    border: 1px solid #D4D4D4;
 }
