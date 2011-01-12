@@ -20,6 +20,7 @@
     </head>
     <body>
         <#include "common-top.ftl">
+        <#include "side-tool.ftl">
         <div class="wrapper">
             <#include "article-header.ftl">
             <div>
@@ -42,6 +43,5 @@
                 </div>
             </div>
         </div>
-        <#include "side-tool.ftl">
     </body>
 </html>

@@ -22,20 +22,41 @@
     });
     util.init();
     util.replaceCommentsEm(".side-navi .navi-comments .side-comment", "i-nove");
-    
+
     // init brush
     var buildBrush = function () {
-        if ($.browser.msie) {
-            $("#brush").height(document.documentElement.scrollHeight - 550).css("background-position",
-            parseInt((document.documentElement.scrollWidth - 910) / 2 - 51) + "px -150px");
-        } else {
-            $("#brush").height(document.documentElement.scrollHeight - 600).css("background-position",
-            parseInt((document.documentElement.scrollWidth - 910) / 2 - 51) + "px -150px");
-        }
+        $("#brush").height(document.documentElement.scrollHeight - document.documentElement.clientHeight).css("background-position",
+        parseInt((document.documentElement.scrollWidth - 910) / 2 - 56) + "px -150px");
     }
-    buildBrush();
-    $(window).resize(function () {
-        buildBrush();
-    });
 
+    // init
+    var init = function () {
+        // brush
+        buildBrush();
+
+        $(window).resize(function () {
+            buildBrush();
+        });
+
+        // bg
+        $("#changeBG a").click(function () {
+            if (this.className !== 'selected') {
+                switch (this.id) {
+                    case "greyBG":
+                        $("body").css("background-image", "url(/skins/andrea/images/bg-grey.jpg)");
+                        break;
+                    case "blueBG":
+                        $("body").css("background-image", "url(/skins/andrea/images/bg-blue.jpg)");
+                        break;
+                    case "brownBG":
+                        $("body").css("background-image", "url(/skins/andrea/images/bg-brown.jpg)");
+                        break;
+                }
+
+                $("#changeBG a").removeClass();
+                this.className = "selected";
+            }
+        });
+    }
+    init();
 </script>
