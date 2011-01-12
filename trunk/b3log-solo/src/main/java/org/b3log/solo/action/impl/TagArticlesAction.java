@@ -213,9 +213,9 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
-            filler.fillSide(ret);
-            filler.fillBlogHeader(ret);
-            filler.fillBlogFooter(ret);
+            filler.fillSide(ret, preference);
+            filler.fillBlogHeader(ret, preference);
+            filler.fillBlogFooter(ret, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

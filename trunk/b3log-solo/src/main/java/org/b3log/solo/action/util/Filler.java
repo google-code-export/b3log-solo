@@ -61,7 +61,6 @@ import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Tags;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,10 +118,6 @@ public final class Filler {
      */
     private ArchiveDates archiveDateUtils = ArchiveDates.getInstance();
     /**
-     * Preference utilities.
-     */
-    private Preferences preferenceUtils = Preferences.getInstance();
-    /**
      * Statistic repository.
      */
     private StatisticRepository statisticRepository =
@@ -141,17 +136,14 @@ public final class Filler {
      *
      * @param dataModel data model
      * @param currentPageNum current page number
+     * @param preference the specified preference
      * @throws Exception exception
      */
     @SuppressWarnings("unchecked")
     public void fillIndexArticles(final Map<String, Object> dataModel,
-                                  final int currentPageNum)
+                                  final int currentPageNum,
+                                  final JSONObject preference)
             throws Exception {
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-
         final int pageSize =
                 preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
         final int windowSize =
@@ -221,16 +213,13 @@ public final class Filler {
      * Fills most used tags.
      *
      * @param dataModel data model
+     * @param preference the specified preference
      * @throws Exception exception
      */
-    public void fillMostUsedTags(final Map<String, Object> dataModel)
+    public void fillMostUsedTags(final Map<String, Object> dataModel,
+                                 final JSONObject preference)
             throws Exception {
         LOGGER.finer("Filling most used tags....");
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-
         final int mostUsedTagDisplayCnt =
                 preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
 
@@ -245,15 +234,12 @@ public final class Filler {
      * Fills archive dates.
      *
      * @param dataModel data model
+     * @param preference the specified preference
      * @throws Exception exception
      */
-    public void fillArchiveDates(final Map<String, Object> dataModel)
+    public void fillArchiveDates(final Map<String, Object> dataModel,
+                                 final JSONObject preference)
             throws Exception {
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-
         final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
         archiveDateUtils.removeForUnpublishedArticles(archiveDates);
 
@@ -284,15 +270,12 @@ public final class Filler {
      * Fills most view count articles.
      *
      * @param dataModel data model
+     * @param preference the specified preference
      * @throws Exception exception
      */
-    public void fillMostViewCountArticles(final Map<String, Object> dataModel)
+    public void fillMostViewCountArticles(final Map<String, Object> dataModel,
+                                          final JSONObject preference)
             throws Exception {
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostViewCountArticles =
@@ -306,16 +289,13 @@ public final class Filler {
      * Fills most comments articles.
      *
      * @param dataModel data model
+     * @param preference the specified preference
      * @throws Exception exception
      */
-    public void fillMostCommentArticles(final Map<String, Object> dataModel)
+    public void fillMostCommentArticles(final Map<String, Object> dataModel,
+                                        final JSONObject preference)
             throws Exception {
         LOGGER.finer("Filling most comment articles....");
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostCommentArticles =
@@ -329,15 +309,12 @@ public final class Filler {
      * Fills post articles recently.
      *
      * @param dataModel data model
+     * @param preference the specified preference
      * @throws Exception exception
      */
-    public void fillRecentArticles(final Map<String, Object> dataModel)
+    public void fillRecentArticles(final Map<String, Object> dataModel,
+                                   final JSONObject preference)
             throws Exception {
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-
         final int recentArticleDisplayCnt =
                 preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
 
@@ -351,16 +328,13 @@ public final class Filler {
      * Fills post comments recently.
      *
      * @param dataModel data model
+     * @param preference the specified preference
      * @throws Exception exception
      */
-    public void fillRecentComments(final Map<String, Object> dataModel)
+    public void fillRecentComments(final Map<String, Object> dataModel,
+                                   final JSONObject preference)
             throws Exception {
         LOGGER.finer("Filling recent comments....");
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-
         final int recentCommentDisplayCnt =
                 preference.getInt(Preference.RECENT_COMMENT_DISPLAY_CNT);
 
@@ -383,14 +357,12 @@ public final class Filler {
      * Fills article-footer.ftl.
      *
      * @param dataModel data model
+     * @param preference the specified preference
      * @throws Exception exception
      */
-    public void fillBlogFooter(final Map<String, Object> dataModel)
+    public void fillBlogFooter(final Map<String, Object> dataModel,
+                               final JSONObject preference)
             throws Exception {
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
 
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
@@ -401,32 +373,15 @@ public final class Filler {
     }
 
     /**
-     * Fills common-top.ftl.
-     *
-     * @param dataModel data model
-     * @throws Exception exception
-     */
-    private void fillCommonTop(final Map<String, Object> dataModel)
-            throws Exception {
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-    }
-
-    /**
      * Fills article-header.ftl.
      *
      * @param dataModel data model
+     * @param preference the specified preference
      * @throws Exception exception
      */
-    public void fillBlogHeader(final Map<String, Object> dataModel)
+    public void fillBlogHeader(final Map<String, Object> dataModel,
+                               final JSONObject preference)
             throws Exception {
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-
         dataModel.put(Preference.LOCALE_STRING,
                       preference.getString(Preference.LOCALE_STRING));
         dataModel.put(Preference.BLOG_TITLE,
@@ -448,7 +403,6 @@ public final class Filler {
             user.remove(User.USER_EMAIL);
         }
 
-        fillCommonTop(dataModel);
         fillPageNavigations(dataModel);
         fillStatistic(dataModel);
     }
@@ -457,22 +411,19 @@ public final class Filler {
      * Fills article-side.ftl.
      *
      * @param dataModel data model
+     * @param preference the specified preference
      * @throws Exception exception
      */
-    public void fillSide(final Map<String, Object> dataModel)
+    public void fillSide(final Map<String, Object> dataModel,
+                         final JSONObject preference)
             throws Exception {
         fillLinks(dataModel);
 //        fillRecentArticles(dataModel);
-        fillRecentComments(dataModel);
-        fillMostUsedTags(dataModel);
-        fillMostCommentArticles(dataModel);
-        fillMostViewCountArticles(dataModel);
-        fillArchiveDates(dataModel);
-
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
+        fillRecentComments(dataModel, preference);
+        fillMostUsedTags(dataModel, preference);
+        fillMostCommentArticles(dataModel, preference);
+        fillMostViewCountArticles(dataModel, preference);
+        fillArchiveDates(dataModel, preference);
 
         final String noticeBoard =
                 preference.getString(Preference.NOTICE_BOARD);
@@ -487,19 +438,16 @@ public final class Filler {
      * @param dataModel data model
      * @param leftCurrentPageNum left part page number
      * @param rightCurrentPageNum right part current page number
+     * @param preference the specified preference
      * @throws Exception exception
      */
     @SuppressWarnings("unchecked")
     public void fillIndexArticlesForValentine(
             final Map<String, Object> dataModel,
             final int leftCurrentPageNum,
-            final int rightCurrentPageNum) throws Exception {
+            final int rightCurrentPageNum, final JSONObject preference)
+            throws Exception {
         LOGGER.finer("Filling article list for skin valentine....");
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new Exception("Not found preference");
-        }
-
         final int pageSize =
                 preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
         final int windowSize =

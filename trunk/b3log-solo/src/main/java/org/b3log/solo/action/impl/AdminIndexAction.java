@@ -115,8 +115,8 @@ public final class AdminIndexAction extends AbstractAdminAction {
             ret.put(User.USER_NAME, userName);
             ret.put(User.USER_ROLE, roleName);
 
-            filler.fillBlogHeader(ret);
-            filler.fillBlogFooter(ret);
+            filler.fillBlogHeader(ret, preference);
+            filler.fillBlogFooter(ret, preference);
 
             final boolean hasMultipleUsers = userUtils.hasMultipleUsers();
             ret.put(Common.ENABLED_MULTIPLE_USER_SUPPORT, hasMultipleUsers);
