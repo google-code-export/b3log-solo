@@ -96,6 +96,15 @@
         <url-pattern>/tags/*</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>TagsFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.TagsFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>TagsFilter</filter-name>
+        <url-pattern>/tags.html</url-pattern>
+    </filter-mapping>
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Upgrade and Initialization</web-resource-name>
