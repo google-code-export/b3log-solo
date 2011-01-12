@@ -34,13 +34,6 @@
             <li>
                 <a class="home" href="/">Blog</a>
             </li>
-            <#list pageNavigations as page>
-            <li>
-                <a href="${page.pagePermalink}">
-                    ${page.pageTitle}
-                </a>
-            </li>
-            </#list>
             <li>
                 <a href="/tags.html">Tags</a>
             </li>
