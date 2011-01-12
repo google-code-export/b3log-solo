@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.repository.impl;
 
 import com.google.appengine.api.datastore.Entity;
@@ -21,7 +20,6 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultIterable;
-import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,8 +54,8 @@ public final class TagGAERepository extends AbstractGAERepository
     /**
      * Tag-Article relation repository.
      */
-    @Inject
-    private TagArticleGAERepository tagArticleRepository;
+    private TagArticleGAERepository tagArticleRepository =
+            TagArticleGAERepository.getInstance();
     /**
      * Cache.
      */

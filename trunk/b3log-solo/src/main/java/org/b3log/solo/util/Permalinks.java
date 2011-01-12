@@ -113,4 +113,39 @@ public final class Permalinks {
 
         return false;
     }
+
+    /**
+     * Gets the {@link Permalinks} singleton.
+     *
+     * @return the singleton
+     */
+    public static Permalinks getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Permalinks() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Permalinks SINGLETON = new Permalinks();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
+    }
 }

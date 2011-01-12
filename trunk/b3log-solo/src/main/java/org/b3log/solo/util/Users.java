@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.6, Jan 12, 2011
  */
-public class Users {
+public final class Users {
 
     /**
      * Logger.
@@ -203,5 +203,40 @@ public class Users {
         }
 
         return false;
+    }
+
+    /**
+     * Gets the {@link Users} singleton.
+     *
+     * @return the singleton
+     */
+    public static Users getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Users() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Users SINGLETON = new Users();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

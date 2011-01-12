@@ -18,7 +18,6 @@ package org.b3log.solo.action.impl;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +52,6 @@ import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
 import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
-import org.b3log.solo.util.Statistics;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -92,28 +90,19 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
     /**
      * Filler.
      */
-    @Inject
-    private Filler filler;
+    private Filler filler = Filler.getInstance();
     /**
      * Article utilities.
      */
-    @Inject
-    private Articles articleUtils;
+    private Articles articleUtils = Articles.getInstance();
     /**
      * Language service.
      */
-    @Inject
-    private LangPropsService langPropsService;
-    /**
-     * Statistic utilities.
-     */
-    @Inject
-    private Statistics statistics;
+    private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

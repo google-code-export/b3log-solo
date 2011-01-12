@@ -19,7 +19,6 @@ package org.b3log.solo.event.comment;
 import com.google.appengine.api.mail.MailService;
 import com.google.appengine.api.mail.MailService.Message;
 import com.google.appengine.api.mail.MailServiceFactory;
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -34,6 +33,7 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 30, 2010
+ * @version 1.0.0.8, Jan 12, 2011
  */
 public final class PageCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -54,26 +54,23 @@ public final class PageCommentReplyNotifier
     /**
      * Comment repository.
      */
-    @Inject
-    private CommentRepository commentRepository;
+    private CommentRepository commentRepository =
+            CommentGAERepository.getInstance();
     /**
      * Mail service.
      */
-    private MailService mailService =
-            MailServiceFactory.getMailService();
+    private MailService mailService = MailServiceFactory.getMailService();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     /**
-     * Constructs a {@link ReplyProcessor} object with the specified event
-     * manager.
+     * Constructs a {@link PageCommentReplyNotifier} object with the specified
+     * event manager.
      *
      * @param eventManager the specified event manager
      */
-    @Inject
     public PageCommentReplyNotifier(final EventManager eventManager) {
         super(eventManager);
     }

@@ -18,7 +18,6 @@ package org.b3log.solo.action.impl;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.inject.Inject;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,8 +53,7 @@ public final class CheckLoggedInAction extends AbstractAction {
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
     /**
      * User service.
      */

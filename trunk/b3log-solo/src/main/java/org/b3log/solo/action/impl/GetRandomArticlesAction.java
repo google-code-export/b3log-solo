@@ -16,7 +16,6 @@
 
 package org.b3log.solo.action.impl;
 
-import com.google.inject.Inject;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -38,7 +37,7 @@ import org.json.JSONObject;
  * Gets random articles action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 11, 2011
+ * @version 1.0.0.3, Jan 12, 2011
  */
 public final class GetRandomArticlesAction extends AbstractAction {
 
@@ -59,8 +58,7 @@ public final class GetRandomArticlesAction extends AbstractAction {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

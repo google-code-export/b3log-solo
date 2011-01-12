@@ -20,7 +20,6 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import java.util.logging.Level;
 import org.b3log.latke.action.ActionException;
-import com.google.inject.Inject;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -42,7 +41,7 @@ import org.json.JSONObject;
  * Admin index action. admin-index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 20, 2010
+ * @version 1.0.0.5, Jan 12, 2011
  */
 public final class AdminIndexAction extends AbstractAdminAction {
 
@@ -58,23 +57,19 @@ public final class AdminIndexAction extends AbstractAdminAction {
     /**
      * Language service.
      */
-    @Inject
-    private LangPropsService langPropsService;
+    private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
      * Filler.
      */
-    @Inject
-    private Filler filler;
+    private Filler filler = Filler.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
     /**
      * User service.
      */

@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -36,6 +35,7 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
+import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jan 10, 2011
+ * @version 1.0.2.3, Jan 12, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -59,28 +59,24 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
     /**
      * Skin utilities.
      */
-    @Inject
-    private Skins skins;
+    private Skins skins = Skins.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Preference repository.
      */
-    @Inject
-    private PreferenceRepository preferenceRepository;
+    private PreferenceRepository preferenceRepository =
+            PreferenceGAERepository.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
     /**
      * Time zone utilities.
      */
-    @Inject
-    private TimeZones timeZoneUtils;
+    private TimeZones timeZoneUtils = TimeZones.getInstance();
 
     /**
      * Gets signs.
@@ -324,5 +320,41 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link PreferenceService} singleton.
+     *
+     * @return the singleton
+     */
+    public static PreferenceService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private PreferenceService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final PreferenceService SINGLETON =
+                new PreferenceService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

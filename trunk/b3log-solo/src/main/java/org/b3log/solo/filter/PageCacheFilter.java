@@ -16,7 +16,6 @@
 
 package org.b3log.solo.filter;
 
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.cache.Cache;
@@ -37,11 +36,11 @@ import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.PageCacheKeys;
 import org.b3log.solo.util.Statistics;
@@ -55,7 +54,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Jan 11, 2011
+ * @version 1.0.2.6, Jan 12, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -70,31 +69,43 @@ public final class PageCacheFilter implements Filter {
     private static final Logger LOGGER =
             Logger.getLogger(PageCacheFilter.class.getName());
     /**
+     * Administrator action serve URLs.
+     */
+    public static final String[] ADMIN_ACTIONS = new String[]{
+        "/admin-index.do",
+        "/admin-article.do",
+        "/admin-article-list.do",
+        "/admin-link-list.do",
+        "/admin-preference.do",
+        "/admin-article-sync.do",
+        "/admin-file-list.do",
+        "/admin-page.do",
+        "/admin-others.do",
+        "/admin-draft-list.do",
+        "/admin-user-list.do"
+    };
+    /**
      * Page cache utilities.
      */
-    @Inject
-    private PageCacheKeys pageCacheKeys;
+    private PageCacheKeys pageCacheKeys = PageCacheKeys.getInstance();
     /**
      * Statistic utilities.
      */
-    @Inject
-    private Statistics statistics;
+    private Statistics statistics = Statistics.getInstance();
     /**
      * Statistic repository.
      */
-    @Inject
-    private StatisticRepository statisticRepository;
+    private StatisticRepository statisticRepository =
+            StatisticGAERepository.getInstance();
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository =
             ArticleGAERepository.getInstance();
-
     /**
      * Article utilities.
      */
-    @Inject
-    private Articles articleUtils;
+    private Articles articleUtils = Articles.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -277,11 +288,11 @@ public final class PageCacheFilter implements Filter {
      *
      * @param requestURI the specified request URI
      * @return {@code true} if it is equals to, {@code false} otherwise
-     * @see org.b3log.solo.action.ActionModule#ADMIN_ACTIONS
+     * @see #ADMIN_ACTIONS
      */
     private static boolean equalAdminActions(final String requestURI) {
-        for (int i = 0; i < ActionModule.ADMIN_ACTIONS.length; i++) {
-            if (ActionModule.ADMIN_ACTIONS[i].equals(requestURI)) {
+        for (int i = 0; i < ADMIN_ACTIONS.length; i++) {
+            if (ADMIN_ACTIONS[i].equals(requestURI)) {
                 return true;
             }
         }

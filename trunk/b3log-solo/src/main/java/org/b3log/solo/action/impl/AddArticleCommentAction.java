@@ -23,7 +23,6 @@ import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -58,8 +57,10 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageCommentRepository;
+import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
@@ -88,38 +89,33 @@ public final class AddArticleCommentAction extends AbstractAction {
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository =
+    private static CommentRepository commentRepository =
             CommentGAERepository.getInstance();
     /**
      * Article utilities.
      */
-    @Inject
-    private Articles articleUtils;
+    private static Articles articleUtils = Articles.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private static Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Time zone utilities.
      */
-    @Inject
-    private TimeZones timeZoneUtils;
+    private static TimeZones timeZoneUtils = TimeZones.getInstance();
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
+    private static ArticleRepository articleRepository =
             ArticleGAERepository.getInstance();
     /**
      * Statistic utilities.
      */
-    @Inject
-    private Statistics statistics;
+    private static Statistics statistics = Statistics.getInstance();
     /**
      * Default user thumbnail.
      */
@@ -128,28 +124,27 @@ public final class AddArticleCommentAction extends AbstractAction {
     /**
      * Mail service.
      */
-    private MailService mailService =
+    private static MailService mailService =
             MailServiceFactory.getMailService();
     /**
      * URL fetch service.
      */
-    private URLFetchService urlFetchService =
+    private static URLFetchService urlFetchService =
             URLFetchServiceFactory.getURLFetchService();
     /**
      * Event manager.
      */
-    @Inject
-    private EventManager eventManager;
+    private static EventManager eventManager = EventManager.getInstance();
     /**
      * Article-Comment repository.
      */
-    @Inject
-    private ArticleCommentRepository articleCommentRepository;
+    private static ArticleCommentRepository articleCommentRepository = ArticleCommentGAERepository.
+            getInstance();
     /**
      * Page-Comment repository.
      */
-    @Inject
-    private PageCommentRepository pageCommentRepository;
+    private static PageCommentRepository pageCommentRepository =
+            PageCommentGAERepository.getInstance();
     /**
      * Comment mail HTML body.
      */
@@ -202,6 +197,26 @@ public final class AddArticleCommentAction extends AbstractAction {
     public JSONObject doAjaxAction(final JSONObject requestJSONObject,
                                    final HttpServletRequest request,
                                    final HttpServletResponse response)
+            throws ActionException {
+        return addArticleComment(requestJSONObject, request, response);
+    }
+
+    /**
+     * Adds article comment.
+     *
+     * @param requestJSONObject request json object
+     * @param request request
+     * @param response response
+     * @return result
+     * @throws ActionException action exception
+     * @see #doAjaxAction(org.json.JSONObject,
+     * javax.servlet.http.HttpServletRequest,
+     * javax.servlet.http.HttpServletResponse)
+     */
+    public static JSONObject addArticleComment(
+            final JSONObject requestJSONObject,
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException {
         final JSONObject ret = new JSONObject();
         final Transaction transaction = commentRepository.beginTransaction();
@@ -329,9 +344,9 @@ public final class AddArticleCommentAction extends AbstractAction {
      * @throws IOException io exception
      * @throws JSONException json exception
      */
-    private void sendNotificationMail(final JSONObject articleOrPage,
-                                      final JSONObject comment,
-                                      final JSONObject originalComment)
+    private static void sendNotificationMail(final JSONObject articleOrPage,
+                                             final JSONObject comment,
+                                             final JSONObject originalComment)
             throws IOException, JSONException {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String commentId = comment.getString(Keys.OBJECT_ID);
@@ -427,8 +442,8 @@ public final class AddArticleCommentAction extends AbstractAction {
      * @return comment sharp URL
      * @throws JSONException json exception
      */
-    private String getCommentSharpURLForArticle(final JSONObject article,
-                                                final String commentId)
+    private static String getCommentSharpURLForArticle(final JSONObject article,
+                                                       final String commentId)
             throws JSONException {
         final String articleLink = article.getString(Article.ARTICLE_PERMALINK);
 
@@ -455,7 +470,7 @@ public final class AddArticleCommentAction extends AbstractAction {
      * @param comment the specified comment
      * @throws Exception exception
      */
-    private void setCommentThumbnailURL(final JSONObject comment)
+    private static void setCommentThumbnailURL(final JSONObject comment)
             throws Exception {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String id = commentEmail.split("@")[0];

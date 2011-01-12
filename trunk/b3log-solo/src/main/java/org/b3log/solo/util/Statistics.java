@@ -336,4 +336,39 @@ public final class Statistics {
                 Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT) - 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
+
+    /**
+     * Gets the {@link Statistics} singleton.
+     *
+     * @return the singleton
+     */
+    public static Statistics getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Statistics() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Statistics SINGLETON = new Statistics();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
+    }
 }

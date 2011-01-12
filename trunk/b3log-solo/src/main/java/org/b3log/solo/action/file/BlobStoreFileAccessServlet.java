@@ -23,7 +23,6 @@ import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
@@ -45,7 +44,7 @@ import org.json.JSONObject;
  * Google Blog Store</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 27, 2010
+ * @version 1.0.0.2, Jan 12, 2011
  */
 public final class BlobStoreFileAccessServlet extends HttpServlet {
 
@@ -81,8 +80,7 @@ public final class BlobStoreFileAccessServlet extends HttpServlet {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     @Override
     protected void doPost(final HttpServletRequest request,

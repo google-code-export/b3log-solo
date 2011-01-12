@@ -16,7 +16,6 @@
 
 package org.b3log.solo.util;
 
-import com.google.inject.Inject;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
@@ -45,8 +44,7 @@ public final class Skins {
     /**
      * Time zone utilities.
      */
-    @Inject
-    private TimeZones timeZoneUtils;
+    private TimeZones timeZoneUtils = TimeZones.getInstance();
     /**
      * Logger.
      */
@@ -178,6 +176,41 @@ public final class Skins {
                     getMessage());
 
             return null;
+        }
+    }
+
+    /**
+     * Gets the {@link Skins} singleton.
+     *
+     * @return the singleton
+     */
+    public static Skins getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Skins() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Skins SINGLETON = new Skins();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
         }
     }
 }

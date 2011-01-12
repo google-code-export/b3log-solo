@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +42,14 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
+import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.PageCommentGAERepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
@@ -61,7 +63,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.8, Jan 3, 2011
+ * @version 1.0.3.9, Jan 12, 2011
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -73,58 +75,46 @@ public final class CommentService extends AbstractGAEJSONRpcService {
     /**
      * Comment repository.
      */
-    @Inject
-    private CommentRepository commentRepository;
+    private CommentRepository commentRepository =
+            CommentGAERepository.getInstance();
     /**
      * Event manager.
      */
-    @Inject
-    private EventManager eventManager;
+    private EventManager eventManager = EventManager.getInstance();
     /**
      * Article-Comment repository.
      */
-    @Inject
-    private ArticleCommentRepository articleCommentRepository;
+    private ArticleCommentRepository articleCommentRepository =
+            ArticleCommentGAERepository.getInstance();
     /**
      * Page-Comment repository.
      */
-    @Inject
-    private PageCommentRepository pageCommentRepository;
+    private PageCommentRepository pageCommentRepository =
+            PageCommentGAERepository.getInstance();
     /**
      * Page repository.
      */
-    @Inject
-    private PageRepository pageRepository;
+    private PageRepository pageRepository = PageGAERepository.getInstance();
     /**
      * Article utilities.
      */
-    @Inject
-    private Articles articleUtils;
+    private Articles articleUtils = Articles.getInstance();
     /**
      * Page utilities.
      */
-    @Inject
-    private Pages pageUtils;
+    private Pages pageUtils = Pages.getInstance();
     /**
      * Statistic utilities.
      */
-    @Inject
-    private Statistics statistics;
+    private Statistics statistics = Statistics.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
-    /**
-     * Time zone utilities.
-     */
-    @Inject
-    private TimeZones timeZoneUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     /**
      * Gets recent comments with the specified http servlet request and response.
@@ -465,5 +455,40 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link CommentService} singleton.
+     *
+     * @return the singleton
+     */
+    public static CommentService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private CommentService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final CommentService SINGLETON = new CommentService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

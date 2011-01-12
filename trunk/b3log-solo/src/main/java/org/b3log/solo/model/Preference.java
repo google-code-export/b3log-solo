@@ -120,16 +120,6 @@ public final class Preference {
     public static final String GOOGLE_OAUTH_CONSUMER_SECRET =
             "googleOAuthConsumerSecret";
     /**
-     * Key of Google Buzz token.
-     */
-    public static final String GOOGLE_BUZZ_TOKEN =
-            "googleBuzzToken";
-    /**
-     * Key of Google Buzz verifier.
-     */
-    public static final String GOOGLE_BUZZ_VERIFIER =
-            "googleBuzzVerifier";
-    /**
      * Key of enable post to Buzz.
      */
     public static final String ENABLE_POST_TO_BUZZ =
@@ -228,6 +218,50 @@ public final class Preference {
          * Default enable article update hint.
          */
         public static final boolean DEFAULT_ENABLE_ARTICLE_UPDATE_HINT = true;
+        /**
+         * Default notice board.
+         */
+        public static final String DEFAULT_NOTICE_BOARD =
+                "Open Source, Open Mind, <br/>Open Sight, Open Future!";
+        /**
+         * Default meta keywords..
+         */
+        public static final String DEFAULT_META_KEYWORDS =
+                "GAE 博客,GAE blog,b3log";
+        /**
+         * Default meta description..
+         */
+        public static final String DEFAULT_META_DESCRIPTION =
+                "An open source blog based on GAE Java. GAE Java 开源博客";
+        /**
+         * Default HTML head to append.
+         */
+        public static final String DEFAULT_HTML_HEAD = "";
+        /**
+         * Default OAuth consumer secret for Google.
+         */
+        public static final String DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET = "";
+        /**
+         * Default enable post to Buzz.
+         */
+        public static final boolean DEFAULT_ENABLE_POST_TO_BUZZ = false;
+        /**
+         * Default relevant articles display count.
+         */
+        public static final int DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT = 5;
+        /**
+         * Default random articles display count.
+         */
+        public static final int DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT = 5;
+        /**
+         * Default external relevant articles display count.
+         */
+        public static final int DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT =
+                5;
+        /**
+         * Most view articles display count.
+         */
+        public static final int DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT = 5;
         /**
          * Default signs.
          */

@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +35,7 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.repository.impl.LinkGAERepository;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * Link service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jan 1, 2011
+ * @version 1.0.0.8, Jan 12, 2011
  */
 public final class LinkService extends AbstractGAEJSONRpcService {
 
@@ -57,13 +57,11 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     /**
      * Link repository.
      */
-    @Inject
-    private LinkRepository linkRepository;
+    private LinkRepository linkRepository = LinkGAERepository.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
 
     /**
      * Gets a link by the specified request json object.
@@ -403,5 +401,40 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link LinkService} singleton.
+     *
+     * @return the singleton
+     */
+    public static LinkService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private LinkService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final LinkService SINGLETON = new LinkService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

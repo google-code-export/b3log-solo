@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,6 +40,8 @@ import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.BlogSyncMgmtGAERepository;
+import org.b3log.solo.repository.impl.ExternalArticleSoloArticleGAERepository;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.Post;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Jan 11, 2011
+ * @version 1.0.1.8, Jan 12, 2011
  */
 public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
@@ -72,38 +73,33 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     /**
      * Tag utilities.
      */
-    @Inject
-    private Tags tagUtils;
+    private Tags tagUtils = Tags.getInstance();
     /**
      * Article utilities.
      */
-    @Inject
-    private Articles articleUtils;
+    private Articles articleUtils = Articles.getInstance();
     /**
      * Statistic utilities.
      */
-    @Inject
-    private Statistics statistics;
+    private Statistics statistics = Statistics.getInstance();
     /**
      * Archive date utilities.
      */
-    @Inject
-    private ArchiveDates archiveDateUtils;
+    private ArchiveDates archiveDateUtils = ArchiveDates.getInstance();
     /**
      * External blog article-Solo article repository.
      */
-    @Inject
-    private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository;
+    private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository =
+            ExternalArticleSoloArticleGAERepository.getInstance();
     /**
      * Blog sync management repository.
      */
-    @Inject
-    private BlogSyncManagementRepository blogSyncManagementRepository;
+    private BlogSyncManagementRepository blogSyncManagementRepository =
+            BlogSyncMgmtGAERepository.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
     /**
      * External blog article retrieval count incremental.
      */
@@ -599,5 +595,40 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
         ret.put(Article.ARTICLE_AUTHOR_EMAIL, currentUserEmail);
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link BlogSyncService} singleton.
+     *
+     * @return the singleton
+     */
+    public static BlogSyncService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private BlogSyncService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final BlogSyncService SINGLETON = new BlogSyncService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

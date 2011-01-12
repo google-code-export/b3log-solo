@@ -18,7 +18,6 @@ package org.b3log.solo.google.auth;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -40,7 +39,7 @@ import org.json.JSONObject;
  * OAuth servlet.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 4, 2010
+ * @version 1.0.0.6, Jan 12, 2010
  */
 public final class BuzzOAuth extends HttpServlet {
 
@@ -68,13 +67,11 @@ public final class BuzzOAuth extends HttpServlet {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * OAuth utilities.
      */
-    @Inject
-    private OAuths oAuths;
+    private OAuths oAuths = OAuths.getInstance();
 
 //    /**
 //     * Gets http transport.

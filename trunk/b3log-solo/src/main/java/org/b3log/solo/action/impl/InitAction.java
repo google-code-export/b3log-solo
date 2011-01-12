@@ -16,7 +16,6 @@
 
 package org.b3log.solo.action.impl;
 
-import com.google.inject.Inject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.File;
@@ -60,8 +59,7 @@ public final class InitAction extends AbstractAction {
     /**
      * Language service.
      */
-    @Inject
-    private LangPropsService langPropsService;
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

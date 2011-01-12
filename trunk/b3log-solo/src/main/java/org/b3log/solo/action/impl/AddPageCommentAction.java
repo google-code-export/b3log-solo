@@ -23,7 +23,6 @@ import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -58,6 +57,7 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
@@ -86,8 +86,7 @@ public final class AddPageCommentAction extends AbstractAction {
     /**
      * Page repository.
      */
-    private PageRepository pageRepository =
-            PageGAERepository.getInstance();
+    private PageRepository pageRepository = PageGAERepository.getInstance();
     /**
      * Comment repository.
      */
@@ -96,23 +95,19 @@ public final class AddPageCommentAction extends AbstractAction {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Time zone utilities.
      */
-    @Inject
-    private TimeZones timeZoneUtils;
+    private TimeZones timeZoneUtils = TimeZones.getInstance();
     /**
      * Page utilities.
      */
-    @Inject
-    private Pages pageUtils;
+    private Pages pageUtils = Pages.getInstance();
     /**
      * Statistic utilities.
      */
-    @Inject
-    private Statistics statistics;
+    private Statistics statistics = Statistics.getInstance();
     /**
      * Default user thumbnail.
      */
@@ -130,13 +125,12 @@ public final class AddPageCommentAction extends AbstractAction {
     /**
      * Event manager.
      */
-    @Inject
-    private EventManager eventManager;
+    private EventManager eventManager = EventManager.getInstance();
     /**
      * Page-Comment repository.
      */
-    @Inject
-    private PageCommentRepository pageCommentRepository;
+    private PageCommentRepository pageCommentRepository =
+            PageCommentGAERepository.getInstance();
     /**
      * Comment mail HTML body.
      */

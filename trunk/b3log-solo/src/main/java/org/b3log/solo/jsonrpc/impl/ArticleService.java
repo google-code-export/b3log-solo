@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,6 +56,9 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArticleSignGAERepository;
+import org.b3log.solo.repository.impl.TagArticleGAERepository;
+import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Permalinks;
@@ -73,7 +75,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.2, Jan 11, 2011
+ * @version 1.0.3.3, Jan 12, 2011
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -90,63 +92,53 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     /**
      * Tag repository.
      */
-    @Inject
-    private TagRepository tagRepository;
+    private TagRepository tagRepository = TagGAERepository.getInstance();
     /**
      * Tag-Article repository.
      */
-    @Inject
-    private TagArticleRepository tagArticleRepository;
+    private TagArticleRepository tagArticleRepository =
+            TagArticleGAERepository.getInstance();
     /**
      * Article-Sign repository.
      */
-    @Inject
-    private ArticleSignRepository articleSignRepository;
+    private ArticleSignRepository articleSignRepository =
+            ArticleSignGAERepository.getInstance();
     /**
      * Event manager.
      */
-    @Inject
-    private EventManager eventManager;
+    private EventManager eventManager = EventManager.getInstance();
     /**
      * Tag utilities.
      */
-    @Inject
-    private Tags tagUtils;
+    private Tags tagUtils = Tags.getInstance();
     /**
      * Article utilities.
      */
-    @Inject
-    private Articles articleUtils;
+    private Articles articleUtils = Articles.getInstance();
     /**
      * Statistic utilities.
      */
-    @Inject
-    private Statistics statistics;
+    private Statistics statistics = Statistics.getInstance();
     /**
      * Archive date utilities.
      */
-    @Inject
-    private ArchiveDates archiveDateUtils;
+    private ArchiveDates archiveDateUtils = ArchiveDates.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Permalink utilities.
      */
-    @Inject
-    private Permalinks permalinks;
+    private Permalinks permalinks = Permalinks.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
     /**
      * Time zone utilities.
      */
-    @Inject
-    private TimeZones timeZoneUtils;
+    private TimeZones timeZoneUtils = TimeZones.getInstance();
     /**
      * Permalink date format(yyyy/MM/dd).
      */
@@ -1097,5 +1089,40 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
+    }
+
+     /**
+     * Gets the {@link ArticleService} singleton.
+     *
+     * @return the singleton
+     */
+    public static ArticleService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private ArticleService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final ArticleService SINGLETON = new ArticleService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

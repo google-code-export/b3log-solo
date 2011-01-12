@@ -38,7 +38,7 @@ import org.b3log.latke.Keys;
  * </p>
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 22, 2010
+ * @version 1.0.0.6, Jan 12, 2011
  */
 public final class DefaultArticlePermalinkFilter implements Filter {
 
@@ -70,6 +70,12 @@ public final class DefaultArticlePermalinkFilter implements Filter {
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
+
+        if (!requestURI.matches("/articles/\\d{4}/\\d{2}/\\d{2}/\\d+.html")) {
+            chain.doFilter(request, response);
+            
+            return;
+        }
 
         final String articleId = StringUtils.substring(
                 requestURI,

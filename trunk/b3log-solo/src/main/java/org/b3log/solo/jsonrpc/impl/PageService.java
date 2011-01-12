@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +36,7 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Users;
@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Dec 8, 2010
+ * @version 1.0.1.0, Jan 12, 2011
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
@@ -59,23 +59,19 @@ public final class PageService extends AbstractGAEJSONRpcService {
     /**
      * Page repository.
      */
-    @Inject
-    private PageRepository pageRepository;
+    private PageRepository pageRepository = PageGAERepository.getInstance();
     /**
      * Page utilities.
      */
-    @Inject
-    private Pages pageUtils;
+    private Pages pageUtils = Pages.getInstance();
     /**
      * Permalink utilities.
      */
-    @Inject
-    private Permalinks permalinks;
+    private Permalinks permalinks = Permalinks.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
 
     /**
      * Gets a page by the specified request json object.
@@ -464,6 +460,41 @@ public final class PageService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             return false;
+        }
+    }
+
+    /**
+     * Gets the {@link PageService} singleton.
+     *
+     * @return the singleton
+     */
+    public static PageService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private PageService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final PageService SINGLETON = new PageService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
         }
     }
 }

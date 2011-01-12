@@ -16,7 +16,6 @@
 
 package org.b3log.solo.google.auth;
 
-import com.google.inject.Inject;
 import java.util.logging.Logger;
 import org.b3log.solo.util.Preferences;
 
@@ -24,7 +23,7 @@ import org.b3log.solo.util.Preferences;
  * Google OAuth utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 4, 2010
+ * @version 1.0.0.6, Jan 12, 2011
  */
 public final class OAuths {
 
@@ -64,12 +63,12 @@ public final class OAuths {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Consumer key.
      */
     private static String consumerKey;
+
     /**
      * Gets the authorization URL for the specified http transport.
      * 
@@ -153,4 +152,38 @@ public final class OAuths {
 //        return ret;
 //    }
 //}
+    /**
+     * Gets the {@link OAuths} singleton.
+     *
+     * @return the singleton
+     */
+    public static OAuths getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private OAuths() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final OAuths SINGLETON = new OAuths();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
+    }
 }

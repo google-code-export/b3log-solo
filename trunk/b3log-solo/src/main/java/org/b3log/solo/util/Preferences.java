@@ -16,10 +16,8 @@
 
 package org.b3log.solo.util;
 
-import org.b3log.latke.event.EventManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.google.inject.Inject;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,14 +50,9 @@ public final class Preferences {
     private static final Logger LOGGER =
             Logger.getLogger(Preferences.class.getName());
     /**
-     * Event manager.
-     */
-    private EventManager eventManager = EventManager.getInstance();
-    /**
      * Skin utilities.
      */
-    @Inject
-    private Skins skins;
+    private Skins skins = Skins.getInstance();
 
     static {
         userPreferenceCache = CacheFactory.getCache(PREFERENCE);
@@ -108,5 +101,40 @@ public final class Preferences {
             throws JSONException, RepositoryException {
         userPreferenceCache.put(PREFERENCE, preference.toString());
         preferenceRepository.update(PREFERENCE, preference);
+    }
+
+    /**
+     * Gets the {@link Preferences} singleton.
+     *
+     * @return the singleton
+     */
+    public static Preferences getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Preferences() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Preferences SINGLETON = new Preferences();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

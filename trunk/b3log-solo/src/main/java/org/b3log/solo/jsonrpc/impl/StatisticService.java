@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +25,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.util.Statistics;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
@@ -34,7 +33,7 @@ import org.json.JSONObject;
  * Statistic service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 3, 2010
+ * @version 1.0.0.5, Jan 12, 2011
  */
 public final class StatisticService extends AbstractGAEJSONRpcService {
 
@@ -46,18 +45,12 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
     /**
      * Statistic repository.
      */
-    @Inject
-    private StatisticRepository statisticRepository;
-    /**
-     * Statistic utilities.
-     */
-    @Inject
-    private Statistics statistics;
+    private StatisticRepository statisticRepository =
+            StatisticGAERepository.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
 
     /**
      * Gets the blog statistic.
@@ -91,5 +84,40 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link StatisticService} singleton.
+     *
+     * @return the singleton
+     */
+    public static StatisticService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private StatisticService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final StatisticService SINGLETON = new StatisticService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

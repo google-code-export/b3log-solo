@@ -79,4 +79,39 @@ public final class Comments {
             }
         }
     }
+
+    /**
+     * Gets the {@link Comments} singleton.
+     *
+     * @return the singleton
+     */
+    public static Comments getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Comments() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Comments SINGLETON = new Comments();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
+    }
 }

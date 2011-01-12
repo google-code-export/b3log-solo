@@ -16,7 +16,6 @@
 
 package org.b3log.solo.action.util;
 
-import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,11 +53,16 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.LinkGAERepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.solo.repository.impl.UserGAERepository;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Tags;
-import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +71,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, Jan 11, 2011
+ * @version 1.0.3.0, Jan 12, 2011
  */
 public final class Filler {
 
@@ -84,63 +88,49 @@ public final class Filler {
     /**
      * Comment repository.
      */
-    @Inject
-    private CommentRepository commentRepository;
+    private CommentRepository commentRepository =
+            CommentGAERepository.getInstance();
     /**
      * Tag repository.
      */
-    @Inject
-    private TagRepository tagRepository;
+    private TagRepository tagRepository = TagGAERepository.getInstance();
     /**
      * Article utilities.
      */
-    @Inject
-    private Articles articleUtils;
-    /**
-     * User utilities.
-     */
-    @Inject
-    private Users userUtils;
+    private Articles articleUtils = Articles.getInstance();
     /**
      * Comment utilities.
      */
-    @Inject
-    private Comments commentUtils;
+    private Comments commentUtils = Comments.getInstance();
     /**
      * Tag utilities.
      */
-    @Inject
-    private Tags tagUtils;
+    private Tags tagUtils = Tags.getInstance();
     /**
      * Link repository.
      */
-    @Inject
-    private LinkRepository linkRepository;
+    private LinkRepository linkRepository = LinkGAERepository.getInstance();
     /**
      * Page repository.
      */
-    @Inject
-    private PageRepository pageRepository;
+    private PageRepository pageRepository = PageGAERepository.getInstance();
     /**
      * Archive date utilities.
      */
-    @Inject
-    private ArchiveDates archiveDateUtils;
+    private ArchiveDates archiveDateUtils = ArchiveDates.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Statistic repository.
      */
-    @Inject
-    private StatisticRepository statisticRepository;
+    private StatisticRepository statisticRepository =
+            StatisticGAERepository.getInstance();
     /**
      * User repository.
      */
-    @Inject
-    private UserRepository userRepository;
+    private UserRepository userRepository = UserGAERepository.getInstance();
     /**
      * {@code true} for published.
      */
@@ -433,8 +423,7 @@ public final class Filler {
     public void fillBlogHeader(final Map<String, Object> dataModel)
             throws Exception {
         final JSONObject preference = preferenceUtils.getPreference();
-        if (null
-            == preference) {
+        if (null == preference) {
             throw new Exception("Not found preference");
         }
 
@@ -687,6 +676,41 @@ public final class Filler {
             article.put(Common.AUTHOR_NAME, authorName);
             final String authorId = author.getString(Keys.OBJECT_ID);
             article.put(Common.AUTHOR_ID, authorId);
+        }
+    }
+
+    /**
+     * Gets the {@link Filler} singleton.
+     *
+     * @return the singleton
+     */
+    public static Filler getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Filler() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Filler SINGLETON = new Filler();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
         }
     }
 }

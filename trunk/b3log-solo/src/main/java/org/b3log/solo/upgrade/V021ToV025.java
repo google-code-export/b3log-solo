@@ -18,7 +18,6 @@ package org.b3log.solo.upgrade;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -49,6 +48,10 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.LinkGAERepository;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.solo.repository.impl.UserGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -143,8 +146,8 @@ public final class V021ToV025 extends HttpServlet {
     /**
      * Statistic repository.
      */
-    @Inject
-    private StatisticRepository statisticRepository;
+    private StatisticRepository statisticRepository =
+            StatisticGAERepository.getInstance();
     /**
      * Article repository.
      */
@@ -153,8 +156,7 @@ public final class V021ToV025 extends HttpServlet {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * User service.
      */
@@ -163,8 +165,7 @@ public final class V021ToV025 extends HttpServlet {
     /**
      * Tag repository.
      */
-    @Inject
-    private TagRepository tagRepository;
+    private TagRepository tagRepository = TagGAERepository.getInstance();
     /**
      * Archive date repository.
      */
@@ -173,13 +174,11 @@ public final class V021ToV025 extends HttpServlet {
     /**
      * Link repository.
      */
-    @Inject
-    private LinkRepository linkRepository;
+    private LinkRepository linkRepository = LinkGAERepository.getInstance();
     /**
      * User repository.
      */
-    @Inject
-    private UserRepository userRepository;
+    private UserRepository userRepository = UserGAERepository.getInstance();
     /**
      * Update size in an request.
      */

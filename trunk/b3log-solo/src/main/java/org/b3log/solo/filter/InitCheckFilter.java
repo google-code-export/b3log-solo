@@ -16,7 +16,6 @@
 
 package org.b3log.solo.filter;
 
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -37,7 +36,7 @@ import org.json.JSONObject;
  * Checks initialization filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 6, 2010
+ * @version 1.0.0.1, Jan 12, 2011
  */
 public final class InitCheckFilter implements Filter {
 
@@ -49,8 +48,7 @@ public final class InitCheckFilter implements Filter {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {

@@ -16,7 +16,6 @@
 
 package org.b3log.solo.util;
 
-import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +49,7 @@ import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.ArticleSignGAERepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.repository.impl.TagArticleGAERepository;
+import org.b3log.solo.repository.impl.UserGAERepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,17 +92,14 @@ public final class Articles {
      */
     private ArticleRepository articleRepository =
             ArticleGAERepository.getInstance();
-
     /**
      * Statistic utilities.
      */
-    @Inject
-    private Statistics statistics;
+    private Statistics statistics = Statistics.getInstance();
     /**
      * User repository.
      */
-    @Inject
-    private UserRepository userRepository;
+    private UserRepository userRepository = UserGAERepository.getInstance();
 
     /**
      * Gets the specified article's author. The specified article has a property
@@ -419,5 +416,40 @@ public final class Articles {
         final JSONArray articles = result.getJSONArray(Keys.RESULTS);
 
         return CollectionUtils.jsonArrayToList(articles);
+    }
+
+    /**
+     * Gets the {@link Articles} singleton.
+     *
+     * @return the singleton
+     */
+    public static Articles getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Articles() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Articles SINGLETON = new Articles();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

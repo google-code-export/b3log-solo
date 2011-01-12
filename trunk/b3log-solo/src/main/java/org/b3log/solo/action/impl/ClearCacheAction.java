@@ -16,7 +16,6 @@
 
 package org.b3log.solo.action.impl;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Level;
@@ -54,13 +53,11 @@ public final class ClearCacheAction extends AbstractAction {
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
     /**
      * Page cache utilities.
      */
-    @Inject
-    private PageCacheKeys pageCacheKeys;
+    private PageCacheKeys pageCacheKeys = PageCacheKeys.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
