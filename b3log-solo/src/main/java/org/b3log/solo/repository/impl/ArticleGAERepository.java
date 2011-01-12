@@ -398,7 +398,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
         PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         QueryResultList<Entity> entities = preparedQuery.asQueryResultList(
                 FetchOptions.Builder.withLimit(fetchSize));
-        
+
         for (final Entity entity : entities) {
             final JSONObject jsonObject = entity2JSONObject(entity);
             ret.add(jsonObject);
@@ -423,5 +423,41 @@ public final class ArticleGAERepository extends AbstractGAERepository
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link ArticleGAERepository} singleton.
+     *
+     * @return a article GAE repository singleton
+     */
+    public static ArticleGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private ArticleGAERepository() {
+    }
+
+    /**
+     * Article GAE repository singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final ArticleGAERepository SINGLETON =
+                new ArticleGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

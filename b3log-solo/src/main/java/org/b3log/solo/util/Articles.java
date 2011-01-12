@@ -30,7 +30,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
-import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
@@ -46,6 +45,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Jan 10, 2011
+ * @version 1.0.1.8, Jan 11, 2011
  */
 public final class Articles {
 
@@ -84,15 +84,11 @@ public final class Articles {
     @Inject
     private TagArticleRepository tagArticleRepository;
     /**
-     * Tag repository.
-     */
-    @Inject
-    private TagRepository tagRepository;
-    /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
+
     /**
      * Statistic utilities.
      */
@@ -171,12 +167,12 @@ public final class Articles {
         final JSONObject article = articleRepository.get(articleId);
         final JSONObject newArticle = new JSONObject(
                 article, JSONObject.getNames(article));
-        
+
         final int viewCnt = article.getInt(Article.ARTICLE_VIEW_COUNT);
         newArticle.put(Article.ARTICLE_VIEW_COUNT, viewCnt + 1);
-        
+
         newArticle.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-        
+
         articleRepository.update(articleId, newArticle);
     }
 
@@ -221,7 +217,7 @@ public final class Articles {
                     articleCommentRelations.get(i);
             final String commentId =
                     articleCommentRelation.getString(Comment.COMMENT + "_"
-                    + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
             commentRepository.remove(commentId);
             final String relationId =
                     articleCommentRelation.getString(Keys.OBJECT_ID);
@@ -251,16 +247,16 @@ public final class Articles {
      * @throws RepositoryException repository exception
      */
     public void addTagArticleRelation(final JSONArray tags,
-            final JSONObject article)
+                                      final JSONObject article)
             throws JSONException, RepositoryException {
         for (int i = 0; i < tags.length(); i++) {
             final JSONObject tag = tags.getJSONObject(i);
             final JSONObject tagArticleRelation = new JSONObject();
 
             tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
-                    tag.getString(Keys.OBJECT_ID));
+                                   tag.getString(Keys.OBJECT_ID));
             tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                    article.getString(Keys.OBJECT_ID));
+                                   article.getString(Keys.OBJECT_ID));
 
             tagArticleRepository.add(tagArticleRelation);
         }
@@ -284,7 +280,7 @@ public final class Articles {
                     articleCommentRelations.get(i);
             final String commentId =
                     articleCommentRelation.getString(Comment.COMMENT + "_"
-                    + Keys.OBJECT_ID);
+                                                     + Keys.OBJECT_ID);
 
             final JSONObject comment = commentRepository.get(commentId);
             final String content = comment.getString(Comment.COMMENT_CONTENT).
@@ -297,7 +293,7 @@ public final class Articles {
                 final String originalCommentName = comment.getString(
                         Comment.COMMENT_ORIGINAL_COMMENT_NAME);
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
-                        originalCommentName);
+                            originalCommentName);
             } else {
                 comment.put(Common.IS_REPLY, false);
             }
@@ -317,14 +313,14 @@ public final class Articles {
      * @throws RepositoryException repository exception
      */
     public void addArticleSignRelation(final String signId,
-            final String articleId)
+                                       final String articleId)
             throws JSONException, RepositoryException {
         final JSONObject articleSignRelation = new JSONObject();
 
         articleSignRelation.put(Sign.SIGN + "_" + Keys.OBJECT_ID,
-                signId);
+                                signId);
         articleSignRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                articleId);
+                                articleId);
 
         articleSignRepository.add(articleSignRelation);
     }
@@ -340,7 +336,7 @@ public final class Articles {
      * @throws JSONException json exception
      */
     public JSONObject getSign(final String articleId,
-            final JSONObject preference)
+                              final JSONObject preference)
             throws JSONException, RepositoryException {
         final JSONArray signs = new JSONArray(
                 preference.getString(Preference.SIGNS));
@@ -352,7 +348,7 @@ public final class Articles {
                 final JSONObject ret = signs.getJSONObject(i);
                 if ("1".equals(ret.getString(Keys.OBJECT_ID))) {
                     LOGGER.log(Level.FINEST, "Used default article sign[{0}]",
-                            ret);
+                               ret);
                     return ret;
                 }
             }
@@ -411,11 +407,11 @@ public final class Articles {
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
         final Set<Filter> filters = new HashSet<Filter>();
         filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
-                FilterOperator.EQUAL,
-                true));
+                               FilterOperator.EQUAL,
+                               true));
         final JSONObject result =
                 articleRepository.get(1, Integer.MAX_VALUE,
-                sorts, filters);
+                                      sorts, filters);
         final JSONArray articles = result.getJSONArray(Keys.RESULTS);
 
         return CollectionUtils.jsonArrayToList(articles);

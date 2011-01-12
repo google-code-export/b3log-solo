@@ -35,6 +35,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +44,7 @@ import org.json.JSONObject;
  * Archive date utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 5, 2010
+ * @version 1.0.0.8, Jan 11, 2011
  */
 public final class ArchiveDates {
 
@@ -65,8 +66,8 @@ public final class ArchiveDates {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
 
     /**
      * Archive the create date with the specified article.

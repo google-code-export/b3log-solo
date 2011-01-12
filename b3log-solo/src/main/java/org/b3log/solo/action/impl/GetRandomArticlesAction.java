@@ -30,6 +30,7 @@ import static org.b3log.solo.model.Article.*;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
@@ -37,7 +38,7 @@ import org.json.JSONObject;
  * Gets random articles action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 11, 2011
+ * @version 1.0.0.2, Jan 11, 2011
  */
 public final class GetRandomArticlesAction extends AbstractAction {
 
@@ -53,8 +54,8 @@ public final class GetRandomArticlesAction extends AbstractAction {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Preference utilities.
      */
@@ -76,7 +77,7 @@ public final class GetRandomArticlesAction extends AbstractAction {
             throws ActionException {
         final List<JSONObject> randomArticles = getRandomArticles();
         final JSONObject ret = new JSONObject();
-        
+
         try {
             ret.put(Common.RANDOM_ARTICLES, randomArticles);
         } catch (final Exception e) {

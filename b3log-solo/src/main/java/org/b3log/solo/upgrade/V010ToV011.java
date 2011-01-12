@@ -23,7 +23,6 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultList;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -38,13 +37,14 @@ import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONObject;
 
 /**
  * Upgrader for <b>v010</b> to <b>v011</b>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 3, 2010
+ * @version 1.0.0.3, Jan 11, 2011
  */
 public final class V010ToV011 extends HttpServlet {
 
@@ -60,8 +60,8 @@ public final class V010ToV011 extends HttpServlet {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Update size in an request.
      */

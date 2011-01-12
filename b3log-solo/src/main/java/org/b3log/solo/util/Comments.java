@@ -25,6 +25,7 @@ import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,7 +33,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 16, 2010
+ * @version 1.0.0.2, Jan 11, 2011
  */
 public final class Comments {
 
@@ -49,8 +50,8 @@ public final class Comments {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
 
     /**
      * Removes comments of unpublished articles for the specified comments.
