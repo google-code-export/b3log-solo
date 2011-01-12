@@ -57,6 +57,17 @@
                 this.className = "selected";
             }
         });
+
+        // page navi
+        $(".side-tool li li a").hover(function () {
+            $(this).animate({
+                width: "63"
+            }, 600 );
+        }, function () {
+            $(this).animate({
+                width: "18"
+            }, 600 );
+        });
     }
     init();
 </script>
