@@ -74,7 +74,6 @@ public final class Permalinks {
         RESERVED_LINKS.add("/error.do");
         RESERVED_LINKS.add("/file-access.do");
         RESERVED_LINKS.add("/datastore-file-access.do");
-        RESERVED_LINKS.add("/live.do");
     }
 
     /**
