@@ -121,9 +121,9 @@ public final class PageAction extends AbstractCacheablePageAction {
             final List<JSONObject> comments = pageUtils.getComments(pageId);
             ret.put(Page.PAGE_COMMENTS_REF, comments);
 
-            filler.fillSide(ret);
-            filler.fillBlogHeader(ret);
-            filler.fillBlogFooter(ret);
+            filler.fillSide(ret, preference);
+            filler.fillBlogHeader(ret, preference);
+            filler.fillBlogFooter(ret, preference);
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
         } catch (final Exception e) {

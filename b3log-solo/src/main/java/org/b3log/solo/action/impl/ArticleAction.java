@@ -218,9 +218,9 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             ret.put(Preference.BLOG_HOST,
                     preference.getString(Preference.BLOG_HOST));
 
-            filler.fillSide(ret);
-            filler.fillBlogHeader(ret);
-            filler.fillBlogFooter(ret);
+            filler.fillSide(ret, preference);
+            filler.fillBlogHeader(ret, preference);
+            filler.fillBlogFooter(ret, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

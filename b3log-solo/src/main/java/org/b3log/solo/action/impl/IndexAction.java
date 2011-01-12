@@ -102,13 +102,14 @@ public final class IndexAction extends AbstractCacheablePageAction {
                         Pagination.PAGINATION_CURRENT_PAGE_NUM
                         + Common.RIGHT_PART_NAME, 1);
                 filler.fillIndexArticlesForValentine(ret, leftCurrentPageNum,
-                                                     rightCurrentPageNum);
+                                                     rightCurrentPageNum,
+                                                     preference);
             } else {
-                filler.fillIndexArticles(ret, currentPageNum);
+                filler.fillIndexArticles(ret, currentPageNum, preference);
             }
-            filler.fillSide(ret);
-            filler.fillBlogHeader(ret);
-            filler.fillBlogFooter(ret);
+            filler.fillSide(ret, preference);
+            filler.fillBlogHeader(ret, preference);
+            filler.fillBlogFooter(ret, preference);
             ret.put(Common.ACTION_NAME, Common.INDEX);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
