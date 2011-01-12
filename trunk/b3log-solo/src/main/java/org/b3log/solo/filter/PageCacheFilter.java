@@ -246,6 +246,7 @@ public final class PageCacheFilter implements Filter {
      * @param requestURI the specified request URI
      * @return {@code true} if should be skipped, {@code false} otherwise
      */
+    // XXX: performance issue
     static boolean shouldSkip(final String requestURI) {
         return requestURI.equals("/json-rpc.do")
                || requestURI.equals("/live.do")
