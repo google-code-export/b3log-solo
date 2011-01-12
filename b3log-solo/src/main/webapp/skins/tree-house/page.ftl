@@ -184,7 +184,8 @@
                 "captchaErrorLabel": "${captchaErrorLabel}",
                 "loadingLabel": "${loadingLabel}",
                 "oId": "${page.oId}",
-                "blogHost": "${blogHost}"
+                "blogHost": "${blogHost}",
+                "skinDirName": "${skinDirName}"
             });
 
             var addComment = function (result, state) {
@@ -263,7 +264,7 @@
 
             var loadAction = function () {
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content", "tree-house");
+                util.replaceCommentsEm("#comments .comment-content");
 
                 // comment url
                 $("#commentURL").focus(function (event) {

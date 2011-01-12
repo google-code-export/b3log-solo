@@ -16,8 +16,9 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
-        "logoutLabel": "${logoutLabel}"
+        "logoutLabel": "${logoutLabel}",
+        "skinDirName": "${skinDirName}"
     });
     util.init();
-    util.replaceCommentsEm("#recentComments li a", "tree-house");
+    util.replaceCommentsEm("#recentComments li a");
 </script>

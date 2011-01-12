@@ -256,7 +256,8 @@
                 "oId": "${article.oId}",
                 "blogHost": "${blogHost}",
                 "externalRelevantArticlesDisplayCount": "${externalRelevantArticlesDisplayCount}",
-                "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
+                "externalRelevantArticles1Label": "${externalRelevantArticles1Label}",
+                "skinDirName": "${skinDirName}"
             });
 
             var addComment = function (result, state) {
@@ -328,7 +329,7 @@
                 }
 
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content", "i-nove");
+                util.replaceCommentsEm("#comments .comment-content");
 
                 articleUtil.load();
                 articleUtil.loadRandomArticles();

@@ -18,7 +18,6 @@
                 <span class='error-msg'>
                     ${statistic.statisticPublishedBlogArticleCount}
                 </span>
-                &nbsp;
             </span>
             <span>
                 ${commentCount1Label}

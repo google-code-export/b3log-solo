@@ -176,7 +176,8 @@
                 "captchaErrorLabel": "${captchaErrorLabel}",
                 "loadingLabel": "${loadingLabel}",
                 "oId": "${page.oId}",
-                "blogHost": "${blogHost}"
+                "blogHost": "${blogHost}",
+                "skinDirName": "${skinDirName}"
             });
 
             var addComment = function (result, state) {
@@ -246,7 +247,7 @@
                 articleUtil.load();
 
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content", "community");
+                util.replaceCommentsEm("#comments .comment-content");
             }
             loadAction();
         </script>

@@ -1,6 +1,6 @@
 body {
     background-image: url("images/bg-grey.jpg");
-    background-color: #FFFFFF;
+    background-color: #000000;
     color: #363636;
     font-family: 微软雅黑, Arial,Verdana,sans-serif;
     font-size: 12px;
@@ -24,7 +24,7 @@ a:hover {
 }
 
 .brush-icon, .article .month , .article .day, .pagination a, #greyBG,
-#brownBG, #blueBG,  #goTop, .side-tool ul ul li a {
+#brownBG, #blueBG,  #goTop, .side-tool ul ul li a, .comment-form button  {
     background-image: url('images/icon.png');
 }
 
@@ -54,7 +54,7 @@ a:hover {
 }
 
 .header .left {
-    width: 530px;
+    width: 566px;
 }
 
 .header h1 {
@@ -82,7 +82,7 @@ a:hover {
 }
 
 .header .right {
-    width: 380px;
+    width: 343px;
 }
 
 .header .right ul {
@@ -91,8 +91,7 @@ a:hover {
 
 .header .right li {
     float: left;
-    margin-left: 33px;
-    margin-top: 18px;
+    margin: 18px 30px 0 0;
     width: 84px;
 }
 
@@ -210,6 +209,15 @@ a:hover {
     border-top: 2px dashed #F1EEE9;
     margin-top: 15px;
     padding: 20px 0 25px 0;
+    overflow: hidden;
+    line-height: 20px;
+}
+
+.article-abstract p:first-child:first-letter, .article-abstract:first-letter {
+    font-size: 38px;
+    float: left;
+    font-weight: bold;
+    margin: 0 3px 3px 0;
 }
 
 .pagination a {
@@ -277,7 +285,7 @@ a:hover {
     text-decoration: none;
 }
 
-.side-navi .item dd li img {
+.side-navi .item .navi-tags img {
     cursor: pointer;
     height: 16px;
     left: 0;
@@ -304,6 +312,10 @@ a:hover {
 
 #naviComments li a:hover {
     text-decoration: underline;
+}
+
+#naviComments img {
+    margin-top: -3px;
 }
 
 .side-navi .item h4 {
@@ -409,6 +421,145 @@ a:hover {
     text-decoration: none;
     width: 11px;
     word-wrap: break-word;
+}
+
+/* article */
+.article-body {
+    border-top: 2px dashed #F1EEE9;
+    margin-top: 15px;
+    overflow: hidden;
+    padding: 20px 0 25px;
+}
+
+.article-body p:first-child:first-letter, .article-body:first-letter{
+    font-size: 48px;
+    float: left;
+    font-weight: bold;
+    margin: 0 3px 3px 0;
+}
+
+.article-relative {
+    margin: 15px 0;
+}
+
+.article-relative h5 {
+    font-family: 'Neucha',微软雅黑,Arial,Verdana;
+    font-size: 16px;
+}
+
+.article-relative ul {
+    list-style-type: none;
+}
+
+#randomArticles, .relevantArticles {
+    width: 262px;overflow: hidden;
+}
+
+/* comments */
+#comments, .comment-form {
+    margin-bottom: 30px;
+}
+
+#comments h2 {
+    border-bottom: 2px solid #3F3D36;
+    font-size: 24px;
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding-bottom: 7px;
+}
+
+.comment-body  {
+    padding: 20px 0;
+}
+
+.comment-author {
+    width: 100px;
+}
+
+.comment-info {
+    margin-right: 12px;
+    width: 423px;
+}
+
+.comment-info > a {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.comment-content {
+    margin: 10px 0;
+}
+
+.comment-odd {
+    background-color: #F1EEE9;
+}
+
+.comment-author img {
+    width: 64px;
+    height: 64px;
+    border: 6px solid #F1EEE9;
+    margin-left: 12px;
+}
+
+.comment-form {
+    color: #606060;
+}
+
+.comment-form img {
+    cursor: pointer;
+}
+
+.comment-form input, .comment-form textarea, #commentURLLabel, #commentURLLabelReply {
+    -moz-border-radius: 5px 5px 5px 5px;
+    background-color: #EBE9E5;
+    border: 1px solid #BABAAE;
+    font-family: '微软雅黑';
+    font-size: 12px;
+    margin: 10px 0;
+    padding: 10px;
+    width: 400px;
+}
+
+.comment-form input:focus, .comment-form textarea:focus {
+    background-color: #E3EBCF;
+    border-color: #73B722;
+}
+
+#commentURLLabel, #commentURLLabelReply {
+    -moz-border-radius: 5px 0 0 5px;
+    border-right: 0 none;
+    color: #000000;
+    float: left;
+    font-size: 12px;
+    padding-right: 0;
+    width: 35px;
+}
+
+#commentURLLabel.selected, #commentURLLabelReply.selected {
+    background-color: #E3EBCF;
+    border-color: #73B722;
+}
+
+#commentURL, #commentURLReply {
+    -moz-border-radius: 0 5px 5px 0;
+    border-left: 0 none;
+    padding-left: 0;
+    width: 365px;
+}
+
+#commentValidate, #commentValidateReply {
+    width: 80px;
+}
+
+.comment-form button {
+    -moz-border-radius: 5px 5px 5px 5px;
+    border: 1px solid #80B53B;
+    color: #355207;
+    cursor: pointer;
+    font-weight: bold;
+    height: 34px;
+    padding: 5px 10px;
+    width: 140px;
 }
 
 /* others */

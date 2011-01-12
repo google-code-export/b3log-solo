@@ -115,8 +115,9 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
-        "logoutLabel": "${logoutLabel}"
+        "logoutLabel": "${logoutLabel}",
+        "skinDirName": "${skinDirName}"
     });
     util.init();
-    util.replaceCommentsEm("#recentComments li .side-comment", "classic");
+    util.replaceCommentsEm("#recentComments li .side-comment");
 </script>

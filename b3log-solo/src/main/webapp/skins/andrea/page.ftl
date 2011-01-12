@@ -166,7 +166,8 @@
                 "captchaErrorLabel": "${captchaErrorLabel}",
                 "loadingLabel": "${loadingLabel}",
                 "oId": "${page.oId}",
-                "blogHost": "${blogHost}"
+                "blogHost": "${blogHost}",
+                "skinDirName": "${skinDirName}"
             });
 
             var addComment = function (result, state) {
@@ -239,7 +240,7 @@
                 }
 
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content", "i-nove");
+                util.replaceCommentsEm("#comments .comment-content");
 
                 articleUtil.load();
             }

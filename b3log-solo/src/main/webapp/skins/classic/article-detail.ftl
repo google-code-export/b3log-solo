@@ -276,7 +276,8 @@
                 "oId": "${article.oId}",
                 "blogHost": "${blogHost}",
                 "externalRelevantArticlesDisplayCount": "${externalRelevantArticlesDisplayCount}",
-                "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
+                "externalRelevantArticles1Label": "${externalRelevantArticles1Label}",
+                "skinDirName": "${skinDirName}"
             });
 
             var addComment = function (result, state) {
@@ -364,7 +365,7 @@
                 }).width($("#comment").width() - $("#commentURLLabel").width());
 
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content", "classic");
+                util.replaceCommentsEm("#comments .comment-content");
 
                 articleUtil.load();
                 articleUtil.loadRandomArticles();

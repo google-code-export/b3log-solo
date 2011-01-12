@@ -278,7 +278,8 @@
                 "oId": "${article.oId}",
                 "blogHost": "${blogHost}",
                 "externalRelevantArticlesDisplayCount": "${externalRelevantArticlesDisplayCount}",
-                "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
+                "externalRelevantArticles1Label": "${externalRelevantArticles1Label}",
+                "skinDirName": "${skinDirName}"
             });
 
             var addComment = function (result, state) {
@@ -357,7 +358,7 @@
 
             var loadAction = function () {
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content", "tree-house");
+                util.replaceCommentsEm("#comments .comment-content");
 
                 // comment url
                 $("#commentURL").focus(function (event) {

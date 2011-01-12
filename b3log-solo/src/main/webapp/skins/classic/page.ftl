@@ -177,7 +177,8 @@
                 "captchaErrorLabel": "${captchaErrorLabel}",
                 "loadingLabel": "${loadingLabel}",
                 "oId": "${page.oId}",
-                "blogHost": "${blogHost}"
+                "blogHost": "${blogHost}",
+                "skinDirName": "${skinDirName}"
             });
 
             var addComment = function (result, state) {
@@ -264,7 +265,7 @@
                 }).width($("#comment").width() - $("#commentURLLabel").width());
                 
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content", "classic");
+                util.replaceCommentsEm("#comments .comment-content");
             }
             loadAction();
         </script>
