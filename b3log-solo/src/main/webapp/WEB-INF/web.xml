@@ -79,15 +79,6 @@
     </filter-mapping>
     
     <filter>
-        <filter-name>DefaultArticlePermalinkFilter</filter-name>
-        <filter-class>org.b3log.solo.filter.DefaultArticlePermalinkFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>DefaultArticlePermalinkFilter</filter-name>
-        <url-pattern>/articles/*</url-pattern>
-    </filter-mapping>
-
-    <filter>
         <filter-name>TagPermalinkFilter</filter-name>
         <filter-class>org.b3log.solo.filter.TagPermalinkFilter</filter-class>
     </filter>
