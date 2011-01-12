@@ -39,7 +39,7 @@ button:hover,.button:hover{border-color:#BBB;}
 .form input{height:24px;line-height:24px;}
 .form .normalInput{width:auto;}
 #admin span{cursor:pointer;}
-#top{border-bottom:1px solid #C9D7F1;padding:0 3px;background-color:#FFF;line-height: 20px;}
+#top{font-family: Arial,Verdana,sans-serif;border-bottom:1px solid #C9D7F1;padding:0 3px;background-color:#FFF;line-height: 20px;}
 .logo{float:left;width:100px;outline:none;}
 .logo span, .footer span{margin:0 -2px;}
 #top a.logo,.footer a{text-decoration:none;}

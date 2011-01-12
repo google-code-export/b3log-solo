@@ -1,16 +1,38 @@
-<div>
-    <div class="header-title">
-        <h1 class="title">
-            <a href="/" id="logoTitle" >
+<div class="header">
+    <div class="left">
+        <h1>
+            <a href="/">
                 ${blogTitle}
             </a>
         </h1>
         <span class="sub-title">${blogSubtitle}</span>
+        <div>
+            <span>
+                ${viewCount1Label}
+                <span class='error-msg'>
+                    ${statistic.statisticBlogViewCount}
+                </span>
+            </span>
+            <span>
+                ${articleCount1Label}
+                <span class='error-msg'>
+                    ${statistic.statisticPublishedBlogArticleCount}
+                </span>
+                &nbsp;
+            </span>
+            <span>
+                ${commentCount1Label}
+                <span class='error-msg'>
+                    ${statistic.statisticPublishedBlogCommentCount}
+                </span>
+            </span>
+        </div>
+        <span class="clear"></span>
     </div>
     <div class="right">
         <ul>
             <li>
-                <a class="home" href="/"></a>
+                <a class="home" href="/">Blog</a>
             </li>
             <#list pageNavigations as page>
             <li>
@@ -20,16 +42,12 @@
             </li>
             </#list>
             <li>
-                <a href="/tags.html">${allTagsLabel}</a>
+                <a href="/tags.html">Tags</a>
             </li>
             <li>
                 <a href="/blog-articles-feed.do">
-                    ${atomLabel}
-                    <img src="/images/feed.png" alt="Atom"/>
+                    Atom
                 </a>
-            </li>
-            <li>
-                <a class="lastNavi" href="javascript:void(0);"></a>
             </li>
         </ul>
     </div>
