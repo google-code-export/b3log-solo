@@ -47,6 +47,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
@@ -57,7 +58,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Jan 9, 2011
+ * @version 1.0.1.6, Jan 11, 2011
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -73,8 +74,8 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleGAERepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Tag repository.
      */

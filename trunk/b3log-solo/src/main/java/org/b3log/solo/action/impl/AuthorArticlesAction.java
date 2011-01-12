@@ -43,6 +43,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
  * Get articles by author action. author-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Jan 9, 2011
+ * @version 1.0.1.8, Jan 11, 2011
  */
 public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
@@ -68,8 +69,8 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleGAERepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * User repository.
      */

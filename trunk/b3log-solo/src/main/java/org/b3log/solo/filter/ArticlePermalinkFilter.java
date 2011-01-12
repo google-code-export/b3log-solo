@@ -16,7 +16,6 @@
 
 package org.b3log.solo.filter;
 
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -31,13 +30,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONObject;
 
 /**
  * Article permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Dec 22, 2010
+ * @version 1.0.0.6, Jan 11, 2011
  */
 public final class ArticlePermalinkFilter implements Filter {
 
@@ -49,8 +49,8 @@ public final class ArticlePermalinkFilter implements Filter {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {

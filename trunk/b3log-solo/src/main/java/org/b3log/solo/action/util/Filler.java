@@ -53,6 +53,7 @@ import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Preferences;
@@ -66,7 +67,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, Jan 9, 2011
+ * @version 1.0.2.9, Jan 11, 2011
  */
 public final class Filler {
 
@@ -78,8 +79,8 @@ public final class Filler {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Comment repository.
      */
@@ -648,7 +649,7 @@ public final class Filler {
                 article.put(Common.HAS_UPDATED, false);
             }
         }
-        
+
         dataModel.put(Article.ARTICLES + partName, ret);
 
         return ret;

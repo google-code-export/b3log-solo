@@ -16,7 +16,6 @@
 
 package org.b3log.solo.action.impl;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -29,13 +28,14 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONObject;
 
 /**
  * Gets some articles randomly and regenerate their random double.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 11, 2011
+ * @version 1.0.0.1, Jan 11, 2011
  */
 public final class ArticleRandomDoubleUpdateServlet extends HttpServlet {
 
@@ -51,8 +51,8 @@ public final class ArticleRandomDoubleUpdateServlet extends HttpServlet {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Default update count.
      */

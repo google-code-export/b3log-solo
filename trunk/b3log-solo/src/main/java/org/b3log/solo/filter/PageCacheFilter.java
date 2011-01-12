@@ -41,6 +41,7 @@ import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.PageCacheKeys;
 import org.b3log.solo.util.Statistics;
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Jan 10, 2011
+ * @version 1.0.2.5, Jan 11, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -86,8 +87,9 @@ public final class PageCacheFilter implements Filter {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
+
     /**
      * Article utilities.
      */

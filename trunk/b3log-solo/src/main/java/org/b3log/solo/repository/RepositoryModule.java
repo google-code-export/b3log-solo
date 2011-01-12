@@ -18,7 +18,6 @@ package org.b3log.solo.repository;
 
 import com.google.inject.Scopes;
 import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
@@ -50,8 +49,6 @@ public final class RepositoryModule extends AbstractServiceModule {
     protected void configure() {
         super.configure();
 
-        bind(ArticleRepository.class).to(ArticleGAERepository.class).
-                in(Scopes.SINGLETON);
         bind(TagRepository.class).to(TagGAERepository.class).
                 in(Scopes.SINGLETON);
         bind(TagArticleRepository.class).to(TagArticleGAERepository.class).

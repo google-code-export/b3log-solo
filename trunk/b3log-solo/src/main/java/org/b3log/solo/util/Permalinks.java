@@ -21,20 +21,21 @@ import java.util.HashSet;
 import java.util.Set;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 
 /**
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 10, 2010
+ * @version 1.0.0.3, Jan 11, 2011
  */
 public final class Permalinks {
 
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Page repository.
      */

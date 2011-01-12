@@ -56,6 +56,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleSignRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Permalinks;
@@ -72,7 +73,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Jan 10, 2011
+ * @version 1.0.3.2, Jan 11, 2011
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -84,8 +85,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Tag repository.
      */
@@ -951,8 +952,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * </p>
      *
      * <p>
-     * The property(named {@value Article#ARTICLE_RANDOM_DOUBLE}) of the
-     * specified article will be regenerated.
+     * The property(named {@value org.b3log.solo.model.Article#ARTICLE_RANDOM_DOUBLE})
+     * of the specified article will be regenerated.
      * </p>
      *
      * @param oldArticle the specified old article

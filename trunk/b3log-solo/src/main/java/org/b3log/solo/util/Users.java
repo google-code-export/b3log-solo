@@ -27,6 +27,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 21, 2010
+ * @version 1.0.0.5, Jan 11, 2011
  */
 public class Users {
 
@@ -56,8 +57,8 @@ public class Users {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
 
     /**
      * Determines whether if exists multiple users in current Solo.

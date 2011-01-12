@@ -46,6 +46,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.comparator.Comparators;
@@ -58,7 +59,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Jan 9, 2011
+ * @version 1.0.2.1, Jan 11, 2011
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -74,8 +75,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Tag-Article repository.
      */

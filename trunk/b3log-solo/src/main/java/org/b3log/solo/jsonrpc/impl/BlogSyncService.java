@@ -40,6 +40,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.Post;
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * Blog sync service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Dec 20, 2010
+ * @version 1.0.1.7, Jan 11, 2011
  */
 public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
@@ -66,8 +67,8 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
     /**
      * Article repository.
      */
-    @Inject
-    private ArticleRepository articleRepository;
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Tag utilities.
      */
@@ -328,7 +329,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
                     statistics.incBlogArticleCount();
                     statistics.incPublishedBlogArticleCount();
-                    
+
                     archiveDateUtils.archiveDate(soloArticle);
 
                     transaction.commit();
