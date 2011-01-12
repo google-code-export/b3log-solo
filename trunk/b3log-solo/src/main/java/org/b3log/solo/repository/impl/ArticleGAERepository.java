@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.repository.impl;
 
 import com.google.appengine.api.datastore.QueryResultIterable;
@@ -192,11 +191,10 @@ public final class ArticleGAERepository extends AbstractGAERepository
 
     @Override
     public List<JSONObject> getMostCommentArticles(final int num) {
-        final String cacheKey = KEY_MOST_CMT_ARTICLES_CACHE_CNT + "["
-                                + num + "]";
+        final String cacheKey = KEY_MOST_CMT_ARTICLES_CACHE_CNT
+                                + "[" + num + "]";
         @SuppressWarnings("unchecked")
-        List<JSONObject> ret =
-                (List<JSONObject>) CACHE.get(cacheKey);
+        List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
         if (null != ret) {
             LOGGER.log(Level.FINEST, "Got the most comment articles from cache");
         } else {
@@ -230,22 +228,36 @@ public final class ArticleGAERepository extends AbstractGAERepository
 
     @Override
     public List<JSONObject> getMostViewCountArticles(final int num) {
-        final Query query = new Query(getName());
-        query.addSort(Article.ARTICLE_VIEW_COUNT,
-                      Query.SortDirection.DESCENDING).
-                addSort(Article.ARTICLE_UPDATE_DATE,
-                        Query.SortDirection.DESCENDING);
-        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                        Query.FilterOperator.EQUAL, true);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final QueryResultIterable<Entity> queryResultIterable =
-                preparedQuery.asQueryResultIterable(FetchOptions.Builder.
-                withLimit(num));
+        final String cacheKey = KEY_MOST_CMT_ARTICLES_CACHE_CNT
+                                + "[" + num + "]";
+        @SuppressWarnings("unchecked")
+        List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
+        if (null != ret) {
+            LOGGER.log(Level.FINEST, "Got the most comment articles from cache");
+        } else {
+            ret = new ArrayList<JSONObject>();
+            final Query query = new Query(getName());
+            query.addSort(Article.ARTICLE_VIEW_COUNT,
+                          Query.SortDirection.DESCENDING).
+                    addSort(Article.ARTICLE_UPDATE_DATE,
+                            Query.SortDirection.DESCENDING);
+            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                            Query.FilterOperator.EQUAL, true);
+            final PreparedQuery preparedQuery = getDatastoreService().prepare(
+                    query);
+            final QueryResultIterable<Entity> queryResultIterable =
+                    preparedQuery.asQueryResultIterable(FetchOptions.Builder.
+                    withLimit(num));
 
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        for (final Entity entity : queryResultIterable) {
-            final JSONObject article = entity2JSONObject(entity);
-            ret.add(article);
+            for (final Entity entity : queryResultIterable) {
+                final JSONObject article = entity2JSONObject(entity);
+                ret.add(article);
+            }
+
+            CACHE.put(cacheKey, ret);
+
+            LOGGER.log(Level.FINEST,
+                       "Got the most viewed articles, then put it into cache");
         }
 
         return ret;
