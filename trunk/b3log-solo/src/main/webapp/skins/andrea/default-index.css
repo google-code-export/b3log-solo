@@ -456,6 +456,10 @@ a:hover {
 }
 
 /* comments */
+#comments {
+    position: relative;
+}
+
 #comments, .comment-form {
     margin-bottom: 30px;
 }
@@ -560,6 +564,16 @@ a:hover {
     height: 34px;
     padding: 5px 10px;
     width: 140px;
+}
+
+.comment-body-ref {
+    background: url("images/bg-transparent.png") repeat scroll 0 0 transparent;
+    padding: 12px 0;
+    position: absolute;
+    width: 537px;
+    border: 1px solid #999999;
+    -moz-border-radius:5px;
+    z-index: 10;
 }
 
 /* others */
