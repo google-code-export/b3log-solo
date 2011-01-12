@@ -362,7 +362,7 @@ a, a:link, a:visited {
     background-position: -105px -119px;
     cursor: pointer;
     height: 36px;
-    margin-top: 6px;
+    margin-top: 9px;
     display: block;
     width: 22px;
 }
@@ -372,11 +372,17 @@ a, a:link, a:visited {
 }
 
 .side-tool ul ul li a {
-    height: 88px;
-    margin: 9px 0;
-    width: 18px;
     background-position: right -159px;
+    color: #EAE7E0;
     display: block;
-    padding: 0 6px;
+    font-size: 14px;
+    font-weight: bold;
+    height: 86px;
+    margin: 9px 0;
     overflow: hidden;
+    padding: 1px 10px;
+    text-align: center;
+    text-decoration: none;
+    width: 11px;
+    word-wrap: break-word;
 }
