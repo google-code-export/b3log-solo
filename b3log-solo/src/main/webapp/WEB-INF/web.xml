@@ -216,9 +216,9 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>TagsAction</servlet-name>
-        <url-pattern>/tags.do</url-pattern>
+        <url-pattern>/tags.html</url-pattern>
     </servlet-mapping>
-
+    
     <servlet>
         <servlet-name>PageAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.PageAction</servlet-class>
