@@ -27,12 +27,12 @@
                 <div class="main">
                     <div class="main-content">
                         <div class="article">
-                            <div class="article-body">
+                            <div class="article-body" style="margin-top: 0px;">
                                 ${page.pageContent}
                             </div>
                         </div>
+                        <h2 class="comment-label">${commentLabel}</h2>
                         <div id="comments" name="comments">
-                            <h2>${commentLabel}</h2>
                             <#list pageComments as comment>
                             <div id="commentItem${comment.oId}"
                                  class="comment-body <#if comment_index % 2 == 0>comment-even<#else>comment-odd</#if>">
