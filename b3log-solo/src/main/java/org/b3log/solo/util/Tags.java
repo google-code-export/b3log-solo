@@ -48,7 +48,7 @@ public final class Tags {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository=
+    private ArticleRepository articleRepository =
             ArticleGAERepository.getInstance();
     /**
      * Tag repository.
@@ -66,7 +66,7 @@ public final class Tags {
      * @throws JSONException json exception
      */
     public JSONArray tag(final String[] tagTitles,
-                                      final JSONObject article)
+                         final JSONObject article)
             throws RepositoryException, JSONException {
         final JSONArray ret = new JSONArray();
         for (int i = 0; i < tagTitles.length; i++) {
@@ -198,6 +198,41 @@ public final class Tags {
             if (0 == tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
                 iterator.remove();
             }
+        }
+    }
+
+    /**
+     * Gets the {@link Tags} singleton.
+     *
+     * @return the singleton
+     */
+    public static Tags getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Tags() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Tags SINGLETON = new Tags();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
         }
     }
 }

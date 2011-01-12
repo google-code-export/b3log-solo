@@ -17,7 +17,6 @@
 package org.b3log.solo.action.impl;
 
 import org.b3log.latke.action.ActionException;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * Index action. index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 9, 2010
+ * @version 1.0.0.9, Jan 12, 2011
  */
 public final class IndexAction extends AbstractCacheablePageAction {
 
@@ -57,18 +56,15 @@ public final class IndexAction extends AbstractCacheablePageAction {
     /**
      * Language service.
      */
-    @Inject
-    private LangPropsService langPropsService;
+    private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
      * Filler.
      */
-    @Inject
-    private Filler filler;
+    private Filler filler = Filler.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

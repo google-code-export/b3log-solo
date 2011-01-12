@@ -16,7 +16,6 @@
 
 package org.b3log.solo.event.sync.impl;
 
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -51,7 +50,6 @@ public final class CnBlogsRemoveArticleProcessor
      *
      * @param eventManager the specified event manager
      */
-    @Inject
     public CnBlogsRemoveArticleProcessor(final EventManager eventManager) {
         super(eventManager);
     }

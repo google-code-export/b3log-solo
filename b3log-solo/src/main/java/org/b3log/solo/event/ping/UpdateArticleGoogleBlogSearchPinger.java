@@ -18,7 +18,6 @@ package org.b3log.solo.event.ping;
 
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
-import com.google.inject.Inject;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.logging.Level;
@@ -46,7 +45,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 10, 2011
+ * @version 1.0.0.1, Jan 12, 2011
  * @see AddArticleGoogleBlogSearchPinger
  */
 public final class UpdateArticleGoogleBlogSearchPinger
@@ -65,8 +64,7 @@ public final class UpdateArticleGoogleBlogSearchPinger
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     /**
      * Constructs a {@link UpdateArticleGoogleBlogSearchPinger} object with the
@@ -74,7 +72,6 @@ public final class UpdateArticleGoogleBlogSearchPinger
      *
      * @param eventManager the specified event manager
      */
-    @Inject
     public UpdateArticleGoogleBlogSearchPinger(final EventManager eventManager) {
         super(eventManager);
     }

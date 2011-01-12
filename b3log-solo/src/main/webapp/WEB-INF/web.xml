@@ -19,25 +19,86 @@
 
 <!--
     Description: B3log Solo web deployment descriptor.
-                 Note:
-                 1. DO NOT configure servlets in this file, using Guice-Servlet
-                    extension instead, see class org.b3log.solo.action.ActionModule
-                    for details.
-    Version: 1.0.1.1, Dec 7, 2010
+    Version: 1.0.1.2, Jan 12, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <filter>
-        <filter-name>GuiceFilter</filter-name>
-        <filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.AuthFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>GuiceFilter</filter-name>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/admin-index.do</url-pattern>
+        <url-pattern>/admin-article.do</url-pattern>
+        <url-pattern>/admin-article-list.do</url-pattern>
+        <url-pattern>/admin-link-list.do</url-pattern>
+        <url-pattern>/admin-preference.do</url-pattern>
+        <url-pattern>/admin-article-sync.do</url-pattern>
+        <url-pattern>/admin-file-list.do</url-pattern>
+        <url-pattern>/admin-page.do</url-pattern>
+        <url-pattern>/admin-others.do</url-pattern>
+        <url-pattern>/admin-draft-list.do</url-pattern>
+        <url-pattern>/admin-user-list.do</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>PageCacheFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.PageCacheFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PageCacheFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>ArticlePermalinkFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.ArticlePermalinkFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ArticlePermalinkFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>PagePermalinkFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.PagePermalinkFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PagePermalinkFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>InitCheckFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.InitCheckFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>InitCheckFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>DefaultArticlePermalinkFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.DefaultArticlePermalinkFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>DefaultArticlePermalinkFilter</filter-name>
+        <url-pattern>/articles/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>TagPermalinkFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.TagPermalinkFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>TagPermalinkFilter</filter-name>
+        <url-pattern>/tags/*</url-pattern>
     </filter-mapping>
 
     <security-constraint>
         <web-resource-collection>
+            <web-resource-name>Upgrade and Initialization</web-resource-name>
             <url-pattern>/upgrade/*</url-pattern>
             <url-pattern>/init.do</url-pattern>
         </web-resource-collection>
@@ -47,6 +108,7 @@
     </security-constraint>
     <security-constraint>
         <web-resource-collection>
+            <web-resource-name>Admin actions</web-resource-name>
             <url-pattern>/admin-article-list.do</url-pattern>
             <url-pattern>/admin-article-sync.do</url-pattern>
             <url-pattern>/admin-article.do</url-pattern>
@@ -74,7 +136,242 @@
             30
         </session-timeout>
     </session-config>
+
+    <servlet>
+        <servlet-name>AdminIndexAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.AdminIndexAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminIndexAction</servlet-name>
+        <url-pattern>/admin-index.do</url-pattern>
+    </servlet-mapping>
     
+    <servlet>
+        <servlet-name>AdminDoNothingAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.AdminDoNothingAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminDoNothingAction</servlet-name>
+        <url-pattern>/admin-article.do</url-pattern>
+        <url-pattern>/admin-article-list.do</url-pattern>
+        <url-pattern>/admin-link-list.do</url-pattern>
+        <url-pattern>/admin-preference.do</url-pattern>
+        <url-pattern>/admin-article-sync.do</url-pattern>
+        <url-pattern>/admin-file-list.do</url-pattern>
+        <url-pattern>/admin-page.do</url-pattern>
+        <url-pattern>/admin-others.do</url-pattern>
+        <url-pattern>admin-draft-list.do</url-pattern>
+        <url-pattern>/admin-user-list.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>InitAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.InitAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InitAction</servlet-name>
+        <url-pattern>/init.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>IndexAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.IndexAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>IndexAction</servlet-name>
+        <url-pattern>/</url-pattern>
+        <url-pattern>/index.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ArticleAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.ArticleAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ArticleAction</servlet-name>
+        <url-pattern>/article-detail.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TagArticlesAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.TagArticlesAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TagArticlesAction</servlet-name>
+        <url-pattern>/tag-articles.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ArchiveDateArticlesAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.ArchiveDateArticlesAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ArchiveDateArticlesAction</servlet-name>
+        <url-pattern>/archive-date-articles.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TagsAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.TagsAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TagsAction</servlet-name>
+        <url-pattern>/tags.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>BlogArticlesFeedServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.feed.BlogArticlesFeedServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogArticlesFeedServlet</servlet-name>
+        <url-pattern>/blog-articles-feed.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TagArticlesFeedServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.feed.TagArticlesFeedServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TagArticlesFeedServlet</servlet-name>
+        <url-pattern>/tag-articles-feed.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CaptchaServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.captcha.CaptchaServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CaptchaServlet</servlet-name>
+        <url-pattern>/captcha.do</url-pattern>
+    </servlet-mapping>
+
+<!--    <servlet>
+        <servlet-name>BlobStoreFileAccessServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.file.BlobStoreFileAccessServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlobStoreFileAccessServlet</servlet-name>
+        <url-pattern>/file-access.do</url-pattern>
+    </servlet-mapping>-->
+
+    <servlet>
+        <servlet-name>DataStoreFileAccessServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.file.DataStoreFileAccessServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DataStoreFileAccessServlet</servlet-name>
+        <url-pattern>/datastore-file-access.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AuthorArticlesAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.AuthorArticlesAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthorArticlesAction</servlet-name>
+        <url-pattern>/author-articles.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CheckLoggedInAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.CheckLoggedInAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckLoggedInAction</servlet-name>
+        <url-pattern>/check-login.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddArticleCommentAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.AddArticleCommentAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddArticleCommentAction</servlet-name>
+        <url-pattern>/add-article-comment.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddPageCommentAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.AddPageCommentAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddPageCommentAction</servlet-name>
+        <url-pattern>/add-page-comment.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ClearCacheAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.ClearCacheAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClearCacheAction</servlet-name>
+        <url-pattern>/clear-cache.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetRandomArticlesAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.GetRandomArticlesAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetRandomArticlesAction</servlet-name>
+        <url-pattern>/get-random-articles.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ArticleRandomDoubleUpdateServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.ArticleRandomDoubleUpdateServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ArticleRandomDoubleUpdateServlet</servlet-name>
+        <url-pattern>/article-random-double-gen.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>V010ToV011</servlet-name>
+        <servlet-class>org.b3log.solo.upgrade.V010ToV011</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>V010ToV011</servlet-name>
+        <url-pattern>/upgrade/v010-v011.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>V011ToV020</servlet-name>
+        <servlet-class>org.b3log.solo.upgrade.V011ToV020</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>V011ToV020</servlet-name>
+        <url-pattern>/upgrade/v011-v020.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>V020ToV021</servlet-name>
+        <servlet-class>org.b3log.solo.upgrade.V020ToV021</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>V020ToV021</servlet-name>
+        <url-pattern>/upgrade/v020-v021.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>V021ToV025</servlet-name>
+        <servlet-class>org.b3log.solo.upgrade.V021ToV025</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>V021ToV025</servlet-name>
+        <url-pattern>/upgrade/v021-v025.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JSONRPCServlet</servlet-name>
+        <servlet-class>org.jabsorb.JSONRPCServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JSONRPCServlet</servlet-name>
+        <url-pattern>/json-rpc.do</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>Error</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.ErrorAction</servlet-class>
@@ -83,10 +380,6 @@
         <servlet-name>Error</servlet-name>
         <url-pattern>/error.do</url-pattern>
     </servlet-mapping>
-    <error-page>
-        <error-code>404</error-code>
-        <location>/error.do</location>
-    </error-page>
 
     <servlet>
         <servlet-name>AdminError</servlet-name>
@@ -96,14 +389,20 @@
         <servlet-name>AdminError</servlet-name>
         <url-pattern>/admin-error.do</url-pattern>
     </servlet-mapping>
+
     <error-page>
-        <error-code>400</error-code>
-        <location>/admin-error.do</location>
+        <error-code>404</error-code>
+        <location>/error.do</location>
     </error-page>
 
     <error-page>
         <error-code>403</error-code>
         <location>/403.html</location>
+    </error-page>
+
+    <error-page>
+        <error-code>400</error-code>
+        <location>/admin-error.do</location>
     </error-page>
 
 </web-app>

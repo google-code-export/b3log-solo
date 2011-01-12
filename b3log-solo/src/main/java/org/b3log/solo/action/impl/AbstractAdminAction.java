@@ -16,7 +16,6 @@
 
 package org.b3log.solo.action.impl;
 
-import com.google.inject.Inject;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.File;
@@ -59,8 +58,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
     /**
      * Language service.
      */
-    @Inject
-    private LangPropsService langPropsService;
+    private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
      * FreeMarker configuration.
      */
@@ -68,8 +66,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     @Override
     public void init() throws ServletException {

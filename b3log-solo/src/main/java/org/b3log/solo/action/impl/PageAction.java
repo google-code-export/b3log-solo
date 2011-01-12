@@ -18,7 +18,6 @@ package org.b3log.solo.action.impl;
 
 import java.util.List;
 import org.b3log.latke.action.ActionException;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -62,13 +61,11 @@ public final class PageAction extends AbstractCacheablePageAction {
     /**
      * Language service.
      */
-    @Inject
-    private LangPropsService langPropsService;
+    private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
      * Filler.
      */
-    @Inject
-    private Filler filler;
+    private Filler filler = Filler.getInstance();
     /**
      * Page repository.
      */
@@ -76,13 +73,11 @@ public final class PageAction extends AbstractCacheablePageAction {
     /**
      * Page utilities.
      */
-    @Inject
-    private Pages pageUtils;
+    private Pages pageUtils = Pages.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(

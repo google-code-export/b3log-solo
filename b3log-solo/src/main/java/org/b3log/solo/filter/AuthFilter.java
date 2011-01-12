@@ -19,7 +19,6 @@ package org.b3log.solo.filter;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -42,7 +41,7 @@ import org.b3log.solo.util.Users;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 7, 2010
+ * @version 1.0.0.1, Jan 12, 2011
  */
 public final class AuthFilter implements Filter {
 
@@ -58,8 +57,7 @@ public final class AuthFilter implements Filter {
     /**
      * User utilities.
      */
-    @Inject
-    private Users users;
+    private Users users = Users.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {

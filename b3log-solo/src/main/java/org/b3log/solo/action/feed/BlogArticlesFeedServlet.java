@@ -16,7 +16,6 @@
 
 package org.b3log.solo.action.feed;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -64,8 +63,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Count of output entry.
      */
@@ -73,13 +71,11 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
     /**
      * Article utilities.
      */
-    @Inject
-    private Articles articleUtils;
+    private Articles articleUtils = Articles.getInstance();
     /**
      * Time zone utilities.
      */
-    @Inject
-    private TimeZones timeZoneUtils;
+    private TimeZones timeZoneUtils = TimeZones.getInstance();
 
     @Override
     protected void doGet(final HttpServletRequest request,

@@ -16,27 +16,13 @@
 
 package org.b3log.solo.jsonrpc;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-import com.google.inject.Inject;
 import org.b3log.latke.jsonrpc.AbstractJSONRpcService;
-import org.b3log.solo.util.Users;
 
 /**
  * Abstract json RPC service on GAE.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 10, 2010
+ * @version 1.0.0.4, Jan 12, 2011
  */
 public abstract class AbstractGAEJSONRpcService extends AbstractJSONRpcService {
-
-    /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
-   /**
-     * User utilities.
-     */
-    @Inject
-    private Users users;
 }

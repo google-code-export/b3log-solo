@@ -16,7 +16,6 @@
 
 package org.b3log.solo.util;
 
-import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -66,8 +65,7 @@ public final class Pages {
     /**
      * Statistic utilities.
      */
-    @Inject
-    private Statistics statistics;
+    private Statistics statistics = Statistics.getInstance();
 
     /**
      * Gets comments of an article specified by the page id.
@@ -177,5 +175,40 @@ public final class Pages {
         final int pageCommentCount = pageCommentRelations.size();
         blogCommentCount -= pageCommentCount;
         statistics.setBlogCommentCount(blogCommentCount);
+    }
+
+    /**
+     * Gets the {@link Pages} singleton.
+     *
+     * @return the singleton
+     */
+    public static Pages getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private Pages() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final Pages SINGLETON = new Pages();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

@@ -20,7 +20,6 @@ package org.b3log.solo.event.buzz;
 //import com.google.api.client.googleapis.json.JsonCContent;
 //import com.google.api.client.http.HttpRequest;
 //import com.google.api.client.http.HttpTransport;
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * adding an article.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Dec 3, 2010
+ * @version 1.0.0.7, Jan 12, 2010
  */
 public final class ActivityCreator
         extends AbstractEventListener<JSONObject> {
@@ -58,21 +57,18 @@ public final class ActivityCreator
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
 
 //    static {
 //        MY_BUZZ_FEED_URL = new GoogleUrl(
 //                "https://www.googleapis.com/buzz/v1/activities/@me/@self");
 //    }
-
     /**
      * Constructs a {@link ActivityCreator} object with the specified event
      * manager.
      *
      * @param eventManager the specified event manager
      */
-    @Inject
     public ActivityCreator(final EventManager eventManager) {
         super(eventManager);
     }
@@ -111,7 +107,7 @@ public final class ActivityCreator
 
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
-               throw new EventException("Not found preference");
+                throw new EventException("Not found preference");
             }
 
             final boolean postToBuzzEnabled =
@@ -168,7 +164,6 @@ public final class ActivityCreator
 //
 //        request.execute().parseAsString();
 //    }
-
     /**
      * Returns a new JSON-C content serializer for the specified article.
      *
@@ -227,7 +222,6 @@ public final class ActivityCreator
 //
 //        return ret;
 //    }
-
     /**
      * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
      *

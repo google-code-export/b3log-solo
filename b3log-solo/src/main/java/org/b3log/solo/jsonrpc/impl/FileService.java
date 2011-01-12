@@ -18,7 +18,6 @@ package org.b3log.solo.jsonrpc.impl;
 
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +36,7 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.File;
 import org.b3log.solo.repository.FileRepository;
+import org.b3log.solo.repository.impl.FileGAERepository;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * File service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 8, 2010
+ * @version 1.0.0.4, Jan 12, 2011
  */
 public final class FileService extends AbstractGAEJSONRpcService {
 
@@ -62,13 +62,11 @@ public final class FileService extends AbstractGAEJSONRpcService {
     /**
      * File repository.
      */
-    @Inject
-    private FileRepository fileRepository;
+    private FileRepository fileRepository = FileGAERepository.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
 
     /**
      * Gets the file with the specified request json object, http servlet
@@ -219,5 +217,40 @@ public final class FileService extends AbstractGAEJSONRpcService {
         }
 
         return blobstoreService.createUploadUrl("/admin-file-list.do");
+    }
+
+    /**
+     * Gets the {@link FileService} singleton.
+     *
+     * @return the singleton
+     */
+    public static FileService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private FileService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final FileService SINGLETON = new FileService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

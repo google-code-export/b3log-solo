@@ -20,7 +20,6 @@ import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
-import com.google.inject.Inject;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -59,8 +58,7 @@ public final class ArticleSender
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * URL of adding article to Rhythm.
      */
@@ -86,7 +84,6 @@ public final class ArticleSender
      *
      * @param eventManager the specified event manager
      */
-    @Inject
     public ArticleSender(final EventManager eventManager) {
         super(eventManager);
     }

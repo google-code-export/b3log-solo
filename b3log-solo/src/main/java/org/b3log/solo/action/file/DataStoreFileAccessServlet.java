@@ -17,7 +17,6 @@
 package org.b3log.solo.action.file;
 
 import com.google.appengine.api.datastore.Blob;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -77,13 +76,11 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Time zone utilities.
      */
-    @Inject
-    private TimeZones timeZoneUtils;
+    private TimeZones timeZoneUtils = TimeZones.getInstance();
 
     @Override
     protected void doPost(final HttpServletRequest request,

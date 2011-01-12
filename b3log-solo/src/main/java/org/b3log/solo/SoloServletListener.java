@@ -25,13 +25,8 @@ import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.appengine.api.utils.SystemProperty.Environment.Value;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.Stage;
 import java.io.BufferedInputStream;
 import java.net.URL;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -50,18 +45,39 @@ import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.jsonrpc.JSONRpcServiceModule;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
-import org.b3log.solo.util.UtilsModule;
-import org.b3log.solo.event.EventModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
-import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.event.buzz.ActivityCreator;
+import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
+import org.b3log.solo.event.comment.PageCommentReplyNotifier;
+import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
+import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
+import org.b3log.solo.event.rhythm.ArticleSender;
+import org.b3log.solo.event.sync.impl.BlogJavaAddArticleProcessor;
+import org.b3log.solo.event.sync.impl.BlogJavaRemoveArticleProcessor;
+import org.b3log.solo.event.sync.impl.BlogJavaUpdateArticleProcessor;
+import org.b3log.solo.event.sync.impl.CSDNBlogAddArticleProcessor;
+import org.b3log.solo.event.sync.impl.CSDNBlogRemoveArticleProcessor;
+import org.b3log.solo.event.sync.impl.CSDNBlogUpdateArticleProcessor;
+import org.b3log.solo.event.sync.impl.CnBlogsAddArticleProcessor;
+import org.b3log.solo.event.sync.impl.CnBlogsRemoveArticleProcessor;
+import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
+import org.b3log.solo.jsonrpc.impl.AdminService;
+import org.b3log.solo.jsonrpc.impl.ArticleService;
+import org.b3log.solo.jsonrpc.impl.BlogSyncService;
+import org.b3log.solo.jsonrpc.impl.CommentService;
+import org.b3log.solo.jsonrpc.impl.FileService;
+import org.b3log.solo.jsonrpc.impl.LinkService;
+import org.b3log.solo.jsonrpc.impl.PageService;
+import org.b3log.solo.jsonrpc.impl.PreferenceService;
+import org.b3log.solo.jsonrpc.impl.StatisticService;
+import org.b3log.solo.jsonrpc.impl.TagService;
 import org.b3log.solo.model.Preference;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.sync.SyncModule;
+import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
@@ -139,57 +155,30 @@ public final class SoloServletListener extends AbstractServletListener {
         EN_MONTHS.put("12", "December");
     }
 
-    /**
-     * Public default constructor. Initializes the package name of remote
-     * JavaScript services and event listeners.
-     */
-    public SoloServletListener() {
-        setClientRemoteServicePackage("org/b3log/solo/jsonrpc/impl");
-    }
-
-    /**
-     * Gets the injector.
-     *
-     * @return injector
-     */
-    @Override
-    public synchronized Injector getInjector() {
-        final Injector ret = super.getInjector();
-
-        if (null == ret) {
-            final Value gaeEnvValue = SystemProperty.environment.value();
-            LOGGER.info("Initializing Guice....");
-            final Collection<Module> modules = createModules();
-
-            if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
-                LOGGER.info("B3log Solo runs on [production] environment");
-                setInjector(Guice.createInjector(Stage.PRODUCTION,
-                                                 modules));
-            } else {
-                LOGGER.info("B3log Solo runs on [development] environment");
-                setInjector(Guice.createInjector(Stage.DEVELOPMENT,
-                                                 modules));
-            }
-
-            LOGGER.log(Level.INFO,
-                       "Application[id={0}, version={1}, instanceReplicaId={2}]",
-                       new Object[]{SystemProperty.applicationId.get(),
-                                    SystemProperty.applicationVersion.get(),
-                                    SystemProperty.instanceReplicaId.get()});
-        }
-
-        return ret;
-    }
-
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Latkes.setRunsOnEnv(RunsOnEnv.GAE);
-        LOGGER.info("Latke runs on Google app enigne.");
 
+        final Value gaeEnvValue = SystemProperty.environment.value();
+        if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
+            LOGGER.info("B3log Solo runs on [production] environment");
+        } else {
+            LOGGER.info("B3log Solo runs on [development] environment");
+        }
+
+        LOGGER.log(Level.INFO,
+                   "Application[id={0}, version={1}, instanceReplicaId={2}]",
+                   new Object[]{SystemProperty.applicationId.get(),
+                                SystemProperty.applicationVersion.get(),
+                                SystemProperty.instanceReplicaId.get()});
+
+        registerRemoteJSServices();
+        registerEventProcessor();
+        
         super.contextInitialized(servletContextEvent);
 
         final PreferenceRepository preferenceRepository =
-                getInjector().getInstance(PreferenceRepository.class);
+                PreferenceGAERepository.getInstance();
         final Transaction transaction = preferenceRepository.beginTransaction();
         try {
             loadPreference();
@@ -234,9 +223,8 @@ public final class SoloServletListener extends AbstractServletListener {
     private void loadPreference() {
         LOGGER.info("Loading preference....");
 
-        final Injector injector = getInjector();
         final PreferenceRepository preferenceRepository =
-                injector.getInstance(PreferenceRepository.class);
+                PreferenceGAERepository.getInstance();
         JSONObject preference = null;
 
         try {
@@ -247,11 +235,10 @@ public final class SoloServletListener extends AbstractServletListener {
                 return;
             }
 
-            final Skins skins = injector.getInstance(Skins.class);
+            final Skins skins = Skins.getInstance();
             skins.loadSkins(preference);
 
-            final EventManager eventManager =
-                    getInjector().getInstance(EventManager.class);
+            final EventManager eventManager = EventManager.getInstance();
 
             eventManager.fireEventSynchronously(// for upgrade extensions
                     new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
@@ -360,19 +347,84 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * Creates all modules used in B3log Solo.
-     *
-     * @return modules
+     * Register event processors.
      */
-    private Collection<Module> createModules() {
-        final Collection<Module> ret = new HashSet<Module>();
+    private void registerEventProcessor() {
+        try {
+            final EventManager eventManager = EventManager.getInstance();
+            
+            new ActivityCreator(eventManager);
+            new ArticleCommentReplyNotifier(eventManager);
+            new PageCommentReplyNotifier(eventManager);
+            new AddArticleGoogleBlogSearchPinger(eventManager);
+            new UpdateArticleGoogleBlogSearchPinger(eventManager);
+            new ArticleSender(eventManager);
+            new BlogJavaAddArticleProcessor(eventManager);
+            new BlogJavaRemoveArticleProcessor(eventManager);
+            new BlogJavaUpdateArticleProcessor(eventManager);
+            new CSDNBlogAddArticleProcessor(eventManager);
+            new CSDNBlogRemoveArticleProcessor(eventManager);
+            new CSDNBlogUpdateArticleProcessor(eventManager);
+            new CnBlogsAddArticleProcessor(eventManager);
+            new CnBlogsRemoveArticleProcessor(eventManager);
+            new CnBlogsUpdateArticleProcessor(eventManager);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Register event processors error", e);
+            throw new RuntimeException(e);
+        }
+    }
 
-        ret.add(new ActionModule());
-        ret.add(new JSONRpcServiceModule());
-        ret.add(new EventModule());
-        ret.add(new SyncModule());
-        ret.add(new UtilsModule());
+    /**
+     * Registers remote JavaScript services.
+     */
+    private void registerRemoteJSServices() {
+        try {
+            final AdminService adminService = AdminService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(adminService.
+                    getServiceObjectName(), adminService);
 
-        return ret;
+            final ArticleService articleService = ArticleService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(articleService.
+                    getServiceObjectName(), articleService);
+
+            final BlogSyncService blogSyncService =
+                    BlogSyncService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(blogSyncService.
+                    getServiceObjectName(), blogSyncService);
+
+            final CommentService commentService = CommentService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(commentService.
+                    getServiceObjectName(), commentService);
+
+            final FileService fileService = FileService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(fileService.
+                    getServiceObjectName(), fileService);
+
+            final LinkService linkService = LinkService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(linkService.
+                    getServiceObjectName(), linkService);
+
+            final PageService pageService = PageService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(pageService.
+                    getServiceObjectName(), pageService);
+
+            final PreferenceService preferenceService =
+                    PreferenceService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(preferenceService.
+                    getServiceObjectName(), preferenceService);
+
+            final StatisticService statisticService =
+                    StatisticService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(statisticService.
+                    getServiceObjectName(), statisticService);
+
+            final TagService tagService = TagService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(tagService.
+                    getServiceObjectName(), tagService);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Register remote JavaScript service error",
+                       e);
+            throw new RuntimeException(e);
+        }
     }
 }

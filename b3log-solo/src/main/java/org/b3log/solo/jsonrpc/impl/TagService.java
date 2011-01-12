@@ -16,7 +16,6 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Tag service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 3, 2010
+ * @version 1.0.0.5, Jan 12, 2011
  */
 public final class TagService extends AbstractGAEJSONRpcService {
 
@@ -52,13 +52,11 @@ public final class TagService extends AbstractGAEJSONRpcService {
     /**
      * Tag repository.
      */
-    @Inject
-    private TagRepository tagRepository;
+    private TagRepository tagRepository = TagGAERepository.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
 
     /**
      * Gets all unused tags.
@@ -189,5 +187,40 @@ public final class TagService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link TagService} singleton.
+     *
+     * @return the singleton
+     */
+    public static TagService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private TagService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final TagService SINGLETON = new TagService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

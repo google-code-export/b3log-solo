@@ -25,7 +25,7 @@ import org.b3log.latke.util.Strings;
  * Page cache key utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 7, 2011
+ * @version 1.0.0.6, Jan 12, 2011
  */
 public final class PageCacheKeys {
 
@@ -73,5 +73,40 @@ public final class PageCacheKeys {
         }
 
         return ret;
+    }
+
+    /**
+     * Gets the {@link PageCacheKeys} singleton.
+     *
+     * @return the singleton
+     */
+    public static PageCacheKeys getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private PageCacheKeys() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final PageCacheKeys SINGLETON = new PageCacheKeys();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

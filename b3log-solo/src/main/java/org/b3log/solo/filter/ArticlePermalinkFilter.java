@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Article permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 11, 2011
+ * @version 1.0.0.7, Jan 12, 2011
  */
 public final class ArticlePermalinkFilter implements Filter {
 

@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.google.auth;
 
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +30,7 @@ import org.json.JSONObject;
  * OAuth callback.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Dec 4, 2010
+ * @version 1.0.0.5, Jan 12, 2011
  */
 public final class BuzzOAuthCallback extends HttpServlet {
 
@@ -52,13 +50,21 @@ public final class BuzzOAuthCallback extends HttpServlet {
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * OAuth utilities.
      */
-    @Inject
-    private OAuths oAuths;
+    private OAuths oAuths = OAuths.getInstance();
+    /**
+     * Key of Google Buzz token.
+     */
+    public static final String GOOGLE_BUZZ_TOKEN =
+            "googleBuzzToken";
+    /**
+     * Key of Google Buzz verifier.
+     */
+    public static final String GOOGLE_BUZZ_VERIFIER =
+            "googleBuzzVerifier";
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -79,8 +85,8 @@ public final class BuzzOAuthCallback extends HttpServlet {
 
         try {
             final JSONObject preference = preferenceUtils.getPreference();
-            preference.put(Preference.GOOGLE_BUZZ_TOKEN, requestToken);
-            preference.put(Preference.GOOGLE_BUZZ_VERIFIER, verifier);
+            preference.put(GOOGLE_BUZZ_TOKEN, requestToken);
+            preference.put(GOOGLE_BUZZ_VERIFIER, verifier);
 
             final JSONObject requestJSONObject = new JSONObject();
             requestJSONObject.put(Preference.PREFERENCE, preference);

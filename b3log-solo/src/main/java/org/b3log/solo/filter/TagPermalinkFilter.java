@@ -16,7 +16,6 @@
 
 package org.b3log.solo.filter;
 
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -33,13 +32,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.repository.impl.TagGAERepository;
 import org.json.JSONObject;
 
 /**
  * Tag permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 22, 2010
+ * @version 1.0.0.3, Jan 12, 2011
  */
 public final class TagPermalinkFilter implements Filter {
 
@@ -51,8 +51,7 @@ public final class TagPermalinkFilter implements Filter {
     /**
      * Tag repository.
      */
-    @Inject
-    private TagRepository tagRepository;
+    private TagRepository tagRepository = TagGAERepository.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {

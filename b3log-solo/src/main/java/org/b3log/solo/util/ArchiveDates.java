@@ -255,4 +255,39 @@ public final class ArchiveDates {
             }
         }
     }
+
+    /**
+     * Gets the {@link ArchiveDates} singleton.
+     *
+     * @return the singleton
+     */
+    public static ArchiveDates getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private ArchiveDates() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final ArchiveDates SINGLETON = new ArchiveDates();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
+    }
 }

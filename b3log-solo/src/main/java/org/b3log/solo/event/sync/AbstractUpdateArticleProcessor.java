@@ -16,7 +16,6 @@
 
 package org.b3log.solo.event.sync;
 
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -30,6 +29,8 @@ import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.repository.impl.BlogSyncMgmtGAERepository;
+import org.b3log.solo.repository.impl.ExternalArticleSoloArticleGAERepository;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.MetaWeblogPost;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 20, 2010
+ * @version 1.0.0.7, Jan 12, 2011
  */
 public abstract class AbstractUpdateArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -57,18 +58,17 @@ public abstract class AbstractUpdateArticleProcessor
     /**
      * Blog sync management repository.
      */
-    @Inject
-    private BlogSyncManagementRepository blogSyncManagementRepository;
+    private BlogSyncManagementRepository blogSyncManagementRepository =
+            BlogSyncMgmtGAERepository.getInstance();
     /**
      * External blog article-Solo article repository.
      */
-    @Inject
-    private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository;
+    private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository =
+            ExternalArticleSoloArticleGAERepository.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
 
     /**
      * Constructs a {@link BlogSyncMgmtUpdateArticleProcessor} object with the
@@ -76,7 +76,6 @@ public abstract class AbstractUpdateArticleProcessor
      *
      * @param eventManager the specified event manager
      */
-    @Inject
     public AbstractUpdateArticleProcessor(final EventManager eventManager) {
         super(eventManager);
     }

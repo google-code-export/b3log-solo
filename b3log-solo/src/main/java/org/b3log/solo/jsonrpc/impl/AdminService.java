@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.util.Set;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.latke.repository.RepositoryException;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -54,6 +52,9 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.impl.UserGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
@@ -66,7 +67,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jan 3, 2011
+ * @version 1.0.2.2, Jan 12, 2011
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -83,53 +84,41 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Preference repository.
      */
-    @Inject
-    private PreferenceRepository preferenceRepository;
+    private PreferenceRepository preferenceRepository =
+            PreferenceGAERepository.getInstance();
     /**
      * User repository.
      */
-    @Inject
-    private UserRepository userRepository;
+    private UserRepository userRepository = UserGAERepository.getInstance();
     /**
      * Statistic repository.
      */
-    @Inject
-    private StatisticRepository statisticRepository;
+    private StatisticRepository statisticRepository =
+            StatisticGAERepository.getInstance();
     /**
      * Event manager.
      */
-    @Inject
-    private EventManager eventManager;
+    private EventManager eventManager = EventManager.getInstance();
     /**
      * Skin utilities.
      */
-    @Inject
-    private Skins skins;
+    private Skins skins = Skins.getInstance();
     /**
      * User utilities.
      */
-    @Inject
-    private Users userUtils;
+    private Users userUtils = Users.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Article service.
      */
-    @Inject
-    private ArticleService articleService;
-    /**
-     * Add article comment action.
-     */
-    @Inject
-    private AddArticleCommentAction addArticleCommentAction;
+    private ArticleService articleService = ArticleService.getInstance();
     /**
      * Time zone utilities.
      */
-    @Inject
-    private TimeZones timeZoneUtils;
+    private TimeZones timeZoneUtils = TimeZones.getInstance();
 
     /**
      * Removes a user with the specified request json object.
@@ -623,8 +612,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                     "Hi, this is a comment. To delete a comment, just log in and "
                     + "view the post's comments. There you will have the option "
                     + "to delete them.");
-            addArticleCommentAction.doAjaxAction(requestJSONObject,
-                                                 request, response);
+            AddArticleCommentAction.addArticleComment(requestJSONObject,
+                                                      request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException("Hello World error?!");
@@ -688,7 +677,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             statisticRepository.add(ret);
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException("Statistic init error!");
         }
@@ -711,6 +702,23 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
         try {
             final String preferenceId = PREFERENCE;
+            ret.put(NOTICE_BOARD, Preference.Default.DEFAULT_NOTICE_BOARD);
+            ret.put(META_DESCRIPTION,
+                    Preference.Default.DEFAULT_META_DESCRIPTION);
+            ret.put(META_KEYWORDS, Preference.Default.DEFAULT_META_KEYWORDS);
+            ret.put(HTML_HEAD, Preference.Default.DEFAULT_HTML_HEAD);
+            ret.put(ENABLE_POST_TO_BUZZ,
+                    Preference.Default.DEFAULT_ENABLE_POST_TO_BUZZ);
+            ret.put(GOOGLE_OAUTH_CONSUMER_SECRET,
+                    Preference.Default.DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
+            ret.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,
+                    Preference.Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
+            ret.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT,
+                    Preference.Default.DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT);
+            ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
+                    Preference.Default.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
+            ret.put(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT,
+                    Preference.Default.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
             ret.put(ARTICLE_LIST_DISPLAY_COUNT,
                     Preference.Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
             ret.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
@@ -723,12 +731,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                     Preference.Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
             ret.put(RECENT_COMMENT_DISPLAY_CNT,
                     Preference.Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
-            ret.put(BLOG_TITLE,
-                    Preference.Default.DEFAULT_BLOG_TITLE);
-            ret.put(BLOG_SUBTITLE,
-                    Preference.Default.DEFAULT_BLOG_SUBTITLE);
-            ret.put(BLOG_HOST,
-                    Preference.Default.DEFAULT_BLOG_HOST);
+            ret.put(BLOG_TITLE, Preference.Default.DEFAULT_BLOG_TITLE);
+            ret.put(BLOG_SUBTITLE, Preference.Default.DEFAULT_BLOG_SUBTITLE);
+            ret.put(BLOG_HOST, Preference.Default.DEFAULT_BLOG_HOST);
             ret.put(ADMIN_EMAIL, // Current logged in adminstrator's email
                     userService.getCurrentUser().getEmail());
             ret.put(LOCALE_STRING,
@@ -781,7 +786,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             preferenceRepository.update(preferenceId, ret);
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException("Preference init error!");
         }
@@ -826,5 +833,40 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                               final HttpServletResponse response)
             throws ActionException, IOException {
         return userService.createLoginURL(redirectURL);
+    }
+
+    /**
+     * Gets the {@link AdminService} singleton.
+     *
+     * @return the singleton
+     */
+    public static AdminService getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private AdminService() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final AdminService SINGLETON = new AdminService();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

@@ -18,7 +18,6 @@ package org.b3log.solo.action.impl;
 
 import java.util.List;
 import org.b3log.latke.action.ActionException;
-import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -73,23 +72,19 @@ public final class TagsAction extends AbstractCacheablePageAction {
     /**
      * Filler.
      */
-    @Inject
-    private Filler filler;
+    private Filler filler = Filler.getInstance();
     /**
      * Language service.
      */
-    @Inject
-    private LangPropsService langPropsService;
+    private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
      * Preference utilities.
      */
-    @Inject
-    private Preferences preferenceUtils;
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Tag utilities.
      */
-    @Inject
-    private Tags tagUtils;
+    private Tags tagUtils = Tags.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
