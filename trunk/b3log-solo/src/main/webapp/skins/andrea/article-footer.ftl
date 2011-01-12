@@ -18,10 +18,11 @@
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
-        "logoutLabel": "${logoutLabel}"
+        "logoutLabel": "${logoutLabel}",
+        "skinDirName": "${skinDirName}"
     });
     util.init();
-    util.replaceCommentsEm(".side-navi .navi-comments .side-comment", "i-nove");
+    util.replaceCommentsEm("#naviComments");
 
     // init brush
     var buildBrush = function () {
