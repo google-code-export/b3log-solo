@@ -428,7 +428,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
     /**
      * Gets the {@link ArticleGAERepository} singleton.
      *
-     * @return a article GAE repository singleton
+     * @return the singleton
      */
     public static ArticleGAERepository getInstance() {
         return SingletonHolder.SINGLETON;

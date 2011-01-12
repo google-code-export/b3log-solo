@@ -37,6 +37,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
@@ -45,7 +46,7 @@ import org.json.JSONObject;
  * Page action. page.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 15, 2010
+ * @version 1.0.0.4, Jan 12, 2011
  */
 public final class PageAction extends AbstractCacheablePageAction {
 
@@ -71,8 +72,7 @@ public final class PageAction extends AbstractCacheablePageAction {
     /**
      * Page repository.
      */
-    @Inject
-    private PageRepository pageRepository;
+    private PageRepository pageRepository = PageGAERepository.getInstance();
     /**
      * Page utilities.
      */

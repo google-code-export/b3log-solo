@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Blog sync management Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 27, 2010
+ * @version 1.0.0.2, Jan 12, 2011
  */
 public final class BlogSyncMgmtGAERepository extends AbstractGAERepository
         implements BlogSyncManagementRepository {
@@ -58,5 +58,41 @@ public final class BlogSyncMgmtGAERepository extends AbstractGAERepository
         }
 
         return entity2JSONObject(entity);
+    }
+
+    /**
+     * Gets the {@link BlogSyncMgmtGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static BlogSyncMgmtGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private BlogSyncMgmtGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final BlogSyncMgmtGAERepository SINGLETON =
+                new BlogSyncMgmtGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

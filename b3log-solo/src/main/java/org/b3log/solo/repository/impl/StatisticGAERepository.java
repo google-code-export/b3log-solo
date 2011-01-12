@@ -25,7 +25,7 @@ import org.b3log.solo.repository.StatisticRepository;
  * Statistic Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 18, 2010
+ * @version 1.0.0.1, Jan 12, 2011
  */
 public final class StatisticGAERepository extends AbstractGAERepository
         implements StatisticRepository {
@@ -39,5 +39,41 @@ public final class StatisticGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return Statistic.STATISTIC;
+    }
+
+    /**
+     * Gets the {@link StatisticGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static StatisticGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private StatisticGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final StatisticGAERepository SINGLETON =
+                new StatisticGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

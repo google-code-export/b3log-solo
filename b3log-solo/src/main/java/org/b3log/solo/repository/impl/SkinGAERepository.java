@@ -25,7 +25,7 @@ import org.b3log.solo.repository.SkinRepository;
  * Skin Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 21, 2010
+ * @version 1.0.0.1, Jan 12, 2011
  */
 public final class SkinGAERepository extends AbstractGAERepository
         implements SkinRepository {
@@ -39,5 +39,41 @@ public final class SkinGAERepository extends AbstractGAERepository
     @Override
     public String getName() {
         return Skin.SKIN;
+    }
+
+    /**
+     * Gets the {@link SkinGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static SkinGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private SkinGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final SkinGAERepository SINGLETON =
+                new SkinGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

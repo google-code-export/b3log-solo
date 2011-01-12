@@ -41,6 +41,7 @@ import org.b3log.solo.model.ErrorPage;
 import org.b3log.solo.model.File;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
+import org.b3log.solo.repository.impl.FileGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jan 2, 2011
+ * @version 1.0.0.8, Jan 12, 2011
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -67,8 +68,8 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
     /**
      * File repository.
      */
-    @Inject
-    private FileRepository fileRepository;
+    private FileRepository fileRepository =
+            FileGAERepository.getInstance();
     /**
      * Maximum entity size limited by data store.
      */

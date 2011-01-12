@@ -38,6 +38,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.comparator.Comparators;
@@ -48,7 +49,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Dec 30, 2010
+ * @version 1.0.0.9, Jan 12, 2011
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -68,8 +69,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
     /**
      * Tag repository.
      */
-    @Inject
-    private TagRepository tagRepository;
+    private TagRepository tagRepository = TagGAERepository.getInstance();
     /**
      * Filler.
      */

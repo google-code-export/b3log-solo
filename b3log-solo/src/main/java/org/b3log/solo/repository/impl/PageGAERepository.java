@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Page Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 5, 2010
+ * @version 1.0.0.3, Jan 12, 2011
  */
 public final class PageGAERepository extends AbstractGAERepository
         implements PageRepository {
@@ -100,5 +100,41 @@ public final class PageGAERepository extends AbstractGAERepository
         final Map<String, Object> properties = entity.getProperties();
 
         return new JSONObject(properties);
+    }
+
+    /**
+     * Gets the {@link PageGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static PageGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private PageGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final PageGAERepository SINGLETON =
+                new PageGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
+        }
     }
 }

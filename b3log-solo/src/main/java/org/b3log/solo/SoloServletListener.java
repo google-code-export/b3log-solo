@@ -55,7 +55,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.UtilsModule;
 import org.b3log.solo.event.EventModule;
-import org.b3log.solo.repository.RepositoryModule;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.action.ActionModule;
 import org.b3log.solo.event.EventTypes;
@@ -71,7 +70,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.8, Jan 3, 2011
+ * @version 1.0.3.9, Jan 12, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -370,7 +369,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         ret.add(new ActionModule());
         ret.add(new JSONRpcServiceModule());
-        ret.add(new RepositoryModule());
         ret.add(new EventModule());
         ret.add(new SyncModule());
         ret.add(new UtilsModule());

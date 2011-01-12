@@ -36,6 +36,8 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.TagArticleGAERepository;
+import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.TimeZones;
@@ -46,7 +48,7 @@ import org.json.JSONObject;
  * Tag articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Jan 11, 2011
+ * @version 1.0.1.3, Jan 12, 2011
  */
 public final class TagArticlesFeedServlet extends HttpServlet {
 
@@ -62,13 +64,13 @@ public final class TagArticlesFeedServlet extends HttpServlet {
     /**
      * Tag repository.
      */
-    @Inject
-    private TagRepository tagRepository;
+    private TagRepository tagRepository =
+            TagGAERepository.getInstance();
     /**
      * Tag-Article repository.
      */
-    @Inject
-    private TagArticleRepository tagArticleRepository;
+    private TagArticleRepository tagArticleRepository =
+            TagArticleGAERepository.getInstance();
     /**
      * Preference utilities.
      */

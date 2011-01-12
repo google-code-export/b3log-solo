@@ -29,6 +29,9 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.PageCommentGAERepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,7 +39,7 @@ import org.json.JSONObject;
  * Page utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 25, 2010
+ * @version 1.0.0.2, Jan 12, 2011
  */
 public final class Pages {
 
@@ -48,18 +51,18 @@ public final class Pages {
     /**
      * Comment repository.
      */
-    @Inject
-    private CommentRepository commentRepository;
+    private CommentRepository commentRepository =
+            CommentGAERepository.getInstance();
     /**
      * Page-Comment repository.
      */
-    @Inject
-    private PageCommentRepository pageCommentRepository;
+    private PageCommentRepository pageCommentRepository =
+            PageCommentGAERepository.getInstance();
     /**
      * Page repository.
      */
-    @Inject
-    private PageRepository pageRepository;
+    private PageRepository pageRepository =
+            PageGAERepository.getInstance();
     /**
      * Statistic utilities.
      */

@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * User Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 9, 2011
+ * @version 1.0.0.5, Jan 12, 2011
  */
 public final class UserGAERepository extends AbstractGAERepository
         implements UserRepository {
@@ -86,7 +86,7 @@ public final class UserGAERepository extends AbstractGAERepository
             }
 
             ret = entity2JSONObject(entity);
-            
+
             CACHE.put(cacheKey, ret);
         }
 
@@ -108,6 +108,42 @@ public final class UserGAERepository extends AbstractGAERepository
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             throw new RepositoryException(e);
+        }
+    }
+
+    /**
+     * Gets the {@link UserGAERepository} singleton.
+     *
+     * @return the singleton
+     */
+    public static UserGAERepository getInstance() {
+        return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Private default constructor.
+     */
+    private UserGAERepository() {
+    }
+
+    /**
+     * Singleton holder.
+     *
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Jan 12, 2011
+     */
+    private static final class SingletonHolder {
+
+        /**
+         * Singleton.
+         */
+        private static final UserGAERepository SINGLETON =
+                new UserGAERepository();
+
+        /**
+         * Private default constructor.
+         */
+        private SingletonHolder() {
         }
     }
 }

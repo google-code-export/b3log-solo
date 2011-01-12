@@ -18,7 +18,6 @@ package org.b3log.solo.util;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.inject.Inject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -28,6 +27,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.UserGAERepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 11, 2011
+ * @version 1.0.0.6, Jan 12, 2011
  */
 public class Users {
 
@@ -48,8 +48,7 @@ public class Users {
     /**
      * User repository.
      */
-    @Inject
-    private UserRepository userRepository;
+    private UserRepository userRepository = UserGAERepository.getInstance();
     /**
      * User service.
      */
