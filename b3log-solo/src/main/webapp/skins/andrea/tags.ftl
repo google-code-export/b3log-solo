@@ -11,26 +11,34 @@
         <meta name="revised" content="B3log, 2010"/>
         <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/i-nove/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/andrea/default-index.css"/>
+        <link href='http://fonts.googleapis.com/css?family=Neucha' rel='stylesheet' type='text/css'/>
+        <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie' rel='stylesheet' type='text/css'/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
     </head>
     <body>
         <#include "common-top.ftl">
+        <#include "side-tool.ftl">
         <div class="wrapper">
-            <div class="content">
-                <#include "article-header.ftl">
-                <div class="body">
-                    <div class="left main">
+            <#include "article-header.ftl">
+            <div>
+                <div class="main">
+                    <div class="main-content">
                         <div id="tagsPanel">
                         </div>
                     </div>
-                    <div class="right">
-                        <#include "article-side.ftl">
-                    </div>
-                    <div class="clear"></div>
+                    <div class="main-footer"></div>
                 </div>
+                <div class="side-navi">
+                    <#include "article-side.ftl">
+                </div>
+                <div class="brush">
+                    <div class="brush-icon"></div>
+                    <div id="brush"></div>
+                </div>
+                <div class="clear"></div>
                 <div class="footer">
                     <#include "article-footer.ftl">
                 </div>

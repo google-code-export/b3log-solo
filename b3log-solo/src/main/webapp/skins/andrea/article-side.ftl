@@ -7,21 +7,6 @@
 <div class="item">
     <dl>
         <dd>
-            <h4>${recentCommentsLabel}</h4>
-            <ul id="naviComments">
-                <#list recentComments as comment>
-                <li>
-                    <a class="author" title="${comment.commentName}" target="_blank" href="${comment.commentURL}">
-                        ${comment.commentName}
-                    </a>:
-                    <a title="${comment.commentContent}" class='side-comment' href="${comment.commentSharpURL}">
-                        ${comment.commentContent}
-                    </a>
-                </li>
-                </#list>
-            </ul>
-        </dd>
-        <dd>
             <h4>${mostCommentArticlesLabel}</h4>
             <ul>
                 <#list mostCommentArticles as article>
@@ -31,6 +16,21 @@
                         href="${article.articlePermalink}">
                         <sup>[${article.articleCommentCount}]</sup>
                         ${article.articleTitle}
+                    </a>
+                </li>
+                </#list>
+            </ul>
+        </dd>
+        <dd>
+            <h4>${recentCommentsLabel}</h4>
+            <ul id="naviComments">
+                <#list recentComments as comment>
+                <li>
+                    <a class="author" title="${comment.commentName}" target="_blank" href="${comment.commentURL}">
+                        ${comment.commentName}
+                    </a>:
+                    <a title="${comment.commentContent}" class='side-comment' href="${comment.commentSharpURL}">
+                        ${comment.commentContent}
                     </a>
                 </li>
                 </#list>
