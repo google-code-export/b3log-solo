@@ -216,7 +216,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>TagsAction</servlet-name>
-        <url-pattern>/tags.html</url-pattern>
+        <url-pattern>/tags.do</url-pattern>
     </servlet-mapping>
     
     <servlet>
