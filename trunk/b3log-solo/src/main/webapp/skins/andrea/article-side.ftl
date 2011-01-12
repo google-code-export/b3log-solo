@@ -1,26 +1,4 @@
 <div class="item" style="margin-top: -35px;">
-    <span>
-        ${viewCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticBlogViewCount}
-        </span>
-        &nbsp;
-    </span>
-    <span>
-        ${articleCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticPublishedBlogArticleCount}
-        </span>
-        &nbsp;
-    </span>
-    <span>
-        ${commentCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticPublishedBlogCommentCount}
-        </span>
-    </span>
-</div>
-<div class="item">
     <h4>${noticeBoardLabel}</h4>
     <div class="marginLeft12 marginTop12">
         ${noticeBoard}
@@ -72,6 +50,10 @@
                 </#list>
             </ul>
         </dd>
+    </dl>
+</div>
+<div class="item">
+    <dl>
         <dd>
             <h4>${popTagsLabel}</h4>
             <ul class="navi-tags">
@@ -85,7 +67,11 @@
                 </#list>
             </ul>
         </dd>
-        <#if 0 != links?size>
+    </dl>
+</div>
+<#if 0 != links?size>
+<div class="item">
+    <dl>
         <dd>
             <h4>${linkLabel}</h4>
             <ul>
@@ -98,7 +84,11 @@
                 </#list>
             </ul>
         </dd>
-        </#if>
+    </dl>
+</div>
+</#if>
+<div class="item">
+    <dl>
         <dd>
             <h4>${archiveLabel}</h4>
             <ul>

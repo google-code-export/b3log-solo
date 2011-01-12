@@ -40,11 +40,66 @@ a, a:link, a:visited {
 }
 
 /* header */
-.header-title {
+.header {
     background: url('images/bgs.png') no-repeat;
-    width: 627px;
+    width: 910px;
     height: 185px;
     float: left;
+}
+
+.header .left {
+    width: 530px;
+}
+
+.header h1 {
+    margin: 18px 0 0 37px;
+}
+
+.header .left a, .sub-title {
+    color: #FFFFFF;
+    font-family: 'Neucha',微软雅黑,Arial,Verdana,sans-serif;
+    font-size: 46px;
+    text-decoration: none;
+}
+
+.sub-title {
+    color: #000000;
+    font-size: 22px;
+    margin-left: 40px;
+    margin-top: 0;
+    display: block;
+}
+
+.header > .left > div {
+    float: right;
+    color: #C0BEBD;
+}
+
+.header .right {
+    width: 380px;
+}
+
+.header .right ul {
+    list-style-type: none
+}
+
+.header .right li {
+    float: left;
+    margin-left: 33px;
+    margin-top: 18px;
+    width: 84px;
+}
+
+.header .right li a {
+    color: #FFFFFF;
+    font-family: 'Reenie Beanie',sans-serif;
+    font-size: 45px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.header .right li a:hover {
+    color: #DDDDDD;
 }
 
 /* main */
@@ -215,6 +270,10 @@ a, a:link, a:visited {
 
 #naviComments li a.author {
     color: #BE0700;
+}
+
+#naviComments li:hover {
+    background-image: none;
 }
 
 #naviComments li a:hover {
