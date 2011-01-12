@@ -28,7 +28,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
@@ -82,42 +81,16 @@ public final class ArticlePermalinkFilter implements Filter {
             return;
         }
 
-        String articleId = null;
-        boolean maybeDefaultPermalink = false;
-        if (requestURI.matches("/articles/\\d{4}/\\d{2}/\\d{2}/\\d+.html")) {
-            articleId = StringUtils.substring(
-                    requestURI, requestURI.lastIndexOf("/") + 1,
-                    requestURI.lastIndexOf("."));
-            try {
-                Long.valueOf(articleId);
-
-                maybeDefaultPermalink = true;
-            } catch (final NumberFormatException nfe) {
-                LOGGER.log(Level.FINER,
-                           "It is not a default article permalink[requestURI={0}]",
-                           requestURI);
-            }
-        }
-
         try {
-
-            JSONObject article = null;
-
-            if (maybeDefaultPermalink) {
-                article = articleRepository.get(articleId);
-            }
-
-            if (null == article) {
-                article = articleRepository.getByPermalink(requestURI);
-            }
-
+            final JSONObject article =
+                    articleRepository.getByPermalink(requestURI);
             if (null == article) {
                 chain.doFilter(request, response);
 
                 return;
             }
 
-            articleId = article.getString(Keys.OBJECT_ID);
+            final String articleId = article.getString(Keys.OBJECT_ID);
 
             final RequestDispatcher requestDispatcher =
                     httpServletRequest.getRequestDispatcher("/article-detail.do");
