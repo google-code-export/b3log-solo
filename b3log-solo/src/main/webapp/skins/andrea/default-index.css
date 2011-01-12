@@ -19,7 +19,7 @@ a, a:link, a:visited {
 }
 
 .brush-icon, .article .month , .article .day, .pagination a, #greyBG,
-#brownBG, #blueBG,  #goTop {
+#brownBG, #blueBG,  #goTop, .side-tool ul ul li a {
     background-image: url('images/icon.png');
 }
 
@@ -188,7 +188,7 @@ a, a:link, a:visited {
     padding: 20px 0 25px 0;
 }
 
-.pagination a, #goTop {
+.pagination a {
     background-position: 0px -47px;
     border: 1px solid #C5C3C2;
     color: #8C8C8C;
@@ -206,7 +206,7 @@ a, a:link, a:visited {
     padding: 1px 7px 2px 6px;
 }
 
-.pagination a:hover, #goTop:hover {
+.pagination a:hover {
     background: none #F3DEDD;
     color: #BE0700;
     border-color: #BE0700;
@@ -318,7 +318,7 @@ a, a:link, a:visited {
 /* side tool */
 .side-tool {
     position: fixed;
-    top: 271px;
+    top: 30px;
 }
 
 .side-tool li {
@@ -359,6 +359,24 @@ a, a:link, a:visited {
 }
 
 #goTop {
+    background-position: -105px -119px;
     cursor: pointer;
-    margin-top: 3px;
+    height: 36px;
+    margin-top: 6px;
+    display: block;
+    width: 22px;
+}
+
+#goTop:hover {
+    background-position: -105px -74px;
+}
+
+.side-tool ul ul li a {
+    height: 88px;
+    margin: 9px 0;
+    width: 18px;
+    background-position: right -159px;
+    display: block;
+    padding: 0 6px;
+    overflow: hidden;
 }
