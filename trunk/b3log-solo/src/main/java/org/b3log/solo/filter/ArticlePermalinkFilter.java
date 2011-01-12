@@ -89,7 +89,7 @@ public final class ArticlePermalinkFilter implements Filter {
                     requestURI, requestURI.lastIndexOf("/") + 1,
                     requestURI.lastIndexOf("."));
             try {
-                Integer.valueOf(articleId);
+                Long.valueOf(articleId);
 
                 maybeDefaultPermalink = true;
             } catch (final NumberFormatException nfe) {
