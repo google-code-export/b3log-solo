@@ -57,10 +57,6 @@ public final class TagsAction extends AbstractCacheablePageAction {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * Page cache key.
-     */
-    public static final String CACHE_KEY = "/tags.do";
-    /**
      * Logger.
      */
     private static final Logger LOGGER =
