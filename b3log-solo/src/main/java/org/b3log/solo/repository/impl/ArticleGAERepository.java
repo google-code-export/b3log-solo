@@ -441,7 +441,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
     }
 
     /**
-     * Article GAE repository singleton holder.
+     * Singleton holder.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
      * @version 1.0.0.0, Jan 12, 2011
