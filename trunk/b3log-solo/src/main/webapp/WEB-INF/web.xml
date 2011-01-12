@@ -220,6 +220,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>PageAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.PageAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PageAction</servlet-name>
+        <url-pattern>/page.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>BlogArticlesFeedServlet</servlet-name>
         <servlet-class>org.b3log.solo.action.feed.BlogArticlesFeedServlet</servlet-class>
     </servlet>
