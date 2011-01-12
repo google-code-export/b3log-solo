@@ -60,12 +60,14 @@
 
         // page navi
         $(".side-tool li li a").hover(function () {
-            $(this).animate({
-                width: "63"
-            }, 600 );
+            if (parseInt($(this).css("padding-left")) === 10) {
+                $(this).animate({
+                    "padding-left": "55px"
+                }, 600 );
+            }
         }, function () {
             $(this).animate({
-                width: "18"
+                "padding-left": "10px"
             }, 600 );
         });
     }
