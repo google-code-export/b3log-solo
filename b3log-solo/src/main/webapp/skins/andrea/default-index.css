@@ -464,12 +464,13 @@ a:hover {
     margin-bottom: 30px;
 }
 
-#comments h2 {
+h2.comment-label {
     border-bottom: 2px solid #3F3D36;
     font-size: 24px;
     margin-bottom: 15px;
     margin-top: 30px;
     padding-bottom: 7px;
+    color: #363636;
 }
 
 .comment-body  {
