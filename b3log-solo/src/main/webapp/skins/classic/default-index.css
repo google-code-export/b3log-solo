@@ -7,7 +7,7 @@ h5{font-size:12px;}
 .sub-title{font-size:14px;font-weight:normal;}
 .side{border-left:2px solid #E5ECF9;padding-left:12px;width: 330px;}
 .main{margin-right:-344px;width: 100%;}
-.main>div{padding-right: 368px;}
+.main>div{padding-right: 368px;min-width: 724px;}
 #logoTitle{font-family:"Microsoft YaHei";font-size:32px;line-height:64px;text-decoration:none;}
 #statistic span{font-size:11px;}
 .article, .comments{padding:12px 0 24px 12px;}
@@ -28,6 +28,7 @@ h5{font-size:12px;}
 .comment-picture{margin-right:12px;}
 .comment-picture img{width:60px;height:60px;}
 .comment-reply{margin:0 auto 24px auto;}
+.comment-content{float: left;width: 88%;}
 #commentURLLabel, #commentURLLabelReply{border-width:2px 0px 2px 2px;border-style:inset none inset inset;border-color:#CCCCCC;float:left;height:24px;line-height:24px;*margin-top:1px;}
 #commentURL, #commentURLReply{border-left:0px;}
 #comment, #commentReply{width:604px;}
