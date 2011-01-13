@@ -32,3 +32,15 @@
     </div>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+<script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript">
+    var util = new Util({
+        "clearAllCacheLabel": "${clearAllCacheLabel}",
+        "clearCacheLabel": "${clearCacheLabel}",
+        "adminLabel": "${adminLabel}",
+        "logoutLabel": "${logoutLabel}",
+        "skinDirName": "${skinDirName}"
+    });
+    util.init();
+    util.replaceCommentsEm(".side-navi .navi-comments .side-comment");
+</script>

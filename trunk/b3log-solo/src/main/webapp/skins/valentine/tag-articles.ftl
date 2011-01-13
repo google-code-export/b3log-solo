@@ -18,26 +18,28 @@
     </head>
     <body>
         <#include "common-top.ftl">
-        <div id="wrapper-home">
-            <div id="header-home"><!-- header --></div>
-            <div id="content-home">
-                <div id="home-rinside">
-                    <!-- The Loop -->
-                    <#include "individual-blue.ftl">
-                    <!-- End Loop-->
+        <div id="wrapper-sub">
+            <div id="header-page"><!-- header --></div>
+            <div id="content-page">
+                <div id="single-pagecontents">
+                    <div class="kind-title">
+                         ${tag1Label}
+                         ${tag.tagTitle}(${tag.tagPublishedRefCount})
+                    </div>
+                    <div class="kind-panel">
+                    </div>
+                    <#include "common-articles-pink.ftl">
                 </div>
-                <div id="home-sidebar">
-                    <div id="home-tag"><!--home tag --></div>
+                <div id="left-sidebar">
+                    <div id="about-tag"><!--about tag --></div>
                     <#include "sidebar.ftl">
                 </div>
-
-                <div id="home-wendyside">
-                    <!-- The Loop -->
-                    <#include "individual-pink.ftl">
-                    <!-- End Loop-->
-                </div>
             </div>
-            <#include "prefooter-home.ftl">
+            <div id="prefooter-page">
+                <div id="rss-page"><!-- RSS Icon--></div>
+                <div id="rss-lefttext"><a href="http://lambsand.appspot.com/feed">Subscribe to RSS</a></div>
+            </div>
+            <!-- start footer -->
             <#include "footer.ftl">
         </div>
     </body>
