@@ -218,7 +218,9 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             PageCaches.removeAll();
             return true;
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             return false;
@@ -277,7 +279,9 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINER, "Updated a link[oId={0}]",
                        linkId);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
@@ -334,7 +338,9 @@ public final class LinkService extends AbstractGAEJSONRpcService {
 
             LOGGER.log(Level.FINER, "Removed a link[oId={0}]", linkId);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
@@ -395,7 +401,9 @@ public final class LinkService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_LINK_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }

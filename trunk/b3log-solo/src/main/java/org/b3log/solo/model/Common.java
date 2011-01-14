@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Jan 4, 2011
+ * @version 1.0.2.5, Jan 14, 2011
  */
 public final class Common {
 
@@ -128,6 +128,10 @@ public final class Common {
      * Author id.
      */
     public static final String AUTHOR_ID = "authorId";
+    /**
+     * Author role.
+     */
+    public static final String AUTHOR_ROLE = "authorRole";
     /**
      * Key of current user.
      */

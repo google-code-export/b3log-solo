@@ -289,7 +289,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             status.put(Keys.CODE, StatusCodes.ADD_ARTICLE_SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
 
             return ret;
         }
@@ -667,7 +669,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.PUT_TOP_ARTICLE_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, "Can't put the article[oId{0}] to top",
                        articleId);
             try {
@@ -728,7 +732,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_TOP_ARTICLE_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE,
                        "Can't cancel the article[oId{0}] from top",
                        articleId);
@@ -1031,7 +1037,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_PUBLISH_ARTICLE_SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
 
             try {
                 ret.put(Keys.STATUS_CODE,
@@ -1091,7 +1099,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         return ret;
     }
 
-     /**
+    /**
      * Gets the {@link ArticleService} singleton.
      *
      * @return the singleton

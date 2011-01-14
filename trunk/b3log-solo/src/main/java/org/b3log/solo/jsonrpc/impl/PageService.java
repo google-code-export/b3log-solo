@@ -271,7 +271,9 @@ public final class PageService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINER, "Updated a page[oId={0}]", pageId);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
 
             return ret;
         }
@@ -323,7 +325,9 @@ public final class PageService extends AbstractGAEJSONRpcService {
 
             LOGGER.log(Level.FINER, "Removed a page[oId={0}]", pageId);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             throw new ActionException(e);
@@ -403,7 +407,9 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_PAGE_SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
 
             return ret;
         }
@@ -456,7 +462,9 @@ public final class PageService extends AbstractGAEJSONRpcService {
             PageCaches.removeAll();
             return true;
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             return false;

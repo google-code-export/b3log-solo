@@ -196,7 +196,9 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
             fileRepository.update(id, file);
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException("File download error: " + e.getMessage());
         }

@@ -278,7 +278,9 @@ public final class PageCacheFilter implements Filter {
             statistics.incBlogViewCount();
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
@@ -336,7 +338,9 @@ public final class PageCacheFilter implements Filter {
             articleUtils.incArticleViewCount(articleId);
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }

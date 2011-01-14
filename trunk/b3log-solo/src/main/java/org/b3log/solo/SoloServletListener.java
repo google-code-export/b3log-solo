@@ -174,7 +174,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         registerRemoteJSServices();
         registerEventProcessor();
-        
+
         super.contextInitialized(servletContextEvent);
 
         final PreferenceRepository preferenceRepository =
@@ -184,7 +184,9 @@ public final class SoloServletListener extends AbstractServletListener {
             loadPreference();
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
@@ -352,7 +354,7 @@ public final class SoloServletListener extends AbstractServletListener {
     private void registerEventProcessor() {
         try {
             final EventManager eventManager = EventManager.getInstance();
-            
+
             new ActivityCreator(eventManager);
             new ArticleCommentReplyNotifier(eventManager);
             new PageCommentReplyNotifier(eventManager);

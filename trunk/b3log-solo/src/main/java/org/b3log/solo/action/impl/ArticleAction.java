@@ -173,6 +173,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             article.put(Common.AUTHOR_NAME, authorName);
             final String authorId = author.getString(Keys.OBJECT_ID);
             article.put(Common.AUTHOR_ID, authorId);
+            article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
 
             article.put(Article.ARTICLE_SIGN_REF,
                         articleUtils.getSign(articleId, preference));
@@ -335,7 +336,9 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             articleUtils.incArticleViewCount(articleId);
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }

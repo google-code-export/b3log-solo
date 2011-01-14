@@ -162,7 +162,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 if ("valentine".equals(
                         preferenceUtils.getPreference().getString(
                         Skin.SKIN_DIR_NAME))) {
-                    transaction.rollback();
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
 
                     ret.put(Keys.STATUS_CODE,
                             StatusCodes.REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS);
@@ -175,7 +177,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_USER_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -244,7 +248,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_USER_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -451,7 +457,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -648,7 +656,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             addUser(admin, request, response);
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RuntimeException("Admin init error!");
         }
