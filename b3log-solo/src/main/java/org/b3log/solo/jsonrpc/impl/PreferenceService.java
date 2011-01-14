@@ -247,7 +247,9 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 if (!userUtils.hasMultipleUsers()) {
                     ret.put(Keys.STATUS_CODE,
                             StatusCodes.UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS);
-                    transaction.rollback();
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
 
                     return ret;
                 }
@@ -261,7 +263,9 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             final boolean containSlash = blogHost.contains("/");
             if (!containColon || containScheme || containSlash) {
                 ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
-                transaction.rollback();
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
 
                 return ret;
             }
@@ -269,7 +273,9 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             final String port = blogHost.split(":")[1].trim();
             if (!"localhost".equals(domain) && !"80".equals(port)) {
                 ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
-                transaction.rollback();
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
 
                 return ret;
             }
@@ -314,7 +320,9 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }

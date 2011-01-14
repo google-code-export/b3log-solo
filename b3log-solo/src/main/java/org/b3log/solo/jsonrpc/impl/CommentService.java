@@ -377,7 +377,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
             LOGGER.log(Level.FINER, "Removed comment[oId={0}]", commentId);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -449,7 +451,9 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                        "Removed comment[oId={0}] of page[{oId={1}}]",
                        new String[]{commentId, pageId});
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }

@@ -190,7 +190,9 @@ public final class FileService extends AbstractGAEJSONRpcService {
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_FILE_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }

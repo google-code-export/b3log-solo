@@ -59,7 +59,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Jan 12, 2011
+ * @version 1.0.1.2, Jan 14, 2011
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -156,12 +156,22 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                                                              + "_"
                                                              + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    continue;
+                }
                 // Puts author name
                 final JSONObject author = articleUtils.getAuthor(article);
                 final String authorName = author.getString(User.USER_NAME);
                 article.put(Common.AUTHOR_NAME, authorName);
                 final String authorId = author.getString(Keys.OBJECT_ID);
                 article.put(Common.AUTHOR_ID, authorId);
+
+                if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                    article.put(Common.HAS_UPDATED,
+                                articleUtils.hasUpdated(article));
+                } else {
+                    article.put(Common.HAS_UPDATED, false);
+                }
 
                 articles.add(article);
             }
@@ -176,14 +186,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             } else {
                 Collections.sort(articles,
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-            }
-            for (final JSONObject article : articles) {
-                if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                    article.put(Common.HAS_UPDATED,
-                                articleUtils.hasUpdated(article));
-                } else {
-                    article.put(Common.HAS_UPDATED, false);
-                }
             }
             ret.put(Article.ARTICLES, articles);
             ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));

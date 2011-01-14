@@ -344,7 +344,9 @@ public final class V021ToV025 extends HttpServlet {
             }
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, "Upgrade archive date fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
@@ -376,7 +378,9 @@ public final class V021ToV025 extends HttpServlet {
             }
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, "Upgrade archive date fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
@@ -402,7 +406,9 @@ public final class V021ToV025 extends HttpServlet {
             }
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, "Upgrade tag fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
@@ -432,7 +438,9 @@ public final class V021ToV025 extends HttpServlet {
             }
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, "Upgrade tag fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
@@ -479,7 +487,9 @@ public final class V021ToV025 extends HttpServlet {
             preferenceUtils.setPreference(preference);
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, "Upgrade preference fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }

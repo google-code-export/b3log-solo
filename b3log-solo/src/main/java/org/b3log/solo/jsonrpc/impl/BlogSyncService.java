@@ -251,7 +251,9 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE,
                     StatusCodes.SET_BLOG_SYNC_MGMT_SUCC);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
@@ -331,7 +333,9 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                     transaction.commit();
                 } catch (final Exception e) {
                     LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                    transaction.rollback();
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
                 }
             }
 
@@ -492,7 +496,9 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
             transaction.commit();
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }

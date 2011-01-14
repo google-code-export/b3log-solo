@@ -290,7 +290,9 @@ public final class AddPageCommentAction extends AbstractAction {
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_PAGE_SUCC);
             ret.put(Keys.OBJECT_ID, commentId);
         } catch (final Exception e) {
-            transaction.rollback();
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
