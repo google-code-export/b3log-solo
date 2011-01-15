@@ -1,6 +1,6 @@
-#summary One-sentence summary of this page.
+#summary 访问统计
 
-===关于访问统计===
+===访问统计===
 
  * 博客、文章访问计数 5 分钟统计更新一次，可自行修改 cron.xml 相关部分进行配置
  * 访问统计的更新只是数据更新，并不会清空页面缓存
