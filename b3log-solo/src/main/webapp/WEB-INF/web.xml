@@ -337,6 +337,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>FlushStatisticServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.stat.FlushStatisticServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FlushStatisticServlet</servlet-name>
+        <url-pattern>/flush-stat.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>V010ToV011</servlet-name>
         <servlet-class>org.b3log.solo.upgrade.V010ToV011</servlet-class>
     </servlet>

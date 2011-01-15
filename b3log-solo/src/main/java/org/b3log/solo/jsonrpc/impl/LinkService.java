@@ -408,6 +408,8 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
+        PageCaches.removeAll();
+
         return ret;
     }
 

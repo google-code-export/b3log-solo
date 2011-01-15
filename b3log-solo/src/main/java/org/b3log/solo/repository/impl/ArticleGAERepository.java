@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Jan 10, 2011
+ * @version 1.0.2.6, Jan 15, 2011
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -313,7 +313,18 @@ public final class ArticleGAERepository extends AbstractGAERepository
                 preparedQuery.asList(FetchOptions.Builder.withLimit(1));
 
         if (1 == result.size()) {
-            return entity2JSONObject(result.get(0));
+            try {
+                final JSONObject ret = new JSONObject();
+                final Entity article = result.get(0);
+                ret.put(Article.ARTICLE_TITLE,
+                        article.getProperty(Article.ARTICLE_TITLE));
+                ret.put(Article.ARTICLE_PERMALINK,
+                        article.getProperty(Article.ARTICLE_PERMALINK));
+
+                return ret;
+            } catch (final JSONException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
         }
 
         return null;
@@ -332,7 +343,18 @@ public final class ArticleGAERepository extends AbstractGAERepository
                 preparedQuery.asList(FetchOptions.Builder.withLimit(1));
 
         if (1 == result.size()) {
-            return entity2JSONObject(result.get(0));
+            try {
+                final JSONObject ret = new JSONObject();
+                final Entity article = result.get(0);
+                ret.put(Article.ARTICLE_TITLE,
+                        article.getProperty(Article.ARTICLE_TITLE));
+                ret.put(Article.ARTICLE_PERMALINK,
+                        article.getProperty(Article.ARTICLE_PERMALINK));
+
+                return ret;
+            } catch (final JSONException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
         }
 
         return null;

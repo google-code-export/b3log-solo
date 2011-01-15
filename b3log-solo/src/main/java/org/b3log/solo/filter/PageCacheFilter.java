@@ -34,7 +34,6 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.util.PageCaches;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
@@ -54,7 +53,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Jan 12, 2011
+ * @version 1.0.2.7, Jan 15, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -212,7 +211,7 @@ public final class PageCacheFilter implements Filter {
                     }
 
                     if (Article.ARTICLE.equals(cachedType)) {
-                        incArticleViewCount(oId);
+                        statistics.incArticleViewCount(oId);
                     }
                 }
 
@@ -232,7 +231,7 @@ public final class PageCacheFilter implements Filter {
             }
         }
 
-        incBlogViewCount();
+        statistics.incBlogViewCount();
     }
 
     /**
@@ -261,28 +260,13 @@ public final class PageCacheFilter implements Filter {
                || requestURI.equals("/add-page-comment.do")
                || requestURI.equals("/get-random-articles.do")
                || requestURI.equals("/article-random-double-gen.do")
+               || requestURI.equals("/flush-stat.do")
                || equalAdminActions(requestURI)
                || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")
                || requestURI.contains("/skins")
                || requestURI.contains("/images")
                || requestURI.contains("/styles");
-    }
-
-    /**
-     * Blog view count +1.
-     */
-    private void incBlogViewCount() {
-        final Transaction transaction = statisticRepository.beginTransaction();
-        try {
-            statistics.incBlogViewCount();
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
     }
 
     @Override
@@ -325,23 +309,5 @@ public final class PageCacheFilter implements Filter {
         }
 
         return ret;
-    }
-
-    /**
-     * View count +1 for an article specified by the given article id.
-     * .
-     * @param articleId the given article id
-     */
-    private void incArticleViewCount(final String articleId) {
-        final Transaction transaction = articleRepository.beginTransaction();
-        try {
-            articleUtils.incArticleViewCount(articleId);
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
     }
 }

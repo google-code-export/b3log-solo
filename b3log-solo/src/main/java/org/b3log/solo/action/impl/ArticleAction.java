@@ -35,7 +35,6 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
@@ -50,6 +49,7 @@ import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,7 +60,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jan 12, 2011
+ * @version 1.0.2.3, Jan 15, 2011
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -103,6 +103,10 @@ public final class ArticleAction extends AbstractCacheablePageAction {
      * Preference utilities.
      */
     private Preferences preferenceUtils = Preferences.getInstance();
+    /**
+     * Statistic utilities.
+     */
+    private Statistics statistics = Statistics.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -151,7 +155,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             }
 
             request.setAttribute(CACHED_OID, articleId);
-            incArticleViewCount(articleId);
+            statistics.incArticleViewCount(articleId);
 
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
@@ -181,36 +185,39 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final JSONObject previous =
                     articleRepository.getPreviousArticle(articleId);
             if (null != previous) {
-                final String previousArticlePermalink =
-                        previous.getString(Article.ARTICLE_PERMALINK);
-                final String previousArticleTitle =
-                        previous.getString(Article.ARTICLE_TITLE);
                 ret.put(Common.PREVIOUS_ARTICLE_PERMALINK,
-                        previousArticlePermalink);
-                ret.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticleTitle);
+                        previous.getString(Article.ARTICLE_PERMALINK));
+                ret.put(Common.PREVIOUS_ARTICLE_TITLE,
+                        previous.getString(Article.ARTICLE_TITLE));
+                LOGGER.finest("Got the previous article");
             }
 
             final JSONObject next =
                     articleRepository.getNextArticle(articleId);
             if (null != next) {
-                final String nextArticlePermalink =
-                        next.getString(Article.ARTICLE_PERMALINK);
-                final String nextArticleTitle =
-                        next.getString(Article.ARTICLE_TITLE);
-                ret.put(Common.NEXT_ARTICLE_PERMALINK, nextArticlePermalink);
-                ret.put(Common.NEXT_ARTICLE_TITLE, nextArticleTitle);
+                ret.put(Common.NEXT_ARTICLE_PERMALINK,
+                        next.getString(Article.ARTICLE_PERMALINK));
+                ret.put(Common.NEXT_ARTICLE_TITLE,
+                        next.getString(Article.ARTICLE_TITLE));
+                LOGGER.finest("Got the next article");
             }
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
+            LOGGER.finest("Getting article's comments....");
             final List<JSONObject> articleComments =
                     articleUtils.getComments(articleId);
             ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
+            LOGGER.finest("Got article's comments");
 
+            LOGGER.finest("Getting relevant articles....");
             final List<JSONObject> relevantArticles = getRelevantArticles(
-                    articleId, article.getString(Article.ARTICLE_TAGS_REF));
+                    articleId,
+                    article.getString(Article.ARTICLE_TAGS_REF),
+                    preference);
             ret.put(Common.RELEVANT_ARTICLES, relevantArticles);
+            LOGGER.finest("Got relevant articles....");
 
             ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                     preference.getInt(
@@ -243,14 +250,15 @@ public final class ArticleAction extends AbstractCacheablePageAction {
      *
      * @param articleId the specified article id
      * @param articleTagsString the specified article tags string
+     * @param preference the specified preference
      * @return a list of articles, returns an empty list if not found
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
      */
     private List<JSONObject> getRelevantArticles(
-            final String articleId, final String articleTagsString)
+            final String articleId, final String articleTagsString,
+            final JSONObject preference)
             throws JSONException, RepositoryException {
-        final JSONObject preference = preferenceUtils.getPreference();
         if (null == preference) {
             throw new RepositoryException("Not found preference");
         }
@@ -299,6 +307,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             }
         }
 
+        Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+        
         if (displayCnt > articles.size()) {
             return articles;
         }
@@ -312,8 +322,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             ret.add(articles.get(index));
         }
 
-        Collections.sort(ret, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
-
         return ret;
     }
 
@@ -323,23 +331,5 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * View count +1 for an article specified by the given article id.
-     * .
-     * @param articleId the given article id
-     */
-    private void incArticleViewCount(final String articleId) {
-        final Transaction transaction = articleRepository.beginTransaction();
-        try {
-            articleUtils.incArticleViewCount(articleId);
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
     }
 }
