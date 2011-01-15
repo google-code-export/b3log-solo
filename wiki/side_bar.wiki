@@ -12,7 +12,7 @@
      * [article_sign 文章签名档]
      * [skin 皮肤]
      * [external_articles 站外相关阅读]
-     * [statistic 关于访问统计]
+     * [statistic 访问统计]
  * 开发手册
    * [pre_dev 前提准备]
    * 开发环境
