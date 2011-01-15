@@ -287,6 +287,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
         final Query query = new Query(getName());
         query.addFilter(Keys.OBJECT_ID,
                         Query.FilterOperator.GREATER_THAN, articleId);
+        query.addSort(Keys.OBJECT_ID, Query.SortDirection.ASCENDING);
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final List<Entity> result =
                 preparedQuery.asList(FetchOptions.Builder.withLimit(1));
@@ -338,6 +339,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
         query.addFilter(Article.ARTICLE_IS_PUBLISHED,
                         Query.FilterOperator.EQUAL,
                         true);
+        query.addSort(Keys.OBJECT_ID, Query.SortDirection.ASCENDING);
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final List<Entity> result =
                 preparedQuery.asList(FetchOptions.Builder.withLimit(1));
