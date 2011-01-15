@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Tag Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jan 12, 2011
+ * @version 1.0.0.8, Jan 15, 2011
  */
 public final class TagGAERepository extends AbstractGAERepository
         implements TagRepository {
@@ -88,17 +88,27 @@ public final class TagGAERepository extends AbstractGAERepository
     @Override
     public JSONObject getByTitle(final String tagTitle)
             throws RepositoryException {
-        final Query query = new Query(Tag.TAG);
-        query.addFilter(Tag.TAG_TITLE, Query.FilterOperator.EQUAL, tagTitle);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
-        if (null == entity) {
-            return null;
+        final String cacheKey = "getByTitle[" + tagTitle + "]";
+        JSONObject ret = (JSONObject) CACHE.get(cacheKey);
+
+        if (null == ret) {
+            final Query query = new Query(Tag.TAG);
+            query.addFilter(Tag.TAG_TITLE, Query.FilterOperator.EQUAL, tagTitle);
+            final PreparedQuery preparedQuery = getDatastoreService().prepare(
+                    query);
+            final Entity entity = preparedQuery.asSingleEntity();
+            if (null == entity) {
+                return null;
+            }
+
+            final Map<String, Object> properties = entity.getProperties();
+
+            ret = new JSONObject(properties);
+            
+            CACHE.put(cacheKey, ret);
         }
 
-        final Map<String, Object> properties = entity.getProperties();
-
-        return new JSONObject(properties);
+        return ret;
     }
 
     @Override

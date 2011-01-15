@@ -16,10 +16,20 @@
 
 package org.b3log.solo.util;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RunsOnEnv;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +38,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 12, 2011
+ * @version 1.0.0.4, Jan 15, 2011
  */
 public final class Statistics {
 
@@ -42,6 +52,39 @@ public final class Statistics {
      */
     private StatisticRepository statisticRepository =
             StatisticGAERepository.getInstance();
+    /**
+     * Article repository.
+     */
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
+    /**
+     * Statistic cache.
+     */
+    public static final Cache<String, Object> CACHE;
+    /**
+     * Statistic cache name.
+     */
+    public static final String STATISTIC_CACHE_NAME = "statisticCache";
+    /**
+     * Cache key of article need to flush.
+     */
+    public static final String KEY_ARTICLE_NEED_TO_FLUSH = "articleNeed2Flush";
+
+    /**
+     * Initializes cache.
+     */
+    static {
+        final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
+        if (!runsOnEnv.equals(RunsOnEnv.GAE)) {
+            throw new RuntimeException(
+                    "GAE cache can only runs on Google App Engine, please "
+                    + "check your configuration and make sure "
+                    + "Latkes.setRunsOnEnv(RunsOnEnv.GAE) was invoked before "
+                    + "using GAE cache.");
+        }
+
+        CACHE = CacheFactory.getCache(STATISTIC_CACHE_NAME);
+    }
 
     /**
      * Get blog comment count.
@@ -160,23 +203,91 @@ public final class Statistics {
     }
 
     /**
-     * Blog statistic view count +1.
+     * Blog statistic view count +1 in memcache.
+     * 
+     * <p>
+     * There is a cron job to flush the blog view count from memcache to 
+     * datastore.
+     * </p>
+     */
+    public void incBlogViewCount() {
+        try {
+            Integer blogViewCnt =
+                    (Integer) CACHE.get(Statistic.STATISTIC_BLOG_VIEW_COUNT);
+            if (null == blogViewCnt) {
+                LOGGER.finer("Loads blog view count from datastore");
+                final JSONObject statistic =
+                        statisticRepository.get(Statistic.STATISTIC);
+                if (null == statistic) {
+                    LOGGER.log(Level.SEVERE, "Not found statistic!");
+
+                    return;
+                }
+
+                blogViewCnt = statistic.getInt(
+                        Statistic.STATISTIC_BLOG_VIEW_COUNT);
+            }
+
+            ++blogViewCnt;
+
+            CACHE.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
+            LOGGER.log(Level.FINE, "Current blog view count[{0}]", blogViewCnt);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Article view count +1 in memcache for an article specified by the given
+     * article id.
      *
+     * <p>
+     * The property(named {@value Article#ARTICLE_RANDOM_DOUBLE}) of the
+     * specified article will be regenerated.
+     * </p>
+     *
+     * @param articleId the given article id
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void incBlogViewCount()
+    public void incArticleViewCount(final String articleId)
             throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
 
-        statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT,
-                      statistic.getInt(
-                Statistic.STATISTIC_BLOG_VIEW_COUNT) + 1);
-        statisticRepository.update(Statistic.STATISTIC, statistic);
+            JSONObject articleStat = (JSONObject) CACHE.get(articleId);
+            if (null == articleStat) {
+                articleStat = new JSONObject(article,
+                                             JSONObject.getNames(article));
+            }
+
+            final int viewCnt =
+                    articleStat.getInt(Article.ARTICLE_VIEW_COUNT) + 1;
+            articleStat.put(Article.ARTICLE_VIEW_COUNT, viewCnt);
+            articleStat.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+
+            CACHE.put(articleId, articleStat);
+
+            @SuppressWarnings("unchecked")
+            Set<String> articleIds =
+                    (Set<String>) CACHE.get(KEY_ARTICLE_NEED_TO_FLUSH);
+            if (null == articleIds) {
+                LOGGER.warning(
+                        "New a set for caching ids of article need to flush");
+                articleIds = new HashSet<String>();
+            }
+            articleIds.add(articleId);
+            CACHE.put(KEY_ARTICLE_NEED_TO_FLUSH, articleIds);
+
+            LOGGER.log(Level.FINE,
+                       "Cached statistic of article[oId={0}, viewCount={1}]",
+                       new Object[]{articleId, viewCnt});
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     /**

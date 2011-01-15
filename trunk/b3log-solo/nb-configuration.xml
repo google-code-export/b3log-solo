@@ -11,10 +11,13 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>blogging</word>
         <word>captcha</word>
         <word>Captcha</word>
+        <word>cron</word>
+        <word>datastore</word>
         <word>ftl</word>
         <word>Gmail</word>
         <word>http</word>
         <word>json</word>
+        <word>memcache</word>
         <word>permalink</word>
         <word>permalinks</word>
         <word>Picasa</word>

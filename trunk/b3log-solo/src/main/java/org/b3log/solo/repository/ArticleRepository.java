@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Dec 13, 2010
+ * @version 1.0.1.2, Jan 15, 2011
  */
 public interface ArticleRepository extends Repository {
 
@@ -112,7 +112,14 @@ public interface ArticleRepository extends Repository {
      * id.
      *
      * @param articleId the specified article id
-     * @return the previous article, {@code null} if not found
+     * @return the previous article,
+     * <pre>
+     * {
+     *     "articleTitle": "",
+     *     "articlePermalink": ""
+     * }
+     * </pre>
+     * returns {@code null} if not found
      */
     JSONObject getPreviousArticle(final String articleId);
 
@@ -120,7 +127,14 @@ public interface ArticleRepository extends Repository {
      * Gets the next article(by create date, oId) by the specified article id.
      *
      * @param articleId the specified article id
-     * @return the next article, {@code null} if not found
+     * @return the next article,
+     * <pre>
+     * {
+     *     "articleTitle": "",
+     *     "articlePermalink": ""
+     * }
+     * </pre>
+     * returns {@code null} if not found
      */
     JSONObject getNextArticle(final String articleId);
 
