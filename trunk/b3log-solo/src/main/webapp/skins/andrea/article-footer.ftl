@@ -13,6 +13,7 @@
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
 <script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/lib/json2.js"></script>
 <script type="text/javascript">
     var util = new Util({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
@@ -22,7 +23,7 @@
         "skinDirName": "${skinDirName}"
     });
     util.init();
-    util.replaceCommentsEm("#naviComments");
+    util.replaceCommentsEm("#naviComments .side-comment");
 
     // init brush
     var buildBrush = function () {
@@ -61,14 +62,14 @@
 
         // page navi
         $(".side-tool li li a").hover(function () {
-            if (parseInt($(this).css("padding-left")) === 10) {
+            if (parseInt($(this).css("padding-left")) === 9) {
                 $(this).animate({
-                    "padding-left": "55px"
+                    "padding-left": "54px"
                 }, 600 );
             }
         }, function () {
             $(this).animate({
-                "padding-left": "10px"
+                "padding-left": "9px"
             }, 600 );
         });
     }

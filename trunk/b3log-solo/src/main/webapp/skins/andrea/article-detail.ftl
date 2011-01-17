@@ -231,11 +231,11 @@
                 <div class="side-navi">
                     <#include "article-side.ftl">
                 </div>
+                <div class="clear"></div>
                 <div class="brush">
                     <div class="brush-icon"></div>
                     <div id="brush"></div>
                 </div>
-                <div class="clear"></div>
                 <div class="footer">
                     <#include "article-footer.ftl">
                 </div>
@@ -363,11 +363,13 @@
                     </tr>\
                 </table>";
                 articleUtil.addReplyForm(id, commentFormHTML);
-                $("#commentURLReply").focus(function () {
-                    $("#commentURLLabelReply").addClass("selected");
-                }).blur(function () {
-                    $("#commentURLLabelReply").removeClass("selected");
-                });
+                if ($.browser.version !== "7.0") {
+                    $("#commentURLReply").focus(function () {
+                        $("#commentURLLabelReply").addClass("selected");
+                    }).blur(function () {
+                        $("#commentURLLabelReply").removeClass("selected");
+                    });
+                }
             }
 
             var showComment = function (it, id) {
@@ -387,12 +389,14 @@
             }
 
             var loadAction = function () {
-                $("#commentURL").focus(function () {
-                    $("#commentURLLabel").addClass("selected");
-                }).blur(function () {
-                    $("#commentURLLabel").removeClass("selected");
-                });
-                
+                if ($.browser.version !== "7.0") {
+                    $("#commentURL").focus(function () {
+                        $("#commentURLLabel").addClass("selected");
+                    }).blur(function () {
+                        $("#commentURLLabel").removeClass("selected");
+                    });
+                }
+                 
                 // emotions
                 util.replaceCommentsEm("#comments .comment-content");
 

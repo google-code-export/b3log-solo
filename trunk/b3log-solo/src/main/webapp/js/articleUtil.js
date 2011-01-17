@@ -246,8 +246,12 @@ $.extend(ArticleUtil.prototype, {
     
     loadTool: function () {
         // Stack initialize
-        var openspeed = 300;
-        var closespeed = 300;
+        var openspeed = 300,
+        closespeed = 300,
+        leftPX = "-6px";
+        if ($.browser.version === "7.0") {
+            leftPX = "-1px";
+        }
         $('.stack>img').toggle(function(){
             var vertical = 0;
             var horizontal = 0;
@@ -262,7 +266,7 @@ $.extend(ArticleUtil.prototype, {
             });
             $el.next().animate({
                 top: '-21px',
-                left: '-6px'
+                left: leftPX
             }, openspeed).addClass('openStack')
             .find('li a>img').animate({
                 width: '28px',

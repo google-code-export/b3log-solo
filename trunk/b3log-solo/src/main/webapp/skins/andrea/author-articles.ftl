@@ -34,11 +34,11 @@
                 <div class="side-navi">
                     <#include "article-side.ftl">
                 </div>
+                <div class="clear"></div>
                 <div class="brush">
                     <div class="brush-icon"></div>
                     <div id="brush"></div>
                 </div>
-                <div class="clear"></div>
                 <div class="footer">
                     <#include "article-footer.ftl">
                 </div>
