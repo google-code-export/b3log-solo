@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import com.google.appengine.api.datastore.Entity;
@@ -225,9 +224,9 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             }
 
             for (final Entity entity : nextArticles) {
-                 ret.put(Common.PREVIOUS_ARTICLE_PERMALINK,
+                ret.put(Common.NEXT_ARTICLE_PERMALINK,
                         entity.getProperty(Article.ARTICLE_PERMALINK));
-                ret.put(Common.PREVIOUS_ARTICLE_TITLE,
+                ret.put(Common.NEXT_ARTICLE_TITLE,
                         entity.getProperty(Article.ARTICLE_TITLE));
                 LOGGER.finest("Got the next article");
             }
