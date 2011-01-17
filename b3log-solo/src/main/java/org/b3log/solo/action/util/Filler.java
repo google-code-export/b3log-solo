@@ -60,7 +60,6 @@ import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
 import org.b3log.solo.util.ArchiveDates;
-import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Tags;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,7 +69,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, Jan 12, 2011
+ * @version 1.0.3.1, Jan 17, 2011
  */
 public final class Filler {
 
@@ -97,10 +96,6 @@ public final class Filler {
      * Article utilities.
      */
     private Articles articleUtils = Articles.getInstance();
-    /**
-     * Comment utilities.
-     */
-    private Comments commentUtils = Comments.getInstance();
     /**
      * Tag utilities.
      */
@@ -340,7 +335,6 @@ public final class Filler {
 
         final List<JSONObject> recentComments =
                 commentRepository.getRecentComments(recentCommentDisplayCnt);
-        commentUtils.removeForUnpublishedArticles(recentComments);
 
         // Erase email for security reason
         for (final JSONObject comment : recentComments) {
