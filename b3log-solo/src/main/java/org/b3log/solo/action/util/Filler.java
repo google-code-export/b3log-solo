@@ -47,7 +47,6 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
@@ -495,16 +494,9 @@ public final class Filler {
     private void fillPageNavigations(final Map<String, Object> dataModel)
             throws Exception {
         LOGGER.finer("Filling page navigations....");
-        final Map<String, SortDirection> sorts =
-                new HashMap<String, SortDirection>();
-        sorts.put(Page.PAGE_ORDER, SortDirection.ASCENDING);
-        final JSONObject result = pageRepository.get(1,
-                                                     Integer.MAX_VALUE, sorts);
-        final List<JSONObject> pageNavigations =
-                org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
-                getJSONArray(Keys.RESULTS));
+        final List<JSONObject> pages = pageRepository.getPages();
 
-        dataModel.put(Common.PAGE_NAVIGATIONS, pageNavigations);
+        dataModel.put(Common.PAGE_NAVIGATIONS, pages);
     }
 
     /**
