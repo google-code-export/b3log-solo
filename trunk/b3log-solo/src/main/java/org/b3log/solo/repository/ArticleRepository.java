@@ -16,6 +16,7 @@
 
 package org.b3log.solo.repository;
 
+import com.google.appengine.api.datastore.Entity;
 import java.util.List;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
@@ -25,7 +26,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Jan 15, 2011
+ * @version 1.0.1.3, Jan 17, 2011
  */
 public interface ArticleRepository extends Repository {
 
@@ -124,6 +125,22 @@ public interface ArticleRepository extends Repository {
     JSONObject getPreviousArticle(final String articleId);
 
     /**
+     * Gets the previous article(by create date, oId) by the specified article
+     * id asynchronously.
+     *
+     * @param articleId the specified article id
+     * @return the previous article,
+     * <pre>
+     * {
+     *     "articleTitle": "",
+     *     "articlePermalink": ""
+     * }
+     * </pre>
+     * returns {@code null} if not found
+     */
+    Iterable<Entity> getPreviousArticleAsync(final String articleId);
+
+    /**
      * Gets the next article(by create date, oId) by the specified article id.
      *
      * @param articleId the specified article id
@@ -137,6 +154,22 @@ public interface ArticleRepository extends Repository {
      * returns {@code null} if not found
      */
     JSONObject getNextArticle(final String articleId);
+
+    /**
+     * Gets the next article(by create date, oId) by the specified article id
+     * asynchronously.
+     *
+     * @param articleId the specified article id
+     * @return the next article,
+     * <pre>
+     * {
+     *     "articleTitle": "",
+     *     "articlePermalink": ""
+     * }
+     * </pre>
+     * returns {@code null} if not found
+     */
+    Iterable<Entity> getNextArticleAsync(final String articleId);
 
     /**
      * Imports the specified article.
