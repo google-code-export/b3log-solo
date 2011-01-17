@@ -16,6 +16,7 @@
 
 package org.b3log.solo.repository;
 
+import java.util.List;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
@@ -24,7 +25,7 @@ import org.json.JSONObject;
  * Page repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 5, 2010
+ * @version 1.0.0.3, Jan 17, 2011
  */
 public interface PageRepository extends Repository {
 
@@ -51,4 +52,12 @@ public interface PageRepository extends Repository {
      * @return page, returns {@code null} if not found
      */
     JSONObject getByOrder(final int order);
+
+    /**
+     * Gets pages.
+     *
+     * @return a list of pages, returns an empty list if  not found
+     * @throws RepositoryException repository exception
+     */
+    List<JSONObject> getPages() throws RepositoryException;
 }
