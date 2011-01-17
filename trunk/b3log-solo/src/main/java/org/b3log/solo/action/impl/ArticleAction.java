@@ -247,8 +247,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
     }
 
     /**
-     * Gets the relevant articles by the specified article tags string excludes
-     * the specified article id.
+     * Gets the relevant published articles by the specified article tags string
+     * excludes the specified article id.
      *
      * @param articleId the specified article id
      * @param articleTagsString the specified article tags string
@@ -292,19 +292,21 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     continue;
                 }
 
-                final JSONObject article =
-                        articleRepository.get(relatedArticleId);
+                if (articleRepository.isPublished(articleId)) {
+                    final JSONObject article =
+                            articleRepository.get(relatedArticleId);
 
-                boolean existed = false;
-                for (final JSONObject relevantArticle : articles) {
-                    if (relevantArticle.getString(Keys.OBJECT_ID).
-                            equals(article.getString(Keys.OBJECT_ID))) {
-                        existed = true;
+                    boolean existed = false;
+                    for (final JSONObject relevantArticle : articles) {
+                        if (relevantArticle.getString(Keys.OBJECT_ID).
+                                equals(article.getString(Keys.OBJECT_ID))) {
+                            existed = true;
+                        }
                     }
-                }
 
-                if (!existed) {
-                    articles.add(article);
+                    if (!existed) {
+                        articles.add(article);
+                    }
                 }
             }
         }
