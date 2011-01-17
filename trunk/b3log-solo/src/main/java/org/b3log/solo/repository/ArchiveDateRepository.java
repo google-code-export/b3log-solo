@@ -16,6 +16,7 @@
 
 package org.b3log.solo.repository;
 
+import java.util.List;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
@@ -24,7 +25,7 @@ import org.json.JSONObject;
  * Archive date repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 19, 2010
+ * @version 1.0.0.1, Jan 17, 2011
  */
 public interface ArchiveDateRepository extends Repository {
 
@@ -37,4 +38,13 @@ public interface ArchiveDateRepository extends Repository {
      */
     JSONObject getByArchiveDate(final String archiveDate)
             throws RepositoryException;
+
+    /**
+     * Gets archive dates.
+     *
+     * @return a list of archive date, returns an empty list if
+     * not found
+     * @throws RepositoryException repository exception
+     */
+    List<JSONObject> getArchiveDates() throws RepositoryException;
 }

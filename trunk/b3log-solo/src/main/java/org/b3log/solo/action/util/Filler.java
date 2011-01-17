@@ -49,9 +49,11 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.repository.impl.LinkGAERepository;
@@ -88,6 +90,11 @@ public final class Filler {
      */
     private CommentRepository commentRepository =
             CommentGAERepository.getInstance();
+    /**
+     * Archive date repository.
+     */
+    private ArchiveDateRepository archiveDateRepository =
+            ArchiveDateGAERepository.getInstance();
     /**
      * Tag repository.
      */
@@ -235,8 +242,9 @@ public final class Filler {
     public void fillArchiveDates(final Map<String, Object> dataModel,
                                  final JSONObject preference)
             throws Exception {
-        final List<JSONObject> archiveDates = archiveDateUtils.getArchiveDates();
-        archiveDateUtils.removeForUnpublishedArticles(archiveDates);
+        LOGGER.finer("Filling archive dates....");
+        final List<JSONObject> archiveDates =
+                archiveDateRepository.getArchiveDates();
 
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
@@ -271,6 +279,7 @@ public final class Filler {
     public void fillMostViewCountArticles(final Map<String, Object> dataModel,
                                           final JSONObject preference)
             throws Exception {
+        LOGGER.finer("Filling the most view count articles....");
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
         final List<JSONObject> mostViewCountArticles =
@@ -357,7 +366,7 @@ public final class Filler {
     public void fillBlogFooter(final Map<String, Object> dataModel,
                                final JSONObject preference)
             throws Exception {
-
+        LOGGER.finer("Filling footter....");
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
         final String blogHost = preference.getString(Preference.BLOG_HOST);
@@ -376,6 +385,7 @@ public final class Filler {
     public void fillBlogHeader(final Map<String, Object> dataModel,
                                final JSONObject preference)
             throws Exception {
+        LOGGER.fine("Filling header....");
         dataModel.put(Preference.LOCALE_STRING,
                       preference.getString(Preference.LOCALE_STRING));
         dataModel.put(Preference.BLOG_TITLE,
@@ -388,8 +398,7 @@ public final class Filler {
                       preference.getString(Preference.META_KEYWORDS));
         dataModel.put(Preference.META_DESCRIPTION,
                       preference.getString(Preference.META_DESCRIPTION));
-        final JSONObject result =
-                userRepository.get(1, Integer.MAX_VALUE);
+        final JSONObject result = userRepository.get(1, Integer.MAX_VALUE);
         final JSONArray users = result.getJSONArray(Keys.RESULTS);
         final List<JSONObject> userList = CollectionUtils.jsonArrayToList(users);
         dataModel.put(User.USERS, userList);
@@ -411,6 +420,7 @@ public final class Filler {
     public void fillSide(final Map<String, Object> dataModel,
                          final JSONObject preference)
             throws Exception {
+        LOGGER.fine("Filling side....");
         fillLinks(dataModel);
 //        fillRecentArticles(dataModel);
         fillRecentComments(dataModel, preference);
@@ -484,6 +494,7 @@ public final class Filler {
      */
     private void fillPageNavigations(final Map<String, Object> dataModel)
             throws Exception {
+        LOGGER.finer("Filling page navigations....");
         final Map<String, SortDirection> sorts =
                 new HashMap<String, SortDirection>();
         sorts.put(Page.PAGE_ORDER, SortDirection.ASCENDING);
@@ -504,6 +515,7 @@ public final class Filler {
      */
     private void fillStatistic(final Map<String, Object> dataModel)
             throws Exception {
+        LOGGER.finer("Filling statistic....");
         final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
 

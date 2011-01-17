@@ -17,17 +17,11 @@
 package org.b3log.solo.util;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
@@ -37,7 +31,6 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
 import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -202,58 +195,6 @@ public final class ArchiveDates {
 
         archiveDateArticleRepository.remove(archiveDateArticleRelation.getString(
                 Keys.OBJECT_ID));
-    }
-
-    /**
-     * Gets archive dates.
-     *
-     * @return a list of archive date, returns an empty list if
-     * not found
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public List<JSONObject> getArchiveDates()
-            throws JSONException, RepositoryException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        final Map<String, SortDirection> sorts =
-                new HashMap<String, SortDirection>();
-        sorts.put(ArchiveDate.ARCHIVE_DATE, SortDirection.DESCENDING);
-        final JSONObject result = archiveDateRepository.get(
-                1, Integer.MAX_VALUE, sorts);
-
-        try {
-            final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < archiveDates.length(); i++) {
-                final JSONObject archiveDate = archiveDates.getJSONObject(i);
-                ret.add(archiveDate);
-            }
-
-            return ret;
-        } catch (final JSONException e) { // not found
-            return ret;
-        }
-    }
-
-    /**
-     * Removes archive dates of unpublished articles from the specified archive
-     * dates.
-     *
-     * @param archiveDates the specified archive dates
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void removeForUnpublishedArticles(
-            final List<JSONObject> archiveDates) throws JSONException,
-                                                        RepositoryException {
-        final Iterator<JSONObject> iterator = archiveDates.iterator();
-        while (iterator.hasNext()) {
-            final JSONObject archiveDate = iterator.next();
-            if (0 == archiveDate.getInt(
-                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
-                iterator.remove();
-            }
-        }
     }
 
     /**
