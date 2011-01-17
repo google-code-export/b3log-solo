@@ -5,4 +5,4 @@ Let's kill IE 6。因此不打算对 IE 6 进行支持，如果您正在使用 I
 
 目前已经有五套皮肤了，详情参见 [http://vanessa.b3log.org/b3log-skin B3log 皮肤简介]。
 
-0.2.5 后，加入了多用户功能，并加入了一款全新的情侣皮肤，由 [http://lamb.b3log.org Lamb] 主刀， [http://vanessa.b3log.org Vanessa] 辅助。
+0.2.5 后，加入了多用户功能，并加入了一款全新的情侣皮肤，由 [http://lamb.b3log.org Lamb] 主刀， [http://vanessa.b3log.org Vanessa] 辅助，该皮肤只能在博客拥有两个作者时才能使用。
