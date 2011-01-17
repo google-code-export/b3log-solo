@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 12, 2011
+ * @version 1.0.0.4, Jan 17, 2011
  */
 public final class Comments {
 
@@ -63,6 +63,7 @@ public final class Comments {
     public void removeForUnpublishedArticles(
             final List<JSONObject> comments) throws JSONException,
                                                     RepositoryException {
+        LOGGER.finer("Removing unpublished articles' comments....");
         final Iterator<JSONObject> iterator = comments.iterator();
         while (iterator.hasNext()) {
             final JSONObject comment = iterator.next();
@@ -78,6 +79,8 @@ public final class Comments {
                 iterator.remove();
             }
         }
+
+        LOGGER.finer("Removed unpublished articles' comments....");
     }
 
     /**
