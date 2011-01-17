@@ -16,6 +16,8 @@
 
 package org.b3log.solo.repository.impl;
 
+import com.google.appengine.api.datastore.AsyncDatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.QueryResultIterable;
 import java.util.ArrayList;
 import com.google.appengine.api.datastore.Entity;
@@ -47,7 +49,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Jan 15, 2011
+ * @version 1.0.2.7, Jan 17, 2011
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -71,6 +73,11 @@ public final class ArticleGAERepository extends AbstractGAERepository
      */
     private static final String KEY_RECENT_ARTICLES_CACHE_CNT =
             "mostRecentArticlesCacheCnt";
+    /**
+     * GAE datastore service.
+     */
+    private final AsyncDatastoreService asyncDatastoreService =
+            DatastoreServiceFactory.getAsyncDatastoreService();
 
     static {
         final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
@@ -332,6 +339,20 @@ public final class ArticleGAERepository extends AbstractGAERepository
     }
 
     @Override
+    public Iterable<Entity> getPreviousArticleAsync(final String articleId) {
+        final Query query = new Query(getName());
+        query.addFilter(Keys.OBJECT_ID,
+                        Query.FilterOperator.LESS_THAN, articleId);
+        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                        Query.FilterOperator.EQUAL,
+                        true);
+        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+
+        return preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+    }
+
+    @Override
     public JSONObject getNextArticle(final String articleId) {
         final Query query = new Query(getName());
         query.addFilter(Keys.OBJECT_ID,
@@ -360,6 +381,20 @@ public final class ArticleGAERepository extends AbstractGAERepository
         }
 
         return null;
+    }
+
+    @Override
+    public Iterable<Entity> getNextArticleAsync(final String articleId) {
+        final Query query = new Query(getName());
+        query.addFilter(Keys.OBJECT_ID,
+                        Query.FilterOperator.GREATER_THAN, articleId);
+        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                        Query.FilterOperator.EQUAL,
+                        true);
+        query.addSort(Keys.OBJECT_ID, Query.SortDirection.ASCENDING);
+        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+
+        return preparedQuery.asList(FetchOptions.Builder.withLimit(1));
     }
 
     @Override

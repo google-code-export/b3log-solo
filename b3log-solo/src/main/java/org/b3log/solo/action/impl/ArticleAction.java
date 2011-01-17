@@ -16,6 +16,7 @@
 
 package org.b3log.solo.action.impl;
 
+import com.google.appengine.api.datastore.Entity;
 import java.util.logging.Level;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
@@ -60,7 +61,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Jan 15, 2011
+ * @version 1.0.2.4, Jan 17, 2011
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -182,25 +183,10 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             article.put(Article.ARTICLE_SIGN_REF,
                         articleUtils.getSign(articleId, preference));
 
-            final JSONObject previous =
-                    articleRepository.getPreviousArticle(articleId);
-            if (null != previous) {
-                ret.put(Common.PREVIOUS_ARTICLE_PERMALINK,
-                        previous.getString(Article.ARTICLE_PERMALINK));
-                ret.put(Common.PREVIOUS_ARTICLE_TITLE,
-                        previous.getString(Article.ARTICLE_TITLE));
-                LOGGER.finest("Got the previous article");
-            }
-
-            final JSONObject next =
-                    articleRepository.getNextArticle(articleId);
-            if (null != next) {
-                ret.put(Common.NEXT_ARTICLE_PERMALINK,
-                        next.getString(Article.ARTICLE_PERMALINK));
-                ret.put(Common.NEXT_ARTICLE_TITLE,
-                        next.getString(Article.ARTICLE_TITLE));
-                LOGGER.finest("Got the next article");
-            }
+            final Iterable<Entity> previousArticles =
+                    articleRepository.getPreviousArticleAsync(articleId);
+            final Iterable<Entity> nextArticles =
+                    articleRepository.getNextArticleAsync(articleId);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
@@ -229,6 +215,22 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
+
+            for (final Entity entity : previousArticles) {
+                ret.put(Common.PREVIOUS_ARTICLE_PERMALINK,
+                        entity.getProperty(Article.ARTICLE_PERMALINK));
+                ret.put(Common.PREVIOUS_ARTICLE_TITLE,
+                        entity.getProperty(Article.ARTICLE_TITLE));
+                LOGGER.finest("Got the previous article");
+            }
+
+            for (final Entity entity : nextArticles) {
+                 ret.put(Common.PREVIOUS_ARTICLE_PERMALINK,
+                        entity.getProperty(Article.ARTICLE_PERMALINK));
+                ret.put(Common.PREVIOUS_ARTICLE_TITLE,
+                        entity.getProperty(Article.ARTICLE_TITLE));
+                LOGGER.finest("Got the next article");
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -308,7 +310,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
         }
 
         Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
-        
+
         if (displayCnt > articles.size()) {
             return articles;
         }
