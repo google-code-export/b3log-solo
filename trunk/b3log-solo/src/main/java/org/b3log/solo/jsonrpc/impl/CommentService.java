@@ -37,8 +37,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
@@ -63,7 +61,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.9, Jan 12, 2011
+ * @version 1.0.4.0, Jan 17, 2011
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -116,57 +114,57 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      */
     private Preferences preferenceUtils = Preferences.getInstance();
 
-    /**
-     * Gets recent comments with the specified http servlet request and response.
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example:
-     * <pre>
-     * {
-     *     "recentComments": [{
-     *         "oId": "",
-     *         "commentName": "",
-     *         "thumbnailUrl": "",
-     *         "commentURL": "",
-     *         "commentContent": "",
-     *         "commentDate": "",
-     *      }, ....]
-     *     "sc": "GET_COMMENTS_SUCC"
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public JSONObject getRecentComments(final HttpServletRequest request,
-                                        final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        try {
-            final JSONObject preference = preferenceUtils.getPreference();
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return ret;
-            }
-
-            final int fetchSize = preference.getInt(
-                    Preference.RECENT_COMMENT_DISPLAY_CNT);
-            final List<JSONObject> recentComments =
-                    commentRepository.getRecentComments(fetchSize);
-            // Erase email for security reason
-            for (final JSONObject comment : recentComments) {
-                comment.remove(Comment.COMMENT_EMAIL);
-            }
-
-            ret.put(Common.RECENT_COMMENTS, recentComments);
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
+//    /**
+//     * Gets recent comments with the specified http servlet request and response.
+//     *
+//     * @param request the specified http servlet request
+//     * @param response the specified http servlet response
+//     * @return for example:
+//     * <pre>
+//     * {
+//     *     "recentComments": [{
+//     *         "oId": "",
+//     *         "commentName": "",
+//     *         "thumbnailUrl": "",
+//     *         "commentURL": "",
+//     *         "commentContent": "",
+//     *         "commentDate": "",
+//     *      }, ....]
+//     *     "sc": "GET_COMMENTS_SUCC"
+//     * }
+//     * </pre>
+//     * @throws ActionException action exception
+//     * @throws IOException io exception
+//     */
+//    public JSONObject getRecentComments(final HttpServletRequest request,
+//                                        final HttpServletResponse response)
+//            throws ActionException, IOException {
+//        final JSONObject ret = new JSONObject();
+//        try {
+//            final JSONObject preference = preferenceUtils.getPreference();
+//            if (null == preference) {
+//                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+//                return ret;
+//            }
+//
+//            final int fetchSize = preference.getInt(
+//                    Preference.RECENT_COMMENT_DISPLAY_CNT);
+//            final List<JSONObject> recentComments =
+//                    commentRepository.getRecentComments(fetchSize);
+//            // Erase email for security reason
+//            for (final JSONObject comment : recentComments) {
+//                comment.remove(Comment.COMMENT_EMAIL);
+//            }
+//
+//            ret.put(Common.RECENT_COMMENTS, recentComments);
+//            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
+//        } catch (final Exception e) {
+//            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+//            throw new ActionException(e);
+//        }
+//
+//        return ret;
+//    }
 
     /**
      * Gets comments of an article specified by the article id for administrator.

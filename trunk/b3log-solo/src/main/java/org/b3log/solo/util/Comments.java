@@ -16,18 +16,7 @@
 
 package org.b3log.solo.util;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.logging.Logger;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.repository.ArticleCommentRepository;
-import org.b3log.latke.Keys;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Comment utilities.
@@ -42,47 +31,9 @@ public final class Comments {
      */
     private static final Logger LOGGER =
             Logger.getLogger(Comments.class.getName());
-    /**
-     * Article-Comment repository.
-     */
-    private ArticleCommentRepository articleCommentRepository =
-            ArticleCommentGAERepository.getInstance();
-    /**
-     * Article repository.
-     */
-    private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
 
-    /**
-     * Removes comments of unpublished articles for the specified comments.
-     *
-     * @param comments the specified comments
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void removeForUnpublishedArticles(
-            final List<JSONObject> comments) throws JSONException,
-                                                    RepositoryException {
-        LOGGER.finer("Removing unpublished articles' comments....");
-        final Iterator<JSONObject> iterator = comments.iterator();
-        while (iterator.hasNext()) {
-            final JSONObject comment = iterator.next();
-            final String commentId = comment.getString(Keys.OBJECT_ID);
-            final JSONObject articleCommentRelation =
-                    articleCommentRepository.getByCommentId(commentId);
-            if (null == articleCommentRelation) {
-                continue; // This comment is a page comment or comment has been removed just
-            }
-            final String articleId = articleCommentRelation.getString(
-                    Article.ARTICLE + "_" + Keys.OBJECT_ID);
-            if (!articleRepository.isPublished(articleId)) {
-                iterator.remove();
-            }
-        }
-
-        LOGGER.finer("Removed unpublished articles' comments....");
-    }
-
+    // XXX: remove this unused class?
+    
     /**
      * Gets the {@link Comments} singleton.
      *

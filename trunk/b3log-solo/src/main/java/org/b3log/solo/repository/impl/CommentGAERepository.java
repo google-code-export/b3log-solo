@@ -22,6 +22,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultIterable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,16 +31,21 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.RunsOnEnv;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.repository.ArticleCommentRepository;
+import org.b3log.solo.repository.ArticleRepository;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Comment Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 12, 2011
+ * @version 1.0.0.5, Jan 17, 2011
  */
 public final class CommentGAERepository extends AbstractGAERepository
         implements CommentRepository {
@@ -58,6 +64,16 @@ public final class CommentGAERepository extends AbstractGAERepository
      */
     private static final String KEY_RECENT_COMMENTS_CACHE_CNT =
             "mostRecentCommentsCacheCnt";
+    /**
+     * Article-Comment repository.
+     */
+    private ArticleCommentRepository articleCommentRepository =
+            ArticleCommentGAERepository.getInstance();
+    /**
+     * Article repository.
+     */
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
 
     static {
         final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
@@ -78,7 +94,8 @@ public final class CommentGAERepository extends AbstractGAERepository
     }
 
     @Override
-    public List<JSONObject> getRecentComments(final int num) {
+    public List<JSONObject> getRecentComments(final int num)
+            throws RepositoryException {
         final String cacheKey = KEY_RECENT_COMMENTS_CACHE_CNT + "["
                                 + num + "]";
         @SuppressWarnings("unchecked")
@@ -101,6 +118,12 @@ public final class CommentGAERepository extends AbstractGAERepository
                 ret.add(comment);
             }
 
+            try {
+                removeForUnpublishedArticles(ret);
+            } catch (final JSONException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
+
             CACHE.put(cacheKey, ret);
 
             LOGGER.log(Level.FINEST,
@@ -108,6 +131,36 @@ public final class CommentGAERepository extends AbstractGAERepository
         }
 
         return ret;
+    }
+
+    /**
+     * Removes comments of unpublished articles for the specified comments.
+     *
+     * @param comments the specified comments
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void removeForUnpublishedArticles(
+            final List<JSONObject> comments) throws JSONException,
+                                                    RepositoryException {
+        LOGGER.finer("Removing unpublished articles' comments....");
+        final Iterator<JSONObject> iterator = comments.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject comment = iterator.next();
+            final String commentId = comment.getString(Keys.OBJECT_ID);
+            final JSONObject articleCommentRelation =
+                    articleCommentRepository.getByCommentId(commentId);
+            if (null == articleCommentRelation) {
+                continue; // This comment is a page comment or comment has been removed just
+            }
+            final String articleId = articleCommentRelation.getString(
+                    Article.ARTICLE + "_" + Keys.OBJECT_ID);
+            if (!articleRepository.isPublished(articleId)) {
+                iterator.remove();
+            }
+        }
+
+        LOGGER.finer("Removed unpublished articles' comments....");
     }
 
     /**

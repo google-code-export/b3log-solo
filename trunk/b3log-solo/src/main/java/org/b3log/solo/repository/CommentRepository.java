@@ -18,13 +18,14 @@ package org.b3log.solo.repository;
 
 import java.util.List;
 import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
 
 /**
  * Comment repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 1, 2010
+ * @version 1.0.0.2, Jan 17, 2011
  */
 public interface CommentRepository extends Repository {
 
@@ -33,6 +34,8 @@ public interface CommentRepository extends Repository {
      *
      * @param fetchSize the specified fetch size
      * @return a list of comments recently, returns an empty list if not found
+     * @throws RepositoryException repository exception
      */
-    List<JSONObject> getRecentComments(final int fetchSize);
+    List<JSONObject> getRecentComments(final int fetchSize)
+            throws RepositoryException;
 }
