@@ -186,6 +186,7 @@ a:hover {
 .article h2 {
     margin-bottom: 3px;
     width: 495px;
+    *line-height: 28px;
 }
 
 .article h2 a {
@@ -203,6 +204,7 @@ a:hover {
 .article h2 sup {
     color: #BE0700;
     font-size: 10px;
+    vertical-align: top;
 }
 
 .article-abstract {
@@ -218,6 +220,16 @@ a:hover {
     float: left;
     font-weight: bold;
     margin: 0 3px 3px 0;
+    line-height: 38px;
+}
+
+#captcha {
+    cursor: auto;
+    vertical-align: super;
+}
+
+.pagination {
+    line-height: 21px;
 }
 
 .pagination a {
@@ -241,7 +253,7 @@ a:hover {
 .pagination a:hover {
     background: none #F3DEDD;
     color: #BE0700;
-    border-color: #BE0700;
+    border: 1px solid #BE0700;
 }
 
 /* side */
@@ -355,6 +367,7 @@ a:hover {
 .side-tool {
     position: fixed;
     top: 30px;
+    left: 0px;
 }
 
 .side-tool li {
@@ -416,11 +429,12 @@ a:hover {
     height: 86px;
     margin: 9px 0;
     overflow: hidden;
-    padding: 1px 10px;
+    padding: 1px 8px 1px 9px;
     text-align: center;
     text-decoration: none;
-    width: 11px;
+    width: 14px;
     word-wrap: break-word;
+    text-transform:uppercase;
 }
 
 /* article */
@@ -461,7 +475,12 @@ a:hover {
 }
 
 #comments, .comment-form {
-    margin-bottom: 30px;
+    padding-bottom: 30px;
+}
+
+.comment-form {
+    margin-right: 15px;
+    color: #606060;
 }
 
 h2.comment-label {
@@ -506,10 +525,6 @@ h2.comment-label {
     margin-left: 12px;
 }
 
-.comment-form {
-    color: #606060;
-}
-
 .comment-form img {
     cursor: pointer;
 }
@@ -535,9 +550,9 @@ h2.comment-label {
     border-right: 0 none;
     color: #000000;
     float: left;
-    font-size: 12px;
     padding-right: 0;
-    width: 35px;
+    width: 36px;
+    *margin-top:11px;
 }
 
 #commentURLLabel.selected, #commentURLLabelReply.selected {
@@ -549,7 +564,7 @@ h2.comment-label {
     -moz-border-radius: 0 5px 5px 0;
     border-left: 0 none;
     padding-left: 0;
-    width: 365px;
+    width: 364px;
 }
 
 #commentValidate, #commentValidateReply {
@@ -578,12 +593,16 @@ h2.comment-label {
 }
 
 /* others */
-#tagsPanel a:hover {
-    border: 1px solid;
+#tagsPanel {
+    min-height: 1px;;
 }
 
 #tagsPanel a {
     display: block;
     float: left;
     border: 1px solid #D4D4D4;
+}
+
+#tagsPanel a:hover {
+    border: 1px solid #BE0700;
 }

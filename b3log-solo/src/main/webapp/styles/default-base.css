@@ -84,7 +84,7 @@ button:hover,.button:hover{border-color:#BBB;}
 .stack{position:fixed;bottom:9px;right:18px;font:13px "Trebuchet MS", Verdana, Helvetica, sans-serif;color:#666;}
 .stack *{margin:0;padding:0;}
 .stack > img{position:relative;cursor:pointer;z-index:2;width:38px;}
-.stack ul{list-style:none;position:absolute;top:2px;margin-left:3px;cursor:pointer;z-index:1;}
+.stack ul{list-style:none;position:absolute;top:2px;margin-left:3px;*margin-left:-2px;cursor:pointer;z-index:1;}
 .stack li{position:absolute;}
 .stack li img{border:0;}
 .stack li span{display:none;}
