@@ -20,20 +20,32 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RunsOnEnv;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Archive date Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 12, 2011
+ * @version 1.0.0.3, Jan 17, 2011
  */
 public final class ArchiveDateGAERepository extends AbstractGAERepository
         implements ArchiveDateRepository {
@@ -43,6 +55,23 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArchiveDateGAERepository.class.getName());
+    /**
+     * Cache.
+     */
+    private static final Cache<String, Object> CACHE;
+
+    static {
+        final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
+        if (!runsOnEnv.equals(RunsOnEnv.GAE)) {
+            throw new RuntimeException(
+                    "GAE repository can only runs on Google App Engine, please "
+                    + "check your configuration and make sure "
+                    + "Latkes.setRunsOnEnv(RunsOnEnv.GAE) was invoked before "
+                    + "using GAE repository.");
+        }
+
+        CACHE = CacheFactory.getCache("ArchiveDateGAERepositoryCache");
+    }
 
     @Override
     public String getName() {
@@ -71,6 +100,68 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
         } catch (final ParseException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
+        }
+    }
+
+    @Override
+    public List<JSONObject> getArchiveDates() throws RepositoryException {
+        final String cacheKey = "[archiveDates]";
+        @SuppressWarnings("unchecked")
+        List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
+        if (null != ret) {
+            LOGGER.log(Level.FINEST, "Got the archive dates from cache");
+        } else {
+            ret = new ArrayList<JSONObject>();
+            final Map<String, SortDirection> sorts =
+                    new HashMap<String, SortDirection>();
+            sorts.put(ArchiveDate.ARCHIVE_DATE, SortDirection.DESCENDING);
+            final JSONObject result = get(1, Integer.MAX_VALUE, sorts);
+
+            try {
+                final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
+
+                for (int i = 0; i < archiveDates.length(); i++) {
+                    final JSONObject archiveDate = archiveDates.getJSONObject(i);
+                    ret.add(archiveDate);
+                }
+            } catch (final JSONException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                throw new RepositoryException(e);
+            }
+
+            try {
+                removeForUnpublishedArticles(ret);
+            } catch (final JSONException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
+
+            CACHE.put(cacheKey, ret);
+
+            LOGGER.log(Level.FINEST,
+                       "Got the archive dates, then put it into cache");
+        }
+
+        return ret;
+    }
+
+     /**
+     * Removes archive dates of unpublished articles from the specified archive
+     * dates.
+     *
+     * @param archiveDates the specified archive dates
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void removeForUnpublishedArticles(
+            final List<JSONObject> archiveDates) throws JSONException,
+                                                        RepositoryException {
+        final Iterator<JSONObject> iterator = archiveDates.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject archiveDate = iterator.next();
+            if (0 == archiveDate.getInt(
+                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
+                iterator.remove();
+            }
         }
     }
 
