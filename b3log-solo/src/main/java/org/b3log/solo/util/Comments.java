@@ -60,7 +60,6 @@ public final class Comments {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    // XXX: performance issue
     public void removeForUnpublishedArticles(
             final List<JSONObject> comments) throws JSONException,
                                                     RepositoryException {
