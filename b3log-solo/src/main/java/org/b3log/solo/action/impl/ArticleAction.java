@@ -191,19 +191,19 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
-            LOGGER.finest("Getting article's comments....");
+            LOGGER.finer("Getting article's comments....");
             final List<JSONObject> articleComments =
                     articleUtils.getComments(articleId);
             ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
-            LOGGER.finest("Got article's comments");
+            LOGGER.finer("Got article's comments");
 
-            LOGGER.finest("Getting relevant articles....");
+            LOGGER.finer("Getting relevant articles....");
             final List<JSONObject> relevantArticles = getRelevantArticles(
                     articleId,
                     article.getString(Article.ARTICLE_TAGS_REF),
                     preference);
             ret.put(Common.RELEVANT_ARTICLES, relevantArticles);
-            LOGGER.finest("Got relevant articles....");
+            LOGGER.finer("Got relevant articles....");
 
             ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                     preference.getInt(
@@ -221,7 +221,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                         entity.getProperty(Article.ARTICLE_PERMALINK));
                 ret.put(Common.PREVIOUS_ARTICLE_TITLE,
                         entity.getProperty(Article.ARTICLE_TITLE));
-                LOGGER.finest("Got the previous article");
+                LOGGER.finer("Got the previous article");
             }
 
             for (final Entity entity : nextArticles) {
@@ -229,7 +229,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                         entity.getProperty(Article.ARTICLE_PERMALINK));
                 ret.put(Common.NEXT_ARTICLE_TITLE,
                         entity.getProperty(Article.ARTICLE_TITLE));
-                LOGGER.finest("Got the next article");
+                LOGGER.finer("Got the next article");
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
