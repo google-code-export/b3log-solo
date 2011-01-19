@@ -10,7 +10,7 @@
             <span style="color: blue;">G</span>&nbsp;
             <span style="color: orangered; font-weight: bold;">Solo</span></a>,
         ver ${version}&nbsp;&nbsp;
-        Theme by <a style="color:white;" href="http://www.iprimidieci.com/" target="_blank">Primi</a> & <a style="color:white;" href="http://lamb.b3log.org" target="_blank">Lamb</a>.
+        Theme by <a style="color:white;" href="http://www.littlevault.com/" target="_blank">Littlevault</a> & <a style="color:white;" href="http://lamb.b3log.org" target="_blank">Lamb</a>.
     </div>
     <div class="right nowrap statistic">
         <div class="right">
