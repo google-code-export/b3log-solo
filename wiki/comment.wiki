@@ -1,0 +1,5 @@
+#summary 评论
+
+===评论===
+
+ * 评论者头像是使用 [http://www.gravatar.com/ Gravatar] 的
