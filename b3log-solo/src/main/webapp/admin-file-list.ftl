@@ -104,18 +104,20 @@
                                     };
 
                                     jsonRpc.fileService.removeFile(function (result, error) {
-                                        switch (result.sc) {
-                                            case "REMOVE_FILE_SUCC":
-                                                getFileList(1);
-                                                $("#tipMsg").text("${removeSuccLabel}");
-                                                break;
-                                            case "REMOVE_FILE_FAIL_":
-                                                $("#tipMsg").text("${removeFailLabel}");
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                        $("#loadMsg").text("");
+                                        try {
+                                            switch (result.sc) {
+                                                case "REMOVE_FILE_SUCC":
+                                                    getFileList(1);
+                                                    $("#tipMsg").text("${removeSuccLabel}");
+                                                    break;
+                                                case "REMOVE_FILE_FAIL_":
+                                                    $("#tipMsg").text("${removeFailLabel}");
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            $("#loadMsg").text("");
+                                        } catch (e) {}
                                     }, requestJSONObject);
                                 }
                             }

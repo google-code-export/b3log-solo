@@ -67,12 +67,14 @@
     
     var unPublish = function () {
         jsonRpc.articleService.cancelPublishArticle(function (result, error) {
-            if (result.sc === "CANCEL_PUBLISH_ARTICLE_SUCC") {
-                $("#tipMsg").text("${unPulbishSuccLabel}");
-                $("#draft-listTab").click();
-            } else {
-                $("#tipMsg").text("${unPulbishFailLabel}");
-            }
+            try {
+                if (result.sc === "CANCEL_PUBLISH_ARTICLE_SUCC") {
+                    $("#tipMsg").text("${unPulbishSuccLabel}");
+                    $("#draft-listTab").click();
+                } else {
+                    $("#tipMsg").text("${unPulbishFailLabel}");
+                }
+            } catch (e) {}
         }, {oId: articleStatus.oId});
     }
     
@@ -98,16 +100,18 @@
 
         // tag auto completed
         jsonRpc.tagService.getTags(function (result, error) {
-            if (result.length > 0) {
-                var tags = [];
-                for (var i = 0; i < result.length; i++) {
-                    tags.push(result[i].tagTitle);
+            try {
+                if (result.length > 0) {
+                    var tags = [];
+                    for (var i = 0; i < result.length; i++) {
+                        tags.push(result[i].tagTitle);
+                    }
+                    $("#tag").completed({
+                        height: 160,
+                        data: tags
+                    });
                 }
-                $("#tag").completed({
-                    height: 160,
-                    data: tags
-                });
-            }
+            } catch (e) {}
         });
 
         // submit action
@@ -199,66 +203,68 @@
             };
 
             jsonRpc.articleService.addArticle(function (result, error) {
-                switch (result.status.code) {
-                    case "ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK":
-                        var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
-                        $("#tipMsg").text(msg);
-                        break;
-                    case "ADD_ARTICLE_SUCC":
-                        var events = result.status.events;
-                        if (events) {
-                            var msg = "${addSuccLabel}";
-                            if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                msg += ", ${syncCSDNBlogFailLabel}: "
-                                    + events.blogSyncCSDNBlog.msg;
-                            }
-
-                            if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                msg += ", ${syncCnBlogsFailLabel}: "
-                                    + events.blogSyncCnBlogs.msg;
-                            }
-
-                            if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                msg += ", ${syncBlogJavaFailLabel}: "
-                                    + events.blogSyncBlogJava.msg;
-                            }
-
-                            //                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
-                            //                                msg += ", ${postToBuzzFailLabel}";
-                            //                            }
+                try {
+                    switch (result.status.code) {
+                        case "ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK":
+                            var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
                             $("#tipMsg").text(msg);
-                            $("#article-listTab").click();
-                        } else {
-                            $("#tipMsg").text("${addSuccLabel}");
-                            $("#draft-listTab").click();
-                        }
-                        
-                        // reset article form
-                        if (tinyMCE.get("articleContent")) {
-                            tinyMCE.get('articleContent').setContent("");
-                        } else {
-                            $("#articleContent").val("");
-                        }
-                        if (tinyMCE.get('abstract')) {
-                            tinyMCE.get('abstract').setContent("");
-                        } else {
-                            $("#abstract").val("");
-                        }
-                        $("#tag").val("");
-                        $("#permalink").val("");
-                        $(".signs button").each(function (i) {
-                            if (i === $(".signs button").length - 1) {
-                                this.className = "selected";
+                            break;
+                        case "ADD_ARTICLE_SUCC":
+                            var events = result.status.events;
+                            if (events) {
+                                var msg = "${addSuccLabel}";
+                                if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
+                                    msg += ", ${syncCSDNBlogFailLabel}: "
+                                        + events.blogSyncCSDNBlog.msg;
+                                }
+
+                                if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
+                                    msg += ", ${syncCnBlogsFailLabel}: "
+                                        + events.blogSyncCnBlogs.msg;
+                                }
+
+                                if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
+                                    msg += ", ${syncBlogJavaFailLabel}: "
+                                        + events.blogSyncBlogJava.msg;
+                                }
+
+                                //                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
+                                //                                msg += ", ${postToBuzzFailLabel}";
+                                //                            }
+                                $("#tipMsg").text(msg);
+                                $("#article-listTab").click();
                             } else {
-                                this.className = "";
+                                $("#tipMsg").text("${addSuccLabel}");
+                                $("#draft-listTab").click();
                             }
-                        });
-                        break;
-                    default:
-                        $("#tipMsg").text("${addFailLabel}");
-                        break;
-                }
-                $("loadMsg").text("");
+                        
+                            // reset article form
+                            if (tinyMCE.get("articleContent")) {
+                                tinyMCE.get('articleContent').setContent("");
+                            } else {
+                                $("#articleContent").val("");
+                            }
+                            if (tinyMCE.get('abstract')) {
+                                tinyMCE.get('abstract').setContent("");
+                            } else {
+                                $("#abstract").val("");
+                            }
+                            $("#tag").val("");
+                            $("#permalink").val("");
+                            $(".signs button").each(function (i) {
+                                if (i === $(".signs button").length - 1) {
+                                    this.className = "selected";
+                                } else {
+                                    this.className = "";
+                                }
+                            });
+                            break;
+                        default:
+                            $("#tipMsg").text("${addFailLabel}");
+                            break;
+                    }
+                    $("loadMsg").text("");
+                } catch (e) {}
             }, requestJSONObject);
         }
     }
@@ -289,65 +295,67 @@
             };
 
             jsonRpc.articleService.updateArticle(function (result, error) {
-                switch (result.status.code) {
-                    case "UPDATE_ARTICLE_FAIL_FORBIDDEN":
-                        $("#tipMsg").text("${forbiddenLabel}");
-                        break;
-                    case "UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK":
-                        var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
-                        $("#tipMsg").text(msg);
-                        break;
-                    case "UPDATE_ARTICLE_SUCC":
-                        var events = result.status.events;
-                        if (events) {
-                            var msg = "${updateSuccLabel}";
-                            if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                msg += ", ${syncCSDNBlogFailLabel}: "
-                                    + events.blogSyncCSDNBlog.msg;
-                            }
-
-                            if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                msg += ", ${syncCnBlogsFailLabel}: "
-                                    + events.blogSyncCnBlogs.msg;
-                            }
-
-                            if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                msg += ", ${syncBlogJavaFailLabel}: "
-                                    + events.blogSyncBlogJava.msg;
-                            }
-                            
+                try {
+                    switch (result.status.code) {
+                        case "UPDATE_ARTICLE_FAIL_FORBIDDEN":
+                            $("#tipMsg").text("${forbiddenLabel}");
+                            break;
+                        case "UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK":
+                            var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
                             $("#tipMsg").text(msg);
-                            $("#article-listTab").click();
-                        } else {
-                            $("#tipMsg").text("${updateSuccLabel}");
-                            $("#draft-listTab").click();
-                        }
-                        // reset article form
-                        if (tinyMCE.get("articleContent")) {
-                            tinyMCE.get('articleContent').setContent("");
-                        } else {
-                            $("#articleContent").val("");
-                        }
-                        if (tinyMCE.get('abstract')) {
-                            tinyMCE.get('abstract').setContent("");
-                        } else {
-                            $("#abstract").val("");
-                        }
-                        $("#tag").val("");
-                        $("#permalink").val("");
-                        $(".signs button").each(function (i) {
-                            if (i === $(".signs button").length - 1) {
-                                this.className = "selected";
+                            break;
+                        case "UPDATE_ARTICLE_SUCC":
+                            var events = result.status.events;
+                            if (events) {
+                                var msg = "${updateSuccLabel}";
+                                if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
+                                    msg += ", ${syncCSDNBlogFailLabel}: "
+                                        + events.blogSyncCSDNBlog.msg;
+                                }
+
+                                if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
+                                    msg += ", ${syncCnBlogsFailLabel}: "
+                                        + events.blogSyncCnBlogs.msg;
+                                }
+
+                                if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
+                                    msg += ", ${syncBlogJavaFailLabel}: "
+                                        + events.blogSyncBlogJava.msg;
+                                }
+                            
+                                $("#tipMsg").text(msg);
+                                $("#article-listTab").click();
                             } else {
-                                this.className = "";
+                                $("#tipMsg").text("${updateSuccLabel}");
+                                $("#draft-listTab").click();
                             }
-                        });
-                        break;
-                    default:
-                        $("#tipMsg").text("${updateFailLabel}");
-                        break;
-                }
-                $("loadMsg").text("");
+                            // reset article form
+                            if (tinyMCE.get("articleContent")) {
+                                tinyMCE.get('articleContent').setContent("");
+                            } else {
+                                $("#articleContent").val("");
+                            }
+                            if (tinyMCE.get('abstract')) {
+                                tinyMCE.get('abstract').setContent("");
+                            } else {
+                                $("#abstract").val("");
+                            }
+                            $("#tag").val("");
+                            $("#permalink").val("");
+                            $(".signs button").each(function (i) {
+                                if (i === $(".signs button").length - 1) {
+                                    this.className = "selected";
+                                } else {
+                                    this.className = "";
+                                }
+                            });
+                            break;
+                        default:
+                            $("#tipMsg").text("${updateFailLabel}");
+                            break;
+                    }
+                    $("loadMsg").text("");
+                } catch (e) {}
             }, requestJSONObject);
         }
     }

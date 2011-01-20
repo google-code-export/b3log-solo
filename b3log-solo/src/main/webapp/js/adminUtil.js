@@ -144,30 +144,32 @@ $.extend(AdminUtil.prototype, {
         // Preload article.
         $("#articlePanel").load("admin-article.do",function () {
             $("#loadMsg").text("");
-
             // Inits Signs.
             jsonRpc.preferenceService.getSigns(function (result, error) {
-                $(".signs button").each(function (i) {
-                    // Sets signs.
-                    if (i === result.length) {
-                        $("#articleSign0").addClass("selected");
-                    } else {
-                        $("#articleSign" + result[i].oId).tip({
-                            content: result[i].signHTML,
-                            position: "top"
-                        });
-                    }
-
-                    // Binds checkbox event.
-                    $(this).click(function () {
-                        if (this.className !== "selected") {
-                            $(".signs button").each(function () {
-                                this.className = "";
+                try {
+                    $(".signs button").each(function (i) {
+                        // Sets signs.
+                        if (i === result.length) {
+                            $("#articleSign0").addClass("selected");
+                        } else {
+                            $("#articleSign" + result[i].oId).tip({
+                                content: result[i].signHTML,
+                                position: "top"
                             });
-                            this.className = "selected";
                         }
+
+                        // Binds checkbox event.
+                        $(this).click(function () {
+                            if (this.className !== "selected") {
+                                $(".signs button").each(function () {
+                                    this.className = "";
+                                });
+                                this.className = "selected";
+                            }
+                        });
                     });
-                });
+                } catch(e) {
+                }
             });
         });
     },
@@ -177,10 +179,13 @@ $.extend(AdminUtil.prototype, {
         var tip = this.tip;
         $("#tipMsg").text("");
         jsonRpc.tagService.removeUnusedTags(function (result, error) {
-            if (result.sc === "REMOVE_UNUSED_TAGS_SUCC") {
-                $("#tipMsg").text(tip.removeSuccLabel);
-            } else {
-                $("#tipMsg").text(tip.removeFailLabel);
+            try {
+                if (result.sc === "REMOVE_UNUSED_TAGS_SUCC") {
+                    $("#tipMsg").text(tip.removeSuccLabel);
+                } else {
+                    $("#tipMsg").text(tip.removeFailLabel);
+                }
+            } catch (e) {
             }
         });
     },
@@ -194,55 +199,58 @@ $.extend(AdminUtil.prototype, {
             "oId": event.data.id[0]
         };
         jsonRpc.articleService.getArticle(function (result, error) {
-            switch (result.sc) {
-                case "GET_ARTICLE_SUCC":
-                    // set default value for article.
-                    $("#title").val(result.article.articleTitle).data("articleStatus", {
-                        "isArticle": isArticle,
-                        'oId': event.data.id[0]
-                    });
-                    if (tinyMCE.get('articleContent')) {
-                        tinyMCE.get('articleContent').setContent(result.article.articleContent);
-                    } else {
-                        $("#articleContent").val(result.article.articleContent);
-                    }
-                    if (tinyMCE.get('abstract')) {
-                        tinyMCE.get('abstract').setContent(result.article.articleAbstract);
-                    } else {
-                        $("#abstract").val(result.article.articleAbstract);
-                    }
-
-                    var tags = result.article.articleTags,
-                    tagsString = '';
-                    for (var i = 0; i < tags.length; i++) {
-                        if (0 === i) {
-                            tagsString = tags[i].tagTitle;
+            try {
+                switch (result.sc) {
+                    case "GET_ARTICLE_SUCC":
+                        // set default value for article.
+                        $("#title").val(result.article.articleTitle).data("articleStatus", {
+                            "isArticle": isArticle,
+                            'oId': event.data.id[0]
+                        });
+                        if (tinyMCE.get('articleContent')) {
+                            tinyMCE.get('articleContent').setContent(result.article.articleContent);
                         } else {
-                            tagsString += "," + tags[i].tagTitle;
+                            $("#articleContent").val(result.article.articleContent);
                         }
-                    }
-                    $("#tag").val(tagsString);
-                    $("#permalink").val(result.article.articlePermalink);
-
-                    // signs
-                    var signs = result.article.signs;
-                    $(".signs button").each(function (i) {
-                        if (parseInt(result.article.articleSign_oId) === parseInt(signs[i].oId)) {
-                            $("#articleSign" + signs[i].oId).addClass("selected");
+                        if (tinyMCE.get('abstract')) {
+                            tinyMCE.get('abstract').setContent(result.article.articleAbstract);
                         } else {
-                            $("#articleSign" + signs[i].oId).removeClass("selected");
+                            $("#abstract").val(result.article.articleAbstract);
                         }
-                    });
 
-                    beforeInitArticle();
-                    $("#tipMsg").text(tip.getSuccLabel);
-                    break;
-                case "GET_ARTICLE_FAIL_":
-                    break;
-                default:
-                    break;
+                        var tags = result.article.articleTags,
+                        tagsString = '';
+                        for (var i = 0; i < tags.length; i++) {
+                            if (0 === i) {
+                                tagsString = tags[i].tagTitle;
+                            } else {
+                                tagsString += "," + tags[i].tagTitle;
+                            }
+                        }
+                        $("#tag").val(tagsString);
+                        $("#permalink").val(result.article.articlePermalink);
+
+                        // signs
+                        var signs = result.article.signs;
+                        $(".signs button").each(function (i) {
+                            if (parseInt(result.article.articleSign_oId) === parseInt(signs[i].oId)) {
+                                $("#articleSign" + signs[i].oId).addClass("selected");
+                            } else {
+                                $("#articleSign" + signs[i].oId).removeClass("selected");
+                            }
+                        });
+
+                        beforeInitArticle();
+                        $("#tipMsg").text(tip.getSuccLabel);
+                        break;
+                    case "GET_ARTICLE_FAIL_":
+                        break;
+                    default:
+                        break;
+                }
+                $("#loadMsg").text("");
+            } catch (e) {
             }
-            $("#loadMsg").text("");
         }, requestJSONObject);
     }
 });
