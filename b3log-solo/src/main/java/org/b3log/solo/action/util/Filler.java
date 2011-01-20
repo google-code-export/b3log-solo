@@ -365,7 +365,7 @@ public final class Filler {
     public void fillBlogFooter(final Map<String, Object> dataModel,
                                final JSONObject preference)
             throws Exception {
-        LOGGER.finer("Filling footter....");
+        LOGGER.finer("Filling footer....");
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
         final String blogHost = preference.getString(Preference.BLOG_HOST);
