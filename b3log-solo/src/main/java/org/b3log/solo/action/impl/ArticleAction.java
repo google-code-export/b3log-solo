@@ -61,7 +61,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Jan 17, 2011
+ * @version 1.0.2.5, Jan 20, 2011
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -180,8 +180,10 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             article.put(Common.AUTHOR_ID, authorId);
             article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
 
+            LOGGER.finer("Getting article sign....");
             article.put(Article.ARTICLE_SIGN_REF,
                         articleUtils.getSign(articleId, preference));
+            LOGGER.finer("Got article sign");
 
             final Iterable<Entity> previousArticles =
                     articleRepository.getPreviousArticleAsync(articleId);
