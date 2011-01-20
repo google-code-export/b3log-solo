@@ -75,7 +75,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.3, Jan 12, 2011
+ * @version 1.0.3.4, Jan 20, 2011
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -287,6 +287,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             transaction.commit();
 
             status.put(Keys.CODE, StatusCodes.ADD_ARTICLE_SUCC);
+
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                PageCaches.removeAll();
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
@@ -295,8 +299,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             return ret;
         }
-
-        PageCaches.removeAll();
 
         return ret;
     }
@@ -605,6 +607,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             status.put(Keys.CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
 
             LOGGER.log(Level.FINER, "Removed an article[oId={0}]", articleId);
+
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                PageCaches.removeAll();
+            }
         } catch (final Exception e) {
             if (null != transaction2 && transaction2.isActive()) {
                 transaction2.rollback();
@@ -616,8 +622,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
-
-        PageCaches.removeAll();
 
         return ret;
     }
@@ -922,6 +926,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
+
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                PageCaches.removeAll();
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -935,8 +943,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             return ret;
         }
-
-        PageCaches.removeAll();
 
         return ret;
     }
