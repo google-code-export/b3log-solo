@@ -107,10 +107,10 @@ public final class FlushStatisticServlet extends HttpServlet {
                         LOGGER.log(Level.FINE,
                                    "Flushing statistic of article[oId={0}]",
                                    articleId);
-
-                        iterator.remove();
-                        Statistics.CACHE.remove(articleId);
                     }
+
+                    iterator.remove();
+                    Statistics.CACHE.remove(articleId);
                 }
 
                 Statistics.CACHE.put(Statistics.KEY_ARTICLE_NEED_TO_FLUSH,
