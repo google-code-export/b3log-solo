@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Jan 17, 2011
+ * @version 1.0.2.8, Jan 20, 2011
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -347,7 +347,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
                         Query.FilterOperator.EQUAL,
                         true);
         query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = asyncDatastoreService.prepare(query);
 
         return preparedQuery.asList(FetchOptions.Builder.withLimit(1));
     }
@@ -392,7 +392,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
                         Query.FilterOperator.EQUAL,
                         true);
         query.addSort(Keys.OBJECT_ID, Query.SortDirection.ASCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+        final PreparedQuery preparedQuery = asyncDatastoreService.prepare(query);
 
         return preparedQuery.asList(FetchOptions.Builder.withLimit(1));
     }
