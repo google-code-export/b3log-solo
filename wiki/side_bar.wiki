@@ -14,7 +14,7 @@
      * [external_articles 站外相关阅读]
      * [statistic 访问统计]
      * [page_cache 页面缓存]
-     * [comment 评论]
+     * [comment_reply 评论/回复]
  * 开发手册
    * [pre_dev 前提准备]
    * 开发环境
