@@ -185,8 +185,10 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                         articleUtils.getSign(articleId, preference));
             LOGGER.finer("Got article sign");
 
+            LOGGER.finer("Getting the previous article async....");
             final Iterable<Entity> previousArticles =
                     articleRepository.getPreviousArticleAsync(articleId);
+            LOGGER.finer("Getting the next article async....");
             final Iterable<Entity> nextArticles =
                     articleRepository.getNextArticleAsync(articleId);
 
