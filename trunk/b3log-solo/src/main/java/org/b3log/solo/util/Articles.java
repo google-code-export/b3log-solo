@@ -19,10 +19,8 @@ package org.b3log.solo.util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
@@ -30,8 +28,8 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.CollectionUtils;
@@ -58,7 +56,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Jan 12, 2011
+ * @version 1.0.2.0, Jan 20, 2011
  */
 public final class Articles {
 
@@ -380,13 +378,10 @@ public final class Articles {
                 new HashMap<String, SortDirection>();
         sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final Set<Filter> filters = new HashSet<Filter>();
-        filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
-                               FilterOperator.EQUAL,
-                               true));
-        final JSONObject result =
-                articleRepository.get(1, Integer.MAX_VALUE,
-                                      sorts, filters);
+        final Query query = new Query().addFilter(Article.ARTICLE_IS_PUBLISHED,
+                                                  FilterOperator.EQUAL,
+                                                  true);
+        final JSONObject result = articleRepository.get(query);
         final JSONArray articles = result.getJSONArray(Keys.RESULTS);
 
         return CollectionUtils.jsonArrayToList(articles);

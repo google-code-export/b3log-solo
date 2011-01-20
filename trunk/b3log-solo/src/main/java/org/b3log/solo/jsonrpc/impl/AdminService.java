@@ -36,6 +36,7 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
@@ -68,7 +69,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jan 12, 2011
+ * @version 1.0.2.3, Jan 20, 2011
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -155,8 +156,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         try {
             final String userId = requestJSONObject.getString(Keys.OBJECT_ID);
 
-            final int userLength =
-                    userRepository.get(1, Integer.MAX_VALUE).getJSONArray(
+            final int userLength = userRepository.get(new Query()).getJSONArray(
                     Keys.RESULTS).length();
             if (2 == userLength) {
                 if ("valentine".equals(
@@ -350,8 +350,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                     Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
-            final JSONObject result =
-                    userRepository.get(currentPageNum, pageSize);
+            final Query query = new Query().setCurrentPageNum(currentPageNum).
+                    setPageSize(pageSize);
+            final JSONObject result = userRepository.get(query);
 
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);

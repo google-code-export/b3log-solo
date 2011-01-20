@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 12, 2011
+ * @version 1.0.0.7, Jan 20, 2011
  */
 public final class Users {
 
@@ -68,8 +69,7 @@ public final class Users {
      */
     public boolean hasMultipleUsers() throws JSONException,
                                              RepositoryException {
-        final JSONArray users =
-                userRepository.get(1, Integer.MAX_VALUE).
+        final JSONArray users = userRepository.get(new Query()).
                 getJSONArray(Keys.RESULTS);
 
         return 1 != users.length();
@@ -175,7 +175,7 @@ public final class Users {
      */
     public boolean isSoloUser(final String email) {
         try {
-            final JSONObject result = userRepository.get(1, Integer.MAX_VALUE);
+            final JSONObject result = userRepository.get(new Query());
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
 
             return existEmail(email, users);

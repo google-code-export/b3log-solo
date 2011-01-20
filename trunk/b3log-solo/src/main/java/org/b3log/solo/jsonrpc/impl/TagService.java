@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Tag service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 12, 2011
+ * @version 1.0.0.6, Jan 20, 2011
  */
 public final class TagService extends AbstractGAEJSONRpcService {
 
@@ -177,7 +178,7 @@ public final class TagService extends AbstractGAEJSONRpcService {
         }
 
         try {
-            final JSONObject result = tagRepository.get(1, Integer.MAX_VALUE);
+            final JSONObject result = tagRepository.get(new Query());
             final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
             if (null != tagArray) {
                 ret = tagArray;

@@ -32,6 +32,7 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractCacheablePageAction;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
@@ -48,7 +49,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Jan 12, 2011
+ * @version 1.0.1.0, Jan 20, 2011
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -105,7 +106,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
-            final JSONObject result = tagRepository.get(1, Integer.MAX_VALUE);
+            final JSONObject result = tagRepository.get(new Query());
             final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
 
             final List<JSONObject> tags =
