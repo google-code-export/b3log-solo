@@ -55,46 +55,48 @@
             "paginationWindowSize": adminUtil.WINDOW_SIZE
         };
         jsonRpc.pageService.getPages(function (result, error) {
-            switch (result.sc) {
-                case "GET_PAGES_SUCC":
-                    var pages = result.pages;
-                    var pageData = [];
-                    pagePagesLength = pages.length;
+            try {
+                switch (result.sc) {
+                    case "GET_PAGES_SUCC":
+                        var pages = result.pages;
+                        var pageData = [];
+                        pagePagesLength = pages.length;
 
-                    for (var i = 0; i < pages.length; i++) {
-                        pageData[i] = {};
-                        pageData[i].pageTitle = pages[i].pageTitle;
-                        pageData[i].pageOrder = pages[i].pageOrder;
-                        pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
-                            + pages[i].pagePermalink + "</a>";
-                        pageData[i].update = "<div class='updateIcon'></div>";
-                        pageData[i].deleted = "<div class='deleteIcon'></div>";
-                        pageData[i].id = pages[i].oId;
-                        pageData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
-                            + pages[i].pageCommentCount + "</div>";
-                    }
+                        for (var i = 0; i < pages.length; i++) {
+                            pageData[i] = {};
+                            pageData[i].pageTitle = pages[i].pageTitle;
+                            pageData[i].pageOrder = pages[i].pageOrder;
+                            pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
+                                + pages[i].pagePermalink + "</a>";
+                            pageData[i].update = "<div class='updateIcon'></div>";
+                            pageData[i].deleted = "<div class='deleteIcon'></div>";
+                            pageData[i].id = pages[i].oId;
+                            pageData[i].comments = "<div class='commentIcon left'></div><div class='left' style='margin-left:6px;'>"
+                                + pages[i].pageCommentCount + "</div>";
+                        }
 
-                    $("#pageList").table("update",{
+                        $("#pageList").table("update",{
                             data: pageData
                         });
 
-                    if (result.pagination.paginationPageCount === 0) {
-                        pageListPageCount = 1;
-                    } else {
-                        pageListPageCount = result.pagination.paginationPageCount;
-                    }
-
-                    $("#pagePagination").paginate({
-                        update: {
-                            currentPage: pageNum,
-                            pageCount: pageListPageCount
+                        if (result.pagination.paginationPageCount === 0) {
+                            pageListPageCount = 1;
+                        } else {
+                            pageListPageCount = result.pagination.paginationPageCount;
                         }
-                    });
-                    break;
-                default:
-                    break;
-            }
-            $("#loadMsg").text("");
+
+                        $("#pagePagination").paginate({
+                            update: {
+                                currentPage: pageNum,
+                                pageCount: pageListPageCount
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+                $("#loadMsg").text("");
+            } catch (e) {}
         }, requestJSONObject);
     }
 
@@ -110,15 +112,17 @@
         }
 
         jsonRpc.pageService.changeOrder(function (result, error) {
-            if (result) {
-                var tmp = tableData[order].pageOrder;
-                tableData[order].pageOrder = tableData[srcOrder].pageOrder;
-                tableData[srcOrder].pageOrder = tmp;
-                $("#pageList").table("changeOrder", status, order);
-            } else {
-                $("#tipMsg").text("${updateFailLabel}");
-            }
-            $("#loadMsg").text("");
+            try {
+                if (result) {
+                    var tmp = tableData[order].pageOrder;
+                    tableData[order].pageOrder = tableData[srcOrder].pageOrder;
+                    tableData[srcOrder].pageOrder = tmp;
+                    $("#pageList").table("changeOrder", status, order);
+                } else {
+                    $("#tipMsg").text("${updateFailLabel}");
+                }
+                $("#loadMsg").text("");
+            } catch (e) {}
         }, tableData[order].id, tableData[srcOrder].pageOrder);
     }
 
@@ -154,18 +158,20 @@
                                 };
 
                                 jsonRpc.pageService.getPage(function (result, error) {
-                                    switch (result.sc) {
-                                        case "GET_PAGE_SUCC":
-                                            $("#pageTitle").val(result.page.pageTitle).data('oId', event.data.id[0]);
-                                            tinyMCE.get('pageContent').setContent(result.page.pageContent);
-                                            $("#pagePermalink").val(result.page.pagePermalink);
-                                            break;
-                                        case "GET_LINK_FAIL_":
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    $("#loadMsg").text("");
+                                    try {
+                                        switch (result.sc) {
+                                            case "GET_PAGE_SUCC":
+                                                $("#pageTitle").val(result.page.pageTitle).data('oId', event.data.id[0]);
+                                                tinyMCE.get('pageContent').setContent(result.page.pageContent);
+                                                $("#pagePermalink").val(result.page.pagePermalink);
+                                                break;
+                                            case "GET_LINK_FAIL_":
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        $("#loadMsg").text("");
+                                    } catch (e) {}
                                 }, requestJSONObject);
                             }
                         }],
@@ -187,26 +193,28 @@
                                     };
 
                                     jsonRpc.pageService.removePage(function (result, error) {
-                                        switch (result.sc) {
-                                            case "REMOVE_PAGE_SUCC":
-                                                getPageList(1);
-                                                $("#tipMsg").text("${removeSuccLabel}");
-                                                break;
-                                            case "REMOVE_PAGE_FAIL_":
-                                                $("#tipMsg").text("${removeFailLabel}");
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                        $("#pageTitle").val("").removeData("oId");
-                                        $("#pagePermalink").val("");
-                                        if (tinyMCE.get("pageContent")) {
-                                            tinyMCE.get('pageContent').setContent("");
-                                        } else {
-                                            $("#pageContent").val("");
-                                        }
+                                        try {
+                                            switch (result.sc) {
+                                                case "REMOVE_PAGE_SUCC":
+                                                    getPageList(1);
+                                                    $("#tipMsg").text("${removeSuccLabel}");
+                                                    break;
+                                                case "REMOVE_PAGE_FAIL_":
+                                                    $("#tipMsg").text("${removeFailLabel}");
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            $("#pageTitle").val("").removeData("oId");
+                                            $("#pagePermalink").val("");
+                                            if (tinyMCE.get("pageContent")) {
+                                                tinyMCE.get('pageContent').setContent("");
+                                            } else {
+                                                $("#pageContent").val("");
+                                            }
 
-                                        $("#loadMsg").text("");
+                                            $("#loadMsg").text("");
+                                        } catch (e) {}
                                     }, requestJSONObject);
                                 }
                             }
@@ -303,22 +311,24 @@
                 }
             };
             jsonRpc.pageService.updatePage(function (result, error) {
-                switch (result.sc) {
-                    case "UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK":
-                        var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
-                        $("#tipMsg").text(msg);
-                        break;
-                    case "UPDATE_PAGE_SUCC":
-                        getPageList(pageListCurrentPage);
-                        $("#pageTitle").removeData("oId").val("");
-                        $("#tipMsg").text("${updateSuccLabel}");
-                        tinyMCE.get('pageContent').setContent("");
-                        $("#pagePermalink").val("");
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
+                try {
+                    switch (result.sc) {
+                        case "UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK":
+                            var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
+                            $("#tipMsg").text(msg);
+                            break;
+                        case "UPDATE_PAGE_SUCC":
+                            getPageList(pageListCurrentPage);
+                            $("#pageTitle").removeData("oId").val("");
+                            $("#tipMsg").text("${updateSuccLabel}");
+                            tinyMCE.get('pageContent').setContent("");
+                            $("#pagePermalink").val("");
+                            break;
+                        default:
+                            break;
+                    }
+                    $("#loadMsg").text("");
+                } catch (e) {}
             }, requestJSONObject);
         }
     }
@@ -335,29 +345,31 @@
                 }
             };
             jsonRpc.pageService.addPage(function (result, error) {
-                switch (result.sc) {
-                    case "ADD_PAGE_FAIL_DUPLICATED_PERMALINK":
-                        var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
-                        $("#tipMsg").text(msg);
-                        break;
-                    case "ADD_PAGE_SUCC":
-                        $("#pageTitle").val("").removeData("oId");
-                        $("#pagePermalink").val("");
-                        if (tinyMCE.get("pageContent")) {
-                            tinyMCE.get('pageContent').setContent("");
-                        } else {
-                            $("#pageContent").val("");
-                        }
-                        if (pagePagesLength === adminUtil.PAGE_SIZE) {
-                            pageListPageCount++;
-                        }
-                        getPageList(pageListPageCount);
-                        $("#tipMsg").text("${addSuccLabel}");
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
+                try {
+                    switch (result.sc) {
+                        case "ADD_PAGE_FAIL_DUPLICATED_PERMALINK":
+                            var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
+                            $("#tipMsg").text(msg);
+                            break;
+                        case "ADD_PAGE_SUCC":
+                            $("#pageTitle").val("").removeData("oId");
+                            $("#pagePermalink").val("");
+                            if (tinyMCE.get("pageContent")) {
+                                tinyMCE.get('pageContent').setContent("");
+                            } else {
+                                $("#pageContent").val("");
+                            }
+                            if (pagePagesLength === adminUtil.PAGE_SIZE) {
+                                pageListPageCount++;
+                            }
+                            getPageList(pageListPageCount);
+                            $("#tipMsg").text("${addSuccLabel}");
+                            break;
+                        default:
+                            break;
+                    }
+                    $("#loadMsg").text("");
+                } catch (e) {}
             }, requestJSONObject);
         }
     }
@@ -374,38 +386,40 @@
         $("#loadMsg").text("${loadingLabel}");
         $("#pageComments").html("");
         jsonRpc.commentService.getCommentsOfPage(function (result, error) {
-            switch (result.sc) {
-                case "GET_COMMENTS_SUCC":
-                    var comments = result.comments,
-                    commentsHTML = '';
-                    for (var i = 0; i < comments.length; i++) {
-                        var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>";
+            try {
+                switch (result.sc) {
+                    case "GET_COMMENTS_SUCC":
+                        var comments = result.comments,
+                        commentsHTML = '';
+                        for (var i = 0; i < comments.length; i++) {
+                            var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>";
 
-                        if (comments[i].commentURL === "http://") {
-                            hrefHTML = "<a target='_blank'>";
+                            if (comments[i].commentURL === "http://") {
+                                hrefHTML = "<a target='_blank'>";
+                            }
+
+                            commentsHTML += "<div class='comment-title'><span class='left'>"
+                                + hrefHTML + comments[i].commentName + "</a>";
+
+                            if (comments[i].commentOriginalCommentName) {
+                                commentsHTML += "@" + comments[i].commentOriginalCommentName;
+                            }
+                            commentsHTML += "</span><span class='right deleteIcon' onclick=\"deletePageComment('" + comments[i].oId
+                                + "')\"></span><span class='right'><a href='mailto:"
+                                + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
+                                + $.bowknot.getDate(comments[i].commentDate.time, 1)
+                                + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
                         }
-
-                        commentsHTML += "<div class='comment-title'><span class='left'>"
-                            + hrefHTML + comments[i].commentName + "</a>";
-
-                        if (comments[i].commentOriginalCommentName) {
-                            commentsHTML += "@" + comments[i].commentOriginalCommentName;
+                        if ("" === commentsHTML) {
+                            commentsHTML = "${noCommentLabel}"
                         }
-                        commentsHTML += "</span><span class='right deleteIcon' onclick=\"deletePageComment('" + comments[i].oId
-                            + "')\"></span><span class='right'><a href='mailto:"
-                            + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
-                            + $.bowknot.getDate(comments[i].commentDate.time, 1)
-                            + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>" + comments[i].commentContent + "</div>";
-                    }
-                    if ("" === commentsHTML) {
-                        commentsHTML = "${noCommentLabel}"
-                    }
-                    $("#pageComments").html(commentsHTML);
-                    break;
-                default:
-                    break;
-            };
-            $("#loadMsg").text("");
+                        $("#pageComments").html(commentsHTML);
+                        break;
+                    default:
+                        break;
+                };
+                $("#loadMsg").text("");
+            } catch (e) {}
         }, {"oId": $("#pageComments").data("oId")});
     }
     
@@ -420,16 +434,18 @@
             $("#loadMsg").text("${loadingLabel}");
             $("#tipMsg").text("");
             jsonRpc.commentService.removeCommentOfPage(function (result, error) {
-                switch (result.sc) {
-                    case "REMOVE_COMMENT_SUCC":
-                        getPageComment();
-                        $("#tipMsg").text("${removeSuccLabel}");
-                        break;
-                    default:
-                        $("#tipMsg").text("");
-                        $("#loadMsg").text("");
-                        break;
-                }
+                try {
+                    switch (result.sc) {
+                        case "REMOVE_COMMENT_SUCC":
+                            getPageComment();
+                            $("#tipMsg").text("${removeSuccLabel}");
+                            break;
+                        default:
+                            $("#tipMsg").text("");
+                            $("#loadMsg").text("");
+                            break;
+                    }
+                } catch (e) {}
             }, {"oId": id});
         }
     }

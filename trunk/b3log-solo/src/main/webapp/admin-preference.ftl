@@ -285,71 +285,73 @@
     var getPreference = function () {
         $("#loadMsg").text("${loadingLabel}");
         jsonRpc.preferenceService.getPreference(function (result, error) {
-            switch (result.sc) {
-                case "GET_PREFERENCE_SUCC":
-                    // preference
-                    var preference = result.preference;
-                    $("#metaKeywords").val(preference.metaKeywords),
-                    $("#metaDescription").val(preference.metaDescription),
-                    $("#blogTitle").val(preference.blogTitle),
-                    $("#blogSubtitle").val(preference.blogSubtitle),
-                    $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
-                    $("#mostViewArticleDisplayCount").val(preference.mostViewArticleDisplayCount),
-                    $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
-                    $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
-                    $("#articleListDisplayCount").val(preference.articleListDisplayCount);
-                    $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
-                    $("#blogHost").val(preference.blogHost);
-                    $("#localeString").val(preference.localeString);
-                    $("#timeZoneId").val(preference.timeZoneId);
-                    $("#noticeBoard").val(preference.noticeBoard);
-                    $("#htmlHead").val(preference.htmlHead);
-                    $("#secret").val(preference.googleOAuthConsumerSecret);
-                    $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
-                    $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
-                    $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
-                    preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
-                    preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
+            try {
+                switch (result.sc) {
+                    case "GET_PREFERENCE_SUCC":
+                        // preference
+                        var preference = result.preference;
+                        $("#metaKeywords").val(preference.metaKeywords),
+                        $("#metaDescription").val(preference.metaDescription),
+                        $("#blogTitle").val(preference.blogTitle),
+                        $("#blogSubtitle").val(preference.blogSubtitle),
+                        $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
+                        $("#mostViewArticleDisplayCount").val(preference.mostViewArticleDisplayCount),
+                        $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
+                        $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
+                        $("#articleListDisplayCount").val(preference.articleListDisplayCount);
+                        $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
+                        $("#blogHost").val(preference.blogHost);
+                        $("#localeString").val(preference.localeString);
+                        $("#timeZoneId").val(preference.timeZoneId);
+                        $("#noticeBoard").val(preference.noticeBoard);
+                        $("#htmlHead").val(preference.htmlHead);
+                        $("#secret").val(preference.googleOAuthConsumerSecret);
+                        $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
+                        $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
+                        $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
+                        preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
+                        preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
                     
-                    localeString = preference.localeString;
+                        localeString = preference.localeString;
 
-                    // skin
-                    $("#skinMain").data("skinDirName", preference.skinDirName);
-                    var skins = eval('(' + preference.skins + ')');
-                    var skinsHTML = "";
-                    for (var i = 0; i < skins.length; i++) {
-                        if (skins[i].skinName === preference.skinName
-                            && skins[i].skinDirName === preference.skinDirName ) {
-                            skinsHTML += "<div title='" + skins[i].skinDirName
-                                + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
-                                + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
-                        } else {
-                            skinsHTML += "<div title='" + skins[i].skinDirName
-                                + "' class='left skinItem'><img class='skinPreview' src='skins/"
-                                + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
+                        // skin
+                        $("#skinMain").data("skinDirName", preference.skinDirName);
+                        var skins = eval('(' + preference.skins + ')');
+                        var skinsHTML = "";
+                        for (var i = 0; i < skins.length; i++) {
+                            if (skins[i].skinName === preference.skinName
+                                && skins[i].skinDirName === preference.skinDirName ) {
+                                skinsHTML += "<div title='" + skins[i].skinDirName
+                                    + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
+                                    + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
+                            } else {
+                                skinsHTML += "<div title='" + skins[i].skinDirName
+                                    + "' class='left skinItem'><img class='skinPreview' src='skins/"
+                                    + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
+                            }
                         }
-                    }
-                    $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
+                        $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
 
-                    $(".skinItem").click(function () {
-                        $(".skinItem").removeClass("selected");
-                        $(this).addClass("selected");
-                        $("#skinMain").data("skinDirName", this.title);
-                    });
+                        $(".skinItem").click(function () {
+                            $(".skinItem").removeClass("selected");
+                            $(this).addClass("selected");
+                            $("#skinMain").data("skinDirName", this.title);
+                        });
 
-                    // sign
-                    var signs = eval('(' + preference.signs + ')');
-                    for (var i = 0; i < signs.length; i++) {
-                        var oId = parseInt(signs[i].oId);
-                        if (oId !== 0) {
-                            $("#preferenceSign" + oId).val(signs[i].signHTML);
+                        // sign
+                        var signs = eval('(' + preference.signs + ')');
+                        for (var i = 0; i < signs.length; i++) {
+                            var oId = parseInt(signs[i].oId);
+                            if (oId !== 0) {
+                                $("#preferenceSign" + oId).val(signs[i].signHTML);
+                            }
                         }
-                    }
-                    break;
-                default:
-                    break;
-            }
-            $("#loadMsg").text("");
+                        break;
+                    default:
+                        break;
+                }
+                $("#loadMsg").text("");
+            } catch (e) {}
         });
     }
     
@@ -422,28 +424,30 @@
         }
 
         jsonRpc.preferenceService.updatePreference(function (result, error) {
-            switch (result.sc) {
-                case "UPDATE_PREFERENCE_SUCC":
-                    $("#tipMsg").text("${updateSuccLabel}");
-                    if ($("#localeString").val() !== localeString) {
-                        window.location.reload();
-                    }
+            try {
+                switch (result.sc) {
+                    case "UPDATE_PREFERENCE_SUCC":
+                        $("#tipMsg").text("${updateSuccLabel}");
+                        if ($("#localeString").val() !== localeString) {
+                            window.location.reload();
+                        }
 
-                    // update article signs
-                    for (var i = 1; i < signs.length; i++) {
-                        $("#articleSign" + signs[i].oId).tip("option", "content", signs[i].signHTML);
-                    }
-                    break;
-                case "UPDATE_PREFERENCE_FAIL_":
-                    $("#tipMsg").text("${updatePreferenceFailLabel}");
-                    break;
-                case "UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS":
-                    $("#tipMsg").text("${updatePreferenceFailNeedMulUsersLabel}");
-                    break;
-                default:
-                    break;
-            }
-            $("#loadMsg").text("");
+                        // update article signs
+                        for (var i = 1; i < signs.length; i++) {
+                            $("#articleSign" + signs[i].oId).tip("option", "content", signs[i].signHTML);
+                        }
+                        break;
+                    case "UPDATE_PREFERENCE_FAIL_":
+                        $("#tipMsg").text("${updatePreferenceFailLabel}");
+                        break;
+                    case "UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS":
+                        $("#tipMsg").text("${updatePreferenceFailNeedMulUsersLabel}");
+                        break;
+                    default:
+                        break;
+                }
+                $("#loadMsg").text("");
+            } catch (e) {}
         }, requestJSONObject);
     }
 

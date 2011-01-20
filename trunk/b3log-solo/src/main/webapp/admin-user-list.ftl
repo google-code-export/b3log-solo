@@ -84,60 +84,62 @@
             "paginationWindowSize": adminUtil.WINDOW_SIZE
         };
         jsonRpc.adminService.getUsers(function (result, error) {
-            switch (result.sc) {
-                case "GET_USERS_SUCC":
-                    var users = result.users;
-                    var userData = [];
-                    usersLength = users.length;
+            try {
+                switch (result.sc) {
+                    case "GET_USERS_SUCC":
+                        var users = result.users;
+                        var userData = [];
+                        usersLength = users.length;
 
-                    if (1 < usersLength) {
-                        // Disable article sync mgmt if exists more than one users
-                        $("#article-syncTab").hide();
-                    } else if (1 === usersLength) {
-                        // Enable article sync mgmt if exists one user exactly
-                        $("#article-syncTab").show();
-                    } else {
-                        alert("A error occurs, please report this issue on http://code.google.com/p/b3log-solo/issues/list");
-                    }
-                    
-                    for (var i = 0; i < users.length; i++) {
-                        userData[i] = {};
-                        userData[i].userName = users[i].userName;
-                        userData[i].userEmail = users[i].userEmail;
-                        userData[i].update = "<div class='updateIcon'></div>";
-                        userData[i].deleted = "<div class='deleteIcon'></div>";
-                        if ("adminRole" === users[i].userRole) {
-                            userData[i].deleted = "";
-                            userData[i].isAdmin = "<div class='falseIcon'></div>";
+                        if (1 < usersLength) {
+                            // Disable article sync mgmt if exists more than one users
+                            $("#article-syncTab").hide();
+                        } else if (1 === usersLength) {
+                            // Enable article sync mgmt if exists one user exactly
+                            $("#article-syncTab").show();
                         } else {
+                            alert("A error occurs, please report this issue on http://code.google.com/p/b3log-solo/issues/list");
+                        }
+                    
+                        for (var i = 0; i < users.length; i++) {
+                            userData[i] = {};
+                            userData[i].userName = users[i].userName;
+                            userData[i].userEmail = users[i].userEmail;
+                            userData[i].update = "<div class='updateIcon'></div>";
                             userData[i].deleted = "<div class='deleteIcon'></div>";
-                            userData[i].isAdmin = "<div class='trueIcon'></div>";
+                            if ("adminRole" === users[i].userRole) {
+                                userData[i].deleted = "";
+                                userData[i].isAdmin = "<div class='falseIcon'></div>";
+                            } else {
+                                userData[i].deleted = "<div class='deleteIcon'></div>";
+                                userData[i].isAdmin = "<div class='trueIcon'></div>";
+                            }
+                            userData[i].userRole = users[i].userRole;
+                            userData[i].id = users[i].oId;
                         }
-                        userData[i].userRole = users[i].userRole;
-                        userData[i].id = users[i].oId;
-                    }
 
-                    $("#userList").table("update",{
-                        data: userData
-                    });
+                        $("#userList").table("update",{
+                            data: userData
+                        });
 
-                    if (result.pagination.paginationPageCount === 0) {
-                        userListPageCount = 1;
-                    } else {
-                        userListPageCount = result.pagination.paginationPageCount;
-                    }
-
-                    $("#userPagination").paginate({
-                        update: {
-                            currentPage: pageNum,
-                            pageCount: userListPageCount
+                        if (result.pagination.paginationPageCount === 0) {
+                            userListPageCount = 1;
+                        } else {
+                            userListPageCount = result.pagination.paginationPageCount;
                         }
-                    });
-                    break;
-                default:
-                    break;
-            }
-            $("#loadMsg").text("");
+
+                        $("#userPagination").paginate({
+                            update: {
+                                currentPage: pageNum,
+                                pageCount: userListPageCount
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+                $("#loadMsg").text("");
+            } catch (e) {}
         }, requestJSONObject);
     }
     
@@ -171,26 +173,28 @@
                                 };
 
                                 jsonRpc.adminService.getUser(function (result, error) {
-                                    switch (result.sc) {
-                                        case "GET_USER_SUCC":
-                                            var $userEmailUpdate = $("#userEmailUpdate");
-                                            $("#userNameUpdate").val(result.user.userName).data("userInfo", {
-                                                'oId': event.data.id[0],
-                                                "userRole": event.data.userRole[0]
-                                            });
-                                            $userEmailUpdate.val(result.user.userEmail);
-                                            if ("adminRole" === event.data.userRole[0]) {
-                                                $userEmailUpdate.attr("disabled", "disabled");
-                                            } else {
-                                                $userEmailUpdate.removeAttr("disabled");
-                                            }
-                                            break;
-                                        case "GET_USER_FAIL_":
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                    $("#loadMsg").text("");
+                                    try {
+                                        switch (result.sc) {
+                                            case "GET_USER_SUCC":
+                                                var $userEmailUpdate = $("#userEmailUpdate");
+                                                $("#userNameUpdate").val(result.user.userName).data("userInfo", {
+                                                    'oId': event.data.id[0],
+                                                    "userRole": event.data.userRole[0]
+                                                });
+                                                $userEmailUpdate.val(result.user.userEmail);
+                                                if ("adminRole" === event.data.userRole[0]) {
+                                                    $userEmailUpdate.attr("disabled", "disabled");
+                                                } else {
+                                                    $userEmailUpdate.removeAttr("disabled");
+                                                }
+                                                break;
+                                            case "GET_USER_FAIL_":
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                        $("#loadMsg").text("");
+                                    } catch (e) {}
                                 }, requestJSONObject);
                             }
                         }],
@@ -215,18 +219,20 @@
                                     };
 
                                     jsonRpc.adminService.removeUser(function (result, error) {
-                                        switch (result.sc) {
-                                            case "REMOVE_USER_SUCC":
-                                                getUserList(1);
-                                                $("#tipMsg").text("${removeSuccLabel}");
-                                                break;
-                                            case "REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS":
-                                                $("#tipMsg").text("${removeUserFailSkinNeedMulUsersLabel}");
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                        $("#loadMsg").text("");
+                                        try {
+                                            switch (result.sc) {
+                                                case "REMOVE_USER_SUCC":
+                                                    getUserList(1);
+                                                    $("#tipMsg").text("${removeSuccLabel}");
+                                                    break;
+                                                case "REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS":
+                                                    $("#tipMsg").text("${removeUserFailSkinNeedMulUsersLabel}");
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                            $("#loadMsg").text("");
+                                        } catch (e) {}
                                     }, requestJSONObject);
                                 }
                             }
@@ -294,22 +300,24 @@
                 "userRole": userInfo.userRole
             };
             jsonRpc.adminService.updateUser(function (result, error) {
-                switch (result.sc) {
-                    case "UPDATE_USER_SUCC":
-                        getUserList(userListCurrentPage);
-                        $("#tipMsg").text("${updateSuccLabel}");
-                        $("#userUpdate").dialog("close");
-                        break;
-                    case "UPDATE_USER_FAIL_DUPLICATED_EMAIL":
-                        $("#tipMsg").text("${duplicatedEmailLabel}");
-                        break;
-                    case "UPDATE_USER_FAIL_":
-                        $("#tipMsg").text("${updateFailLabel}");
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
+                try {
+                    switch (result.sc) {
+                        case "UPDATE_USER_SUCC":
+                            getUserList(userListCurrentPage);
+                            $("#tipMsg").text("${updateSuccLabel}");
+                            $("#userUpdate").dialog("close");
+                            break;
+                        case "UPDATE_USER_FAIL_DUPLICATED_EMAIL":
+                            $("#tipMsg").text("${duplicatedEmailLabel}");
+                            break;
+                        case "UPDATE_USER_FAIL_":
+                            $("#tipMsg").text("${updateFailLabel}");
+                            break;
+                        default:
+                            break;
+                    }
+                    $("#loadMsg").text("");
+                } catch (e) {}
             }, requestJSONObject);
         }
     }
@@ -323,23 +331,25 @@
                 "userEmail": $("#userEmail").val()
             };
             jsonRpc.adminService.addUser(function (result, error) {
-                switch (result.sc) {
-                    case "ADD_USER_SUCC":
-                        $("#userName").val("");
-                        $("#userEmail").val("");
-                        if (usersLength === adminUtil.PAGE_SIZE) {
-                            userListPageCount++;
-                        }
-                        getUserList(userListPageCount);
-                        $("#tipMsg").text("${addSuccLabel}");
-                        break;
-                    case "ADD_USER_FAIL_DUPLICATED_EMAIL":
-                        $("#tipMsg").text("${duplicatedEmailLabel}");
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
+                try {
+                    switch (result.sc) {
+                        case "ADD_USER_SUCC":
+                            $("#userName").val("");
+                            $("#userEmail").val("");
+                            if (usersLength === adminUtil.PAGE_SIZE) {
+                                userListPageCount++;
+                            }
+                            getUserList(userListPageCount);
+                            $("#tipMsg").text("${addSuccLabel}");
+                            break;
+                        case "ADD_USER_FAIL_DUPLICATED_EMAIL":
+                            $("#tipMsg").text("${duplicatedEmailLabel}");
+                            break;
+                        default:
+                            break;
+                    }
+                    $("#loadMsg").text("");
+                } catch (e) {}
             }, requestJSONObject);
         }
     }
