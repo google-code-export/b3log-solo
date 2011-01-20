@@ -349,7 +349,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
         query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
         final PreparedQuery preparedQuery = asyncDatastoreService.prepare(query);
 
-        return preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+        return preparedQuery.asIterable(FetchOptions.Builder.withLimit(1));
     }
 
     @Override
@@ -394,7 +394,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
         query.addSort(Keys.OBJECT_ID, Query.SortDirection.ASCENDING);
         final PreparedQuery preparedQuery = asyncDatastoreService.prepare(query);
 
-        return preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+        return preparedQuery.asIterable(FetchOptions.Builder.withLimit(1));
     }
 
     @Override
