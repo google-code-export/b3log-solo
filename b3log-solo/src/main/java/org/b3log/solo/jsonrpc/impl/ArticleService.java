@@ -20,11 +20,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -45,8 +41,8 @@ import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
@@ -463,17 +459,14 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final boolean articleIsPublished =
                     requestJSONObject.optBoolean(ARTICLE_IS_PUBLISHED, true);
 
-            final Map<String, SortDirection> sorts =
-                    new HashMap<String, SortDirection>();
-            sorts.put(ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
-            sorts.put(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-            final Set<Filter> filters = new HashSet<Filter>();
-            filters.add(new Filter(ARTICLE_IS_PUBLISHED,
-                                   FilterOperator.EQUAL,
-                                   articleIsPublished));
-            final JSONObject result =
-                    articleRepository.get(currentPageNum, pageSize,
-                                          sorts, filters);
+            final Query query = new Query().setCurrentPageNum(currentPageNum).
+                    setPageSize(pageSize).
+                    addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING).
+                    addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING).
+                    addFilter(ARTICLE_IS_PUBLISHED,
+                              FilterOperator.EQUAL,
+                              articleIsPublished);
+            final JSONObject result = articleRepository.get(query);
 
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);

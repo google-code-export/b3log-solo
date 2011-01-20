@@ -19,10 +19,8 @@ package org.b3log.solo.action.util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -34,8 +32,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.Filter;
 import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
@@ -70,7 +68,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Jan 17, 2011
+ * @version 1.0.3.2, Jan 20, 2011
  */
 public final class Filler {
 
@@ -150,22 +148,20 @@ public final class Filler {
         final int windowSize =
                 preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-        final Map<String, SortDirection> sorts =
-                new HashMap<String, SortDirection>();
-        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-            sorts.put(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
-        } else {
-            sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
-        }
-        sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final Set<Filter> filters = new HashSet<Filter>();
-        filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
-                               FilterOperator.EQUAL,
-                               PUBLISHED));
-        final JSONObject result =
-                articleRepository.get(currentPageNum, pageSize,
-                                      sorts, filters);
+        final Query query = new Query().setCurrentPageNum(currentPageNum).
+                setPageSize(pageSize).
+                addFilter(Article.ARTICLE_IS_PUBLISHED,
+                          FilterOperator.EQUAL, PUBLISHED);
 
+        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+        } else {
+            query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+        }
+
+        query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+
+        final JSONObject result = articleRepository.get(query);
         final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                 getInt(Pagination.PAGINATION_PAGE_COUNT);
 
@@ -201,9 +197,9 @@ public final class Filler {
         final Map<String, SortDirection> sorts =
                 new HashMap<String, SortDirection>();
         sorts.put(Link.LINK_ORDER, SortDirection.ASCENDING);
-        final JSONObject linkResult = linkRepository.get(1,
-                                                         Integer.MAX_VALUE,
-                                                         sorts);
+        final Query query = new Query().addSort(Link.LINK_ORDER,
+                                                SortDirection.ASCENDING);
+        final JSONObject linkResult = linkRepository.get(query);
         final List<JSONObject> links = org.b3log.latke.util.CollectionUtils.
                 jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
 
@@ -398,7 +394,7 @@ public final class Filler {
         dataModel.put(Preference.META_DESCRIPTION,
                       preference.getString(Preference.META_DESCRIPTION));
         // XXX: performance issue
-        final JSONObject result = userRepository.get(1, Integer.MAX_VALUE);
+        final JSONObject result = userRepository.get(new Query());
         final JSONArray users = result.getJSONArray(Keys.RESULTS);
         final List<JSONObject> userList = CollectionUtils.jsonArrayToList(users);
         dataModel.put(User.USERS, userList);
@@ -457,7 +453,7 @@ public final class Filler {
         final int windowSize =
                 preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-        final JSONObject result = userRepository.get(1, Integer.MAX_VALUE);
+        final JSONObject result = userRepository.get(new Query());
         final JSONArray users = result.getJSONArray(Keys.RESULTS);
 
         final String adminEmail =
@@ -543,25 +539,24 @@ public final class Filler {
             throws JSONException, RepositoryException {
         LOGGER.log(Level.FINEST, "Filling part[name={0}, authorEmail={1}]",
                    new String[]{partName, authorEmail});
-        final Map<String, SortDirection> sorts =
-                new HashMap<String, SortDirection>();
+
+        final Query query = new Query().addFilter(Article.ARTICLE_IS_PUBLISHED,
+                                                  FilterOperator.EQUAL,
+                                                  PUBLISHED).
+                addFilter(Article.ARTICLE_AUTHOR_EMAIL,
+                          FilterOperator.EQUAL,
+                          authorEmail);
+
         if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-            sorts.put(Article.ARTICLE_UPDATE_DATE,
-                      SortDirection.DESCENDING);
+            query.addSort(Article.ARTICLE_UPDATE_DATE,
+                          SortDirection.DESCENDING);
         } else {
-            sorts.put(Article.ARTICLE_CREATE_DATE,
-                      SortDirection.DESCENDING);
+            query.addSort(Article.ARTICLE_CREATE_DATE,
+                          SortDirection.DESCENDING);
         }
-        sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final Set<Filter> filters = new HashSet<Filter>();
-        filters.add(new Filter(Article.ARTICLE_IS_PUBLISHED,
-                               FilterOperator.EQUAL, PUBLISHED));
-        filters.add(new Filter(Article.ARTICLE_AUTHOR_EMAIL,
-                               FilterOperator.EQUAL,
-                               authorEmail));
-        final JSONObject result =
-                articleRepository.get(currentPageNum, pageSize, sorts,
-                                      filters);
+
+        query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+        final JSONObject result = articleRepository.get(query);
         final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                 getInt(Pagination.PAGINATION_PAGE_COUNT);
         final List<Integer> pageNums =

@@ -21,7 +21,6 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -43,7 +42,7 @@ import org.json.JSONObject;
  * Page Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 12, 2011
+ * @version 1.0.0.4, Jan 20, 2011
  */
 public final class PageGAERepository extends AbstractGAERepository
         implements PageRepository {
@@ -136,12 +135,10 @@ public final class PageGAERepository extends AbstractGAERepository
             LOGGER.log(Level.FINEST, "Got the pages from cache");
         } else {
             ret = new ArrayList<JSONObject>();
-            final Map<String, SortDirection> sorts =
-                    new HashMap<String, SortDirection>();
-            sorts.put(Page.PAGE_ORDER, SortDirection.ASCENDING);
-            final JSONObject result = get(1,
-                                          Integer.MAX_VALUE,
-                                          sorts);
+           final org.b3log.latke.repository.Query
+                    query = new org.b3log.latke.repository.Query().
+                    addSort(Page.PAGE_ORDER, SortDirection.ASCENDING);
+            final JSONObject result = get(query);
 
             try {
                 ret = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.

@@ -125,7 +125,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Jan 12, 2011
+ * @version 1.0.2.1, Jan 20, 2011
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -394,7 +394,7 @@ public final class V021ToV025 extends HttpServlet {
     private void upgradeTags() throws ServletException {
         final Transaction transaction = tagRepository.beginTransaction();
         try {
-            final JSONObject result = tagRepository.get(1, Integer.MAX_VALUE);
+            final JSONObject result = tagRepository.get(new Query());
             final JSONArray tags = result.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < tags.length(); i++) {
                 final JSONObject tag = tags.getJSONObject(i);

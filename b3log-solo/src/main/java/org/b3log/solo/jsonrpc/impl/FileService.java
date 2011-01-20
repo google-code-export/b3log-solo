@@ -19,9 +19,7 @@ package org.b3log.solo.jsonrpc.impl;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +28,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.action.StatusCodes;
@@ -45,7 +44,7 @@ import org.json.JSONObject;
  * File service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 12, 2011
+ * @version 1.0.0.5, Jan 20, 2011
  */
 public final class FileService extends AbstractGAEJSONRpcService {
 
@@ -118,11 +117,10 @@ public final class FileService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Map<String, SortDirection> sorts =
-                    new HashMap<String, SortDirection>();
-            sorts.put(File.FILE_UPLOAD_DATE, SortDirection.DESCENDING);
-            final JSONObject result =
-                    fileRepository.get(currentPageNum, pageSize, sorts);
+            final Query query = new Query().setCurrentPageNum(currentPageNum).
+                    setPageSize(pageSize).
+                    addSort(File.FILE_UPLOAD_DATE, SortDirection.DESCENDING);
+            final JSONObject result = fileRepository.get(query);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
 
