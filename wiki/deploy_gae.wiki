@@ -21,5 +21,5 @@ appcfg.cmd update ${solo.war}
 </ol>
 等部署完毕后，在浏览器中访问：[http://${application-id}.appspot.com/init.do] 进行初始化。
 
-_注意_：<br/>
-初始化功能（/init.do）只有在第一次部署时才可用，一旦初始化过后，该功能将被锁定。
+_注意_：
+ * 初始化功能（/init.do）只有在第一次部署时才可用，一旦初始化过后，该功能将被锁定。
