@@ -17,6 +17,7 @@
 package org.b3log.solo.action.stat;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +38,7 @@ import org.json.JSONObject;
  * Flushes statistic from memcache to datastore.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 15, 2011
+ * @version 1.0.0.1, Jan 20, 2011
  */
 public final class FlushStatisticServlet extends HttpServlet {
 
@@ -95,7 +96,9 @@ public final class FlushStatisticServlet extends HttpServlet {
             final Set<String> articleIds = (Set<String>) Statistics.CACHE.get(
                     Statistics.KEY_ARTICLE_NEED_TO_FLUSH);
             if (null != articleIds) {
-                for (final String articleId : articleIds) {
+                final Iterator<String> iterator = articleIds.iterator();
+                while (iterator.hasNext()) {
+                    final String articleId = iterator.next();
                     LOGGER.log(Level.FINER, "Article[oId={0}]", articleId);
                     final JSONObject articleStat =
                             (JSONObject) Statistics.CACHE.get(articleId);
@@ -104,7 +107,17 @@ public final class FlushStatisticServlet extends HttpServlet {
                         LOGGER.log(Level.FINE,
                                    "Flushing statistic of article[oId={0}]",
                                    articleId);
+
+                        iterator.remove();
+                        Statistics.CACHE.remove(articleId);
                     }
+
+                    Statistics.CACHE.put(Statistics.KEY_ARTICLE_NEED_TO_FLUSH,
+                                         articleIds);
+
+                    LOGGER.log(Level.FINE,
+                               "Next time will flush [{0}] statistics",
+                               articleIds.size());
                 }
             }
             transaction.commit();
