@@ -1,5 +1,5 @@
-#summary 评论
+#summary 评论/回复
 
-===评论===
+===评论/回复===
 
- * 评论者头像是使用 [http://www.gravatar.com/ Gravatar] 的
+ * 评论/回复者的头像是使用 [http://www.gravatar.com/ Gravatar] 的
