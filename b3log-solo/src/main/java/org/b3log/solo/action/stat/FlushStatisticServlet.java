@@ -115,9 +115,6 @@ public final class FlushStatisticServlet extends HttpServlet {
 
                 Statistics.CACHE.put(Statistics.KEY_ARTICLE_NEED_TO_FLUSH,
                                      articleIds);
-                LOGGER.log(Level.FINE,
-                           "Next time will flush [{0}] statistics",
-                           articleIds.size());
             }
             transaction.commit();
         } catch (final Exception e) {
