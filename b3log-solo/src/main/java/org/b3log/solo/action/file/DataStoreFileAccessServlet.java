@@ -33,6 +33,7 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Locales;
@@ -154,6 +155,8 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                     file.put(File.FILE_DOWNLOAD_URL, downloadURL);
 
                     fileRepository.add(file);
+
+                    PageCaches.removeAll(); // XXX: use repository cache instead
                 }
             }
 
