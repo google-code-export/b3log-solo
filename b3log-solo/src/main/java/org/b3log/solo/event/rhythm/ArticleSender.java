@@ -36,7 +36,7 @@ import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for sending articles to B3log Rhythm.
+ * This listener is responsible for sending article to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.0, Jan 23, 2011
