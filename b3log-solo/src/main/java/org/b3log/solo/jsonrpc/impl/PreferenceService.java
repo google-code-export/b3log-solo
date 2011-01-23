@@ -16,6 +16,8 @@
 
 package org.b3log.solo.jsonrpc.impl;
 
+import com.google.appengine.api.utils.SystemProperty;
+import com.google.appengine.api.utils.SystemProperty.Environment.Value;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -47,7 +49,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Jan 12, 2011
+ * @version 1.0.2.4, Jan 23, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -270,6 +272,17 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 return ret;
             }
             final String domain = blogHost.split(":")[0].trim();
+            final Value gaeEnvValue = SystemProperty.environment.value();
+            if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
+                if ("localhost".equals(domain)) {
+                    ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    return ret;
+                }
+            }
             final String port = blogHost.split(":")[1].trim();
             if (!"localhost".equals(domain) && !"80".equals(port)) {
                 ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
