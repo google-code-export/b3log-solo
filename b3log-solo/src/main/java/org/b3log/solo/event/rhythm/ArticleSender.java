@@ -97,7 +97,7 @@ public final class ArticleSender
                                 data,
                                 ArticleSender.class.getName()});
         try {
-            final JSONObject article =
+            final JSONObject originalArticle =
                     data.getJSONObject(Article.ARTICLE);
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
@@ -111,8 +111,10 @@ public final class ArticleSender
                 LOGGER.log(Level.INFO,
                            "Blog Solo runs on local server, so should not send "
                            + "this article[oId={0}, title={1}] to Rhythm",
-                           new Object[]{article.getString(Keys.OBJECT_ID),
-                                        article.getString(Article.ARTICLE_TITLE)});
+                           new Object[]{
+                            originalArticle.getString(Keys.OBJECT_ID),
+                                        originalArticle.getString(
+                            Article.ARTICLE_TITLE)});
                 return;
             }
 
@@ -120,6 +122,18 @@ public final class ArticleSender
                     new HTTPRequest(ADD_ARTICLE_URL, HTTPMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             requestJSONObject.put(VER, SoloServletListener.VERSION);
+            final JSONObject article = new JSONObject();
+            article.put(Article.ARTICLE_TITLE,
+                        originalArticle.getString(Article.ARTICLE_TITLE));
+            article.put(Article.ARTICLE_PERMALINK,
+                        originalArticle.getString(Article.ARTICLE_PERMALINK));
+            article.put(Article.ARTICLE_TAGS_REF,
+                        originalArticle.getString(Article.ARTICLE_TAGS_REF));
+            article.put(Article.ARTICLE_AUTHOR_EMAIL,
+                        originalArticle.getString(Article.ARTICLE_AUTHOR_EMAIL));
+            article.put(Article.ARTICLE_CONTENT,
+                        originalArticle.getString(Article.ARTICLE_CONTENT));
+
             requestJSONObject.put(Article.ARTICLE, article);
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
             httpRequest.setPayload(
