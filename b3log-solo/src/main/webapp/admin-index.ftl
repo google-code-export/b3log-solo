@@ -12,7 +12,6 @@
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery/jquery.bowknot.min.js"></script>
         <script type="text/javascript" src="js/lib/tiny_mce/tiny_mce.js"></script>
-        ${htmlHead}
     </head>
     <body>
         <div id="loadMsg">${loadingLabel}</div>
