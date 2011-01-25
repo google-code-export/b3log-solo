@@ -16,8 +16,10 @@
 
 package org.b3log.solo.util;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.b3log.solo.filter.PageCacheFilter;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
@@ -27,7 +29,7 @@ import org.b3log.solo.repository.impl.PageGAERepository;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 12, 2011
+ * @version 1.0.0.5, Jan 25, 2011
  */
 public final class Permalinks {
 
@@ -48,9 +50,6 @@ public final class Permalinks {
 
     static {
         RESERVED_LINKS.add("/");
-        RESERVED_LINKS.add("/admin-index.do");
-        RESERVED_LINKS.add("/init.do");
-        RESERVED_LINKS.add("/admin-index.do");
         RESERVED_LINKS.add("/index.do");
         RESERVED_LINKS.add("/article-detail.do");
         RESERVED_LINKS.add("/tag-articles.do");
@@ -59,21 +58,14 @@ public final class Permalinks {
         RESERVED_LINKS.add("/tags.html");
         RESERVED_LINKS.add("/tags");
         RESERVED_LINKS.add("/page.do");
-        RESERVED_LINKS.add("/admin-article.do");
-        RESERVED_LINKS.add("/admin-article-list.do");
-        RESERVED_LINKS.add("/admin-link-list.do");
-        RESERVED_LINKS.add("/admin-preference.do");
-        RESERVED_LINKS.add("/admin-article-sync.do");
-        RESERVED_LINKS.add("/admin-file-list.do");
-        RESERVED_LINKS.add("/admin-page.do");
-        RESERVED_LINKS.add("/admin-others.do");
         RESERVED_LINKS.add("/blog-articles-feed.do");
         RESERVED_LINKS.add("/tag-articles-feed.do");
-        RESERVED_LINKS.add("/captcha.do");
         RESERVED_LINKS.add("/captcha.do");
         RESERVED_LINKS.add("/error.do");
         RESERVED_LINKS.add("/file-access.do");
         RESERVED_LINKS.add("/datastore-file-access.do");
+
+        RESERVED_LINKS.removeAll(Arrays.asList(PageCacheFilter.ADMIN_ACTIONS));
     }
 
     /**
