@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Jan 15, 2011
+ * @version 1.0.2.8, Jan 25, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -81,7 +81,10 @@ public final class PageCacheFilter implements Filter {
         "/admin-page.do",
         "/admin-others.do",
         "/admin-draft-list.do",
-        "/admin-user-list.do"
+        "/admin-user-list.do",
+        "/rm-all-data.do",
+        "/init.do",
+        "/clear-cache.do"
     };
     /**
      * Page cache utilities.
@@ -248,14 +251,11 @@ public final class PageCacheFilter implements Filter {
     // XXX: performance issue
     static boolean shouldSkip(final String requestURI) {
         return requestURI.equals("/json-rpc.do")
-               || requestURI.equals("/live.do")
                || requestURI.equals("/captcha.do")
                || requestURI.equals("/tag-articles-feed.do")
                || requestURI.equals("/blog-articles-feed.do")
                || requestURI.equals("/file-access.do")
-               || requestURI.equals("/init.do")
                || requestURI.equals("/check-login.do")
-               || requestURI.equals("/clear-cache.do")
                || requestURI.equals("/add-article-comment.do")
                || requestURI.equals("/add-page-comment.do")
                || requestURI.equals("/get-random-articles.do")
