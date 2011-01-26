@@ -193,6 +193,9 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final Iterable<Entity> nextArticles =
                     articleRepository.getNextArticleAsync(articleId);
 
+            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
+            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
+
             LOGGER.finer("Getting article's comments....");
             final List<JSONObject> articleComments =
                     articleUtils.getComments(articleId);
