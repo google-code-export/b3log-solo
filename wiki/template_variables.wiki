@@ -3,24 +3,32 @@
 ===模板变量===
 
  * 如果模板变量的类型是 JSONObject，其字段属性参考 org.b3log.solo.model 包下的类
- * 每个页面都包含 header、side、footer 这三个公共部分，其模板变量单独列出（不在 `*`.ftl 表中给出）
+ * 每个页面都包含一些公共模板变量，这些模板变量单独列出（不在 `*`.ftl 表中给出）
 
 ----
- * header
+ * 公共的模板变量
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th>
   </tr>
   <tr><td>localeString</td><td>String</td><td>区域设定字符串
-  </td><td>值例如："zh_CN"</td></tr>
+  </td><td>值如："zh_CN"</td></tr>
   <tr><td>blogTitle</td><td>String</td><td>博客标题</td><td></td>
   </tr>
   <tr><td>blogTitle</td><td>String</td><td>博客子标题</td><td></td></tr>
   <tr><td>htmlHead</td><td>String</td><td>用户自定义的 HTML Head</td><td></td></tr>
   <tr><td>metaKeywords</td><td>String</td><td>用户自定义的关键字</td><td></td></tr>
   <tr><td>metaDescription</td><td>String</td><td>用户自定义的描述</td><td></td></tr>
-  <tr><td>users</td><td>String</td><td>用户列表</td><td></td></tr>
-  <tr><td>pageNavigations</td><td>String</td><td>自定义页面列表</td><td></td></tr>
+  <tr><td>users</td><td>List`<`JSONObject`>`</td><td>用户列表</td><td></td></tr>
+  <tr><td>pageNavigations</td><td>List`<`JSONObject`>`</td><td>自定义页面列表</td><td></td></tr>
   <tr><td>statistic</td><td>String</td><td>统计信息</td><td></td></tr>
+  <tr><td>links</td><td>List`<`JSONObject`>`</td><td>链接列表</td><td></td></tr>
+  <tr><td>recentComments</td><td>List`<`JSONObject`>`</td><td>最新评论列表</td><td></td></tr>
+  <tr><td>mostUsedTags</td><td>List`<`JSONObject`>`</td><td>引用最多的标签列表</td><td></td></tr>
+  <tr><td>mostCommentArticles</td><td>List`<`JSONObject`>`</td><td>评论最多的文章列表</td><td></td></tr>
+  <tr><td>mostViewCountArticles</td><td>List`<`JSONObject`>`</td><td>访问最多的文章列表</td><td></td></tr>
+  <tr><td>archiveDates</td><td>List`<`JSONObject`>`</td><td>存档日期列表</td><td></td></tr>
+  <tr><td>noticeBoard</td><td>String</td><td>用户自定义的公告栏</td><td></td></tr>
+  <tr><td>blogHost</td><td>String</td><td>博客地址</td><td>值如："88250.b3log.org:80"</td></tr>
  </table>
 ----
  * archive-date-articles.ftl：
