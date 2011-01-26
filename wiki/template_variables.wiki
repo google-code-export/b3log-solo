@@ -6,7 +6,7 @@
  * 每个页面都包含一些公共模板变量，这些模板变量单独列出（不在 `*`.ftl 表中给出）
 
 ----
- * 公共的模板变量
+ *公共的模板变量*
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th>
   </tr>
@@ -32,7 +32,7 @@
   <tr><td>version</td><td>String</td><td>当前使用的 B3log Solo 版本</td><td></td></tr>
  </table>
 ----
- * archive-date-articles.ftl：
+ *archive-date-articles.ftl*
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
   <tr><td>archiveDate</td><td>JSONObject</td><td>存档日期对象</td><td></td></tr>
