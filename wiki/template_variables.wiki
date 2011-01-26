@@ -8,4 +8,12 @@
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
   <tr><td>archiveDate</td><td>JSONObject</td><td>存档日期对象</td><td></td></tr>
+  <tr><td>articles</td><td>List`<`JSONObject`>`</td><td>存档文章列表</td><td></td></tr>
+  <tr><td>paginationFirstPageNum</td><td>Integer</td><td>文章列表分页第一页页码</td><td></td></tr>
+  <tr><td>paginationLastPageNum</td><td>Integer</td><td>文章列表分页最末页页码</td><td></td></tr>
+  <tr><td>paginationPageCount</td><td>Integer</td><td>文章列表分页页数</td><td></td></tr>
+  <tr><td>paginationPageNums</td><td>List`<`Integer`>`</td><td>文章列表分页页号</td><td></td></tr>
+  <tr><td>actionName</td><td>String</td><td>Action 名</td><td>Action 名值为 "archive-date-articles"</td></tr>
+  <tr><td>oId</td><td>String</td><td>存档日期对象 Id</td><td></td></tr>
+  <tr><td>skinDirName</td><td>String</td><td>当前使用的皮肤目录名</td><td></td></tr>
  </table>
