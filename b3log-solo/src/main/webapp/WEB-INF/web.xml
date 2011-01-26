@@ -19,7 +19,7 @@
 
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.1.3, Jan 25, 2011
+    Version: 1.0.1.4, Jan 26, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -95,6 +95,8 @@
             <url-pattern>/upgrade/*</url-pattern>
             <url-pattern>/init.do</url-pattern>
             <url-pattern>/rm-all-data.do</url-pattern>
+            <url-pattern>/tencent-microblog-oauth-authorize-token.do</url-pattern>
+            <url-pattern>/tencent-microblog-oauth-callback.do</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -114,6 +116,7 @@
             <url-pattern>/admin-others.do</url-pattern>
             <url-pattern>/admin-page.do</url-pattern>
             <url-pattern>/admin-preference.do</url-pattern>
+            <url-pattern>/admin-user-list.do</url-pattern>
             <url-pattern>/admin-user-list.do</url-pattern>
         </web-resource-collection>
         <auth-constraint>
@@ -378,6 +381,24 @@
         <servlet-name>AdminError</servlet-name>
         <url-pattern>/admin-error.do</url-pattern>
     </servlet-mapping>
+    <!-- Tencent OAuth -->
+    <servlet>
+        <servlet-name>AuthorizeToken</servlet-name>
+        <servlet-class>org.b3log.solo.tencent.microblog.oauth.AuthorizeToken</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthorizeToken</servlet-name>
+        <url-pattern>/tencent-microblog-oauth-authorize-token.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>TencentMicroblogOAuthCallback</servlet-name>
+        <servlet-class>org.b3log.solo.tencent.microblog.oauth.Callback</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TencentMicroblogOAuthCallback</servlet-name>
+        <url-pattern>/tencent-microblog-oauth-callback.do</url-pattern>
+    </servlet-mapping>
+    <!-- Error Pages -->
     <error-page>
         <error-code>404</error-code>
         <location>/error.do</location>

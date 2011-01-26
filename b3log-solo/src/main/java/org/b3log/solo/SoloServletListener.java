@@ -49,7 +49,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.event.buzz.ActivityCreator;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
@@ -64,6 +63,7 @@ import org.b3log.solo.event.sync.impl.CSDNBlogUpdateArticleProcessor;
 import org.b3log.solo.event.sync.impl.CnBlogsAddArticleProcessor;
 import org.b3log.solo.event.sync.impl.CnBlogsRemoveArticleProcessor;
 import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
+import org.b3log.solo.event.tencent.microblog.TencentMicroblogSender;
 import org.b3log.solo.jsonrpc.impl.AdminService;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.jsonrpc.impl.BlogSyncService;
@@ -86,7 +86,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.9, Jan 12, 2011
+ * @version 1.0.4.0, Jan 26, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -355,7 +355,8 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final EventManager eventManager = EventManager.getInstance();
 
-            new ActivityCreator(eventManager);
+//            new ActivityCreator(eventManager);
+            new TencentMicroblogSender(eventManager);
             new ArticleCommentReplyNotifier(eventManager);
             new PageCommentReplyNotifier(eventManager);
             new AddArticleGoogleBlogSearchPinger(eventManager);

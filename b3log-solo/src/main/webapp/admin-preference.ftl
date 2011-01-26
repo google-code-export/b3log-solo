@@ -9,6 +9,9 @@
         <span id="signs" onclick="changePreferenceTab(this);">
             ${signLabel}
         </span>
+        <span id="tencent" onclick="changePreferenceTab(this);">
+            ${tencentLabel}
+        </span>
         <!--
         <span id="syncGoogle" onclick="changePreferenceTab(this);">
             ${googleLabel}
@@ -242,32 +245,76 @@
                 </tbody>
             </table>
         </div>
-        <div id="syncGooglePanel" class="none">
+        <!--        <div id="syncGooglePanel" class="none">
+                    <table class="form" width="99%" cellpadding="0" cellspacing="9px">
+                        <tbody>
+                            <tr>
+                                <th width="260">
+                                    ${OAuthConsumerSecret1Label}
+                                </th>
+                                <td>
+                                    <input id="secret"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    ${authorizeGoogleBuzz1Label}
+                                </th>
+                                <td>
+                                    <img class="pointer" src="images/buzz.png"
+                                         onclick="oauthBuzz();" alt="${authorizeGoogleBuzz1Label}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    ${postToBuzzWhilePublishArticleLabel}
+                                </th>
+                                <td align="left">
+                                    <input type="checkbox" class="normalInput" id="syncBuzz"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="right">
+                                    <button onclick="changePreference();">${saveLabel}</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>-->
+        <div id="tencentPanel" class="none">
             <table class="form" width="99%" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
                         <th width="260">
-                            ${OAuthConsumerSecret1Label}
+                            ${appKey1Label}
                         </th>
                         <td>
-                            <input id="secret"/>
+                            <input id="tencentMicroblogAppKey"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="260">
+                            ${appSecret1Label}
+                        </th>
+                        <td>
+                            <input id="tencentMicroblogAppSecret"/>
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            ${authorizeGoogleBuzz1Label}
+                            ${authorizeTencentMicroblog1Label}
                         </th>
                         <td>
-                            <img class="pointer" src="images/buzz.png" 
-                                 onclick="oauthBuzz();" alt="${authorizeGoogleBuzz1Label}"/>
+                            <img class="pointer" src="images/tencent-microblog.png"
+                                 onclick="oauthTencentMicroblog();" alt="${authorizeTencentMicroblog1Label}"/>
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            ${postToBuzzWhilePublishArticleLabel}
+                            ${postToTencentMicroblogWhilePublishArticleLabel}
                         </th>
                         <td align="left">
-                            <input type="checkbox" class="normalInput" id="syncBuzz"/>
+                            <input type="checkbox" class="normalInput" id="postToTencentMicroblog"/>
                         </td>
                     </tr>
                     <tr>
@@ -311,7 +358,12 @@
                         $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                         preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
                         preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
-                    
+
+                        // Tencent micro blog settings
+                        preference.enablePostToTencentMicroblog ? $("#postToTencentMicroblog").attr("checked", "checked") : $("#postToTencentMicroblog").removeAttr("checked");
+                        $("#tencentMicroblogAppKey").val(preference.tencentMicroblogAppKey);
+                        $("#tencentMicroblogAppSecret").val(preference.tencentMicroblogAppSecret);
+
                         localeString = preference.localeString;
 
                         // skin
@@ -358,7 +410,7 @@
     getPreference();
     
     var changePreferenceTab = function (it) {
-        var tabs = ['preferences', 'skins', 'signs', 'syncGoogle'];
+        var tabs = ['preferences', 'skins', 'signs', 'syncGoogle', 'tencent'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i]) {
                 $("#" + tabs[i] + "Panel").show();
@@ -413,13 +465,16 @@
                 "timeZoneId": $("#timeZoneId").val(),
                 "noticeBoard": $("#noticeBoard").val(),
                 "htmlHead": $("#htmlHead").val(),
-                "googleOAuthConsumerSecret": $("#secret").val(),
+                "googleOAuthConsumerSecret": ""/*$("#secret").val()*/,
                 "externalRelevantArticlesDisplayCount": $("#externalRelevantArticlesDisplayCount").val(),
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
                 "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
-                "enablePostToBuzz": $("#syncBuzz").attr("checked"),
+                "enablePostToBuzz": false /*$("#syncBuzz").attr("checked")*/,
                 "enableArticleUpdateHint": $("#enableArticleUpdateHint").attr("checked"),
-                "signs": signs
+                "signs": signs,
+                "tencentMicroblogAppKey": $("#tencentMicroblogAppKey").val(),
+                "tencentMicroblogAppSecret": $("#tencentMicroblogAppSecret").val(),
+                "enablePostToTencentMicroblog": $("#postToTencentMicroblog").attr("checked")
             }
         }
 
@@ -458,5 +513,23 @@
         }
         $("#loadMsg").text("${loadingLabel}");
         window.location = "buzz-oauth.do?googleOAuthConsumerSecret=" + encodeURIComponent($("#secret").val());
+    }
+
+    var oauthTencentMicroblog = function () {
+        if ("" === $("#tencentMicroblogAppKey").val().replace(/\s/g, "")) {
+            $("#tipMsg").text("${contentEmptyLabel}");
+            return;
+        }
+
+        if ("" === $("#tencentMicroblogAppSecret").val().replace(/\s/g, "")) {
+            $("#tipMsg").text("${contentEmptyLabel}");
+            return;
+        }
+
+        $("#loadMsg").text("${loadingLabel}");
+        window.location = "tencent-microblog-oauth-authorize-token.do?appKey="
+            + $("#tencentMicroblogAppKey").val()
+            + "&appSecret=" + $("#tencentMicroblogAppSecret").val();
+
     }
 </script>
