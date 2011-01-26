@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, Jan 25, 2011
+ * @version 1.0.2.9, Jan 26, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -84,7 +84,9 @@ public final class PageCacheFilter implements Filter {
         "/admin-user-list.do",
         "/rm-all-data.do",
         "/init.do",
-        "/clear-cache.do"
+        "/clear-cache.do",
+        "/tencent-microblog-oauth-authorize-token.do",
+        "/tencent-microblog-oauth-callback.do"
     };
     /**
      * Page cache utilities.
