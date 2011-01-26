@@ -332,6 +332,7 @@
                         <exclude>**/src/main/java/**/package-info.java</exclude>
                         <exclude>**/src/*/webapp/js/lib/*.js</exclude>
                         <exclude>**/src/main/java/freemarker/core/TextBlock.java</exclude>
+                         <exclude>**/src/main/java/com/**/*.java</exclude>
                     </excludes>
 
                     <useDefaultExcludes>true</useDefaultExcludes>
@@ -363,7 +364,8 @@
                     <configLocation>${basedir}/src/main/resources/etc/beyondtrack_checks.xml</configLocation>
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <excludes>
-                    freemarker/core/TextBlock.java
+                    freemarker/core/TextBlock.java,
+                    com/**/*.java
                     </excludes>
                     <consoleOutput>true</consoleOutput>
                     <failOnViolation>true</failOnViolation>

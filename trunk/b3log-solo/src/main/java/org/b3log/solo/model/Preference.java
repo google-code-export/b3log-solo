@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Jan 2, 2011
+ * @version 1.0.1.9, Jan 26, 2011
  */
 public final class Preference {
 
@@ -148,6 +148,31 @@ public final class Preference {
      * Key of signs.
      */
     public static final String SIGNS = "signs";
+    /**
+     * Key of tencent micro blog app key.
+     */
+    public static final String TENCENT_MICROBLOG_APP_KEY =
+            "tencentMicroblogAppKey";
+    /**
+     * Key of tencent micro blog app secret.
+     */
+    public static final String TENCENT_MICROBLOG_APP_SECRET =
+            "tencentMicroblogAppSecret";
+    /**
+     * Key of tencent micro blog token key.
+     */
+    public static final String TENCENT_MICROBLOG_TOKEN_KEY =
+            "tencentMicroblogTokenKey";
+    /**
+     * Key of tencent micro blog token secret.
+     */
+    public static final String TENCENT_MICROBLOG_TOKEN_SECRET =
+            "tencentMicroblogTokenSecret";
+    /**
+     * Key of enable post to tencent micro blog.
+     */
+    public static final String ENABLE_POST_TO_TENCENT_MICROBLOG =
+            "enablePostToTencentMicroblog";
 
     /**
      * Private default constructor.
