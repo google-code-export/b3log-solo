@@ -40,7 +40,6 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
@@ -163,9 +162,6 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
             ret.put(Article.ARTICLES, articles);
             ret.put(Common.ACTION_NAME, Common.AUTHOR_ARTICLES);
             ret.put(Keys.OBJECT_ID, authorId);
-
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             final String authorName = author.getString(User.USER_NAME);
             ret.put(Common.AUTHOR_NAME, authorName);
