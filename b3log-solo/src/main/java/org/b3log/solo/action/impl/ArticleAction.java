@@ -42,6 +42,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
@@ -209,6 +210,9 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                     preference.getInt(
                     Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+
+            ret.put(Preference.BLOG_HOST,
+                    preference.getString(Preference.BLOG_HOST));
 
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
