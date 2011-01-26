@@ -30,6 +30,7 @@
   <tr><td>noticeBoard</td><td>String</td><td>用户自定义的公告栏</td><td></td></tr>
   <tr><td>blogHost</td><td>String</td><td>博客地址</td><td>值如："88250.b3log.org:80"</td></tr>
   <tr><td>version</td><td>String</td><td>当前使用的 B3log Solo 版本</td><td></td></tr>
+  <tr><td>所有语言配置属性</td><td></td><td></td><td>在 lang_x.properties 中配置的属性</td></tr>
  </table>
 
 *archive-date-articles.ftl*
@@ -44,4 +45,18 @@
   <tr><td>actionName</td><td>String</td><td>Action 名</td><td>Action 名值为 "archive-date-articles"</td></tr>
   <tr><td>oId</td><td>String</td><td>存档日期对象 Id</td><td></td></tr>
   <tr><td>skinDirName</td><td>String</td><td>当前使用的皮肤目录名</td><td></td></tr>
+ </table>
+
+*article-detial.ftl*
+ <table border="1">
+  <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
+  <tr><td>article</td><td>JSONObject</td><td>文章对象</td><td></td></tr>
+  <tr><td>articleComments</td><td>List`<`JSONObject`>`</td><td>文章评论列表</td><td></td></tr>
+  <tr><td>relevantArticles</td><td>List`<`JSONObject`>`</td><td>相关文章列表</td><td></td></tr>
+  <tr><td>externalRelevantArticlesDisplayCount</td><td>Integer</td><td>站外相关文章显示数</td><td></td></tr>
+  <tr><td>paginationPageCount</td><td>Integer</td><td>文章列表分页页数</td><td></td></tr>
+  <tr><td>previousArticlePermalink</td><td>String</td><td>上一篇文章链接</td><td></td></tr>
+  <tr><td>previousArticleTitle</td><td>String</td><td>上一篇文章标题</td><td></td></tr>
+  <tr><td>nextArticlePermalink</td><td>String</td><td>下一篇文章链接</td><td></td></tr>
+  <tr><td>nextArticleTitle</td><td>String</td><td>下一篇文章标题</td><td></td></tr>
  </table>
