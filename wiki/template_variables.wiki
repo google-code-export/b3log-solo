@@ -29,6 +29,7 @@
   <tr><td>archiveDates</td><td>List`<`JSONObject`>`</td><td>存档日期列表</td><td></td></tr>
   <tr><td>noticeBoard</td><td>String</td><td>用户自定义的公告栏</td><td></td></tr>
   <tr><td>blogHost</td><td>String</td><td>博客地址</td><td>值如："88250.b3log.org:80"</td></tr>
+  <tr><td>version</td><td>String</td><td>当前使用的 B3log Solo 版本</td><td></td></tr>
  </table>
 ----
  * archive-date-articles.ftl：
