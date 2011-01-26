@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Index action. index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Jan 12, 2011
+ * @version 1.0.1.0, Jan 26, 2011
  */
 public final class IndexAction extends AbstractCacheablePageAction {
 
@@ -111,9 +111,6 @@ public final class IndexAction extends AbstractCacheablePageAction {
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
             ret.put(Common.ACTION_NAME, Common.INDEX);
-
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

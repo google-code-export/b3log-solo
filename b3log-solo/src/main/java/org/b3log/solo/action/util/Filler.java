@@ -45,6 +45,7 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
@@ -68,7 +69,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.2, Jan 20, 2011
+ * @version 1.0.3.3, Jan 26, 2011
  */
 public final class Filler {
 
@@ -401,6 +402,9 @@ public final class Filler {
         for (final JSONObject user : userList) {
             user.remove(User.USER_EMAIL);
         }
+
+        final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
+        dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);
 
         fillPageNavigations(dataModel);
         fillStatistic(dataModel);

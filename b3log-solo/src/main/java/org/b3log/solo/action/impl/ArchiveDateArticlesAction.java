@@ -42,7 +42,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
@@ -59,7 +58,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Jan 14, 2011
+ * @version 1.0.1.3, Jan 26, 2011
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -195,8 +194,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
             ret.put(Common.ACTION_NAME, Common.ARCHIVED_DATE_ARTICLES);
             ret.put(Keys.OBJECT_ID, archiveDateId);
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);

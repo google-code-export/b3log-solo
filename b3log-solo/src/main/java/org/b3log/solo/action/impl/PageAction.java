@@ -33,7 +33,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
@@ -45,7 +44,7 @@ import org.json.JSONObject;
  * Page action. page.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 12, 2011
+ * @version 1.0.0.5, Jan 26, 2011
  */
 public final class PageAction extends AbstractCacheablePageAction {
 
@@ -124,8 +123,6 @@ public final class PageAction extends AbstractCacheablePageAction {
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

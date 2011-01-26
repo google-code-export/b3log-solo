@@ -44,7 +44,6 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.TagArticleGAERepository;
@@ -58,7 +57,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Jan 14, 2011
+ * @version 1.0.1.9, Jan 26, 2011
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -213,8 +212,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
             ret.put(Keys.OBJECT_ID, tagId);
             ret.put(Tag.TAG, tag);
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
