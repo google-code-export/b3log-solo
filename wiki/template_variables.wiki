@@ -31,7 +31,7 @@
   <tr><td>blogHost</td><td>String</td><td>博客地址</td><td>值如："88250.b3log.org:80"</td></tr>
   <tr><td>version</td><td>String</td><td>当前使用的 B3log Solo 版本</td><td></td></tr>
  </table>
-----
+
 *archive-date-articles.ftl*
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
