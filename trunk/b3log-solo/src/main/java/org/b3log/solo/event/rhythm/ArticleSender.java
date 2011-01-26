@@ -152,7 +152,7 @@ public final class ArticleSender
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#PREFERENCE_LOAD}.
+     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
      *
      * @return event type
      */
