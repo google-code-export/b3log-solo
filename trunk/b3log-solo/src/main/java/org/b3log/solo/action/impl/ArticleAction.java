@@ -214,9 +214,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     preference.getInt(
                     Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
 
-            ret.put(Preference.BLOG_HOST,
-                    preference.getString(Preference.BLOG_HOST));
-
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
