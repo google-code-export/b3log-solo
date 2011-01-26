@@ -393,7 +393,7 @@ public final class Filler {
                       preference.getString(Preference.META_KEYWORDS));
         dataModel.put(Preference.META_DESCRIPTION,
                       preference.getString(Preference.META_DESCRIPTION));
-        // XXX: performance issue
+
         final JSONObject result = userRepository.get(new Query());
         final JSONArray users = result.getJSONArray(Keys.RESULTS);
         final List<JSONObject> userList = CollectionUtils.jsonArrayToList(users);
