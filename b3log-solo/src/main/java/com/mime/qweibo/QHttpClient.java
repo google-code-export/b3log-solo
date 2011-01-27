@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2009, 2010, 2011, B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.mime.qweibo;
 
 import com.google.appengine.api.urlfetch.HTTPHeader;
@@ -6,23 +21,18 @@ import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
-
-//import org.apache.commons.httpclient.HttpClient;
-//import org.apache.commons.httpclient.HttpStatus;
-//import org.apache.commons.httpclient.methods.ByteArrayRequestEntity;
-//import org.apache.commons.httpclient.methods.GetMethod;
-//import org.apache.commons.httpclient.methods.PostMethod;
-//import org.apache.commons.httpclient.methods.multipart.FilePart;
-//import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-//import org.apache.commons.httpclient.methods.multipart.Part;
-//import org.apache.commons.httpclient.methods.multipart.StringPart;
-//import org.apache.commons.httpclient.HttpStatus;
 import java.net.URL;
 import javax.servlet.http.HttpServletResponse;
 
-public class QHttpClient {
+/**
+ * HTTP client for GAE application.
+ *
+ * @author unascribed
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.0, Jan 26, 2011
+ */
+final class QHttpClient {
 
-    private static final int CONNECTION_TIMEOUT = 20000;
     private URLFetchService urlFetchService =
             URLFetchServiceFactory.getURLFetchService();
 
@@ -46,11 +56,7 @@ public class QHttpClient {
             url += "?" + queryString;
         }
 
-
         final HTTPRequest request = new HTTPRequest(new URL(url));
-//		GetMethod httpGet = new GetMethod(url);
-//        httpGet.getParams().setParameter("http.socket.timeout",
-//                                         new Integer(CONNECTION_TIMEOUT));
 
         try {
             final HTTPResponse response = urlFetchService.fetch(request);
@@ -58,20 +64,10 @@ public class QHttpClient {
                 System.err.println("HttpGet Method failed: "
                                    + response.getResponseCode());
             }
-//            int statusCode = httpClient.executeMethod(httpGet);
-//            if (statusCode != HttpStatus.SC_OK) {
-//                System.err.println("HttpGet Method failed: "
-//                                   + httpGet.getStatusLine());
-//            }
-            // Read the response body.
-//            responseData = httpGet.getResponseBodyAsString();
             ret = new String(response.getContent(), "UTF-8");
 
         } catch (Exception e) {
             throw new Exception(e);
-        } finally {
-//            httpGet.releaseConnection();
-//            httpClient = null;
         }
 
         return ret;
@@ -89,44 +85,23 @@ public class QHttpClient {
      */
     public String httpPost(String url, String queryString) throws Exception {
         String ret = null;
-
-//        HttpClient httpClient = new HttpClient();
-//        PostMethod httpPost = new PostMethod(url);
-
         final HTTPRequest request = new HTTPRequest(new URL(url),
                                                     HTTPMethod.POST);
-//        request.setHeader(new HTTPHeader("Content-Type",
-//                                         "application/x-www-form-urlencoded"));
         request.setHeader(new HTTPHeader("Content-Type",
-                                         "text/html"));
-//        httpPost.addParameter("Content-Type",
-//                              "application/x-www-form-urlencoded");
-//        httpPost.getParams().setParameter("http.socket.timeout",
-//                                          new Integer(CONNECTION_TIMEOUT));
+                                         "application/x-www-form-urlencoded"));
         if (queryString != null && !queryString.equals("")) {
-//            httpPost.setRequestEntity(new ByteArrayRequestEntity(queryString.
-//                    getBytes()));
             request.setPayload(queryString.getBytes("UTF-8"));
         }
 
         try {
-//            int statusCode = httpClient.executeMethod(httpPost);
             final HTTPResponse response = urlFetchService.fetch(request);
             if (HttpServletResponse.SC_OK != response.getResponseCode()) {
                 System.err.println("HttpPost Method failed: "
                                    + response.getResponseCode());
             }
-//            if (statusCode != HttpStatus.SC_OK) {
-//                System.err.println("HttpPost Method failed: "
-//                                   + httpPost.getStatusLine());
-//            }
-//            ret = httpPost.getResponseBodyAsString();
             ret = new String(response.getContent(), "UTF-8");
         } catch (Exception e) {
             throw new Exception(e);
-        } finally {
-//			httpPost.releaseConnection();
-//			httpClient = null;
         }
 
         return ret;
