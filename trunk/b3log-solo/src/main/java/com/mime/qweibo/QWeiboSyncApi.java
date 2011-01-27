@@ -1,11 +1,11 @@
 package com.mime.qweibo;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mime.qweibo.QWeiboType.PageFlag;
 import com.mime.qweibo.QWeiboType.ResultType;
+import java.net.URLEncoder;
 
 public class QWeiboSyncApi {
 
@@ -32,7 +32,7 @@ public class QWeiboSyncApi {
         QWeiboRequest request = new QWeiboRequest();
         String res = null;
         try {
-            res = request.syncRequest(url, "GET", oauthKey, parameters, null);
+            res = request.request(url, "GET", oauthKey, parameters, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,7 +70,7 @@ public class QWeiboSyncApi {
         QWeiboRequest request = new QWeiboRequest();
         String res = null;
         try {
-            res = request.syncRequest(url, "GET", oauthKey, parameters, null);
+            res = request.request(url, "GET", oauthKey, parameters, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,7 +126,7 @@ public class QWeiboSyncApi {
         QWeiboRequest request = new QWeiboRequest();
         String res = null;
         try {
-            res = request.syncRequest(url, "GET", oauthKey, parameters, null);
+            res = request.request(url, "GET", oauthKey, parameters, null);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -185,15 +185,19 @@ public class QWeiboSyncApi {
             return "";
         }
 
+        try {
         parameters.add(new QParameter("format", strFormat));
         parameters.add(new QParameter("content", content));
         parameters.add(new QParameter("clientip", "127.0.0.1"));
+        } catch (final Exception e) {
+            System.err.println(e.getMessage());
+        }
 
         QWeiboRequest request = new QWeiboRequest();
         String res = null;
         try {
-            res = request.syncRequest(url, httpMethod, oauthKey, parameters,
-                                      files);
+            res = request.request(url, httpMethod, oauthKey, parameters,
+                                  files);
         } catch (Exception e) {
             e.printStackTrace();
         }
