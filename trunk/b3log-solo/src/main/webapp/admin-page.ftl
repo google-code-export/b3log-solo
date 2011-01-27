@@ -278,8 +278,7 @@
 
             extended_valid_elements: "pre[name|class]",
 
-            relative_urls: false,
-            remove_script_host: false
+            convert_urls : true
         });
 
         getPageList(1);
