@@ -1,0 +1,4 @@
+#summary 代码高亮
+
+===代码高亮===
+默认只能高亮 JavaScript、Java、XML，如果您需要高亮其他语言请修改 /js/articleUtil.js，找到 `SyntaxHighlighter.autoloader(`，按已有代码格式加入高亮刷。
