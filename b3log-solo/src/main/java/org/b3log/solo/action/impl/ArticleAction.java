@@ -290,7 +290,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     continue;
                 }
 
-                if (articleRepository.isPublished(articleId)) {
+                if (articleRepository.isPublished(relatedArticleId)) {
                     final JSONObject article =
                             articleRepository.get(relatedArticleId);
 
