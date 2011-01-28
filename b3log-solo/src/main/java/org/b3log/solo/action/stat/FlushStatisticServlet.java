@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Flushes statistic from memcache to datastore.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 20, 2011
+ * @version 1.0.0.2, Jan 28, 2011
  */
 public final class FlushStatisticServlet extends HttpServlet {
 
@@ -102,7 +102,7 @@ public final class FlushStatisticServlet extends HttpServlet {
                     LOGGER.log(Level.FINER, "Article[oId={0}]", articleId);
                     final JSONObject articleStat =
                             (JSONObject) Statistics.CACHE.get(articleId);
-                    if (null != articleStat) {
+                    if (null != articleStat && articleRepository.has(articleId)) {
                         articleRepository.update(articleId, articleStat);
                         LOGGER.log(Level.FINE,
                                    "Flushing statistic of article[oId={0}]",
