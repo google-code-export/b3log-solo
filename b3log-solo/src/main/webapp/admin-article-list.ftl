@@ -82,7 +82,7 @@
                     minWidth: 110,
                     style: "padding-left: 6px; overflow: hidden;font-size:11px; "
                 }, {
-                    name: "${commentNameLabel}",
+                    name: "${authorLabel}",
                     index: "author",
                     width: 100,
                     style: "padding-left: 6px; overflow: hidden;"
