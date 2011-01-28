@@ -169,7 +169,6 @@ public final class Tags {
     public void decTagPublishedRefCount(final String articleId)
             throws JSONException, RepositoryException {
         final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
-        final JSONObject article = articleRepository.get(articleId);
 
         for (final JSONObject tag : tags) {
             final String tagId = tag.getString(Keys.OBJECT_ID);
