@@ -12,7 +12,7 @@
         <meta name="robots" content="noindex, follow"/>
         <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/tree-house/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
@@ -43,7 +43,7 @@
                             <embed width="228" height="239" type="application/x-shockwave-flash"
                                    menu="false" name="http://blog.thepixel.com/wp-content/themes/PixelBlog2/flash/fan"
                                    wmode="transparent" loop="true" pluginspage="http://www.adobe.com/go/getflashplayer"
-                                   quality="high" src="/skins/tree-house/images/fan.swf"
+                                   quality="high" src="/skins/${skinDirName}/images/fan.swf"
                                    style="position: absolute;top:112px;left:265px;">
                         </div>
                     </div>

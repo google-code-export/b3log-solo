@@ -11,7 +11,7 @@
         <meta name="revised" content="B3log, 2010"/>
         <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/tree-house/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div class='goTopIcon' onclick='util.goTop();'></div>
-        <div class='goBottomIcon' onclick='util.goBottom("tree-house");'></div>
+        <div class='goBottomIcon' onclick='util.goBottom();'></div>
         <script type="text/javascript">
             util.setTagsPanel([<#list tags as tag>{
                     tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-var Util = function (tip) {
-    this.tip = tip;
+var Util = function (tips) {
+    this.tips = tips;
 }
 
 $.extend(Util.prototype, {
@@ -30,8 +30,8 @@ $.extend(Util.prototype, {
         }
     },
 
-    goBottom: function (type) {
-        switch (type) {
+    goBottom: function () {
+        switch (this.tips.skinDirName) {
             case undefined:
                 window.scrollTo(0, 0);
                 break;
@@ -58,7 +58,7 @@ $.extend(Util.prototype, {
                 return;
             }
         }
-        var tip = this.tip;
+        var tips = this.tips;
 
         // common-top
         $.ajax({
@@ -70,19 +70,19 @@ $.extend(Util.prototype, {
 
                     if (result.isAdmin) {
                         loginHTML += "<span class='left' onclick=\"util.clearCache('all');\">"
-                        + tip.clearAllCacheLabel + "&nbsp;|&nbsp;</span>"
+                        + tips.clearAllCacheLabel + "&nbsp;|&nbsp;</span>"
                         + "<span class='left' onclick='util.clearCache();'>"
-                        + tip.clearCacheLabel + "&nbsp;|&nbsp;</span>";
+                        + tips.clearCacheLabel + "&nbsp;|&nbsp;</span>";
                     }
                     loginHTML += "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='"
-                    + tip.adminLabel + "'></div>" + "<div class='left'>&nbsp;|&nbsp;</div>"
+                    + tips.adminLabel + "'></div>" + "<div class='left'>&nbsp;|&nbsp;</div>"
                     + "<div onclick=\"window.location.href='"
-                    + result.logoutURL + "';\" class='left logoutIcon' title='" + tip.logoutLabel+ "'></div>";
+                    + result.logoutURL + "';\" class='left logoutIcon' title='" + tips.logoutLabel+ "'></div>";
                 
                     $("#admin").append(loginHTML);
                 } else {
                     $("#admin").append("<div class='left loginIcon' onclick=\"window.location.href='"
-                        + result.loginURL + "';\" title='" + tip.loginLabel + "'></div>");
+                        + result.loginURL + "';\" title='" + tips.loginLabel + "'></div>");
                 }
             },
             error: function (event, XMLHttpRequest, ajaxOptions, thrownError) {
@@ -118,7 +118,7 @@ $.extend(Util.prototype, {
         });
     },
 
-    replaceCommentsEm: function (selector, skinName) {
+    replaceCommentsEm: function (selector) {
         var $commentContents = $(selector);
         for (var i = 0; i < $commentContents.length; i++) {
             var str = $commentContents[i].innerHTML;
@@ -126,7 +126,7 @@ $.extend(Util.prototype, {
             var content = ems[0];
             for (var j = 1; j < ems.length; j++) {
                 var key = ems[j].substr(0, 2),
-                emImgHTML = "<img src='/skins/" + this.tip.skinDirName + "/emotions/em" + key
+                emImgHTML = "<img src='/skins/" + this.tips.skinDirName + "/emotions/em" + key
                 + ".png'/>";
                 content += emImgHTML + ems[j].slice(3);
             }
