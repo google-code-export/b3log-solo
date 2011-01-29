@@ -5,6 +5,6 @@
         <img alt="Newer Posts" src="/skins/${skinDirName}/images/main_newerpost.jpg">
     </div>
     <div id="rss-hometext">
-        <a href="http://lambsand.appspot.com/feed">Subscribeto RSS</a>
+        <a href="/blog-articles-feed.do">Subscribeto RSS</a>
     </div>
 </div>

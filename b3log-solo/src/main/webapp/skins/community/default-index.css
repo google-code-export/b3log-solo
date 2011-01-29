@@ -42,8 +42,12 @@ a:hover {
 }
 
 input[type='button'] {
-    -moz-border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 1px 2px rgba(0, 0, 0, 0.29);
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 1px 2px rgba(0, 0, 0, 0.29);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 1px 2px rgba(0, 0, 0, 0.29);
     background-color: #000000;
     background: -moz-linear-gradient(center top , #333333 20%, #000000 100%) repeat scroll 0 0 transparent;
     border: 1px solid #000000;
@@ -316,8 +320,12 @@ a.header-title {
 }
 
 #comments .comment-panel .reply a {
-    -moz-border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 1px 2px rgba(0, 0, 0, 0.29);
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 1px 2px rgba(0, 0, 0, 0.29);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 0 2px rgba(255, 255, 255, 0.3) inset, 0 1px 2px rgba(0, 0, 0, 0.29);
     background-color: #EEEEEE;
     border: 1px solid #888888;
     color: #555555;
@@ -356,17 +364,23 @@ a.header-title {
 }
 
 .comment input[type="text"], .comment textarea {
+    outline: none;
     color: #666666;
-    padding: 11px 7px 9px;
+    padding: 10px 7px;
     background-color: #FFFFFF;
-    font: 14px/14px Arial,Helvetica,sans-serif;
+    font-family: Arial,Helvetica,sans-serif;
     width: 723px;
     overflow: auto;
     border: 1px solid #DDDDDD;
+    font-size: 12px;
+    height: 16px;
+    line-height: 16px;
 }
 
 .comment textarea {
     margin: 10px 0;
+    padding: 7px;
+    height: auto;
 }
 
 .comment #captchaReply {
@@ -647,4 +661,18 @@ a.star-icon {
     float: right;
     background-position: 0 -128px;
     margin: 1px 0 3px 0;
+}
+
+#tagsPanel a.tagPanel:hover {
+    border: 1px dashed;
+}
+
+#tagsPanel a.tagPanel {
+    border: 1px solid;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    margin: 3px;
+    cursor: pointer;
+    float: left;
 }

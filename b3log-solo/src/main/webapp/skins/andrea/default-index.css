@@ -223,11 +223,6 @@ a:hover {
     line-height: 38px;
 }
 
-#captcha {
-    cursor: auto;
-    vertical-align: super;
-}
-
 .pagination {
     line-height: 21px;
 }
@@ -259,6 +254,8 @@ a:hover {
 /* side */
 .side-navi .item {
     -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
     background: url("images/bg-transparent.png") repeat scroll 0 0 transparent;
     border: 1px solid #999999;
     float: left;
@@ -530,7 +527,9 @@ h2.comment-label {
 }
 
 .comment-form input, .comment-form textarea, #commentURLLabel, #commentURLLabelReply {
-    -moz-border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
     background-color: #EBE9E5;
     border: 1px solid #BABAAE;
     font-family: '微软雅黑';
@@ -538,6 +537,7 @@ h2.comment-label {
     margin: 10px 0;
     padding: 10px;
     width: 400px;
+    outline:none;
 }
 
 .comment-form input:focus, .comment-form textarea:focus {
@@ -547,6 +547,8 @@ h2.comment-label {
 
 #commentURLLabel, #commentURLLabelReply {
     -moz-border-radius: 5px 0 0 5px;
+    -webkit-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
     border-right: 0 none;
     color: #000000;
     float: left;
@@ -562,6 +564,8 @@ h2.comment-label {
 
 #commentURL, #commentURLReply {
     -moz-border-radius: 0 5px 5px 0;
+    -webkit-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
     border-left: 0 none;
     padding-left: 0;
     width: 364px;
@@ -572,7 +576,9 @@ h2.comment-label {
 }
 
 .comment-form button {
-    -moz-border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
     border: 1px solid #80B53B;
     color: #355207;
     cursor: pointer;
@@ -589,6 +595,8 @@ h2.comment-label {
     width: 537px;
     border: 1px solid #999999;
     -moz-border-radius:5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
     z-index: 10;
 }
 
