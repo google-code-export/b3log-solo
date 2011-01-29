@@ -337,7 +337,7 @@
                 } else {
                     var $refComment = $("#commentItem" + id).clone();
                     $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
-                    $refComment.find(".reply").remove();
+                    $refComment.find("#replyForm, .reply").remove();
                     $("#comments").append($refComment);
                 }
                 var position =  $(it).position();

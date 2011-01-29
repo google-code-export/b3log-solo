@@ -19,8 +19,8 @@
 #skinsPanel{width:99%;min-width:328px;}
 .skinPreview{width:280px;margin:6px;cursor:pointer;height:160px;}
 .skinItem{text-align:center;border:1px solid #E3E9FF;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;margin:12px;width:304px;}
-.skinItem.selected{border:1px solid;border-color:#CCC #BBBBBB #A0A0A0;}
-.skinItem:hover{border-color:#BBB;border-style:solid;}
+.skinItem.selected{border:1px solid;border-color:#BBCCFF;}
+.skinItem:hover{border-color:#CCCCFF #BBCCFF #BBBBFF;border-style:solid;}
 .tabPanel{background-color:#BCF;}
 .tabs{line-height:26px;}
 .tabs span{padding:6px 12px;cursor:pointer;}
