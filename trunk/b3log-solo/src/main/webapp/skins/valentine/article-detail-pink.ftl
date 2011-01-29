@@ -52,7 +52,7 @@
     </div>
     <div id="prefooter-wendy">
         <div id="rss-right"><!-- RSS Icon--></div>
-        <div id="rss-righttext"><a href="http://lambsand.appspot.com/feed">Subscribe to RSS</a></div>
+        <div id="rss-righttext"><a href="/blog-articles-feed.do">Subscribe to RSS</a></div>
     </div>
     <#include "footer.ftl">
 </div>

@@ -52,7 +52,7 @@
             </div>
             <div id="prefooter-page">
                 <div id="rss-page"><!-- RSS Icon--></div>
-                <div id="rss-lefttext"><a href="http://lambsand.appspot.com/feed">Subscribe to RSS</a></div>
+                <div id="rss-lefttext"><a href="/blog-articles-feed.do">Subscribe to RSS</a></div>
             </div>
             <!-- start footer -->
             <div id="footer">
