@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Jan 23, 2011
+ * @version 1.0.2.5, Jan 30, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
