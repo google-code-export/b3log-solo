@@ -45,13 +45,13 @@
             if (this.className !== 'selected') {
                 switch (this.id) {
                     case "greyBG":
-                        $("body").css("background-image", "url(/skins/andrea/images/bg-grey.jpg)");
+                        $("body").css("background-image", "url(/skins/${skinDirName}/images/bg-grey.jpg)");
                         break;
                     case "blueBG":
-                        $("body").css("background-image", "url(/skins/andrea/images/bg-blue.jpg)");
+                        $("body").css("background-image", "url(/skins/${skinDirName}/images/bg-blue.jpg)");
                         break;
                     case "brownBG":
-                        $("body").css("background-image", "url(/skins/andrea/images/bg-brown.jpg)");
+                        $("body").css("background-image", "url(/skins/${skinDirName}/images/bg-brown.jpg)");
                         break;
                 }
 

@@ -11,7 +11,7 @@
         <meta name="revised" content="B3log, 2010"/>
         <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/classic/default-index.css"/>
+        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
         ${htmlHead}
@@ -104,21 +104,21 @@
                                                 ${commentEmotions1Label}
                                             </th>
                                             <td id="emotions">
-                                                <img class="[em00]" src="/skins/classic/emotions/em00.png" alt="${em00Label}" title="${em00Label}" />
-                                                <img class="[em01]" src="/skins/classic/emotions/em01.png" alt="${em01Label}" title="${em01Label}" />
-                                                <img class="[em02]" src="/skins/classic/emotions/em02.png" alt="${em02Label}" title="${em02Label}" />
-                                                <img class="[em03]" src="/skins/classic/emotions/em03.png" alt="${em03Label}" title="${em03Label}" />
-                                                <img class="[em04]" src="/skins/classic/emotions/em04.png" alt="${em04Label}" title="${em04Label}" />
-                                                <img class="[em05]" src="/skins/classic/emotions/em05.png" alt="${em05Label}" title="${em05Label}" />
-                                                <img class="[em06]" src="/skins/classic/emotions/em06.png" alt="${em06Label}" title="${em06Label}" />
-                                                <img class="[em07]" src="/skins/classic/emotions/em07.png" alt="${em07Label}" title="${em07Label}" />
-                                                <img class="[em08]" src="/skins/classic/emotions/em08.png" alt="${em08Label}" title="${em08Label}" />
-                                                <img class="[em09]" src="/skins/classic/emotions/em09.png" alt="${em09Label}" title="${em09Label}" />
-                                                <img class="[em10]" src="/skins/classic/emotions/em10.png" alt="${em10Label}" title="${em10Label}" />
-                                                <img class="[em11]" src="/skins/classic/emotions/em11.png" alt="${em11Label}" title="${em11Label}" />
-                                                <img class="[em12]" src="/skins/classic/emotions/em12.png" alt="${em12Label}" title="${em12Label}" />
-                                                <img class="[em13]" src="/skins/classic/emotions/em13.png" alt="${em13Label}" title="${em13Label}" />
-                                                <img class="[em14]" src="/skins/classic/emotions/em14.png" alt="${em14Label}" title="${em14Label}" />
+                                                <img class="[em00]" src="/skins/${skinDirName}/emotions/em00.png" alt="${em00Label}" title="${em00Label}" />
+                                                <img class="[em01]" src="/skins/${skinDirName}/emotions/em01.png" alt="${em01Label}" title="${em01Label}" />
+                                                <img class="[em02]" src="/skins/${skinDirName}/emotions/em02.png" alt="${em02Label}" title="${em02Label}" />
+                                                <img class="[em03]" src="/skins/${skinDirName}/emotions/em03.png" alt="${em03Label}" title="${em03Label}" />
+                                                <img class="[em04]" src="/skins/${skinDirName}/emotions/em04.png" alt="${em04Label}" title="${em04Label}" />
+                                                <img class="[em05]" src="/skins/${skinDirName}/emotions/em05.png" alt="${em05Label}" title="${em05Label}" />
+                                                <img class="[em06]" src="/skins/${skinDirName}/emotions/em06.png" alt="${em06Label}" title="${em06Label}" />
+                                                <img class="[em07]" src="/skins/${skinDirName}/emotions/em07.png" alt="${em07Label}" title="${em07Label}" />
+                                                <img class="[em08]" src="/skins/${skinDirName}/emotions/em08.png" alt="${em08Label}" title="${em08Label}" />
+                                                <img class="[em09]" src="/skins/${skinDirName}/emotions/em09.png" alt="${em09Label}" title="${em09Label}" />
+                                                <img class="[em10]" src="/skins/${skinDirName}/emotions/em10.png" alt="${em10Label}" title="${em10Label}" />
+                                                <img class="[em11]" src="/skins/${skinDirName}/emotions/em11.png" alt="${em11Label}" title="${em11Label}" />
+                                                <img class="[em12]" src="/skins/${skinDirName}/emotions/em12.png" alt="${em12Label}" title="${em12Label}" />
+                                                <img class="[em13]" src="/skins/${skinDirName}/emotions/em13.png" alt="${em13Label}" title="${em13Label}" />
+                                                <img class="[em14]" src="/skins/${skinDirName}/emotions/em14.png" alt="${em14Label}" title="${em14Label}" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -203,7 +203,8 @@
                     + '</div><div class="clear"></div></div><div class="comment-body">'
                     + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
                     + '" src="' + result.commentThumbnailURL + '"/>'
-                    + '</div><div class="comment-content">' + articleUtil.replaceEmotions($("#comment" + state).val().replace(/\n/g,"<br/>").replace(/</g, "&lt;").replace(/>/g, "&gt;"), "classic") + '</div><div class="clear"></div>'
+                    + '</div><div class="comment-content">' + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/\n/g,"<br/>").replace(/</g, "&lt;").replace(/>/g, "&gt;"))
+                    + '</div><div class="clear"></div>'
                     + '</div></div></div>';
 
                 articleUtil.addCommentAjax(commentHTML, state);

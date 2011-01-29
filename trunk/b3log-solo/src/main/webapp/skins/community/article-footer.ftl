@@ -43,7 +43,8 @@
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
-        "logoutLabel": "${logoutLabel}"
+        "logoutLabel": "${logoutLabel}",
+        "skinDirName": "${skinDirName}"
     });
 
     var init = function () {

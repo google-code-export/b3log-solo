@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-var ArticleUtil = function (tip) {
+var ArticleUtil = function (tips) {
     this.currentCommentId = "";
-    this.tip = tip;
+    this.tips = tips;
 };
 
 $.extend(ArticleUtil.prototype, {
@@ -73,19 +73,19 @@ $.extend(ArticleUtil.prototype, {
         var commentName = $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
         commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
         if (2 > commentName.length || commentName.length > 20) {
-            $("#commentErrorTip" + state).html(this.tip.nameTooLongLabel);
+            $("#commentErrorTip" + state).html(this.tips.nameTooLongLabel);
             $("#commentName" + state).focus();
         } else if ($("#commentEmail" + state).val().replace(/\s/g, "") === "") {
-            $("#commentErrorTip" + state).html(this.tip.mailCannotEmptyLabel);
+            $("#commentErrorTip" + state).html(this.tips.mailCannotEmptyLabel);
             $("#commentEmail" + state).focus();
         } else if(!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#commentEmail" + state).val())) {
-            $("#commentErrorTip" + state).html(this.tip.mailInvalidLabel);
+            $("#commentErrorTip" + state).html(this.tips.mailInvalidLabel);
             $("#commentEmail" + state).focus();
         } else if (2 > commenterContent.length || commenterContent.length > 500) {
-            $("#commentErrorTip" + state).html(this.tip.commentContentCannotEmptyLabel);
+            $("#commentErrorTip" + state).html(this.tips.commentContentCannotEmptyLabel);
             $("#comment" + state).focus();
         } else if ($("#commentValidate" + state).val().replace(/\s/g, "") === "") {
-            $("#commentErrorTip" + state).html(this.tip.captchaCannotEmptyLabel);
+            $("#commentErrorTip" + state).html(this.tips.captchaCannotEmptyLabel);
             $("#commentValidate" + state).focus();
         } else {
             return true;
@@ -116,12 +116,12 @@ $.extend(ArticleUtil.prototype, {
         }
     },
 
-    replaceEmotions: function (commentContentHTML, skinName) {
+    replaceCommentsEmString: function (commentContentHTML) {
         var commentContents = commentContentHTML.split("[em");
         commentContentHTML = commentContents[0];
         for (var j = 1; j < commentContents.length; j++) {
             var key = commentContents[j].substr(0, 2),
-            emImgHTML = "<img src='/skins/" + skinName + "/emotions/em" + key + ".png'/>";
+            emImgHTML = "<img src='/skins/" + this.tips.skinDirName + "/emotions/em" + key + ".png'/>";
             commentContentHTML += emImgHTML + commentContents[j].slice(3);
         }
         return commentContentHTML;
@@ -185,7 +185,7 @@ $.extend(ArticleUtil.prototype, {
     },
 
     loadRandomArticles: function () {
-        var randomArticles1Label = this.tip.randomArticles1Label;
+        var randomArticles1Label = this.tips.randomArticles1Label;
         // getRandomArticles
         $.ajax({
             url: "/get-random-articles.do",
@@ -211,10 +211,10 @@ $.extend(ArticleUtil.prototype, {
     },
 
     loadExternalRelevantArticles: function (tags) {
-        var tip = this.tip;
+        var tips = this.tips;
         $.ajax({
             url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
-            + "&blogHost=" + tip.blogHost + "&paginationPageSize=" + tip.externalRelevantArticlesDisplayCount,
+            + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
             type: "GET",
             dataType:"jsonp",
             jsonp: "callback",
@@ -236,7 +236,7 @@ $.extend(ArticleUtil.prototype, {
                     listHtml += articleLiHtml
                 }
                 
-                var randomArticleListHtml = "<h5>" + tip.externalRelevantArticles1Label + "</h5>"
+                var randomArticleListHtml = "<h5>" + tips.externalRelevantArticles1Label + "</h5>"
                 + "<ul class='marginLeft12'>"
                 + listHtml + "</ul>";
                 $("#externalRelevantArticles").append(randomArticleListHtml).addClass("article-relative");
@@ -313,15 +313,15 @@ $.extend(ArticleUtil.prototype, {
         if (!statue) {
             statue = '';
         }
-        var tip = this.tip,
+        var tips = this.tips,
         type = "article";
-        if (tip.randomArticles1Label === undefined) {
+        if (tips.randomArticles1Label === undefined) {
             type = "page";
         }
         if (this.validateComment(statue)) {
-            $("#commentErrorTip" + statue).html(this.tip.loadingLabel);
+            $("#commentErrorTip" + statue).html(this.tips.loadingLabel);
             var requestJSONObject = {
-                "oId": tip.oId,
+                "oId": tips.oId,
                 "commentContent": $("#comment" + statue).val().replace(/(^\s*)|(\s*$)/g, ""),
                 "commentEmail": $("#commentEmail" + statue).val(),
                 "commentURL": "http://" + $("#commentURL" + statue).val().replace(/(^\s*)|(\s*$)/g, ""),
@@ -343,7 +343,7 @@ $.extend(ArticleUtil.prototype, {
                             addComment(result, statue);
                             break;
                         case "CAPTCHA_ERROR":
-                            $("#commentErrorTip" + statue).html(tip.captchaErrorLabel);
+                            $("#commentErrorTip" + statue).html(tips.captchaErrorLabel);
                             $("#captcha" + statue).attr("src", "/captcha.do?code=" + Math.random());
                             $("#commentValidate" + statue).val("").focus();
                             break;
