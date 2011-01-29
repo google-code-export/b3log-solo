@@ -42,5 +42,4 @@
         "skinDirName": "${skinDirName}"
     });
     util.init();
-    util.replaceCommentsEm(".side-navi .navi-comments .side-comment");
 </script>

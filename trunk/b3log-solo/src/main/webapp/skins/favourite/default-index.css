@@ -59,13 +59,13 @@ h5{font-size:12px;}
 #commentURLLabel, #commentURLLabelReply{background:url("images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;border:1px solid #A6A6A6;border-right:0px;float:left;height:20px;line-height:20px;color: #555555;}
 #commentURL, #commentURLReply{border-left:0 none;width:166px;color: #555555;}
 .error-msg{color:#3366CC;}
-.side-navi .item{padding:15px 0 15px 30px;}
+.side-navi .item{padding:15px 12px 15px 30px;}
 .side-navi .navi-comments img{width:32px;height:32px;border:1px solid #999999;padding:1px;margin-right:7px;}
 .side-navi .navi-comments a{font-weight:bold;color:white;}
 .side-navi .navi-comments .side-comment{color:white;font-weight:normal;width:210px;}
 .side-navi .navi-comments .side-comment img{border:0px;height:24px;width:24px;padding:0px;margin-right: 0px;}
 .side-navi .navi-comments li{padding:2px 0;}
-.side-navi .navi-comments li div{width:227px;}
+.side-navi .navi-comments li div{width:215px;}
 .side-navi a.selected{text-decoration:none;color:#555555;}
 .side-navi ul.navi-tags li, .side-navi .navi-comments li{padding-left:0px;background-image:none;}
 .side-navi ul.navi-tags li img{padding-right:6px;height:16px;width:16px;}
