@@ -275,7 +275,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             final Value gaeEnvValue = SystemProperty.environment.value();
             if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
                 if ("localhost".equals(domain)) {
-                    ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
+                    ret.put(Keys.STATUS_CODE,
+                            StatusCodes.UPDATE_PREFERENCE_FAIL_);
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
@@ -310,8 +311,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
             LOGGER.log(Level.FINE, "Skin path[{0}]", skinPath);
-            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
-                    new File(skinPath));
             Templates.CACHE.clear();
 
             preference.put(Skin.SKINS, skinArray.toString());
@@ -332,6 +331,9 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_SUCC);
+
+            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
+                    new File(skinPath));
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
