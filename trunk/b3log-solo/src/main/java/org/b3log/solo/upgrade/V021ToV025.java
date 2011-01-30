@@ -125,7 +125,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jan 20, 2011
+ * @version 1.0.2.2, Jan 25, 2011
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -188,7 +188,7 @@ public final class V021ToV025 extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
-        if ("0.2.5 Beta2".equals(SoloServletListener.VERSION)) {
+        if ("0.2.5".equals(SoloServletListener.VERSION)) {
             LOGGER.info("Checking for consistency....");
 
             final String currentUserEmail =
