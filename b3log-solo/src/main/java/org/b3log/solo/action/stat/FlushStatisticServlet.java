@@ -17,8 +17,6 @@
 package org.b3log.solo.action.stat;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -27,9 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Statistic;
-import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
@@ -38,7 +34,7 @@ import org.json.JSONObject;
  * Flushes statistic from memcache to datastore.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 28, 2011
+ * @version 1.0.0.3, Jan 30, 2011
  */
 public final class FlushStatisticServlet extends HttpServlet {
 
@@ -51,11 +47,6 @@ public final class FlushStatisticServlet extends HttpServlet {
      */
     private static final Logger LOGGER =
             Logger.getLogger(FlushStatisticServlet.class.getName());
-    /**
-     * Article repository.
-     */
-    private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
     /**
      * Statistic repository.
      */
@@ -73,7 +64,7 @@ public final class FlushStatisticServlet extends HttpServlet {
             return;
         }
 
-        Transaction transaction = statisticRepository.beginTransaction();
+        final Transaction transaction = statisticRepository.beginTransaction();
         try {
             final JSONObject statistic =
                     statisticRepository.get(Statistic.STATISTIC);
@@ -89,40 +80,5 @@ public final class FlushStatisticServlet extends HttpServlet {
         }
         LOGGER.log(Level.FINE, "Flushed the blog view count[{0}]",
                    blogViewCnt);
-
-        transaction = statisticRepository.beginTransaction();
-        try {
-            @SuppressWarnings("unchecked")
-            final Set<String> articleIds = (Set<String>) Statistics.CACHE.get(
-                    Statistics.KEY_ARTICLE_NEED_TO_FLUSH);
-            if (null != articleIds) {
-                final Iterator<String> iterator = articleIds.iterator();
-                while (iterator.hasNext()) {
-                    final String articleId = iterator.next();
-                    LOGGER.log(Level.FINER, "Article[oId={0}]", articleId);
-                    final JSONObject articleStat =
-                            (JSONObject) Statistics.CACHE.get(articleId);
-                    if (null != articleStat && articleRepository.has(articleId)) {
-                        articleRepository.update(articleId, articleStat);
-                        LOGGER.log(Level.FINE,
-                                   "Flushing statistic of article[oId={0}]",
-                                   articleId);
-                    }
-
-                    iterator.remove();
-                    Statistics.CACHE.remove(articleId);
-                }
-
-                Statistics.CACHE.put(Statistics.KEY_ARTICLE_NEED_TO_FLUSH,
-                                     articleIds);
-            }
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-        LOGGER.log(Level.FINE, "Flushed the articles view count");
     }
 }

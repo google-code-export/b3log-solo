@@ -18,17 +18,17 @@ package org.b3log.solo.repository;
 
 import com.google.appengine.api.datastore.Entity;
 import java.util.List;
-import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.gae.GAERepository;
 import org.json.JSONObject;
 
 /**
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Jan 17, 2011
+ * @version 1.0.1.4, Jan 30, 2011
  */
-public interface ArticleRepository extends Repository {
+public interface ArticleRepository extends GAERepository {
 
     /**
      * Gets articles by the specified author email, current page number and
