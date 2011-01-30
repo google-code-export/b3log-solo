@@ -21,7 +21,7 @@
     Description: Cron job for GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.0.0.5, Jan 15, 2011
+    Version: 1.0.0.6, Jan 30, 2011
     Author: Liang Ding
 -->
 <cronentries>
@@ -36,12 +36,6 @@
         <url>/article-random-double-gen.do?cnt=5</url>
         <description>Regenerate article random double.</description>
         <schedule>every 1 minutes</schedule>
-    </cron>
-
-    <cron>
-        <url>/flush-stat.do</url>
-        <description>Flushes the statistic from memcache to datastore.</description>
-        <schedule>every 5 minutes</schedule>
     </cron>
 
 </cronentries>
