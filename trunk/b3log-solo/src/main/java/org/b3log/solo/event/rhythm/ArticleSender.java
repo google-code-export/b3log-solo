@@ -131,8 +131,8 @@ public final class ArticleSender
             article.put(Article.ARTICLE_CONTENT,
                         originalArticle.getString(Article.ARTICLE_CONTENT));
             article.put(Article.ARTICLE_CREATE_DATE,
-                        ((Date)originalArticle.get(Article.ARTICLE_CREATE_DATE))
-                        .getTime());
+                        ((Date) originalArticle.get(Article.ARTICLE_CREATE_DATE)).
+                    getTime());
 
             requestJSONObject.put(Article.ARTICLE, article);
             requestJSONObject.put(Common.BLOG_VERSION,
