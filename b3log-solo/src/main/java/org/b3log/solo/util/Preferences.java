@@ -99,8 +99,8 @@ public final class Preferences {
      */
     public void setPreference(final JSONObject preference)
             throws JSONException, RepositoryException {
-        userPreferenceCache.put(PREFERENCE, preference.toString());
         preferenceRepository.update(PREFERENCE, preference);
+        userPreferenceCache.put(PREFERENCE, preference.toString());
     }
 
     /**
