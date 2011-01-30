@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Jan 14, 2011
+ * @version 1.0.2.6, Jan 30, 2011
  */
 public final class Common {
 
@@ -161,6 +161,14 @@ public final class Common {
      * Key of URI.
      */
     public static final String URI = "URI";
+    /**
+     * Key of blog.
+     */
+    public static final String BLOG = "blog";
+    /**
+     * Key of blog version.
+     */
+    public static final String BLOG_VERSION = "blogVersion";
 
     /**
      * Private default constructor.

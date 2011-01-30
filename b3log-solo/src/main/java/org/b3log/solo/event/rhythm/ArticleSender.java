@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.event.rhythm;
 
 import com.google.appengine.api.urlfetch.HTTPMethod;
@@ -32,6 +31,7 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
@@ -63,10 +63,6 @@ public final class ArticleSender
      * URL of adding article to Rhythm.
      */
     private static final URL ADD_ARTICLE_URL;
-    /**
-     * Key of version.
-     */
-    private static final String VER = "soloVersion";
 
     static {
         try {
@@ -113,7 +109,7 @@ public final class ArticleSender
                            + "this article[oId={0}, title={1}] to Rhythm",
                            new Object[]{
                             originalArticle.getString(Keys.OBJECT_ID),
-                                        originalArticle.getString(
+                            originalArticle.getString(
                             Article.ARTICLE_TITLE)});
                 return;
             }
@@ -121,7 +117,6 @@ public final class ArticleSender
             final HTTPRequest httpRequest =
                     new HTTPRequest(ADD_ARTICLE_URL, HTTPMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
-            requestJSONObject.put(VER, SoloServletListener.VERSION);
             final JSONObject article = new JSONObject();
             article.put(Article.ARTICLE_TITLE,
                         originalArticle.getString(Article.ARTICLE_TITLE));
@@ -137,18 +132,16 @@ public final class ArticleSender
                         originalArticle.get(Article.ARTICLE_CREATE_DATE));
 
             requestJSONObject.put(Article.ARTICLE, article);
+            requestJSONObject.put(Common.BLOG_VERSION,
+                                  SoloServletListener.VERSION);
+            requestJSONObject.put(Common.BLOG, "B3log Solo");
             requestJSONObject.put(Preference.BLOG_TITLE,
-                    preference.getString(Preference.BLOG_TITLE));
+                                  preference.getString(Preference.BLOG_TITLE));
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
             httpRequest.setPayload(
                     requestJSONObject.toString().getBytes("UTF-8"));
-//            final Future<HTTPResponse> futureResponse =
+
             urlFetchService.fetchAsync(httpRequest);
-//            final HTTPResponse httpResponse =
-//                    futureResponse.get(TIMEOUT, TimeUnit.MILLISECONDS);
-//            final int statusCode = httpResponse.getResponseCode();
-//            LOGGER.log(Level.FINEST, "Response from Rhythm[statusCode={0}]",
-//                       statusCode);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Sends article to Rhythm error: {0}",
                        e.getMessage());
