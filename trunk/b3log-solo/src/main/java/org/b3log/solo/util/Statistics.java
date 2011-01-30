@@ -16,8 +16,6 @@
 
 package org.b3log.solo.util;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Latkes;
@@ -38,7 +36,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 15, 2011
+ * @version 1.0.0.5, Jan 30, 2011
  */
 public final class Statistics {
 
@@ -65,10 +63,6 @@ public final class Statistics {
      * Statistic cache name.
      */
     public static final String STATISTIC_CACHE_NAME = "statisticCache";
-    /**
-     * Cache key of article need to flush.
-     */
-    public static final String KEY_ARTICLE_NEED_TO_FLUSH = "articleNeed2Flush";
 
     /**
      * Initializes cache.
@@ -258,33 +252,14 @@ public final class Statistics {
                 return;
             }
 
-            JSONObject articleStat = (JSONObject) CACHE.get(articleId);
-            if (null == articleStat) {
-                articleStat = new JSONObject(article,
-                                             JSONObject.getNames(article));
-            }
-
             final int viewCnt =
-                    articleStat.getInt(Article.ARTICLE_VIEW_COUNT) + 1;
-            articleStat.put(Article.ARTICLE_VIEW_COUNT, viewCnt);
-            articleStat.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+                    article.getInt(Article.ARTICLE_VIEW_COUNT) + 1;
+            article.put(Article.ARTICLE_VIEW_COUNT, viewCnt);
+            article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
-            CACHE.put(articleId, articleStat);
-
-            @SuppressWarnings("unchecked")
-            Set<String> articleIds =
-                    (Set<String>) CACHE.get(KEY_ARTICLE_NEED_TO_FLUSH);
-            if (null == articleIds) {
-                LOGGER.warning(
-                        "New a set for caching ids of article need to flush");
-                articleIds = new HashSet<String>();
-            }
-            articleIds.add(articleId);
-            CACHE.put(KEY_ARTICLE_NEED_TO_FLUSH, articleIds);
-
-            LOGGER.log(Level.FINE,
-                       "Cached statistic of article[oId={0}, viewCount={1}]",
-                       new Object[]{articleId, viewCnt});
+            LOGGER.finer("Incing article view count async....");
+            articleRepository.updateAsync(articleId, article);
+            LOGGER.finer("Inced article view count");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
