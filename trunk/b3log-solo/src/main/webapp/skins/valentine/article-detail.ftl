@@ -27,7 +27,6 @@
         <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             var articleUtil = new ArticleUtil({
                 "nameTooLongLabel": "${nameTooLongLabel}",
@@ -118,7 +117,6 @@
 
                 articleUtil.load();
                 articleUtil.loadRandomArticles();
-                articleUtil.loadTool();
                     <#if 0 != externalRelevantArticlesDisplayCount>
                     articleUtil.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
                     </#if>

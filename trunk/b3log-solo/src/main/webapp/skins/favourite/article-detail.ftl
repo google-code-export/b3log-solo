@@ -228,16 +228,6 @@
                     <div class="clear"></div>
                 </div>
                 <div class="roundbottom"></div>
-                <div class="stack addthis_toolbox">
-                    <img src="/images/stack.png" alt="stack"/>
-                    <ul id="stack" class="custom_images">
-                        <li><a class="addthis_button_googlebuzz"><span>Buzz</span><img src="/images/buzz.png" alt="Share to Buzz" /></a></li>
-                        <li><a class="addthis_button_twitter"><span>Twitter</span><img src="/images/twitter.png" alt="Share to Twitter" /></a></li>
-                        <li><a class="addthis_button_delicious"><span>Delicious</span><img src="/images/delicious.png" alt="Share to Delicious" /></a></li>
-                        <li><a class="addthis_button_facebook"><span>Facebook</span><img src="/images/facebook.png" alt="Share to Facebook" /></a></li>
-                        <li><a class="addthis_button_more"><span>More...</span><img src="/images/addthis.png" alt="More..." /></a></li>
-                    </ul>
-                </div>
             </div>
         </div>
         <div class="footer">
@@ -247,7 +237,6 @@
         <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
         <script type="text/javascript">
             var articleUtil = new ArticleUtil({
                 "nameTooLongLabel": "${nameTooLongLabel}",
@@ -338,7 +327,6 @@
 
                 articleUtil.load();
                 articleUtil.loadRandomArticles();
-                articleUtil.loadTool();
                     <#if 0 != externalRelevantArticlesDisplayCount>
                     articleUtil.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
                     </#if>
