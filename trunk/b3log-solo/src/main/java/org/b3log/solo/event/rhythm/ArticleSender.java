@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.event.rhythm;
 
 import com.google.appengine.api.urlfetch.HTTPMethod;
@@ -21,6 +22,7 @@ import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -129,7 +131,8 @@ public final class ArticleSender
             article.put(Article.ARTICLE_CONTENT,
                         originalArticle.getString(Article.ARTICLE_CONTENT));
             article.put(Article.ARTICLE_CREATE_DATE,
-                        originalArticle.get(Article.ARTICLE_CREATE_DATE));
+                        ((Date)originalArticle.get(Article.ARTICLE_CREATE_DATE))
+                        .getTime());
 
             requestJSONObject.put(Article.ARTICLE, article);
             requestJSONObject.put(Common.BLOG_VERSION,
