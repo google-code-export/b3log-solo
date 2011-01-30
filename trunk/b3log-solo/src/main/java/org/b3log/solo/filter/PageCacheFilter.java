@@ -113,7 +113,6 @@ public final class PageCacheFilter implements Filter {
         final long startTimeMillis = System.currentTimeMillis();
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
-        httpServletRequest.getContentType();
         final String contentType = httpServletRequest.getContentType();
         if (null != contentType
             && contentType.toLowerCase().contains("multipart/form-data")) {
