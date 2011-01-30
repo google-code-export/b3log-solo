@@ -25,12 +25,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -40,7 +39,7 @@ import org.jsoup.Jsoup;
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 3, 2010
+ * @version 1.0.0.7, Jan 30, 2011
  */
 public final class MetaWeblogPost implements Post {
 
@@ -236,41 +235,36 @@ public final class MetaWeblogPost implements Post {
             ret.put("title", getTitle());
             final StringBuilder descriptionBuilder =
                     new StringBuilder(getContent());
-            final Cache<String, Object> userPreferenceCache = CacheFactory.
-                    getCache(Preference.PREFERENCE);
-            final Object preferenceString =
-                    userPreferenceCache.get(Preference.PREFERENCE);
-            // XXX: preference string may be null
-            final JSONObject preference = new JSONObject(preferenceString.
-                    toString());
-            if (null != preference) { // Preference is null in test env
-                final String blogTitle = preference.getString(
-                        Preference.BLOG_TITLE);
-                final String blogHost = preference.getString(
-                        Preference.BLOG_HOST);
-                final String blogDomain = blogHost.split(":")[0];
-                // TODO: i18N
-                descriptionBuilder.append("<br/><br/>");
-                descriptionBuilder.append(
-                        "<div style='font: italic normal normal 11px Verdana'>");
-                descriptionBuilder.append(
-                        "本文是使用 <a href='http://b3log-solo.googlecode.com/'>");
-                descriptionBuilder.append("B3log Solo</a> 从 <a href='http://");
-                descriptionBuilder.append(blogHost);
-                descriptionBuilder.append("'>");
-                descriptionBuilder.append(blogTitle);
-                descriptionBuilder.append("</a> 进行同步发布的</div>");
-                descriptionBuilder.append(
-                        "<div style='font: italic normal normal 11px Verdana'>");
-                descriptionBuilder.append("原文地址：<a href='http://");
-                descriptionBuilder.append(blogDomain);
-                descriptionBuilder.append(getPermalink());
-                descriptionBuilder.append("'>");
-                descriptionBuilder.append("http://");
-                descriptionBuilder.append(blogDomain);
-                descriptionBuilder.append(getPermalink());
-                descriptionBuilder.append("</a></div>");
-            }
+            final JSONObject preference =
+                    Preferences.getInstance().getPreference();
+            
+            final String blogTitle = preference.getString(
+                    Preference.BLOG_TITLE);
+            final String blogHost = preference.getString(
+                    Preference.BLOG_HOST);
+            final String blogDomain = blogHost.split(":")[0];
+            // TODO: i18N
+            descriptionBuilder.append("<br/><br/>");
+            descriptionBuilder.append(
+                    "<div style='font: italic normal normal 11px Verdana'>");
+            descriptionBuilder.append(
+                    "本文是使用 <a href='http://b3log-solo.googlecode.com/'>");
+            descriptionBuilder.append("B3log Solo</a> 从 <a href='http://");
+            descriptionBuilder.append(blogHost);
+            descriptionBuilder.append("'>");
+            descriptionBuilder.append(blogTitle);
+            descriptionBuilder.append("</a> 进行同步发布的</div>");
+            descriptionBuilder.append(
+                    "<div style='font: italic normal normal 11px Verdana'>");
+            descriptionBuilder.append("原文地址：<a href='http://");
+            descriptionBuilder.append(blogDomain);
+            descriptionBuilder.append(getPermalink());
+            descriptionBuilder.append("'>");
+            descriptionBuilder.append("http://");
+            descriptionBuilder.append(blogDomain);
+            descriptionBuilder.append(getPermalink());
+            descriptionBuilder.append("</a></div>");
+
             ret.put("description", descriptionBuilder.toString());
             ret.put("categories", getCategories().<String>toArray(new String[0]));
 
