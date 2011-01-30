@@ -193,11 +193,11 @@ public final class Statistics {
 
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
                       count);
-        statisticRepository.update(Statistic.STATISTIC, statistic);
+        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
     }
 
     /**
-     * Blog statistic view count +1 in memcache.
+     * Blog statistic view count +1.
      * 
      * <p>
      * There is a cron job to flush the blog view count from memcache to 
@@ -206,25 +206,13 @@ public final class Statistics {
      */
     public void incBlogViewCount() {
         try {
-            Integer blogViewCnt =
-                    (Integer) CACHE.get(Statistic.STATISTIC_BLOG_VIEW_COUNT);
-            if (null == blogViewCnt) {
-                LOGGER.finer("Loads blog view count from datastore");
-                final JSONObject statistic =
-                        statisticRepository.get(Statistic.STATISTIC);
-                if (null == statistic) {
-                    LOGGER.log(Level.SEVERE, "Not found statistic!");
-
-                    return;
-                }
-
-                blogViewCnt = statistic.getInt(
-                        Statistic.STATISTIC_BLOG_VIEW_COUNT);
-            }
-
+            final JSONObject statistic =
+                    statisticRepository.get(Statistic.STATISTIC);
+            long blogViewCnt =
+                    statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
             ++blogViewCnt;
-
-            CACHE.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
+            statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
+            statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
             LOGGER.log(Level.FINE, "Current blog view count[{0}]", blogViewCnt);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -282,7 +270,7 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_BLOG_ARTICLE_COUNT) + 1);
-        statisticRepository.update(Statistic.STATISTIC, statistic);
+        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
     }
 
     /**
@@ -302,7 +290,7 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT) + 1);
-        statisticRepository.update(Statistic.STATISTIC, statistic);
+        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
     }
 
     /**
@@ -361,7 +349,7 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_BLOG_COMMENT_COUNT) + 1);
-        statisticRepository.update(Statistic.STATISTIC, statistic);
+        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
     }
 
     /**
@@ -380,7 +368,7 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT) + 1);
-        statisticRepository.update(Statistic.STATISTIC, statistic);
+        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
     }
 
     /**
