@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, Jan 26, 2011
+ * @version 1.0.3.0, Jan 30, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -128,8 +128,8 @@ public final class PageCacheFilter implements Filter {
         final HttpServletResponse httpServletResponse =
                 (HttpServletResponse) response;
 
-        httpServletResponse.setHeader("Cache-Control", "no-cache");
-        httpServletResponse.setHeader("Expires", "Mon, 25 Aug 1986 00:00:00 GMT");
+//        httpServletResponse.setHeader("Cache-Control", "no-cache");
+//        httpServletResponse.setHeader("Expires", "Mon, 25 Aug 1986 00:00:00 GMT");
 
         final String requestURI = httpServletRequest.getRequestURI();
         if (requestURI.endsWith(".ftl")) {
