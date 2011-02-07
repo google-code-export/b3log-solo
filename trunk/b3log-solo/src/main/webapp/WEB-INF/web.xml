@@ -19,7 +19,7 @@
 
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.1.5, Jan 30, 2011
+    Version: 1.0.1.6, Feb 7, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -116,7 +116,6 @@
             <url-pattern>/admin-others.do</url-pattern>
             <url-pattern>/admin-page.do</url-pattern>
             <url-pattern>/admin-preference.do</url-pattern>
-            <url-pattern>/admin-user-list.do</url-pattern>
             <url-pattern>/admin-user-list.do</url-pattern>
         </web-resource-collection>
         <auth-constraint>
