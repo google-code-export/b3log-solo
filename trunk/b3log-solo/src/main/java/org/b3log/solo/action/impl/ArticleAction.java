@@ -16,7 +16,6 @@
 
 package org.b3log.solo.action.impl;
 
-import com.google.appengine.api.datastore.Entity;
 import java.util.logging.Level;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
@@ -60,7 +59,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Jan 26, 2011
+ * @version 1.0.2.7, Feb 8, 2011
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -184,13 +183,27 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                         articleUtils.getSign(articleId, preference));
             LOGGER.finer("Got article sign");
 
-            LOGGER.finer("Getting the previous article async....");
-            // XXX: waiting for GAE async APIs for Query
-            final Iterable<Entity> previousArticles =
-                    articleRepository.getPreviousArticleAsync(articleId);
-            LOGGER.finer("Getting the next article async....");
-            final Iterable<Entity> nextArticles =
-                    articleRepository.getNextArticleAsync(articleId);
+            LOGGER.finer("Getting the previous article....");
+            final JSONObject previousArticle =
+                    articleRepository.getPreviousArticle(articleId);
+            if (null != previousArticle) {
+                ret.put(Common.PREVIOUS_ARTICLE_PERMALINK,
+                        previousArticle.getString(Article.ARTICLE_PERMALINK));
+                ret.put(Common.PREVIOUS_ARTICLE_TITLE,
+                        previousArticle.getString(Article.ARTICLE_TITLE));
+                LOGGER.finer("Got the previous article");
+            }
+
+            LOGGER.finer("Getting the next article....");
+            final JSONObject nextArticle =
+                    articleRepository.getNextArticle(articleId);
+            if (null != nextArticle) {
+                ret.put(Common.NEXT_ARTICLE_PERMALINK,
+                        nextArticle.getString(Article.ARTICLE_PERMALINK));
+                ret.put(Common.NEXT_ARTICLE_TITLE,
+                        nextArticle.getString(Article.ARTICLE_TITLE));
+                LOGGER.finer("Got the next article");
+            }
 
             LOGGER.finer("Getting article's comments....");
             final List<JSONObject> articleComments =
@@ -213,22 +226,6 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
-
-            for (final Entity entity : previousArticles) {
-                ret.put(Common.PREVIOUS_ARTICLE_PERMALINK,
-                        entity.getProperty(Article.ARTICLE_PERMALINK));
-                ret.put(Common.PREVIOUS_ARTICLE_TITLE,
-                        entity.getProperty(Article.ARTICLE_TITLE));
-                LOGGER.finer("Got the previous article");
-            }
-
-            for (final Entity entity : nextArticles) {
-                ret.put(Common.NEXT_ARTICLE_PERMALINK,
-                        entity.getProperty(Article.ARTICLE_PERMALINK));
-                ret.put(Common.NEXT_ARTICLE_TITLE,
-                        entity.getProperty(Article.ARTICLE_TITLE));
-                LOGGER.finer("Got the next article");
-            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
