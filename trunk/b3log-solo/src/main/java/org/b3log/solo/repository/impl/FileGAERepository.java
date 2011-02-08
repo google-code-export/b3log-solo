@@ -25,7 +25,7 @@ import org.b3log.solo.repository.FileRepository;
  * File Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 12, 2011
+ * @version 1.0.0.3, Feb 8, 2011
  */
 public final class FileGAERepository extends AbstractGAERepository
         implements FileRepository {
@@ -51,9 +51,10 @@ public final class FileGAERepository extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private default constructor. Disables cache.
      */
     private FileGAERepository() {
+        setCacheEnabled(false);
     }
 
     /**
