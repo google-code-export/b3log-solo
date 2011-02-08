@@ -16,7 +16,6 @@
 
 package org.b3log.solo.repository;
 
-import com.google.appengine.api.datastore.Entity;
 import java.util.List;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.GAERepository;
@@ -26,7 +25,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Jan 30, 2011
+ * @version 1.0.1.5, Feb 8, 2011
  */
 public interface ArticleRepository extends GAERepository {
 
@@ -91,25 +90,7 @@ public interface ArticleRepository extends GAERepository {
     List<JSONObject> getMostViewCountArticles(final int num);
 
     /**
-     * Gets the id of the previous article(by create date, oId) by the
-     * specified article id.
-     *
-     * @param articleId the specified article id
-     * @return an article id, {@code null} if not found
-     */
-    String getPreviousArticleId(final String articleId);
-
-    /**
-     * Gets the id of the next article(by create date, oId) by the specified
-     * article id.
-     *
-     * @param articleId the specified article id
-     * @return an article id, {@code null} if not found
-     */
-    String getNextArticleId(final String articleId);
-
-    /**
-     * Gets the previous article(by create date, oId) by the specified article
+     * Gets the previous article(by create date) by the specified article
      * id.
      *
      * @param articleId the specified article id
@@ -121,24 +102,12 @@ public interface ArticleRepository extends GAERepository {
      * }
      * </pre>
      * returns {@code null} if not found
+     * @throws RepositoryException repository exception
      */
-    JSONObject getPreviousArticle(final String articleId);
+    JSONObject getPreviousArticle(final String articleId)
+            throws RepositoryException;
 
-    /**
-     * Gets the previous article(by create date, oId) by the specified article
-     * id asynchronously.
-     *
-     * @param articleId the specified article id
-     * @return the previous article,
-     * <pre>
-     * {
-     *     "articleTitle": "",
-     *     "articlePermalink": ""
-     * }
-     * </pre>
-     * returns {@code null} if not found
-     */
-    Iterable<Entity> getPreviousArticleAsync(final String articleId);
+    
 
     /**
      * Gets the next article(by create date, oId) by the specified article id.
@@ -152,24 +121,10 @@ public interface ArticleRepository extends GAERepository {
      * }
      * </pre>
      * returns {@code null} if not found
+     * @throws RepositoryException repository exception
      */
-    JSONObject getNextArticle(final String articleId);
-
-    /**
-     * Gets the next article(by create date, oId) by the specified article id
-     * asynchronously.
-     *
-     * @param articleId the specified article id
-     * @return the next article,
-     * <pre>
-     * {
-     *     "articleTitle": "",
-     *     "articlePermalink": ""
-     * }
-     * </pre>
-     * returns {@code null} if not found
-     */
-    Iterable<Entity> getNextArticleAsync(final String articleId);
+    JSONObject getNextArticle(final String articleId)
+              throws RepositoryException;
 
     /**
      * Imports the specified article.

@@ -26,6 +26,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultList;
 import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -49,7 +50,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, Jan 20, 2011
+ * @version 1.0.2.9, Feb 8, 2011
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -272,129 +273,88 @@ public final class ArticleGAERepository extends AbstractGAERepository
     }
 
     @Override
-    public String getPreviousArticleId(final String articleId) {
-        final Query query = new Query(getName());
-        query.addFilter(Keys.OBJECT_ID,
-                        Query.FilterOperator.LESS_THAN, articleId);
-        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final List<Entity> result =
-                preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+    public JSONObject getPreviousArticle(final String articleId)
+            throws RepositoryException {
+        try {
+            final JSONObject current = get(articleId);
+            final Date currentDate = (Date) current.get(
+                    Article.ARTICLE_CREATE_DATE);
 
-        if (1 == result.size()) {
-            final JSONObject previous = entity2JSONObject(result.get(0));
-            return previous.optString(Keys.OBJECT_ID);
-        }
+            final Query query = new Query(getName());
+            query.addFilter(Article.ARTICLE_CREATE_DATE,
+                            Query.FilterOperator.LESS_THAN, currentDate);
+            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                            Query.FilterOperator.EQUAL, true);
+            query.addSort(Article.ARTICLE_CREATE_DATE,
+                          Query.SortDirection.DESCENDING);
 
-        return null;
-    }
+            final PreparedQuery preparedQuery =
+                    getDatastoreService().prepare(query);
+            final List<Entity> result =
+                    preparedQuery.asList(FetchOptions.Builder.withLimit(1));
 
-    @Override
-    public String getNextArticleId(final String articleId) {
-        final Query query = new Query(getName());
-        query.addFilter(Keys.OBJECT_ID,
-                        Query.FilterOperator.GREATER_THAN, articleId);
-        query.addSort(Keys.OBJECT_ID, Query.SortDirection.ASCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final List<Entity> result =
-                preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+            if (1 == result.size()) {
+                try {
+                    final JSONObject ret = new JSONObject();
+                    final Entity article = result.get(0);
+                    ret.put(Article.ARTICLE_TITLE,
+                            article.getProperty(Article.ARTICLE_TITLE));
+                    ret.put(Article.ARTICLE_PERMALINK,
+                            article.getProperty(Article.ARTICLE_PERMALINK));
 
-        if (1 == result.size()) {
-            final JSONObject previous = entity2JSONObject(result.get(0));
-            return previous.optString(Keys.OBJECT_ID);
-        }
-
-        return null;
-    }
-
-    @Override
-    public JSONObject getPreviousArticle(final String articleId) {
-        final Query query = new Query(getName());
-        query.addFilter(Keys.OBJECT_ID,
-                        Query.FilterOperator.LESS_THAN, articleId);
-        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                        Query.FilterOperator.EQUAL,
-                        true);
-        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final List<Entity> result =
-                preparedQuery.asList(FetchOptions.Builder.withLimit(1));
-
-        if (1 == result.size()) {
-            try {
-                final JSONObject ret = new JSONObject();
-                final Entity article = result.get(0);
-                ret.put(Article.ARTICLE_TITLE,
-                        article.getProperty(Article.ARTICLE_TITLE));
-                ret.put(Article.ARTICLE_PERMALINK,
-                        article.getProperty(Article.ARTICLE_PERMALINK));
-
-                return ret;
-            } catch (final JSONException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    return ret;
+                } catch (final JSONException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
             }
+
+            return null;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
         }
-
-        return null;
     }
 
     @Override
-    public Iterable<Entity> getPreviousArticleAsync(final String articleId) {
-        final Query query = new Query(getName());
-        query.addFilter(Keys.OBJECT_ID,
-                        Query.FilterOperator.LESS_THAN, articleId);
-        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                        Query.FilterOperator.EQUAL,
-                        true);
-        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = asyncDatastoreService.prepare(query);
+    public JSONObject getNextArticle(final String articleId)
+            throws RepositoryException {
+        try {
+            final JSONObject current = get(articleId);
+            final Date currentDate = (Date) current.get(
+                    Article.ARTICLE_CREATE_DATE);
+            final Query query = new Query(getName());
+            query.addFilter(Article.ARTICLE_CREATE_DATE,
+                            Query.FilterOperator.GREATER_THAN, currentDate);
+            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                            Query.FilterOperator.EQUAL, true);
+            query.addSort(Article.ARTICLE_CREATE_DATE,
+                          Query.SortDirection.ASCENDING);
 
-        return preparedQuery.asIterable(FetchOptions.Builder.withLimit(1));
-    }
+            final PreparedQuery preparedQuery =
+                    getDatastoreService().prepare(query);
+            final List<Entity> result =
+                    preparedQuery.asList(FetchOptions.Builder.withLimit(1));
 
-    @Override
-    public JSONObject getNextArticle(final String articleId) {
-        final Query query = new Query(getName());
-        query.addFilter(Keys.OBJECT_ID,
-                        Query.FilterOperator.GREATER_THAN, articleId);
-        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                        Query.FilterOperator.EQUAL,
-                        true);
-        query.addSort(Keys.OBJECT_ID, Query.SortDirection.ASCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final List<Entity> result =
-                preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+            if (1 == result.size()) {
+                try {
+                    final JSONObject ret = new JSONObject();
+                    final Entity article = result.get(0);
+                    ret.put(Article.ARTICLE_TITLE,
+                            article.getProperty(Article.ARTICLE_TITLE));
+                    ret.put(Article.ARTICLE_PERMALINK,
+                            article.getProperty(Article.ARTICLE_PERMALINK));
 
-        if (1 == result.size()) {
-            try {
-                final JSONObject ret = new JSONObject();
-                final Entity article = result.get(0);
-                ret.put(Article.ARTICLE_TITLE,
-                        article.getProperty(Article.ARTICLE_TITLE));
-                ret.put(Article.ARTICLE_PERMALINK,
-                        article.getProperty(Article.ARTICLE_PERMALINK));
-
-                return ret;
-            } catch (final JSONException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    return ret;
+                } catch (final JSONException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
             }
+
+            return null;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
         }
-
-        return null;
-    }
-
-    @Override
-    public Iterable<Entity> getNextArticleAsync(final String articleId) {
-        final Query query = new Query(getName());
-        query.addFilter(Keys.OBJECT_ID,
-                        Query.FilterOperator.GREATER_THAN, articleId);
-        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                        Query.FilterOperator.EQUAL,
-                        true);
-        query.addSort(Keys.OBJECT_ID, Query.SortDirection.ASCENDING);
-        final PreparedQuery preparedQuery = asyncDatastoreService.prepare(query);
-
-        return preparedQuery.asIterable(FetchOptions.Builder.withLimit(1));
     }
 
     @Override
