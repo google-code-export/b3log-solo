@@ -10,7 +10,7 @@ h5{font-size:12px;}
 .main>div{padding-right: 368px;min-width: 724px;}
 #logoTitle{font-family:"Microsoft YaHei";font-size:32px;line-height:64px;text-decoration:none;}
 #statistic span{font-size:11px;}
-.article, .comments{padding:12px 0 24px 12px;}
+.article, .comments{padding:0px 0 12px 12px;}
 .article-title{background-color:#E3E9FF;border-top:1px solid #3366CC;margin-left:91px;padding:3px 0 3px 12px;}
 .article-title sup{font-size:12px;}
 .article-date{-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#E3E9FF;border:1px solid #BBCCFF;margin:0 12px 12px 0;padding:6px;width:65px;float:left;}
