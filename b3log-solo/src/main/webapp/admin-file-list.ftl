@@ -4,7 +4,7 @@
         <tbody>
             <tr>
                 <td id="uploadFile">
-                    <input type='file' name='myFile' size='45' style="width: 356px;">
+                    <input type='file' name='myFile' size='45' style="width: 356px;" />
                 </td>
                 <td>
                     <button type="submit">${submitUploadLabel}</button>
