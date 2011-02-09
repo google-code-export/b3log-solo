@@ -332,7 +332,7 @@
                         <exclude>**/src/main/java/**/package-info.java</exclude>
                         <exclude>**/src/*/webapp/js/lib/*.js</exclude>
                         <exclude>**/src/main/java/freemarker/core/TextBlock.java</exclude>
-                         <exclude>**/src/main/java/com/**/*.java</exclude>
+                        <exclude>**/src/main/java/com/**/*.java</exclude>
                     </excludes>
 
                     <useDefaultExcludes>true</useDefaultExcludes>
