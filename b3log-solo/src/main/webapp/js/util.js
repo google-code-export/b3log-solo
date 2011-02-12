@@ -134,7 +134,7 @@ $.extend(Util.prototype, {
         }
     },
 
-    setCurrentPage: function (selector) {
+    setCurrentPage: function () {
         if ($(".pagination").length >= 1) {
             var local = window.location.search.substring(1),
             currentPage = "1";

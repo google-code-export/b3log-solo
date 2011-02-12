@@ -44,7 +44,8 @@
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
         "logoutLabel": "${logoutLabel}",
-        "skinDirName": "${skinDirName}"
+        "skinDirName": "${skinDirName}",
+        "loginLabel": "${loginLabel}"
     });
 
     var init = function () {
