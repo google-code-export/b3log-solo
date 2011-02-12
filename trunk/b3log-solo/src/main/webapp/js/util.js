@@ -54,7 +54,7 @@ $.extend(Util.prototype, {
     init: function () {
         if ($.browser.msie) {
             if ($.browser.version === "6.0") {
-                alert("Let's kill IE 6!");
+                alert("Let's kill IE6!");
                 return;
             }
         }
