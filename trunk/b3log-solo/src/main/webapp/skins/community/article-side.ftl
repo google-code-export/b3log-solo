@@ -1,5 +1,6 @@
 <div class="footer-secondary">
     <div class="content">
+        <#if "" != noticeBoard>
         <h4>
             ${noticeBoardLabel}
         </h4>
@@ -8,8 +9,9 @@
             ${noticeBoard}
         </div>
         <div class="clear"></div>
-        <#if 0 != mostViewCountArticles?size>
         <div class="hr"></div>
+        </#if>
+        <#if 0 != mostViewCountArticles?size>
         <h4>${mostViewCountArticlesLabel}</h4>
         <div class="arrow-right"></div>
         <div class="most-view-count-articles">

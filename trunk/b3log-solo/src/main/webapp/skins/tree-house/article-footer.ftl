@@ -17,7 +17,8 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
         "logoutLabel": "${logoutLabel}",
-        "skinDirName": "${skinDirName}"
+        "skinDirName": "${skinDirName}",
+        "loginLabel": "${loginLabel}"
     });
     util.init();
     util.replaceCommentsEm("#recentComments li a");
