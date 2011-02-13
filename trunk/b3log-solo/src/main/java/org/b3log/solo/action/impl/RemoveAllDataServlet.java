@@ -217,29 +217,21 @@ public final class RemoveAllDataServlet extends HttpServlet {
         final long step = 20000;
         final Future<Transaction> transactionFuture =
                 datastore.beginTransaction();
-        final Set<Key> keys =
-                new HashSet<Key>();
-
+        final Set<Key> keys = new HashSet<Key>();
 
         for (final Entity entity : datastore.prepare(new Query(kind)).
                 asIterable()) {
             keys.add(entity.getKey());
 
-
-
             if (System.currentTimeMillis() >= startTime + step) {
                 LOGGER.log(Level.INFO, "[{0}] remains to remove", kind);
 
-
                 break;
-
-
             }
         }
         datastore.delete(keys);
         transactionFuture.get().commit();
 
         LOGGER.log(Level.INFO, "Removed [{0}]", kind);
-
     }
 }
