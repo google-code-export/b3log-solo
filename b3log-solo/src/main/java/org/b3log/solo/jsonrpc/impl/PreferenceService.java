@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Jan 30, 2011
+ * @version 1.0.2.6, Feb 14, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -271,12 +271,12 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
                 return ret;
             }
-            final String domain = blogHost.split(":")[0].trim();
+            final String domain = blogHost.split(":")[0].trim().toLowerCase();
             final Value gaeEnvValue = SystemProperty.environment.value();
             if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
                 if ("localhost".equals(domain)) {
                     ret.put(Keys.STATUS_CODE,
-                            StatusCodes.UPDATE_PREFERENCE_FAIL_);
+                            StatusCodes.UPDATE_PREFERENCE_FAIL_CANNT_BE_LOCALHOST);
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }

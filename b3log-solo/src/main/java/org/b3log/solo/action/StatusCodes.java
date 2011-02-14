@@ -20,7 +20,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Dec 31, 2010
+ * @version 1.0.2.2, Feb 14, 2010
  */
 public enum StatusCodes {
 
@@ -140,6 +140,11 @@ public enum StatusCodes {
      * Indicates update preference fails.
      */
     UPDATE_PREFERENCE_FAIL_,
+    /**
+     * Indicates update preference fails, caused by cannot set blog host as
+     * "localhost" on production.
+     */
+    UPDATE_PREFERENCE_FAIL_CANNT_BE_LOCALHOST,
     /**
      * Indicates update preference fails, caused by needing multiple users.
      */
