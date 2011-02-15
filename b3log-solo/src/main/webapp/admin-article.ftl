@@ -152,7 +152,8 @@
 
             extended_valid_elements: "pre[name|class]",
 
-            convert_urls : true
+            relative_urls: false,
+            remove_script_host: false
         });
 
         $("#loadMsg").text("");
