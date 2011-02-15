@@ -74,12 +74,16 @@
         <property name="article_oId" direction="desc"/>
     </datastore-index>
 
-    <datastore-index kind="article" ancestor="false" source="manual">
+    <datastore-index kind="article" ancestor="false" source="auto">
         <property name="articleAuthorEmail" direction="asc"/>
         <property name="articleIsPublished" direction="asc"/>
         <property name="articlePutTop" direction="desc"/>
         <property name="articleUpdateDate" direction="desc"/>
     </datastore-index>
 
+    <datastore-index kind="page_comment" ancestor="false" source="auto">
+        <property name="page_oId" direction="asc"/>
+        <property name="oId" direction="desc"/>
+    </datastore-index>
     
 </datastore-indexes>
