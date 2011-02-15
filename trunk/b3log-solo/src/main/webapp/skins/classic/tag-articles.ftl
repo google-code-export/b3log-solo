@@ -25,7 +25,7 @@
             <div class="body">
                 <div class="left main">
                     <div>
-                        <h2 class="marginLeft12">${tag1Label}
+                        <h2 class="marginLeft12 marginBottom12">${tag1Label}
                             <span id="tagArticlesTag">
                                 ${tag.tagTitle}
                             </span>(${tag.tagPublishedRefCount})
