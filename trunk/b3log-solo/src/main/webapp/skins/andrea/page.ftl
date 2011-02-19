@@ -138,7 +138,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" align="right">
-                                        <button onclick="articleUtil.submitComment();">${submmitCommentLabel}</button>
+                                        <button id="submitCommentButton" onclick="articleUtil.submitComment();">${submmitCommentLabel}</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -263,7 +263,7 @@
                     </tr>\
                     <tr>\
                         <td colspan='3' align='right'>\
-                            <button onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>\
+                            <button id=\"submitCommentButtonReply\" onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>\
                         </td>\
                     </tr>\
                 </table>";

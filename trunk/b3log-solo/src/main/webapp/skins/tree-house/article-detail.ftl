@@ -228,7 +228,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="3" align="right">
-                                                        <button onclick="articleUtil.submitComment();">${submmitCommentLabel}</button>
+                                                        <button id="submitCommentButton" onclick="articleUtil.submitComment();">${submmitCommentLabel}</button>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -315,7 +315,7 @@
                     + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><td>"
                     + "<span class='error-msg' id='commentErrorTipReply'/>"
                     + "</td></tr><tr><td colspan='3' align='right'>"
-                    + "<button onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
+                    + "<button id=\"submitCommentButtonReply\" onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
                     + "</td></tr></table></div><div class='comment-bottom'></div></div>";
                 articleUtil.addReplyForm(id, commentFormHTML);
 
