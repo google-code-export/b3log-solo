@@ -86,7 +86,7 @@
                     + new Date().getTime() + "'></img></td><th align='right'>"
                     + "<span class='error-msg' id='commentErrorTipReply'/>"
                     + "</th></tr><tr><td colspan='3' align='right'>"
-                    + "<button onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
+                    + "<button id=\"submitCommentButtonReply\" onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
                     + "</td></tr></tbody></table>";
                 articleUtil.addReplyForm(id, commentFormHTML);
             }

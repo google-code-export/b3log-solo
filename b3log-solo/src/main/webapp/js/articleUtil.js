@@ -254,6 +254,7 @@ $.extend(ArticleUtil.prototype, {
             type = "page";
         }
         if (this.validateComment(statue)) {
+            $("#submitCommentButton" + statue).attr("disabled", "disabled");
             $("#commentErrorTip" + statue).html(this.tips.loadingLabel);
             var requestJSONObject = {
                 "oId": tips.oId,
@@ -267,7 +268,6 @@ $.extend(ArticleUtil.prototype, {
             if (statue === "Reply") {
                 requestJSONObject.commentOriginalCommentId = commentId;
             }
-            
             $.ajax({
                 type: "POST",
                 url: "/add-" + type + "-comment.do",
@@ -285,6 +285,7 @@ $.extend(ArticleUtil.prototype, {
                         default:
                             break;
                     }
+                    $("#submitCommentButton" + statue).removeAttr("disabled");
                 }
             });
 

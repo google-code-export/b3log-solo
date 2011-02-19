@@ -1,5 +1,7 @@
 <p class="slogantext">Detailing the day to day happenings of the two.</p>
-<p class="slogantext-small">(Arguments not included)</p>
+<p class="slogantext-small">
+    <a href="/">GO HOME</a>
+</p>
 <p>&nbsp;</p>
 <div class="sidebar-titletagcolor">
     <h3 class="pagetitle">${noticeBoardLabel}</h3>
@@ -84,7 +86,9 @@
              alt="由 Google App Engine 提供支持" />
     </p>
     <p align="center">
-        <img height="55" width="140" alt="B3log Logo" src="http://code.google.com/p/b3log-solo/logo?cct=1287802701" />
+        <a href="http://www.b3log.org" target="_blank">
+            <img height="55" width="140" alt="B3log Logo" src="http://code.google.com/p/b3log-solo/logo?cct=1287802701" />
+        </a>
     </p>
     <p>&nbsp;</p>
     <p>&nbsp;</p>

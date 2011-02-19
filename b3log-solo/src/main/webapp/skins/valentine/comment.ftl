@@ -90,7 +90,7 @@
         </tr>
         <tr>
             <td colspan="3" align="right">
-                <button onclick="articleUtil.submitComment();">${submmitCommentLabel}</button>
+                <button id="submitCommentButton" onclick="articleUtil.submitComment();">${submmitCommentLabel}</button>
             </td>
         </tr>
     </tbody>
