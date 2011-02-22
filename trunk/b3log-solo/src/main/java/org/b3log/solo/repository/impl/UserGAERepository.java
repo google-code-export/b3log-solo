@@ -21,10 +21,6 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RunsOnEnv;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
@@ -37,7 +33,7 @@ import org.json.JSONObject;
  * User Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 12, 2011
+ * @version 1.0.0.6, Feb 22, 2011
  */
 public final class UserGAERepository extends AbstractGAERepository
         implements UserRepository {
@@ -47,23 +43,6 @@ public final class UserGAERepository extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(UserGAERepository.class.getName());
-    /**
-     * Cache.
-     */
-    private static final Cache<String, Object> CACHE;
-
-    static {
-        final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
-        if (!runsOnEnv.equals(RunsOnEnv.GAE)) {
-            throw new RuntimeException(
-                    "GAE repository can only runs on Google App Engine, please "
-                    + "check your configuration and make sure "
-                    + "Latkes.setRunsOnEnv(RunsOnEnv.GAE) was invoked before "
-                    + "using GAE repository.");
-        }
-
-        CACHE = CacheFactory.getCache("UserGAERepositoryCache");
-    }
 
     @Override
     public String getName() {
@@ -78,6 +57,29 @@ public final class UserGAERepository extends AbstractGAERepository
             final Query query = new Query(getName());
             query.addFilter(User.USER_EMAIL, Query.FilterOperator.EQUAL,
                             email.toLowerCase());
+            final PreparedQuery preparedQuery = getDatastoreService().prepare(
+                    query);
+            final Entity entity = preparedQuery.asSingleEntity();
+            if (null == entity) {
+                return null;
+            }
+
+            ret = entity2JSONObject(entity);
+
+            CACHE.put(cacheKey, ret);
+        }
+
+        return ret;
+    }
+
+    @Override
+    public JSONObject getAdmin() {
+        final String cacheKey = "GetAdmin";
+        JSONObject ret = (JSONObject) CACHE.get(cacheKey);
+        if (null == ret) {
+            final Query query = new Query(getName());
+            query.addFilter(User.USER_ROLE, Query.FilterOperator.EQUAL,
+                            Role.ADMIN_ROLE);
             final PreparedQuery preparedQuery = getDatastoreService().prepare(
                     query);
             final Entity entity = preparedQuery.asSingleEntity();
