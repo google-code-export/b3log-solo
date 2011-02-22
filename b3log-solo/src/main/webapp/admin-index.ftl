@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -8,7 +8,7 @@
         <link type="text/css" rel="stylesheet" href="styles/default-bowknot.css"/>
         <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
         <link rel="icon" type="image/png" href="/favicon.png"/>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
         <script type="text/javascript" src="js/lib/jquery/jquery.bowknot.min.js"></script>
         <script type="text/javascript" src="js/lib/tiny_mce/tiny_mce.js"></script>
