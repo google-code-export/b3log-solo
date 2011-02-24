@@ -18,7 +18,17 @@
         ${htmlHead}
     </head>
     <body>
-        <#include "common-top.ftl">
+		<div id="top">
+		    <a href="http://b3log-solo.googlecode.com" class="logo" target="_blank">
+		        <span style="color: orange;margin-left:0px;">B</span>
+		        <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
+		        <span style="color: green;">L</span>
+		        <span style="color: red;">O</span>
+		        <span style="color: blue;">G</span>&nbsp;
+		        <span style="color: orangered; font-weight: bold;">Solo</span>
+		    </a>
+		    <div class="clear"></div>
+		</div>
         <div id="a">
             <header>
 			    <a href="/" id="logoTitle">${blogTitle}</a>
@@ -55,7 +65,20 @@
 				</nav></aside>
                 <div class="clear"></div>
             </div>
-            <#include "article-footer.ftl">
+			<footer>
+				<a href="http://code.google.com/appengine" target="_blank"><img src="http://code.google.com/appengine/images/appengine-noborder-120x30.gif" alt="Powered by Google App Engine" /></a>&nbsp;&nbsp;
+			    <span>© 2011</span> - <a href="http://${blogHost}">${blogTitle}</a>
+			    Powered by
+			    <a href="http://b3log-solo.googlecode.com" target="_blank">
+			        <span style="color: orange;">B</span>
+			        <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
+			        <span style="color: green;">L</span>
+			        <span style="color: red;">O</span>
+			        <span style="color: blue;">G</span>&nbsp;
+			        <span style="color: orangered; font-weight: bold;">Solo</span></a>,
+			    ver ${version}&nbsp;&nbsp;
+			    Theme by <a href="http://lightdian.b3log.org/" target="_blank">Dongxu Wang</a> & <a href="http://www.jabz.info/contact/jonas-jared-jacek/" title="Profile of Jonas Jacek">Jonas Jacek</a>.
+			</footer>
         </div>
     </body>
 </html>
