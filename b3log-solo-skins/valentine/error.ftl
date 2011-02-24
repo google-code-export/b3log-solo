@@ -5,12 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="${notFoundLabel},${metaKeywords}"/>
         <meta name="description" content="${sorryLabel},${notFoundLabel},${metaDescription}"/>
-        <meta name="author" content="B3log Team"/>
-        <meta name="generator" content="B3log"/>
-        <meta name="copyright" content="B3log"/>
-        <meta name="revised" content="B3log, 2010"/>
         <meta name="robots" content="noindex, follow"/>
-        <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
