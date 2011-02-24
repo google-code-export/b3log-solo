@@ -48,8 +48,8 @@ h5{font-size:12px;}
 #tagsPanel .tagPanel{float:left;border:2px solid;margin:3px;-moz-border-radius:6px;-webkit-border-radius:6px;cursor:pointer;}
 #tagsPanel .tagPanel:hover{background-color:#EEEEEE;border:2px dashed;}
 #tagsPanel .tagPanel{text-decoration:none;}
-.error-title{background-color:#E5ECF9;padding:6px 12px;}
-.error-panel{border-bottom:5px solid #E5ECF9;padding:24px;}
+.error-title{background-color:#E5ECF9;padding:6px 12px;margin-left:12px;}
+.error-panel{border-bottom:5px solid #E5ECF9;padding:24px;margin-left:12px;}
 .commentIcon, .browserIcon{width:16px;height:16px;background-image:url("../../images/icon.png");cursor:pointer;margin-right:3px;}
 .commentIcon{background-position:-32px -16px;}
 .browserIcon{background-position:-128px -16px;}
