@@ -42,6 +42,9 @@
 			    <aside><nav>
 				<h4>Navigation</h4>
 			        <ul>
+			            <li>
+			                <a class="home" href="/">Home</a>
+			            </li>
 			            <#list pageNavigations as page>
 			            <li>
 			                <a href="${page.pagePermalink}">
