@@ -482,3 +482,14 @@ footer {
 			-moz-box-shadow : none;
 			-webkit-box-shadow : none;
 		}
+
+.single_page  {
+	-moz-border-radius : 4px;
+	-webkit-border-radius : 4px;
+	-moz-box-shadow : 0 2px 2px rgba(0,0,0,0.2);
+	-webkit-box-shadow : 0 2px 2px rgba(0,0,0,0.2);
+	background : #F2F7F8;
+	padding : 10px;
+	margin-bottom : 25px;
+	width : 531px;
+}
