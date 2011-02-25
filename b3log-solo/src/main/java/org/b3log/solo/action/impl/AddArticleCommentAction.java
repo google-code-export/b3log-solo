@@ -198,26 +198,6 @@ public final class AddArticleCommentAction extends AbstractAction {
                                    final HttpServletRequest request,
                                    final HttpServletResponse response)
             throws ActionException {
-        return addArticleComment(requestJSONObject, request, response);
-    }
-
-    /**
-     * Adds article comment.
-     *
-     * @param requestJSONObject request json object
-     * @param request request
-     * @param response response
-     * @return result
-     * @throws ActionException action exception
-     * @see #doAjaxAction(org.json.JSONObject,
-     * javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse)
-     */
-    public static JSONObject addArticleComment(
-            final JSONObject requestJSONObject,
-            final HttpServletRequest request,
-            final HttpServletResponse response)
-            throws ActionException {
         final JSONObject ret = new JSONObject();
         final Transaction transaction = commentRepository.beginTransaction();
 
