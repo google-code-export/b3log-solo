@@ -200,7 +200,7 @@
                 }
 
                 commentHTML += '&nbsp;' + result.commentDate
-                    + '</div><div class="comment-content">' + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/\n/g,"<br/>").replace(/</g, "&lt;").replace(/>/g, "&gt;"))
+                    + '</div><div class="comment-content">' + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
                     + '</div><div class="reply"><a href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
                     + '</div></div><div class="clear"></div></div>';
 

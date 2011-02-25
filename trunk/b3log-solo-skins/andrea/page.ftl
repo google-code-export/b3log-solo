@@ -205,7 +205,7 @@
                         + commentOriginalCommentName + '</a>';
                 }
                 commentHTML += '&nbsp;' + result.commentDate + '<div class="comment-content">'
-                    + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/\n/g,"<br/>").replace(/</g, "&lt;").replace(/>/g, "&gt;"))
+                    + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
                     + '</div><div><a href="javascript:replyTo(\''
                     + result.oId + '\');">${replyLabel}</a>'
                     +'</div></div><div class="clear"></div></div>';
