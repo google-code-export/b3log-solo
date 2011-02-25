@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin-index.do
+Desallow: /admin-error.do
+Disallow: /init.do
+Disallow: /article-detail.do
