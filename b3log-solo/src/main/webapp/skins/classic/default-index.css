@@ -5,9 +5,9 @@ h5{font-size:12px;}
 .content{margin:0 auto;max-width:1160px;}
 .header{height:108px;}
 .sub-title{font-size:14px;font-weight:normal;}
-.side{border-left:2px solid #E5ECF9;padding-left:12px;width: 330px;}
-.main{margin-right:-344px;width: 100%;}
-.main>div{padding-right: 368px;min-width: 724px;}
+.side{border-left:2px solid #E5ECF9;padding-left:12px;width: 280px;}
+.main{margin-right:-294px;width: 100%;}
+.main>div{padding-right: 318px;min-width: 674px;}
 #logoTitle{font-family:"Microsoft YaHei";font-size:32px;line-height:64px;text-decoration:none;}
 #statistic span{font-size:11px;}
 .article, .comments{padding:0px 0 12px 12px;}
