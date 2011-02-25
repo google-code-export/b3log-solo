@@ -56,16 +56,13 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
-import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,10 +83,6 @@ public final class AddArticleCommentAction extends AbstractAction {
      */
     private static final Logger LOGGER =
             Logger.getLogger(AddArticleCommentAction.class.getName());
-    /**
-     * User utilities.
-     */
-    private Users userUtils = Users.getInstance();
     /**
      * Comment repository.
      */
@@ -138,17 +131,12 @@ public final class AddArticleCommentAction extends AbstractAction {
     /**
      * Article-Comment repository.
      */
-    private static ArticleCommentRepository articleCommentRepository = ArticleCommentGAERepository.
-            getInstance();
-    /**
-     * Page-Comment repository.
-     */
-    private static PageCommentRepository pageCommentRepository =
-            PageCommentGAERepository.getInstance();
+    private static ArticleCommentRepository articleCommentRepository =
+            ArticleCommentGAERepository.getInstance();
     /**
      * Comment mail HTML body.
      */
-    private static final String COMMENT_MAIL_HTML_BODY =
+    public static final String COMMENT_MAIL_HTML_BODY =
             "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">"
             + "{title}</a>]" + " received a new comment:</p>"
             + "{commenter}: <span><a href=\"http://{commentSharpURL}\">"
