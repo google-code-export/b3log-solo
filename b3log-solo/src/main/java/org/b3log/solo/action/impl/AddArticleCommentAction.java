@@ -63,7 +63,6 @@ import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
-import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
 
