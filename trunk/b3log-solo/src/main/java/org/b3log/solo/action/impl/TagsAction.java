@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Jan 26, 2011
+ * @version 1.0.1.2, Feb 25, 2011
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -139,5 +139,10 @@ public final class TagsAction extends AbstractCacheablePageAction {
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected String getPageName(final String requestURI){
+        return "tags.ftl";
     }
 }
