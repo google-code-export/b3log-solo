@@ -63,6 +63,7 @@ import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
+import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,7 +71,7 @@ import org.json.JSONObject;
  * Adds article comment action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 12, 2011
+ * @version 1.0.0.4, Feb 25, 2011
  */
 public final class AddArticleCommentAction extends AbstractAction {
 
@@ -185,6 +186,26 @@ public final class AddArticleCommentAction extends AbstractAction {
     public JSONObject doAjaxAction(final JSONObject requestJSONObject,
                                    final HttpServletRequest request,
                                    final HttpServletResponse response)
+            throws ActionException {
+        return addArticleComment(requestJSONObject, request, response);
+    }
+
+    /**
+     * Adds article comment.
+     *
+     * @param requestJSONObject request json object
+     * @param request request
+     * @param response response
+     * @return result
+     * @throws ActionException action exception
+     * @see #doAjaxAction(org.json.JSONObject,
+     * javax.servlet.http.HttpServletRequest,
+     * javax.servlet.http.HttpServletResponse)
+     */
+    public static JSONObject addArticleComment(
+            final JSONObject requestJSONObject,
+            final HttpServletRequest request,
+            final HttpServletResponse response)
             throws ActionException {
         final JSONObject ret = new JSONObject();
         final Transaction transaction = commentRepository.beginTransaction();
