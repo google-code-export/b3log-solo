@@ -271,6 +271,14 @@
         <url-pattern>/add-article-comment.do</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>AddArticleCommentFromSymphonyAction</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.AddArticleCommentFromSymphonyAction</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddArticleCommentFromSymphonyAction</servlet-name>
+        <url-pattern>/add-article-from-symphony-comment.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>AddPageCommentAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.AddPageCommentAction</servlet-class>
     </servlet>
