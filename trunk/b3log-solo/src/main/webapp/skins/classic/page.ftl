@@ -202,7 +202,7 @@
                     + '</div><div class="clear"></div></div><div class="comment-body">'
                     + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
                     + '" src="' + result.commentThumbnailURL + '"/>'
-                    + '</div><div class="comment-content">' + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/\n/g,"<br/>").replace(/</g, "&lt;").replace(/>/g, "&gt;"))
+                    + '</div><div class="comment-content">' + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
                     + '</div><div class="clear"></div>'
                     + '</div></div></div>';
 
