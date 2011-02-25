@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -41,7 +42,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Jan 26, 2011
+ * @version 1.0.2.0, Feb 25, 2011
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -108,7 +108,22 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
+        final String requestURI = request.getRequestURI();
+        String tagTitle = requestURI.substring(("/" + Tag.TAGS + "/").length());
+
+        JSONObject tag = null;
+
         try {
+            tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
+            LOGGER.log(Level.FINER, "Tag[title={0}]", tagTitle);
+            tag = tagRepository.getByTitle(tagTitle);
+
+            if (null == tag) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            }
+
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -125,19 +140,10 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
+            final String tagId = tag.getString(Keys.OBJECT_ID);
+
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
-            String tagId = queryStringJSONObject.optString(Keys.OBJECT_ID);
-            if (Strings.isEmptyOrNull(tagId)) {
-                tagId = (String) request.getAttribute(Keys.OBJECT_ID);
-            }
-
-            if (Strings.isEmptyOrNull(tagId)) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
-            }
-
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
             final int pageSize = preference.getInt(
@@ -193,7 +199,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                                        windowSize);
 
             LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
-            final JSONObject tag = tagRepository.get(tagId);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles,
@@ -237,5 +242,10 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected String getPageName(final String requestURI) {
+        return "tag-articles.ftl";
     }
 }
