@@ -32,7 +32,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
@@ -209,7 +208,6 @@ public final class AddArticleCommentFromSymphonyAction
             String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT).
                     replaceAll("\\n", SoloServletListener.ENTER_ESC);
-            commentContent = StringEscapeUtils.escapeHtml(commentContent);
             final String originalCommentId = requestJSONObject.optString(
                     Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
@@ -218,11 +216,7 @@ public final class AddArticleCommentFromSymphonyAction
             comment.put(Comment.COMMENT_NAME, commentName);
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
-            comment.put(Comment.COMMENT_CONTENT,
-                        commentContent.replace("<p>", "").
-                    replace("</p>", SoloServletListener.ENTER_ESC).
-                    replace("<br>", "").
-                    replace("</br>", SoloServletListener.ENTER_ESC));
+            comment.put(Comment.COMMENT_CONTENT, commentContent);
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
             final Date date = timeZoneUtils.getTime(timeZoneId);
