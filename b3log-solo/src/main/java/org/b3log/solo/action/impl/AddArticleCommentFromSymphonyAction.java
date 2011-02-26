@@ -203,8 +203,8 @@ public final class AddArticleCommentFromSymphonyAction
             final String commentEmail =
                     requestJSONObject.getString("commenterEmail").trim().
                     toLowerCase();
-            final String commentURL = "http://" + 
-                    requestJSONObject.optString("commenterURL");
+            final String commentURL = "http://" 
+                    + requestJSONObject.optString("commenterURL");
             final String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT).
                     replaceAll("\\n", SoloServletListener.ENTER_ESC);
