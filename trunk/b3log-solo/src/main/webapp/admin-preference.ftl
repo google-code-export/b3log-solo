@@ -190,6 +190,14 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>
+                            ${keyOfSolo1Label}
+                        </th>
+                        <td>
+                            <input id="keyOfSolo" class="normalInput"/>
+                        </td>
+                    </tr>
+                    <tr>
                         <th colspan="2">
                             <button onclick="changePreference();">${updateLabel}</button>
                         </th>
@@ -356,6 +364,7 @@
                         $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
                         $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
                         $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
+                        $("#keyOfSolo").val(preference.keyOfSolo);
                         preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
                         preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
 
@@ -474,7 +483,8 @@
                 "signs": signs,
                 "tencentMicroblogAppKey": $("#tencentMicroblogAppKey").val(),
                 "tencentMicroblogAppSecret": $("#tencentMicroblogAppSecret").val(),
-                "enablePostToTencentMicroblog": $("#postToTencentMicroblog").attr("checked")
+                "enablePostToTencentMicroblog": $("#postToTencentMicroblog").attr("checked"),
+                "keyOfSolo": $("#keyOfSolo").val()
             }
         }
 
