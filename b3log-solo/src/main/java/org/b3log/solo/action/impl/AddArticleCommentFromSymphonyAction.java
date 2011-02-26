@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import com.google.appengine.api.mail.MailService;
@@ -32,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
@@ -45,9 +43,7 @@ import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.action.StatusCodes;
-import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Google;
@@ -71,9 +67,10 @@ import org.json.JSONObject;
  * (Symphony)</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Feb 25, 2011
+ * @version 1.0.0.1, Feb 26, 2011
  */
-public final class AddArticleCommentFromSymphonyAction extends AbstractAction {
+public final class AddArticleCommentFromSymphonyAction
+        extends AbstractAction {
 
     /**
      * Default serial version uid.
@@ -149,8 +146,8 @@ public final class AddArticleCommentFromSymphonyAction extends AbstractAction {
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
-     *     "key": "",
-     *     "oId": articleId,
+     *     "keyOfSolo": "",
+     *     "articleId": "",
      *     "commentName": "",
      *     "commentEmail": "",
      *     "commentURL": "",
@@ -164,12 +161,7 @@ public final class AddArticleCommentFromSymphonyAction extends AbstractAction {
      * @return for example,
      * <pre>
      * {
-     *     "oId": generatedCommentId,
-     *     "sc": "COMMENT_ARTICLE_SUCC",
-     *     "commentDate": "", // yyyy/MM/dd hh:mm:ss
-     *     "commentSharpURL": "",
-     *     "commentThumbnailURL": "",
-     *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
+     *     "sc": true
      * }
      * </pre>
      * @throws ActionException action exception
@@ -182,25 +174,30 @@ public final class AddArticleCommentFromSymphonyAction extends AbstractAction {
         final JSONObject ret = new JSONObject();
         final Transaction transaction = commentRepository.beginTransaction();
 
-        String articleId, commentId;
         try {
-            final String captcha = requestJSONObject.getString(
-                    CaptchaServlet.CAPTCHA);
-            final HttpSession session = request.getSession();
-            final String storedCaptcha = (String) session.getAttribute(
-                    CaptchaServlet.CAPTCHA);
-            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-                ret.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
+            final JSONObject preference = preferenceUtils.getPreference();
+            final String keyOfSolo =
+                    preference.optString(Preference.KEY_OF_SOLO);
+            final String key =
+                    requestJSONObject.optString(Preference.KEY_OF_SOLO);
+            if (Strings.isEmptyOrNull(keyOfSolo)
+                || !keyOfSolo.equals(key)) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "Wrong key");
 
                 return ret;
             }
 
-            synchronized (CommentService.class) {
-                session.removeAttribute(CaptchaServlet.CAPTCHA);
+            final String articleId = requestJSONObject.getString("articleId");
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
+                ret.put(Keys.MSG, "Not found the specified article[id=" +
+                        articleId + "]");
+
+                return ret;
             }
 
-            articleId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final JSONObject article = articleRepository.get(articleId);
             final String commentName =
                     requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail =
@@ -221,7 +218,6 @@ public final class AddArticleCommentFromSymphonyAction extends AbstractAction {
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            final JSONObject preference = preferenceUtils.getPreference();
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
             final Date date = timeZoneUtils.getTime(timeZoneId);
@@ -249,7 +245,7 @@ public final class AddArticleCommentFromSymphonyAction extends AbstractAction {
             setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL,
                     comment.getString(Comment.COMMENT_THUMBNAIL_URL));
-            commentId = commentRepository.add(comment);
+            final String commentId = commentRepository.add(comment);
             // Save comment sharp URL
             final String commentSharpURL =
                     getCommentSharpURLForArticle(article,
