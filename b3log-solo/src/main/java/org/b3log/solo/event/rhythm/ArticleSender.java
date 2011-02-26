@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending article to B3log Rhythm.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Jan 30, 2011
+ * @version 1.0.1.3, Feb 26, 2011
  */
 public final class ArticleSender
         extends AbstractEventListener<JSONObject> {
@@ -120,6 +120,8 @@ public final class ArticleSender
                     new HTTPRequest(ADD_ARTICLE_URL, HTTPMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject();
+            article.put(Keys.OBJECT_ID,
+                        originalArticle.getString(Keys.OBJECT_ID));
             article.put(Article.ARTICLE_TITLE,
                         originalArticle.getString(Article.ARTICLE_TITLE));
             article.put(Article.ARTICLE_PERMALINK,
