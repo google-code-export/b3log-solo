@@ -219,10 +219,10 @@ public final class AddArticleCommentFromSymphonyAction
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT,
-                        commentContent.replaceAll("<p>", "").
-                    replaceAll("</p>", SoloServletListener.ENTER_ESC).
-                    replaceAll("<br>", "").
-                    replaceAll("</br>", SoloServletListener.ENTER_ESC));
+                        commentContent.replace("<p>", "").
+                    replace("</p>", SoloServletListener.ENTER_ESC).
+                    replace("<br>", "").
+                    replace("</br>", SoloServletListener.ENTER_ESC));
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
             final Date date = timeZoneUtils.getTime(timeZoneId);
