@@ -287,7 +287,7 @@
                 var position =  $(it).position();
                 $("#commentItemRef" + id).css({
                     "top": (position.top + 18) + "px",
-                    "left": "30px"
+                    "left": "177px"
                 });
             }
 
