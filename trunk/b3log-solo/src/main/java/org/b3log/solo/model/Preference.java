@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Jan 26, 2011
+ * @version 1.0.2.0, Feb 26, 2011
  */
 public final class Preference {
 
@@ -173,6 +173,10 @@ public final class Preference {
      */
     public static final String ENABLE_POST_TO_TENCENT_MICROBLOG =
             "enablePostToTencentMicroblog";
+    /**
+     * Key of key of Solo.
+     */
+    public static final String KEY_OF_SOLO = "keyOfSolo";
 
     /**
      * Private default constructor.
