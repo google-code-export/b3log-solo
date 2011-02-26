@@ -205,7 +205,7 @@ public final class AddArticleCommentFromSymphonyAction
                     toLowerCase();
             final String commentURL =
                     requestJSONObject.optString("commenterURL");
-            String commentContent =
+            final String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT).
                     replaceAll("\\n", SoloServletListener.ENTER_ESC);
             final String originalCommentId = requestJSONObject.optString(
