@@ -149,9 +149,9 @@ public final class AddArticleCommentFromSymphonyAction
      * {
      *     "keyOfSolo": "",
      *     "articleId": "",
-     *     "commentName": "",
-     *     "commentEmail": "",
-     *     "commentURL": "",
+     *     "commenterName": "",
+     *     "commenterEmail": "",
+     *     "commenterURL": "",
      *     "commentContent": "",
      *     "commentOriginalCommentId": "" // optional, if exists this key, the comment
      *                                    // is an reply
@@ -200,12 +200,12 @@ public final class AddArticleCommentFromSymphonyAction
             }
 
             final String commentName =
-                    requestJSONObject.getString(Comment.COMMENT_NAME);
+                    requestJSONObject.getString("commenterName");
             final String commentEmail =
-                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().
+                    requestJSONObject.getString("commenterEmail").trim().
                     toLowerCase();
             final String commentURL =
-                    requestJSONObject.optString(Comment.COMMENT_URL);
+                    requestJSONObject.optString("commenterURL");
             String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT).
                     replaceAll("\\n", SoloServletListener.ENTER_ESC);
