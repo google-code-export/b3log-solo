@@ -193,8 +193,8 @@ public final class AddArticleCommentFromSymphonyAction
             final JSONObject article = articleRepository.get(articleId);
             if (null == article) {
                 ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
-                ret.put(Keys.MSG, "Not found the specified article[id=" +
-                        articleId + "]");
+                ret.put(Keys.MSG, "Not found the specified article[id=" 
+                        + articleId + "]");
 
                 return ret;
             }
