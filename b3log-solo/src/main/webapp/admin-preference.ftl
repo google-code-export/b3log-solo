@@ -496,7 +496,7 @@
                         $("#tipMsg").text("${updatePreferenceFailLabel}");
                         break;
                     case "UPDATE_PREFERENCE_FAIL_CANNT_BE_LOCALHOST":
-                        $("#tipMsg").text("${canntBeLocalhostOnProductionLabel}");
+                        $("#tipMsg").text('${canntBeLocalhostOnProductionLabel}');
                         break;
                     case "UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS":
                         $("#tipMsg").text("${updatePreferenceFailNeedMulUsersLabel}");
