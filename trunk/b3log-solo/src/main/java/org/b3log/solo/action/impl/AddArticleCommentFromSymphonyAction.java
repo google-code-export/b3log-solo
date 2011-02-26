@@ -193,8 +193,8 @@ public final class AddArticleCommentFromSymphonyAction
             final JSONObject article = articleRepository.get(articleId);
             if (null == article) {
                 ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
-                ret.put(Keys.MSG, "Not found the specified article[id=" 
-                        + articleId + "]");
+                ret.put(Keys.MSG, "Not found the specified article[id="
+                                  + articleId + "]");
 
                 return ret;
             }
@@ -341,8 +341,7 @@ public final class AddArticleCommentFromSymphonyAction
         final String blogHost =
                 preference.getString(Preference.BLOG_HOST);
         boolean isArticle = true;
-        String title =
-                articleOrPage.optString(Article.ARTICLE_TITLE);
+        String title = articleOrPage.optString(Article.ARTICLE_TITLE);
         if (Strings.isEmptyOrNull(title)) {
             title = articleOrPage.getString(Page.PAGE_TITLE);
             isArticle = false;
