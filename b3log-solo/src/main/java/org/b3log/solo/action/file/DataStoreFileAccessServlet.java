@@ -19,6 +19,7 @@ package org.b3log.solo.action.file;
 import com.google.appengine.api.datastore.Blob;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 12, 2011
+ * @version 1.0.0.9, Feb 28, 2011
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -172,6 +173,8 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                          final HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
         final String id = request.getParameter(Keys.OBJECT_ID);
         final Transaction transaction = fileRepository.beginTransaction();
         try {
@@ -183,13 +186,9 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
 
             final Blob content = (Blob) file.get(File.FILE_CONTENT);
             final String name = file.getString(File.FILE_NAME);
-            String charset = "ISO-8859-1";
-            if (request.getLocale().getLanguage().equals("zh")) {
-                charset = "GBK";
-            }
             response.addHeader("Content-Disposition",
                                "attachment; filename="
-                               + new String(name.getBytes(charset), "ISO-8859-1"));
+                               + URLEncoder.encode(name, "UTF-8"));
             response.setContentType(file.getString(File.FILE_CONTENT_TYPE));
             response.getOutputStream().write(content.getBytes());
             response.getOutputStream().close();
