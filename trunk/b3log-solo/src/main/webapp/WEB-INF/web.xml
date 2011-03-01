@@ -16,7 +16,6 @@
     limitations under the License.
 
 -->
-
 <!--
     Description: B3log Solo web deployment descriptor.
     Version: 1.0.1.7, Feb 25, 2011
@@ -77,11 +76,11 @@
         <web-resource-collection>
             <web-resource-name>Upgrade and Initialization</web-resource-name>
             <url-pattern>/upgrade/*</url-pattern>
-            <url-pattern>/fix/*</url-pattern>
             <url-pattern>/init.do</url-pattern>
             <url-pattern>/rm-all-data.do</url-pattern>
             <url-pattern>/tencent-microblog-oauth-authorize-token.do</url-pattern>
             <url-pattern>/tencent-microblog-oauth-callback.do</url-pattern>
+            <url-pattern>/fix/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -344,12 +343,12 @@
         <url-pattern>/upgrade/v021-v025.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>RestoreSign</servlet-name>
-        <servlet-class>org.b3log.solo.fix.RestoreSign</servlet-class>
+        <servlet-name>RestoreSigns</servlet-name>
+        <servlet-class>org.b3log.solo.fix.RestoreSigns</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RestoreSign</servlet-name>
-        <url-pattern>/fix/restore-sign.do</url-pattern>
+        <servlet-name>RestoreSigns</servlet-name>
+        <url-pattern>/fix/restore-signs.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>JSONRPCServlet</servlet-name>
