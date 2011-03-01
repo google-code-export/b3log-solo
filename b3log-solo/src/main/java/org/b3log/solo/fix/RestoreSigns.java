@@ -33,12 +33,12 @@ import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
- * Restores the sign of preference to default.
+ * Restores the signs of preference to default.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Mar 1, 2011
  */
-public final class RestoreSign extends HttpServlet {
+public final class RestoreSigns extends HttpServlet {
 
     /**
      * Default serial version uid.
@@ -48,7 +48,7 @@ public final class RestoreSign extends HttpServlet {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(RestoreSign.class.getName());
+            Logger.getLogger(RestoreSigns.class.getName());
     /**
      * Preference utilities.
      */
@@ -67,7 +67,7 @@ public final class RestoreSign extends HttpServlet {
 
         try {
             final JSONObject preference = preferenceUtils.getPreference();
-            final String originalSign =
+            final String originalSigns =
                     preference.getString(Preference.SIGNS);
             preference.put(Preference.SIGNS, Preference.Default.DEFAULT_SIGNS);
 
@@ -75,7 +75,7 @@ public final class RestoreSign extends HttpServlet {
 
             final Message msg = new MailService.Message(
                     preference.getString(Preference.ADMIN_EMAIL),
-                    "DL88250@gmail.com", "Restore signs", originalSign);
+                    "DL88250@gmail.com", "Restore signs", originalSigns);
             MAIL_SVC.send(msg);
             writer.println("Restores signs succeeded.");
 
