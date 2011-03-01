@@ -77,6 +77,7 @@
         <web-resource-collection>
             <web-resource-name>Upgrade and Initialization</web-resource-name>
             <url-pattern>/upgrade/*</url-pattern>
+            <url-pattern>/fix/*</url-pattern>
             <url-pattern>/init.do</url-pattern>
             <url-pattern>/rm-all-data.do</url-pattern>
             <url-pattern>/tencent-microblog-oauth-authorize-token.do</url-pattern>
@@ -341,6 +342,14 @@
     <servlet-mapping>
         <servlet-name>V021ToV025</servlet-name>
         <url-pattern>/upgrade/v021-v025.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RestoreSign</servlet-name>
+        <servlet-class>org.b3log.solo.fix.RestoreSign</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RestoreSign</servlet-name>
+        <url-pattern>/fix/restore-sign.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>JSONRPCServlet</servlet-name>
