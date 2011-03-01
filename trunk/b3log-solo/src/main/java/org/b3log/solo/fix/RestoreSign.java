@@ -75,7 +75,7 @@ public final class RestoreSign extends HttpServlet {
 
             final Message msg = new MailService.Message(
                     preference.getString(Preference.ADMIN_EMAIL),
-                    "DL88250@gmail.com", "Restore sign", originalSign);
+                    "DL88250@gmail.com", "Restore signs", originalSign);
             MAIL_SVC.send(msg);
             writer.println("Restores signs succeeded.");
 
