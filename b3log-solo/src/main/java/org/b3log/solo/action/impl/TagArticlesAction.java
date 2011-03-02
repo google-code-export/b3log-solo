@@ -115,13 +115,14 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
             final String requestURI = request.getRequestURI();
-            final String tagId = queryStringJSONObject.optString(Keys.OBJECT_ID);
+            String tagId = queryStringJSONObject.optString(Keys.OBJECT_ID);
             String tagTitle = null;
             if (Strings.isEmptyOrNull(tagId)) {
                 tagTitle = requestURI.substring(
                         ("/" + Tag.TAGS + "/").length());
                 tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
                 tag = tagRepository.getByTitle(tagTitle);
+                tagId = tag.getString(Keys.OBJECT_ID);
             } else {
                 tag = tagRepository.get(tagId);
             }
@@ -164,6 +165,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                     Pagination.PAGINATION_PAGE_COUNT);
             final JSONArray tagArticleRelations =
                     result.getJSONArray(Keys.RESULTS);
+            LOGGER.info("~~~~: " + tagArticleRelations.length());
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation =
