@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * (Symphony)</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Feb 26, 2011
+ * @version 1.0.0.2, Mar 2, 2011
  */
 public final class AddArticleCommentFromSymphonyAction
         extends AbstractAction {
@@ -205,9 +205,12 @@ public final class AddArticleCommentFromSymphonyAction
                     toLowerCase();
             final String commentURL = "http://" 
                     + requestJSONObject.optString("commenterURL");
-            final String commentContent =
+            String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT).
                     replaceAll("\\n", SoloServletListener.ENTER_ESC);
+            commentContent += "<div style='font: italic normal normal 11px Verdana'>"
+                    + "该评论来自 <a href='http://symphony.b3log.org'>"
+                    + "B3log 社区</a></div>"; // XXX: no i18n
             final String originalCommentId = requestJSONObject.optString(
                     Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
