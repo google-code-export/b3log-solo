@@ -42,6 +42,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
@@ -57,7 +58,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Feb 25, 2011
+ * @version 1.0.2.1, Mar 2, 2011
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -108,15 +109,22 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
-        final String requestURI = request.getRequestURI();
-        String tagTitle = requestURI.substring(("/" + Tag.TAGS + "/").length());
-
         JSONObject tag = null;
 
         try {
-            tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
-            LOGGER.log(Level.FINER, "Tag[title={0}]", tagTitle);
-            tag = tagRepository.getByTitle(tagTitle);
+            final JSONObject queryStringJSONObject =
+                    getQueryStringJSONObject(request);
+            final String requestURI = request.getRequestURI();
+            final String tagId = queryStringJSONObject.optString(Keys.OBJECT_ID);
+            String tagTitle = null;
+            if (Strings.isEmptyOrNull(tagId)) {
+                tagTitle = requestURI.substring(
+                        ("/" + Tag.TAGS + "/").length());
+                tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
+                tag = tagRepository.getByTitle(tagTitle);
+            } else {
+                tag = tagRepository.get(tagId);
+            }
 
             if (null == tag) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -140,10 +148,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
-            final String tagId = tag.getString(Keys.OBJECT_ID);
-
-            final JSONObject queryStringJSONObject =
-                    getQueryStringJSONObject(request);
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
             final int pageSize = preference.getInt(
