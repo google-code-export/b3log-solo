@@ -206,9 +206,8 @@ public final class AddArticleCommentFromSymphonyAction
             final String commentURL = "http://" 
                     + requestJSONObject.optString("commenterURL");
             String commentContent =
-                    requestJSONObject.getString(Comment.COMMENT_CONTENT).
-                    replaceAll("\\n", SoloServletListener.ENTER_ESC);
-            commentContent += "<div style='font: italic normal normal 11px Verdana'>"
+                    requestJSONObject.getString(Comment.COMMENT_CONTENT);
+            commentContent += "<br/><div style='font: italic normal normal 11px Verdana'>"
                     + "该评论来自 <a href='http://symphony.b3log.org'>"
                     + "B3log 社区</a></div>"; // XXX: no i18n
             final String originalCommentId = requestJSONObject.optString(
