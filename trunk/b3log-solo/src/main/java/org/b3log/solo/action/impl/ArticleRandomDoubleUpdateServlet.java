@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
@@ -69,21 +68,17 @@ public final class ArticleRandomDoubleUpdateServlet extends HttpServlet {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
 
-        final Transaction transaction = articleRepository.beginTransaction();
         try {
             final List<JSONObject> randomArticles =
                     articleRepository.getRandomly(updateCnt);
 
             for (final JSONObject article : randomArticles) {
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-                articleRepository.update(article.getString(Keys.OBJECT_ID),
-                                         article);
+                articleRepository.updateAsync(article.getString(Keys.OBJECT_ID),
+                                              article);
             }
-            transaction.commit();
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
+            LOGGER.log(Level.WARNING, "Updates article random value failed.");
         }
     }
 }
