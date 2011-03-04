@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Gets some articles randomly and regenerate their random double.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 11, 2011
+ * @version 1.0.0.2, Mar 4, 2011
  */
 public final class ArticleRandomDoubleUpdateServlet extends HttpServlet {
 
@@ -84,7 +84,6 @@ public final class ArticleRandomDoubleUpdateServlet extends HttpServlet {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 }
