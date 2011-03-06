@@ -64,6 +64,7 @@ import org.b3log.solo.util.Tags;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 /**
  * Filler utilities.
@@ -345,7 +346,7 @@ public final class Filler {
         for (final JSONObject comment : recentComments) {
             final String content = comment.getString(Comment.COMMENT_CONTENT).
                     replaceAll(SoloServletListener.ENTER_ESC, "&nbsp;");
-            comment.put(Comment.COMMENT_CONTENT, content);
+            comment.put(Comment.COMMENT_CONTENT, Jsoup.parse(content).text());
             comment.remove(Comment.COMMENT_EMAIL);
         }
 
