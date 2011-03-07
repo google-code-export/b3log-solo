@@ -283,10 +283,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             transaction.commit();
 
             status.put(Keys.CODE, StatusCodes.ADD_ARTICLE_SUCC);
-
-            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                PageCaches.removeAll();
-            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
@@ -295,6 +291,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             return ret;
         }
+
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -546,9 +544,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        final Transaction transaction =
-                articleRepository.beginTransaction();
-        Transaction transaction2 = null;
+        final Transaction transaction = articleRepository.beginTransaction();
         try {
             final JSONObject status = new JSONObject();
             ret.put(Keys.STATUS, status);
@@ -568,11 +564,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             // Step 3: Remove related comments, article-comment relations,
             // set article/blog comment statistic count
             articleUtils.removeArticleComments(articleId);
-            // XXX: GAE transaction isolation
-            // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
-            transaction.commit();
-            transaction2 =
-                    articleRepository.beginTransaction();
             // Step 4: Remove article
             final JSONObject article = articleRepository.get(articleId);
             articleRepository.remove(articleId);
@@ -595,26 +586,19 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);
             }
 
-            transaction2.commit();
+            transaction.commit();
 
             status.put(Keys.CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
-
             LOGGER.log(Level.FINER, "Removed an article[oId={0}]", articleId);
-
-            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                PageCaches.removeAll();
-            }
         } catch (final Exception e) {
-            if (null != transaction2 && transaction2.isActive()) {
-                transaction2.rollback();
-            }
-
             if (transaction.isActive()) {
                 transaction.rollback();
             }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
+
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -797,8 +781,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        final Transaction transaction =
-                articleRepository.beginTransaction();
+        final Transaction transaction = articleRepository.beginTransaction();
         Transaction transaction2 = null;
 
         final JSONObject status = new JSONObject();
@@ -919,10 +902,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
-
-            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                PageCaches.removeAll();
-            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -936,6 +915,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             return ret;
         }
+
+        PageCaches.removeAll();
 
         return ret;
     }
