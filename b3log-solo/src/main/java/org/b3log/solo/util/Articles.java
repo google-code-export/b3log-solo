@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Feb 22, 2011
+ * @version 1.0.2.2, Mar 7, 2011
  */
 public final class Articles {
 
@@ -157,22 +157,35 @@ public final class Articles {
     }
 
     /**
-     * Removes tag-article relations by the specified article id.
+     * Removes tag-article relations by the specified article id and tag ids of
+     * the relations to be removed.
      *
      * @param articleId the specified article id
+     * @param tagIds the specified tag ids of the relations to be removed
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void removeTagArticleRelations(final String articleId)
+    public void removeTagArticleRelations(final String articleId,
+                                          final String... tagIds)
             throws JSONException, RepositoryException {
+        final List<String> tagIdList = Arrays.asList(tagIds);
         final List<JSONObject> tagArticleRelations =
                 tagArticleRepository.getByArticleId(articleId);
         for (int i = 0; i < tagArticleRelations.size(); i++) {
             final JSONObject tagArticleRelation =
                     tagArticleRelations.get(i);
-            final String relationId =
-                    tagArticleRelation.getString(Keys.OBJECT_ID);
-            tagArticleRepository.remove(relationId);
+            String relationId = null;
+            if (tagIdList.isEmpty()) { // Removes all if un-specified
+                relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
+                tagArticleRepository.remove(relationId);
+            } else {
+                if (tagIdList.contains(
+                        tagArticleRelation.getString(Tag.TAG + "_"
+                                                     + Keys.OBJECT_ID))) {
+                    relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
+                    tagArticleRepository.remove(relationId);
+                }
+            }
         }
     }
 

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import java.util.ArrayList;
@@ -180,13 +179,11 @@ public final class Tags {
                                             final JSONObject newArticle)
             throws Exception {
         final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
-        articleUtils.removeTagArticleRelations(oldArticleId);
-
         final List<JSONObject> oldTags =
                 tagRepository.getByArticleId(oldArticleId);
         final String tagsString =
                 newArticle.getString(Article.ARTICLE_TAGS_REF);
-        final String[] tagStrings = tagsString.split(",");
+        String[] tagStrings = tagsString.split(",");
         final List<JSONObject> newTags = new ArrayList<JSONObject>();
         for (int i = 0; i < tagStrings.length; i++) {
             final String tagTitle = tagStrings[i];
@@ -219,12 +216,26 @@ public final class Tags {
                     tagRemoved.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             if (oldArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 tagRemoved.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                                    publishedRefCnt - 1);
+                               publishedRefCnt - 1);
             }
 
             tagRepository.update(tagId, tagRemoved);
         }
 
+        final String[] oldTagIds = new String[tagsRemoved.size()];
+        for (int i = 0; i < oldTagIds.length; i++) {
+            final JSONObject tag = tagsRemoved.get(i);
+            final String id = tag.getString(Keys.OBJECT_ID);
+            oldTagIds[i] = id;
+        }
+        articleUtils.removeTagArticleRelations(oldArticleId, oldTagIds);
+
+        tagStrings = new String[newTags.size()];
+        for (int i = 0; i < tagStrings.length; i++) {
+            final JSONObject tag = newTags.get(i);
+            final String tagTitle = tag.getString(Tag.TAG_TITLE);
+            tagStrings[i] = tagTitle;
+        }
         final JSONArray tags = tag(tagStrings, newArticle);
 
         articleUtils.addTagArticleRelation(tags, newArticle);
