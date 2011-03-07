@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 30, 2011
+ * @version 1.0.0.6, Mar 7, 2011
  */
 public final class Statistics {
 
@@ -208,6 +208,10 @@ public final class Statistics {
         try {
             final JSONObject statistic =
                     statisticRepository.get(Statistic.STATISTIC);
+            if (null == statistic) {
+                return;
+            }
+            
             long blogViewCnt =
                     statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
             ++blogViewCnt;
