@@ -190,7 +190,12 @@ public final class Tags {
         final List<JSONObject> newTags = new ArrayList<JSONObject>();
         for (int i = 0; i < tagStrings.length; i++) {
             final String tagTitle = tagStrings[i];
-            final JSONObject newTag = tagRepository.getByTitle(tagTitle);
+            JSONObject newTag = tagRepository.getByTitle(tagTitle);
+            if (null == newTag) {
+                newTag = new JSONObject();
+                newTag.put(Tag.TAG_TITLE, tagTitle);
+                newTag.put(Keys.OBJECT_ID, "_");
+            }
             newTags.add(newTag);
         }
 
