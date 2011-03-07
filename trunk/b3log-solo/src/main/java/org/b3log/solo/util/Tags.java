@@ -200,7 +200,6 @@ public final class Tags {
         final List<JSONObject> tagsNeedToAdd = new ArrayList<JSONObject>();
         for (final JSONObject newTag : newTags) {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
-
             if (!tagExists(newTagTitle, oldTags)) {
                 LOGGER.log(Level.FINER, "Tag need to add[title={0}]",
                            newTagTitle);
@@ -209,7 +208,6 @@ public final class Tags {
         }
         for (final JSONObject oldTag : oldTags) {
             final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
-
             if (!tagExists(oldTagTitle, newTags)) {
                 LOGGER.log(Level.FINER, "Tag dropped[title={0}]", oldTag);
                 tagsDropped.add(oldTag);
