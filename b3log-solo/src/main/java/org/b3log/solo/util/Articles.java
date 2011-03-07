@@ -161,6 +161,10 @@ public final class Articles {
      * Removes tag-article relations by the specified article id and tag ids of
      * the relations to be removed.
      *
+     * <p>
+     * Removes all relations if not specified the tag ids.
+     * </p>
+     *
      * @param articleId the specified article id
      * @param tagIds the specified tag ids of the relations to be removed
      * @throws JSONException json exception
