@@ -203,6 +203,8 @@ public final class Tags {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(newTagTitle, oldTags)) {
+                LOGGER.log(Level.FINER, "Tag need to add[title={0}]",
+                           newTagTitle);
                 tagsNeedToAdd.add(newTag);
             }
         }
@@ -210,6 +212,7 @@ public final class Tags {
             final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(oldTagTitle, newTags)) {
+                LOGGER.log(Level.FINER, "Tag dropped[title={0}]", oldTag);
                 tagsDropped.add(oldTag);
             }
         }
@@ -228,13 +231,13 @@ public final class Tags {
             tagRepository.update(tagId, tagDropped);
         }
 
-        final String[] TagIdsDropped = new String[tagsDropped.size()];
-        for (int i = 0; i < TagIdsDropped.length; i++) {
+        final String[] tagIdsDropped = new String[tagsDropped.size()];
+        for (int i = 0; i < tagIdsDropped.length; i++) {
             final JSONObject tag = tagsDropped.get(i);
             final String id = tag.getString(Keys.OBJECT_ID);
-            TagIdsDropped[i] = id;
+            tagIdsDropped[i] = id;
         }
-        articleUtils.removeTagArticleRelations(oldArticleId, TagIdsDropped);
+        articleUtils.removeTagArticleRelations(oldArticleId, tagIdsDropped);
 
         tagStrings = new String[tagsNeedToAdd.size()];
         for (int i = 0; i < tagStrings.length; i++) {
