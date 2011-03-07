@@ -97,6 +97,7 @@ public final class Tags {
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
                 tagId = tag.getString(Keys.OBJECT_ID);
+                tag = tagRepository.get(tagId); // XXX: Gets tag from repository cache[tagId]
                 LOGGER.log(Level.FINEST,
                            "Found a existing tag[title={0}, oId={1}] in article[title={2}]",
                            new Object[]{tag.getString(Tag.TAG_TITLE),
