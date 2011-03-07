@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.util;
 
 import java.util.ArrayList;
@@ -230,15 +231,15 @@ public final class Tags {
                 if (!newArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
                                      publishedRefCnt - 1);
+                    tagRepository.update(tagId, tagUnchanged);
                 }
             } else {
                 if (newArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
                                      publishedRefCnt + 1);
+                    tagRepository.update(tagId, tagUnchanged);
                 }
             }
-
-            tagRepository.update(tagId, tagUnchanged);
         }
 
         for (final JSONObject tagDropped : tagsDropped) {
