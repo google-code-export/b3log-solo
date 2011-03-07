@@ -782,7 +782,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         }
 
         final Transaction transaction = articleRepository.beginTransaction();
-        Transaction transaction2 = null;
 
         final JSONObject status = new JSONObject();
         try {
@@ -811,23 +810,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     oldArticle, article,
                     (Date) oldArticle.get(ARTICLE_CREATE_DATE), status);
             article.put(ARTICLE_PERMALINK, permalink);
-            // Step 2: Dec reference count of tag
-            tagUtils.decTagRefCount(articleId);
-            // Step 3: Un-archive date-article relations
-            archiveDateUtils.unArchiveDate(articleId);
-            // Step 4: Remove tag-article relations
-            articleUtils.removeTagArticleRelations(articleId);
-            // XXX: GAE transaction isolation
-            // http://code.google.com/intl/en/appengine/docs/java/datastore/transactions.html#Isolation_and_Consistency
-            transaction.commit();
-            transaction2 = articleRepository.beginTransaction();
-            // Step 5: Add tags
-            final String tagsString = article.getString(ARTICLE_TAGS_REF);
-            final String[] tagTitles = tagsString.split(",");
-            final JSONArray tags = tagUtils.tag(tagTitles, article);
-            // Step 6: Fill auto properties
+            // Step 3: Process tag
+            tagUtils.processTagsForArticleUpdate(oldArticle, article);
+            // Step 5: Fill auto properties
             fillAutoProperties(oldArticle, article);
-            // Step 7: Set date
+            // Step 6: Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             final JSONObject preference = preferenceUtils.getPreference();
             final String timeZoneId =
@@ -852,7 +839,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     article.put(ARTICLE_UPDATE_DATE, date);
                 }
             }
-            // Step 8: Set statistic
+            // Step 7: Set statistic
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 if (!oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)) {
                     // This article is updated from unpublished to published
@@ -865,7 +852,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                             blogCmtCnt + articleCmtCnt);
                 }
             }
-            // Step 9: Add article-sign relation
+            // Step 8: Add article-sign relation
             final String signId =
                     article.getString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             final JSONObject articleSignRelation =
@@ -876,12 +863,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
             articleUtils.addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-            // Step 10: Update
+            // Step 9: Update
             articleRepository.update(articleId, article);
-            // Step 11: Add tag-article relations
-            articleUtils.addTagArticleRelation(tags, article);
-            // Step 12: Add archive date-article relations
-            archiveDateUtils.archiveDate(article);
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 // Fire update article event
@@ -897,17 +880,13 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 }
             }
 
-            transaction2.commit();
+            transaction.commit();
 
             status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            if (null != transaction2 && transaction2.isActive()) {
-                transaction2.rollback();
-            }
 
             if (transaction.isActive()) {
                 transaction.rollback();

@@ -29,10 +29,6 @@ import java.util.logging.Logger;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RunsOnEnv;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.json.JSONException;
@@ -42,7 +38,7 @@ import org.json.JSONObject;
  * Tag Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 15, 2011
+ * @version 1.0.0.9, Mar 7, 2011
  */
 public final class TagGAERepository extends AbstractGAERepository
         implements TagRepository {
@@ -58,27 +54,10 @@ public final class TagGAERepository extends AbstractGAERepository
     private TagArticleGAERepository tagArticleRepository =
             TagArticleGAERepository.getInstance();
     /**
-     * Cache.
-     */
-    private static final Cache<String, Object> CACHE;
-    /**
      * Key of the most used tag cache count.
      */
     private static final String KEY_MOST_USED_TAG_CACHE_CNT =
             "mostUsedTagCacheCnt";
-
-    static {
-        final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
-        if (!runsOnEnv.equals(RunsOnEnv.GAE)) {
-            throw new RuntimeException(
-                    "GAE repository can only runs on Google App Engine, please "
-                    + "check your configuration and make sure "
-                    + "Latkes.setRunsOnEnv(RunsOnEnv.GAE) was invoked before "
-                    + "using GAE repository.");
-        }
-
-        CACHE = CacheFactory.getCache("TagGAERepositoryCache");
-    }
 
     @Override
     public String getName() {

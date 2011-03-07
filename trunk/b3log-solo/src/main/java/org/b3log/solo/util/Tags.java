@@ -16,6 +16,7 @@
 
 package org.b3log.solo.util;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
  * Tag utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 12, 2011
+ * @version 1.0.0.5, Mar 7, 2011
  */
 public final class Tags {
 
@@ -55,6 +56,10 @@ public final class Tags {
      */
     private TagRepository tagRepository =
             TagGAERepository.getInstance();
+    /**
+     * Article utilities.
+     */
+    private Articles articleUtils = Articles.getInstance();
 
     /**
      * Tags the specified article with the specified tag titles.
@@ -156,6 +161,94 @@ public final class Tags {
         LOGGER.log(Level.FINER,
                    "Deced all tag reference count of article[oId={0}]",
                    articleId);
+    }
+
+    /**
+     * Processes tags for article update.
+     *
+     * <ul>
+     *   <li>Un-tags old article, decrements tag reference count</li>
+     *   <li>Removes old article-tag relations</li>
+     *   <li>Saves new article-tag relations with tag reference count</li>
+     * </ul>
+     *
+     * @param oldArticle the specified old article
+     * @param newArticle the specified new article
+     * @throws Exception exception
+     */
+    public void processTagsForArticleUpdate(final JSONObject oldArticle,
+                                            final JSONObject newArticle)
+            throws Exception {
+        final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
+        articleUtils.removeTagArticleRelations(oldArticleId);
+
+        final List<JSONObject> oldTags =
+                tagRepository.getByArticleId(oldArticleId);
+        final String tagsString =
+                newArticle.getString(Article.ARTICLE_TAGS_REF);
+        String[] tagStrings = tagsString.split(",");
+        final List<JSONObject> newTags = new ArrayList<JSONObject>();
+        for (int i = 0; i < tagStrings.length; i++) {
+            final String tagTitle = tagStrings[i];
+            final JSONObject newTag = tagRepository.getByTitle(tagTitle);
+            newTags.add(newTag);
+        }
+
+        final List<JSONObject> tagsRemoved = new ArrayList<JSONObject>();
+        final List<JSONObject> tagsNeedToAdd = new ArrayList<JSONObject>();
+        for (final JSONObject newTag : newTags) {
+            final String newTagId = newTag.getString(Keys.OBJECT_ID);
+
+            if (!tagExists(newTagId, oldTags)) {
+                tagsNeedToAdd.add(newTag);
+            } else {
+                tagsRemoved.add(newTag);
+            }
+        }
+
+        for (final JSONObject tagNeedToRemove : tagsRemoved) {
+            final String tagId = tagNeedToRemove.getString(Keys.OBJECT_ID);
+            final int refCnt = tagNeedToRemove.getInt(Tag.TAG_REFERENCE_COUNT);
+            tagNeedToRemove.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
+            final int publishedRefCnt =
+                    tagNeedToRemove.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            if (oldArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                tagNeedToRemove.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                                    publishedRefCnt - 1);
+            }
+
+            tagRepository.update(tagId, tagNeedToRemove);
+        }
+
+        tagStrings = new String[tagsNeedToAdd.size()];
+        for (int i = 0; i < tagsNeedToAdd.size(); i++) {
+            final JSONObject tag = tagsNeedToAdd.get(i);
+            tagStrings[i] = tag.getString(Tag.TAG_TITLE);
+        }
+
+        final JSONArray tags = tag(tagStrings, newArticle);
+
+        articleUtils.addTagArticleRelation(tags, newArticle);
+    }
+
+    /**
+     * Determines whether the specified tag id exists in the specified tags.
+     *
+     * @param tagId the specified tag id
+     * @param tags the specified tags
+     * @return {@code true} if it exists, {@code false} otherwise
+     * @throws JSONException json exception
+     */
+    private static boolean tagExists(final String tagId,
+                                     final List<JSONObject> tags)
+            throws JSONException {
+        for (final JSONObject tag : tags) {
+            if (tag.getString(Keys.OBJECT_ID).equals(tagId)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
