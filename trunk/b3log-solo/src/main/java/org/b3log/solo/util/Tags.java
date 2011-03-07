@@ -214,7 +214,6 @@ public final class Tags {
             }
         }
 
-
         for (final JSONObject tagDropped : tagsDropped) {
             final String tagId = tagDropped.getString(Keys.OBJECT_ID);
             final int refCnt = tagDropped.getInt(Tag.TAG_REFERENCE_COUNT);
