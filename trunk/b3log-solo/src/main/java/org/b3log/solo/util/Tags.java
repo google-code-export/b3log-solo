@@ -225,12 +225,6 @@ public final class Tags {
             tagRepository.update(tagId, tagNeedToRemove);
         }
 
-        tagStrings = new String[tagsNeedToAdd.size()];
-        for (int i = 0; i < tagsNeedToAdd.size(); i++) {
-            final JSONObject tag = tagsNeedToAdd.get(i);
-            tagStrings[i] = tag.getString(Tag.TAG_TITLE);
-        }
-
         final JSONArray tags = tag(tagStrings, newArticle);
 
         articleUtils.addTagArticleRelation(tags, newArticle);
