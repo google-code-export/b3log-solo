@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import java.util.ArrayList;
@@ -198,12 +197,15 @@ public final class Tags {
 
         final List<JSONObject> tagsDropped = new ArrayList<JSONObject>();
         final List<JSONObject> tagsNeedToAdd = new ArrayList<JSONObject>();
+        final List<JSONObject> tagsUnchanged = new ArrayList<JSONObject>();
         for (final JSONObject newTag : newTags) {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
             if (!tagExists(newTagTitle, oldTags)) {
                 LOGGER.log(Level.FINER, "Tag need to add[title={0}]",
                            newTagTitle);
                 tagsNeedToAdd.add(newTag);
+            } else {
+                tagsUnchanged.add(newTag);
             }
         }
         for (final JSONObject oldTag : oldTags) {
@@ -211,7 +213,32 @@ public final class Tags {
             if (!tagExists(oldTagTitle, newTags)) {
                 LOGGER.log(Level.FINER, "Tag dropped[title={0}]", oldTag);
                 tagsDropped.add(oldTag);
+            } else {
+                tagsUnchanged.remove(oldTag);
             }
+        }
+
+        LOGGER.log(Level.FINER, "Tags unchanged[{0}]", tagsUnchanged);
+        for (final JSONObject tagUnchanged : tagsUnchanged) {
+            final String tagId = tagUnchanged.optString(Keys.OBJECT_ID);
+            if (null == tagId) {
+                continue; // Unchanged tag always exist id
+            }
+            final int publishedRefCnt =
+                    tagUnchanged.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            if (oldArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (!newArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                                     publishedRefCnt - 1);
+                }
+            } else {
+                if (newArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                                     publishedRefCnt + 1);
+                }
+            }
+
+            tagRepository.update(tagId, tagUnchanged);
         }
 
         for (final JSONObject tagDropped : tagsDropped) {
