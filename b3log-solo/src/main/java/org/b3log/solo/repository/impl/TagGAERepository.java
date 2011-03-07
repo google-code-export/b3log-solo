@@ -23,7 +23,6 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultIterable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Tag;
@@ -80,9 +79,7 @@ public final class TagGAERepository extends AbstractGAERepository
                 return null;
             }
 
-            final Map<String, Object> properties = entity.getProperties();
-
-            ret = new JSONObject(properties);
+            ret = entity2JSONObject(entity);
             
             CACHE.put(cacheKey, ret);
         }
