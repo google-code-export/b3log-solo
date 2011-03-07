@@ -211,18 +211,18 @@ public final class Tags {
             }
         }
 
-        for (final JSONObject tagNeedToRemove : tagsRemoved) {
-            final String tagId = tagNeedToRemove.getString(Keys.OBJECT_ID);
-            final int refCnt = tagNeedToRemove.getInt(Tag.TAG_REFERENCE_COUNT);
-            tagNeedToRemove.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
+        for (final JSONObject tagRemoved : tagsRemoved) {
+            final String tagId = tagRemoved.getString(Keys.OBJECT_ID);
+            final int refCnt = tagRemoved.getInt(Tag.TAG_REFERENCE_COUNT);
+            tagRemoved.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
             final int publishedRefCnt =
-                    tagNeedToRemove.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+                    tagRemoved.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             if (oldArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                tagNeedToRemove.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                tagRemoved.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
                                     publishedRefCnt - 1);
             }
 
-            tagRepository.update(tagId, tagNeedToRemove);
+            tagRepository.update(tagId, tagRemoved);
         }
 
         final JSONArray tags = tag(tagStrings, newArticle);
