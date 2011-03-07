@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ import org.json.JSONObject;
  * Tag utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Mar 7, 2011
+ * @version 1.0.0.6, Mar 8, 2011
  */
 public final class Tags {
 
@@ -96,7 +95,6 @@ public final class Tags {
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
-                LOGGER.info("~~~~: " + tag);
                 tagId = tag.getString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST,
                            "Found a existing tag[title={0}, oId={1}] in article[title={2}]",
@@ -237,7 +235,10 @@ public final class Tags {
             final String id = tag.getString(Keys.OBJECT_ID);
             tagIdsDropped[i] = id;
         }
-        articleUtils.removeTagArticleRelations(oldArticleId, tagIdsDropped);
+        articleUtils.removeTagArticleRelations(
+                oldArticleId, 0 == tagIdsDropped.length
+                ? new String[]{"l0y0l"}
+                : tagIdsDropped);
 
         tagStrings = new String[tagsNeedToAdd.size()];
         for (int i = 0; i < tagStrings.length; i++) {
