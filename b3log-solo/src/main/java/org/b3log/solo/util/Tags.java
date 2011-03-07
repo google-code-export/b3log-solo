@@ -194,7 +194,7 @@ public final class Tags {
             if (null == newTag) {
                 newTag = new JSONObject();
                 newTag.put(Tag.TAG_TITLE, tagTitle);
-                newTag.put(Keys.OBJECT_ID, "_");
+                newTag.put(Keys.OBJECT_ID, "Invalid Id");
             }
             newTags.add(newTag);
         }
