@@ -557,24 +557,17 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
 
             LOGGER.log(Level.FINER, "Removing an article[oId={0}]", articleId);
-            // Step 1: Dec reference count of tag
             tagUtils.decTagRefCount(articleId);
-            // Step 2: Remove tag-article relations
+            archiveDateUtils.unArchiveDate(articleId);
             articleUtils.removeTagArticleRelations(articleId);
-            // Step 3: Remove related comments, article-comment relations,
-            // set article/blog comment statistic count
             articleUtils.removeArticleComments(articleId);
-            // Step 4: Remove article
             final JSONObject article = articleRepository.get(articleId);
             articleRepository.remove(articleId);
-            // Step 5: Dec blog article count statictis
             statistics.decBlogArticleCount();
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 statistics.decPublishedBlogArticleCount();
             }
-            // Step 6: Un-archive date-article relations
-            archiveDateUtils.unArchiveDate(articleId);
-            // Step 7: Fire remove article event
+            archiveDateUtils.archiveDate(article);
             final JSONObject eventData = new JSONObject();
             eventData.put(Keys.OBJECT_ID, articleId);
             eventData.put(Keys.RESULTS, ret);
