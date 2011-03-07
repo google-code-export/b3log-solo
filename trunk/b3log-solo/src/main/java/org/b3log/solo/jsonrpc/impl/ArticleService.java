@@ -810,11 +810,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     oldArticle, article,
                     (Date) oldArticle.get(ARTICLE_CREATE_DATE), status);
             article.put(ARTICLE_PERMALINK, permalink);
-            // Step 3: Process tag
+            // Step 2: Process tag
             tagUtils.processTagsForArticleUpdate(oldArticle, article);
-            // Step 5: Fill auto properties
+            // Step 3: Fill auto properties
             fillAutoProperties(oldArticle, article);
-            // Step 6: Set date
+            // Step 4: Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             final JSONObject preference = preferenceUtils.getPreference();
             final String timeZoneId =
@@ -839,7 +839,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     article.put(ARTICLE_UPDATE_DATE, date);
                 }
             }
-            // Step 7: Set statistic
+            // Step 5: Set statistic
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 if (!oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)) {
                     // This article is updated from unpublished to published
@@ -852,7 +852,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                             blogCmtCnt + articleCmtCnt);
                 }
             }
-            // Step 8: Add article-sign relation
+            // Step 6: Add article-sign relation
             final String signId =
                     article.getString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             final JSONObject articleSignRelation =
@@ -863,7 +863,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
             articleUtils.addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-            // Step 9: Update
+            // Step 7: Update
             articleRepository.update(articleId, article);
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
