@@ -186,7 +186,7 @@ public final class Tags {
                 tagRepository.getByArticleId(oldArticleId);
         final String tagsString =
                 newArticle.getString(Article.ARTICLE_TAGS_REF);
-        String[] tagStrings = tagsString.split(",");
+        final String[] tagStrings = tagsString.split(",");
         final List<JSONObject> newTags = new ArrayList<JSONObject>();
         for (int i = 0; i < tagStrings.length; i++) {
             final String tagTitle = tagStrings[i];
