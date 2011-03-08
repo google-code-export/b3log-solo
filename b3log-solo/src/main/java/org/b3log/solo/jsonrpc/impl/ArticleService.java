@@ -796,18 +796,17 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
                 return ret;
             }
-
-            // Step 1: Set permalink
+            // Set permalink
             final JSONObject oldArticle = articleRepository.get(articleId);
             final String permalink = getPermalinkForUpdateArticle(
                     oldArticle, article,
                     (Date) oldArticle.get(ARTICLE_CREATE_DATE), status);
             article.put(ARTICLE_PERMALINK, permalink);
-            // Step 2: Process tag
+            // Process tag
             tagUtils.processTagsForArticleUpdate(oldArticle, article);
-            // Step 3: Fill auto properties
+            // Fill auto properties
             fillAutoProperties(oldArticle, article);
-            // Step 4: Set date
+            // Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             final JSONObject preference = preferenceUtils.getPreference();
             final String timeZoneId =
@@ -832,7 +831,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     article.put(ARTICLE_UPDATE_DATE, date);
                 }
             }
-            // Step 5: Set statistic
+            // Set statistic
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 if (!oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)) {
                     // This article is updated from unpublished to published
@@ -845,7 +844,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                             blogCmtCnt + articleCmtCnt);
                 }
             }
-            // Step 6: Add article-sign relation
+            // Add article-sign relation
             final String signId =
                     article.getString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             final JSONObject articleSignRelation =
@@ -856,9 +855,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
             articleUtils.addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-            // Step 7: Update
+            // Update
             articleRepository.update(articleId, article);
-
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 // Fire update article event
                 final JSONObject eventData = new JSONObject();
@@ -867,6 +865,19 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 try {
                     eventManager.fireEventSynchronously(
                             new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
+                                                  eventData));
+                } catch (final EventException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
+            }
+            if (!articleUtils.hadBeenPublished(article)) {
+                // Fire add article event
+                 final JSONObject eventData = new JSONObject();
+                eventData.put(ARTICLE, article);
+                eventData.put(Keys.RESULTS, ret);
+                try {
+                    eventManager.fireEventSynchronously(
+                            new Event<JSONObject>(EventTypes.ADD_ARTICLE,
                                                   eventData));
                 } catch (final EventException e) {
                     LOGGER.log(Level.SEVERE, e.getMessage(), e);
