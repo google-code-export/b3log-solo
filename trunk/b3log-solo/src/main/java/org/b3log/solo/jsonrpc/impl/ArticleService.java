@@ -786,11 +786,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
-            String articleId = null;
-            final JSONObject article =
-                    requestJSONObject.getJSONObject(ARTICLE);
-            articleId = article.getString(Keys.OBJECT_ID);
-
+            final JSONObject article = requestJSONObject.getJSONObject(ARTICLE);
+            final String articleId = article.getString(Keys.OBJECT_ID);
             if (!userUtils.canAccessArticle(articleId)) {
                 status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
 
@@ -872,7 +869,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
             if (!articleUtils.hadBeenPublished(article)) {
                 // Fire add article event
-                 final JSONObject eventData = new JSONObject();
+                final JSONObject eventData = new JSONObject();
                 eventData.put(ARTICLE, article);
                 eventData.put(Keys.RESULTS, ret);
                 try {
