@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.io.IOException;
@@ -852,6 +851,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
             articleUtils.addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+            if (!oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)
+                && article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+                archiveDateUtils.incArchiveDatePublishedRefCount(articleId);
+            }
             // Update
             articleRepository.update(articleId, article);
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
