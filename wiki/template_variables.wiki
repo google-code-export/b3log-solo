@@ -14,7 +14,7 @@
   </td><td>值如："zh_CN"</td></tr>
   <tr><td>blogTitle</td><td>String</td><td>博客标题</td><td></td>
   </tr>
-  <tr><td>blogTitle</td><td>String</td><td>博客子标题</td><td></td></tr>
+  <tr><td>blogSubtitle</td><td>String</td><td>博客子标题</td><td></td></tr>
   <tr><td>htmlHead</td><td>String</td><td>用户自定义的 HTML Head</td><td></td></tr>
   <tr><td>metaKeywords</td><td>String</td><td>用户自定义的关键字</td><td></td></tr>
   <tr><td>metaDescription</td><td>String</td><td>用户自定义的描述</td><td></td></tr>
