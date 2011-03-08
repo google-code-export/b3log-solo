@@ -23,16 +23,10 @@ import org.b3log.solo.util.Preferences;
  * Google OAuth utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 12, 2011
+ * @version 1.0.0.7, Mar 8, 2011
  */
 public final class OAuths {
 
-    /**
-     * XXX: remove this constructor.
-     */
-    public void test() {
-        System.out.println("REMOVE THIS METHOD.");
-    }
     /**
      * Logger.
      */
