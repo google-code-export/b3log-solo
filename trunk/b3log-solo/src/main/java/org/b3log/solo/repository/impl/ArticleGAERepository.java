@@ -16,8 +16,6 @@
 
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.AsyncDatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.QueryResultIterable;
 import java.util.ArrayList;
 import com.google.appengine.api.datastore.Entity;
@@ -34,10 +32,6 @@ import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RunsOnEnv;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
@@ -50,7 +44,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, Feb 8, 2011
+ * @version 1.0.3.0, Mar 8, 2011
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -61,10 +55,6 @@ public final class ArticleGAERepository extends AbstractGAERepository
     private static final Logger LOGGER =
             Logger.getLogger(ArticleGAERepository.class.getName());
     /**
-     * Cache.
-     */
-    private static final Cache<String, Object> CACHE;
-    /**
      * Key of the most comment articles cache count.
      */
     private static final String KEY_MOST_CMT_ARTICLES_CACHE_CNT =
@@ -74,24 +64,6 @@ public final class ArticleGAERepository extends AbstractGAERepository
      */
     private static final String KEY_RECENT_ARTICLES_CACHE_CNT =
             "mostRecentArticlesCacheCnt";
-    /**
-     * GAE datastore service.
-     */
-    private final AsyncDatastoreService asyncDatastoreService =
-            DatastoreServiceFactory.getAsyncDatastoreService();
-
-    static {
-        final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
-        if (!runsOnEnv.equals(RunsOnEnv.GAE)) {
-            throw new RuntimeException(
-                    "GAE repository can only runs on Google App Engine, please "
-                    + "check your configuration and make sure "
-                    + "Latkes.setRunsOnEnv(RunsOnEnv.GAE) was invoked before "
-                    + "using GAE repository.");
-        }
-
-        CACHE = CacheFactory.getCache("ArticleGAERepositoryCache");
-    }
 
     @Override
     public String getName() {
