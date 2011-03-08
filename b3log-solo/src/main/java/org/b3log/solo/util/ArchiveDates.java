@@ -154,6 +154,28 @@ public final class ArchiveDates {
     }
 
     /**
+     * Increments reference count of archive date of an published article specified
+     * by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void incArchiveDatePublishedRefCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final JSONObject archiveDateArticleRelation =
+                archiveDateArticleRepository.getByArticleId(articleId);
+        final String archiveDateId =
+                archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
+                                                     + "_" + Keys.OBJECT_ID);
+        final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
+        archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                        archiveDate.getInt(
+                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
+        archiveDateRepository.update(archiveDateId, archiveDate);
+    }
+
+    /**
      * Un-archive an article specified by the given specified article id.
      *
      * @param articleId the given article id
