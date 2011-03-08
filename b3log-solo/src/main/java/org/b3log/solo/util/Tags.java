@@ -182,8 +182,7 @@ public final class Tags {
         final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
         final List<JSONObject> oldTags =
                 tagRepository.getByArticleId(oldArticleId);
-        final String tagsString =
-                newArticle.getString(Article.ARTICLE_TAGS_REF);
+        final String tagsString = newArticle.getString(Article.ARTICLE_TAGS_REF);
         String[] tagStrings = tagsString.split(",");
         final List<JSONObject> newTags = new ArrayList<JSONObject>();
         for (int i = 0; i < tagStrings.length; i++) {
