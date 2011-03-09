@@ -70,7 +70,7 @@ import org.jsoup.Jsoup;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.5, Mar 6, 2011
+ * @version 1.0.3.6, Mar 9, 2011
  */
 public final class Filler {
 
@@ -423,7 +423,7 @@ public final class Filler {
             throws Exception {
         LOGGER.fine("Filling side....");
         fillLinks(dataModel);
-//        fillRecentArticles(dataModel);
+//        fillRecentArticles(dataModel, preference);
         fillRecentComments(dataModel, preference);
         fillMostUsedTags(dataModel, preference);
         fillMostCommentArticles(dataModel, preference);
