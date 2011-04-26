@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.4, Jan 20, 2011
+ * @version 1.0.3.5, Apr 26, 2011
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -155,6 +155,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *         "articleTags": "tag1,tag2,tag3",
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
+     *         "postToCommunity": boolean,
      *         "articleSign_oId": "" // optional
      *     }
      * }
