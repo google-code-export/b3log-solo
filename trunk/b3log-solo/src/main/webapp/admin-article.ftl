@@ -55,6 +55,14 @@
         </td>
     </tr>
     <tr>
+        <th>
+            ${postToCommunityLabel}
+        </th> 
+        <td>
+            <input id="postToCommunity" type="checkbox" checked="checked"/>
+        </td>
+    </tr>
+    <tr>
         <th colspan="2">
             <button class="marginRight12" id="saveArticle">${saveLabel}</button>
             <button id="submitArticle">${publishLabel}</button>
@@ -198,7 +206,8 @@
                     "articleTags": $.bowknot.trimUnique(tagArray).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
-                    "articleSign_oId": signId
+                    "articleSign_oId": signId,
+                    "postToCommunity": $("#postToCommunity").attr("checked")
                 }
             };
 
