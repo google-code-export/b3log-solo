@@ -54,7 +54,7 @@
             <button id="articleSign0">${noSignLabel}</button>
         </td>
     </tr>
-    <tr>
+    <tr id="postToCommunityTR">
         <th>
             ${postToCommunityLabel}
         </th> 
