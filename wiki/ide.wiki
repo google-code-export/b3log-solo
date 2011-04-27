@@ -7,7 +7,7 @@
 =====配置=====
  # 工具->选项->其他->Maven->外部&Maven主页->浏览 把 Maven 的路径加上
  # 用 SVN 把项目迁出 http://b3log-solo.googlecode.com/svn/trunk/
- # 更新 GAE 相关资源。右键项目，定制-> gae:unpack（在每次 GAE SDK 升级后都需要运行此命令）
+ # 更新 GAE 相关资源。右键项目，定制-> gae:unpack（_在每次 GAE SDK 升级后都需要运行此命令_）
  # 运行项目。右键项目，定制-> gae:run
  # 部署项目，定制-> gae:deploy
 按提示在控制台输入账号密码即可
