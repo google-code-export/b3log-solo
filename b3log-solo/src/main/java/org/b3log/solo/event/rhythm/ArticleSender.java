@@ -97,11 +97,12 @@ public final class ArticleSender
         try {
             final JSONObject originalArticle =
                     data.getJSONObject(Article.ARTICLE);
-            if (!originalArticle.getBoolean(Common.POST_TO_COMMUNITY)) {
+            if (!originalArticle.getBoolean(Common.POST_TO_COMMUNITY)
+                || !originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 LOGGER.log(Level.FINER,
                            "Ignores post article[title={0}] to Rhythm",
                            originalArticle.getString(Article.ARTICLE_TITLE));
-                
+
                 return;
             }
 
@@ -156,9 +157,11 @@ public final class ArticleSender
 
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sends article to Rhythm error: {0}",
+            LOGGER.log(Level.SEVERE, "Sends an article to Rhythm error: {0}",
                        e.getMessage());
         }
+        
+        LOGGER.log(Level.FINER, "Sent an article to Rhythm");
     }
 
     /**
