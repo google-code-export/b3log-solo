@@ -8,7 +8,7 @@
         <meta name="author" content="B3log Team"/>
         <meta name="generator" content="B3log"/>
         <meta name="copyright" content="B3log"/>
-        <meta name="revised" content="B3log, 2010"/>
+        <meta name="revised" content="B3log, ${year}"/>
         <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
