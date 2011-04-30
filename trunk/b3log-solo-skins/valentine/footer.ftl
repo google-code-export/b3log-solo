@@ -1,6 +1,6 @@
 <div id="footer">
     <div class="left copyright">
-        <span style="color:white;">© 2010</span> - <a style="color:white;" href="http://${blogHost}">${blogTitle}</a><br/>
+        <span style="color:white;">&copy; ${year}</span> - <a style="color:white;" href="http://${blogHost}">${blogTitle}</a><br/>
         Powered by
         <a href="http://b3log-solo.googlecode.com" target="_blank">
             <span style="color: orange;">B</span>
