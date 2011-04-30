@@ -17,7 +17,7 @@
                 ${linkTitle1Label}
             </th>
             <td>
-                <input id="linkTitle"/>
+                <input id="linkTitle" type="text"/>
             </td>
         </tr>
         <tr>
@@ -25,7 +25,7 @@
                 ${url1Label}
             </th>
             <td>
-                <input id="linkAddress"/>
+                <input id="linkAddress" type="text"/>
             </td>
         </tr>
         <tr>
@@ -50,7 +50,7 @@
                     ${linkTitle1Label}
                 </th>
                 <td>
-                    <input id="linkTitleUpdate"/>
+                    <input id="linkTitleUpdate" type="text"/>
                 </td>
             </tr>
             <tr>
@@ -58,7 +58,7 @@
                     ${url1Label}
                 </th>
                 <td>
-                    <input id="linkAddressUpdate"/>
+                    <input id="linkAddressUpdate" type="text"/>
                 </td>
             </tr>
             <tr>

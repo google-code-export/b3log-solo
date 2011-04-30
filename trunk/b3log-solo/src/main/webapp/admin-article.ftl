@@ -48,7 +48,7 @@
             ${sign1Label}
         </th>
         <td class="signs">
-            <button id="articleSign1">${signLabel} 1</button>
+            <button style="margin-left: 0px;" id="articleSign1">${signLabel} 1</button>
             <button id="articleSign2">${signLabel} 2</button>
             <button id="articleSign3">${signLabel} 3</button>
             <button id="articleSign0">${noSignLabel}</button>

@@ -12,7 +12,7 @@
                 ${title1Label}
             </th>
             <td>
-                <input id="pageTitle"/>
+                <input id="pageTitle" type="text"/>
             </td>
         </tr>
         <tr>

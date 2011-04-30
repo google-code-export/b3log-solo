@@ -33,7 +33,7 @@
                                 ${userName1Label}
                             </th>
                             <td colspan="5">
-                                <input id="magName"/>
+                                <input id="magName" type="text"/>
                             </td>
                         </tr>
                         <tr>
@@ -54,7 +54,7 @@
                                 </label>
                             </td>
                             <th>
-                                <input type="checkbox" id="updateSync"
+                                <input type="checkbox" id="updateSync"/>
                             </th>
                             <td>
                                 <label for="updateSync">
