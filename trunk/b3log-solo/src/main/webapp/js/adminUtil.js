@@ -81,6 +81,7 @@ $.extend(AdminUtil.prototype, {
         }
         $("#tag").val("");
         $("#permalink").val("");
+        $("#postToCommunity").attr("checked", "checked");
         $(".signs button").each(function (i) {
             if (i === $(".signs button").length - 1) {
                 this.className = "selected";
@@ -192,9 +193,7 @@ $.extend(AdminUtil.prototype, {
     },
 
     // article list and draft list
-    updateArticle: function (event, isArticle) {
-        $("#postToCommunityTR").hide(); // Ignores post to community while updating an article
-        
+    updateArticle: function (event, isArticle) {        
         var tip = this.tip;
         $("#loadMsg").text(tip.loadingLabel);
         this.changeList(document.getElementById("articleTab"));

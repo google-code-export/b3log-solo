@@ -93,6 +93,7 @@
             if (articleStatus.isArticle) {
                 $("#unSubmitArticle").show();
                 $("#submitArticle").hide();
+                $("#postToCommunityTR").hide();
             } else {
                 $("#submitArticle").show();
                 $("#unSubmitArticle").hide();
