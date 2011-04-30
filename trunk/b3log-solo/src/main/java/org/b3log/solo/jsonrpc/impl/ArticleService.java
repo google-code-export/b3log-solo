@@ -568,7 +568,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 statistics.decPublishedBlogArticleCount();
             }
-            archiveDateUtils.archiveDate(article);
             final JSONObject eventData = new JSONObject();
             eventData.put(Keys.OBJECT_ID, articleId);
             eventData.put(Keys.RESULTS, ret);
