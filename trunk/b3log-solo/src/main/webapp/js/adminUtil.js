@@ -81,7 +81,6 @@ $.extend(AdminUtil.prototype, {
         }
         $("#tag").val("");
         $("#permalink").val("");
-        $("#postToCommunity").attr("checked", "checked");
         $(".signs button").each(function (i) {
             if (i === $(".signs button").length - 1) {
                 this.className = "selected";
