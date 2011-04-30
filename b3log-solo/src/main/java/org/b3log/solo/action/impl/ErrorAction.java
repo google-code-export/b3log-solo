@@ -18,6 +18,7 @@ package org.b3log.solo.action.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import org.b3log.latke.action.ActionException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -113,6 +114,8 @@ public final class ErrorAction extends AbstractAction {
             ret.put(Preference.META_DESCRIPTION,
                     preference.getString(Preference.META_DESCRIPTION));
             ret.put(Common.PAGE_NAVIGATIONS, new ArrayList<String>());
+            ret.put(Common.YEAR, 
+                    String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
