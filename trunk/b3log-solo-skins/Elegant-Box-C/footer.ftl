@@ -1,5 +1,5 @@
 <p id="about">
-	版权所有 &copy; 2010 ${blogTitle} | 基于 <a href="http://b3log-solo.googlecode.com" target="_blank">
+	版权所有 &copy; ${year} ${blogTitle} | 基于 <a href="http://b3log-solo.googlecode.com" target="_blank">
         <span style="color: orange;">B</span>
         <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
         <span style="color: green;">L</span>

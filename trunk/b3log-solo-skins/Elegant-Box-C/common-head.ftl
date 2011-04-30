@@ -4,7 +4,7 @@
 <meta name="author" content="B3log Team"/>
 <meta name="generator" content="B3log"/>
 <meta name="copyright" content="B3log"/>
-<meta name="revised" content="B3log, 2010"/>
+<meta name="revised" content="B3log, ${year}"/>
 <meta http-equiv="Window-target" content="_top"/>
 <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
 <link rel="icon" type="image/png" href="/favicon.png"/>
