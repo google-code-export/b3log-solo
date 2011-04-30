@@ -488,6 +488,9 @@ a#cancel-comment-reply-link:hover {
 #footer #about {
     float:left;
 }
+#footer #about a span {
+    margin: 0 -2px;
+}
 #footer ul#admin {
     float:right;
     display:block;
