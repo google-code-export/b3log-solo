@@ -54,7 +54,7 @@
                 </div>
                 <div class="footer">
                     <div class="left copyright">
-                        <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
+                        <span style="color: gray;">&copy; ${year}</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
                         Powered by
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
                             <span style="color: orange;">B</span>
