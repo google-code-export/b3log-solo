@@ -88,6 +88,7 @@ $.extend(AdminUtil.prototype, {
                 this.className = "";
             }
         });
+         $("#postToCommunityTR").show();
     },
 
     init: function () {
@@ -192,6 +193,8 @@ $.extend(AdminUtil.prototype, {
 
     // article list and draft list
     updateArticle: function (event, isArticle) {
+        $("#postToCommunityTR").hide(); // Ignores post to community while updating an article
+        
         var tip = this.tip;
         $("#loadMsg").text(tip.loadingLabel);
         this.changeList(document.getElementById("articleTab"));

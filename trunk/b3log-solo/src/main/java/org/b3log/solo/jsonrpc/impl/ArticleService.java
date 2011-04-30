@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.5, Apr 26, 2011
+ * @version 1.0.3.6, Apr 30, 2011
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -829,18 +829,20 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                     article.put(ARTICLE_UPDATE_DATE, date);
                 }
             }
+
+            final boolean publishNewArticle =
+                    !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)
+                    && article.getBoolean(ARTICLE_IS_PUBLISHED);
             // Set statistic
-            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                if (!oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                    // This article is updated from unpublished to published
-                    statistics.incPublishedBlogArticleCount();
-                    final int blogCmtCnt =
-                            statistics.getPublishedBlogCommentCount();
-                    final int articleCmtCnt =
-                            article.getInt(ARTICLE_COMMENT_COUNT);
-                    statistics.setPublishedBlogCommentCount(
-                            blogCmtCnt + articleCmtCnt);
-                }
+            if (publishNewArticle) {
+                // This article is updated from unpublished to published
+                statistics.incPublishedBlogArticleCount();
+                final int blogCmtCnt =
+                        statistics.getPublishedBlogCommentCount();
+                final int articleCmtCnt =
+                        article.getInt(ARTICLE_COMMENT_COUNT);
+                statistics.setPublishedBlogCommentCount(
+                        blogCmtCnt + articleCmtCnt);
             }
             // Add article-sign relation
             final String signId =
@@ -853,26 +855,14 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
             articleUtils.addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-            if (!oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)
-                && article.getBoolean(ARTICLE_IS_PUBLISHED)) {
+            if (publishNewArticle) {
                 archiveDateUtils.incArchiveDatePublishedRefCount(articleId);
             }
+
             // Update
             articleRepository.update(articleId, article);
-            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
-                // Fire update article event
-                final JSONObject eventData = new JSONObject();
-                eventData.put(ARTICLE, article);
-                eventData.put(Keys.RESULTS, ret);
-                try {
-                    eventManager.fireEventSynchronously(
-                            new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
-                                                  eventData));
-                } catch (final EventException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-            }
-            if (!articleUtils.hadBeenPublished(article)) {
+
+            if (publishNewArticle) {
                 // Fire add article event
                 final JSONObject eventData = new JSONObject();
                 eventData.put(ARTICLE, article);
@@ -880,6 +870,18 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 try {
                     eventManager.fireEventSynchronously(
                             new Event<JSONObject>(EventTypes.ADD_ARTICLE,
+                                                  eventData));
+                } catch (final EventException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
+            } else {
+                // Fire update article event
+                final JSONObject eventData = new JSONObject();
+                eventData.put(ARTICLE, article);
+                eventData.put(Keys.RESULTS, ret);
+                try {
+                    eventManager.fireEventSynchronously(
+                            new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
                                                   eventData));
                 } catch (final EventException e) {
                     LOGGER.log(Level.SEVERE, e.getMessage(), e);
