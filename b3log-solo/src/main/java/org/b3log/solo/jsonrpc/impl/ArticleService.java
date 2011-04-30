@@ -317,7 +317,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      *     "articleAbstract": "",
      *     "articleContent": "",
      *     "articlePermalink": "",
-     *     "articleIsPublished": boolean
+     *     "articleHadBeenPublished": boolean,
      *     "articleTags": [{
      *         "oId": "",
      *         "tagTitle": ""
@@ -375,7 +375,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             article.remove(ARTICLE_AUTHOR_EMAIL);
             article.remove(ARTICLE_COMMENT_COUNT);
             article.remove(ARTICLE_CREATE_DATE);
-            article.remove(ARTICLE_HAD_BEEN_PUBLISHED);
             article.remove(ARTICLE_IS_PUBLISHED);
             article.remove(ARTICLE_PUT_TOP);
             article.remove(ARTICLE_UPDATE_DATE);
