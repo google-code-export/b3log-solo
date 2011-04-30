@@ -89,7 +89,6 @@ $.extend(AdminUtil.prototype, {
                 this.className = "";
             }
         });
-         $("#postToCommunityTR").show();
     },
 
     init: function () {
@@ -193,7 +192,7 @@ $.extend(AdminUtil.prototype, {
     },
 
     // article list and draft list
-    updateArticle: function (event, isArticle) {        
+    updateArticle: function (event, isArticle) {
         var tip = this.tip;
         $("#loadMsg").text(tip.loadingLabel);
         this.changeList(document.getElementById("articleTab"));
@@ -207,7 +206,8 @@ $.extend(AdminUtil.prototype, {
                         // set default value for article.
                         $("#title").val(result.article.articleTitle).data("articleStatus", {
                             "isArticle": isArticle,
-                            'oId': event.data.id[0]
+                            'oId': event.data.id[0],
+                            "articleHadBeenPublished": result.article.articleHadBeenPublished
                         });
                         if (tinyMCE.get('articleContent')) {
                             tinyMCE.get('articleContent').setContent(result.article.articleContent);
