@@ -17,7 +17,7 @@
                 ${commentName1Label}
             </th>
             <td>
-                <input id="userName"/>
+                <input id="userName" type="text"/>
             </td>
         </tr>
         <tr>
@@ -25,7 +25,7 @@
                 ${commentEmail1Label}
             </th>
             <td>
-                <input id="userEmail"/>
+                <input id="userEmail" type="text"/>
             </td>
         </tr>
         <tr>
@@ -50,7 +50,7 @@
                     ${commentName1Label}
                 </th>
                 <td>
-                    <input id="userNameUpdate"/>
+                    <input id="userNameUpdate" type="text"/>
                 </td>
             </tr>
             <tr>
@@ -58,7 +58,7 @@
                     ${commentEmail1Label}
                 </th>
                 <td>
-                    <input id="userEmailUpdate"/>
+                    <input id="userEmailUpdate" type="text"/>
                 </td>
             </tr>
             <tr>

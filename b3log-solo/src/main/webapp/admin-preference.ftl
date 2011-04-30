@@ -32,7 +32,7 @@
                             ${blogTitle1Label}
                         </th>
                         <td>
-                            <input id="blogTitle"/>
+                            <input id="blogTitle" type="text"/>
                         </td>
                     </tr>
                     <tr>
@@ -40,7 +40,7 @@
                             ${blogSubtitle1Label}
                         </th>
                         <td>
-                            <input id="blogSubtitle"/>
+                            <input id="blogSubtitle" type="text"/>
                         </td>
                     </tr>
                     <tr>
@@ -48,40 +48,40 @@
                             ${blogHost1Label}
                         </th>
                         <td>
-                            <input id="blogHost"/>
+                            <input id="blogHost" type="text"/>
                         </td>
                     </tr>
                     <tr>
                         <th>
                             ${metaKeywords1Label}
                         </th>
-                        <th>
-                            <input id="metaKeywords" />
-                        </th>
+                        <td>
+                            <input id="metaKeywords" type="text"/>
+                        </td>
                     </tr>
                     <tr>
                         <th>
                             ${metaDescription1Label}
                         </th>
-                        <th>
-                            <input id="metaDescription" />
-                        </th>
+                        <td>
+                            <input id="metaDescription" type="text" />
+                        </td>
                     </tr>
                     <tr>
                         <th>
                             ${noticeBoard1Label}
                         </th>
-                        <th>
+                        <td>
                             <textarea rows="9" id="noticeBoard"></textarea>
-                        </th>
+                        </td>
                     </tr>
                     <tr>
                         <th>
                             ${htmlhead1Label}
                         </th>
-                        <th>
+                        <td>
                             <textarea rows="9" id="htmlHead"></textarea>
-                        </th>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -296,39 +296,37 @@
                         <th width="260">
                             ${appKey1Label}
                         </th>
-                        <td>
-                            <input id="tencentMicroblogAppKey"/>
+                        <td colspan="3">
+                            <input id="tencentMicroblogAppKey" type="text"/>
                         </td>
                     </tr>
                     <tr>
                         <th width="260">
                             ${appSecret1Label}
                         </th>
-                        <td>
-                            <input id="tencentMicroblogAppSecret"/>
+                        <td colspan="3">
+                            <input id="tencentMicroblogAppSecret" type="text"/>
                         </td>
                     </tr>
                     <tr>
                         <th>
                             ${authorizeTencentMicroblog1Label}
                         </th>
-                        <td>
+                        <td width="20%">
                             <img class="pointer" src="images/tencent-microblog.png"
                                  onclick="oauthTencentMicroblog();" alt="${authorizeTencentMicroblog1Label}"/>
                         </td>
-                    </tr>
-                    <tr>
-                        <th>
+                        <th width="20%">
                             ${postToTencentMicroblogWhilePublishArticleLabel}
                         </th>
-                        <td align="left">
+                        <td>
                             <input type="checkbox" class="normalInput" id="postToTencentMicroblog"/>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="2" align="right">
+                        <th colspan="4">
                             <button onclick="changePreference();">${saveLabel}</button>
-                        </td>
+                        </th>
                     </tr>
                 </tbody>
             </table>

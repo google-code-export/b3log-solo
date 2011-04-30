@@ -1,6 +1,6 @@
 <form id="uploadForm" action="/datastore-file-access.do" method="POST"
       enctype="multipart/form-data" target="formActionHidden">
-    <table class="form" cellpadding="0" cellspacing="9">
+    <table class="form" cellpadding="0" cellspacing="9" width="494">
         <tbody>
             <tr>
                 <td id="uploadFile">
