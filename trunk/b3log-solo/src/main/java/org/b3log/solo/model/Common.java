@@ -87,6 +87,10 @@ public final class Common {
      * Version.
      */
     public static final String VERSION = "version";
+     /**
+     * Year.
+     */
+    public static final String YEAR = "year";
     /**
      * Key of flag a comment is an reply or not.
      */
