@@ -90,17 +90,22 @@
         articleStatus = $("#title").data("articleStatus");
         // set button status
         if (articleStatus) {
-            if (articleStatus.isArticle) {
+            if (articleStatus.isArticle) { 
                 $("#unSubmitArticle").show();
                 $("#submitArticle").hide();
-                $("#postToCommunityTR").hide();
             } else {
                 $("#submitArticle").show();
                 $("#unSubmitArticle").hide();
             }
+            if (articleStatus.articleHadBeenPublished) {
+                $("#postToCommunityTR").hide();
+            } else {
+                $("#postToCommunityTR").show();
+            }
         } else {
             $("#submitArticle").show();
             $("#unSubmitArticle").hide();
+            $("#postToCommunityTR").show();
         }
     }
     
