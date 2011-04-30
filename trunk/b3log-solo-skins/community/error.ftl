@@ -53,7 +53,7 @@
         <div class="footer error-footer">
             <div class="content">
                 <div>
-                    <span style="color: gray;">© 2010</span> - <a href="http://${blogHost}">${blogTitle}</a>
+                    <span style="color: gray;">&copy; ${year}</span> - <a href="http://${blogHost}">${blogTitle}</a>
                 </div>
                 Powered by
                 <a href="http://b3log-solo.googlecode.com" target="_blank" style="text-decoration: none;">
