@@ -107,6 +107,8 @@
             $("#unSubmitArticle").hide();
             $("#postToCommunityTR").show();
         }
+
+        $("#postToCommunity").attr("checked", "checked");
     }
     
     var initArticle = function () {
@@ -320,26 +322,28 @@
                             $("#tipMsg").text(msg);
                             break;
                         case "UPDATE_ARTICLE_SUCC":
-                            var events = result.status.events;
-                            if (events) {
-                                var msg = "${updateSuccLabel}";
-                                if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                    msg += ", ${syncCSDNBlogFailLabel}: "
-                                        + events.blogSyncCSDNBlog.msg;
-                                }
+                            if (tag){
+                                var events = result.status.events;
+                                if (events) {
+                                    var msg = "${updateSuccLabel}";
+                                    if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
+                                        msg += ", ${syncCSDNBlogFailLabel}: "
+                                            + events.blogSyncCSDNBlog.msg;
+                                    }
 
-                                if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                    msg += ", ${syncCnBlogsFailLabel}: "
-                                        + events.blogSyncCnBlogs.msg;
-                                }
+                                    if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
+                                        msg += ", ${syncCnBlogsFailLabel}: "
+                                            + events.blogSyncCnBlogs.msg;
+                                    }
 
-                                if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                    msg += ", ${syncBlogJavaFailLabel}: "
-                                        + events.blogSyncBlogJava.msg;
+                                    if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
+                                        msg += ", ${syncBlogJavaFailLabel}: "
+                                            + events.blogSyncBlogJava.msg;
+                                    }
+
+                                    $("#tipMsg").text(msg);
+                                    $("#article-listTab").click();
                                 }
-                            
-                                $("#tipMsg").text(msg);
-                                $("#article-listTab").click();
                             } else {
                                 $("#tipMsg").text("${updateSuccLabel}");
                                 $("#draft-listTab").click();
