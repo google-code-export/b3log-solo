@@ -75,7 +75,7 @@
         <h3>${linkLabel}</h3>
         <ul class='xoxo blogroll'>
             <#list links as link>
-            <#if link?starts_with("http://")>
+            <#if link.linkAddress?starts_with("http")>
             <li><a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">${link.linkTitle}</a></li>
             <#else>
             <li><a href="http://${link.linkAddress}" title="${link.linkTitle}" target="_blank">${link.linkTitle}</a></li>
