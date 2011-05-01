@@ -5,7 +5,7 @@
 <li>创建 GAE 应用</li>
 假设 ID 为 `${application-id}`,（没有 GAE 帐号的话请点击<a href="http://appengine.google.com/">这里</a>申请）
 <li>配置 Solo</li>
-将 `${solo.war}/WEB-INF/appengine-web.xml` 文件里的
+将 `${b3log-solo-x.x.x}/WEB-INF/appengine-web.xml` 文件里的
 {{{
 <application>solo-demo</application>
 }}}
@@ -16,7 +16,7 @@
 <li>上传 Solo</li>
 （Windows）在命令行下 `cd` 进入 `${gae.home}/bin/` 目录，执行：
 {{{
-appcfg.cmd update ${solo.war}
+appcfg.cmd update ${b3log-solo-x.x.x}
 }}}
 </ol>
 等部署完毕后，在浏览器中访问：[http://${application-id}.appspot.com/init.do] 进行初始化。
