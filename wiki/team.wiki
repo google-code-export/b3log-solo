@@ -1,5 +1,18 @@
 #summary B3log Solo 开发团队介绍
 
 = 开发团队介绍 =
+B3log Solo 项目开发团队是由一堆爱好 Java、Google、GAE、Open Source 的程序员组成。
 
-==丁亮==
+
+===丁亮===
+项目 Lead，核心开发人员，昵称 88250，简称 D。<br/>
+B3log! 系列相关问题请找此人。博客地址：[http://88250.b3log.org http://88250.b3log.org]
+
+===李丽媛===
+项目 UI Lead，核心开发人员，昵称 Vanessa，简称 V。
+B3log Solo 皮肤开发、皮肤问题请找此人。博客地址：[http://vanessa.b3log.org http://vanessa.b3log.org]
+
+===高洋===
+项目早期入伙者，皮肤贡献者，昵称 Lamb。博客地址：[http://lamb.b3log.org http://lamb.b3log.org]
+
+===...===
