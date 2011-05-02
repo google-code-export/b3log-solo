@@ -25,4 +25,4 @@
    * [skin_dev 皮肤开发]
      * [template_variables 模板变量]
  * 第三方文章、教程
-    * [http://www.ansen.me/articles/2011/05/01/1304270393591.html B3log部署至GAE服务器教程]
+    * [third_party_deploy_gae 部署相关]
