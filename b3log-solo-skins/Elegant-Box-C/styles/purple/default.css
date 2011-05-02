@@ -103,9 +103,7 @@ a .sided:hover {
 #searchbox .textfield {
 	border:1px solid #D3BDD7;
 	background:#FBF9FC url(search_background.gif) no-repeat right !important;
-	background:#FBF9FC url(search_background_ie.gif) no-repeat right; /* for IE6 */
 	background-position:0 0 !important;
-	background-position:0 -21px; /* for IE6 */
 }
 /* 搜索框获得焦点(对 IE<=6 的浏览器无效) */
 #searchbox .textfield:focus {

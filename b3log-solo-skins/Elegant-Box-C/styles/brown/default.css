@@ -86,9 +86,7 @@ a .sided:hover {
 #searchbox .textfield {
 	border:1px solid #C8AB71;
 	background:#FAF6F0 url(search_background.gif) no-repeat right !important;
-	background:#FAF6F0 url(search_background_ie.gif) no-repeat right;
 	background-position:0 0 !important;
-	background-position:0 -21px;
 }
 #searchbox .textfield:focus {
 	border:1px solid #A07828;
