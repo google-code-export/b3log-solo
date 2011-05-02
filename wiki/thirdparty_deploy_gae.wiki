@@ -1,2 +1,4 @@
-#summary 安装相关文章
+#summary 部署相关
 
+Ansen：
+[http://www.ansen.me/articles/2011/05/01/1304270393591.html B3log部署至GAE服务器教程]
