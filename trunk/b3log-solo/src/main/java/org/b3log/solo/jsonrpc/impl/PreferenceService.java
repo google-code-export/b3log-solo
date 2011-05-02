@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Feb 14, 2011
+ * @version 1.0.2.7, May 2, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -257,21 +257,25 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 }
             }
 
-            final String blogHost = preference.getString(BLOG_HOST).
-                    toLowerCase().trim(); // blog host check
-            LOGGER.log(Level.FINE, "Blog Host[{0}]", blogHost);
-            final boolean containColon = blogHost.contains(":");
-            final boolean containScheme = blogHost.contains("http://");
-            final boolean containSlash = blogHost.contains("/");
-            if (!containColon || containScheme || containSlash) {
-                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                return ret;
+            String blogHost = preference.getString(BLOG_HOST).
+                    toLowerCase().trim();
+            if (blogHost.startsWith("http://")) {
+                blogHost = blogHost.substring("http://".length());
             }
-            final String domain = blogHost.split(":")[0].trim().toLowerCase();
+            if (blogHost.endsWith("/")) {
+                blogHost = blogHost.substring(0, blogHost.length() - 1);
+            }
+
+            LOGGER.log(Level.FINE, "Blog Host[{0}]", blogHost);
+
+            String domain = null;
+            final boolean hasPort = blogHost.contains(":");
+            if (hasPort) {
+                domain = blogHost.split(":")[0].trim();
+            } else {
+                domain = blogHost;
+            }
+
             final Value gaeEnvValue = SystemProperty.environment.value();
             if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
                 if ("localhost".equals(domain)) {
@@ -284,7 +288,12 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                     return ret;
                 }
             }
-            final String port = blogHost.split(":")[1].trim();
+
+            String port = "80";
+            if (hasPort) {
+                port = blogHost.split(":")[1].trim();
+            }
+            
             if (!"localhost".equals(domain) && !"80".equals(port)) {
                 ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
                 if (transaction.isActive()) {
@@ -293,6 +302,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
                 return ret;
             }
+            
             preference.put(BLOG_HOST, blogHost);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
