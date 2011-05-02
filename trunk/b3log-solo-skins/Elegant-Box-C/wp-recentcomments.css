@@ -1,3 +1,6 @@
+.rc_item  {
+    overflow: hidden;
+}
 .rc_item .rc_avatar img {
 	padding:1px;
 	border-width:1px;
