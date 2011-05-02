@@ -29,6 +29,17 @@
                         <span class="alignleft"></span>
                         <span class="alignright"></span>
                         <script type="text/javascript">
+                            window.location.getParameter=function(name){
+                                var search=window.location.search;
+                                var params=search.substr(1,search.length-1).split('&');
+                                var i=0;
+                                for(i=0;i<params.length;i++){
+                                    var param=params[i];
+                                    if(param.indexOf(name+'=')==0){
+                                        return param.substr(param.indexOf('=')+1);
+                                    }
+                                }
+                            }
                             var currentPageNum = window.location.getParameter('paginationCurrentPageNum');
                             if(!currentPageNum){
                                 currentPageNum=1;

@@ -1,15 +1,11 @@
-/*
-Author: mg12
-Update: 2008/08/13
-Author URI: http://www.neoease.com/
-*/
 (function() {
 
-function reply(authorId, commentId, commentBox) {
-	var author = document.getElementById(authorId).innerHTML;
-	var insertStr = '<a href="#' + commentId + '">@' + author.replace(/\t|\n|\r\n/g, "") + ' </a> \n';
+function reply(authorId, commentId, commentOriginalCommentId) {
+	//var author = document.getElementById(authorId).innerHTML;
+	//var insertStr = '<a href="#' + commentId + '">@' + author.replace(/\t|\n|\r\n/g, "") + ' </a> \n';
 
-	appendReply(insertStr, commentBox);
+	//appendReply(insertStr, commentBox);
+        window['CMT']['commentOriginalCommentId']=commentOriginalCommentId;
 }
 
 function quote(authorId, commentId, commentBodyId, commentBox) {
@@ -89,10 +85,37 @@ function loadCommentShortcut(frm, submitbnt, desc) {
 	};
 	document.getElementById(submitbnt).value += desc;
 }
+function commentSubmit(form){
+    var params=$(form).serializeArray();
+    var data={};
+    for(var i in params){
+        var param=params[i];
+        data[param.name]=param.value;
+    }
+    data['commentOriginalCommentId']=window['CMT']['commentOriginalCommentId'];
+    $.ajax({
+        type:form.method,
+        url:form.action,
+        data:JSON.stringify(data),
+        success: function(result){
+            switch(result.sc){
+            case "COMMENT_ARTICLE_SUCC":
+                window.location.reload();
+                break;
+            case 'CAPTCHA_ERROR':
+                $("#commitStatus").text('\u9a8c证码错误');
+                changeCaptcha();
+                break;
+        }
+        }
+    });
+    return false;
+}
 
 window['CMT'] = {};
 window['CMT']['reply'] = reply;
 window['CMT']['quote'] = quote;
 window['CMT']['loadCommentShortcut'] = loadCommentShortcut;
+window['CMT']['commentSubmit']=commentSubmit;
 
 })();

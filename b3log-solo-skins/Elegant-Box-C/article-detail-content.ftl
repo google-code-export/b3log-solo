@@ -60,7 +60,7 @@
                 <div class="date">${comment.commentDate?string("yyyy年MM月dd日HH:mm:ss")}</div>
             </div>
             <div class="count">
-                <a onclick="CMT.reply('commentauthor-${comment.oId}', 'comment-${comment.oId}','${comment.oId}', 'comment');" href="javascript:void(0);">回复</a> |
+                <a onclick="CMT.reply('commentauthor-${comment.oId}', 'comment-${comment.oId}','${comment.oId}');" href="javascript:void(0);">回复</a> |
                 <a href="#${comment.oId}" name="${comment.oId}">链接</a>
             </div>
             <div class="fixed"></div>
@@ -85,7 +85,7 @@
             $('#captcha').attr('src','/captcha.do?'+ Math.random());
         };
     </script>
-    <form id="commentform" method="post" action="/add-article-comment.do">
+    <form id="commentform" method="post" action="/add-article-comment.do" onsubmit="return CMT.commentSubmit(this);">
         <!-- comment info -->
         <div id="comment_header">
             <div id="comment_info">
