@@ -1,5 +1,14 @@
 <p id="about">
-				版权所有 &copy; ${year} ${blogTitle} | 基于 <a href="http://b3log-solo.googlecode.com/">B3log</a>,${version} | 主题由 <a href="http://www.neoease.com/">NeoEase</a> & <a href="http://www.oncereply.me/">oncereply</a> 提供			</p>
+    版权所有 &copy; ${year} ${blogTitle} | 基于 
+    <a href="http://b3log-solo.googlecode.com/" target="_blank" style="text-decoration: none;">
+        <span style="color: orange;margin-left:0px;">B</span>
+        <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
+        <span style="color: green;">L</span>
+        <span style="color: red;">O</span>
+        <span style="color: blue;">G</span>&nbsp;
+        <span style="color: orangered; font-weight: bold;">Solo</span>
+    </a>
+    ,${version} | 主题由 <a href="http://www.neoease.com/" target="_blank">NeoEase</a> & <a href="http://www.oncereply.me/" target="_blank">oncereply</a> 提供			</p>
 
 <ul id="admin">
 </ul>
