@@ -18,7 +18,7 @@
  # Window->Preferences->Maven->installations->Add 把 Maven 的路径添加上
  # 用 SVN 把项目迁出 http://b3log-solo.googlecode.com/svn/trunk/
  # win+R->cmd进入命令行，进入项目所在目录（e.g:D: 回车；cd foldername 回车  etc...），你如果成功进入会发现pom.xml,运行命令mvn eclipse:eclipse ,静静等待，Build成功即可
-# 在Eclipse中右键项目，选择刷新（refresh）,可以很明显的看到目录结构的变化。这是因为上一步生成了eclipse的.project .classpath配置文件，现在可以识别maven项目了
+ # 在Eclipse中右键项目，选择刷新（refresh）,可以很明显的看到目录结构的变化。这是因为上一步生成了eclipse的.project .classpath配置文件，现在可以识别maven项目了
  # 更新 GAE 相关资源。右键项目，run as maven build... --> Goals: gae:unpack
  # 运行项目。右键项目，run as maven build... --> Goals: gae:run
  # 部署项目，run as maven build... --> Goals: gae:deploy
