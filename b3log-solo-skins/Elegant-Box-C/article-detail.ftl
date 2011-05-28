@@ -40,7 +40,7 @@
                         <div class="fixed"></div>
                     </div>
                     <div class="anchor">
-                        <span><a href="#" onclick="MGJS.goTop();return false;">置顶</a></span>
+                        <span><a href="#" onclick="MGJS.goTop();return false;">${putTopLabel}</a></span>
                     </div>
                     <div class="fixed"></div>
                 </div>
