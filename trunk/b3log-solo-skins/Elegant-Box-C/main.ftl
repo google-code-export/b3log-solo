@@ -7,9 +7,9 @@
     <div class="info">
         <span>
             <#if article.hasUpdated>
-            ${article.articleUpdateDate?string("yyyy年MM月dd日")}
+            ${article.articleUpdateDate?string("${Elegant_Box_C_articleTimeFormatLabel}")}
             <#else>
-            ${article.articleCreateDate?string("yyyy年MM月dd日")}
+            ${article.articleCreateDate?string("${Elegant_Box_C_articleTimeFormatLabel}")}
             </#if>
         </span>
         <span>
@@ -26,9 +26,9 @@
     </div>
     <div class="comments">
         <#if article.articleCommentCount==0>
-        <a href="${article.articlePermalink}#comments" title="${article.articleTitle} 上的评论">没有评论</a>
+        <a href="${article.articlePermalink}#comments">${Elegant_Box_C_noCommentLabel}</a>
         <#else>
-        <a href="${article.articlePermalink}#comments" title="${article.articleTitle} 上的评论">${article.articleCommentCount}条评论</a>
+        <a href="${article.articlePermalink}#comments">${article.articleCommentCount} ${Elegant_Box_C_numOfCommentsLabel}</a>
         </#if>
     </div>
 </div>

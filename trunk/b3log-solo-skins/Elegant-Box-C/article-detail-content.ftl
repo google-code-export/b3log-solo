@@ -6,9 +6,9 @@
     <div class="info">
         <span>
             <#if article.hasUpdated>
-            ${article.articleUpdateDate?string("yyyy年MM月dd日")}
+            ${article.articleUpdateDate?string("${Elegant_Box_C_articleTimeFormatLabel}")}
             <#else>
-            ${article.articleCreateDate?string("yyyy年MM月dd日")}
+            ${article.articleCreateDate?string("${Elegant_Box_C_articleTimeFormatLabel}")}
             </#if>
         </span>
         <span>
@@ -25,16 +25,14 @@
         <div class="fixed"></div>
     </div>
     <div class="comments comments_single">
-        <a href="#respond">发表评论</a>
+        <a href="#respond" name="comments">${postCommentsLabel}</a>
     </div>
-    <!-- related posts START -->
-    <!-- related posts END -->
 </div>
 
 <#if (articleComments?size = 0)>
 <div class="messagebox">
     <div class="content small">
-        目前还没有任何评论.
+        ${Elegant_Box_C_noCommentsYetLabel}
     </div>
 </div>
 <#else>
@@ -57,11 +55,11 @@
                     &nbsp;@&nbsp;<a href="${article.articlePermalink}#${comment.commentOriginalCommentId}">${comment.commentOriginalCommentName?trim}</a>
                     </#if>
                 </div>
-                <div class="date">${comment.commentDate?string("yyyy年MM月dd日HH:mm:ss")}</div>
+                <div class="date">${comment.commentDate?string("${Elegant_Box_C_commentTimeFormatLabel}")}</div>
             </div>
             <div class="count">
-                <a onclick="CMT.reply('commentauthor-${comment.oId}', 'comment-${comment.oId}','${comment.oId}');" href="javascript:void(0);">回复</a> |
-                <a href="#${comment.oId}" name="${comment.oId}">链接</a>
+                <a onclick="CMT.reply('commentauthor-${comment.oId}', 'comment-${comment.oId}','${comment.oId}','${comment.commentName}');" href="javascript:void(0);">${replyLabel}</a> |
+                <a href="#${comment.oId}" name="${comment.oId}">${permalinkLabel}</a>
             </div>
             <div class="fixed"></div>
         </div>
@@ -83,24 +81,74 @@
     <script type="text/javascript">
         var changeCaptcha=function(){
             $('#captcha').attr('src','/captcha.do?'+ Math.random());
+            $('#commentValidate').select();
         };
+        function commentSubmit(form){
+            form=document.getElementById('commentform');
+            var params=$(form).serializeArray();
+            var data={};
+            for(var i in params){
+                var param=params[i];
+                if(param.name=='commentContent'){
+                    var commentContentLength=param.value.length;
+                    if(commentContentLength<2||commentContentLength>500){
+                         $("#commitStatus").text('${commentContentCannotEmptyLabel}');
+                         return;
+                    }
+                }else if($.trim(param.value).length==0){
+                    switch(param.name){
+                        case 'commentName':
+                            $("#commitStatus").text('${nameEmptyLabel}');
+                            return;
+                        case 'commentEmail':
+                            $("#commitStatus").text('${mailCannotEmptyLabel}');
+                            return;
+                        case 'captcha':
+                            $("#commitStatus").text('${captchaCannotEmptyLabel}');
+                            return;
+                    }
+                }
+                data[param.name]=param.value;
+            }
+            data['commentOriginalCommentId']=window['CMT']['commentOriginalCommentId'];
+            $.ajax({
+                type:form.method,
+                url:form.action,
+                data:JSON.stringify(data),
+                beforeSend:function(){
+                    $("#commitStatus").text('${loadingLabel}');
+                },
+                success: function(result){
+                    switch(result.sc){
+                        case "COMMENT_ARTICLE_SUCC":
+                            window.location.reload();
+                            break;
+                        case 'CAPTCHA_ERROR':
+                            $("#commitStatus").text('${captchaErrorLabel}');
+                            changeCaptcha();
+                            break;
+                    }
+                }
+            });
+            return false;
+        }
+        window['CMT']['commentSubmit']=commentSubmit;
     </script>
-    <form id="commentform" method="post" action="/add-article-comment.do" onsubmit="return CMT.commentSubmit(this);">
-        <!-- comment info -->
+    <form id="commentform" method="post" action="/add-article-comment.do">
         <div id="comment_header">
             <div id="comment_info">
                 <div id="author_info">
                     <div class="row">
                         <input type="text" tabindex="1" size="24" value="" class="textfield" id="author" name="commentName" gtbfieldid="6">
-                        <label class="small" for="author">昵称 (必填)</label>
+                        <label class="small" for="author">${commentNameLabel} (${Elegant_Box_C_requiredLabel})</label>
                     </div>
                     <div class="row">
                         <input type="text" tabindex="2" size="24" value="" class="textfield" id="email" name="commentEmail" gtbfieldid="7">
-                        <label class="small" for="email">电子邮箱 (我们会为您保密) (必填)</label>
+                        <label class="small" for="email">${commentEmailLabel} (${Elegant_Box_C_willNotBePublishedLabel}) (${Elegant_Box_C_requiredLabel})</label>
                     </div>
                     <div class="row">
                         <input type="text" tabindex="3" size="24" value="" class="textfield" id="url" name="commentURL" gtbfieldid="8">
-                        <label class="small" for="url">网址</label>
+                        <label class="small" for="url">${Elegant_Box_C_websiteLabel}</label>
                     </div>
                 </div>
             </div>
@@ -117,7 +165,7 @@
             </span>
             <div class="act">
                 <input type="hidden" name="oId" value="${article.oId}"/>
-		<input type="submit" value="提交评论" tabindex="5" class="button" id="submit" name="submit">
+		<input type="button" value="${Elegant_Box_C_submitCommentLabel}" tabindex="5" class="button" id="submit" name="submit" onclick="return CMT.commentSubmit();"/>
             </div>
             <div class="fixed"></div>
         </div>

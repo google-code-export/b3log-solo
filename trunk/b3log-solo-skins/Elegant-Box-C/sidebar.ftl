@@ -1,13 +1,12 @@
-<!-- Style Switcher START -->
 <div class="widget">
     <div id="styleswitcher">
-        <span id="style-text">主题风格: </span>
-        <span id="style-black" class="color"><a onclick="TSS.setActiveStyleSheet('black');" href="javascript:void(0);" title="将主题风格更换为black"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
-        <span id="style-blue" class="color"><a onclick="TSS.setActiveStyleSheet('blue');" href="javascript:void(0);" title="将主题风格更换为blue"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
-        <span id="style-brown" class="color"><a onclick="TSS.setActiveStyleSheet('brown');" href="javascript:void(0);" title="将主题风格更换为brown"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
-        <span id="style-green" class="color"><a onclick="TSS.setActiveStyleSheet('green');" href="javascript:void(0);" title="将主题风格更换为green"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
-        <span id="style-purple" class="color"><a onclick="TSS.setActiveStyleSheet('purple');" href="javascript:void(0);" title="将主题风格更换为purple"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
-        <span id="style-white" class="color"><a onclick="TSS.setActiveStyleSheet('white');" href="javascript:void(0);" title="将主题风格更换为white"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
+        <span id="style-text">${Elegant_Box_C_themeLabel}: </span>
+        <span id="style-black" class="color"><a onclick="TSS.setActiveStyleSheet('black');" href="javascript:void(0);" title="${Elegant_Box_C_changeThemeToLabel} black"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
+        <span id="style-blue" class="color"><a onclick="TSS.setActiveStyleSheet('blue');" href="javascript:void(0);" title="${Elegant_Box_C_changeThemeToLabel} blue"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
+        <span id="style-brown" class="color"><a onclick="TSS.setActiveStyleSheet('brown');" href="javascript:void(0);" title="${Elegant_Box_C_changeThemeToLabel} brown"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
+        <span id="style-green" class="color"><a onclick="TSS.setActiveStyleSheet('green');" href="javascript:void(0);" title="${Elegant_Box_C_changeThemeToLabel} green"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
+        <span id="style-purple" class="color"><a onclick="TSS.setActiveStyleSheet('purple');" href="javascript:void(0);" title="${Elegant_Box_C_changeThemeToLabel} purple"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
+        <span id="style-white" class="color"><a onclick="TSS.setActiveStyleSheet('white');" href="javascript:void(0);" title="${Elegant_Box_C_changeThemeToLabel} white"><img src="http://${blogHost}/skins/${skinDirName}/images/transparent.gif" alt="" /></a></span>
         <div class="fixed"></div>
     </div>
 </div>
@@ -66,11 +65,10 @@
         <h3>${popTagsLabel}</h3>
         <div>
             <#list mostUsedTags as tag>
-            <a href="/tags/${tag.tagTitle?url('UTF-8')}" title='${tag.tagPublishedRefCount}篇文章' style='font-size: 8pt;'>${tag.tagTitle}</a>
+            <a href="/tags/${tag.tagTitle?url('UTF-8')}" title='${tag.tagPublishedRefCount} ${Elegant_Box_C_numOfArticlesLabel}' style='font-size: 8pt;'>${tag.tagTitle}</a>
             </#list>
         </div>
     </li>
-    <!-- 友情链接 -->
     <li class="widget widget_links">
         <h3>${linkLabel}</h3>
         <ul class='xoxo blogroll'>
@@ -102,5 +100,3 @@
         </ul>
     </li>
 </ul>
-
-<!-- showcase 2 -->

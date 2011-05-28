@@ -13,7 +13,7 @@
     var search_box = document.getElementById("search_box");
     var searchbox = document.getElementById("searchbox");
     var searchtxt = document.getElementById("searchtxt");
-    var tiptext = "请输入关键字...";
+    var tiptext = "${Elegant_Box_C_searchPhraseLabel}";
     if(searchtxt.value == "" || searchtxt.value == tiptext) {
         searchtxt.className += " searchtip";
         searchtxt.value = tiptext;
@@ -38,19 +38,19 @@
 </script>
 <!-- navigation START -->
 <ul id="navigation">
-    <li class="page_item page-item-1"><a href="http://${blogHost}/">首页</a></li>
-    <li class="page_item page-item-2"><a href="http://${blogHost}/tags.html" title="标签">标签</a></li>
+    <li class="page_item page-item-1"><a href="http://${blogHost}/">${homeLabel}</a></li>
+    <li class="page_item page-item-2"><a href="http://${blogHost}/tags.html">${allTagsLabel}</a></li>
     <li id="subscribe">
-        <a rel="external nofollow" title="订阅这个博客的文章" id="feed" href="http://${blogHost}/blog-articles-feed.do"><img src="http://${blogHost}/skins/${skinDirName}/images/src/feed.png" alt="RSS 订阅" /></a>
+        <a rel="external nofollow" title="${Elegant_Box_C_subscribeToThisBlogLabel}" id="feed" href="http://${blogHost}/blog-articles-feed.do"><img src="http://${blogHost}/skins/${skinDirName}/images/src/feed.png" alt="RSS" /></a>
         <ul>
-            <li class="first"><a rel="external nofollow" title="订阅到有道" href="http://reader.youdao.com/b.do?url=http://${blogHost}/blog-articles-feed.do"> 有道</a></li>
-            <li><a rel="external nofollow" title="订阅到鲜果" href="http://www.xianguo.com/subscribe.php?url=http://${blogHost}/blog-articles-feed.do"> 鲜果</a></li>
-            <li><a rel="external nofollow" title="订阅到抓虾" href="http://www.zhuaxia.com/add_channel.php?url=http://${blogHost}/blog-articles-feed.do"> 抓虾</a></li>
-            <li><a rel="external nofollow" title="订阅到 Google" href="http://fusion.google.com/add?feedurl=http://${blogHost}/blog-articles-feed.do">  Google</a></li>
-            <li><a rel="external nofollow" title="订阅到 My Yahoo!" href="http://add.my.yahoo.com/rss?url=http://${blogHost}/blog-articles-feed.do">  My Yahoo!</a></li>
-            <li><a rel="external nofollow" title="订阅到 newsgator" href="http://www.newsgator.com/ngs/subscriber/subfext.aspx?url=http://${blogHost}/blog-articles-feed.do">  newsgator</a></li>
-            <li><a rel="external nofollow" title="订阅到 Bloglines" href="http://www.bloglines.com/sub/http://${blogHost}/blog-articles-feed.do">  Bloglines</a></li>
-            <li><a rel="external nofollow" title="订阅到 哪吒" href="http://inezha.com/add?url=http://${blogHost}/blog-articles-feed.do">  哪吒</a></li>
+            <li class="first"><a rel="external nofollow" title="${Elegant_Box_C_subscribeToLabel} 有道" href="http://reader.youdao.com/b.do?url=http://${blogHost}/blog-articles-feed.do"> 有道</a></li>
+            <li><a rel="external nofollow" title="${Elegant_Box_C_subscribeToLabel} 鲜果" href="http://www.xianguo.com/subscribe.php?url=http://${blogHost}/blog-articles-feed.do"> 鲜果</a></li>
+            <li><a rel="external nofollow" title="${Elegant_Box_C_subscribeToLabel} 抓虾" href="http://www.zhuaxia.com/add_channel.php?url=http://${blogHost}/blog-articles-feed.do"> 抓虾</a></li>
+            <li><a rel="external nofollow" title="${Elegant_Box_C_subscribeToLabel} Google" href="http://fusion.google.com/add?feedurl=http://${blogHost}/blog-articles-feed.do">  Google</a></li>
+            <li><a rel="external nofollow" title="${Elegant_Box_C_subscribeToLabel} My Yahoo!" href="http://add.my.yahoo.com/rss?url=http://${blogHost}/blog-articles-feed.do">  My Yahoo!</a></li>
+            <li><a rel="external nofollow" title="${Elegant_Box_C_subscribeToLabel} newsgator" href="http://www.newsgator.com/ngs/subscriber/subfext.aspx?url=http://${blogHost}/blog-articles-feed.do">  newsgator</a></li>
+            <li><a rel="external nofollow" title="${Elegant_Box_C_subscribeToLabel} Bloglines" href="http://www.bloglines.com/sub/http://${blogHost}/blog-articles-feed.do">  Bloglines</a></li>
+            <li><a rel="external nofollow" title="${Elegant_Box_C_subscribeToLabel} 哪吒" href="http://inezha.com/add?url=http://${blogHost}/blog-articles-feed.do">  哪吒</a></li>
         </ul>
     </li>
 </ul>

@@ -19,7 +19,7 @@
                     <div class="post">
                         <div class="title bottom_space">
                             <h2>
-                                ${archiveDate.archiveDateYear}${yearLabel}${archiveDate.archiveDateMonth}${monthLabel} 的存档 (${archiveDate.archiveDatePublishedArticleCount})
+                                ${archiveDate.archiveDateYear}${yearLabel}${archiveDate.archiveDateMonth}${monthLabel} ${archiveLabel} (${archiveDate.archiveDatePublishedArticleCount})
                             </h2>
                             <div class="fixed"></div>
                         </div><!-- title -->
@@ -34,15 +34,15 @@
                                 </div>
                                 <small>
                                     <#if article.hasUpdated>
-                                    ${article.articleUpdateDate?string("yyyy年MM月dd日")}
+                                    ${article.articleUpdateDate?string("${Elegant_Box_C_articleTimeFormatLabel}")}
                                     <#else>
-                                    ${article.articleCreateDate?string("yyyy年MM月dd日")}
+                                    ${article.articleCreateDate?string("${Elegant_Box_C_articleTimeFormatLabel}")}
                                     </#if>
                                     |
                                     <#if article.articleCommentCount==0>
-                                    <a href="${article.articlePermalink}#comments" title="${article.articleTitle} 上的评论">没有评论</a>
+                                    <a href="${article.articlePermalink}#comments">${Elegant_Box_C_noCommentLabel}</a>
                                     <#else>
-                                    <a href="${article.articlePermalink}#comments" title="${article.articleTitle} 上的评论">${article.articleCommentCount}条评论</a>
+                                    <a href="${article.articlePermalink}#comments">${article.articleCommentCount} ${Elegant_Box_C_numOfCommentsLabel}</a>
                                     </#if>
                                 </small>
                                 <div>
@@ -113,7 +113,7 @@
                         <div class="fixed"></div>
                     </div>
                     <div class="anchor">
-                        <span><a href="#" onclick="MGJS.goTop();return false;">置顶</a></span>
+                        <span><a href="#" onclick="MGJS.goTop();return false;">${putTopLabel}</a></span>
                     </div>
                     <div class="fixed"></div>
                 </div>

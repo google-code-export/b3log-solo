@@ -1,10 +1,10 @@
 (function() {
 
-function reply(authorId, commentId, commentOriginalCommentId) {
+function reply(authorId, commentId, commentOriginalCommentId,commentName) {
 	//var author = document.getElementById(authorId).innerHTML;
-	//var insertStr = '<a href="#' + commentId + '">@' + author.replace(/\t|\n|\r\n/g, "") + ' </a> \n';
+	var insertStr = '@' + commentName + ' ';
 
-	//appendReply(insertStr, commentBox);
+	appendReply(insertStr, 'comment');
         window['CMT']['commentOriginalCommentId']=commentOriginalCommentId;
 }
 
@@ -37,9 +37,14 @@ function appendReply(insertStr, commentBox) {
 	if (field.value.replace(/\s|\t|\n/g, "") == '') {
 		field.value = insertStr;
 	} else {
-		field.value = field.value.replace(/[\n]*$/g, "") + '\n\n' + insertStr;
+		//field.value = field.value.replace(/[\n]*$/g, "") + '\n\n' + insertStr;
+                field.value = insertStr;
 	}
 	field.focus();
+        var rng=field.createTextRange(); 
+        rng.moveStart('character', field.value.length); 
+        rng.collapse(true);  
+        rng.select(); 
 }
 
 function insertQuote(insertStr, commentBox) {
@@ -85,37 +90,37 @@ function loadCommentShortcut(frm, submitbnt, desc) {
 	};
 	document.getElementById(submitbnt).value += desc;
 }
-function commentSubmit(form){
-    var params=$(form).serializeArray();
-    var data={};
-    for(var i in params){
-        var param=params[i];
-        data[param.name]=param.value;
-    }
-    data['commentOriginalCommentId']=window['CMT']['commentOriginalCommentId'];
-    $.ajax({
-        type:form.method,
-        url:form.action,
-        data:JSON.stringify(data),
-        success: function(result){
-            switch(result.sc){
-            case "COMMENT_ARTICLE_SUCC":
-                window.location.reload();
-                break;
-            case 'CAPTCHA_ERROR':
-                $("#commitStatus").text('\u9a8c证码错误');
-                changeCaptcha();
-                break;
-        }
-        }
-    });
-    return false;
-}
+//function commentSubmit(form){
+//    var params=$(form).serializeArray();
+//    var data={};
+//    for(var i in params){
+//        var param=params[i];
+//        data[param.name]=param.value;
+//    }
+//    data['commentOriginalCommentId']=window['CMT']['commentOriginalCommentId'];
+//    $.ajax({
+//        type:form.method,
+//        url:form.action,
+//        data:JSON.stringify(data),
+//        success: function(result){
+//            switch(result.sc){
+//            case "COMMENT_ARTICLE_SUCC":
+//                window.location.reload();
+//                break;
+//            case 'CAPTCHA_ERROR':
+//                $("#commitStatus").text('\u9a8c证码错误');
+//                changeCaptcha();
+//                break;
+//        }
+//        }
+//    });
+//    return false;
+//}
 
 window['CMT'] = {};
 window['CMT']['reply'] = reply;
 window['CMT']['quote'] = quote;
 window['CMT']['loadCommentShortcut'] = loadCommentShortcut;
-window['CMT']['commentSubmit']=commentSubmit;
+//window['CMT']['commentSubmit']=commentSubmit;
 
 })();
