@@ -40,7 +40,7 @@
             <#list recentComments as comment>
             <li class="rc_item" id="rc_item_${comment_index+1}">
                 <div class="rc_avatar rc_left">
-                    <img width="32" height="32" class="avatar avatar-32 photo" src="${comment.commentThumbnailURL}" alt="">
+                    <img width="32" height="32" class="avatar avatar-32 photo" src="${comment.commentThumbnailURL}"/>
                 </div>
                 <div class="rc_info">
                     <span class="author_name">

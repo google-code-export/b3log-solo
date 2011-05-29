@@ -6,6 +6,7 @@ function reply(authorId, commentId, commentOriginalCommentId,commentName) {
 
 	appendReply(insertStr, 'comment');
         window['CMT']['commentOriginalCommentId']=commentOriginalCommentId;
+        window['CMT']['commentName']=commentName;
 }
 
 function quote(authorId, commentId, commentBodyId, commentBox) {
@@ -41,10 +42,16 @@ function appendReply(insertStr, commentBox) {
                 field.value = insertStr;
 	}
 	field.focus();
-        var rng=field.createTextRange(); 
-        rng.moveStart('character', field.value.length); 
-        rng.collapse(true);  
-        rng.select(); 
+        try{
+            var rng;
+            if(document.all)
+                rng=field.createTextRange();
+            else
+                rng=field.createRange();
+            rng.moveStart('character', field.value.length); 
+            rng.collapse(true);  
+            rng.select(); 
+        }catch(e){}
 }
 
 function insertQuote(insertStr, commentBox) {
@@ -81,14 +88,14 @@ function insertQuote(insertStr, commentBox) {
 }
 
 function loadCommentShortcut(frm, submitbnt, desc) {
-	document.getElementById(frm).onkeydown = function (moz_ev) {
-		var ev = null;
-		ev = window.event ? window.event : moz_ev;
-		if (ev != null && ev.ctrlKey && ev.keyCode == 13) {
-			document.getElementById(submitbnt).click();
-		}
-	};
-	document.getElementById(submitbnt).value += desc;
+    document.getElementById(frm).onkeydown = function (moz_ev) {
+            var ev = null;
+            ev = window.event ? window.event : moz_ev;
+            if (ev != null && ev.ctrlKey && ev.keyCode == 13) {
+                    document.getElementById(submitbnt).click();
+            }
+    };
+    document.getElementById(submitbnt).value += desc;
 }
 //function commentSubmit(form){
 //    var params=$(form).serializeArray();

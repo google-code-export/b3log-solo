@@ -52,7 +52,7 @@
                        target="_blank">${comment.commentName}</a>
                     </#if>
                     <#if comment.isReply>
-                    &nbsp;@&nbsp;<a href="${article.articlePermalink}#${comment.commentOriginalCommentId}">${comment.commentOriginalCommentName?trim}</a>
+                    &nbsp;@<a href="${article.articlePermalink}#${comment.commentOriginalCommentId}">${comment.commentOriginalCommentName?trim}</a>
                     </#if>
                 </div>
                 <div class="date">${comment.commentDate?string("${Elegant_Box_C_commentTimeFormatLabel}")}</div>
@@ -95,6 +95,10 @@
                          $("#commitStatus").text('${commentContentCannotEmptyLabel}');
                          return;
                     }
+                    if(param.value.indexOf('@'+window['CMT']['commentName']+' ')==0){
+                        param.value=param.value.replace('@'+window['CMT']['commentName']+' ','');
+                        data['commentOriginalCommentId']=window['CMT']['commentOriginalCommentId'];
+                    }
                 }else if($.trim(param.value).length==0){
                     switch(param.name){
                         case 'commentName':
@@ -110,7 +114,8 @@
                 }
                 data[param.name]=param.value;
             }
-            data['commentOriginalCommentId']=window['CMT']['commentOriginalCommentId'];
+            if(data['commentURL'].indexOf('http://')!=0)
+                data['commentURL']='http://' + data['commentURL'];
             $.ajax({
                 type:form.method,
                 url:form.action,
@@ -139,15 +144,15 @@
             <div id="comment_info">
                 <div id="author_info">
                     <div class="row">
-                        <input type="text" tabindex="1" size="24" value="" class="textfield" id="author" name="commentName" gtbfieldid="6">
+                        <input type="text" tabindex="1" size="24" value="" class="textfield" id="author" name="commentName" gtbfieldid="6"/>
                         <label class="small" for="author">${commentNameLabel} (${Elegant_Box_C_requiredLabel})</label>
                     </div>
                     <div class="row">
-                        <input type="text" tabindex="2" size="24" value="" class="textfield" id="email" name="commentEmail" gtbfieldid="7">
+                        <input type="text" tabindex="2" size="24" value="" class="textfield" id="email" name="commentEmail" gtbfieldid="7"/>
                         <label class="small" for="email">${commentEmailLabel} (${Elegant_Box_C_willNotBePublishedLabel}) (${Elegant_Box_C_requiredLabel})</label>
                     </div>
                     <div class="row">
-                        <input type="text" tabindex="3" size="24" value="" class="textfield" id="url" name="commentURL" gtbfieldid="8">
+                        <input type="text" tabindex="3" size="24" value="" class="textfield" id="url" name="commentURL" gtbfieldid="8"/>
                         <label class="small" for="url">${Elegant_Box_C_websiteLabel}</label>
                     </div>
                 </div>
@@ -165,9 +170,10 @@
             </span>
             <div class="act">
                 <input type="hidden" name="oId" value="${article.oId}"/>
-		<input type="button" value="${Elegant_Box_C_submitCommentLabel}" tabindex="5" class="button" id="submit" name="submit" onclick="return CMT.commentSubmit();"/>
+		<input type="button" value="${Elegant_Box_C_submitCommentLabel}" tabindex="5" class="button" id="submit" name="submit" onclick="return CMT.commentSubmit();" title="(Ctrl+Enter)"/>
             </div>
             <div class="fixed"></div>
         </div>
     </form>
+    <script type="text/javascript">window['CMT']['loadCommentShortcut']('commentform','submit','');</script>
 </div>
