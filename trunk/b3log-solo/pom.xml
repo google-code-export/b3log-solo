@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.6.2, Apr 30, 2011
+    Version: 1.0.6.3, Jun 7, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -428,6 +428,17 @@
 
     <repositories>
         <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
             <id>m2-release</id>
             <name>88250 at Google Maven repository of snapshots</name>
             <url>http://m2-repos.googlecode.com/svn/release</url>
@@ -438,7 +449,6 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-
     </repositories>
 </project>
 
