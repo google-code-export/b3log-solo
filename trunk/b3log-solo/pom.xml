@@ -35,7 +35,7 @@
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <commons-lang.version>2.5</commons-lang.version>
         <jsoup.version>1.5.2</jsoup.version>
-        <gae.version>1.4.3</gae.version>
+        <gae.version>1.5.0.1</gae.version>
 <!--        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>-->
         <!-- maven plugin -->
         <maven-license-plugin.version>1.8.0</maven-license-plugin.version>
