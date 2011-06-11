@@ -22,6 +22,10 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>permalink</word>
         <word>permalinks</word>
         <word>Picasa</word>
+        <word>Plugin</word>
+        <word>plugin</word>
+        <word>Plugins</word>
+        <word>plugins</word>
         <word>servlet</word>
         <word>servlets</word>
         <word>Upgrader</word>
