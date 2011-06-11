@@ -494,10 +494,10 @@
                         if ($("#localeString").val() !== localeString) {
                             window.location.reload();
                         }
-
+                        
                         // update article signs
                         for (var i = 1; i < signs.length; i++) {
-                            $("#articleSign" + signs[i].oId).tip("option", "content", signs[i].signHTML);
+                            $("#articleSign" + signs[i].oId).tip("option", "content", signs[i].signHTML === "" ? "该签名档为空" : signs[i].signHTML);
                         }
                         break;
                     case "UPDATE_PREFERENCE_FAIL_":
