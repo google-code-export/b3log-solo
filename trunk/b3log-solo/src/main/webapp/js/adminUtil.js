@@ -153,7 +153,7 @@ $.extend(AdminUtil.prototype, {
                             $("#articleSign0").addClass("selected");
                         } else {
                             $("#articleSign" + result[i].oId).tip({
-                                content: result[i].signHTML,
+                                content: result[i].signHTML === "" ? "该签名档为空" : result[i].signHTML,
                                 position: "top"
                             });
                         }
