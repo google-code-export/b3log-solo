@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Jan 20, 2011
+ * @version 1.0.2.4, Jun 11, 2011
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -121,6 +121,10 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * Time zone utilities.
      */
     private TimeZones timeZoneUtils = TimeZones.getInstance();
+    /**
+     * Maximum count of initialization.
+     */
+    private static final int MAX_RETRIES_CNT = 3;
 
     /**
      * Removes a user with the specified request json object.
@@ -362,7 +366,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             final JSONObject pagination = new JSONObject();
             ret.put(Pagination.PAGINATION, pagination);
             final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
+                    Paginator.paginate(currentPageNum, pageSize,
+                                       pageCount,
                                        windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
@@ -525,6 +530,23 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Initializes B3log Solo.
      * 
+     * <p>
+     * Initializes the followings in sequence:
+     *   <ol>
+     *     <li>Statistic.</li>
+     *     <li>Preference.</li>
+     *     <li>Administrator.</li>
+     *   </ol>
+     * </p>
+     * 
+     * <p>
+     *   We will try to initialize B3log Solo 3 times at most.
+     * </p>
+     * 
+     * <p>
+     *   Posts "Hello World!" article and its comment while B3log Solo 
+     *   initialized.
+     * </p>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws ActionException action exception
@@ -545,20 +567,43 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        try {
-            final JSONObject statistic =
-                    statisticRepository.get(Statistic.STATISTIC);
-            if (null == statistic) {
-                initStatistic();
-                initPreference();
-                initAdmin(request, response);
+        int retries = MAX_RETRIES_CNT;
+        while (true) {
+            final Transaction transaction = userRepository.beginTransaction();
+            try {
+                final JSONObject statistic =
+                        statisticRepository.get(Statistic.STATISTIC);
+                if (null == statistic) {
+                    initStatistic();
+                    initPreference();
+                    initAdmin(request, response);
+                }
 
-                helloWorld(request, response);
+                ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
+
+                transaction.commit();
+                break;
+            } catch (final Exception e) {
+                if (0 == retries) {
+                    LOGGER.log(Level.SEVERE, "Initialize B3log Solo error", e);
+                    throw new ActionException("Initailize B3log Solo error!");
+                }
+
+                // Allow retry to occur
+                --retries;
+                LOGGER.log(Level.WARNING,
+                           "Retrying to init B3log Solo[retries={0}]", retries);
+            } finally {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
             }
+        }
 
-            ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
+        try {
+            helloWorld(request, response);
         } catch (final Exception e) {
-            LOGGER.severe("Initialize B3log Solo error");
+            LOGGER.log(Level.SEVERE, "Hello World error?!", e);
         }
 
         return ret;
@@ -567,69 +612,59 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Publishes the first article "Hello World".
      *
-     * <p>
-     *   <b>Note</b>: The article "Hello World" and its comment is no i18N,
-     *   all contents are English.
-     * </p>
-     *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
+     * @throws Exception exception
      */
     private void helloWorld(final HttpServletRequest request,
                             final HttpServletResponse response)
-            throws RepositoryException, JSONException {
+            throws Exception {
         LOGGER.info("Hello World!");
 
-        try {
-            final JSONObject article = new JSONObject();
+        final JSONObject article = new JSONObject();
 
-            article.put(Article.ARTICLE_TITLE, "Hello World!");
-            final String content =
-                    "Welcome to <a style=\"text-decoration: none;\" target=\"_blank\" "
-                    + "href=\"http://b3log-solo.googlecode.com\">"
-                    + "<span style=\"color: orange;\">B</span>"
-                    + "<span style=\"font-size: 9px; color: blue;\">"
-                    + "<sup>3</sup></span><span style=\"color: green;\">L</span>"
-                    + "<span style=\"color: red;\">O</span>"
-                    + "<span style=\"color: blue;\">G</span> "
-                    + " <span style=\"color: orangered; font-weight: bold;\">Solo</span>"
-                    + "</a>. This is your first post. Edit or delete it, "
-                    + "then start blogging!";
-            article.put(Article.ARTICLE_ABSTRACT, content);
-            article.put(Article.ARTICLE_CONTENT, content);
-            article.put(Article.ARTICLE_TAGS_REF, "B3log");
-            article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
-            article.put(Article.ARTICLE_IS_PUBLISHED, true);
-            article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
+        // XXX: no i18n
+        article.put(Article.ARTICLE_TITLE, "Hello World!");
+        final String content =
+                "Welcome to <a style=\"text-decoration: none;\" target=\"_blank\" "
+                + "href=\"http://b3log-solo.googlecode.com\">"
+                + "<span style=\"color: orange;\">B</span>"
+                + "<span style=\"font-size: 9px; color: blue;\">"
+                + "<sup>3</sup></span><span style=\"color: green;\">L</span>"
+                + "<span style=\"color: red;\">O</span>"
+                + "<span style=\"color: blue;\">G</span> "
+                + " <span style=\"color: orangered; font-weight: bold;\">Solo</span>"
+                + "</a>. This is your first post. Edit or delete it, "
+                + "then start blogging!";
+        article.put(Article.ARTICLE_ABSTRACT, content);
+        article.put(Article.ARTICLE_CONTENT, content);
+        article.put(Article.ARTICLE_TAGS_REF, "B3log");
+        article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
+        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
 
-            JSONObject requestJSONObject = new JSONObject();
-            requestJSONObject.put(Article.ARTICLE, article);
-            final String articleId = articleService.addArticle(
-                    requestJSONObject, request,
-                    response).getString(Keys.OBJECT_ID);
+        JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(Article.ARTICLE, article);
+        final String articleId = articleService.addArticle(
+                requestJSONObject, request,
+                response).getString(Keys.OBJECT_ID);
 
-            requestJSONObject = new JSONObject();
-            final String captchaForInit = "captchaForInit";
-            request.getSession().setAttribute(CaptchaServlet.CAPTCHA,
-                                              captchaForInit);
-            requestJSONObject.put(CaptchaServlet.CAPTCHA, captchaForInit);
-            requestJSONObject.put(Keys.OBJECT_ID, articleId);
-            requestJSONObject.put(Comment.COMMENT_NAME, "88250");
-            requestJSONObject.put(Comment.COMMENT_EMAIL, "DL88250@gmail.com");
-            requestJSONObject.put(Comment.COMMENT_URL, "http://88250.b3log.org");
-            requestJSONObject.put(
-                    Comment.COMMENT_CONTENT,
-                    "Hi, this is a comment. To delete a comment, just log in and "
-                    + "view the post's comments. There you will have the option "
-                    + "to delete them.");
-            AddArticleCommentAction.addArticleComment(requestJSONObject,
-                                                      request, response);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RuntimeException("Hello World error?!");
-        }
+        requestJSONObject = new JSONObject();
+        final String captchaForInit = "captchaForInit";
+        request.getSession().setAttribute(CaptchaServlet.CAPTCHA,
+                                          captchaForInit);
+        requestJSONObject.put(CaptchaServlet.CAPTCHA, captchaForInit);
+        requestJSONObject.put(Keys.OBJECT_ID, articleId);
+        requestJSONObject.put(Comment.COMMENT_NAME, "88250");
+        requestJSONObject.put(Comment.COMMENT_EMAIL, "DL88250@gmail.com");
+        requestJSONObject.put(Comment.COMMENT_URL, "http://88250.b3log.org");
+        requestJSONObject.put(
+                Comment.COMMENT_CONTENT,
+                "Hi, this is a comment. To delete a comment, just log in and "
+                + "view the post's comments. There you will have the option "
+                + "to delete them.");
+        AddArticleCommentAction.addArticleComment(requestJSONObject,
+                                                  request, response);
     }
 
     /**
@@ -637,34 +672,23 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
+     * @throws Exception exception
      */
     private void initAdmin(final HttpServletRequest request,
                            final HttpServletResponse response)
-            throws RepositoryException, JSONException {
+            throws Exception {
         LOGGER.info("Initializing admin....");
-        final Transaction transaction = userRepository.beginTransaction();
-        try {
-            final JSONObject admin = new JSONObject();
+        final JSONObject admin = new JSONObject();
 
-            final com.google.appengine.api.users.User user =
-                    userService.getCurrentUser();
-            final String name = user.getNickname();
-            admin.put(User.USER_NAME, name);
-            final String email = user.getEmail();
-            admin.put(User.USER_EMAIL, email);
-            admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+        final com.google.appengine.api.users.User user =
+                userService.getCurrentUser();
+        final String name = user.getNickname();
+        admin.put(User.USER_NAME, name);
+        final String email = user.getEmail();
+        admin.put(User.USER_EMAIL, email);
+        admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
 
-            addUser(admin, request, response);
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RuntimeException("Admin init error!");
-        }
+        addUser(admin, request, response);
 
         LOGGER.info("Initialized admin");
     }
@@ -679,24 +703,14 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     private JSONObject initStatistic() throws RepositoryException,
                                               JSONException {
         LOGGER.info("Initializing statistic....");
-        final Transaction transaction = userRepository.beginTransaction();
         final JSONObject ret = new JSONObject();
-        try {
-            ret.put(Keys.OBJECT_ID, Statistic.STATISTIC);
-            ret.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 0);
-            ret.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 0);
-            ret.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, 0);
-            ret.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 0);
-            ret.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 0);
-            statisticRepository.add(ret);
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RuntimeException("Statistic init error!");
-        }
+        ret.put(Keys.OBJECT_ID, Statistic.STATISTIC);
+        ret.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 0);
+        ret.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 0);
+        ret.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, 0);
+        ret.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 0);
+        ret.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 0);
+        statisticRepository.add(ret);
 
         LOGGER.info("Initialized statistic");
 
@@ -707,105 +721,96 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * Initializes preference.
      *
      * @return preference
+     * @throws Exception exception
      */
-    private JSONObject initPreference() {
+    private JSONObject initPreference() throws Exception {
         LOGGER.info("Initializing preference....");
 
-        final Transaction transaction = userRepository.beginTransaction();
         final JSONObject ret = new JSONObject();
 
-        try {
-            final String preferenceId = PREFERENCE;
-            ret.put(NOTICE_BOARD, Preference.Default.DEFAULT_NOTICE_BOARD);
-            ret.put(META_DESCRIPTION,
-                    Preference.Default.DEFAULT_META_DESCRIPTION);
-            ret.put(META_KEYWORDS, Preference.Default.DEFAULT_META_KEYWORDS);
-            ret.put(HTML_HEAD, Preference.Default.DEFAULT_HTML_HEAD);
-            ret.put(ENABLE_POST_TO_BUZZ,
-                    Preference.Default.DEFAULT_ENABLE_POST_TO_BUZZ);
-            ret.put(GOOGLE_OAUTH_CONSUMER_SECRET,
-                    Preference.Default.DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
-            ret.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,
-                    Preference.Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
-            ret.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT,
-                    Preference.Default.DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT);
-            ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-                    Preference.Default.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
-            ret.put(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT,
-                    Preference.Default.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
-            ret.put(ARTICLE_LIST_DISPLAY_COUNT,
-                    Preference.Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
-            ret.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
-                    Preference.Default.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-            ret.put(MOST_USED_TAG_DISPLAY_CNT,
-                    Preference.Default.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
-            ret.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
-                    Preference.Default.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
-            ret.put(RECENT_ARTICLE_DISPLAY_CNT,
-                    Preference.Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
-            ret.put(RECENT_COMMENT_DISPLAY_CNT,
-                    Preference.Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
-            ret.put(BLOG_TITLE, Preference.Default.DEFAULT_BLOG_TITLE);
-            ret.put(BLOG_SUBTITLE, Preference.Default.DEFAULT_BLOG_SUBTITLE);
-            ret.put(BLOG_HOST, Preference.Default.DEFAULT_BLOG_HOST);
-            ret.put(ADMIN_EMAIL, // Current logged in adminstrator's email
-                    userService.getCurrentUser().getEmail());
-            ret.put(LOCALE_STRING,
-                    Preference.Default.DEFAULT_LANGUAGE);
-            ret.put(ENABLE_ARTICLE_UPDATE_HINT,
-                    Preference.Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
-            ret.put(Preference.CURRENT_VERSION_NUMBER,
-                    SoloServletListener.VERSION);
-            ret.put(SIGNS, Preference.Default.DEFAULT_SIGNS);
-            ret.put(TIME_ZONE_ID, Preference.Default.DEFAULT_TIME_ZONE);
+        final String preferenceId = PREFERENCE;
+        ret.put(NOTICE_BOARD, Preference.Default.DEFAULT_NOTICE_BOARD);
+        ret.put(META_DESCRIPTION,
+                Preference.Default.DEFAULT_META_DESCRIPTION);
+        ret.put(META_KEYWORDS, Preference.Default.DEFAULT_META_KEYWORDS);
+        ret.put(HTML_HEAD, Preference.Default.DEFAULT_HTML_HEAD);
+        ret.put(ENABLE_POST_TO_BUZZ,
+                Preference.Default.DEFAULT_ENABLE_POST_TO_BUZZ);
+        ret.put(GOOGLE_OAUTH_CONSUMER_SECRET,
+                Preference.Default.DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
+        ret.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,
+                Preference.Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
+        ret.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT,
+                Preference.Default.DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT);
+        ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
+                Preference.Default.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
+        ret.put(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT,
+                Preference.Default.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
+        ret.put(ARTICLE_LIST_DISPLAY_COUNT,
+                Preference.Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
+        ret.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
+                Preference.Default.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+        ret.put(MOST_USED_TAG_DISPLAY_CNT,
+                Preference.Default.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
+        ret.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
+                Preference.Default.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
+        ret.put(RECENT_ARTICLE_DISPLAY_CNT,
+                Preference.Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
+        ret.put(RECENT_COMMENT_DISPLAY_CNT,
+                Preference.Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
+        ret.put(BLOG_TITLE, Preference.Default.DEFAULT_BLOG_TITLE);
+        ret.put(BLOG_SUBTITLE, Preference.Default.DEFAULT_BLOG_SUBTITLE);
+        ret.put(BLOG_HOST, Preference.Default.DEFAULT_BLOG_HOST);
+        ret.put(ADMIN_EMAIL, // Current logged in adminstrator's email
+                userService.getCurrentUser().getEmail());
+        ret.put(LOCALE_STRING,
+                Preference.Default.DEFAULT_LANGUAGE);
+        ret.put(ENABLE_ARTICLE_UPDATE_HINT,
+                Preference.Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
+        ret.put(Preference.CURRENT_VERSION_NUMBER,
+                SoloServletListener.VERSION);
+        ret.put(SIGNS, Preference.Default.DEFAULT_SIGNS);
+        ret.put(TIME_ZONE_ID, Preference.Default.DEFAULT_TIME_ZONE);
 
-            final String skinDirName = Preference.Default.DEFAULT_SKIN_DIR_NAME;
-            ret.put(Skin.SKIN_DIR_NAME, skinDirName);
+        final String skinDirName = Preference.Default.DEFAULT_SKIN_DIR_NAME;
+        ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
-            final String skinName = skins.getSkinName(skinDirName);
-            ret.put(Skin.SKIN_NAME, skinName);
+        final String skinName = skins.getSkinName(skinDirName);
+        ret.put(Skin.SKIN_NAME, skinName);
 
-            final Set<String> skinDirNames = skins.getSkinDirNames();
-            final JSONArray skinArray = new JSONArray();
-            for (final String dirName : skinDirNames) {
-                final JSONObject skin = new JSONObject();
-                skinArray.put(skin);
+        final Set<String> skinDirNames = skins.getSkinDirNames();
+        final JSONArray skinArray = new JSONArray();
+        for (final String dirName : skinDirNames) {
+            final JSONObject skin = new JSONObject();
+            skinArray.put(skin);
 
-                final String name = skins.getSkinName(dirName);
-                skin.put(Skin.SKIN_NAME, name);
-                skin.put(Skin.SKIN_DIR_NAME, dirName);
-            }
-
-            ret.put(Skin.SKINS, skinArray.toString());
-
-            try {
-                final String webRootPath = SoloServletListener.getWebRoot();
-                final String skinPath = webRootPath + Skin.SKINS + "/"
-                                        + skinDirName;
-                Templates.CONFIGURATION.setDirectoryForTemplateLoading(
-                        new File(skinPath));
-            } catch (final IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            timeZoneUtils.setTimeZone("Asia/Shanghai");
-
-            ret.put(Keys.OBJECT_ID, preferenceId);
-            preferenceRepository.add(ret);
-
-            eventManager.fireEventSynchronously(// for upgrade extensions
-                    new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
-                                          ret));
-
-            preferenceRepository.update(preferenceId, ret);
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RuntimeException("Preference init error!");
+            final String name = skins.getSkinName(dirName);
+            skin.put(Skin.SKIN_NAME, name);
+            skin.put(Skin.SKIN_DIR_NAME, dirName);
         }
+
+        ret.put(Skin.SKINS, skinArray.toString());
+
+        try {
+            final String webRootPath = SoloServletListener.getWebRoot();
+            final String skinPath = webRootPath + Skin.SKINS + "/"
+                                    + skinDirName;
+            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
+                    new File(skinPath));
+        } catch (final IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        timeZoneUtils.setTimeZone("Asia/Shanghai");
+
+        ret.put(Keys.OBJECT_ID, preferenceId);
+        preferenceRepository.add(ret);
+
+        eventManager.fireEventSynchronously(// for upgrade extensions
+                new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
+                                      ret));
+
+        preferenceRepository.update(preferenceId, ret);
 
         LOGGER.info("Initialized preference");
 
