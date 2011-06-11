@@ -181,6 +181,14 @@ a.header-title {
     overflow: hidden;
 }
 
+.article-body a {
+    color: #075181;
+}
+
+.article-body a:hover {
+    color: #68ADD5;
+}
+
 .article-main h2.title {
     font: bold 30px Arial,Helvetica,sans-serif;
     margin: 0 0 20px;
@@ -425,7 +433,9 @@ a.header-title {
     float: left;
     font-size: 17px;
     font-weight: bold;
-    padding: 9px 0 8px 15px;
+    height: 37px;
+    line-height: 37px;
+    padding-left: 15px;
     width: 145px;
 }
 
