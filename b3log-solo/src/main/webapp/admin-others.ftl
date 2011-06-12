@@ -18,3 +18,4 @@
     }
     getCacheState();
 </script>
+${plugins}
