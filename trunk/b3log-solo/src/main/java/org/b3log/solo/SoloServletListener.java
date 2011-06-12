@@ -45,6 +45,7 @@ import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
@@ -75,6 +76,7 @@ import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.jsonrpc.impl.StatisticService;
 import org.b3log.solo.jsonrpc.impl.TagService;
 import org.b3log.solo.model.Preference;
+import org.b3log.latke.plugin.ViewLoadEventHandler;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
@@ -86,14 +88,14 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.1, Jan 30, 2011
+ * @version 1.0.4.2, Jun 12, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
     /**
      * B3log Solo version.
      */
-    public static final String VERSION = "0.2.6";
+    public static final String VERSION = "0.3.0";
     /**
      * Logger.
      */
@@ -172,10 +174,10 @@ public final class SoloServletListener extends AbstractServletListener {
                                 SystemProperty.applicationVersion.get(),
                                 SystemProperty.instanceReplicaId.get()});
 
+        super.contextInitialized(servletContextEvent);
+
         registerRemoteJSServices();
         registerEventProcessor();
-
-        super.contextInitialized(servletContextEvent);
 
         final PreferenceRepository preferenceRepository =
                 PreferenceGAERepository.getInstance();
@@ -371,6 +373,9 @@ public final class SoloServletListener extends AbstractServletListener {
             new CnBlogsAddArticleProcessor(eventManager);
             new CnBlogsRemoveArticleProcessor(eventManager);
             new CnBlogsUpdateArticleProcessor(eventManager);
+            new ViewLoadEventHandler(eventManager);
+
+            PluginManager.load();
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
             throw new RuntimeException(e);
