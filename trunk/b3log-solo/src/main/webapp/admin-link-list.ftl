@@ -343,3 +343,4 @@
     }
     initLink();
 </script>
+${plugins}

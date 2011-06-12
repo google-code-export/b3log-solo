@@ -157,3 +157,4 @@
     }
     initFile();
 </script>
+${plugins}
