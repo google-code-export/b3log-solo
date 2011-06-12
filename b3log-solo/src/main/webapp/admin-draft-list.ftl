@@ -195,3 +195,4 @@
     }
     loadDraftList();
 </script>
+${plugins}

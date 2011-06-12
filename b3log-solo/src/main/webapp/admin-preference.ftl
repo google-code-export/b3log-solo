@@ -544,3 +544,4 @@
 
     }
 </script>
+${plugins}
