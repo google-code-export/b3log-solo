@@ -19,7 +19,6 @@ package org.b3log.solo.plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.b3log.latke.model.Plugin;
 
 /**
  * Page cache list plugin.
@@ -37,8 +36,8 @@ public final class PageCacheList extends AbstractPlugin {
 
     @Override
     public void plug(final Map<String, Object> dataModel) {
-        final String mainViewContent = getMainViewContent();
-        dataModel.put(Plugin.PLUGINS, mainViewContent);
+        super.plug(dataModel);
+        
     }
 
     @Override
