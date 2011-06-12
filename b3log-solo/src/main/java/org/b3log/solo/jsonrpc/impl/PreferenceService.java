@@ -20,15 +20,18 @@ import com.google.appengine.api.utils.SystemProperty;
 import com.google.appengine.api.utils.SystemProperty.Environment.Value;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -293,7 +296,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             if (hasPort) {
                 port = blogHost.split(":")[1].trim();
             }
-            
+
             if (!"localhost".equals(domain) && !"80".equals(port)) {
                 ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_FAIL_);
                 if (transaction.isActive()) {
@@ -302,7 +305,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
                 return ret;
             }
-            
+
             preference.put(BLOG_HOST, blogHost);
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
@@ -335,6 +338,12 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
             preference.put(ADMIN_EMAIL, adminEmail);
 
+            final String localeString = preference.getString(
+                    Preference.LOCALE_STRING);
+            LOGGER.log(Level.FINER, "Current locale[string={0}]", localeString);
+            Latkes.setDefaultLocale(new Locale(
+                    Locales.getLanguage(localeString),
+                    Locales.getCountry(localeString)));
             preferenceUtils.setPreference(preference);
 
             PageCaches.removeAll();
