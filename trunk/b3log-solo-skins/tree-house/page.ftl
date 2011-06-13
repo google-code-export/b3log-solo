@@ -84,7 +84,7 @@
                                                         ${commentName1Label}
                                                     </th>
                                                     <td colspan="2">
-                                                        <input class="normalInput" id="commentName"/>
+                                                        <input type="text" class="normalInput" id="commentName"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -92,7 +92,7 @@
                                                         ${commentEmail1Label}
                                                     </th>
                                                     <td colspan="2">
-                                                        <input class="normalInput" id="commentEmail"/>
+                                                        <input type="text" class="normalInput" id="commentEmail"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -103,7 +103,7 @@
                                                         <div id="commentURLLabel">
                                                             http://
                                                         </div>
-                                                        <input id="commentURL"/>
+                                                        <input type="text" id="commentURL"/>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -138,7 +138,7 @@
                                                         ${captcha1Label}
                                                     </th>
                                                     <td valign="top" style="min-width: 190px;">
-                                                        <input class="normalInput" id="commentValidate"/>
+                                                        <input type="text" class="normalInput" id="commentValidate"/>
                                                         <img id="captcha" alt="validate" src="/captcha.do"></img>
                                                     </td>
                                                     <td>
@@ -220,16 +220,16 @@
             var replyTo = function (id) {
                 var commentFormHTML = "<div id='replyForm'><div class='comment-top'></div>"
                     + "<div class='comment-body'><table class='form comment-reply'><tr><th>${commentName1Label}"
-                    + "</th><td colspan='2'><input class='normalInput' id='commentNameReply' value='" + Cookie.readCookie("commentName") + "'/>"
+                    + "</th><td colspan='2'><input type='text' class='normalInput' id='commentNameReply' value='" + Cookie.readCookie("commentName") + "'/>"
                     + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
-                    + "<input class='normalInput' id='commentEmailReply' value='" + Cookie.readCookie("commentEmail") + "'/></td></tr><tr>"
+                    + "<input type='text' class='normalInput' id='commentEmailReply' value='" + Cookie.readCookie("commentEmail") + "'/></td></tr><tr>"
                     + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
-                    + "http://</div><input id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/>"
+                    + "http://</div><input type='text' id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/>"
                     + "</td></tr><tr><td id='emotionsReply' colspan='3'>" + $("#emotions").html()
                     + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
                     + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
                     + "<th valign='top'>${captcha1Label}</th><td valign='top' style='min-width: 190px;'>"
-                    + "<input class='normalInput' id='commentValidateReply'/>&nbsp;"
+                    + "<input type='text' class='normalInput' id='commentValidateReply'/>&nbsp;"
                     + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><td>"
                     + "<span class='error-msg' id='commentErrorTipReply'/>"
                     + "</td></tr><tr><td colspan='3' align='right'>"

@@ -42,7 +42,7 @@
     <tbody>
         <tr>
             <td width="208px">
-                <input class="normalInput" id="commentName"/>
+                <input type="text" class="normalInput" id="commentName"/>
             </td>
             <td colspan="2" width="400px">
                 ${commentNameLabel}
@@ -50,7 +50,7 @@
         </tr>
         <tr>
             <td>
-                <input class="normalInput" id="commentEmail"/>
+                <input type="text" class="normalInput" id="commentEmail"/>
             </td>
             <td colspan="2">
                 ${commentEmailLabel}
@@ -61,7 +61,7 @@
                 <div id="commentURLLabel">
                     http://
                 </div>
-                <input id="commentURL"/>
+                <input type="text" id="commentURL"/>
             </td>
             <td colspan="2">
                 ${commentURLLabel}
@@ -79,7 +79,7 @@
         </tr>
         <tr>
             <td>
-                <input class="normalInput" id="commentValidate"/>
+                <input type="text" class="normalInput" id="commentValidate"/>
             </td>
             <td>
                 <img id="captcha" alt="validate" src="/captcha.do"></img>

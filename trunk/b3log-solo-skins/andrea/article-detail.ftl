@@ -316,7 +316,7 @@
                         <th>${commentURLLabel}</th>\
                         <td colspan='2'>\
                             <div id='commentURLLabelReply'>http://</div>\
-                            <input id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/>\
+                            <input type='text' id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/>\
                         </td>\
                     </tr>\
                     <tr>\
@@ -338,7 +338,7 @@
                             ${captchaLabel}\
                         </th>\
                         <td>\
-                            <input class='normalInput' id='commentValidateReply'/>\
+                            <input type='text' class='normalInput' id='commentValidateReply'/>\
                             <img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img>\
                         </td>\
                         <th width='262px'>\

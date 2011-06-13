@@ -78,7 +78,7 @@
                             <tbody>
                                 <tr>
                                     <td width="208px">
-                                        <input class="normalInput" id="commentName"/>
+                                        <input type="text" class="normalInput" id="commentName"/>
                                     </td>
                                     <td colspan="2" width="400px">
                                         ${commentNameLabel}
@@ -86,7 +86,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="normalInput" id="commentEmail"/>
+                                        <input type="text" class="normalInput" id="commentEmail"/>
                                     </td>
                                     <td colspan="2">
                                         ${commentEmailLabel}
@@ -97,7 +97,7 @@
                                         <div id="commentURLLabel">
                                             http://
                                         </div>
-                                        <input id="commentURL"/>
+                                        <input type="text" id="commentURL"/>
                                     </td>
                                     <td colspan="2">
                                         ${commentURLLabel}
@@ -115,7 +115,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input class="normalInput" id="commentValidate"/>
+                                        <input type="text" class="normalInput" id="commentValidate"/>
                                     </td>
                                     <td>
                                         <img id="captcha" alt="validate" src="/captcha.do"></img>
@@ -191,14 +191,14 @@
 
             var replyTo = function (id) {
                 var commentFormHTML = "<table class='marginTop12 comment-form' id='replyForm'><tbody><tr>"
-                    + "<td width='208px'><input class='normalInput' id='commentNameReply' value='" + Cookie.readCookie("commentName") + "'/>"
+                    + "<td width='208px'><input type='text' class='normalInput' id='commentNameReply' value='" + Cookie.readCookie("commentName") + "'/>"
                     + "</td><td colspan='2' width='400px'>${commentNameLabel}</td></tr><tr><td>"
-                    + "<input class='normalInput' id='commentEmailReply' value='" + Cookie.readCookie("commentEmail") + "'/></td><td colspan='2'>${commentEmailLabel}</td></tr><tr>"
-                    + "<td><div id='commentURLLabelReply'>http://</div><input id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/>"
+                    + "<input type='text' class='normalInput' id='commentEmailReply' value='" + Cookie.readCookie("commentEmail") + "'/></td><td colspan='2'>${commentEmailLabel}</td></tr><tr>"
+                    + "<td><div id='commentURLLabelReply'>http://</div><input type='text' id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/>"
                     + "</td><td colspan='2'>${commentURLLabel}</td></tr><tr><td id='emotionsReply' colspan='3'>"
                     + $("#emotions").html() + "</td></tr><tr><td colspan='3'>"
                     + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                    + "<td><input class='normalInput' id='commentValidateReply'/>"
+                    + "<td><input type='text' class='normalInput' id='commentValidateReply'/>"
                     + "</td><td><img id='captchaReply' alt='validate' src='/captcha.do?"
                     + new Date().getTime() + "'></img></td><th align='right'>"
                     + "<span class='error-msg' id='commentErrorTipReply'/>"

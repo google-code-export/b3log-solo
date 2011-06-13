@@ -163,7 +163,7 @@
         <!-- comment submit and rss -->
         <div id="submitbox">
             <div style="float:left;">
-                <input style="vertical-align:top;" tabindex="4" size="24" maxlength="4" value="" class="textfield" id="commentValidate" name="captcha" gtbfieldid="9">
+                <input type="text" style="vertical-align:top;" tabindex="4" size="24" maxlength="4" value="" class="textfield" id="commentValidate" name="captcha" gtbfieldid="9">
                 <img id="captcha" alt="validate" src="/captcha.do" onclick="changeCaptcha();"/>
             </div>
             <span style="line-height:22px;margin-right: 15px;color:red;" id="commitStatus">
