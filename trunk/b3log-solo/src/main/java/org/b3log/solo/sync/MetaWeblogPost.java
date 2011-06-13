@@ -78,14 +78,14 @@ public final class MetaWeblogPost implements Post {
     private static final int MAX_ABSTRACT_LENGTH = 300;
 
     /**
-     * Constructs a {@link AbstractMetaWeblogPost} object.
+     * Constructs a {@link MetaWeblogPost} object.
      */
     public MetaWeblogPost() {
         categories = new HashSet<String>();
     }
 
     /**
-     * Constructs a {@link AbstractMetaWeblogPost} object from the specified
+     * Constructs a {@link MetaWeblogPost} object from the specified
      * json object.
      *
      * @param jsonObject the specified json object, for example,
