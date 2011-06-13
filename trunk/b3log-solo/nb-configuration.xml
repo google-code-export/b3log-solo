@@ -17,6 +17,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>ftl</word>
         <word>Gmail</word>
         <word>http</word>
+        <word>Jabsorb</word>
         <word>json</word>
         <word>memcache</word>
         <word>permalink</word>
@@ -30,5 +31,6 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>servlet</word>
         <word>servlets</word>
         <word>Upgrader</word>
+        <word>Upgraders</word>
     </spellchecker-wordlist>
 </project-shared-configuration>

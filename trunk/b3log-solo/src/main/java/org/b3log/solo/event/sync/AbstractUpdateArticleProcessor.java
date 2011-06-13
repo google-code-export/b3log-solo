@@ -71,7 +71,7 @@ public abstract class AbstractUpdateArticleProcessor
     private Users userUtils = Users.getInstance();
 
     /**
-     * Constructs a {@link BlogSyncMgmtUpdateArticleProcessor} object with the
+     * Constructs a {@link AbstractUpdateArticleProcessor} object with the
      * specified event manager.
      *
      * @param eventManager the specified event manager
