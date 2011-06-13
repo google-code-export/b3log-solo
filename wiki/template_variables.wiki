@@ -7,7 +7,7 @@
 ----
 *公共的模板变量*
  <table border="1">
-  <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th>
+  <tr><th>变量名</th><th>类型</th><th>说明</th><th width="210">备注</th>
   </tr>
   <tr><td>localeString</td><td>String</td><td>区域设定字符串</td><td>值如："zh_CN"</td></tr>
   <tr><td>blogTitle</td><td>String</td><td>博客标题</td><td></td></tr>
