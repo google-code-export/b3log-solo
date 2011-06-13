@@ -112,11 +112,11 @@ public final class Common {
      */
     public static final String HAS_UPDATED = "hasUpdated";
     /**
-     * Left part name(for skin {@value valentine}).
+     * Left part name(for skin "valentine").
      */
     public static final String LEFT_PART_NAME = "_l";
     /**
-     * Right part name(for skin {@value valentine}).
+     * Right part name(for skin "valentine").
      */
     public static final String RIGHT_PART_NAME = "_r";
     /**
