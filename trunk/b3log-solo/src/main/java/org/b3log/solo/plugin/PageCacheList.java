@@ -36,8 +36,8 @@ public final class PageCacheList extends AbstractPlugin {
 
     @Override
     public void plug(final Map<String, Object> dataModel) {
+        dataModel.put("TEST", ">>>>");
         super.plug(dataModel);
-        
     }
 
     @Override
