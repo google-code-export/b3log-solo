@@ -38,7 +38,7 @@ button:hover,.button:hover{border-color:#BBB;}
 .form input:focus,.form textarea:focus{border:2px solid #73A6FF;}
 .form input[type='checkbox']:focus{border:0px;}
 .form input{height:24px;line-height:24px;}
-.form .normalInput{width:auto;}
+.form input.normalInput{width:auto;}
 #admin span{cursor:pointer;}
 #top{font-family: Arial,Verdana,sans-serif;border-bottom:1px solid #C9D7F1;padding:0 3px;background-color:#FFF;line-height: 20px;}
 .logo{float:left;width:100px;outline:none;}
