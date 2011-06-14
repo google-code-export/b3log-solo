@@ -56,4 +56,21 @@
   <tr><td>relevantArticles</td><td>List`<`JSONObject`>`</td><td>相关文章列表</td><td></td></tr>
  </table>
 
-TBD
+*page.ftl*
+ <table border="1">
+  <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
+  <tr><td>page</td><td>JSONObject</td><td>自定义页面对象</td><td></td></tr>
+  <tr><td>pageComments</td><td>List`<`JSONObject`>`</td><td>自定义页面评论列表</td><td></td></tr>
+ </table>
+
+*tag-articles.ftl*
+ <table border="1">
+  <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
+  <tr><td>tag</td><td>JSONObject</td><td>标签对象</td><td></td></tr>
+ </table>
+
+*tags.ftl*
+ <table border="1">
+  <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
+  <tr><td>tags</td><td>List`<`JSONObject`>`</td><td>标签列表</td><td></td></tr>
+ </table>
