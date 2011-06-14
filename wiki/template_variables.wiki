@@ -7,35 +7,34 @@
 ----
 *公共的模板变量*
  <table border="1">
-  <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th>
-  </tr>
-  <tr><td>localeString</td><td>String</td><td>区域设定字符串</td><td>值如："zh_CN"</td></tr>
+  <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
+  <tr><td>actionName</td><td>String</td><td>Action 名</td><td>当前页面的 pathname </td></tr>
+  <tr><td>archiveDates</td><td>List`<`JSONObject`>`</td><td>存档日期列表</td><td></td></tr>
+  <tr><td>articles</td><td>List`<`JSONObject`>`</td><td>存档文章列表</td><td></td></tr>
   <tr><td>blogTitle</td><td>String</td><td>博客标题</td><td></td></tr>
-  <tr><td>year</td><td>String</td><td>当前年份</td><td></td></tr>
+  <tr><td>blogHost</td><td>String</td><td>博客地址</td><td>值如："vanessa.b3log.org:80"</td></tr>
   <tr><td>blogSubtitle</td><td>String</td><td>博客子标题</td><td></td></tr>
   <tr><td>htmlHead</td><td>String</td><td>用户自定义的 HTML Head</td><td></td></tr>
+  <tr><td>links</td><td>List`<`JSONObject`>`</td><td>链接列表</td><td></td></tr>
+  <tr><td>localeString</td><td>String</td><td>区域设定字符串</td><td>值如："zh_CN"</td></tr>
   <tr><td>metaKeywords</td><td>String</td><td>用户自定义的关键字</td><td></td></tr>
   <tr><td>metaDescription</td><td>String</td><td>用户自定义的描述</td><td></td></tr>
-  <tr><td>users</td><td>List`<`JSONObject`>`</td><td>用户列表</td><td></td></tr>
-  <tr><td>pageNavigations</td><td>List`<`JSONObject`>`</td><td>自定义页面列表</td><td></td></tr>
-  <tr><td>statistic</td><td>JSONObject</td><td>统计信息对象</td><td></td></tr>
-  <tr><td>links</td><td>List`<`JSONObject`>`</td><td>链接列表</td><td></td></tr>
-  <tr><td>recentComments</td><td>List`<`JSONObject`>`</td><td>最新评论列表</td><td></td></tr>
-  <tr><td>mostUsedTags</td><td>List`<`JSONObject`>`</td><td>引用最多的标签列表</td><td></td></tr>
   <tr><td>mostCommentArticles</td><td>List`<`JSONObject`>`</td><td>评论最多的文章列表</td><td></td></tr>
+  <tr><td>mostUsedTags</td><td>List`<`JSONObject`>`</td><td>引用最多的标签列表</td><td></td></tr>
   <tr><td>mostViewCountArticles</td><td>List`<`JSONObject`>`</td><td>访问最多的文章列表</td><td></td></tr>
-  <tr><td>archiveDates</td><td>List`<`JSONObject`>`</td><td>存档日期列表</td><td></td></tr>
   <tr><td>noticeBoard</td><td>String</td><td>用户自定义的公告栏</td><td></td></tr>
-  <tr><td>blogHost</td><td>String</td><td>博客地址</td><td>值如："vanessa.b3log.org:80"</td></tr>
-  <tr><td>version</td><td>String</td><td>当前使用的 B3log Solo 版本</td><td></td></tr>
-  <tr><td>skinDirName</td><td>String</td><td>当前使用的皮肤目录名</td><td></td></tr>
-  <tr><td>paginationPageNums</td><td>List`<`Integer`>`</td><td>文章列表分页页号</td><td></td></tr>
-  <tr><td>paginationPageCount</td><td>Integer</td><td>文章列表页数</td><td></td></tr>
+  <tr><td>oId</td><td>String</td><td>存档日期对象 Id</td><td></td></tr>
+  <tr><td>pageNavigations</td><td>List`<`JSONObject`>`</td><td>自定义页面列表</td><td></td></tr>
   <tr><td>paginationFirstPageNum</td><td>Integer</td><td>文章列表分页第一页页码</td><td></td></tr>
   <tr><td>paginationLastPageNum</td><td>Integer</td><td>文章列表分页最末页页码</td><td></td></tr>
-  <tr><td>actionName</td><td>String</td><td>Action 名</td><td>当前页面的 pathname </td></tr>
-  <tr><td>oId</td><td>String</td><td>存档日期对象 Id</td><td></td></tr>
-  <tr><td>articles</td><td>List`<`JSONObject`>`</td><td>存档文章列表</td><td></td></tr>
+  <tr><td>paginationPageNums</td><td>List`<`Integer`>`</td><td>文章列表分页页号</td><td></td></tr>
+  <tr><td>paginationPageCount</td><td>Integer</td><td>文章列表页数</td><td></td></tr>
+  <tr><td>recentComments</td><td>List`<`JSONObject`>`</td><td>最新评论列表</td><td></td></tr>
+  <tr><td>skinDirName</td><td>String</td><td>当前使用的皮肤目录名</td><td></td></tr>
+  <tr><td>statistic</td><td>JSONObject</td><td>统计信息对象</td><td></td></tr>
+  <tr><td>users</td><td>List`<`JSONObject`>`</td><td>用户列表</td><td></td></tr>
+  <tr><td>version</td><td>String</td><td>当前使用的 B3log Solo 版本</td><td></td></tr>
+  <tr><td>year</td><td>String</td><td>当前年份</td><td></td></tr>
  </table>
 
 *archive-date-articles.ftl*
@@ -49,12 +48,12 @@
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
   <tr><td>article</td><td>JSONObject</td><td>文章对象</td><td></td></tr>
   <tr><td>articleComments</td><td>List`<`JSONObject`>`</td><td>文章评论列表</td><td></td></tr>
-  <tr><td>relevantArticles</td><td>List`<`JSONObject`>`</td><td>相关文章列表</td><td></td></tr>
   <tr><td>externalRelevantArticlesDisplayCount</td><td>Integer</td><td>站外相关文章显示数</td><td></td></tr>
-  <tr><td>previousArticlePermalink</td><td>String</td><td>上一篇文章链接</td><td></td></tr>
-  <tr><td>previousArticleTitle</td><td>String</td><td>上一篇文章标题</td><td></td></tr>
   <tr><td>nextArticlePermalink</td><td>String</td><td>下一篇文章链接</td><td></td></tr>
   <tr><td>nextArticleTitle</td><td>String</td><td>下一篇文章标题</td><td></td></tr>
+  <tr><td>previousArticlePermalink</td><td>String</td><td>上一篇文章链接</td><td></td></tr>
+  <tr><td>previousArticleTitle</td><td>String</td><td>上一篇文章标题</td><td></td></tr>
+  <tr><td>relevantArticles</td><td>List`<`JSONObject`>`</td><td>相关文章列表</td><td></td></tr>
  </table>
 
 TBD
