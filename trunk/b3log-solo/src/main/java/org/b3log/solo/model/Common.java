@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Apr 26, 2011
+ * @version 1.0.2.8, Jun 18, 2011
  */
 public final class Common {
 
@@ -87,7 +87,7 @@ public final class Common {
      * Version.
      */
     public static final String VERSION = "version";
-     /**
+    /**
      * Year.
      */
     public static final String YEAR = "year";

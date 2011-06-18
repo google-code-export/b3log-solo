@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Get articles by author action. author-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Jan 26, 2011
+ * @version 1.0.2.1, Jun 18, 2011
  */
 public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
@@ -91,6 +91,7 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
+        request.setAttribute(CACHED_TYPE, User.USER + "_" + Article.ARTICLES);
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -118,6 +119,10 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
                 return ret;
             }
+
+            request.setAttribute(CACHED_OID, authorId);
+            request.setAttribute(CACHED_TITLE,
+                                 "AuthorArticles[authorId=" + authorId + "]");
 
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
@@ -148,8 +153,9 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-            final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
-                    jsonArrayToList(result.getJSONArray(Keys.RESULTS));
+            final List<JSONObject> articles =
+                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
+                    getJSONArray(Keys.RESULTS));
             filler.putArticleExProperties(articles, preference);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {

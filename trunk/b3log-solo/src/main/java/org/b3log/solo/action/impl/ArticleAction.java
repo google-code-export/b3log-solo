@@ -59,7 +59,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Feb 8, 2011
+ * @version 1.0.2.8, Jun 18, 2011
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -154,6 +154,8 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             }
 
             request.setAttribute(CACHED_OID, articleId);
+            request.setAttribute(CACHED_TITLE,
+                                 article.getString(Article.ARTICLE_TITLE));
             statistics.incArticleViewCount(articleId);
 
             LOGGER.log(Level.FINEST, "Article[title={0}]",
@@ -264,7 +266,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                 preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
         final String[] tagTitles = articleTagsString.split(",");
         final int maxTagCnt = displayCnt > tagTitles.length
-                ? tagTitles.length : displayCnt;
+                              ? tagTitles.length : displayCnt;
         final List<JSONObject> articles = new ArrayList<JSONObject>();
         for (int i = 0; i < maxTagCnt; i++) {  // XXX: should average by tag?
             final String tagTitle = tagTitles[i];
@@ -276,7 +278,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     result.getJSONArray(Keys.RESULTS);
 
             final int relationSize = displayCnt < tagArticleRelations.length()
-                    ? displayCnt : tagArticleRelations.length();
+                                     ? displayCnt : tagArticleRelations.length();
             for (int j = 0; j < relationSize; j++) {
                 final JSONObject tagArticleRelation =
                         tagArticleRelations.getJSONObject(j);

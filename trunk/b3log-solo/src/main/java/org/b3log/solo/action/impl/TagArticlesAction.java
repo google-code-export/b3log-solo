@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Mar 2, 2011
+ * @version 1.0.2.2, Jun 18, 2011
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -107,6 +107,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
+        request.setAttribute(CACHED_TYPE, Tag.TAG);
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         JSONObject tag = null;
@@ -139,6 +140,8 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
                 return ret;
             }
+            request.setAttribute(CACHED_OID, tagId);
+            request.setAttribute(CACHED_TITLE, Tag.TAG + "[tagId=" + tagId + "]");
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
@@ -165,7 +168,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                     Pagination.PAGINATION_PAGE_COUNT);
             final JSONArray tagArticleRelations =
                     result.getJSONArray(Keys.RESULTS);
-            LOGGER.info("~~~~: " + tagArticleRelations.length());
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation =

@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Jan 26, 2011
+ * @version 1.0.1.4, Jun 18, 2011
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -108,6 +108,9 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
+        request.setAttribute(CACHED_TYPE,
+                             ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLES);
+
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -141,6 +144,10 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final JSONObject result =
                     archiveDateArticleRepository.getByArchiveDateId(
                     archiveDateId, currentPageNum, pageSize);
+            request.setAttribute(CACHED_OID, archiveDateId);
+            request.setAttribute(CACHED_TITLE,
+                                 "ArchiveDateArticles[archiveDateId="
+                                 + archiveDateId + "]");
             final int pageCount = result.getJSONObject(
                     Pagination.PAGINATION).getInt(
                     Pagination.PAGINATION_PAGE_COUNT);

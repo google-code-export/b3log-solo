@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Page action. page.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 26, 2011
+ * @version 1.0.0.6, Jun 18, 2011
  */
 public final class PageAction extends AbstractCacheablePageAction {
 
@@ -83,6 +83,7 @@ public final class PageAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
+        request.setAttribute(CACHED_TYPE, Page.PAGE);
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -116,6 +117,15 @@ public final class PageAction extends AbstractCacheablePageAction {
             }
 
             final JSONObject page = pageRepository.get(pageId);
+            if (null == page) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            }
+            request.setAttribute(CACHED_OID, pageId);
+            request.setAttribute(CACHED_TITLE,
+                                 Page.PAGE + "[pageId=" + pageId + "]");
+
             ret.put(Page.PAGE, page);
             final List<JSONObject> comments = pageUtils.getComments(pageId);
             ret.put(Page.PAGE_COMMENTS_REF, comments);

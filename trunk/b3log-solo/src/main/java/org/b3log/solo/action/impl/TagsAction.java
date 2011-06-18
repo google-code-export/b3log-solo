@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Feb 25, 2011
+ * @version 1.0.1.3, Jun 18, 2011
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -87,6 +87,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
+        request.setAttribute(CACHED_TYPE, Tag.TAG);
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -95,6 +96,8 @@ public final class TagsAction extends AbstractCacheablePageAction {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
+            request.setAttribute(CACHED_OID, "No id");
+            request.setAttribute(CACHED_TITLE, Tag.TAGS);
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
@@ -112,7 +115,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
                     CollectionUtils.jsonArrayToList(tagArray);
             tagUtils.removeForUnpublishedArticles(tags);
             Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
-            
+
             ret.put(Tag.TAGS, tags);
 
             filler.fillSide(ret, preference);
@@ -142,7 +145,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
     }
 
     @Override
-    protected String getPageName(final String requestURI){
+    protected String getPageName(final String requestURI) {
         return "tags.ftl";
     }
 }
