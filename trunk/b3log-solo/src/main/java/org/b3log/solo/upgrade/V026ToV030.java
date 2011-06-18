@@ -74,13 +74,12 @@ public final class V026ToV030 extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
+        final PrintWriter writer = response.getWriter();
         if ("0.2.6".equals(SoloServletListener.VERSION)) {
             LOGGER.info("Checking for consistency....");
 
             upgradePreference();
 
-
-            final PrintWriter writer = response.getWriter();
             final String upgraded =
                     "Upgraded from v026 to v030 successfully :-)";
             LOGGER.info(upgraded);
@@ -89,6 +88,13 @@ public final class V026ToV030 extends HttpServlet {
             writer.close();
 
             LOGGER.info("Checked for consistency");
+        } else {
+            final String ignored =
+                    "Ignored upgrade to v030, caused by the old version is NOT v026!";
+            LOGGER.info(ignored);
+            writer.print(ignored);
+
+            writer.close();
         }
 
         PageCaches.removeAll();
