@@ -8,6 +8,7 @@ Without this configuration present, some functionality in the IDE may be limited
 -->
     <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
         <word>Admin</word>
+        <word>app</word>
         <word>blog</word>
         <word>blogging</word>
         <word>captcha</word>
@@ -30,6 +31,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>plugins</word>
         <word>servlet</word>
         <word>servlets</word>
+        <word>tencent</word>
         <word>Upgrader</word>
         <word>Upgraders</word>
     </spellchecker-wordlist>

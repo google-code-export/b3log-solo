@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Feb 26, 2011
+ * @version 1.0.2.1, Jun 18, 2011
  */
 public final class Preference {
 
@@ -177,6 +177,10 @@ public final class Preference {
      * Key of key of Solo.
      */
     public static final String KEY_OF_SOLO = "keyOfSolo";
+    /**
+     * Key of page cache enabled.
+     */
+    public static final String PAGE_CACHE_ENABLED = "pageCacheEnabled";
 
     /**
      * Private default constructor.
@@ -295,6 +299,10 @@ public final class Preference {
          * Default signs.
          */
         public static final String DEFAULT_SIGNS;
+        /**
+         * Default page cache enabled.
+         */
+        public static final boolean DEFAULT_PAGE_CACHE_ENABLED = true;
 
         static {
             final JSONArray signs = new JSONArray();
