@@ -41,7 +41,7 @@ $.extend(AdminUtil.prototype, {
                     $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
                 } else {
                     switch (tabs[i]) {
-                        case "others":
+                        case "cache-list":
                             getCacheState();
                             break;
                         case "article-list":
@@ -49,9 +49,6 @@ $.extend(AdminUtil.prototype, {
                             break;
                         case "draft-list":
                             getDraftList(1);
-                            break;
-                        case "page":
-                            getPageList(1);
                             break;
                         default:
                             break;
@@ -249,7 +246,7 @@ $.extend(AdminUtil.prototype, {
                             }
                         });
 
-                       that.beforeInitArticle();
+                        that.beforeInitArticle();
                         $("#tipMsg").text(tip.getSuccLabel);
                         break;
                     case "GET_ARTICLE_FAIL_":
