@@ -40,7 +40,7 @@
 .tabs span{padding:6px 12px;cursor:pointer;}
 .tabMain{background-color:#E3E9FF;padding:12px;}
 .tabs span.selected{background-color:#E3E9FF;font-weight:bold;padding:6px 12px;}
-.error-msg{color:#3366CC;}
+.f-blue, .error-msg{color:#3366CC;}
 .signs button{
     margin: 0 12px;
 }
