@@ -1,6 +1,6 @@
 <table width="100%" cellpadding="0" cellspacing="9px" class="form">
     <tr>
-        <th>
+        <th width="123">
             ${title1Label}
         </th>
         <td>
