@@ -74,7 +74,7 @@ public final class PageCacheFilter implements Filter {
         "/admin-preference.do",
         "/admin-article-sync.do",
         "/admin-file-list.do",
-        "/admin-page.do",
+        "/admin-page-list.do",
         "/admin-others.do",
         "/admin-draft-list.do",
         "/admin-user-list.do",

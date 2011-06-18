@@ -1,5 +1,4 @@
-.side{width:173px;}
-#adminMain{overflow-y: scroll;height:100%;position:absolute;width:100%;z-index:1;}
+#adminMain{height:100%;position:absolute;width:100%;z-index:1;}
 #main{background-color:#BCF;padding:6px;min-height:300px;}
 #allPanel{min-width:885px;margin-top:24px;}
 .content{height:100%;background-color:#E3E9FF;min-height:300px;}
@@ -8,9 +7,24 @@
 #comments{height:462px;overflow:auto;}
 #tipMsg, #loadMsg{-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px;background-color:#E5E7EB;font-weight:bold;left:48%;margin:0 auto;padding:2px 0;position:absolute;text-align:center;top:1px;overflow:hidden;z-index:2;}
 #tipMsg{top:25px;}
-#sideNavi li{padding:2px 0 2px 24px;margin-left:0;cursor:pointer;list-style:none;}
-#sideNavi li.hover{background-color:#DDE5FF;}
-#sideNavi li.selected{background-color:#BCF;font-weight:bold;}
+#sideNavi {
+    height: 30px;
+}
+#sideNavi li{
+    float: left;
+    list-style: none outside none;
+    margin-left: 0;
+}
+
+#sideNavi li a {
+    color: #000000;
+    display: block;
+    line-height: 16px;
+    padding: 8px 15px 6px;
+    text-decoration: none;
+}
+#sideNavi a:hover {background-color:#DDE5FF;}
+#sideNavi a.selected {background-color:#BCF;font-weight:bold;}
 #syncBlogType{background-color:#E3E9FF;padding:12px 0 0 12px;}
 #syncSettingPanel{height:236px;padding:12px;}
 #syncSettingPanel fieldset{-moz-border-radius:12px;-webkit-border-radius:12px;border-radius:12px;border:1px solid #A0A0A0;padding:12px;width:411px;}

@@ -33,7 +33,7 @@ $.extend(AdminUtil.prototype, {
 
     changeList: function (it) {
         var tabs = ['article', 'article-list', 'draft-list', 'link-list', 'preference',
-        'article-sync', 'page', 'file-list', 'others', 'user-list', 'cache-list'];
+        'article-sync', 'page-list', 'file-list', 'others', 'user-list', 'cache-list'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i] + "Tab") {
                 if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
@@ -58,10 +58,10 @@ $.extend(AdminUtil.prototype, {
                     }
                 }
                 $("#" + tabs[i] + "Panel").show();
-                $("#" + tabs[i] + "Tab").addClass("selected");
+                $("#" + tabs[i] + "Tab a").addClass("selected");
             } else {
                 $("#" + tabs[i] + "Panel").hide();
-                $("#" + tabs[i] + "Tab").removeClass("selected");
+                $("#" + tabs[i] + "Tab a").removeClass("selected");
             }
         }
     },
@@ -96,7 +96,7 @@ $.extend(AdminUtil.prototype, {
                 alert("Let's kill IE 6!");
                 return;
             }
-        }
+        }       
 
         // Removes functions with the current user role
         if (this.tip.userRole !== "adminRole") {
@@ -115,31 +115,6 @@ $.extend(AdminUtil.prototype, {
                 }, 8000);
             }
         }, 6000);
-
-        // resize
-        var $main = $("#main");
-        var leftWidth = $(".side").width() + parseInt($main.css("padding-left"))
-        + parseInt($main.css("padding-right")) + 17;
-
-        var windowWidth = document.documentElement.clientWidth - leftWidth;
-        if (windowWidth < 700) {
-            windowWidth = 700;
-        }
-        $("#main").css("width", windowWidth);
-        $(window).resize(function () {
-            var windowWidth = document.documentElement.clientWidth - leftWidth;
-            if (windowWidth < 700) {
-                windowWidth = 700;
-            }
-            $("#main").css("width", windowWidth);
-        });
-
-        // sideNavi action
-        $("#sideNavi li").mouseover(function () {
-            $(this).addClass('hover');
-        }).mouseout(function () {
-            $(this).removeClass('hover');
-        });
 
         // Preload article.
         $("#articlePanel").load("admin-article.do",function () {
