@@ -1,7 +1,7 @@
 <div style="color: red;">
-    TTTEEESSSTTT!!!!${testLabel}
-    ${em10Label}
-    ${TEST}
+    <#list pages as page>
+    ${page.pageCacheKey}
+    </#list>
 </div>
 <script type="text/javascript">    
     //alert(1);
