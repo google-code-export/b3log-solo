@@ -65,10 +65,35 @@ $.extend(AdminUtil.prototype, {
             }
         }
     },
+  
+    beforeInitArticle: function () {
+        articleStatus = $("#title").data("articleStatus");
+        // set button status
+        if (articleStatus) {
+            if (articleStatus.isArticle) { 
+                $("#unSubmitArticle").show();
+                $("#submitArticle").hide();
+            } else {
+                $("#submitArticle").show();
+                $("#unSubmitArticle").hide();
+            }
+            if (articleStatus.articleHadBeenPublished) {
+                $("#postToCommunityTR").hide();
+            } else {
+                $("#postToCommunityTR").show();
+            }
+        } else {
+            $("#submitArticle").show();
+            $("#unSubmitArticle").hide();
+            $("#postToCommunityTR").show();
+        }
 
+        $("#postToCommunity").attr("checked", "checked");
+    },
+    
     clearArticle: function () {
         $("#title").removeData("articleStatus").val("");
-        beforeInitArticle();
+        this.beforeInitArticle();
         if (tinyMCE.get("articleContent")) {
             tinyMCE.get('articleContent').setContent("");
         } else {
@@ -91,6 +116,7 @@ $.extend(AdminUtil.prototype, {
     },
 
     init: function () {
+        // judge browser
         if ($.browser.msie) {
             if ($.browser.version === "6.0") {
                 alert("Let's kill IE 6!");
@@ -116,37 +142,43 @@ $.extend(AdminUtil.prototype, {
             }
         }, 6000);
 
-        // Preload article.
-        $("#articlePanel").load("admin-article.do",function () {
-            $("#loadMsg").text("");
-            // Inits Signs.
-            jsonRpc.preferenceService.getSigns(function (result, error) {
-                try {
-                    $(".signs button").each(function (i) {
-                        // Sets signs.
-                        if (i === result.length) {
-                            $("#articleSign0").addClass("selected");
-                        } else {
-                            $("#articleSign" + result[i].oId).tip({
-                                content: result[i].signHTML === "" ? "该签名档为空" : result[i].signHTML,
-                                position: "top"
-                            });
-                        }
-
-                        // Binds checkbox event.
-                        $(this).click(function () {
-                            if (this.className !== "selected") {
-                                $(".signs button").each(function () {
-                                    this.className = "";
+        var hash = window.location.hash;
+        if (hash !== "") {
+            // set current tab
+            this.changeList(document.getElementById(hash.substr(1, hash.length - 1) + "Tab"));
+        } else {
+            // Preload article.
+            $("#articlePanel").load("admin-article.do",function () {
+                $("#loadMsg").text("");
+                // Inits Signs.
+                jsonRpc.preferenceService.getSigns(function (result, error) {
+                    try {
+                        $(".signs button").each(function (i) {
+                            // Sets signs.
+                            if (i === result.length) {
+                                $("#articleSign0").addClass("selected");
+                            } else {
+                                $("#articleSign" + result[i].oId).tip({
+                                    content: result[i].signHTML === "" ? "该签名档为空" : result[i].signHTML,
+                                    position: "top"
                                 });
-                                this.className = "selected";
                             }
+
+                            // Binds checkbox event.
+                            $(this).click(function () {
+                                if (this.className !== "selected") {
+                                    $(".signs button").each(function () {
+                                        this.className = "";
+                                    });
+                                    this.className = "selected";
+                                }
+                            });
                         });
-                    });
-                } catch(e) {
-                }
+                    } catch(e) {
+                    }
+                });
             });
-        });
+        }
     },
 
     // others
@@ -167,7 +199,8 @@ $.extend(AdminUtil.prototype, {
 
     // article list and draft list
     updateArticle: function (event, isArticle) {
-        var tip = this.tip;
+        var tip = this.tip,
+        that = this;
         $("#loadMsg").text(tip.loadingLabel);
         this.changeList(document.getElementById("articleTab"));
         var requestJSONObject = {
@@ -216,7 +249,7 @@ $.extend(AdminUtil.prototype, {
                             }
                         });
 
-                        beforeInitArticle();
+                       that.beforeInitArticle();
                         $("#tipMsg").text(tip.getSuccLabel);
                         break;
                     case "GET_ARTICLE_FAIL_":

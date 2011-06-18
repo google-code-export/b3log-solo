@@ -86,33 +86,8 @@
         }, {oId: articleStatus.oId});
     }
     
-    var beforeInitArticle = function () {
-        articleStatus = $("#title").data("articleStatus");
-        // set button status
-        if (articleStatus) {
-            if (articleStatus.isArticle) { 
-                $("#unSubmitArticle").show();
-                $("#submitArticle").hide();
-            } else {
-                $("#submitArticle").show();
-                $("#unSubmitArticle").hide();
-            }
-            if (articleStatus.articleHadBeenPublished) {
-                $("#postToCommunityTR").hide();
-            } else {
-                $("#postToCommunityTR").show();
-            }
-        } else {
-            $("#submitArticle").show();
-            $("#unSubmitArticle").hide();
-            $("#postToCommunityTR").show();
-        }
-
-        $("#postToCommunity").attr("checked", "checked");
-    }
-    
     var initArticle = function () {
-        beforeInitArticle();
+        adminUtil.beforeInitArticle();
 
         // tag auto completed
         jsonRpc.tagService.getTags(function (result, error) {
