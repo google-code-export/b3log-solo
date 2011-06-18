@@ -574,7 +574,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                        e.getMessage());
             throw new ActionException(e);
         }
-        
+
         PageCaches.removeAll();
     }
 
@@ -780,50 +780,51 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         final JSONObject ret = new JSONObject();
 
         final String preferenceId = PREFERENCE;
-        ret.put(NOTICE_BOARD, Preference.Default.DEFAULT_NOTICE_BOARD);
+        ret.put(NOTICE_BOARD, Default.DEFAULT_NOTICE_BOARD);
         ret.put(META_DESCRIPTION,
-                Preference.Default.DEFAULT_META_DESCRIPTION);
-        ret.put(META_KEYWORDS, Preference.Default.DEFAULT_META_KEYWORDS);
-        ret.put(HTML_HEAD, Preference.Default.DEFAULT_HTML_HEAD);
+                Default.DEFAULT_META_DESCRIPTION);
+        ret.put(META_KEYWORDS, Default.DEFAULT_META_KEYWORDS);
+        ret.put(HTML_HEAD, Default.DEFAULT_HTML_HEAD);
         ret.put(ENABLE_POST_TO_BUZZ,
-                Preference.Default.DEFAULT_ENABLE_POST_TO_BUZZ);
+                Default.DEFAULT_ENABLE_POST_TO_BUZZ);
         ret.put(GOOGLE_OAUTH_CONSUMER_SECRET,
-                Preference.Default.DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
+                Default.DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
         ret.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,
-                Preference.Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
+                Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
         ret.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT,
-                Preference.Default.DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT);
+                Default.DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT);
         ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-                Preference.Default.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
+                Default.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
         ret.put(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT,
-                Preference.Default.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
+                Default.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
         ret.put(ARTICLE_LIST_DISPLAY_COUNT,
-                Preference.Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
+                Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
         ret.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
-                Preference.Default.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+                Default.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
         ret.put(MOST_USED_TAG_DISPLAY_CNT,
-                Preference.Default.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
+                Default.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
         ret.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT,
-                Preference.Default.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
+                Default.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
         ret.put(RECENT_ARTICLE_DISPLAY_CNT,
-                Preference.Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
+                Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
         ret.put(RECENT_COMMENT_DISPLAY_CNT,
-                Preference.Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
-        ret.put(BLOG_TITLE, Preference.Default.DEFAULT_BLOG_TITLE);
-        ret.put(BLOG_SUBTITLE, Preference.Default.DEFAULT_BLOG_SUBTITLE);
-        ret.put(BLOG_HOST, Preference.Default.DEFAULT_BLOG_HOST);
+                Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
+        ret.put(BLOG_TITLE, Default.DEFAULT_BLOG_TITLE);
+        ret.put(BLOG_SUBTITLE, Default.DEFAULT_BLOG_SUBTITLE);
+        ret.put(BLOG_HOST, Default.DEFAULT_BLOG_HOST);
         ret.put(ADMIN_EMAIL, // Current logged in adminstrator's email
                 userService.getCurrentUser().getEmail());
         ret.put(LOCALE_STRING,
-                Preference.Default.DEFAULT_LANGUAGE);
+                Default.DEFAULT_LANGUAGE);
         ret.put(ENABLE_ARTICLE_UPDATE_HINT,
-                Preference.Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
+                Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
         ret.put(Preference.CURRENT_VERSION_NUMBER,
                 SoloServletListener.VERSION);
-        ret.put(SIGNS, Preference.Default.DEFAULT_SIGNS);
-        ret.put(TIME_ZONE_ID, Preference.Default.DEFAULT_TIME_ZONE);
+        ret.put(SIGNS, Default.DEFAULT_SIGNS);
+        ret.put(TIME_ZONE_ID, Default.DEFAULT_TIME_ZONE);
+        ret.put(PAGE_CACHE_ENABLED, Default.DEFAULT_PAGE_CACHE_ENABLED);
 
-        final String skinDirName = Preference.Default.DEFAULT_SKIN_DIR_NAME;
+        final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
         ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
         final String skinName = skins.getSkinName(skinDirName);
