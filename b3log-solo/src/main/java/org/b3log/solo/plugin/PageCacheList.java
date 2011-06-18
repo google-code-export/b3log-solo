@@ -16,15 +16,25 @@
 
 package org.b3log.solo.plugin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 import org.b3log.latke.plugin.AbstractPlugin;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.action.util.PageCaches;
+import org.b3log.solo.model.Page;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Page cache list plugin.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jun 12, 2011
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.0.2, Jun 18, 2011
  */
 public final class PageCacheList extends AbstractPlugin {
 
@@ -36,7 +46,21 @@ public final class PageCacheList extends AbstractPlugin {
 
     @Override
     public void plug(final Map<String, Object> dataModel) {
-        dataModel.put("TEST", ">>>>");
+        final List<JSONObject> pages = new ArrayList<JSONObject>();
+        final Set<String> keys = PageCaches.getKeys();
+        for (final String key : keys) {
+            LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
+            try {
+                final JSONObject page = new JSONObject();
+                page.put(Keys.PAGE_CACHE_KEY, key);
+                pages.add(page);
+            } catch (final JSONException ex) {
+                LOGGER.log(Level.SEVERE, "Page cache plug failed", ex);
+            }
+        }
+
+        dataModel.put(Page.PAGES, pages);
+
         super.plug(dataModel);
     }
 
