@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Jun 11, 2011
+ * @version 1.0.2.5, Jun 18, 2011
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -490,7 +490,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *     "cacheHitCount": long,
      *     "cachedBytes": long,
      *     "hitBytes": long,
-     *     "cacheMissCount": long
+     *     "cacheMissCount": long,
+     *     "pageCacheEnabled": boolean
      * }
      * </pre>
      * @throws ActionException action exception
@@ -513,12 +514,18 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         final long cachedBytes = cache.getCachedBytes();
         final long hitBytes = cache.getHitBytes();
 
+
         try {
             ret.put(Cache.CACHE_CACHED_COUNT, cachedCount);
             ret.put(Cache.CACHE_HIT_COUNT, hitCount);
             ret.put(Cache.CACHE_CACHED_BYTES, cachedBytes);
             ret.put(Cache.CACHE_HIT_BYTES, hitBytes);
             ret.put(Cache.CACHE_MISS_COUNT, missCount);
+
+            final JSONObject preference = preferenceUtils.getPreference();
+            final boolean pageCacheEnabled =
+                    preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
+            ret.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Get page cache error: {0}", e.getMessage());
             throw new ActionException(e);

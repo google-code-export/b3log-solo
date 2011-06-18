@@ -346,6 +346,14 @@
         <servlet-name>V021ToV025</servlet-name>
         <url-pattern>/upgrade/v021-v025.do</url-pattern>
     </servlet-mapping>
+        <servlet>
+        <servlet-name>V026ToV030</servlet-name>
+        <servlet-class>org.b3log.solo.upgrade.V026ToV030</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>V026ToV030</servlet-name>
+        <url-pattern>/upgrade/v026-v030.do</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>RestoreSigns</servlet-name>
         <servlet-class>org.b3log.solo.fix.RestoreSigns</servlet-class>
