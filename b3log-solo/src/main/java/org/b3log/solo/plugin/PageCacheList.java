@@ -23,8 +23,9 @@ import java.util.logging.Level;
 import org.b3log.latke.plugin.AbstractPlugin;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.b3log.latke.Keys;
+import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Page;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,8 +52,13 @@ public final class PageCacheList extends AbstractPlugin {
         for (final String key : keys) {
             LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
             try {
+                final JSONObject cachedPage = PageCaches.get(key);
+
                 final JSONObject page = new JSONObject();
-                page.put(Keys.PAGE_CACHE_KEY, key);
+                page.put(Link.LINK, "" + key);
+                page.put(CACHED_TYPE, cachedPage.getString(CACHED_TYPE));
+                page.put(CACHED_TITLE, cachedPage.getString(CACHED_TITLE));
+
                 pages.add(page);
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, "Page cache plug failed", ex);
