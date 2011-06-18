@@ -35,55 +35,44 @@
                 <div class="clear"></div>
             </div>
             <div id="allPanel">
-                <div class="left side">
+                <div>
                     <ul id="sideNavi">
                         <li id="articleTab" onclick="adminUtil.changeList(this);adminUtil.clearArticle();">
-                            <div class="left postIcon"></div>
-                            <span>&nbsp;${postArticleLabel}</span>
+                            <a href="#article"><div class="left postIcon"></div>${postArticleLabel}</a>
                         </li>
                         <li id="article-listTab" onclick="adminUtil.changeList(this);">
-                            <div class="left articlesIcon"></div>
-                            <span>&nbsp;${articleListLabel}</span>
+                            <a href="#article-list"><div class="left articlesIcon"></div>${articleListLabel}</a>
                         </li>
                         <li id="draft-listTab" onclick="adminUtil.changeList(this);">
-                            <div class="left draftsIcon"></div>
-                            <span>&nbsp;${draftListLabel}</span>
+                            <a href="#draft-list"><div class="left draftsIcon"></div>${draftListLabel}</a>
                         </li>
                         <li id="file-listTab" onclick="adminUtil.changeList(this);">
-                            <div class="left fileIcon"></div>
-                            <span>&nbsp;${fileListLabel}</span>
+                            <a href="#file-list"><div class="left fileIcon"></div>${fileListLabel}</a>
                         </li>
-                        <li id="pageTab" onclick="adminUtil.changeList(this);">
-                            <div class="left pageIcon"></div>
-                            <span>&nbsp;${pageMgmtLabel}</span>
+                        <li id="page-listTab" onclick="adminUtil.changeList(this);">
+                            <a href="#page-list"><div class="left pageIcon"></div>${pageMgmtLabel}</a>
                         </li>
                         <li id="link-listTab" onclick="adminUtil.changeList(this);">
-                            <div class="left linkIcon"></div>
-                            <span>&nbsp;${linkManagementLabel}</span>
+                            <a href="#link-list"><div class="left linkIcon"></div>${linkManagementLabel}</a>
                         </li>
                         <li id="article-syncTab" onclick="adminUtil.changeList(this);">
-                            <div class="left blogSyncIcon"></div>
-                            <span>&nbsp;${blogSyncLabel}</span>
+                            <a href="#article-sync"><div class="left blogSyncIcon"></div>${blogSyncLabel}</a>
                         </li>
                         <li id="preferenceTab" onclick="adminUtil.changeList(this);">
-                            <div class="left preferenceIcon"></div>
-                            <span>&nbsp;${preferenceLabel}</span>
+                            <a href="#preference"><div class="left preferenceIcon"></div>${preferenceLabel}</a>
                         </li>
                         <li id="user-listTab" onclick="adminUtil.changeList(this);">
-                            <div class="left usersIcon"></div>
-                            <span>&nbsp;${userManageLabel}</span>
+                            <a href="#user-list"><div class="left usersIcon"></div>${userManageLabel}</a>
                         </li>
                         <li id="cache-listTab" onclick="adminUtil.changeList(this);">
-                            <div class="left cacheIcon"></div>
-                            <span>&nbsp;${cacheMgmtLabel}</span>
+                            <a href="#cache-list"><div class="left cacheIcon"></div>${cacheMgmtLabel}</a>
                         </li>
                         <li id="othersTab" onclick="adminUtil.changeList(this);">
-                            <div class="left othersIcon"></div>
-                            <span>&nbsp;${othersLabel}</span>
+                            <a href="#others"><div class="left othersIcon"></div>${othersLabel}</a>
                         </li>
                     </ul>
                 </div>
-                <div class="left" id="main">
+                <div id="main">
                     <div class="content">
                         <div id="articlePanel" class="none">
                         </div>
@@ -97,7 +86,7 @@
                         </div>
                         <div id="article-syncPanel" class="none">
                         </div>
-                        <div id="pagePanel" class="none">
+                        <div id="page-listPanel" class="none">
                         </div>
                         <div id="file-listPanel" class="none">
                         </div>
@@ -109,7 +98,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="clear"></div>
                 <div class="footer">
                     Powered by
                     <a href="http://b3log-solo.googlecode.com" target="_blank">
