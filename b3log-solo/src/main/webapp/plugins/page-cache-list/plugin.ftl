@@ -1,6 +1,3 @@
-<div class="padding12" style="line-height: 28px;">
-    ${cacheStatusLabel} &nbsp; <button onclick="changeCacheStatus(this);">${enabledLabel}</button>
-</div>
 <div class="table-main">
     <div class="table-header">
         <table cellspacing="0" cellpadding="0" style="width:100%">
@@ -33,13 +30,3 @@
         </table>
     </div>
 </div>
-<script type="text/javascript">    
-    var changeCacheStatus = function (it) {
-        var $it = $(it);
-        if ($it.text() === "${enabledLabel}") {
-            $it.text("${disabledLabel}")
-        } else {
-            $it.text("${enabledLabel}")
-        }
-    }
-</script>
