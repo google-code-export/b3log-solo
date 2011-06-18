@@ -73,6 +73,10 @@
                             <div class="left usersIcon"></div>
                             <span>&nbsp;${userManageLabel}</span>
                         </li>
+                        <li id="cache-listTab" onclick="adminUtil.changeList(this);">
+                            <div class="left cacheIcon"></div>
+                            <span>&nbsp;${cacheMgmtLabel}</span>
+                        </li>
                         <li id="othersTab" onclick="adminUtil.changeList(this);">
                             <div class="left othersIcon"></div>
                             <span>&nbsp;${othersLabel}</span>
@@ -96,6 +100,8 @@
                         <div id="pagePanel" class="none">
                         </div>
                         <div id="file-listPanel" class="none">
+                        </div>
+                        <div id="cache-listPanel" class="none">
                         </div>
                         <div id="othersPanel" class="none">
                         </div>
