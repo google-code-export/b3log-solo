@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Error action. error.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, May 1, 2011
+ * @version 1.0.0.9, Jun 18, 2011
  */
 public final class ErrorAction extends AbstractAction {
 
@@ -59,10 +59,6 @@ public final class ErrorAction extends AbstractAction {
      * Filler.
      */
     private Filler filler = Filler.getInstance();
-    /**
-     * Preference utilities.
-     */
-    private Preferences preferenceUtils = Preferences.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -72,7 +68,8 @@ public final class ErrorAction extends AbstractAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference =
+                    Preferences.getInstance().getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
