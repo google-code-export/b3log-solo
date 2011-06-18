@@ -5,9 +5,9 @@
         $("#loadMsg").text("${loadingLabel}");
         jsonRpc.adminService.getPageCache(function (result, error) {
             try {
-                var cacheStatusLabel = "${closeLabel}";
+                var cacheStatusLabel = "${disabledLabel}";
                 if (result.pageCacheEnabled) {
-                    cacheStatusLabel = "${openLabel}";
+                    cacheStatusLabel = "${enabledLabel}";
                 }
                 var cacheHTML = "${cachedBytes1Label}<span class='f-blue'> " + result.cacheCachedBytes
                     + " &nbsp; </span>${cachedCount1Label}<span class='f-blue'>" + result.cacheCachedCount
@@ -26,10 +26,10 @@
     
     var changeCacheStatus = function (it) {
         var $it = $(it);
-        if ($it.text() === "${openLabel}") {
-            $it.text("${closeLabel}")
+        if ($it.text() === "${enabledLabel}") {
+            $it.text("${disabledLabel}")
         } else {
-            $it.text("${openLabel}")
+            $it.text("${enabledLabel}")
         }
     }
 </script>
