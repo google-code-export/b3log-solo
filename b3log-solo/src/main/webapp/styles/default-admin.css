@@ -50,3 +50,9 @@
     background-image: none;
     color: #555555;
 }
+
+/* cache list */
+#cacheContent {
+    padding: 12px;
+    line-height: 28px;
+}
