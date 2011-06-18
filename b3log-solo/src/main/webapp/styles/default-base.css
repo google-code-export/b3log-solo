@@ -74,7 +74,7 @@ button:hover,.button:hover{border-color:#BBB;}
 .putTopIcon{background-position:-16px -32px;}
 .notPutTopIcon{background-position:-32px -32px;}
 .othersIcon{background-position:-48px -32px;}
-.cacheIcon{background-position:-80px -32px;}
+.cacheIcon{background-position:-96px -32px;}
 .draftsIcon{background-position:-96px -32px;}
 .usersIcon{background-position:-112px -32px;}
 .goTopIcon{background-position:-64px -32px;top:45%;position:fixed;right:20px;}
