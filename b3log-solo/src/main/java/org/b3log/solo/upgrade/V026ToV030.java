@@ -75,7 +75,7 @@ public final class V026ToV030 extends HttpServlet {
                          final HttpServletResponse response)
             throws ServletException, IOException {
         final PrintWriter writer = response.getWriter();
-        if ("0.2.6".equals(SoloServletListener.VERSION)) {
+        if ("0.3.0".equals(SoloServletListener.VERSION)) {
             LOGGER.info("Checking for consistency....");
 
             upgradePreference();
