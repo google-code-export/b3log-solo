@@ -1,7 +1,7 @@
 <div class="padding12" id="cacheContent">
 </div>
 <script type="text/javascript">    
-    (function () {
+    var getCacheState = function () {
         $("#loadMsg").text("${loadingLabel}");
         jsonRpc.adminService.getPageCache(function (result, error) {
             try {
@@ -15,6 +15,7 @@
                 $("#loadMsg").text("");
             } catch (e) {}
         });
-    })();
+    };
+    getCacheState();
 </script>
 ${plugins}
