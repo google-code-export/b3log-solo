@@ -77,6 +77,7 @@ public final class PageCacheFilter implements Filter {
         "/admin-others.do",
         "/admin-draft-list.do",
         "/admin-user-list.do",
+        "/admin-cache-list.do",
         "/rm-all-data.do",
         "/init.do",
         "/clear-cache.do",
