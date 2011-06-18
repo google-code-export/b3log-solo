@@ -1,5 +1,5 @@
 <div class="padding12" style="line-height: 28px;">
-    ${cacheStatusLabel} &nbsp; <button onclick="changeCacheStatus(this);">${openLabel}</button>
+    ${cacheStatusLabel} &nbsp; <button onclick="changeCacheStatus(this);">${enabledLabel}</button>
 </div>
 <div class="table-main">
     <div class="table-header">
@@ -36,10 +36,10 @@
 <script type="text/javascript">    
     var changeCacheStatus = function (it) {
         var $it = $(it);
-        if ($it.text() === "${openLabel}") {
-            $it.text("${closeLabel}")
+        if ($it.text() === "${enabledLabel}") {
+            $it.text("${disabledLabel}")
         } else {
-            $it.text("${openLabel}")
+            $it.text("${enabledLabel}")
         }
     }
 </script>
