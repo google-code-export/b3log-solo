@@ -481,7 +481,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * Gets page cache states with the specified http servlet request and http
      * servlet response.
      *
-     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
      * <pre>
@@ -497,8 +496,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject getPageCache(final HttpServletRequest request,
-                                   final HttpServletResponse response)
+    public JSONObject getPageCache(final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
@@ -527,11 +525,55 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                     preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
             ret.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Get page cache error: {0}", e.getMessage());
+            LOGGER.log(Level.SEVERE, "Gets page cache error: {0}",
+                       e.getMessage());
             throw new ActionException(e);
         }
 
         return ret;
+    }
+
+    /**
+     * Sets page cache states with the specified http servlet response and 
+     * settings.
+     *
+     * @param response the specified http servlet response
+     * @param settings the specified settings, for example,
+     * <pre>
+     * {
+     *     "pageCacheEnabled": boolean,
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public void setPageCache(final HttpServletResponse response,
+                             final JSONObject settings)
+            throws ActionException, IOException {
+        if (!userUtils.isAdminLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final Transaction transaction = userRepository.beginTransaction();
+        try {
+            final boolean pageCacheEnabled =
+                    settings.getBoolean(Preference.PAGE_CACHE_ENABLED);
+
+            final JSONObject preference = preferenceUtils.getPreference();
+            preference.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
+
+            preferenceUtils.setPreference(preference);
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            LOGGER.log(Level.SEVERE, "Sets page cache error: {0}",
+                       e.getMessage());
+            throw new ActionException(e);
+        }
     }
 
     /**
