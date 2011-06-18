@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Index action. index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Jan 26, 2011
+ * @version 1.0.1.1, Jun 18, 2011
  */
 public final class IndexAction extends AbstractCacheablePageAction {
 
@@ -71,6 +71,7 @@ public final class IndexAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
+        request.setAttribute(CACHED_TYPE, "Index");
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -84,6 +85,10 @@ public final class IndexAction extends AbstractCacheablePageAction {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
+
+            request.setAttribute(CACHED_OID, "id?");
+            request.setAttribute(CACHED_TITLE,
+                                 "Index[currentPageNum=" + currentPageNum + "]");
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
