@@ -71,6 +71,6 @@ public final class PageCacheList extends AbstractPlugin {
 
     @Override
     public String getViewName() {
-        return "admin-others.ftl";
+        return "admin-cache-list.ftl";
     }
 }

@@ -33,7 +33,7 @@ $.extend(AdminUtil.prototype, {
 
     changeList: function (it) {
         var tabs = ['article', 'article-list', 'draft-list', 'link-list', 'preference',
-        'article-sync', 'page', 'file-list', 'others', 'user-list'];
+        'article-sync', 'page', 'file-list', 'others', 'user-list', 'cache-list'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i] + "Tab") {
                 if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
