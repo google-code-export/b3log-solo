@@ -566,8 +566,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             preferenceUtils.setPreference(preference);
             
-            // TODO: page cache mgmt issue 134
-            
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {

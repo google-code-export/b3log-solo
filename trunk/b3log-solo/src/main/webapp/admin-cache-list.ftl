@@ -27,9 +27,19 @@
     var changeCacheStatus = function (it) {
         var $it = $(it);
         if ($it.text() === "${enabledLabel}") {
-            $it.text("${disabledLabel}")
+            $it.text("${disabledLabel}");
+            
+            var requestJSONObject = {
+                "pageCacheEnabled": false
+            };
+            jsonRpc.adminService.setPageCache(requestJSONObject);
         } else {
-            $it.text("${enabledLabel}")
+            $it.text("${enabledLabel}");
+            
+            var requestJSONObject = {
+                "pageCacheEnabled": true
+            };
+            jsonRpc.adminService.setPageCache(requestJSONObject);
         }
     }
 </script>

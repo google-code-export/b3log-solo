@@ -41,8 +41,6 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RunsOnEnv;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.plugin.PluginManager;
@@ -77,9 +75,9 @@ import org.b3log.solo.jsonrpc.impl.StatisticService;
 import org.b3log.solo.jsonrpc.impl.TagService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
-import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
@@ -166,6 +164,7 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.info("B3log Solo runs on [production] environment");
         } else {
             LOGGER.info("B3log Solo runs on [development] environment");
+            Latkes.disablePageCache(); // Always disable page cache on dev environment
         }
 
         LOGGER.log(Level.INFO,
@@ -248,11 +247,7 @@ public final class SoloServletListener extends AbstractServletListener {
                     new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
                                           preference));
 
-            preferenceRepository.update(PREFERENCE, preference);
-
-            final Cache<String, Object> userPreferenceCache =
-                    CacheFactory.getCache(PREFERENCE);
-            userPreferenceCache.put(PREFERENCE, preference.toString());
+            Preferences.getInstance().setPreference(preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -265,11 +260,10 @@ public final class SoloServletListener extends AbstractServletListener {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
-
     }
 
     /**
-     * Loads captchas.
+     * Loads captcha.
      */
     private void loadCaptchas() {
         try {
