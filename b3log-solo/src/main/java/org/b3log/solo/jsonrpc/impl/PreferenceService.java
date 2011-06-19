@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, May 2, 2011
+ * @version 1.0.2.8, Jun 19, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -330,13 +330,17 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
             final String timeZoneId = preference.getString(TIME_ZONE_ID);
             timeZoneUtils.setTimeZone(timeZoneId);
-
+            
             preference.put(Preference.SIGNS,
                            preference.getJSONArray(Preference.SIGNS).toString());
 
             final JSONObject oldPreference = preferenceUtils.getPreference();
             final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
             preference.put(ADMIN_EMAIL, adminEmail);
+            
+            final boolean pageCacheEnabled = 
+                    oldPreference.getBoolean(PAGE_CACHE_ENABLED);
+            preference.put(PAGE_CACHE_ENABLED, pageCacheEnabled);
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
@@ -344,6 +348,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             Latkes.setDefaultLocale(new Locale(
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString)));
+            
             preferenceUtils.setPreference(preference);
 
             PageCaches.removeAll();
