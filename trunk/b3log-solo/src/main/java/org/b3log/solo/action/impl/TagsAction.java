@@ -36,6 +36,7 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Preferences;
@@ -48,7 +49,7 @@ import org.json.JSONObject;
  * Tag action. tags.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Jun 18, 2011
+ * @version 1.0.1.4, Jun 19, 2011
  */
 public final class TagsAction extends AbstractCacheablePageAction {
 
@@ -87,7 +88,6 @@ public final class TagsAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
-        request.setAttribute(CACHED_TYPE, Tag.TAG);
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -107,6 +107,8 @@ public final class TagsAction extends AbstractCacheablePageAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+            
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
 
             final JSONObject result = tagRepository.get(new Query());
             final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);

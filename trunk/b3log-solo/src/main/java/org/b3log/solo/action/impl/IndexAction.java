@@ -31,6 +31,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.Preferences;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Index action. index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Jun 18, 2011
+ * @version 1.0.1.2, Jun 19, 2011
  */
 public final class IndexAction extends AbstractCacheablePageAction {
 
@@ -71,7 +72,6 @@ public final class IndexAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
-        request.setAttribute(CACHED_TYPE, "Index");
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -98,6 +98,8 @@ public final class IndexAction extends AbstractCacheablePageAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+            request.setAttribute(CACHED_TYPE,
+                                 langs.get(PageTypes.INDEX_ARTICLES));
 
             if ("valentine".equals(preference.getString(Skin.SKIN_DIR_NAME))) {
                 final int leftCurrentPageNum = queryStringJSONObject.optInt(

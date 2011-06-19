@@ -44,6 +44,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
@@ -58,7 +59,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jun 18, 2011
+ * @version 1.0.2.3, Jun 19, 2011
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -107,7 +108,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
-        request.setAttribute(CACHED_TYPE, Tag.TAG);
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         JSONObject tag = null;
@@ -151,6 +151,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
 
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
