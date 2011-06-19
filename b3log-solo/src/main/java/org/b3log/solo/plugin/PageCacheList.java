@@ -17,6 +17,8 @@
 package org.b3log.solo.plugin;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -64,6 +66,15 @@ public final class PageCacheList extends AbstractPlugin {
                 LOGGER.log(Level.SEVERE, "Page cache plug failed", ex);
             }
         }
+
+        Collections.sort(pages, new Comparator<JSONObject>() {
+
+            @Override
+            public int compare(final JSONObject page1, final JSONObject page2) {
+                return page1.optString(CACHED_TYPE).compareTo(page2.optString(
+                        CACHED_TYPE));
+            }
+        });
 
         dataModel.put(Page.PAGES, pages);
 
