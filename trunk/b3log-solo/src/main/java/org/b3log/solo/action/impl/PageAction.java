@@ -125,7 +125,7 @@ public final class PageAction extends AbstractCacheablePageAction {
             }
             request.setAttribute(CACHED_OID, pageId);
             request.setAttribute(CACHED_TITLE,
-                                 Page.PAGE + "[pageId=" + pageId + "]");
+                                 page.getString(Page.PAGE_TITLE));
 
             ret.put(Page.PAGE, page);
             final List<JSONObject> comments = pageUtils.getComments(pageId);
