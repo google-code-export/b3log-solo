@@ -29,6 +29,6 @@
     * tags.ftl 是在点击了标签墙后
 ----
 ===注意事项===
- # 皮肤修改过程中，id 最好不要进行更改
+ # 皮肤修改过程中，id 最好不要进行更改（如 common-top.ftl 中的 id="admin" ）
  # 部分公用方法被提取到 /js/util.js 和 /js/articleUtil.js 
  # 如有任何疑问请与 [http://vanessa.b3log.org Vanessa] 联系
