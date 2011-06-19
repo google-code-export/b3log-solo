@@ -150,12 +150,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
-            request.setAttribute(CACHED_OID, tagId);
-            request.setAttribute(
-                    CACHED_TITLE,
-                    langs.get(PageTypes.TAG_ARTICLES) + "  [" + langs.get(
-                    "tagLabel") + "=" + tagTitle + "]");
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
 
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
@@ -163,6 +157,14 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+
+            request.setAttribute(CACHED_OID, tagId);
+            request.setAttribute(
+                    CACHED_TITLE,
+                    langs.get(PageTypes.TAG_ARTICLES) + "  ["
+                    + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
+                    + langs.get("tagLabel") + "=" + tagTitle + "]");
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
 
             final JSONObject result =
                     tagArticleRepository.getByTagId(tagId,
