@@ -86,10 +86,6 @@ public final class IndexAction extends AbstractCacheablePageAction {
                 return ret;
             }
 
-            request.setAttribute(CACHED_OID, "id?");
-            request.setAttribute(CACHED_TITLE,
-                                 "Index[currentPageNum=" + currentPageNum + "]");
-
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -98,6 +94,11 @@ public final class IndexAction extends AbstractCacheablePageAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+            request.setAttribute(CACHED_OID, "No id");
+            request.setAttribute(CACHED_TITLE,
+                                 langs.get(PageTypes.INDEX_ARTICLES)
+                                 + "  [" + langs.get("pageNumLabel") + "="
+                                 + currentPageNum + "]");
             request.setAttribute(CACHED_TYPE,
                                  langs.get(PageTypes.INDEX_ARTICLES));
 

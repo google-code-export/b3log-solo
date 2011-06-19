@@ -140,8 +140,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
                 return ret;
             }
-            request.setAttribute(CACHED_OID, tagId);
-            request.setAttribute(CACHED_TITLE, Tag.TAG + "[tagId=" + tagId + "]");
+
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
@@ -151,6 +150,11 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+            request.setAttribute(CACHED_OID, tagId);
+            request.setAttribute(
+                    CACHED_TITLE,
+                    langs.get(PageTypes.TAG_ARTICLES) + "  [" + langs.get(
+                    "tagLabel") + "=" + tagTitle + "]");
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
 
             final int currentPageNum = queryStringJSONObject.optInt(

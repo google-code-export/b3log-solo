@@ -96,8 +96,6 @@ public final class TagsAction extends AbstractCacheablePageAction {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
-            request.setAttribute(CACHED_OID, "No id");
-            request.setAttribute(CACHED_TITLE, Tag.TAGS);
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
@@ -107,7 +105,8 @@ public final class TagsAction extends AbstractCacheablePageAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
-            
+            request.setAttribute(CACHED_OID, "No id");
+            request.setAttribute(CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
 
             final JSONObject result = tagRepository.get(new Query());
