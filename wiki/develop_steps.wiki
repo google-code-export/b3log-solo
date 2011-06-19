@@ -1,16 +1,17 @@
 #summary 开发步骤
 
 ===初始框架===
- # 在 /skins 下新建一个文件夹，命名可任意，系统会自动识别出新增的皮肤文件夹
- # 在新建文件夹中创建 skin.properties 文件
+ # 在 /skins 下新建一个文件夹${myskin}，命名可任意，系统会自动识别出新增的皮肤文件夹。如无特别声明，以下创建的文件或文件夹均位于${myskin}中
+ # 创建 skin.properties 文件
  # skin.properties 给 name 和 memo 赋值
     * name：皮肤名称（此名称会显示在【后台管理-偏好设定-皮肤】中）
     * memo：备注，可记录所仿皮肤的站点或名称等信息
  # 创建 default-index.css 文件，在其中写入该皮肤的外联样式
- # 在新建文件夹中创建 emotions，images，js（有 images 或 js 文件时才需创建） 目录
+ # 创建 emotions，images，js（有 images 或 js 文件时才需创建） 目录
     * emotions：存放该皮肤的评论头像图片，尺寸最佳为24×24，数量最佳为15，命名为 em00.png ~ em14.png
     * images：存放该皮肤所需要使用到的其他图片
     * js：存放 /js 中没有，但该皮肤需要使用到的 js 文件
+ # 
 ----
 ===具体开发===
  # 可参照 /classic 中的 ftl 文件进行创建及相应的修改
