@@ -47,6 +47,7 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Cache;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import static org.b3log.solo.model.Preference.*;
@@ -490,7 +491,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *     "cachedBytes": long,
      *     "hitBytes": long,
      *     "cacheMissCount": long,
-     *     "pageCacheEnabled": boolean
+     *     "pageCacheEnabled": boolean,
+     *     "pageCachedCnt": int
      * }
      * </pre>
      * @throws ActionException action exception
@@ -524,6 +526,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             final boolean pageCacheEnabled =
                     preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
             ret.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
+
+            ret.put(Common.PAGE_CACHED_CNT, PageCaches.getKeys().size());
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Gets page cache error: {0}",
                        e.getMessage());
@@ -565,7 +569,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             preference.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
 
             preferenceUtils.setPreference(preference);
-            
+
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
