@@ -3,11 +3,11 @@
         <table cellspacing="0" cellpadding="0" style="width:100%">
             <tbody>
                 <tr>
-                    <th>
-                        ${titleLabel}
-                    </th>
                     <th width="120">
                         ${typeLabel}
+                    </th>
+                    <th>
+                        ${titleLabel}
                     </th>
                 </tr>
             </tbody>
@@ -18,11 +18,11 @@
             <tbody>
                 <#list pages as page>
                 <tr class="table-oddRow">
-                    <td style="padding-left: 6px;">
-                        <a target="_blank" href="${page.link?substring(5)}">${page.cachedTitle}</a>
-                    </td>
                     <td style="text-align: center;width: 120px">
                         ${page.cachedType}
+                    </td>
+                    <td style="padding-left: 6px;">
+                        <a target="_blank" href="${page.link?substring(5)}">${page.cachedTitle}</a>
                     </td>
                 </tr>
                 </#list>

@@ -37,6 +37,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Link;
@@ -71,7 +72,7 @@ import org.jsoup.Jsoup;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.6, Mar 9, 2011
+ * @version 1.0.3.7, Jun 19, 2011
  */
 public final class Filler {
 
@@ -256,7 +257,7 @@ public final class Filler {
 
             if ("en".equals(language)) {
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
-                        SoloServletListener.EN_MONTHS.get(month));
+                        Dates.EN_MONTHS.get(month));
             } else {
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
             }

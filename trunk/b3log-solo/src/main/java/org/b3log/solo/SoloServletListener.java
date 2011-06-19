@@ -86,7 +86,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.2, Jun 12, 2011
+ * @version 1.0.4.3, Jun 19, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -130,30 +130,11 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final String B3LOG_RHYTHM_ADDRESS =
             "http://b3log-rhythm.appspot.com:80";
-    /**
-     * English month.
-     */
-    public static final Map<String, String> EN_MONTHS =
-            new HashMap<String, String>();
+   
     /**
      * Enter escape.
      */
     public static final String ENTER_ESC = "_esc_enter_88250_";
-
-    static {
-        EN_MONTHS.put("01", "January");
-        EN_MONTHS.put("02", "February");
-        EN_MONTHS.put("03", "March");
-        EN_MONTHS.put("04", "April");
-        EN_MONTHS.put("05", "May");
-        EN_MONTHS.put("06", "June");
-        EN_MONTHS.put("07", "Jule");
-        EN_MONTHS.put("08", "August");
-        EN_MONTHS.put("09", "September");
-        EN_MONTHS.put("10", "October");
-        EN_MONTHS.put("11", "November");
-        EN_MONTHS.put("12", "December");
-    }
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {

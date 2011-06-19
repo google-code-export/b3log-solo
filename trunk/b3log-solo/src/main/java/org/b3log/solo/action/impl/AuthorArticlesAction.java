@@ -109,8 +109,6 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
                     Locales.getCountry(localeString));
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
-            request.setAttribute(CACHED_TYPE,
-                                 langs.get(PageTypes.AUTHOR_ARTICLES));
 
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
@@ -122,10 +120,6 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
                 return ret;
             }
 
-            request.setAttribute(CACHED_OID, authorId);
-            request.setAttribute(CACHED_TITLE,
-                                 "AuthorArticles[authorId=" + authorId + "]");
-
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
             final int pageSize = preference.getInt(
@@ -134,6 +128,17 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final JSONObject author = userRepository.get(authorId);
+
+            request.setAttribute(CACHED_TYPE,
+                                 langs.get(PageTypes.AUTHOR_ARTICLES));
+            request.setAttribute(CACHED_OID, "No id");
+            request.setAttribute(
+                    CACHED_TITLE,
+                    langs.get(PageTypes.AUTHOR_ARTICLES) + "  ["
+                    + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
+                    + langs.get("authorLabel") + "=" + author.getString(
+                    User.USER_NAME) + "]");
+
             final String authorEmail = author.getString(User.USER_EMAIL);
             final JSONObject result =
                     articleRepository.getByAuthorEmail(authorEmail,

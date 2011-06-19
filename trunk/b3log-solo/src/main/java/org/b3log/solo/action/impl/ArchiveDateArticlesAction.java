@@ -39,11 +39,11 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.ArchiveDateRepository;
@@ -126,7 +126,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
 
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
@@ -143,10 +142,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final JSONObject result =
                     archiveDateArticleRepository.getByArchiveDateId(
                     archiveDateId, currentPageNum, pageSize);
-            request.setAttribute(CACHED_OID, archiveDateId);
-            request.setAttribute(CACHED_TITLE,
-                                 "ArchiveDateArticles[archiveDateId="
-                                 + archiveDateId + "]");
+
             final int pageCount = result.getJSONObject(
                     Pagination.PAGINATION).getInt(
                     Pagination.PAGINATION_PAGE_COUNT);
@@ -214,13 +210,23 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final String month = dateStrings[1];
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
             final String language = Locales.getLanguage(localeString);
+            String cachedTitle = null;
             if ("en".equals(language)) {
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
-                                SoloServletListener.EN_MONTHS.get(month));
+                                Dates.EN_MONTHS.get(month));
+                cachedTitle = Dates.EN_MONTHS.get(month) + " " + year;
             } else {
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
+                cachedTitle = year + " " + langs.get("yearLabel") + " "
+                              + month + " " + langs.get("monthLabel");
             }
             ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
+
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
+            request.setAttribute(CACHED_OID, archiveDateId);
+            request.setAttribute(CACHED_TITLE,
+                                 cachedTitle + "  [" + langs.get("pageNumLabel")
+                                 + "=" + currentPageNum + "]");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
