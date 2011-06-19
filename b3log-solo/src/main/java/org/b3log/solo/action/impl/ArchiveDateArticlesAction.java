@@ -45,6 +45,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
@@ -58,7 +59,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Jun 18, 2011
+ * @version 1.0.1.5, Jun 19, 2011
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -108,9 +109,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
-        request.setAttribute(CACHED_TYPE,
-                             ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLES);
-
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -128,6 +126,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
 
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);

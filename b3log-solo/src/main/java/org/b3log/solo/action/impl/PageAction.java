@@ -34,6 +34,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Pages;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * Page action. page.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jun 18, 2011
+ * @version 1.0.0.7, Jun 19, 2011
  */
 public final class PageAction extends AbstractCacheablePageAction {
 
@@ -83,7 +84,6 @@ public final class PageAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
-        request.setAttribute(CACHED_TYPE, Page.PAGE);
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -104,6 +104,7 @@ public final class PageAction extends AbstractCacheablePageAction {
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
 
             String pageId = queryStringJSONObject.optString(Keys.OBJECT_ID);
             if (Strings.isEmptyOrNull(pageId)) {

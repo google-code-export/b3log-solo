@@ -39,6 +39,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  * Get articles by author action. author-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jun 18, 2011
+ * @version 1.0.2.2, Jun 19, 2011
  */
 public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
@@ -91,7 +92,6 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
-        request.setAttribute(CACHED_TYPE, User.USER + "_" + Article.ARTICLES);
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
@@ -109,6 +109,8 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
                     Locales.getCountry(localeString));
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
+            request.setAttribute(CACHED_TYPE,
+                                 langs.get(PageTypes.AUTHOR_ARTICLES));
 
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
