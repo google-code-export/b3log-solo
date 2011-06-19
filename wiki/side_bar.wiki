@@ -22,7 +22,7 @@
      * [mvn Maven2+]
      * [ide IDE]
      * [latke 开发框架]
-   * [skin_dev 皮肤开发]
+   * 皮肤开发
      * [develop_steps 开发步骤]
      * [develop_notes 注意事项]
      * [template_variables 模板变量]
