@@ -5,17 +5,17 @@
         $("#loadMsg").text("${loadingLabel}");
         jsonRpc.adminService.getPageCache(function (result, error) {
             try {
-                var cacheStatus1Label = "${disabledLabel}";
+                var pageCacheStatusLabel = "${disabledLabel}";
                 if (result.pageCacheEnabled) {
-                    cacheStatus1Label = "${enabledLabel}";
+                    pageCacheStatusLabel = "${enabledLabel}";
                 }
                 var cacheHTML = "${cachedBytes1Label}<span class='f-blue'> " + result.cacheCachedBytes
                     + " &nbsp; </span>${cachedCount1Label}<span class='f-blue'>" + result.cacheCachedCount
                     + " &nbsp; </span>${hitCount1Label}<span class='f-blue'>" + result.cacheHitCount
                     + " &nbsp; </span>${hitBytes1Label}<span class='f-blue'>" + result.cacheHitBytes
                     + " &nbsp; </span>${missCount1Label}<span class='f-blue'>" + result.cacheMissCount 
-                    + " &nbsp; </span>${cacheStatus1Label} &nbsp; <button onclick='changeCacheStatus(this);'>" 
-                    + cacheStatus1Label
+                    + " &nbsp; </span>${pageCacheStatus1Label} &nbsp; <button onclick='changeCacheStatus(this);'>" 
+                    + pageCacheStatusLabel
                     + "</button>";
                 $("#cacheContent").html(cacheHTML);
                 $("#loadMsg").text("");
