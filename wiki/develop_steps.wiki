@@ -12,3 +12,8 @@
     * images：存放该皮肤所需要使用到的其他图片
     * js：存放 /js 中没有，但该皮肤需要使用到的 js 文件
  # 可参照 /classic 中的 ftl 文件进行创建及相应的修改
+
+===注意事项===
+ * 皮肤修改过程中，id 最好不要进行更改
+ * 部分公用方法被提取到 /js/util.js 和 /js/articleUtil.js 
+ * 如有任何疑问请与 [http://vanessa.b3log.org Vanessa] 联系
