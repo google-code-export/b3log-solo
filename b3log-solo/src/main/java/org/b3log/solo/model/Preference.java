@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jun 18, 2011
+ * @version 1.0.2.2, Jun 19, 2011
  */
 public final class Preference {
 
@@ -181,7 +181,7 @@ public final class Preference {
      * Key of page cache enabled.
      */
     public static final String PAGE_CACHE_ENABLED = "pageCacheEnabled";
-
+    
     /**
      * Private default constructor.
      */

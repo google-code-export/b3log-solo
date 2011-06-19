@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Latkes;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,10 +31,15 @@ import static org.b3log.solo.model.Preference.*;
  * Preference utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 12, 2011
+ * @version 1.0.0.5, Jan 19, 2011
  */
 public final class Preferences {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(Preferences.class.getName());
     /**
      * Preference cache.
      */
@@ -44,11 +49,6 @@ public final class Preferences {
      */
     private PreferenceRepository preferenceRepository =
             PreferenceGAERepository.getInstance();
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER =
-            Logger.getLogger(Preferences.class.getName());
     /**
      * Skin utilities.
      */
@@ -101,6 +101,14 @@ public final class Preferences {
             throws JSONException, RepositoryException {
         preferenceRepository.update(PREFERENCE, preference);
         userPreferenceCache.put(PREFERENCE, preference.toString());
+
+        if (preference.getBoolean(PAGE_CACHE_ENABLED)) {
+            Latkes.enablePageCache();
+        } else {
+            Latkes.disablePageCache();
+        }
+        
+        LOGGER.log(Level.FINER, "Set preference successfully");
     }
 
     /**
