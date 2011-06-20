@@ -12,7 +12,7 @@
 .dialog-content{margin:12px;overflow:auto;}
 .dialog-close{float:right;cursor:pointer;height:12px;width:12px;background:url("../images/icon.png") no-repeat -51px -16px;}
 .pagination-clear{line-height:0;clear:both;font-size:0;}
-.pagination-pagination span{margin:0 5px 0 4px;display:block;float:left;cursor:pointer;}
+.pagination-pagination span{line-height: 19px;margin:0 5px 0 4px;display:block;float:left;cursor:pointer;}
 .pagination-page, .pagination-nextPage, .pagination-lastPage, .pagination-firstPage, .pagination-prePage, .pagination-prePageHover, .pagination-nextPageHover{color:#4272DB;}
 .pagination-pageCurrent{color:#000;font-weight:bold;}
 .pagination-goInput{width:18px;}
