@@ -9,15 +9,15 @@
                 if (result.pageCacheEnabled) {
                     pageCacheStatusLabel = "${enabledLabel}";
                 }
-                var cacheHTML = "${cachedBytes1Label}<span class='f-blue'> " + result.cacheCachedBytes
+                var cacheHTML = "${pageCachedCnt1Label}<span class='f-blue'>" + result.pageCachedCnt
+                    + " &nbsp; </span>${cachedBytes1Label}<span class='f-blue'> " + result.cacheCachedBytes
                     + " &nbsp; </span>${cachedCount1Label}<span class='f-blue'>" + result.cacheCachedCount
                     + " &nbsp; </span>${hitCount1Label}<span class='f-blue'>" + result.cacheHitCount
                     + " &nbsp; </span>${hitBytes1Label}<span class='f-blue'>" + result.cacheHitBytes
                     + " &nbsp; </span>${missCount1Label}<span class='f-blue'>" + result.cacheMissCount 
-                    + " &nbsp; </span>"
-                    + "<br/><span>${pageCacheStatus1Label} &nbsp; <button onclick='changeCacheStatus(this);'>" 
+                    + " &nbsp; </span>${pageCacheStatus1Label} &nbsp; <button onclick='changeCacheStatus(this);'>" 
                     + pageCacheStatusLabel
-                    + "</button></span> &nbsp;${pageCachedCnt1Label}" + result.pageCachedCnt;
+                    + "</button>";
                 $("#cacheContent").html(cacheHTML);
                 $("#loadMsg").text("");
             } catch (e) {}
