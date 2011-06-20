@@ -855,7 +855,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                     new File(skinPath));
         } catch (final IOException e) {
-            throw new RuntimeException(e);
+        	LOGGER.log(Level.SEVERE, "Loads skins error!", e);
+            throw new IllegalStateException(e);
         }
 
         timeZoneUtils.setTimeZone("Asia/Shanghai");

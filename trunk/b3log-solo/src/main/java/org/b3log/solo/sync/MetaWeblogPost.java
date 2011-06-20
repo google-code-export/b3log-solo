@@ -274,7 +274,7 @@ public final class MetaWeblogPost implements Post {
                     AbstractMetaWeblog.UTC_DATE_FORMAT.format(getCreateDate())));
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
 
         return ret;

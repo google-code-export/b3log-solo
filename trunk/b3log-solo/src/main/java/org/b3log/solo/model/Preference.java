@@ -16,6 +16,9 @@
 
 package org.b3log.solo.model;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.b3log.latke.Keys;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -195,6 +198,11 @@ public final class Preference {
      * @version 1.0.0.8, Jan 2, 2011
      */
     public static final class Default {
+    	/**
+    	 * Logger.
+    	 */
+    	private static final Logger LOGGER = 
+    		Logger.getLogger(Default.class.getName());
 
         /**
          * Default recent article display count.
@@ -322,7 +330,8 @@ public final class Preference {
 
                 DEFAULT_SIGNS = signs.toString();
             } catch (final Exception e) {
-                throw new RuntimeException(e);
+            	LOGGER.log(Level.SEVERE, "Creates sign error!", e);
+                throw new IllegalStateException(e);
             }
         }
 

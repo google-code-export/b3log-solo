@@ -78,7 +78,7 @@ public final class CommentGAERepository extends AbstractGAERepository
     static {
         final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
         if (!runsOnEnv.equals(RunsOnEnv.GAE)) {
-            throw new RuntimeException(
+            throw new IllegalStateException(
                     "GAE repository can only runs on Google App Engine, please "
                     + "check your configuration and make sure "
                     + "Latkes.setRunsOnEnv(RunsOnEnv.GAE) was invoked before "

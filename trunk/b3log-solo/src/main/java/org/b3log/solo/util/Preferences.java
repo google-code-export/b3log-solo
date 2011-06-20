@@ -84,7 +84,7 @@ public final class Preferences {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
 
         return ret;
