@@ -44,7 +44,7 @@ public final class ArticleCreateDateComparator
 
             return date2.compareTo(date1);
         } catch (final Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }

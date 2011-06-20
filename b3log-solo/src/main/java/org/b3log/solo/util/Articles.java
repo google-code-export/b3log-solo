@@ -360,7 +360,7 @@ public final class Articles {
             }
         }
 
-        throw new RuntimeException("Can't load article sign!");
+        throw new IllegalStateException("Can't load article sign!");
     }
 
     /**

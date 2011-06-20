@@ -43,7 +43,7 @@ public final class TagRefCntComparator
 
             return refCnt1.compareTo(refCnt2);
         } catch (final Exception e) {
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }

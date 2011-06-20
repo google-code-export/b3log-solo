@@ -43,7 +43,7 @@ public final class BlogFactory {
         } else if (BlogSync.BLOG_SYNC_BLOGJAVA.equals(externalSysName)) {
             return new BlogJavaBlog();
         } else {
-            throw new RuntimeException("Not supported external blogging system["
+            throw new IllegalArgumentException("Not supported external blogging system["
                                        + externalSysName + "]");
         }
     }

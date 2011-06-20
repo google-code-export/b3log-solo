@@ -86,7 +86,8 @@ public final class Skins {
             Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                     new File(skinPath));
         } catch (final IOException e) {
-            throw new RuntimeException(e);
+        	LOGGER.log(Level.SEVERE, "Loads skins error!", e);
+            throw new IllegalStateException(e);
         }
 
         final String localeString = preference.getString(

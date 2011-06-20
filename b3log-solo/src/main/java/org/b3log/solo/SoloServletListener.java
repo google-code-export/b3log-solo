@@ -232,7 +232,7 @@ public final class SoloServletListener extends AbstractServletListener {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
 
         try {
@@ -282,7 +282,7 @@ public final class SoloServletListener extends AbstractServletListener {
         } catch (final Exception e) {
             LOGGER.severe("Can not load captchs!");
 
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
 
         LOGGER.info("Loaded captch images");
@@ -298,7 +298,7 @@ public final class SoloServletListener extends AbstractServletListener {
             jsonRpcBridge.registerSerializer(new StatusCodesSerializer());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -353,7 +353,7 @@ public final class SoloServletListener extends AbstractServletListener {
             PluginManager.load();
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -407,7 +407,7 @@ public final class SoloServletListener extends AbstractServletListener {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register remote JavaScript service error",
                        e);
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 }
