@@ -33,13 +33,14 @@ public final class PageCacheListService extends AbstractGAEJSONRpcService {
      */
     private static final Logger LOGGER =
             Logger.getLogger(PageCacheListService.class.getName());
+
     /**
      * Test method.
      */
     public void test() {
-    	LOGGER.entering(PageCacheListService.class.getName(), "test()");
+        LOGGER.entering(PageCacheListService.class.getName(), "test()");
     }
-    
+
     /**
      * Gets the {@link PageCacheListService} singleton.
      *
@@ -66,7 +67,8 @@ public final class PageCacheListService extends AbstractGAEJSONRpcService {
         /**
          * Singleton.
          */
-        private static final PageCacheListService SINGLETON = new PageCacheListService();
+        private static final PageCacheListService SINGLETON =
+                new PageCacheListService();
 
         /**
          * Private default constructor.
