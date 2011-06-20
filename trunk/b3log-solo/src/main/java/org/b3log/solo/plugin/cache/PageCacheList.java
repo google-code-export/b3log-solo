@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.b3log.solo.plugin;
+package org.b3log.solo.plugin.cache;
 
 import java.util.ArrayList;
 import java.util.Collections;
