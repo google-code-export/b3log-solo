@@ -318,7 +318,6 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                     final String categoriesString = externalArticle.getString(
                             BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES);
                     final String[] tagTitles = categoriesString.split(",");
-                    @SuppressWarnings(value = "unchecked")
                     final JSONArray tags = tagUtils.tag(tagTitles, soloArticle);
                     articleUtils.addTagArticleRelation(tags, soloArticle);
 
