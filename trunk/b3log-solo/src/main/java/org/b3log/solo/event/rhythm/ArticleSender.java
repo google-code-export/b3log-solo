@@ -46,134 +46,131 @@ import org.json.JSONObject;
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(ArticleSender.class
-			.getName());
-	/**
-	 * URL fetch service.
-	 */
-	private final URLFetchService urlFetchService = URLFetchServiceFactory
-			.getURLFetchService();
-	/**
-	 * Preference utilities.
-	 */
-	private Preferences preferenceUtils = Preferences.getInstance();
-	/**
-	 * URL of adding article to Rhythm.
-	 */
-	private static final URL ADD_ARTICLE_URL;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(ArticleSender.class.getName());
+    /**
+     * URL fetch service.
+     */
+    private final URLFetchService urlFetchService = URLFetchServiceFactory.
+            getURLFetchService();
+    /**
+     * Preference utilities.
+     */
+    private Preferences preferenceUtils = Preferences.getInstance();
+    /**
+     * URL of adding article to Rhythm.
+     */
+    private static final URL ADD_ARTICLE_URL;
 
-	static {
-		try {
-			ADD_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_ADDRESS
-					+ "/add-article.do");
-		} catch (final MalformedURLException e) {
-			LOGGER
-					.log(Level.SEVERE,
-							"Creates remote service address[rhythm add article] error!");
-			throw new IllegalStateException(e);
-		}
-	}
+    static {
+        try {
+            ADD_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_ADDRESS
+                                      + "/add-article.do");
+        } catch (final MalformedURLException e) {
+            LOGGER.log(Level.SEVERE,
+                       "Creates remote service address[rhythm add article] error!");
+            throw new IllegalStateException(e);
+        }
+    }
 
-	/**
-	 * Constructs a {@link ArticleSender} object with the specified event
-	 * manager.
-	 * 
-	 * @param eventManager
-	 *            the specified event manager
-	 */
-	public ArticleSender(final EventManager eventManager) {
-		super(eventManager);
-	}
+    /**
+     * Constructs a {@link ArticleSender} object with the specified event
+     * manager.
+     * 
+     * @param eventManager
+     *            the specified event manager
+     */
+    public ArticleSender(final EventManager eventManager) {
+        super(eventManager);
+    }
 
-	@Override
-	public void action(final Event<JSONObject> event) throws EventException {
-		final JSONObject data = event.getData();
-		LOGGER
-				.log(
-						Level.FINER,
-						"Processing an event[type={0}, data={1}] in listener[className={2}]",
-						new Object[] { event.getType(), data,
-								ArticleSender.class.getName() });
-		try {
-			final JSONObject originalArticle = data
-					.getJSONObject(Article.ARTICLE);
-			if (!originalArticle.optBoolean(Common.POST_TO_COMMUNITY)
-					|| !originalArticle
-							.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-				LOGGER.log(Level.FINER,
-						"Ignores post article[title={0}] to Rhythm",
-						originalArticle.getString(Article.ARTICLE_TITLE));
+    @Override
+    public void action(final Event<JSONObject> event) throws EventException {
+        final JSONObject data = event.getData();
+        LOGGER.log(
+                Level.FINER,
+                "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                new Object[]{event.getType(), data,
+                             ArticleSender.class.getName()});
+        try {
+            final JSONObject originalArticle = data.getJSONObject(
+                    Article.ARTICLE);
+            if (!originalArticle.optBoolean(Common.POST_TO_COMMUNITY)
+                || !originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                LOGGER.log(Level.FINER,
+                           "Ignores post article[title={0}] to Rhythm",
+                           originalArticle.getString(Article.ARTICLE_TITLE));
 
-				return;
-			}
+                return;
+            }
 
-			final JSONObject preference = preferenceUtils.getPreference();
-			if (null == preference) {
-				throw new EventException("Not found preference");
-			}
+            final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                throw new EventException("Not found preference");
+            }
 
-			final String blogHost = preference.getString(Preference.BLOG_HOST)
-					.toLowerCase();
-			if (Preference.Default.DEFAULT_BLOG_HOST.equals(blogHost)
-					|| "localhost".equals(blogHost.split(":")[0].trim())) {
-				LOGGER.log(Level.INFO,
-						"Blog Solo runs on local server, so should not send "
-								+ "this article[oId={0}, title={1}] to Rhythm",
-						new Object[] {
-								originalArticle.getString(Keys.OBJECT_ID),
-								originalArticle
-										.getString(Article.ARTICLE_TITLE) });
-				return;
-			}
+            final String blogHost = preference.getString(Preference.BLOG_HOST).
+                    toLowerCase();
+            if (Preference.Default.DEFAULT_BLOG_HOST.equals(blogHost)
+                || "localhost".equals(blogHost.split(":")[0].trim())) {
+                LOGGER.log(Level.INFO,
+                           "Blog Solo runs on local server, so should not send "
+                           + "this article[oId={0}, title={1}] to Rhythm",
+                           new Object[]{
+                            originalArticle.getString(Keys.OBJECT_ID),
+                            originalArticle.getString(Article.ARTICLE_TITLE)});
+                return;
+            }
 
-			final HTTPRequest httpRequest = new HTTPRequest(ADD_ARTICLE_URL,
-					HTTPMethod.POST);
-			final JSONObject requestJSONObject = new JSONObject();
-			final JSONObject article = new JSONObject();
-			article.put(Keys.OBJECT_ID, originalArticle
-					.getString(Keys.OBJECT_ID));
-			article.put(Article.ARTICLE_TITLE, originalArticle
-					.getString(Article.ARTICLE_TITLE));
-			article.put(Article.ARTICLE_PERMALINK, originalArticle
-					.getString(Article.ARTICLE_PERMALINK));
-			article.put(Article.ARTICLE_TAGS_REF, originalArticle
-					.getString(Article.ARTICLE_TAGS_REF));
-			article.put(Article.ARTICLE_AUTHOR_EMAIL, originalArticle
-					.getString(Article.ARTICLE_AUTHOR_EMAIL));
-			article.put(Article.ARTICLE_CONTENT, originalArticle
-					.getString(Article.ARTICLE_CONTENT));
-			article.put(Article.ARTICLE_CREATE_DATE, ((Date) originalArticle
-					.get(Article.ARTICLE_CREATE_DATE)).getTime());
+            final HTTPRequest httpRequest = new HTTPRequest(ADD_ARTICLE_URL,
+                                                            HTTPMethod.POST);
+            final JSONObject requestJSONObject = new JSONObject();
+            final JSONObject article = new JSONObject();
+            article.put(Keys.OBJECT_ID,
+                        originalArticle.getString(Keys.OBJECT_ID));
+            article.put(Article.ARTICLE_TITLE,
+                        originalArticle.getString(Article.ARTICLE_TITLE));
+            article.put(Article.ARTICLE_PERMALINK,
+                        originalArticle.getString(Article.ARTICLE_PERMALINK));
+            article.put(Article.ARTICLE_TAGS_REF,
+                        originalArticle.getString(Article.ARTICLE_TAGS_REF));
+            article.put(Article.ARTICLE_AUTHOR_EMAIL,
+                        originalArticle.getString(Article.ARTICLE_AUTHOR_EMAIL));
+            article.put(Article.ARTICLE_CONTENT,
+                        originalArticle.getString(Article.ARTICLE_CONTENT));
+            article.put(Article.ARTICLE_CREATE_DATE,
+                        ((Date) originalArticle.get(Article.ARTICLE_CREATE_DATE)).
+                    getTime());
 
-			requestJSONObject.put(Article.ARTICLE, article);
-			requestJSONObject.put(Common.BLOG_VERSION,
-					SoloServletListener.VERSION);
-			requestJSONObject.put(Common.BLOG, "B3log Solo");
-			requestJSONObject.put(Preference.BLOG_TITLE, preference
-					.getString(Preference.BLOG_TITLE));
-			requestJSONObject.put(Preference.BLOG_HOST, blogHost);
-			httpRequest.setPayload(requestJSONObject.toString().getBytes(
-					"UTF-8"));
+            requestJSONObject.put(Article.ARTICLE, article);
+            requestJSONObject.put(Common.BLOG_VERSION,
+                                  SoloServletListener.VERSION);
+            requestJSONObject.put(Common.BLOG, "B3log Solo");
+            requestJSONObject.put(Preference.BLOG_TITLE,
+                                  preference.getString(Preference.BLOG_TITLE));
+            requestJSONObject.put(Preference.BLOG_HOST, blogHost);
+            httpRequest.setPayload(requestJSONObject.toString().getBytes(
+                    "UTF-8"));
 
-			urlFetchService.fetchAsync(httpRequest);
-		} catch (final Exception e) {
-			LOGGER.log(Level.SEVERE, "Sends an article to Rhythm error: {0}", e
-					.getMessage());
-		}
+            urlFetchService.fetchAsync(httpRequest);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Sends an article to Rhythm error: {0}", e.
+                    getMessage());
+        }
 
-		LOGGER.log(Level.FINER, "Sent an article to Rhythm");
-	}
+        LOGGER.log(Level.FINER, "Sent an article to Rhythm");
+    }
 
-	/**
-	 * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
-	 * 
-	 * @return event type
-	 */
-	@Override
-	public String getEventType() {
-		return EventTypes.ADD_ARTICLE;
-	}
+    /**
+     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * 
+     * @return event type
+     */
+    @Override
+    public String getEventType() {
+        return EventTypes.ADD_ARTICLE;
+    }
 }
