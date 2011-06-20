@@ -86,7 +86,7 @@ public final class Skins {
             Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                     new File(skinPath));
         } catch (final IOException e) {
-        	LOGGER.log(Level.SEVERE, "Loads skins error!", e);
+            LOGGER.log(Level.SEVERE, "Loads skins error!", e);
             throw new IllegalStateException(e);
         }
 
@@ -173,8 +173,8 @@ public final class Skins {
 
             return ret.getProperty("name");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Read skin configuration error[msg={0}]", e.
-                    getMessage());
+            LOGGER.log(Level.SEVERE, "Read skin configuration error[msg={0}]",
+                       e.getMessage());
 
             return null;
         }

@@ -184,7 +184,7 @@ public final class Preference {
      * Key of page cache enabled.
      */
     public static final String PAGE_CACHE_ENABLED = "pageCacheEnabled";
-    
+
     /**
      * Private default constructor.
      */
@@ -198,12 +198,12 @@ public final class Preference {
      * @version 1.0.0.8, Jan 2, 2011
      */
     public static final class Default {
-    	/**
-    	 * Logger.
-    	 */
-    	private static final Logger LOGGER = 
-    		Logger.getLogger(Default.class.getName());
 
+        /**
+         * Logger.
+         */
+        private static final Logger LOGGER =
+                Logger.getLogger(Default.class.getName());
         /**
          * Default recent article display count.
          */
@@ -330,7 +330,7 @@ public final class Preference {
 
                 DEFAULT_SIGNS = signs.toString();
             } catch (final Exception e) {
-            	LOGGER.log(Level.SEVERE, "Creates sign error!", e);
+                LOGGER.log(Level.SEVERE, "Creates sign error!", e);
                 throw new IllegalStateException(e);
             }
         }
