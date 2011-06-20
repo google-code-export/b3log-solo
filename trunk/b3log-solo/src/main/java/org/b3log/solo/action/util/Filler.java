@@ -142,7 +142,6 @@ public final class Filler {
      * @param preference the specified preference
      * @throws Exception exception
      */
-    @SuppressWarnings("unchecked")
     public void fillIndexArticles(final Map<String, Object> dataModel,
             final int currentPageNum,
             final JSONObject preference)
@@ -448,7 +447,6 @@ public final class Filler {
      * @param preference the specified preference
      * @throws Exception exception
      */
-    @SuppressWarnings("unchecked")
     public void fillIndexArticlesForValentine(
             final Map<String, Object> dataModel,
             final int leftCurrentPageNum,

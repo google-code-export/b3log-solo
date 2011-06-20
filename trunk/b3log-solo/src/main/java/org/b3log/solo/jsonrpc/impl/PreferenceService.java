@@ -233,7 +233,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    @SuppressWarnings("unchecked")
     public JSONObject updatePreference(final JSONObject requestJSONObject,
                                        final HttpServletRequest request,
                                        final HttpServletResponse response)
