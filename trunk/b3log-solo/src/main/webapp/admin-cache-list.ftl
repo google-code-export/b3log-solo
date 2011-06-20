@@ -1,5 +1,4 @@
-<div id="cacheContent">
-</div>
+<div id="cacheContent"></div>
 <script type="text/javascript">    
     var getCacheState = function () {
         $("#loadMsg").text("${loadingLabel}");
@@ -17,7 +16,7 @@
                     + " &nbsp; </span>${missCount1Label}<span class='f-blue'>" + result.cacheMissCount 
                     + " &nbsp; </span>${pageCacheStatus1Label} &nbsp; <button onclick='changeCacheStatus(this);'>" 
                     + pageCacheStatusLabel
-                    + "</button>";
+                    + "</button>"; 
                 $("#cacheContent").html(cacheHTML);
                 $("#loadMsg").text("");
             } catch (e) {}
