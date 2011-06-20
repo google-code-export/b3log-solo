@@ -158,6 +158,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
         registerRemoteJSServices();
         registerEventProcessor();
+        
+        PluginManager.load();
 
         final PreferenceRepository preferenceRepository =
                 PreferenceGAERepository.getInstance();
@@ -349,8 +351,6 @@ public final class SoloServletListener extends AbstractServletListener {
             new CnBlogsRemoveArticleProcessor(eventManager);
             new CnBlogsUpdateArticleProcessor(eventManager);
             new ViewLoadEventHandler(eventManager);
-
-            PluginManager.load();
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
             throw new IllegalStateException(e);
