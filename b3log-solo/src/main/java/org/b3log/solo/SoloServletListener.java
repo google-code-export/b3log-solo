@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -130,7 +129,15 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final String B3LOG_RHYTHM_ADDRESS =
             "http://b3log-rhythm.appspot.com:80";
-   
+
+    /**
+     * Gets instance replica id.
+     * 
+     * @return instance replica id
+     */
+    public static String getInstanceReplicaId() {
+        return "";
+    }
     /**
      * Enter escape.
      */
@@ -149,16 +156,15 @@ public final class SoloServletListener extends AbstractServletListener {
         }
 
         LOGGER.log(Level.INFO,
-                   "Application[id={0}, version={1}, instanceReplicaId={2}]",
+                   "Application[id={0}, version={1}]",
                    new Object[]{SystemProperty.applicationId.get(),
-                                SystemProperty.applicationVersion.get(),
-                                SystemProperty.instanceReplicaId.get()});
+                                SystemProperty.applicationVersion.get()});
 
         super.contextInitialized(servletContextEvent);
 
         registerRemoteJSServices();
         registerEventProcessor();
-        
+
         PluginManager.load();
 
         final PreferenceRepository preferenceRepository =
