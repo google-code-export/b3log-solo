@@ -90,7 +90,7 @@ public final class PageCacheListService extends AbstractGAEJSONRpcService {
      *         "cachedType": "",
      *         "cachedTitle": "",
      *      }, ....]
-     *     "sc": "GET_ARTICLES_SUCC"
+     *     "sc": boolean
      * }
      * </pre>, order by article update date and sticky(put top).
      * @throws ActionException action exception
