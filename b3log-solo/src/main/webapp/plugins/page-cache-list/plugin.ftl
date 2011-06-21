@@ -26,36 +26,39 @@
             }
         });
         $("#loadMsg").text("");
-        /*jsonRpc.pageCacheListService.getPages(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "GET_USERS_SUCC":
-                            var caches = result.pages;
-                            var cacheData = [];
+        
+        var requestJSONObject = {
+            "paginationCurrentPageNum": pageNum,
+            "paginationPageSize": 5,
+            "paginationWindowSize": 10
+        };
+        jsonRpc.pageCacheListService.getPages(function (result, error) {
+            try {
+                if (result.sc) {
+                    var caches = result.pages;
+                    var cacheData = [];
                     
-                            for (var i = 0; i < caches.length; i++) {
-                                cacheData[i] = {};
-                                cacheData[i].title = caches[i].userName;
-                                cacheData[i].type = caches[i].userEmail;
-                            }
-
-                            $("#cacheList").table("update",{
-                                data: cacheData
-                            });
-
-                            $("#cachePagination").paginate({
-                                update: {
-                                    currentPage: pageNum,
-                                    pageCount: result.pagination.paginationPageCount
-                                }
-                            });
-                            break;
-                        default:
-                            break;
+                    for (var i = 0; i < caches.length; i++) {
+                        cacheData[i] = {};
+                        cacheData[i].link = caches[i].link;
+                        cacheData[i].title = caches[i].cachedTitle;
+                        cacheData[i].type = caches[i].cachedType;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {}
-            }, requestJSONObject);*/
+
+                    $("#cacheList").table("update",{
+                        data: cacheData
+                    });
+
+                    $("#cachePagination").paginate({
+                        update: {
+                            currentPage: pageNum,
+                            pageCount: result.pagination.paginationPageCount
+                        }
+                    });
+                }
+                $("#loadMsg").text("");
+            } catch (e) {}
+        }, requestJSONObject);
     }
         
     var initCache = function () {
