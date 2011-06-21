@@ -130,6 +130,10 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final String B3LOG_RHYTHM_ADDRESS =
             "http://b3log-rhythm.appspot.com:80";
+    /**
+     * Enter escape.
+     */
+    public static final String ENTER_ESC = "_esc_enter_88250_";
 
     /**
      * Gets instance replica id.
@@ -139,10 +143,6 @@ public final class SoloServletListener extends AbstractServletListener {
     public static String getInstanceReplicaId() {
         return "";
     }
-    /**
-     * Enter escape.
-     */
-    public static final String ENTER_ESC = "_esc_enter_88250_";
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
