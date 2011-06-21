@@ -32,6 +32,7 @@
         <url-pattern>/admin-index.do</url-pattern>
         <url-pattern>/admin-article.do</url-pattern>
         <url-pattern>/admin-article-list.do</url-pattern>
+        <url-pattern>/admin-comment-list.do</url-pattern>
         <url-pattern>/admin-link-list.do</url-pattern>
         <url-pattern>/admin-preference.do</url-pattern>
         <url-pattern>/admin-article-sync.do</url-pattern>
@@ -133,6 +134,7 @@
         <servlet-name>AdminDoNothingAction</servlet-name>
         <url-pattern>/admin-article.do</url-pattern>
         <url-pattern>/admin-article-list.do</url-pattern>
+        <url-pattern>/admin-comment-list.do</url-pattern>
         <url-pattern>/admin-link-list.do</url-pattern>
         <url-pattern>/admin-preference.do</url-pattern>
         <url-pattern>/admin-article-sync.do</url-pattern>
