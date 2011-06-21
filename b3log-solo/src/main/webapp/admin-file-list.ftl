@@ -19,7 +19,12 @@
 </div>
 <iframe class="none" id="formActionHidden" name="formActionHidden"></iframe>
 <script type="text/javascript">    
+    var fileListCurrentPage = 1,
+    fileListPageCount = 1,
+    fileListLength = 1;
+    
     var getFileList = function (pageNum) {
+        fileListCurrentPage = pageNum;
         $("#loadMsg").text("${loadingLabel}");
         $("#tipMsg").text("");
         var requestJSONObject = {
@@ -32,6 +37,7 @@
             case "GET_FILES_SUCC":
                 var files = result.files;
                 var fileData = [];
+                fileListLength = files.length;
                 for (var i = 0; i < files.length; i++) {
                     fileData[i] = {};
                     fileData[i].name = "<a href='" + files[i].fileDownloadURL + "'>"
@@ -47,17 +53,18 @@
                     data: [{
                             groupName: "all",
                             groupData: fileData
-                    }]
+                        }]
                 });
-
-                if (0 === result.pagination.paginationPageCount) {
-                    result.pagination.paginationPageCount = 1;
+                if (result.pagination.paginationPageCount === 0) {
+                    fileListPageCount = 1;
+                } else {
+                    fileListPageCount = result.pagination.paginationPageCount;
                 }
                 
                 $("#filePagination").paginate({
                     update: {
                         currentPage: pageNum,
-                        pageCount: result.pagination.paginationPageCount
+                        pageCount: fileListPageCount
                     }
                 });
                 break;
@@ -110,7 +117,13 @@
                                         try {
                                             switch (result.sc) {
                                                 case "REMOVE_FILE_SUCC":
-                                                    getFileList(1);
+                                                    var pageNum = fileListCurrentPage;
+                                                    if (fileListLength === 1 && fileListPageCount !== 1 &&
+                                                        fileListCurrentPage === fileListPageCount) {
+                                                        fileListPageCount--;
+                                                        pageNum = fileListPageCount;
+                                                    }
+                                                    getFileList(pageNum);
                                                     $("#tipMsg").text("${removeSuccLabel}");
                                                     break;
                                                 case "REMOVE_FILE_FAIL_":

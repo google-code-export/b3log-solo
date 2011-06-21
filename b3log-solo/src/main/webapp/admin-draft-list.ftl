@@ -3,6 +3,8 @@
 <div id="draftPagination" class="right margin12">
 </div>
 <div class="clear"></div>
+<div id="draftListComments" class="none">
+</div>
 <script type="text/javascript">
     var draftListCurrentPage = 1;
     var getDraftList = function (pageNum) {
@@ -39,7 +41,7 @@
                             data: [{
                                     groupName: "all",
                                     groupData: articleData
-                            }]
+                                }]
                         });
 
                         if (0 === result.pagination.paginationPageCount) {
@@ -160,12 +162,12 @@
                     bind: [{
                             'type': 'click',
                             'action': function (event, data) {
-                                $("#articleListComments").data("oId", data.id);
-                                getArticleListComment();
-                                $("#articleListComments").dialog({
+                                $("#draftListComments").data("oId", data.id);
+                                getDraftListComment();
+                                $("#draftListComments").dialog({
                                     width: 700,
                                     height:500,
-                                    closeEvent: "closeArticleListDialog()"
+                                    closeEvent: "closeDraftListDialog()"
                                 });
                             }
                         }],
@@ -194,5 +196,61 @@
         getDraftList(1);
     }
     loadDraftList();
+    
+    var closeDraftListDialog = function () {
+        getDraftList(draftListCurrentPage);
+        $("#draftListComments").dialog("close");
+    }
+    
+    var getDraftListComment = function () {
+        $("#loadMsg").text("${loadingLabel}");
+        $("#draftListComments").html("");
+        jsonRpc.commentService.getCommentsOfArticle(function (result, error) {
+            try {
+                switch (result.sc) {
+                    case "GET_COMMENTS_SUCC":
+                        var comments = result.comments,
+                        commentsHTML = '';
+                        for (var i = 0; i < comments.length; i++) {
+                            var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>",
+                            content = comments[i].commentContent;
+                            var ems = content.split("[em");
+                            var contentHTML = ems[0];
+                            for (var j = 1; j < ems.length; j++) {
+                                var key = ems[j].substr(0, 2),
+                                emImgHTML = "<img src='/skins/classic/emotions/em" + key
+                                    + ".png'/>";
+                                contentHTML += emImgHTML + ems[j].slice(3);
+                            }
+                        
+                            if (comments[i].commentURL === "http://") {
+                                hrefHTML = "<a target='_blank'>";
+                            }
+
+                            commentsHTML += "<div class='comment-title'><span class='left'>"
+                                + hrefHTML + comments[i].commentName + "</a>";
+
+                            if (comments[i].commentOriginalCommentName) {
+                                commentsHTML += "@" + comments[i].commentOriginalCommentName;
+                            }
+                            commentsHTML += "</span><span title='${removeLabel}' class='right deleteIcon' onclick=\"deleteArticleListComment('"
+                                + comments[i].oId + "')\"></span><span class='right'><a href='mailto:"
+                                + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
+                                + $.bowknot.getDate(comments[i].commentDate.time, 1)
+                                + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>"
+                                + contentHTML + "</div>";
+                        }
+                        if ("" === commentsHTML) {
+                            commentsHTML = "${noCommentLabel}"
+                        }
+                        $("#draftListComments").html(commentsHTML);
+                        break;
+                    default:
+                        break;
+                };
+                $("#loadMsg").text("");
+            } catch (e) {}
+        }, {"oId": $("#articleListComments").data("oId")});
+    }
 </script>
 ${plugins}
