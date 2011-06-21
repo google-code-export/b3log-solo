@@ -88,7 +88,34 @@
     
     var initArticle = function () {
         adminUtil.clearArticle();
-
+        
+        // Inits Signs.
+        jsonRpc.preferenceService.getSigns(function (result, error) {
+            try {
+                $(".signs button").each(function (i) {
+                    // Sets signs.
+                    if (i === result.length) {
+                        $("#articleSign0").addClass("selected");
+                    } else {
+                        $("#articleSign" + result[i].oId).tip({
+                            content: result[i].signHTML === "" ? "该签名档为空" : result[i].signHTML,
+                            position: "top"
+                        });
+                    }
+                    // Binds checkbox event.
+                    $(this).click(function () {
+                        if (this.className !== "selected") {
+                            $(".signs button").each(function () {
+                                this.className = "";
+                            });
+                            this.className = "selected";
+                        }
+                    });
+                });
+            } catch(e) {
+            }
+        });
+        
         // tag auto completed
         jsonRpc.tagService.getTags(function (result, error) {
             try {
