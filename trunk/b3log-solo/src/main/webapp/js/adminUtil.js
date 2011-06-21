@@ -44,6 +44,9 @@ $.extend(AdminUtil.prototype, {
                         case "cache-list":
                             getCacheState();
                             break;
+                        case "page-list":
+                            getPageList(1);
+                            break;
                         case "article-list":
                             getArticleList(1);
                             break;
@@ -56,6 +59,9 @@ $.extend(AdminUtil.prototype, {
                 }
                 $("#" + tabs[i] + "Panel").show();
                 $("#" + tabs[i] + "Tab a").addClass("selected");
+                if (window.location.hash !== "#" + tabs[i]) {
+                    window.location.hash = "#" + tabs[i];
+                }
             } else {
                 $("#" + tabs[i] + "Panel").hide();
                 $("#" + tabs[i] + "Tab a").removeClass("selected");

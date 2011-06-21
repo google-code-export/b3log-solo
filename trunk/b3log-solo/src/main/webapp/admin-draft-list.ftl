@@ -250,7 +250,7 @@
                 };
                 $("#loadMsg").text("");
             } catch (e) {}
-        }, {"oId": $("#articleListComments").data("oId")});
+        }, {"oId": $("#draftListComments").data("oId")});
     }
 </script>
 ${plugins}
