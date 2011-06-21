@@ -33,7 +33,8 @@ public final class PageCacheKeys {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageCacheKeys.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageCacheKeys.class.
+            getName());
 
     /**
      * Gets page cache key by the specified URI and query string.
