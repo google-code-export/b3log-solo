@@ -37,7 +37,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Jun 18, 2011
+ * @version 1.0.0.3, Jun 21, 2011
  */
 public final class PageCacheList extends AbstractPlugin {
 
@@ -46,7 +46,7 @@ public final class PageCacheList extends AbstractPlugin {
      */
     private static final Logger LOGGER =
             Logger.getLogger(PageCacheList.class.getName());
-
+    
     @Override
     public void plug(final Map<String, Object> dataModel) {
         final List<JSONObject> pages = new ArrayList<JSONObject>();
@@ -55,37 +55,39 @@ public final class PageCacheList extends AbstractPlugin {
             LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
             try {
                 final JSONObject cachedPage = PageCaches.get(key);
-
+                
                 final JSONObject page = new JSONObject();
                 page.put(Link.LINK, "" + key);
                 page.put(CACHED_TYPE, cachedPage.getString(CACHED_TYPE));
                 page.put(CACHED_TITLE, cachedPage.getString(CACHED_TITLE));
-
+                
                 pages.add(page);
             } catch (final JSONException ex) {
                 LOGGER.log(Level.SEVERE, "Page cache plug failed", ex);
             }
         }
-
+        
         Collections.sort(pages, new Comparator<JSONObject>() {
-
+            
             @Override
             public int compare(final JSONObject page1, final JSONObject page2) {
                 return page1.optString(CACHED_TYPE).compareTo(page2.optString(
                         CACHED_TYPE));
             }
         });
-
+        
         dataModel.put(Page.PAGES, pages);
-
+        
         super.plug(dataModel);
+        
+        LOGGER.log(Level.FINER, "Plugin[name={0}] has been plugged", getName());
     }
-
+    
     @Override
     public void unplug() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
+    
     @Override
     public String getViewName() {
         return "admin-cache-list.ftl";
