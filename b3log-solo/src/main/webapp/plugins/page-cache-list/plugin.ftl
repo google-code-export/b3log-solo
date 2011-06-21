@@ -1,37 +1,16 @@
 <div id="cacheList"></div>
 <div id="cachePagination" class="margin12 right"></div>
+<div class="clear"></div>
 <script type="text/javascript">
     var getCacheList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
-        var caches = [{cachedType: 1, cachedTitle: 1, link: 1}];
-        var cacheData = [];
-                    
-        for (var i = 0; i < caches.length; i++) {
-            cacheData[i] = {};
-            cacheData[i].cachedType = caches[i].cachedType;
-            cacheData[i].cachedTitle = caches[i].cachedTitle;
-            cacheData[i].link = caches[i].link;
-            
-            console.log(cacheData[i]);
-        }
-
-        $("#cacheList").table("update",{
-            data: cacheData
-        });
-
-        $("#cachePagination").paginate({
-            update: {
-                currentPage: pageNum,
-                pageCount: 10
-            }
-        });
-        $("#loadMsg").text("");
         
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": 5,
-            "paginationWindowSize": 10
+            "paginationPageSize": adminUtil.PAGE_SIZE,
+            "paginationWindowSize": adminUtil.WINDOW_SIZE
         };
+        
         jsonRpc.pageCacheListService.getPages(function (result, error) {
             try {
                 if (result.sc) {
@@ -40,15 +19,23 @@
                     
                     for (var i = 0; i < caches.length; i++) {
                         cacheData[i] = {};
-                        cacheData[i].link = caches[i].link;
-                        cacheData[i].title = caches[i].cachedTitle;
-                        cacheData[i].type = caches[i].cachedType;
+                        cacheData[i].cachedTitle = "<a href='" + caches[i].link + "'  target='_blank'>" 
+                            + caches[i].cachedTitle + "</a>";
+                        cacheData[i].cachedType = caches[i].cachedType;
                     }
 
                     $("#cacheList").table("update",{
-                        data: cacheData
+                        data: [{
+                                groupName: "all",
+                                groupData: cacheData
+                            }]
                     });
-
+                    
+                    // pagination
+                    if (0 === result.pagination.paginationPageCount) {
+                        result.pagination.paginationPageCount = 1;
+                    }
+                    
                     $("#cachePagination").paginate({
                         update: {
                             currentPage: pageNum,
@@ -61,24 +48,21 @@
         }, requestJSONObject);
     }
         
-    var initCache = function () {
+    var initCache = function () {          
         $("#cacheList").table({
             colModel: [{
                     style: "padding-left: 6px;",
-                    name: "${typeLabel}",
+                    text: "${typeLabel}",
                     index: "cachedType",
                     width: 120
                 }, {
                     style: "padding-left: 6px;",
-                    name: "${titleLabel}",
+                    text: "${titleLabel}",
                     index: "cachedTitle",
                     minWidth: 300
-                }, {
-                    visible: false,
-                    index: "link"
                 }]
         });
-                
+        
         $("#cachePagination").paginate({
             bindEvent: "getCacheList",
             pageCount: 1,
