@@ -20,13 +20,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.SoloServletListener;
 
 /**
  * Page cache key utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 12, 2011
+ * @version 1.0.0.7, Jun 21, 2011
  */
 public final class PageCacheKeys {
 
@@ -39,28 +38,12 @@ public final class PageCacheKeys {
     /**
      * Gets page cache key by the specified URI and query string.
      *
-     * <p>
-     * In cluster environment(multiple application instance replicas), the memory
-     * cache may be individual(depends on underlying memory cache strategy).
-     * </p>
-     *
-     * <p>
-     * <a href="http://code.google.com/appengine">Google App Engine</a>
-     * will setup an application instance replicas sometimes(high traffic, redeploy
-     * application, etc), so the cache service (provided by
-     * <a href="http://code.google.com/appengine/docs/java/memcache/">
-     * memcache service</a>) may be used in these instances individually. For
-     * consistency reason, this method will add the <i>instance id</i> as the
-     * prefix of the key. The <i>instance id</i> may be {@code null} if only one
-     * instance is serving.
-     * </p>
-     *
      * @param uri the specified URI
      * @param queryString the specified query string
      * @return cache key
      */
     public String getPageCacheKey(final String uri, final String queryString) {
-        String ret = SoloServletListener.getInstanceReplicaId() + uri;
+        String ret = uri;
 
         try {
             if (!Strings.isEmptyOrNull(queryString)) {

@@ -86,7 +86,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.3, Jun 19, 2011
+ * @version 1.0.4.4, Jun 21, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -134,15 +134,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * Enter escape.
      */
     public static final String ENTER_ESC = "_esc_enter_88250_";
-
-    /**
-     * Gets instance replica id.
-     * 
-     * @return instance replica id
-     */
-    public static String getInstanceReplicaId() {
-        return "";
-    }
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
