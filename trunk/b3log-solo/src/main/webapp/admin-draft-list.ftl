@@ -36,7 +36,10 @@
                             articleData[i].author = articles[i].authorName;
                         }
                         $("#draftList").table("update",{
-                            data: articleData
+                            data: [{
+                                    groupName: "all",
+                                    groupData: articleData
+                            }]
                         });
 
                         if (0 === result.pagination.paginationPageCount) {
@@ -62,52 +65,52 @@
         $("#draftList").table({
             resizable: true,
             colModel: [{
-                    name: "${titleLabel}",
+                    text: "${titleLabel}",
                     index: "title",
                     width: 286,
                     style: "padding-left: 6px;"
                 }, {
-                    name: "${tagsLabel}",
+                    text: "${tagsLabel}",
                     index: "tags",
                     minWidth: 110,
                     style: "padding-left: 6px; overflow: hidden;font-size:11px; "
                 }, {
-                    name: "${commentNameLabel}",
+                    text: "${commentNameLabel}",
                     index: "author",
                     width: 100,
                     style: "padding-left: 6px; overflow: hidden;"
                 }, {
                     textAlign: "center",
-                    name: "${createDateLabel}",
+                    text: "${createDateLabel}",
                     index: "date",
                     width: 130
                 }, {
                     textAlign: "center",
-                    name: "${updateLabel}",
+                    text: "${updateLabel}",
                     index: "update",
                     width: 49,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
-                                adminUtil.updateArticle(event, false);
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
+                                adminUtil.updateArticle(data, false);
                             }
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
                     textAlign: "center",
-                    name: "${removeLabel}",
+                    text: "${removeLabel}",
                     index: "remove",
                     width: 53,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action':  function (event) {
+                    bind: [{
+                            'type': 'click',
+                            'action':  function (event, data) {
                                 var isDelete = confirm("${confirmRemoveLabel}");
 
                                 if (isDelete) {
                                     $("#loadMsg").text("${loadingLabel}");
                                     $("#tipMsg").text("");
                                     var requestJSONObject = {
-                                        "oId": event.data.id[0]
+                                        "oId": data.id
                                     };
 
                                     jsonRpc.articleService.removeArticle(function (result, error) {
@@ -151,13 +154,13 @@
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
                     textAlign: "center",
-                    name: "${commentLabel}",
+                    text: "${commentLabel}",
                     index: "comments",
                     width: 65,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
-                                $("#articleListComments").data("oId", event.data.id[0]);
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
+                                $("#articleListComments").data("oId", data.id);
                                 getArticleListComment();
                                 $("#articleListComments").dialog({
                                     width: 700,
@@ -168,13 +171,10 @@
                         }],
                     style: "cursor:pointer; margin-left:16px;"
                 }, {
-                    name: "${viewLabel}",
+                    text: "${viewLabel}",
                     width: 36,
                     index: "articleViewCount",
                     style: "text-align:center;"
-                }, {
-                    visible: false,
-                    index: "id"
                 }]
         });
 

@@ -72,7 +72,7 @@
 <script type="text/javascript">
     var userListCurrentPage = 1,
     userListPageCount = 1,
-    usersLength = 1;
+    userListLength = 1;
 
 
     var getUserList = function (pageNum) {
@@ -89,12 +89,12 @@
                     case "GET_USERS_SUCC":
                         var users = result.users;
                         var userData = [];
-                        usersLength = users.length;
+                        userListLength = users.length;
 
-                        if (1 < usersLength) {
+                        if (1 < userListLength) {
                             // Disable article sync mgmt if exists more than one users
                             $("#article-syncTab").hide();
-                        } else if (1 === usersLength) {
+                        } else if (1 === userListLength) {
                             // Enable article sync mgmt if exists one user exactly
                             $("#article-syncTab").show();
                         } else {
@@ -119,7 +119,10 @@
                         }
 
                         $("#userList").table("update",{
-                            data: userData
+                            data: [{
+                                    "groupName": "all",
+                                    "groupData": userData
+                                }]
                         });
 
                         if (result.pagination.paginationPageCount === 0) {
@@ -147,29 +150,29 @@
         $("#userList").table({
             colModel: [{
                     style: "padding-left: 6px;",
-                    name: "${commentNameLabel}",
+                    text: "${commentNameLabel}",
                     index: "userName",
                     width: 230
                 }, {
                     style: "padding-left: 6px;",
-                    name: "${commentEmailLabel}",
+                    text: "${commentEmailLabel}",
                     index: "userEmail",
                     minWidth: 180
                 }, {
                     textAlign: "center",
-                    name: "${updateLabel}",
+                    text: "${updateLabel}",
                     index: "update",
                     width: 56,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
                                 $("#loadMsg").text("${loadingLabel}");
                                 $("#userUpdate").dialog({
                                     width: 700,
                                     height:200
                                 });
                                 var requestJSONObject = {
-                                    "oId": event.data.id[0]
+                                    "oId": data.id
                                 };
 
                                 jsonRpc.adminService.getUser(function (result, error) {
@@ -178,11 +181,11 @@
                                             case "GET_USER_SUCC":
                                                 var $userEmailUpdate = $("#userEmailUpdate");
                                                 $("#userNameUpdate").val(result.user.userName).data("userInfo", {
-                                                    'oId': event.data.id[0],
-                                                    "userRole": event.data.userRole[0]
+                                                    'oId': data.id,
+                                                    "userRole": data.userRole
                                                 });
                                                 $userEmailUpdate.val(result.user.userEmail);
-                                                if ("adminRole" === event.data.userRole[0]) {
+                                                if ("adminRole" === data.userRole) {
                                                     $userEmailUpdate.attr("disabled", "disabled");
                                                 } else {
                                                     $userEmailUpdate.removeAttr("disabled");
@@ -201,13 +204,13 @@
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
                     textAlign: "center",
-                    name: "${removeLabel}",
+                    text: "${removeLabel}",
                     index: "deleted",
                     width: 56,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
-                                if ("adminRole" === event.data.userRole[0]) {
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
+                                if ("adminRole" === data.userRole) {
                                     return;
                                 }
                                 var isDelete = confirm("${confirmRemoveLabel}");
@@ -215,14 +218,20 @@
                                     $("#loadMsg").text("${loadingLabel}");
                                     $("#tipMsg").text("");
                                     var requestJSONObject = {
-                                        "oId": event.data.id[0]
+                                        "oId": data.id
                                     };
 
                                     jsonRpc.adminService.removeUser(function (result, error) {
                                         try {
                                             switch (result.sc) {
                                                 case "REMOVE_USER_SUCC":
-                                                    getUserList(1);
+                                                    var pageNum = userListCurrentPage;
+                                                    if (userListLength === 1 && userListPageCount !== 1 &&
+                                                        userListCurrentPage === userListPageCount) {
+                                                        userListPageCount--;
+                                                        pageNum = userListPageCount;
+                                                    }
+                                                    getUserList(pageNum);
                                                     $("#tipMsg").text("${removeSuccLabel}");
                                                     break;
                                                 case "REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS":
@@ -240,15 +249,9 @@
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
                     style: "padding-left: 36px;",
-                    name: "${administratorLabel}",
+                    text: "${administratorLabel}",
                     index: "isAdmin",
                     width: 89
-                }, {
-                    visible: false,
-                    index: "id"
-                }, {
-                    visible: false,
-                    index: "userRole"
                 }]
         });
 
@@ -336,7 +339,8 @@
                         case "ADD_USER_SUCC":
                             $("#userName").val("");
                             $("#userEmail").val("");
-                            if (usersLength === adminUtil.PAGE_SIZE) {
+                            if (userListLength === adminUtil.PAGE_SIZE &&
+                                userListCurrentPage === userListPageCount) {
                                 userListPageCount++;
                             }
                             getUserList(userListPageCount);

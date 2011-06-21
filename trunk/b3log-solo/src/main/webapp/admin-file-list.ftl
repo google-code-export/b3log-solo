@@ -44,7 +44,10 @@
                 }
 
                 $("#fileList").table("update",{
-                    data: fileData
+                    data: [{
+                            groupName: "all",
+                            groupData: fileData
+                    }]
                 });
 
                 if (0 === result.pagination.paginationPageCount) {
@@ -69,38 +72,38 @@
             resizable: true,
             colModel: [{
                     style: "padding-left: 6px;",
-                    name: "${fileNameLabel}",
+                    text: "${fileNameLabel}",
                     index: "name",
                     minWidth: 260
                 }, {
                     textAlign: "center",
-                    name: "${uploadDateLabel}",
+                    text: "${uploadDateLabel}",
                     index: "uploadDate",
                     width: 200
                 }, {
                     textAlign: "center",
-                    name: "${sizeLabel} (Bytes)",
+                    text: "${sizeLabel} (Bytes)",
                     index: "size",
                     width: 150
                 }, {
                     textAlign: "center",
-                    name: "${downloadCountLabel}",
+                    text: "${downloadCountLabel}",
                     index: "downloadCnt",
                     width: 80
                 }, {
                     textAlign: "center",
-                    name: "${removeLabel}",
+                    text: "${removeLabel}",
                     index: "remove",
                     width: 56,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
                                 var isDelete = confirm("${confirmRemoveLabel}");
                                 if (isDelete) {
                                     $("#loadMsg").text("${loadingLabel}");
                                     $("#tipMsg").text("");
                                     var requestJSONObject = {
-                                        "oId": event.data.id[0]
+                                        "oId": data.id
                                     };
 
                                     jsonRpc.fileService.removeFile(function (result, error) {
@@ -123,9 +126,6 @@
                             }
                         }],
                     style: "cursor:pointer; margin-left:22px;"
-                }, {
-                    visible: false,
-                    index: "id"
                 }]
         });
 

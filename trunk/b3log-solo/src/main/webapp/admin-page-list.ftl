@@ -44,7 +44,7 @@
 <script type="text/javascript">
     var pageListCurrentPage = 1,
     pageListPageCount = 1,
-    pagePagesLength = 1;
+    pageListLength = 1;
     
     var getPageList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
@@ -60,12 +60,29 @@
                     case "GET_PAGES_SUCC":
                         var pages = result.pages;
                         var pageData = [];
-                        pagePagesLength = pages.length;
+                        pageListLength = pages.length;
 
                         for (var i = 0; i < pages.length; i++) {
                             pageData[i] = {};
+                            if (i === 0) {
+                                if (pages.length === 1) {
+                                    pageData[i].pageOrder = "";
+                                } else {
+                                    pageData[i].pageOrder = '<div class="table-center" style="width:16px">\
+                                <span onclick="savePageOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                            </div>';
+                                }
+                            } else if (i === pages.length - 1) {
+                                pageData[i].pageOrder = '<div class="table-center" style="width:16px">\
+                                <span onclick="savePageOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                            </div>';
+                            } else {
+                                pageData[i].pageOrder = '<div class="table-center" style="width:38px">\
+                                <span onclick="savePageOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                <span onclick="savePageOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                            </div>';
+                            }
                             pageData[i].pageTitle = pages[i].pageTitle;
-                            pageData[i].pageOrder = pages[i].pageOrder;
                             pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                                 + pages[i].pagePermalink + "</a>";
                             pageData[i].update = "<div class='updateIcon'></div>";
@@ -76,7 +93,10 @@
                         }
 
                         $("#pageList").table("update",{
-                            data: pageData
+                            data: [{
+                                    groupName: "all",
+                                    groupData: pageData
+                                }]
                         });
 
                         if (result.pagination.paginationPageCount === 0) {
@@ -100,11 +120,10 @@
         }, requestJSONObject);
     }
 
-    var savePageOrder = function (order, status) {
+    var savePageOrder = function (id, order, status) {
         $("#loadMsg").text("${loadingLabel}");
         $("#tipMsg").text("");
-        var tableData = $("#pageList").table("option", "data"),
-        srcOrder = order;
+        var srcOrder = order;
         if (status === "up") {
             srcOrder -= 1;
         } else {
@@ -114,54 +133,49 @@
         jsonRpc.pageService.changeOrder(function (result, error) {
             try {
                 if (result) {
-                    var tmp = tableData[order].pageOrder;
-                    tableData[order].pageOrder = tableData[srcOrder].pageOrder;
-                    tableData[srcOrder].pageOrder = tmp;
-                    $("#pageList").table("changeOrder", status, order);
+                    getPageList(pageListCurrentPage);
                 } else {
                     $("#tipMsg").text("${updateFailLabel}");
                 }
                 $("#loadMsg").text("");
             } catch (e) {}
-        }, tableData[order].id, tableData[srcOrder].pageOrder);
+        }, id.toString(), srcOrder);
     }
 
     var initPage = function () {
         $("#pageList").table({
-            orderActionName: "savePageOrder",
             colModel: [ {
-                    name: "",
-                    inputType: "order",
+                    text: "",
                     index: "pageOrder",
                     width: 60
                 }, {
                     style: "padding-left: 6px;",
-                    name: "${titleLabel}",
+                    text: "${titleLabel}",
                     index: "pageTitle",
                     width: 120
                 }, {
                     style: "padding-left: 6px;",
-                    name: "${permalinkLabel}",
+                    text: "${permalinkLabel}",
                     index: "pagePermalink",
                     minWidth: 300
                 }, {
                     textAlign: "center",
-                    name: "${updateLabel}",
+                    text: "${updateLabel}",
                     index: "update",
                     width: 49,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
                                 $("#loadMsg").text("${loadingLabel}");
                                 var requestJSONObject = {
-                                    "oId": event.data.id[0]
+                                    "oId": data.id
                                 };
 
                                 jsonRpc.pageService.getPage(function (result, error) {
                                     try {
                                         switch (result.sc) {
                                             case "GET_PAGE_SUCC":
-                                                $("#pageTitle").val(result.page.pageTitle).data('oId', event.data.id[0]);
+                                                $("#pageTitle").val(result.page.pageTitle).data('oId', data.id);
                                                 tinyMCE.get('pageContent').setContent(result.page.pageContent);
                                                 $("#pagePermalink").val(result.page.pagePermalink);
                                                 break;
@@ -178,25 +192,31 @@
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
                     textAlign: "center",
-                    name: "${removeLabel}",
+                    text: "${removeLabel}",
                     index: "deleted",
                     width: 53,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
                                 var isDelete = confirm("${confirmRemoveLabel}");
                                 if (isDelete) {
                                     $("#loadMsg").text("${loadingLabel}");
                                     $("#tipMsg").text("");
                                     var requestJSONObject = {
-                                        "oId": event.data.id[0]
+                                        "oId": data.id
                                     };
 
                                     jsonRpc.pageService.removePage(function (result, error) {
                                         try {
                                             switch (result.sc) {
                                                 case "REMOVE_PAGE_SUCC":
-                                                    getPageList(1);
+                                                    var pageNum = pageListCurrentPage;
+                                                    if (pageListLength === 1 && pageListPageCount !== 1 &&
+                                                        pageListCurrentPage === pageListPageCount) {
+                                                        pageListPageCount--;
+                                                        pageNum = pageListPageCount;
+                                                    }
+                                                    getPageList(pageNum);
                                                     $("#tipMsg").text("${removeSuccLabel}");
                                                     break;
                                                 case "REMOVE_PAGE_FAIL_":
@@ -222,13 +242,13 @@
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
                     textAlign: "center",
-                    name: "${commentLabel}",
+                    text: "${commentLabel}",
                     index: "comments",
                     width: 65,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
-                                $("#pageComments").data("oId", event.data.id[0]);
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
+                                $("#pageComments").data("oId", data.id);
                                 getPageComment();
                                 $("#pageComments").dialog({
                                     width: 700,
@@ -238,9 +258,6 @@
                             }
                         }],
                     style: "cursor:pointer; margin-left:16px;"
-                }, {
-                    visible: false,
-                    index: "id"
                 }]
         });
 
@@ -359,7 +376,8 @@
                             } else {
                                 $("#pageContent").val("");
                             }
-                            if (pagePagesLength === adminUtil.PAGE_SIZE) {
+                            if (pageListLength === adminUtil.PAGE_SIZE &&
+                                pageListCurrentPage === pageListPageCount) {
                                 pageListPageCount++;
                             }
                             getPageList(pageListPageCount);
