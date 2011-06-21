@@ -16,21 +16,10 @@
 
 package org.b3log.solo.plugin.cache;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import org.b3log.latke.plugin.AbstractPlugin;
 import java.util.Map;
 import java.util.logging.Logger;
-import static org.b3log.latke.action.AbstractCacheablePageAction.*;
-import org.b3log.latke.action.util.PageCaches;
-import org.b3log.solo.model.Link;
-import org.b3log.solo.model.Page;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Page cache list plugin.
@@ -49,35 +38,6 @@ public final class PageCacheList extends AbstractPlugin {
     
     @Override
     public void plug(final Map<String, Object> dataModel) {
-        final List<JSONObject> pages = new ArrayList<JSONObject>();
-        final Set<String> keys = PageCaches.getKeys();
-        for (final String key : keys) {
-            LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
-            try {
-                final JSONObject cachedPage = PageCaches.get(key);
-                
-                final JSONObject page = new JSONObject();
-                page.put(Link.LINK, "" + key);
-                page.put(CACHED_TYPE, cachedPage.getString(CACHED_TYPE));
-                page.put(CACHED_TITLE, cachedPage.getString(CACHED_TITLE));
-                
-                pages.add(page);
-            } catch (final JSONException ex) {
-                LOGGER.log(Level.SEVERE, "Page cache plug failed", ex);
-            }
-        }
-        
-        Collections.sort(pages, new Comparator<JSONObject>() {
-            
-            @Override
-            public int compare(final JSONObject page1, final JSONObject page2) {
-                return page1.optString(CACHED_TYPE).compareTo(page2.optString(
-                        CACHED_TYPE));
-            }
-        });
-        
-        dataModel.put(Page.PAGES, pages);
-        
         super.plug(dataModel);
         
         LOGGER.log(Level.FINER, "Plugin[name={0}] has been plugged", getName());
