@@ -38,8 +38,7 @@
         </tr>
     </tbody>
 </table>
-<div id="pageComments" class="none">
-</div>
+<div id="pageComments" class="none"></div>
 <div class="clear"></div>
 <script type="text/javascript">
     var pageListCurrentPage = 1,
