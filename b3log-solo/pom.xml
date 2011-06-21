@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.6.7, Jun 20, 2011
+    Version: 1.0.6.8, Jun 21, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -22,7 +22,7 @@
 
     <!-- Properties -->
     <properties>
-        <org.b3log.latke.version>0.4.8</org.b3log.latke.version>
+        <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
         <org.b3log.latke-repository-gae.version>
             0.4.5
         </org.b3log.latke-repository-gae.version>
@@ -436,13 +436,24 @@
         </repository>
         <repository>
             <id>m2-release</id>
-            <name>88250 at Google Maven repository of snapshots</name>
+            <name>88250 at Google Maven repository of releases</name>
             <url>http://m2-repos.googlecode.com/svn/release</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
             <releases>
                 <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>m2-snapshot</id>
+            <name>88250 at Google Maven repository of snapshots</name>
+            <url>http://m2-repos.googlecode.com/svn/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
             </releases>
         </repository>
     </repositories>
