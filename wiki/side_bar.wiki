@@ -29,3 +29,5 @@
     * [thirdparty_deploy_gae 部署相关]
  * 入伙
     * [join_us 加入B3log团队]
+    * [about_us 关于我们]
+  
