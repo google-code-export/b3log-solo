@@ -72,13 +72,12 @@
 <script type="text/javascript">
     var linkListCurrentPage = 1,
     linkListPageCount = 1,
-    linksLength = 1;
+    linkListLength = 1;
     
-    var saveLinkOrder = function (order, status) {
+    var saveLinkOrder = function (id, order, status) {
         $("#loadMsg").text("${loadingLabel}");
         $("#tipMsg").text("");
-        var tableData = $("#linkList").table("option", "data"),
-        srcOrder = order;
+        var srcOrder = order;
         if (status === "up") {
             srcOrder -= 1;
         } else {
@@ -88,16 +87,13 @@
         jsonRpc.linkService.changeOrder(function (result, error) {
             try {
                 if (result) {
-                    var tmp = tableData[order].linkOrder;
-                    tableData[order].linkOrder = tableData[srcOrder].linkOrder;
-                    tableData[srcOrder].linkOrder = tmp;
-                    $("#linkList").table("changeOrder", status, order);
+                    getLinkList(linkListCurrentPage);
                 } else {
                     $("#tipMsg").text("${updateFailLabel}");
                 }
                 $("#loadMsg").text("");
             } catch (e) {}
-        }, tableData[order].id, tableData[srcOrder].linkOrder);
+        }, id.toString(), srcOrder);
     }
 
     var validateLink = function (status) {
@@ -134,17 +130,37 @@
 
                         for (var i = 0; i < links.length; i++) {
                             linkData[i] = {};
+                            if (i === 0) {
+                                if (links.length === 1) {
+                                    linkData[i].linkOrder = "";
+                                } else {
+                                    linkData[i].linkOrder = '<div class="table-center" style="width:16px">\
+                                <span onclick="saveLinkOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                            </div>';
+                                }
+                            } else if (i === links.length - 1) {
+                                linkData[i].linkOrder = '<div class="table-center" style="width:16px">\
+                                <span onclick="saveLinkOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                            </div>';
+                            } else {
+                                linkData[i].linkOrder = '<div class="table-center" style="width:38px">\
+                                <span onclick="saveLinkOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                <span onclick="saveLinkOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                            </div>';
+                            }
                             linkData[i].linkTitle = links[i].linkTitle;
                             linkData[i].linkAddress = "<a target='_blank' class='no-underline' href='" + links[i].linkAddress + "'>"
                                 + links[i].linkAddress + "</a>";
                             linkData[i].update = "<div class='updateIcon'></div>";
                             linkData[i].deleted = "<div class='deleteIcon'></div>";
                             linkData[i].id = links[i].oId;
-                            linkData[i].linkOrder = links[i].linkOrder;
                         }
 
                         $("#linkList").table("update",{
-                            data: linkData
+                            data: [{
+                                    groupName: "all",
+                                    groupData: linkData
+                                }]
                         });
 
                         if (result.pagination.paginationPageCount === 0) {
@@ -216,7 +232,8 @@
                         case "ADD_LINK_SUCC":
                             $("#linkTitle").val("");
                             $("#linkAddress").val("");
-                            if (linksLength === adminUtil.PAGE_SIZE) {
+                            if (linkListLength === adminUtil.PAGE_SIZE &&
+                                linkListCurrentPage === linkListPageCount) {
                                 linkListPageCount++;
                             }
                             getLinkList(linkListPageCount);
@@ -233,44 +250,42 @@
 
     var initLink = function () {
         $("#linkList").table({
-            orderActionName: "saveLinkOrder",
             colModel: [{
-                    name: "",
-                    inputType: "order",
+                    text: "",
                     index: "linkOrder",
                     width: 60
                 },{
                     style: "padding-left: 6px;",
-                    name: "${linkTitleLabel}",
+                    text: "${linkTitleLabel}",
                     index: "linkTitle",
                     width: 230
                 }, {
                     style: "padding-left: 6px;",
-                    name: "${urlLabel}",
+                    text: "${urlLabel}",
                     index: "linkAddress",
                     minWidth: 180
                 }, {
                     textAlign: "center",
-                    name: "${updateLabel}",
+                    text: "${updateLabel}",
                     index: "update",
                     width: 56,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
                                 $("#loadMsg").text("${loadingLabel}");
                                 $("#updateLink").dialog({
                                     width: 700,
                                     height:200
                                 });
                                 var requestJSONObject = {
-                                    "oId": event.data.id[0]
+                                    "oId": data.id
                                 };
 
                                 jsonRpc.linkService.getLink(function (result, error) {
                                     try {
                                         switch (result.sc) {
                                             case "GET_LINK_SUCC":
-                                                $("#linkTitleUpdate").val(result.link.linkTitle).data('oId', event.data.id[0]);
+                                                $("#linkTitleUpdate").val(result.link.linkTitle).data('oId', data.id);
                                                 $("#linkAddressUpdate").val(result.link.linkAddress);
                                                 break;
                                             case "GET_LINK_FAIL_":
@@ -286,25 +301,31 @@
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
                     textAlign: "center",
-                    name: "${removeLabel}",
+                    text: "${removeLabel}",
                     index: "deleted",
                     width: 56,
-                    bindEvent: [{
-                            'eventName': 'click',
-                            'action': function (event) {
+                    bind: [{
+                            'type': 'click',
+                            'action': function (event, data) {
                                 var isDelete = confirm("${confirmRemoveLabel}");
                                 if (isDelete) {
                                     $("#loadMsg").text("${loadingLabel}");
                                     $("#tipMsg").text("");
                                     var requestJSONObject = {
-                                        "oId": event.data.id[0]
+                                        "oId": data.id
                                     };
 
                                     jsonRpc.linkService.removeLink(function (result, error) {
                                         try {
                                             switch (result.sc) {
                                                 case "REMOVE_LINK_SUCC":
-                                                    getLinkList(1);
+                                                    var pageNum = linkListCurrentPage;
+                                                    if (linkListLength === 1 && linkListPageCount !== 1 &&
+                                                        linkListCurrentPage === linkListPageCount) {
+                                                        linkListPageCount--;
+                                                        pageNum = linkListPageCount;
+                                                    }
+                                                    getLinkList(pageNum);
                                                     $("#tipMsg").text("${removeSuccLabel}");
                                                     break;
                                                 case "REMOVE_LINK_FAIL_":
@@ -320,9 +341,6 @@
                             }
                         }],
                     style: "cursor:pointer; margin-left:22px;"
-                }, {
-                    visible: false,
-                    index: "id"
                 }]
         });
 

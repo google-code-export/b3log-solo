@@ -144,37 +144,7 @@ $.extend(AdminUtil.prototype, {
             // set current tab
             this.changeList(document.getElementById(hash.substr(1, hash.length - 1) + "Tab"));
         } else {
-            // Preload article.
-            $("#articlePanel").load("admin-article.do",function () {
-                $("#loadMsg").text("");
-                // Inits Signs.
-                jsonRpc.preferenceService.getSigns(function (result, error) {
-                    try {
-                        $(".signs button").each(function (i) {
-                            // Sets signs.
-                            if (i === result.length) {
-                                $("#articleSign0").addClass("selected");
-                            } else {
-                                $("#articleSign" + result[i].oId).tip({
-                                    content: result[i].signHTML === "" ? "该签名档为空" : result[i].signHTML,
-                                    position: "top"
-                                });
-                            }
-
-                            // Binds checkbox event.
-                            $(this).click(function () {
-                                if (this.className !== "selected") {
-                                    $(".signs button").each(function () {
-                                        this.className = "";
-                                    });
-                                    this.className = "selected";
-                                }
-                            });
-                        });
-                    } catch(e) {
-                    }
-                });
-            });
+            $("#loadMsg").text("");
         }
     },
 
@@ -195,13 +165,13 @@ $.extend(AdminUtil.prototype, {
     },
 
     // article list and draft list
-    updateArticle: function (event, isArticle) {
+    updateArticle: function (data, isArticle) {
         var tip = this.tip,
         that = this;
         $("#loadMsg").text(tip.loadingLabel);
         this.changeList(document.getElementById("articleTab"));
         var requestJSONObject = {
-            "oId": event.data.id[0]
+            "oId": data.id
         };
         jsonRpc.articleService.getArticle(function (result, error) {
             try {
@@ -210,7 +180,7 @@ $.extend(AdminUtil.prototype, {
                         // set default value for article.
                         $("#title").val(result.article.articleTitle).data("articleStatus", {
                             "isArticle": isArticle,
-                            'oId': event.data.id[0],
+                            'oId': data.id,
                             "articleHadBeenPublished": result.article.articleHadBeenPublished
                         });
                         if (tinyMCE.get('articleContent')) {
