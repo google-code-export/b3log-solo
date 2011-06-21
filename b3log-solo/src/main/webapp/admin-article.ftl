@@ -87,7 +87,7 @@
     }
     
     var initArticle = function () {
-        adminUtil.beforeInitArticle();
+        adminUtil.clearArticle();
 
         // tag auto completed
         jsonRpc.tagService.getTags(function (result, error) {
