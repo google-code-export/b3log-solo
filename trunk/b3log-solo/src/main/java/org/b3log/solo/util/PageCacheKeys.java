@@ -16,10 +16,11 @@
 
 package org.b3log.solo.util;
 
-import com.google.appengine.api.utils.SystemProperty;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.SoloServletListener;
 
 /**
  * Page cache key utilities.
@@ -32,8 +33,7 @@ public final class PageCacheKeys {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PageCacheKeys.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageCacheKeys.class.getName());
 
     /**
      * Gets page cache key by the specified URI and query string.
@@ -58,9 +58,8 @@ public final class PageCacheKeys {
      * @param queryString the specified query string
      * @return cache key
      */
-    public String getPageCacheKey(final String uri,
-                                  final String queryString) {
-        String ret = SystemProperty.instanceReplicaId.get() + "_" + uri;
+    public String getPageCacheKey(final String uri, final String queryString) {
+        String ret = SoloServletListener.getInstanceReplicaId() + uri;
 
         try {
             if (!Strings.isEmptyOrNull(queryString)) {
