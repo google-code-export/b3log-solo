@@ -27,3 +27,5 @@
      * [template_variables 模板变量]
  * 非官方文档
     * [thirdparty_deploy_gae 部署相关]
+ * 入伙
+    * [thirdparty_deploy_gae 加入B3log团队]
