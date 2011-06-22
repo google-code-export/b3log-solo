@@ -1,7 +1,7 @@
 #labels Featured
 ==加入到B3log团队==
 ===1、写在前面的话===
-  欢迎你打开这一页面，想必你有兴趣加入到B3log团队。B3log Solo是一个基于 Google App Engine Java版的博客程序，B3log首页：http://www.b3log.org， B3log社区：http://symphony.b3log.org——自由、平等、奔放。
+  欢迎你打开这一页面，想必你有兴趣加入到B3log团队。B3log Solo是一个基于 Google App Engine Java版的博客程序，B3log首页：http://www.b3log.org， B3log社区：http://symphony.b3log.org ——自由、平等、奔放。
 ===2、加入我们你需要什么===
 <ul>
 <li>关于责任</li>
