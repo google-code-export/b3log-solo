@@ -7,10 +7,67 @@
     font-weight: bold;
     background-color:#BCF;
 }
-.dialog-background{background-color:gray;height:100%;left:0;opacity:.3;position:absolute;top:0;width:100%;filter:alpha(opacity=30);z-index:99;}
-.dialog-panel{-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;background:#FFF;border:2px solid #36C;position:absolute;z-index:100;}
-.dialog-content{margin:12px;overflow:auto;}
-.dialog-close{float:right;cursor:pointer;height:12px;width:12px;background:url("../images/icon.png") no-repeat -51px -16px;}
+.dialog-background {
+    height: 100%;
+    left: 0;
+    opacity: .3;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    filter: alpha(opacity=30);
+    display: none;
+    background-color: #000000;
+    z-index: 90;
+}
+
+.dialog-panel {
+    position: absolute;
+    z-index: 100;
+    display: none;
+    -moz-user-select: none;
+}
+
+.dialog-title {
+    float: left;
+    line-height: 27px;
+    margin-left: 3px;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
+.dialog-header-left, .dialog-header-right {
+    background-color: #666666;
+    float: left;
+    height: 16px;
+    width: 4px;
+}
+
+.dialog-header-middle {
+    float: left;
+}
+
+.dialog-header-bg {
+    background-color: #666666;
+    cursor: move;
+    float: left;
+    height: 16px;
+}
+
+.dialog-close-icon {
+    background: url("../images/icon.png") repeat scroll -49px -16px transparent;
+    cursor: pointer;
+    float: right;
+    height: 6px;
+    padding: 5px;
+    width: 7px;
+}
+
+.dialog-main {
+    background-color: #FFFFFF;
+    border: 2px solid #666666;
+    border-top-width: 0;
+    padding: 12px;
+}
 .pagination-clear{line-height:0;clear:both;font-size:0;}
 .pagination-pagination span{line-height: 19px;margin:0 5px 0 4px;display:block;float:left;cursor:pointer;}
 .pagination-page, .pagination-nextPage, .pagination-lastPage, .pagination-firstPage, .pagination-prePage, .pagination-prePageHover, .pagination-nextPageHover{color:#4272DB;}

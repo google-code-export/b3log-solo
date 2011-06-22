@@ -273,10 +273,7 @@
                             'type': 'click',
                             'action': function (event, data) {
                                 $("#loadMsg").text("${loadingLabel}");
-                                $("#updateLink").dialog({
-                                    width: 700,
-                                    height:200
-                                });
+                                $("#updateLink").dialog("open");
                                 var requestJSONObject = {
                                     "oId": data.id
                                 };
@@ -358,6 +355,12 @@
         });
 
         getLinkList(1);
+        $("#updateLink").dialog({
+            width: 700,
+            height: 160,
+            "modal": true,
+            "hideFooter": true
+        });
     }
     initLink();
 </script>
