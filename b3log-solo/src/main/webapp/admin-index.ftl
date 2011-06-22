@@ -43,9 +43,6 @@
                         <li id="article-listTab" onclick="adminUtil.changeList(this);">
                             <a href="#article-list"><div class="left articlesIcon"></div>${articleListLabel}</a>
                         </li>
-                        <li id="comment-listTab" onclick="adminUtil.changeList(this);">
-                            <a href="#comment-list"><div class="left articlesIcon"></div>${commentListLabel}</a>
-                        </li>                        
                         <li id="draft-listTab" onclick="adminUtil.changeList(this);">
                             <a href="#draft-list"><div class="left draftsIcon"></div>${draftListLabel}</a>
                         </li>
@@ -80,8 +77,6 @@
                         <div id="articlePanel" class="none">
                         </div>
                         <div id="article-listPanel" class="none">
-                        </div>
-                        <div id="comment-listPanel" class="none">
                         </div>
                         <div id="draft-listPanel" class="none">
                         </div>

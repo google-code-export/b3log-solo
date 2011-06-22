@@ -32,7 +32,7 @@ $.extend(AdminUtil.prototype, {
     },
 
     changeList: function (it) {
-        var tabs = ['article', 'article-list','comment-list', 'draft-list', 'link-list', 'preference',
+        var tabs = ['article', 'article-list', 'draft-list', 'link-list', 'preference',
         'article-sync', 'page-list', 'file-list', 'others', 'user-list', 'cache-list'];
         for (var i = 0; i < tabs.length; i++) {
             if (it.id === tabs[i] + "Tab") {
@@ -52,8 +52,6 @@ $.extend(AdminUtil.prototype, {
                             break;
                         case "draft-list":
                             getDraftList(1);
-                        case "comment-list":
-                        	getCommentList(1);
                             break;
                         default:
                             break;

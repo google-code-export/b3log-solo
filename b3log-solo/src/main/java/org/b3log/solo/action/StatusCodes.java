@@ -96,7 +96,6 @@ public enum StatusCodes {
      * Indicates get comments successfully.
      */
     GET_COMMENTS_SUCC,
-    
     /**
      * Indicates remove a comment successfully.
      */
