@@ -164,11 +164,7 @@
                             'action': function (event, data) {
                                 $("#draftListComments").data("oId", data.id);
                                 getDraftListComment();
-                                $("#draftListComments").dialog({
-                                    width: 700,
-                                    height:500,
-                                    closeEvent: "closeDraftListDialog()"
-                                });
+                                $("#draftListComments").dialog("open");
                             }
                         }],
                     style: "cursor:pointer; margin-left:16px;"
@@ -194,13 +190,19 @@
         });
         
         getDraftList(1);
+        
+        $("#draftListComments").dialog({
+            width: 700,
+            height:500,
+            "modal": true,
+            "hideFooter": true,
+            "close": function () {
+                getDraftList(draftListCurrentPage);
+                return true;
+            }
+        });
     }
     loadDraftList();
-    
-    var closeDraftListDialog = function () {
-        getDraftList(draftListCurrentPage);
-        $("#draftListComments").dialog("close");
-    }
     
     var getDraftListComment = function () {
         $("#loadMsg").text("${loadingLabel}");
