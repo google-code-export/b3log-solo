@@ -22,7 +22,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
@@ -46,7 +45,7 @@ import org.json.JSONObject;
  * blogging system.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 12, 2011
+ * @version 1.0.0.7, Jun 23, 2011
  */
 public abstract class AbstractAddArticleProcessor
         extends AbstractEventListener<JSONObject> {
@@ -70,16 +69,6 @@ public abstract class AbstractAddArticleProcessor
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
-
-    /**
-     * Constructs a {@link AbstractAddArticleProcessor} object with the
-     * specified event manager.
-     *
-     * @param eventManager the specified event manager
-     */
-    public AbstractAddArticleProcessor(final EventManager eventManager) {
-        super(eventManager);
-    }
 
     /**
      * Adds articles with the specified event.

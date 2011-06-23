@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -35,7 +34,7 @@ import org.json.JSONObject;
  * author's <a href="http://t.qq.com">Tencent microblog</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 26, 2011
+ * @version 1.0.0.1, Jun 23, 2011
  */
 public final class TencentMicroblogSender extends AbstractEventListener<JSONObject> {
 
@@ -48,16 +47,6 @@ public final class TencentMicroblogSender extends AbstractEventListener<JSONObje
      * Preference utilities.
      */
     private Preferences preferenceUtils = Preferences.getInstance();
-
-    /**
-     * Constructs a {@link TencentMicroblogSender} object with the specified
-     * event manager.
-     *
-     * @param eventManager the specified event manager
-     */
-    public TencentMicroblogSender(final EventManager eventManager) {
-        super(eventManager);
-    }
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {

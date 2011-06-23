@@ -26,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -45,7 +44,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.2, Jun 23, 2011
  * @see UpdateArticleGoogleBlogSearchPinger
  */
 public final class AddArticleGoogleBlogSearchPinger
@@ -65,16 +64,6 @@ public final class AddArticleGoogleBlogSearchPinger
      * Preference utilities.
      */
     private Preferences preferenceUtils = Preferences.getInstance();
-
-    /**
-     * Constructs a {@link AddArticleGoogleBlogSearchPinger} object with the
-     * specified event manager.
-     *
-     * @param eventManager the specified event manager
-     */
-    public AddArticleGoogleBlogSearchPinger(final EventManager eventManager) {
-        super(eventManager);
-    }
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.

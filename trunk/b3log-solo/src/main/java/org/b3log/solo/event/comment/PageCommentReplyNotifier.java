@@ -25,7 +25,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.event.EventManager;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 12, 2011
+ * @version 1.0.0.9, Jun 23, 2011
  */
 public final class PageCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -64,16 +63,6 @@ public final class PageCommentReplyNotifier
      * Preference utilities.
      */
     private Preferences preferenceUtils = Preferences.getInstance();
-
-    /**
-     * Constructs a {@link PageCommentReplyNotifier} object with the specified
-     * event manager.
-     *
-     * @param eventManager the specified event manager
-     */
-    public PageCommentReplyNotifier(final EventManager eventManager) {
-        super(eventManager);
-    }
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {

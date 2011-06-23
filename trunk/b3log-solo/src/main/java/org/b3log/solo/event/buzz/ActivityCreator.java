@@ -26,7 +26,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -40,7 +39,7 @@ import org.json.JSONObject;
  * adding an article.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jan 12, 2010
+ * @version 1.0.0.8, Jun 23, 2011
  */
 public final class ActivityCreator
         extends AbstractEventListener<JSONObject> {
@@ -63,15 +62,6 @@ public final class ActivityCreator
 //        MY_BUZZ_FEED_URL = new GoogleUrl(
 //                "https://www.googleapis.com/buzz/v1/activities/@me/@self");
 //    }
-    /**
-     * Constructs a {@link ActivityCreator} object with the specified event
-     * manager.
-     *
-     * @param eventManager the specified event manager
-     */
-    public ActivityCreator(final EventManager eventManager) {
-        super(eventManager);
-    }
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
