@@ -17,10 +17,10 @@
         ${htmlHead}
     </head>
     <body>
-        <#include "common-top.ftl">
+        <#include "top-nav.ftl">
         <div class="content">
             <div class="header">
-                <#include "article-header.ftl">
+                <#include "header.ftl">
             </div>
             <div class="body">
                 <div class="left main">
@@ -31,15 +31,15 @@
                             </span>(${tag.tagPublishedRefCount})
                         </h2>
                     </div>
-                    <#include "common-articles.ftl">
+                    <#include "article-list.ftl">
                 </div>
                 <div class="right side">
-                    <#include "article-side.ftl">
+                    <#include "side.ftl">
                 </div>
                 <div class="clear"></div>
             </div>
             <div class="footer">
-                <#include "article-footer.ftl">
+                <#include "footer.ftl">
             </div>
         </div>
         <div class='goTopIcon' onclick='goTop();'></div>
