@@ -86,7 +86,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.4, Jun 21, 2011
+ * @version 1.0.4.5, Jun 23, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -333,22 +333,23 @@ public final class SoloServletListener extends AbstractServletListener {
             final EventManager eventManager = EventManager.getInstance();
 
 //            new ActivityCreator(eventManager);
-            new TencentMicroblogSender(eventManager);
-            new ArticleCommentReplyNotifier(eventManager);
-            new PageCommentReplyNotifier(eventManager);
-            new AddArticleGoogleBlogSearchPinger(eventManager);
-            new UpdateArticleGoogleBlogSearchPinger(eventManager);
-            new ArticleSender(eventManager);
-            new BlogJavaAddArticleProcessor(eventManager);
-            new BlogJavaRemoveArticleProcessor(eventManager);
-            new BlogJavaUpdateArticleProcessor(eventManager);
-            new CSDNBlogAddArticleProcessor(eventManager);
-            new CSDNBlogRemoveArticleProcessor(eventManager);
-            new CSDNBlogUpdateArticleProcessor(eventManager);
-            new CnBlogsAddArticleProcessor(eventManager);
-            new CnBlogsRemoveArticleProcessor(eventManager);
-            new CnBlogsUpdateArticleProcessor(eventManager);
-            new ViewLoadEventHandler(eventManager);
+            eventManager.registerListener(new TencentMicroblogSender());
+            eventManager.registerListener(new ArticleCommentReplyNotifier());
+            eventManager.registerListener(new PageCommentReplyNotifier());
+            eventManager.registerListener(new AddArticleGoogleBlogSearchPinger());
+            eventManager.registerListener(
+                    new UpdateArticleGoogleBlogSearchPinger());
+            eventManager.registerListener(new ArticleSender());
+            eventManager.registerListener(new BlogJavaAddArticleProcessor());
+            eventManager.registerListener(new BlogJavaRemoveArticleProcessor());
+            eventManager.registerListener(new BlogJavaUpdateArticleProcessor());
+            eventManager.registerListener(new CSDNBlogAddArticleProcessor());
+            eventManager.registerListener(new CSDNBlogRemoveArticleProcessor());
+            eventManager.registerListener(new CSDNBlogUpdateArticleProcessor());
+            eventManager.registerListener(new CnBlogsAddArticleProcessor());
+            eventManager.registerListener(new CnBlogsRemoveArticleProcessor());
+            eventManager.registerListener(new CnBlogsUpdateArticleProcessor());
+            eventManager.registerListener(new ViewLoadEventHandler());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
             throw new IllegalStateException(e);
