@@ -1,7 +1,7 @@
-<#macro head>
+<#macro head title>
+<title>${title}</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="${metaKeywords}"/>
-<meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
+<#nested>
 <meta name="author" content="B3log Team"/>
 <meta name="generator" content="B3log"/>
 <meta name="copyright" content="B3log"/>
@@ -11,4 +11,5 @@
 <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
 <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
 <link rel="icon" type="image/png" href="/favicon.png"/>
+${htmlHead}
 </#macro>
