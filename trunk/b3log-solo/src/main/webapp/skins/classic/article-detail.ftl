@@ -6,6 +6,8 @@
         <meta name="keywords" content="<#list article.articleTags?split(',') as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>"/>
         <meta name="description" content="${article.articleAbstract}"/>
         </@head>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css"/>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css"/>
     </head>
     <body>
         <#include "top-nav.ftl">

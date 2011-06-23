@@ -1,6 +1,6 @@
 <#macro head title>
+<meta charset="utf-8" />
 <title>${title}</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <#nested>
 <meta name="author" content="B3log Team"/>
 <meta name="generator" content="B3log"/>
