@@ -13,7 +13,7 @@
         ${htmlHead}
     </head>
     <body>
-        <#include "common-top.ftl">
+        <#include "top-nav.ftl">
         <div class="content">
             <div class="header">
                 <div class="marginBottom12">
