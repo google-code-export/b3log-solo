@@ -240,7 +240,7 @@
         </div>
         <div class='goTopIcon' onclick='goTop();'></div>
         <div class='goBottomIcon' onclick='goBottom();'></div>
-        <script type="text/javascript" src="/js/articleUtil.js"></script>
+        <script type="text/javascript" src="/js/${miniDir}articleUtil${miniPostfix}.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript">
