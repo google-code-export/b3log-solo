@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.RunsOnEnv;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.repository.RepositoryException;
@@ -76,12 +76,12 @@ public final class CommentGAERepository extends AbstractGAERepository
             ArticleGAERepository.getInstance();
 
     static {
-        final RunsOnEnv runsOnEnv = Latkes.getRunsOnEnv();
-        if (!runsOnEnv.equals(RunsOnEnv.GAE)) {
+        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+        if (!runtimeEnv.equals(RuntimeEnv.GAE)) {
             throw new IllegalStateException(
                     "GAE repository can only runs on Google App Engine, please "
                     + "check your configuration and make sure "
-                    + "Latkes.setRunsOnEnv(RunsOnEnv.GAE) was invoked before "
+                    + "Latkes.setRuntimeEnv(RuntimeEnv.GAE) was invoked before "
                     + "using GAE repository.");
         }
 

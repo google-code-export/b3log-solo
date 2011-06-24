@@ -123,6 +123,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                         ("/" + Tag.TAGS + "/").length());
                 tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
                 tag = tagRepository.getByTitle(tagTitle);
+                // FIXME: issue 214, http://code.google.com/p/b3log-solo/issues/detail?id=214
                 tagId = tag.getString(Keys.OBJECT_ID);
             } else {
                 tag = tagRepository.get(tagId);
