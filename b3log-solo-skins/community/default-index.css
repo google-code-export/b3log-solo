@@ -461,6 +461,7 @@ a.header-title {
 
 .recent-comments div a {
     display: block;
+    line-height: 22px;
 }
 
 .recent-comments img {
