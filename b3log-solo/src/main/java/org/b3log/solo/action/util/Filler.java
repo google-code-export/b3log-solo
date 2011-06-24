@@ -30,6 +30,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
@@ -72,7 +73,7 @@ import org.jsoup.Jsoup;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.7, Jun 19, 2011
+ * @version 1.0.3.8, Jun 24, 2011
  */
 public final class Filler {
 
@@ -143,8 +144,8 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillIndexArticles(final Map<String, Object> dataModel,
-            final int currentPageNum,
-            final JSONObject preference)
+                                  final int currentPageNum,
+                                  final JSONObject preference)
             throws Exception {
         final int pageSize =
                 preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -154,7 +155,7 @@ public final class Filler {
         final Query query = new Query().setCurrentPageNum(currentPageNum).
                 setPageSize(pageSize).
                 addFilter(Article.ARTICLE_IS_PUBLISHED,
-                FilterOperator.EQUAL, PUBLISHED);
+                          FilterOperator.EQUAL, PUBLISHED);
 
         if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
             query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
@@ -169,19 +170,20 @@ public final class Filler {
                 getInt(Pagination.PAGINATION_PAGE_COUNT);
 
         final List<Integer> pageNums = Paginator.paginate(currentPageNum,
-                pageSize,
-                pageCount,
-                windowSize);
+                                                          pageSize,
+                                                          pageCount,
+                                                          windowSize);
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
-                    pageNums.get(0));
+                          pageNums.get(0));
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                    pageNums.get(pageNums.size() - 1));
+                          pageNums.get(pageNums.size() - 1));
         }
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-        final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
+        final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
+                jsonArrayToList(result.getJSONArray(Keys.RESULTS));
         putArticleExProperties(articles, preference);
 
         dataModel.put(Article.ARTICLES, articles);
@@ -200,9 +202,10 @@ public final class Filler {
                 new HashMap<String, SortDirection>();
         sorts.put(Link.LINK_ORDER, SortDirection.ASCENDING);
         final Query query = new Query().addSort(Link.LINK_ORDER,
-                SortDirection.ASCENDING);
+                                                SortDirection.ASCENDING);
         final JSONObject linkResult = linkRepository.get(query);
-        final List<JSONObject> links = org.b3log.latke.util.CollectionUtils.jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
+        final List<JSONObject> links = org.b3log.latke.util.CollectionUtils.
+                jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
 
         dataModel.put(Link.LINKS, links);
     }
@@ -215,7 +218,7 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillMostUsedTags(final Map<String, Object> dataModel,
-            final JSONObject preference)
+                                 final JSONObject preference)
             throws Exception {
         LOGGER.finer("Filling most used tags....");
         final int mostUsedTagDisplayCnt =
@@ -236,7 +239,7 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillArchiveDates(final Map<String, Object> dataModel,
-            final JSONObject preference)
+                                 final JSONObject preference)
             throws Exception {
         LOGGER.finer("Filling archive dates....");
         final List<JSONObject> archiveDates =
@@ -256,7 +259,7 @@ public final class Filler {
 
             if ("en".equals(language)) {
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
-                        Dates.EN_MONTHS.get(month));
+                                Dates.EN_MONTHS.get(month));
             } else {
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
             }
@@ -273,7 +276,7 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillMostViewCountArticles(final Map<String, Object> dataModel,
-            final JSONObject preference)
+                                          final JSONObject preference)
             throws Exception {
         LOGGER.finer("Filling the most view count articles....");
         final int mostCommentArticleDisplayCnt =
@@ -293,7 +296,7 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillMostCommentArticles(final Map<String, Object> dataModel,
-            final JSONObject preference)
+                                        final JSONObject preference)
             throws Exception {
         LOGGER.finer("Filling most comment articles....");
         final int mostCommentArticleDisplayCnt =
@@ -313,7 +316,7 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillRecentArticles(final Map<String, Object> dataModel,
-            final JSONObject preference)
+                                   final JSONObject preference)
             throws Exception {
         final int recentArticleDisplayCnt =
                 preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
@@ -332,7 +335,7 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillRecentComments(final Map<String, Object> dataModel,
-            final JSONObject preference)
+                                   final JSONObject preference)
             throws Exception {
         LOGGER.finer("Filling recent comments....");
         final int recentCommentDisplayCnt =
@@ -360,7 +363,7 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillBlogFooter(final Map<String, Object> dataModel,
-            final JSONObject preference)
+                               final JSONObject preference)
             throws Exception {
         LOGGER.finer("Filling footer....");
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
@@ -381,21 +384,21 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillBlogHeader(final Map<String, Object> dataModel,
-            final JSONObject preference)
+                               final JSONObject preference)
             throws Exception {
         LOGGER.fine("Filling header....");
         dataModel.put(Preference.LOCALE_STRING,
-                preference.getString(Preference.LOCALE_STRING));
+                      preference.getString(Preference.LOCALE_STRING));
         dataModel.put(Preference.BLOG_TITLE,
-                preference.getString(Preference.BLOG_TITLE));
+                      preference.getString(Preference.BLOG_TITLE));
         dataModel.put(Preference.BLOG_SUBTITLE,
-                preference.getString(Preference.BLOG_SUBTITLE));
+                      preference.getString(Preference.BLOG_SUBTITLE));
         dataModel.put(Preference.HTML_HEAD,
-                preference.getString(Preference.HTML_HEAD));
+                      preference.getString(Preference.HTML_HEAD));
         dataModel.put(Preference.META_KEYWORDS,
-                preference.getString(Preference.META_KEYWORDS));
+                      preference.getString(Preference.META_KEYWORDS));
         dataModel.put(Preference.META_DESCRIPTION,
-                preference.getString(Preference.META_DESCRIPTION));
+                      preference.getString(Preference.META_DESCRIPTION));
 
         final JSONObject result = userRepository.get(new Query());
         final JSONArray users = result.getJSONArray(Keys.RESULTS);
@@ -407,6 +410,17 @@ public final class Filler {
 
         final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
         dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);
+
+        switch (Latkes.getRuntimeMode()) {
+            case DEVELOPMENT:
+                dataModel.put("", "");
+                break;
+            case PRODUCTION:
+                dataModel.put(Common.MINI_DIR, Common.MINI_DIR_VALUE);
+                break;
+            default:
+                throw new AssertionError();
+        }
 
         fillPageNavigations(dataModel);
         fillStatistic(dataModel);
@@ -420,7 +434,7 @@ public final class Filler {
      * @throws Exception exception
      */
     public void fillSide(final Map<String, Object> dataModel,
-            final JSONObject preference)
+                         final JSONObject preference)
             throws Exception {
         LOGGER.fine("Filling side....");
         fillLinks(dataModel);
@@ -465,16 +479,16 @@ public final class Filler {
                 users.getJSONObject(0).getString(User.USER_EMAIL);
         final List<JSONObject> articlesL =
                 fillPart(preference, leftCurrentPageNum, pageSize, windowSize,
-                dataModel, Common.LEFT_PART_NAME, adminEmail);
+                         dataModel, Common.LEFT_PART_NAME, adminEmail);
 
         List<JSONObject> articlesR = new ArrayList<JSONObject>();
         if (1 < users.length()) {
             final String anotherUserEmail =
                     users.getJSONObject(1).getString(User.USER_EMAIL);
             articlesR = fillPart(preference, rightCurrentPageNum, pageSize,
-                    windowSize,
-                    dataModel, Common.RIGHT_PART_NAME,
-                    anotherUserEmail);
+                                 windowSize,
+                                 dataModel, Common.RIGHT_PART_NAME,
+                                 anotherUserEmail);
         }
         dataModel.put(Article.ARTICLES + Common.RIGHT_PART_NAME, articlesR);
 
@@ -535,29 +549,29 @@ public final class Filler {
      * @throws RepositoryException repository exception
      */
     private List<JSONObject> fillPart(final JSONObject preference,
-            final int currentPageNum,
-            final int pageSize,
-            final int windowSize,
-            final Map<String, Object> dataModel,
-            final String partName,
-            final String authorEmail)
+                                      final int currentPageNum,
+                                      final int pageSize,
+                                      final int windowSize,
+                                      final Map<String, Object> dataModel,
+                                      final String partName,
+                                      final String authorEmail)
             throws JSONException, RepositoryException {
         LOGGER.log(Level.FINEST, "Filling part[name={0}, authorEmail={1}]",
-                new String[]{partName, authorEmail});
+                   new String[]{partName, authorEmail});
 
         final Query query = new Query().addFilter(Article.ARTICLE_IS_PUBLISHED,
-                FilterOperator.EQUAL,
-                PUBLISHED).
+                                                  FilterOperator.EQUAL,
+                                                  PUBLISHED).
                 addFilter(Article.ARTICLE_AUTHOR_EMAIL,
-                FilterOperator.EQUAL,
-                authorEmail);
+                          FilterOperator.EQUAL,
+                          authorEmail);
 
         if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
             query.addSort(Article.ARTICLE_UPDATE_DATE,
-                    SortDirection.DESCENDING);
+                          SortDirection.DESCENDING);
         } else {
             query.addSort(Article.ARTICLE_CREATE_DATE,
-                    SortDirection.DESCENDING);
+                          SortDirection.DESCENDING);
         }
 
         query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
@@ -566,17 +580,18 @@ public final class Filler {
                 getInt(Pagination.PAGINATION_PAGE_COUNT);
         final List<Integer> pageNums =
                 Paginator.paginate(currentPageNum, pageSize, pageCount,
-                windowSize);
+                                   windowSize);
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM + partName,
-                    pageNums.get(0));
+                          pageNums.get(0));
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM + partName,
-                    pageNums.get(pageNums.size() - 1));
+                          pageNums.get(pageNums.size() - 1));
         }
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT + partName, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS + partName, pageNums);
         final List<JSONObject> ret =
-                org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
+                org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
+                getJSONArray(Keys.RESULTS));
         for (final JSONObject article : ret) {
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
@@ -607,7 +622,7 @@ public final class Filler {
      * @throws JSONException json exception
      */
     public void putArticleExProperties(final List<JSONObject> articles,
-            final JSONObject preference)
+                                       final JSONObject preference)
             throws JSONException {
         for (final JSONObject article : articles) {
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
