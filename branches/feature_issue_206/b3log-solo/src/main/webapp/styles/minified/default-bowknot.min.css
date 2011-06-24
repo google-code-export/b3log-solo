@@ -1,0 +1,92 @@
+.completed-panel{background-color:#E3E9FF;border:1px solid #555;display:none;padding:2px;position:absolute;color:#00C;overflow:auto;}
+.completed-panel a {
+    display: block;
+    text-decoration: none;
+}
+.completed-panel a.selected {
+    font-weight: bold;
+    background-color:#BCF;
+}
+.dialog-background {
+    height: 100%;
+    left: 0;
+    opacity: .3;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    filter: alpha(opacity=30);
+    display: none;
+    background-color: #000000;
+    z-index: 90;
+}
+
+.dialog-panel {
+    position: absolute;
+    z-index: 100;
+    display: none;
+    -moz-user-select: none;
+}
+
+.dialog-title {
+    float: left;
+    line-height: 27px;
+    margin-left: 3px;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
+.dialog-header-left, .dialog-header-right {
+    background-color: #666666;
+    float: left;
+    height: 16px;
+    width: 4px;
+}
+
+.dialog-header-middle {
+    float: left;
+}
+
+.dialog-header-bg {
+    background-color: #666666;
+    cursor: move;
+    float: left;
+    height: 16px;
+}
+
+.dialog-close-icon {
+    background: url("../images/icon.png") repeat scroll -49px -16px transparent;
+    cursor: pointer;
+    float: right;
+    height: 6px;
+    padding: 5px;
+    width: 7px;
+}
+
+.dialog-main {
+    background-color: #FFFFFF;
+    border: 2px solid #666666;
+    border-top-width: 0;
+    padding: 12px;
+}
+.pagination-clear{line-height:0;clear:both;font-size:0;}
+.pagination-pagination span{line-height: 19px;margin:0 5px 0 4px;display:block;float:left;cursor:pointer;}
+.pagination-page, .pagination-nextPage, .pagination-lastPage, .pagination-firstPage, .pagination-prePage, .pagination-prePageHover, .pagination-nextPageHover{color:#4272DB;}
+.pagination-pageCurrent{color:#000;font-weight:bold;}
+.pagination-goInput{width:18px;}
+.table-main{margin:0;padding:0;position:relative;overflow:auto;}
+.table-main table{border-left:1px solid #CCC;table-layout:fixed;word-break:break-all;word-wrap:break-word;background:url(../images/icon.png) center bottom;}
+.table-main table:hover{border-left:1px solid #BBB;}
+.table-header,.table-body{overflow:auto;}
+.table-header th{border:1px solid;border-color:#CCC #BBBBBB #A0A0A0;border-left-style:none;height:28px;}
+.table-main td{border-bottom:1px solid #D0D0D0;border-right:1px solid #FFF;color:#333;padding:3px 0;}
+.table-heiglight td,.table-lineHover td{background-color:#FFC;}
+.table-oddRow{background-color:#FFF;}
+.table-evenRow{background-color:#FFF;}
+.table-upIcon,.table-downIcon{float: left;background-image: url("../images/icon.png");cursor: pointer;height: 16px;width: 16px;}
+.table-upIcon{background-position:-64px -32px;margin-right:6px;}
+.table-downIcon{background-position:-80px -32px;}
+.table-center{margin:0 auto;}
+.bowknot-none{display:none;}
+.bowknot-clear{clear:both;height:0;font-size:0;line-height:0;}
+.bowknot-left{float:left;}
+.tip-panel{z-index: 1;-moz-box-shadow:0 4px 10px #8B8B8B;-webkit-box-shadow:0 4px 10px #8B8B8B;box-shadow:0 4px 10px #8B8B8B;position: absolute;background-color: #FFFFFF;display: none;padding: 3px;max-height: 500px;max-width: 500px;overflow: hidden;}

@@ -29,7 +29,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.event.EventManager;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
@@ -42,7 +41,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending article to B3log Rhythm.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Apr 30, 2011
+ * @version 1.0.1.6, Jun 23, 2011
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
@@ -76,28 +75,16 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
         }
     }
 
-    /**
-     * Constructs a {@link ArticleSender} object with the specified event
-     * manager.
-     * 
-     * @param eventManager
-     *            the specified event manager
-     */
-    public ArticleSender(final EventManager eventManager) {
-        super(eventManager);
-    }
-
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
-        LOGGER.log(
-                Level.FINER,
-                "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data,
-                             ArticleSender.class.getName()});
+        LOGGER.log(Level.FINER,
+                   "Processing an event[type={0}, data={1}] in listener[className={2}]",
+                   new Object[]{event.getType(), data,
+                                ArticleSender.class.getName()});
         try {
-            final JSONObject originalArticle = data.getJSONObject(
-                    Article.ARTICLE);
+            final JSONObject originalArticle =
+                    data.getJSONObject(Article.ARTICLE);
             if (!originalArticle.optBoolean(Common.POST_TO_COMMUNITY)
                 || !originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 LOGGER.log(Level.FINER,
@@ -112,8 +99,8 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            final String blogHost = preference.getString(Preference.BLOG_HOST).
-                    toLowerCase();
+            final String blogHost =
+                    preference.getString(Preference.BLOG_HOST).toLowerCase();
             if (Preference.Default.DEFAULT_BLOG_HOST.equals(blogHost)
                 || "localhost".equals(blogHost.split(":")[0].trim())) {
                 LOGGER.log(Level.INFO,

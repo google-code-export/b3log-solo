@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.event.EventManager;
 import org.b3log.solo.event.sync.AbstractRemoveArticleProcessor;
 import org.b3log.solo.event.sync.BlogSyncStatusCodes;
 import org.b3log.solo.model.BlogSync;
@@ -33,7 +32,7 @@ import org.json.JSONObject;
  * This listener is responsible for blog sync remove article from CnBlogs.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 3, 2010
+ * @version 1.0.0.5, Jun 23, 2011
  */
 public final class CnBlogsRemoveArticleProcessor
         extends AbstractRemoveArticleProcessor {
@@ -43,16 +42,6 @@ public final class CnBlogsRemoveArticleProcessor
      */
     private static final Logger LOGGER =
             Logger.getLogger(CnBlogsRemoveArticleProcessor.class.getName());
-
-    /**
-     * Constructs a {@link CnBlogsRemoveArticleProcessor} object with the
-     * specified event manager.
-     *
-     * @param eventManager the specified event manager
-     */
-    public CnBlogsRemoveArticleProcessor(final EventManager eventManager) {
-        super(eventManager);
-    }
 
     @Override
     public String getExternalBloggingSys() {

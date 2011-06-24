@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, Jun 19, 2011
+ * @version 1.0.3.0, Jun 24, 2011
  */
 public final class Common {
 
@@ -176,6 +176,22 @@ public final class Common {
      * Key of page cached count.
      */
     public static final String PAGE_CACHED_CNT = "pageCachedCnt";
+    /**
+     * Key of minified directory.
+     */
+    public static final String MINI_DIR  = "miniDir";
+    /**
+     * Key of mini postfix.
+     */
+    public static final String MINI_POSTFIX = "miniPostfix";
+    /**
+     * Value of minified directory.
+     */
+    public static final String MINI_DIR_VALUE = "minified/";
+    /**
+     * Value of mini postfix.
+     */
+    public static final String MINI_POSTFIX_VALUE = ".min";
 
     /**
      * Private default constructor.

@@ -4,9 +4,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="none"/>
         <title>${blogTitle} - ${adminConsoleLabel}</title>
-        <link type="text/css" rel="stylesheet" href="styles/default-admin.css"/>
-        <link type="text/css" rel="stylesheet" href="styles/default-bowknot.css"/>
-        <link type="text/css" rel="stylesheet" href="styles/default-base.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/${miniDir}default-admin${miniPostfix}.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/${miniDir}default-bowknot${miniPostfix}.css"/>
+        <link type="text/css" rel="stylesheet" href="styles/${miniDir}default-base${miniPostfix}.css"/>
         <link rel="icon" type="image/png" href="/favicon.png"/>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
         <script type="text/javascript" src="js/lib/jsonrpc.min.js"></script>
@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="js/adminUtil.js"></script>
+        <script type="text/javascript" src="js/${miniDir}adminUtil${miniPostfix}.js"></script>
         <script type="text/javascript">
             var adminUtil = new AdminUtil({
                 "userRole": "${userRole}",
