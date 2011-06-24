@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.6.8, Jun 21, 2011
+    Version: 1.0.6.9, Jun 24, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -451,6 +451,7 @@
             <url>http://m2-repos.googlecode.com/svn/snapshot</url>
             <snapshots>
                 <enabled>true</enabled>
+                <updatePolicy>interval:10</updatePolicy>
             </snapshots>
             <releases>
                 <enabled>false</enabled>
