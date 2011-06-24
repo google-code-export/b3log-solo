@@ -147,7 +147,6 @@ public final class SoloServletListener extends AbstractServletListener {
         } else {
             LOGGER.info("B3log Solo runs in [development] mode");
             Latkes.setRuntimeMode(RuntimeMode.DEVELOPMENT);
-            Latkes.disablePageCache(); // Always disable page cache on dev environment
         }
 
         LOGGER.log(Level.INFO, "Application[id={0}, version={1}]",
