@@ -167,10 +167,7 @@
                             'type': 'click',
                             'action': function (event, data) {
                                 $("#loadMsg").text("${loadingLabel}");
-                                $("#userUpdate").dialog({
-                                    width: 700,
-                                    height:200
-                                });
+                                $("#userUpdate").dialog("open");
                                 var requestJSONObject = {
                                     "oId": data.id
                                 };
@@ -268,6 +265,13 @@
             firstPage: "${firstPageLabel}"
         });
         getUserList(1);
+        
+        $("#userUpdate").dialog({
+            width: 700,
+            height: 160,
+            "modal": true,
+            "hideFooter": true
+        });
     }
     initUser();
     
