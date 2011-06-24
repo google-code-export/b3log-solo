@@ -413,10 +413,12 @@ public final class Filler {
 
         switch (Latkes.getRuntimeMode()) {
             case DEVELOPMENT:
-                dataModel.put("", "");
+                dataModel.put(Common.MINI_DIR, "");
+                dataModel.put(Common.MINI_POSTFIX, "");
                 break;
             case PRODUCTION:
                 dataModel.put(Common.MINI_DIR, Common.MINI_DIR_VALUE);
+                dataModel.put(Common.MINI_POSTFIX, Common.MINI_POSTFIX_VALUE);
                 break;
             default:
                 throw new AssertionError();
