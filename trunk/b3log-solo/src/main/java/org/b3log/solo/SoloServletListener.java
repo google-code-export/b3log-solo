@@ -40,7 +40,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.RunsOnEnv;
+import org.b3log.latke.RuntimeEnv;
+import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.plugin.PluginManager;
@@ -137,18 +138,19 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
-        Latkes.setRunsOnEnv(RunsOnEnv.GAE);
+        Latkes.setRuntimeEnv(RuntimeEnv.GAE);
 
         final Value gaeEnvValue = SystemProperty.environment.value();
         if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
-            LOGGER.info("B3log Solo runs on [production] environment");
+            LOGGER.info("B3log Solo runs in [production] mode");
+            Latkes.setRuntimeMode(RuntimeMode.PRODUCTION);
         } else {
-            LOGGER.info("B3log Solo runs on [development] environment");
+            LOGGER.info("B3log Solo runs in [development] mode");
+            Latkes.setRuntimeMode(RuntimeMode.DEVELOPMENT);
             Latkes.disablePageCache(); // Always disable page cache on dev environment
         }
 
-        LOGGER.log(Level.INFO,
-                   "Application[id={0}, version={1}]",
+        LOGGER.log(Level.INFO, "Application[id={0}, version={1}]",
                    new Object[]{SystemProperty.applicationId.get(),
                                 SystemProperty.applicationVersion.get()});
 
