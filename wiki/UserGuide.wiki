@@ -1,4 +1,5 @@
 ﻿#summary 用户手册
+#labels Featured
 
 =B3log Solo 用户手册=
 
