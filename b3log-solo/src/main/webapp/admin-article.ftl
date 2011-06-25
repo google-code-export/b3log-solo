@@ -78,7 +78,7 @@
             try {
                 if (result.sc === "CANCEL_PUBLISH_ARTICLE_SUCC") {
                     $("#tipMsg").text("${unPulbishSuccLabel}");
-                    $("#draft-listTab").click();
+                    adminUtil.selectTab("draft-list");
                 } else {
                     $("#tipMsg").text("${unPulbishFailLabel}");
                 }
@@ -251,10 +251,10 @@
                                 //                                msg += ", ${postToBuzzFailLabel}";
                                 //                            }
                                 $("#tipMsg").text(msg);
-                                $("#article-listTab").click();
+                                adminUtil.selectTab("article-list");
                             } else {
                                 $("#tipMsg").text("${addSuccLabel}");
-                                $("#draft-listTab").click();
+                                adminUtil.selectTab("draft-list");
                             }
                         
                             // reset article form
@@ -344,11 +344,11 @@
                                     }
 
                                     $("#tipMsg").text(msg);
-                                    $("#article-listTab").click();
+                                    adminUtil.selectTab("article-list");
                                 }
                             } else {
                                 $("#tipMsg").text("${updateSuccLabel}");
-                                $("#draft-listTab").click();
+                                adminUtil.selectTab("draft-list");
                             }
                             // reset article form
                             if (tinyMCE.get("articleContent")) {

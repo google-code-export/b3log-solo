@@ -63,10 +63,10 @@
     padding: 8px 15px 6px;
     text-decoration: none;
 }
-#sideNavi a:hover {
+#sideNavi li.hover {
     background-color: #DDE5FF;
 }
-#sideNavi a.selected {
+#sideNavi .tabs-middle-selected {
     background-color: #BCF;
     font-weight: bold;
 }

@@ -30,41 +30,6 @@ $.extend(AdminUtil.prototype, {
         var logoutURL = jsonRpc.adminService.getLogoutURL();
         window.location.href = logoutURL;
     },
-
-    changeList: function (it) {
-        var tabs = ['article', 'article-list', 'draft-list', 'link-list', 'preference',
-        'article-sync', 'page-list', 'file-list', 'others', 'user-list', 'cache-list'];
-        for (var i = 0; i < tabs.length; i++) {
-            if (it.id === tabs[i] + "Tab") {
-                if ($("#" + tabs[i] + "Panel").html().replace(/\s/g, "") === "") {
-                    $("#loadMsg").text(this.tip.loadingLabel);
-                    $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
-                } else {
-                    switch (tabs[i]) {
-                        case "page-list":
-                            getPageList(1);
-                            break;
-                        case "article-list":
-                            getArticleList(1);
-                            break;
-                        case "draft-list":
-                            getDraftList(1);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                $("#" + tabs[i] + "Panel").show();
-                $("#" + tabs[i] + "Tab a").addClass("selected");
-                if (window.location.hash !== "#" + tabs[i]) {
-                    window.location.hash = "#" + tabs[i];
-                }
-            } else {
-                $("#" + tabs[i] + "Panel").hide();
-                $("#" + tabs[i] + "Tab a").removeClass("selected");
-            }
-        }
-    },
   
     beforeInitArticle: function () {
         articleStatus = $("#title").data("articleStatus");
@@ -116,8 +81,51 @@ $.extend(AdminUtil.prototype, {
     },
 
     init: function () {
-        Util.killIE();       
-
+        // 不支持 IE 6
+        Util.killIE();      
+        
+        var tip = this.tip;
+        // 构建 tabs 及其点击事件
+        $("#tabs").tabs({
+            "bind":[{
+                "type": "click",
+                "action": function (event, data) {
+                    if ($("#tabs_" + data.id).html().replace(/\s/g, "") === "") {
+                        $("#loadMsg").text(tip.loadingLabel);
+                        $("#tabs_" + data.id).load("admin-" + data.id + ".do");
+                    } else {
+                        switch (data.id) {
+                            case "article":
+                                adminUtil.clearArticle();
+                                break;
+                            case "page-list":
+                                getPageList(1);
+                                break;
+                            case "article-list":
+                                getArticleList(1);
+                                break;
+                            case "draft-list":
+                                getDraftList(1);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }]
+        });
+        
+        // 根据 hash 设置当前 tab，如果 hash 为空时，默认为发布文章
+        var hash = window.location.hash;
+        if (hash !== "") {
+            var tabId = hash.substr(1, hash.length - 1);
+            $("#tabs_" + tabId).load("admin-" + tabId + ".do");
+            $("#tabs").tabs("select", tabId);
+        } else {
+            $("#tabs_article").load("admin-article.do");
+            window.location.hash = "#article";
+        }
+        
         // Removes functions with the current user role
         if (this.tip.userRole !== "adminRole") {
             var unUsed = ['link-list', 'preference', 'file-list', 'article-sync', 'page', 'others', 'user-list'];
@@ -135,14 +143,6 @@ $.extend(AdminUtil.prototype, {
                 }, 8000);
             }
         }, 6000);
-
-        var hash = window.location.hash;
-        if (hash !== "") {
-            // set current tab
-            this.changeList(document.getElementById(hash.substr(1, hash.length - 1) + "Tab"));
-        } else {
-            $("#loadMsg").text("");
-        }
     },
 
     // others
@@ -166,9 +166,22 @@ $.extend(AdminUtil.prototype, {
         var tip = this.tip,
         that = this;
         $("#loadMsg").text(tip.loadingLabel);
-        this.changeList(document.getElementById("articleTab"));
+        
+        // 当前 tab 更新为发布文章
+        $("#tabs").tabs("select", "article");
+        window.location.hash = "#article";
+        if ($("#tabs_article").html().replace(/\s/g, "") === "") {
+            $("#tabs_article" ).load("admin-article.do", function () {
+                that.getArticle(data.id, isArticle, tip, that);
+            });
+        } else {
+            that.getArticle(data.id, isArticle, tip, that);
+        }
+    },
+    
+    getArticle: function (id, isArticle, tip, that) {
         var requestJSONObject = {
-            "oId": data.id
+            "oId": id
         };
         jsonRpc.articleService.getArticle(function (result, error) {
             try {
@@ -177,7 +190,7 @@ $.extend(AdminUtil.prototype, {
                         // set default value for article.
                         $("#title").val(result.article.articleTitle).data("articleStatus", {
                             "isArticle": isArticle,
-                            'oId': data.id,
+                            'oId': id,
                             "articleHadBeenPublished": result.article.articleHadBeenPublished
                         });
                         if (tinyMCE.get('articleContent')) {
@@ -225,5 +238,30 @@ $.extend(AdminUtil.prototype, {
             } catch (e) {
             }
         }, requestJSONObject);
+    },
+    
+    selectTab: function (id) {
+        $("#tabs").tabs("select", id);
+        if ($("#tabs_" + id).html().replace(/\s/g, "") === "") {
+            $("#tabs_" + id).load("admin-" + id + ".do");
+        } else {
+            switch (id) {
+                case "article":
+                    adminUtil.clearArticle();
+                    break;
+                case "page-list":
+                    getPageList(1);
+                    break;
+                case "article-list":
+                    getArticleList(1);
+                    break;
+                case "draft-list":
+                    getDraftList(1);
+                    break;
+                default:
+                    break;
+            }
+        }
+        window.location.hash = "#" + id;
     }
 });
