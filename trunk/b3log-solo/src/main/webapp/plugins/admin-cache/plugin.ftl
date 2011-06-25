@@ -10,6 +10,14 @@
         "text": "<a href=\"#cache-list\"><div class=\"left cacheIcon\"></div>cache</a>",
         "content": $("#cachePlugin").html()
     });
+    
+    $("#tabs").tabs("bind", [{
+            "type": "click",
+            "action": function (event, data) {
+                initCache();
+            }
+        }], "cache-list");
+        
     $("#cachePlugin").remove();
     var hash = window.location.hash;
     adminUtil.selectTab(hash.substr(1, hash.length - 1));
