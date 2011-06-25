@@ -1,8 +1,19 @@
-<div id="cacheContent"></div>
-<div id="cacheList"></div>
-<div id="cachePagination" class="margin12 right"></div>
-<div class="clear"></div>
+<div id="cachePlugin">
+    <div id="cacheContent"></div>
+    <div id="cacheList"></div>
+    <div id="cachePagination" class="margin12 right"></div>
+    <div class="clear"></div>
+</div>
 <script type="text/javascript">
+    $("#tabs").tabs("add", {
+        "id": "cache-list",
+        "text": "<a href=\"#cache-list\"><div class=\"left cacheIcon\"></div>cache</a>",
+        "content": $("#cachePlugin").html()
+    });
+    $("#cachePlugin").remove();
+    var hash = window.location.hash;
+    adminUtil.selectTab(hash.substr(1, hash.length - 1));
+    
     var getCacheList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
         
@@ -50,7 +61,7 @@
     }
         
     var initCache = function () {     
-         $("#loadMsg").text("${loadingLabel}");
+        $("#loadMsg").text("${loadingLabel}");
         jsonRpc.adminCacheService.getPageCache(function (result, error) {
             try {
                 var pageCacheStatusLabel = "${disabledLabel}";
