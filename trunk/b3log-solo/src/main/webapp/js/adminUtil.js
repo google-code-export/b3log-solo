@@ -119,13 +119,7 @@ $.extend(AdminUtil.prototype, {
     },
 
     init: function () {
-        // judge browser
-        if ($.browser.msie) {
-            if ($.browser.version === "6.0") {
-                alert("Let's kill IE 6!");
-                return;
-            }
-        }       
+        Util.killIE();       
 
         // Removes functions with the current user role
         if (this.tip.userRole !== "adminRole") {

@@ -18,7 +18,16 @@ var Util = function (tips) {
     this.tips = tips;
 }
 
-$.extend(Util.prototype, {
+Util.killIE =  function () {
+    if ($.browser.msie) {
+        if ($.browser.version === "6.0") {
+            alert("Let's kill IE 6!");
+            return;
+        }
+    }
+};
+
+$.extend(Util.prototype, {    
     goTop:function (type) {
         switch (type) {
             case undefined:
