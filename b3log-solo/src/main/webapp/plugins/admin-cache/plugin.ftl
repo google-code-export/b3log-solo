@@ -5,22 +5,12 @@
     <div class="clear"></div>
 </div>
 <script type="text/javascript">
-    $("#tabs").tabs("add", {
-        "id": "cache-list",
-        "text": "<a href=\"#cache-list\"><div class=\"left cacheIcon\"></div>cache</a>",
-        "content": $("#cachePlugin").html()
-    });
+    plugins["cache-list"] = {};
     
-    $("#tabs").tabs("bind", [{
-            "type": "click",
-            "action": function (event, data) {
-                initCache();
-            }
-        }], "cache-list");
-        
-    $("#cachePlugin").remove();
-    var hash = window.location.hash;
-    adminUtil.selectTab(hash.substr(1, hash.length - 1));
+    
+    
+    
+    
     
     var getCacheList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
@@ -68,7 +58,7 @@
         }, requestJSONObject);
     }
         
-    var initCache = function () {     
+    plugins["cache-list"].initCache = function () {     
         $("#loadMsg").text("${loadingLabel}");
         jsonRpc.adminCacheService.getPageCache(function (result, error) {
             try {
@@ -118,7 +108,6 @@
         });
         getCacheList(1);
     };
-    initCache();
     
     var changeCacheStatus = function (it) {
         var $it = $(it);
@@ -138,4 +127,33 @@
             jsonRpc.adminService.setPageCache(requestJSONObject);
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    $("#tabs").tabs("add", {
+        "id": "cache-list",
+        "text": "<a href=\"#cache-list\"><div class=\"left cacheIcon\"></div>cache</a>",
+        "content": $("#cachePlugin").html()
+    });
+    
+    var hash = window.location.hash;
+    $("#tabs").tabs("select", hash.substr(1, hash.length - 1));
+    if (hash === "#cache-list") {
+        plugins["cache-list"].initCache();
+    }
+    $("#tabs").tabs("bind", [{
+            "type": "click",
+            "action": function (event, data) {
+                plugins["cache-list"].initCache();
+            }
+        }], "cache-list");
+        
+    $("#cachePlugin").remove();
 </script>
