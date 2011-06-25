@@ -50,6 +50,6 @@ public final class AdminCache extends AbstractPlugin {
     
     @Override
     public String getViewName() {
-        return "admin-cache-list.ftl";
+        return "admin-index.ftl";
     }
 }
