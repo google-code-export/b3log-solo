@@ -16,10 +16,7 @@
 
 package org.b3log.solo.plugin.cache;
 
-import java.util.logging.Level;
 import org.b3log.latke.plugin.AbstractPlugin;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Admin cache plugin.
@@ -30,19 +27,6 @@ import java.util.logging.Logger;
  */
 public final class AdminCache extends AbstractPlugin {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER =
-            Logger.getLogger(AdminCache.class.getName());
-    
-    @Override
-    public void plug(final Map<String, Object> dataModel) {
-        super.plug(dataModel);
-        
-        LOGGER.log(Level.FINER, "Plugin[name={0}] has been plugged", getName());
-    }
-    
     @Override
     public void unplug() {
         throw new UnsupportedOperationException("Not supported yet.");
