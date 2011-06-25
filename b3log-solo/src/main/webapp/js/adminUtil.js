@@ -41,9 +41,6 @@ $.extend(AdminUtil.prototype, {
                     $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
                 } else {
                     switch (tabs[i]) {
-                        case "cache-list":
-                            getCacheState();
-                            break;
                         case "page-list":
                             getPageList(1);
                             break;
