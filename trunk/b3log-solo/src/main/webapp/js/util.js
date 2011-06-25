@@ -233,3 +233,7 @@ $.extend(Util.prototype, {
         $("#tagsPanel").html(tagsHTML + "<div class='clear'></div>");
     }
 });
+
+
+
+var plugins = {};
