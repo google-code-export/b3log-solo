@@ -12,7 +12,7 @@
             "paginationWindowSize": adminUtil.WINDOW_SIZE
         };
         
-        jsonRpc.pageCacheListService.getPages(function (result, error) {
+        jsonRpc.adminCacheService.getPages(function (result, error) {
             try {
                 if (result.sc) {
                     var caches = result.pages;
@@ -51,7 +51,7 @@
         
     var initCache = function () {     
          $("#loadMsg").text("${loadingLabel}");
-        jsonRpc.adminService.getPageCache(function (result, error) {
+        jsonRpc.adminCacheService.getPageCache(function (result, error) {
             try {
                 var pageCacheStatusLabel = "${disabledLabel}";
                 if (result.pageCacheEnabled) {
