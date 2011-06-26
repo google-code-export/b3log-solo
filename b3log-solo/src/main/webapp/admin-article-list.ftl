@@ -31,7 +31,6 @@
                                 + articles[i].articleTitle + "</a>";
                             articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
                             articleData[i].update = "<div class='updateIcon'></div>";
-                            articleData[i].remove = "<div class='deleteIcon'></div>";
                             var topArticleHtml = articles[i].articlePutTop ?
                                 "<div class='putTopIcon'></div>" : "<div class='notPutTopIcon'></div>"
                             articleData[i].topArticle = topArticleHtml;
@@ -42,6 +41,7 @@
                                 + "' class='no-underline'>"+ articles[i].articleViewCount + "</a>";;
                             articleData[i].id = articles[i].oId;
                             articleData[i].author = articles[i].authorName;
+                            articleData[i].expendRow = "更新 <span onclick=\"removeArticle('" + articles[i].oId + "')\">删除</span> 置顶";
                         }
                         articleDataTemp = articleData;
                         $("#articleList").table("update",{
@@ -70,6 +70,59 @@
             }
         }, requestJSONObject);
     }
+    
+    var removeArticle = function (id) {
+        var isDelete = confirm("${confirmRemoveLabel}");
+
+        if (isDelete) {
+            $("#loadMsg").text("${loadingLabel}");
+            $("#tipMsg").text("");
+            var requestJSONObject = {
+                "oId": id
+            };
+
+            jsonRpc.articleService.removeArticle(function (result, error) {
+                try {
+                    switch (result.status.code) {
+                        case "REMOVE_ARTICLE_SUCC":
+                            var events = result.status.events,
+                            msg = "${removeSuccLabel}";
+                            if (events) {
+                                if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
+                                    msg += ", ${syncCSDNBlogFailLabel}: "
+                                        + events.blogSyncCSDNBlog.msg;
+                                }
+
+                                if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
+                                    msg += ", ${syncCnBlogsFailLabel}: "
+                                        + events.blogSyncCnBlogs.msg;
+                                }
+
+                                if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
+                                    msg += ", ${syncBlogJavaFailLabel}: "
+                                        + events.blogSyncBlogJava.msg;
+                                }
+                            }
+                            $("#tipMsg").text(msg);
+                            getArticleList(1);
+                            break;
+                        case "REMOVE_ARTICLE_FAIL_FORBIDDEN":
+                            $("#tipMsg").text("${forbiddenLabel}");
+                            break;
+                        case "REMOVE_ARTICLE_FAIL_":
+                            $("#tipMsg").text("${removeFailLabel}");
+                            break;
+                        default:
+                            $("#tipMsg").text("");
+                            break;
+                    }
+                    $("#loadMsg").text("");
+                } catch (e) {
+                }
+            }, requestJSONObject);
+        }
+    }
+
 
     var loadArticleList = function () {
         $("#articleList").table({
@@ -87,7 +140,7 @@
                 }, {
                     text: "${authorLabel}",
                     index: "author",
-                    width: 100,
+                    width: 130,
                     style: "padding-left: 6px; overflow: hidden;"
                 }, {
                     textAlign: "center",
@@ -107,66 +160,6 @@
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
-                    textAlign: "center",
-                    text: "${removeLabel}",
-                    index: "remove",
-                    width: 53,
-                    bind: [{
-                            'type': 'click',
-                            'action': function (event, data) {
-                                var isDelete = confirm("${confirmRemoveLabel}");
-
-                                if (isDelete) {
-                                    $("#loadMsg").text("${loadingLabel}");
-                                    $("#tipMsg").text("");
-                                    var requestJSONObject = {
-                                        "oId": data.id
-                                    };
-
-                                    jsonRpc.articleService.removeArticle(function (result, error) {
-                                        try {
-                                            switch (result.status.code) {
-                                                case "REMOVE_ARTICLE_SUCC":
-                                                    var events = result.status.events,
-                                                    msg = "${removeSuccLabel}";
-                                                    if (events) {
-                                                        if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                                            msg += ", ${syncCSDNBlogFailLabel}: "
-                                                                + events.blogSyncCSDNBlog.msg;
-                                                        }
-
-                                                        if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                                            msg += ", ${syncCnBlogsFailLabel}: "
-                                                                + events.blogSyncCnBlogs.msg;
-                                                        }
-
-                                                        if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                                            msg += ", ${syncBlogJavaFailLabel}: "
-                                                                + events.blogSyncBlogJava.msg;
-                                                        }
-                                                    }
-                                                    $("#tipMsg").text(msg);
-                                                    getArticleList(1);
-                                                    break;
-                                                case "REMOVE_ARTICLE_FAIL_FORBIDDEN":
-                                                    $("#tipMsg").text("${forbiddenLabel}");
-                                                    break;
-                                                case "REMOVE_ARTICLE_FAIL_":
-                                                    $("#tipMsg").text("${removeFailLabel}");
-                                                    break;
-                                                default:
-                                                    $("#tipMsg").text("");
-                                                    break;
-                                            }
-                                            $("#loadMsg").text("");
-                                        } catch (e) {
-                                        }
-                                    }, requestJSONObject);
-                                }
-                            }
-                        }],
-                    style: "cursor:pointer; margin-left:22px;"
-                },  {
                     textAlign: "center",
                     text: "${putTopLabel}",
                     index: "topArticle",
@@ -264,7 +257,10 @@
                     width: 36,
                     index: "articleViewCount",
                     style: "text-align:center;"
-                }]
+                }],
+            expendRow: {
+                index: "expendRow"
+            }
         });
 
         $("#articlePagination").paginate({

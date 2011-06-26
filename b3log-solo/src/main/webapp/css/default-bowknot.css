@@ -123,6 +123,9 @@
 	color: #333;
 	padding: 3px 0;
 }
+.table-lineHover .table-hasExpend td {
+    border-bottom: 0px;
+}
 .table-heiglight td,.table-lineHover td {
 	background-color: #FFC;
 }
