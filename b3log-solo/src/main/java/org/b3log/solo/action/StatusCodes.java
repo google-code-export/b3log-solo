@@ -20,7 +20,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Feb 14, 2010
+ * @version 1.0.2.3, Jun 26, 2011
  */
 public enum StatusCodes {
 
@@ -263,4 +263,9 @@ public enum StatusCodes {
      * Indicates get user successfully.
      */
     GET_USER_SUCC,
+    /**
+     * Indicates get plugins successfully.
+     */
+    GET_PLUGINS_SUCC
+    
 }
