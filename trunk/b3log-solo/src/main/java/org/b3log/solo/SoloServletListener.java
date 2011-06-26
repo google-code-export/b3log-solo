@@ -76,6 +76,7 @@ import org.b3log.solo.jsonrpc.impl.StatisticService;
 import org.b3log.solo.jsonrpc.impl.TagService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
+import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.util.Preferences;
@@ -87,7 +88,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.5, Jun 23, 2011
+ * @version 1.0.4.6, Jun 26, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -404,6 +405,10 @@ public final class SoloServletListener extends AbstractServletListener {
             final TagService tagService = TagService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(tagService.
                     getServiceObjectName(), tagService);
+            
+            final PluginService pluginService = PluginService.getInstance();
+            JSONRPCBridge.getGlobalBridge().registerObject(pluginService.
+                    getServiceObjectName(), pluginService);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register remote JavaScript service error",
                        e);
