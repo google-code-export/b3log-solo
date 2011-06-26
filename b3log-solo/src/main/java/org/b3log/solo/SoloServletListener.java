@@ -44,7 +44,7 @@ import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.plugin.PluginManager;
+import org.b3log.latke.plugin.PluginLoader;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
@@ -158,7 +158,7 @@ public final class SoloServletListener extends AbstractServletListener {
         registerRemoteJSServices();
         registerEventProcessor();
 
-        PluginManager.load();
+        PluginLoader.load();
 
         final PreferenceRepository preferenceRepository =
                 PreferenceGAERepository.getInstance();
