@@ -35,67 +35,72 @@
                 <div class="clear"></div>
             </div>
             <div id="allPanel">
-                <div>
+                <div id="tabs">
                     <ul id="sideNavi">
-                        <li id="articleTab" onclick="adminUtil.changeList(this);adminUtil.clearArticle();">
-                            <a href="#article"><div class="left postIcon"></div>${postArticleLabel}</a>
+                        <li>
+                            <div data-index="article">
+                                <a href="#article"><div class="left postIcon"></div>${postArticleLabel}</a>
+                            </div>
                         </li>
-                        <li id="article-listTab" onclick="adminUtil.changeList(this);">
-                            <a href="#article-list"><div class="left articlesIcon"></div>${articleListLabel}</a>
+                        <li>
+                            <div data-index="article-list">
+                                <a href="#article-list"><div class="left articlesIcon"></div>${articleListLabel}</a>
+                            </div>
                         </li>
-                        <li id="draft-listTab" onclick="adminUtil.changeList(this);">
-                            <a href="#draft-list"><div class="left draftsIcon"></div>${draftListLabel}</a>
+                        <li>
+                            <div data-index="draft-list">
+                                <a href="#draft-list"><div class="left draftsIcon"></div>${draftListLabel}</a>
+                            </div>
                         </li>
-                        <li id="file-listTab" onclick="adminUtil.changeList(this);">
-                            <a href="#file-list"><div class="left fileIcon"></div>${fileListLabel}</a>
+                        <li>
+                            <div data-index="file-list">
+                                <a href="#file-list"><div class="left fileIcon"></div>${fileListLabel}</a>
+                            </div>
                         </li>
-                        <li id="page-listTab" onclick="adminUtil.changeList(this);">
-                            <a href="#page-list"><div class="left pageIcon"></div>${pageMgmtLabel}</a>
+                        <li>
+                            <div data-index="page-list">
+                                <a href="#page-list"><div class="left pageIcon"></div>${pageMgmtLabel}</a>
+                            </div>
                         </li>
-                        <li id="link-listTab" onclick="adminUtil.changeList(this);">
-                            <a href="#link-list"><div class="left linkIcon"></div>${linkManagementLabel}</a>
+                        <li>
+                            <div data-index="link-list">
+                                <a href="#link-list"><div class="left linkIcon"></div>${linkManagementLabel}</a>
+                            </div>
                         </li>
-                        <li id="article-syncTab" onclick="adminUtil.changeList(this);">
-                            <a href="#article-sync"><div class="left blogSyncIcon"></div>${blogSyncLabel}</a>
+                        <li>
+                            <div data-index="article-sync">
+                                <a href="#article-sync"><div class="left blogSyncIcon"></div>${blogSyncLabel}</a>
+                            </div>
                         </li>
-                        <li id="preferenceTab" onclick="adminUtil.changeList(this);">
-                            <a href="#preference"><div class="left preferenceIcon"></div>${preferenceLabel}</a>
+                        <li>
+                            <div data-index="preference">
+                                <a href="#preference"><div class="left preferenceIcon"></div>${preferenceLabel}</a>
+                            </div>
                         </li>
-                        <li id="user-listTab" onclick="adminUtil.changeList(this);">
-                            <a href="#user-list"><div class="left usersIcon"></div>${userManageLabel}</a>
+                        <li>
+                            <div data-index="user-list">
+                                <a href="#user-list"><div class="left usersIcon"></div>${userManageLabel}</a>
+                            </div>
                         </li>
-                        <li id="cache-listTab" onclick="adminUtil.changeList(this);">
-                            <a href="#cache-list"><div class="left cacheIcon"></div>${cacheMgmtLabel}</a>
-                        </li>
-                        <li id="othersTab" onclick="adminUtil.changeList(this);">
-                            <a href="#others"><div class="left othersIcon"></div>${othersLabel}</a>
+                        <li>
+                            <div data-index="others">
+                                <a href="#others"><div class="left othersIcon"></div>${othersLabel}</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
                 <div id="main">
-                    <div class="content">
-                        <div id="articlePanel" class="none">
-                        </div>
-                        <div id="article-listPanel" class="none">
-                        </div>
-                        <div id="draft-listPanel" class="none">
-                        </div>
-                        <div id="link-listPanel" class="none">
-                        </div>
-                        <div id="preferencePanel" class="none">
-                        </div>
-                        <div id="article-syncPanel" class="none">
-                        </div>
-                        <div id="page-listPanel" class="none">
-                        </div>
-                        <div id="file-listPanel" class="none">
-                        </div>
-                        <div id="cache-listPanel" class="none">
-                        </div>
-                        <div id="othersPanel" class="none">
-                        </div>
-                        <div id="user-listPanel" class="none">
-                        </div>
+                    <div class="content" id="tabsContent">
+                        <div id="tabs_article"></div>
+                        <div id="tabs_article-list"></div>
+                        <div id="tabs_draft-list"></div>
+                        <div id="tabs_link-list"></div>
+                        <div id="tabs_preference"></div>
+                        <div id="tabs_article-sync"></div>
+                        <div id="tabs_page-list"></div>
+                        <div id="tabs_file-list"></div>
+                        <div id="tabs_others"></div>
+                        <div id="tabs_user-list"></div>
                     </div>
                 </div>
                 <div class="footer">
