@@ -50,7 +50,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.3.1, Jun 18, 2011
+ * @version 1.0.3.2, Jun 26, 2011
  * @see org.b3log.latke.action.AbstractCacheablePageAction#afterDoFreeMarkerTemplateAction(
  * javax.servlet.http.HttpServletRequest,
  * javax.servlet.http.HttpServletResponse,
@@ -79,7 +79,8 @@ public final class PageCacheFilter implements Filter {
         "/admin-others.do",
         "/admin-draft-list.do",
         "/admin-user-list.do",
-        "/admin-cache-list.do",
+        "/admin-cache.do",
+        "/admin-plugin.do",
         "/rm-all-data.do",
         "/init.do",
         "/clear-cache.do",
@@ -280,12 +281,12 @@ public final class PageCacheFilter implements Filter {
                || requestURI.equals("/get-random-articles.do")
                || requestURI.equals("/article-random-double-gen.do")
                || requestURI.equals("/flush-stat.do")
-               || equalAdminActions(requestURI)
                || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")
                || requestURI.contains("/skins")
                || requestURI.contains("/images")
-               || requestURI.contains("/styles");
+               || requestURI.contains("/styles")
+               || equalAdminActions(requestURI);
     }
 
     @Override
