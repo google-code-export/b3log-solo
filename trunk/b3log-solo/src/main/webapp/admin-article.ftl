@@ -283,7 +283,8 @@
                             break;
                     }
                     $("loadMsg").text("");
-                } catch (e) {}
+                } catch (e) {
+                }
             }, requestJSONObject);
         }
     }
