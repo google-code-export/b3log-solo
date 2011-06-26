@@ -102,6 +102,7 @@
         $("#articlePagination").paginate({
             "bind": function(currentPage) {
                 adminUtil.getArticleList(currentPage, "article");
+                articleListCurrentPage = currentPage;
                 return true;
             },
             "currentPage": 1,

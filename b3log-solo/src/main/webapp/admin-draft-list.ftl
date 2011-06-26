@@ -50,6 +50,7 @@
         $("#draftPagination").paginate({
            "bind": function(currentPage) {
                 adminUtil.getArticleList(currentPage, "draft");
+                draftListCurrentPage = currentPage;
                 return true;
             },
             "currentPage": 1,
