@@ -55,7 +55,7 @@
         $("#pluginList").table({
             colModel: [{
                     style: "padding-left: 6px;",
-                    text: "${titleLabel}",
+                    text: "${pluginNameLabel}",
                     index: "name",
                     width: 230
                 }, {
