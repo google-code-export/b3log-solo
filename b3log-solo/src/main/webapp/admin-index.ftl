@@ -83,13 +83,13 @@
                             </div>
                         </li>
                         <li>
-                            <div data-index="others">
-                                <a href="#others"><div class="left othersIcon"></div>${othersLabel}</a>
+                            <div data-index="plugin-list">
+                                <a href="#plugin-list"><div class="left othersIcon"></div>${pluginMagtLabel}</a>
                             </div>
                         </li>
                         <li>
-                            <div data-index="plugin-list">
-                                <a href="#plugin-list"><div class="left othersIcon"></div>${othersLabel}</a>
+                            <div data-index="others">
+                                <a href="#others"><div class="left othersIcon"></div>${othersLabel}</a>
                             </div>
                         </li>
                     </ul>

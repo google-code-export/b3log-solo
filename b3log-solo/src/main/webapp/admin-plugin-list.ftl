@@ -55,7 +55,7 @@
         $("#pluginList").table({
             colModel: [{
                     style: "padding-left: 6px;",
-                    text: "${commentNameLabel}",
+                    text: "${titleLabel}",
                     index: "name",
                     width: 230
                 }, {
@@ -64,13 +64,13 @@
                     index: "status",
                     minWidth: 180
                 }, {
-                    style: "padding-left: 36px;",
-                    text: "${administratorLabel}",
+                    style: "padding-left: 6px;",
+                    text: "${authorLabel}",
                     index: "author",
                     width: 200
                 }, {
-                    style: "padding-left: 36px;",
-                    text: "${administratorLabel}",
+                    style: "padding-left: 3px;",
+                    text: "${versionLabel}",
                     index: "version",
                     width: 120
                 }]
