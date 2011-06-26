@@ -204,7 +204,7 @@ $.extend(AdminUtil.prototype, {
         }
     },
     
-    // 获取文章并把值塞入发布文章页面
+    /* 获取文章并把值塞入发布文章页面 */
     getArticle: function (id, isArticle, tip, that) {
         var requestJSONObject = {
             "oId": id
