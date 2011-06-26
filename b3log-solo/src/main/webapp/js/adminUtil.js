@@ -162,7 +162,7 @@ $.extend(AdminUtil.prototype, {
     },
 
     // article list and draft list
-    updateArticle: function (data, isArticle) {
+    updateArticle: function (id, isArticle) {
         var tip = this.tip,
         that = this;
         $("#loadMsg").text(tip.loadingLabel);
@@ -172,10 +172,10 @@ $.extend(AdminUtil.prototype, {
         window.location.hash = "#article";
         if ($("#tabs_article").html().replace(/\s/g, "") === "") {
             $("#tabs_article" ).load("admin-article.do", function () {
-                that.getArticle(data.id, isArticle, tip, that);
+                that.getArticle(id, isArticle, tip, that);
             });
         } else {
-            that.getArticle(data.id, isArticle, tip, that);
+            that.getArticle(id, isArticle, tip, that);
         }
     },
     

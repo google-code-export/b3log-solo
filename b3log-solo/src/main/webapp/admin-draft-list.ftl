@@ -94,7 +94,7 @@
                     bind: [{
                             'type': 'click',
                             'action': function (event, data) {
-                                adminUtil.updateArticle(data, false);
+                                adminUtil.updateArticle(data.id, false);
                             }
                         }],
                     style: "cursor:pointer; margin-left:22px;"
