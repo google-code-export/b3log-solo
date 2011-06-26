@@ -15,7 +15,7 @@
  */
 
 var AdminUtil = function (tip) {
-    this.PAGE_SIZE = 1;
+    this.PAGE_SIZE = 18;
     this.WINDOW_SIZE = 10;
     this.tip = tip;
 };
