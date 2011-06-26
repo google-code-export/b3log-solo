@@ -33,13 +33,14 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.action.util.Filler;
 import org.json.JSONObject;
 
 /**
  * B3log Solo initialization action. init.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 6, 2010
+ * @version 1.0.0.3, Jun 25, 2011
  */
 public final class InitAction extends AbstractAction {
 
@@ -60,6 +61,10 @@ public final class InitAction extends AbstractAction {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Filler.
+     */
+    private Filler filler = Filler.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -74,6 +79,8 @@ public final class InitAction extends AbstractAction {
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+
+        filler.fillMinified(ret);
 
         try {
             if (SoloServletListener.isInited()) {

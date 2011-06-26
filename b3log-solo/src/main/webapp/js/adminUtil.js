@@ -41,9 +41,6 @@ $.extend(AdminUtil.prototype, {
                     $("#" + tabs[i] + "Panel").load("admin-" + tabs[i] + ".do");
                 } else {
                     switch (tabs[i]) {
-                        case "cache-list":
-                            getCacheState();
-                            break;
                         case "page-list":
                             getPageList(1);
                             break;
@@ -119,13 +116,7 @@ $.extend(AdminUtil.prototype, {
     },
 
     init: function () {
-        // judge browser
-        if ($.browser.msie) {
-            if ($.browser.version === "6.0") {
-                alert("Let's kill IE 6!");
-                return;
-            }
-        }       
+        Util.killIE();       
 
         // Removes functions with the current user role
         if (this.tip.userRole !== "adminRole") {

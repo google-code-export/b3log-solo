@@ -22,19 +22,19 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * Page cache list plugin.
+ * Admin cache plugin.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Jun 21, 2011
+ * @version 1.0.0.4, Jun 25, 2011
  */
-public final class PageCacheList extends AbstractPlugin {
+public final class AdminCache extends AbstractPlugin {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PageCacheList.class.getName());
+            Logger.getLogger(AdminCache.class.getName());
     
     @Override
     public void plug(final Map<String, Object> dataModel) {
@@ -50,6 +50,6 @@ public final class PageCacheList extends AbstractPlugin {
     
     @Override
     public String getViewName() {
-        return "admin-cache-list.ftl";
+        return "admin-index.ftl";
     }
 }
