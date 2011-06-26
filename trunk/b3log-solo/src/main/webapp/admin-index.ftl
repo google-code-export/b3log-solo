@@ -84,7 +84,7 @@
                         </li>
                         <li>
                             <div data-index="plugin-list">
-                                <a href="#plugin-list"><div class="left othersIcon"></div>${pluginMagtLabel}</a>
+                                <a href="#plugin-list"><div class="left othersIcon"></div>${pluginMgmtLabel}</a>
                             </div>
                         </li>
                         <li>

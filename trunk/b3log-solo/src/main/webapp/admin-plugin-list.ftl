@@ -60,7 +60,7 @@
                     width: 230
                 }, {
                     style: "padding-left: 6px;",
-                    text: "${commentEmailLabel}",
+                    text: "${statusLabel}",
                     index: "status",
                     minWidth: 180
                 }, {

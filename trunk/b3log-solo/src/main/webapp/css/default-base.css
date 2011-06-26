@@ -42,7 +42,7 @@ li {
 	margin-left: 12px;
 }
 button,.button {
-	background: url(../images/icon.png) repeat center bottom;
+	background: url(/images/icon.png) repeat center bottom;
 	border: 1px solid;
 	border-color: #CCC #BBBBBB #A0A0A0;
 	border-radius: 4px;
@@ -182,7 +182,7 @@ button:hover,.button:hover {
 .postIcon,.articlesIcon,.draftsIcon,.usersIcon,.linkIcon,
 .preferenceIcon,.blogSyncIcon, .pageIcon, .trueIcon,.falseIcon,
 .fileIcon, .othersIcon, .goTopIcon, .goBottomIcon, .cacheIcon {
-	background-image: url("../images/icon.png");
+	background-image: url("/images/icon.png");
 	cursor: pointer;
 	height: 16px;
 	width: 16px;
