@@ -21,10 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
@@ -60,7 +58,6 @@ import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 
 /**
  * Comment service for JavaScript client.
@@ -181,75 +178,75 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 //
 //        return ret;
 //    }
-
+//    
     /**
-	 * @throws RepositoryException
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
-	public JSONObject getComments(final JSONObject requestJSONObject,
-			final HttpServletRequest request, final HttpServletResponse response)
-			throws ActionException, IOException {
+     * @throws RepositoryException
+     * 
+     * 
+     * 
+     * 
+     */
+    public JSONObject getComments(final JSONObject requestJSONObject,
+                                  final HttpServletRequest request,
+                                  final HttpServletResponse response)
+            throws ActionException, IOException {
 
-		JSONObject ret = new JSONObject();
-		if (!userUtils.isLoggedIn()) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN);
-			return ret;
-		}
+        JSONObject ret = new JSONObject();
+        if (!userUtils.isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
 
-		try {
-			final int currentPageNum = requestJSONObject
-					.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
-			final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
-			final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
+        try {
+            final int currentPageNum = requestJSONObject.getInt(
+                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
+            final int pageSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_PAGE_SIZE);
+            final int windowSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_WINDOW_SIZE);
 
-			Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize)
-					.addSort(Comment.COMMENT_DATE, SortDirection.DESCENDING);
-			JSONObject result = commentRepository.get(query);
+            final Query query = new Query().setCurrentPageNum(currentPageNum).
+                    setPageSize(pageSize).addSort(Comment.COMMENT_DATE,
+                                                  SortDirection.DESCENDING);
+            final JSONObject result = commentRepository.get(query);
+            final JSONArray comments = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < comments.length(); i++) {
+                final JSONObject comment = comments.getJSONObject(i);
+                final JSONObject articleCommentrelationship =
+                        articleCommentRepository.getByCommentId(comment.
+                        getString(Keys.OBJECT_ID));
 
-			JSONArray comments = result.getJSONArray(Keys.RESULTS);
+                final JSONObject article =
+                        articleRepository.get(articleCommentrelationship.
+                        getString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
 
-			for (int i = 0; i < comments.length(); i++) {
+                // the extra data that comment-list need show
+                comment.put(Comment.COMMENT_ARTICLE_TITLE,
+                            article.getString(Article.ARTICLE_TITLE));
+            }
 
-				JSONObject comment = comments.getJSONObject(i);
+            ret.put(Comment.COMMENTS, comments);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
 
-				JSONObject articleCommentrelationship = articleCommentRepository
-						.getByCommentId(comment.getString(Keys.OBJECT_ID));
+            // page
+            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
+                    getInt(Pagination.PAGINATION_PAGE_COUNT);
+            final JSONObject pagination = new JSONObject();
+            ret.put(Pagination.PAGINATION, pagination);
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum,
+                                                              pageSize,
+                                                              pageCount,
+                                                              windowSize);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ActionException(e);
+        }
 
-				JSONObject article = articleRepository.get(articleCommentrelationship
-						.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
+        return ret;
+    }
 
-				// the extra data that comment-list need show
-				comment.put(Comment.COMMENT_ARTICLE_TITLE, article.getString(Article.ARTICLE_TITLE));
-
-			}
-
-			ret.put(Comment.COMMENTS, comments);
-
-			ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
-
-			// page
-			final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(
-					Pagination.PAGINATION_PAGE_COUNT);
-			final JSONObject pagination = new JSONObject();
-			ret.put(Pagination.PAGINATION, pagination);
-			final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount,
-					windowSize);
-			pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-			pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, e.getMessage(), e);
-			throw new ActionException(e);
-		}
-
-		return ret;
-	}
-
-    
-    
     /**
      * Gets comments of an article specified by the article id for administrator.
      *
@@ -305,7 +302,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                                          + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
-                final String content = comment.getString(Comment.COMMENT_CONTENT).
+                final String content =
+                        comment.getString(Comment.COMMENT_CONTENT).
                         replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
                 comment.put(Comment.COMMENT_CONTENT, content);
                 comments.add(comment);
