@@ -85,9 +85,9 @@
     </action>
     <action>
             <actionName>CUSTOM-minify-minify</actionName>
-            <displayName>minify-minify</displayName>
+            <displayName>min-min</displayName>
             <goals>
-                <goal>minify:minify</goal>
+                <goal>min:min</goal>
             </goals>
         </action>
 </actions>
