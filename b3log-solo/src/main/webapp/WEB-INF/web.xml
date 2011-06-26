@@ -41,7 +41,7 @@
         <url-pattern>/admin-others.do</url-pattern>
         <url-pattern>/admin-draft-list.do</url-pattern>
         <url-pattern>/admin-user-list.do</url-pattern>
-        <url-pattern>/admin-plugin.do</url-pattern>
+        <url-pattern>/admin-plugin-list.do</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>PageCacheFilter</filter-name>
@@ -105,7 +105,7 @@
             <url-pattern>/admin-page-list.do</url-pattern>
             <url-pattern>/admin-preference.do</url-pattern>
             <url-pattern>/admin-user-list.do</url-pattern>
-            <url-pattern>/admin-plugin.do</url-pattern>
+            <url-pattern>/admin-plugin-list.do</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>*</role-name>
@@ -144,7 +144,7 @@
         <url-pattern>/admin-others.do</url-pattern>
         <url-pattern>admin-draft-list.do</url-pattern>
         <url-pattern>/admin-user-list.do</url-pattern>
-        <url-pattern>/admin-plugin.do</url-pattern>
+        <url-pattern>/admin-plugin-list.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>InitAction</servlet-name>

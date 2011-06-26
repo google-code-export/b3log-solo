@@ -83,4 +83,11 @@
             <goal>install</goal>
         </goals>
     </action>
+    <action>
+            <actionName>CUSTOM-minify-minify</actionName>
+            <displayName>minify-minify</displayName>
+            <goals>
+                <goal>minify:minify</goal>
+            </goals>
+        </action>
 </actions>
