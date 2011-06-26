@@ -104,6 +104,9 @@ $.extend(AdminUtil.prototype, {
                             case "article-list":
                                 getArticleList(1);
                                 break;
+                            case "comment-list":
+                            	getCommentList(1);
+                            	break;
                             case "draft-list":
                                 getDraftList(1);
                                 break;
