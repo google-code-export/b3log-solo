@@ -15,27 +15,17 @@
             try {
                 switch (result.sc) {
                     case "GET_PLUGINS_SUCC":
-                        var pluginList = result.plugins;
-                        var pluginData = [];
-                        for (var i = 0; i < pluginList.length; i++) {
-                            pluginData[i] = {};
-                            pluginData[i].author = pluginList[i].author;
-                            pluginData[i].name = pluginList[i].name;
-                            pluginData[i].version= pluginList[i].version;
-                            pluginData[i].status= pluginList[i].status.javaClass;
-                        }
-
                         $("#pluginList").table("update",{
                             data: [{
                                     "groupName": "all",
-                                    "groupData": pluginData
+                                    "groupData": result.plugins
                                 }]
                         });
-
+                        
                         if (result.pagination.paginationPageCount === 0) {
                             result.pagination.paginationPageCount = 1;
                         }
-
+                        
                         $("#pluginPagination").paginate("update", {
                                 currentPage: pageNum,
                                 pageCount: result.pagination.paginationPageCount

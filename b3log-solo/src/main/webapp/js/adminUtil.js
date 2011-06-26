@@ -44,8 +44,10 @@ $.extend(AdminUtil.prototype, {
                     getPageList(1);
                     break;
                 case "article-list":
+                    adminUtil.getArticleList(1, "article");
+                    break;
                 case "draft-list":
-                    adminUtil.getArticleList(1);
+                    adminUtil.getArticleList(1, "draft");
                     break;
                 default:
                     break;
@@ -125,9 +127,10 @@ $.extend(AdminUtil.prototype, {
                                 getPageList(1);
                                 break;
                             case "article-list":
-                            case "draft-list":
-                                adminUtil.getArticleList(1);
+                                adminUtil.getArticleList(1, "article");
                                 break;
+                            case "draft-list":
+                                adminUtil.getArticleList(1, "draft");
                                 break;
                             default:
                                 break;
@@ -301,11 +304,11 @@ $.extend(AdminUtil.prototype, {
                             
                             if (fromId === "draft") {
                                 articleData[i].title = articles[i].articleTitle;
-                                articleData[i].expendRow = "<a href='javascript:void(0)' onclick=\"adminUtil.updateArticle('" + articles[i].oId + "', true);\">" + adminUtil.tip.updateLabel + "</a>  \
+                                articleData[i].expendRow = "<a href='javascript:void(0)' onclick=\"adminUtil.updateArticle('" + articles[i].oId + "', false);\">" + adminUtil.tip.updateLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"removeArticle('" + articles[i].oId + "')\">" + adminUtil.tip.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"adminUtil.popComment('" + articles[i].oId + "', '" + fromId + "')\">" + adminUtil.tip.commentLabel + "</a>";
                             }
-                        };
+                        }
                         $("#" + fromId + "List").table("update",{
                             data: [{
                                 groupName: "all",
@@ -327,6 +330,7 @@ $.extend(AdminUtil.prototype, {
                 }
                 $("#loadMsg").text("");
             } catch (e) {
+                console.log(e);
             }
         }, requestJSONObject);
     },
