@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.7.0, Jun 25, 2011
+    Version: 1.0.7.1, Jun 26, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -375,6 +375,20 @@
                         <phase>compile</phase>
                         <goals>
                             <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.b3log</groupId>
+                <artifactId>maven-min-plugin</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>min</goal>
                         </goals>
                     </execution>
                 </executions>
