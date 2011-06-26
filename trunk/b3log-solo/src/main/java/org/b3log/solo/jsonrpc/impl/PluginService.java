@@ -20,16 +20,20 @@ import org.b3log.latke.plugin.AbstractPlugin;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.PluginLoader;
+import org.b3log.latke.plugin.PluginStatus;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.util.Users;
@@ -52,6 +56,10 @@ public final class PluginService extends AbstractGAEJSONRpcService {
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Gets plugins by the specified request json object.
@@ -104,11 +112,30 @@ public final class PluginService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getDefaultLocale());
+
             final List<JSONObject> pluginJSONObjects =
                     new ArrayList<JSONObject>();
             final List<AbstractPlugin> plugins = PluginLoader.getPlugins();
             for (final AbstractPlugin plugin : plugins) {
                 final JSONObject jsonObject = plugin.toJSONObject();
+
+                // Fills plugin status with i18n string
+                final PluginStatus status = plugin.getStatus();
+                switch (status) {
+                    case ENABLED:
+                        jsonObject.put(Plugin.PLUGIN_STATUS,
+                                       langs.get("enabledLabel"));
+                        break;
+                    case DISABLED:
+                        jsonObject.put(Plugin.PLUGIN_STATUS,
+                                       langs.get("disabledLabel"));
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+
                 pluginJSONObjects.add(jsonObject);
             }
 
