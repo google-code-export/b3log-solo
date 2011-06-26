@@ -46,11 +46,9 @@
                         result.pagination.paginationPageCount = 1;
                     }
                     
-                    $("#cachePagination").paginate({
-                        update: {
-                            currentPage: pageNum,
-                            pageCount: result.pagination.paginationPageCount
-                        }
+                    $("#cachePagination").paginate("update", {
+                        currentPage: pageNum,
+                        pageCount: result.pagination.paginationPageCount
                     });
                 }
                 $("#loadMsg").text("");
@@ -95,16 +93,15 @@
         });
         
         $("#cachePagination").paginate({
-            bindEvent: "getCacheList",
-            pageCount: 1,
-            windowSize: adminUtil.WINDOW_SIZE,
-            currentPage: 1,
-            style: "google",
-            isGoTo: false,
-            lastPage: "${lastPageLabel}",
-            nextPage: "${nextPagePabel}",
-            previousPage: "${previousPageLabel}",
-            firstPage: "${firstPageLabel}"
+            "bind": function(currentPage) {
+                getCacheList(currentPage);
+                return true;
+            },
+            "currentPage": 1,
+            "errorMessage": "${inputErrorLabel}",
+            "nextPageText": "${nextPagePabel}",
+            "previousPageText": "${previousPageLabel}",
+            "goText": "${gotoLabel}"            
         });
         getCacheList(1);
     };

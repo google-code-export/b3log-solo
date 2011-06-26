@@ -29,10 +29,10 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Abstract admin action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 2, 2011
+ * @version 1.0.0.5, Jan 26, 2011
  */
 public abstract class AbstractAdminAction extends AbstractAction {
 
@@ -95,16 +95,13 @@ public abstract class AbstractAdminAction extends AbstractAction {
                 return ret;
             }
 
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            ret.put(Preference.LOCALE_STRING, localeString);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
-
-            final Map<String, String> langs = langPropsService.getAll(locale);
+            final Locale locale = Latkes.getDefaultLocale();
+            final Map<String, String> langs =
+                    langPropsService.getAll(locale);
             ret.putAll(langs);
-
+            
+            ret.put(Preference.LOCALE_STRING, locale.toString());
+            
             // For admin-preference.ftl only
             final StringBuilder timeZoneIdOptions = new StringBuilder();
             final String[] availableIDs = TimeZone.getAvailableIDs();

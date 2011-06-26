@@ -136,7 +136,20 @@
                 "loadingLabel": "${loadingLabel}",
                 "removeSuccLabel": "${removeSuccLabel}",
                 "removeFailLabel": "${removeFailLabel}",
-                "getSuccLabel": "${getSuccLabel}"
+                "getSuccLabel": "${getSuccLabel}",
+                "noCommentLabel": "${noCommentLabel}",
+                "confirmRemoveLabel": "${confirmRemoveLabel}",
+                "forbiddenLabel": "${forbiddenLabel}",
+                "removeSuccLabel": "${removeSuccLabel}",
+                "removeLabel": "${removeLabel}",
+                "cancelPutTopLabel": "${cancelPutTopLabel}",
+                "putTopLabel": "${putTopLabel}",
+                "viewLabel": "${viewLabel}",
+                "updateLabel": "${updateLabel}",
+                "commentLabel": "${commentLabel}",
+                "syncBlogJavaFailLabel": "${syncBlogJavaFailLabel}",
+                "syncCSDNBlogFailLabel": "${syncCSDNBlogFailLabel}",
+                "syncCnBlogsFailLabel": "${syncCnBlogsFailLabel}"
             });
 
             adminUtil.init();
