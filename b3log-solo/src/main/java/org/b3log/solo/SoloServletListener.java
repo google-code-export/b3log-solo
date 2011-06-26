@@ -309,7 +309,7 @@ public final class SoloServletListener extends AbstractServletListener {
      *
      * @return {@code true} if it had been initialized, {@code false} otherwise
      */
-    // XXX: to find a better way?
+    // XXX: to find a better way (isInited)?
     public static boolean isInited() {
         try {
             final DatastoreService datastoreService =
