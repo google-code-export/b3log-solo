@@ -87,6 +87,11 @@
                                 <a href="#others"><div class="left othersIcon"></div>${othersLabel}</a>
                             </div>
                         </li>
+                        <li>
+                            <div data-index="plugin-list">
+                                <a href="#plugin-list"><div class="left othersIcon"></div>${othersLabel}</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div id="main">
@@ -101,6 +106,7 @@
                         <div id="tabs_file-list"></div>
                         <div id="tabs_others"></div>
                         <div id="tabs_user-list"></div>
+                        <div id="tabs_plugin-list"></div>
                     </div>
                 </div>
                 <div class="footer">
