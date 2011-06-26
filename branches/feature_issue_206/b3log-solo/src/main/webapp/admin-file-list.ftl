@@ -61,11 +61,9 @@
                     fileListPageCount = result.pagination.paginationPageCount;
                 }
                 
-                $("#filePagination").paginate({
-                    update: {
-                        currentPage: pageNum,
-                        pageCount: fileListPageCount
-                    }
+                $("#filePagination").paginate("update", {
+                    currentPage: pageNum,
+                    pageCount: fileListPageCount
                 });
                 break;
             default:
@@ -83,22 +81,22 @@
                     index: "name",
                     minWidth: 260
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${uploadDateLabel}",
                     index: "uploadDate",
                     width: 200
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${sizeLabel} (Bytes)",
                     index: "size",
                     width: 150
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${downloadCountLabel}",
                     index: "downloadCnt",
                     width: 80
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${removeLabel}",
                     index: "remove",
                     width: 56,
@@ -143,16 +141,15 @@
         });
 
         $("#filePagination").paginate({
-            bindEvent: "getfileList",
-            pageCount: 1,
-            windowSize: adminUtil.WINDOW_SIZE,
-            currentPage: 1,
-            style: "google",
-            isGoTo: false,
-            lastPage: "${lastPageLabel}",
-            nextPage: "${nextPagePabel}",
-            previousPage: "${previousPageLabel}",
-            firstPage: "${firstPageLabel}"
+            "bind": function(currentPage) {
+                getfileList(currentPage);
+                return true;
+            },
+            "currentPage": 1,
+            "errorMessage": "${inputErrorLabel}",
+            "nextPageText": "${nextPagePabel}",
+            "previousPageText": "${previousPageLabel}",
+            "goText": "${gotoLabel}"
         });
         
         getFileList(1);

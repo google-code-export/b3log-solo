@@ -11,36 +11,24 @@
             "paginationPageSize": adminUtil.PAGE_SIZE,
             "paginationWindowSize": adminUtil.WINDOW_SIZE
         };
-        jsonRpc.adminService.getPlugins(function (result, error) {
+        jsonRpc.pluginService.getPlugins(function (result, error) {
             try {
                 switch (result.sc) {
                     case "GET_PLUGINS_SUCC":
-                        var pluginList = result.plugins;
-                        var pluginData = [];
-                        for (var i = 0; i < pluginList.length; i++) {
-                            pluginData[i] = {};
-                            pluginData[i].author = pluginList[i].author;
-                            pluginData[i].name = pluginList[i].name;
-                            pluginData[i].version= pluginList[i].version;
-                            pluginData[i].status= pluginList[i].status.javaClass;
-                        }
-
                         $("#pluginList").table("update",{
                             data: [{
                                     "groupName": "all",
-                                    "groupData": pluginData
+                                    "groupData": result.plugins
                                 }]
                         });
-
+                        
                         if (result.pagination.paginationPageCount === 0) {
                             result.pagination.paginationPageCount = 1;
                         }
-
-                        $("#pluginPagination").paginate({
-                            update: {
+                        
+                        $("#pluginPagination").paginate("update", {
                                 currentPage: pageNum,
                                 pageCount: result.pagination.paginationPageCount
-                            }
                         });
                         break;
                     default:
@@ -55,7 +43,7 @@
         $("#pluginList").table({
             colModel: [{
                     style: "padding-left: 6px;",
-                    text: "${titleLabel}",
+                    text: "${pluginNameLabel}",
                     index: "name",
                     width: 230
                 }, {
@@ -77,16 +65,15 @@
         });
 
         $("#pluginPagination").paginate({
-            bindEvent: "getPluginList",
-            pageCount: 1,
-            windowSize: adminUtil.WINDOW_SIZE,
-            currentPage: 1,
-            style: "google",
-            isGoTo: false,
-            lastPage: "${lastPageLabel}",
-            nextPage: "${nextPagePabel}",
-            previousPage: "${previousPageLabel}",
-            firstPage: "${firstPageLabel}"
+            "bind": function(currentPage) {
+                getPluginList(currentPage);
+                return true;
+            },
+            "currentPage": 1,
+            "errorMessage": "${inputErrorLabel}",
+            "nextPageText": "${nextPagePabel}",
+            "previousPageText": "${previousPageLabel}",
+            "goText": "${gotoLabel}"
         });
         getPluginList(1);
     }

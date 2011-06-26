@@ -169,11 +169,9 @@
                             linkListPageCount = result.pagination.paginationPageCount;
                         }
 
-                        $("#linkPagination").paginate({
-                            update: {
-                                currentPage: pageNum,
-                                pageCount: linkListPageCount
-                            }
+                        $("#linkPagination").paginate("update", {
+                            currentPage: pageNum,
+                            pageCount: linkListPageCount
                         });
                         break;
                     default:
@@ -265,7 +263,7 @@
                     index: "linkAddress",
                     minWidth: 180
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${updateLabel}",
                     index: "update",
                     width: 56,
@@ -297,7 +295,7 @@
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${removeLabel}",
                     index: "deleted",
                     width: 56,
@@ -342,16 +340,15 @@
         });
 
         $("#linkPagination").paginate({
-            bindEvent: "getLinkList",
-            pageCount: 1,
-            windowSize: adminUtil.WINDOW_SIZE,
-            currentPage: 1,
-            style: "google",
-            isGoTo: false,
-            lastPage: "${lastPageLabel}",
-            nextPage: "${nextPagePabel}",
-            previousPage: "${previousPageLabel}",
-            firstPage: "${firstPageLabel}"
+            "bind": function(currentPage) {
+                getLinkList(currentPage);
+                return true;
+            },
+            "currentPage": 1,
+            "errorMessage": "${inputErrorLabel}",
+            "nextPageText": "${nextPagePabel}",
+            "previousPageText": "${previousPageLabel}",
+            "goText": "${gotoLabel}"
         });
 
         getLinkList(1);

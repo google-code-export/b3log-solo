@@ -104,11 +104,9 @@
                             pageListPageCount = result.pagination.paginationPageCount;
                         }
 
-                        $("#pagePagination").paginate({
-                            update: {
+                        $("#pagePagination").paginate("update", {
                                 currentPage: pageNum,
                                 pageCount: pageListPageCount
-                            }
                         });
                         break;
                     default:
@@ -158,7 +156,7 @@
                     index: "pagePermalink",
                     minWidth: 300
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${updateLabel}",
                     index: "update",
                     width: 49,
@@ -190,7 +188,7 @@
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${removeLabel}",
                     index: "deleted",
                     width: 53,
@@ -240,7 +238,7 @@
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${commentLabel}",
                     index: "comments",
                     width: 65,
@@ -261,16 +259,15 @@
         });
 
         $("#pagePagination").paginate({
-            bindEvent: "getPageList",
-            pageCount: 1,
-            windowSize: adminUtil.WINDOW_SIZE,
-            currentPage: 1,
-            style: "google",
-            isGoTo: false,
-            lastPage: "${lastPageLabel}",
-            nextPage: "${nextPagePabel}",
-            previousPage: "${previousPageLabel}",
-            firstPage: "${firstPageLabel}"
+         "bind": function(currentPage) {
+                getPageList(currentPage);
+                return true;
+            },
+            "currentPage": 1,
+            "errorMessage": "${inputErrorLabel}",
+            "nextPageText": "${nextPagePabel}",
+            "previousPageText": "${previousPageLabel}",
+            "goText": "${gotoLabel}"
         });
 
         // editor

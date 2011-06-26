@@ -131,11 +131,9 @@
                             userListPageCount = result.pagination.paginationPageCount;
                         }
 
-                        $("#userPagination").paginate({
-                            update: {
-                                currentPage: pageNum,
-                                pageCount: userListPageCount
-                            }
+                        $("#userPagination").paginate("update", {
+                            currentPage: pageNum,
+                            pageCount: userListPageCount
                         });
                         break;
                     default:
@@ -159,7 +157,7 @@
                     index: "userEmail",
                     minWidth: 180
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${updateLabel}",
                     index: "update",
                     width: 56,
@@ -200,7 +198,7 @@
                         }],
                     style: "cursor:pointer; margin-left:22px;"
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     text: "${removeLabel}",
                     index: "deleted",
                     width: 56,
@@ -253,16 +251,15 @@
         });
 
         $("#userPagination").paginate({
-            bindEvent: "getUserList",
-            pageCount: 1,
-            windowSize: adminUtil.WINDOW_SIZE,
-            currentPage: 1,
-            style: "google",
-            isGoTo: false,
-            lastPage: "${lastPageLabel}",
-            nextPage: "${nextPagePabel}",
-            previousPage: "${previousPageLabel}",
-            firstPage: "${firstPageLabel}"
+            "bind": function(currentPage) {
+                getUserList(currentPage);
+                return true;
+            },
+            "currentPage": 1,
+            "errorMessage": "${inputErrorLabel}",
+            "nextPageText": "${nextPagePabel}",
+            "previousPageText": "${previousPageLabel}",
+            "goText": "${gotoLabel}"
         });
         getUserList(1);
         

@@ -122,7 +122,7 @@
                     index: "selected",
                     width: 26,
                     inputType: "checkbox",
-                    textAlign: "center",
+                    align: "center",
                     allSelected: true
                 }, {
                     name: "${titleLabel}",
@@ -134,12 +134,12 @@
                     index: "tags",
                     minWidth: 120
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     name: "${createDateLabel}",
                     index: "date",
                     width: 79
                 }, {
-                    textAlign: "center",
+                    align: "center",
                     name: "${importedLabel}",
                     index: "imported",
                     width: 61,
