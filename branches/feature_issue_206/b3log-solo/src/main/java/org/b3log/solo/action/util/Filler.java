@@ -410,7 +410,18 @@ public final class Filler {
 
         final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
         dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);
+        fillMinified(dataModel);
 
+        fillPageNavigations(dataModel);
+        fillStatistic(dataModel);
+    }
+
+    /**
+     * Fills minified directory and file postfix for static JavaScript, CSS.
+     * 
+     * @param dataModel the specified data model
+     */
+    public void fillMinified(final Map<String, Object> dataModel) {
         switch (Latkes.getRuntimeMode()) {
             case DEVELOPMENT:
                 dataModel.put(Common.MINI_DIR, "");
@@ -423,9 +434,6 @@ public final class Filler {
             default:
                 throw new AssertionError();
         }
-
-        fillPageNavigations(dataModel);
-        fillStatistic(dataModel);
     }
 
     /**

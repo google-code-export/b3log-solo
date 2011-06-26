@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.6.9, Jun 24, 2011
+    Version: 1.0.7.0, Jun 25, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -34,7 +34,7 @@
         <commons-fileupload.version>1.2.2</commons-fileupload.version>
         <commons-lang.version>2.5</commons-lang.version>
         <jsoup.version>1.5.2</jsoup.version>
-        <gae.version>1.4.3</gae.version>
+        <gae.version>1.5.1</gae.version>
 <!--        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>-->
         <!-- maven plugin -->
         <maven-license-plugin.version>1.8.0</maven-license-plugin.version>

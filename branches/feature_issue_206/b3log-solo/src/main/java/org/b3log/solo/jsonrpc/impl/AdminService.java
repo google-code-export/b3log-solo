@@ -45,9 +45,7 @@ import org.b3log.solo.action.impl.AddArticleCommentAction;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Cache;
 import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import static org.b3log.solo.model.Preference.*;
@@ -70,7 +68,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Jun 18, 2011
+ * @version 1.0.2.6, Jun 25, 2011
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -476,111 +474,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         PageCaches.removeAll();
 
         return ret;
-    }
-
-    /**
-     * Gets page cache states with the specified http servlet request and http
-     * servlet response.
-     *
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
-     *     "cacheCachedCount": long,
-     *     "cacheHitCount": long,
-     *     "cachedBytes": long,
-     *     "hitBytes": long,
-     *     "cacheMissCount": long,
-     *     "pageCacheEnabled": boolean,
-     *     "pageCachedCnt": int
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public JSONObject getPageCache(final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
-
-        final org.b3log.latke.cache.Cache<String, Object> cache =
-                PageCaches.getCache();
-        final long cachedCount = cache.getCachedCount();
-        final long hitCount = cache.getHitCount();
-        final long missCount = cache.getMissCount();
-        final long cachedBytes = cache.getCachedBytes();
-        final long hitBytes = cache.getHitBytes();
-
-
-        try {
-            ret.put(Cache.CACHE_CACHED_COUNT, cachedCount);
-            ret.put(Cache.CACHE_HIT_COUNT, hitCount);
-            ret.put(Cache.CACHE_CACHED_BYTES, cachedBytes);
-            ret.put(Cache.CACHE_HIT_BYTES, hitBytes);
-            ret.put(Cache.CACHE_MISS_COUNT, missCount);
-
-            final JSONObject preference = preferenceUtils.getPreference();
-            final boolean pageCacheEnabled =
-                    preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
-            ret.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
-
-            ret.put(Common.PAGE_CACHED_CNT, PageCaches.getKeys().size());
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Gets page cache error: {0}",
-                       e.getMessage());
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
-
-    /**
-     * Sets page cache states with the specified http servlet response and 
-     * settings.
-     *
-     * @param response the specified http servlet response
-     * @param settings the specified settings, for example,
-     * <pre>
-     * {
-     *     "pageCacheEnabled": boolean,
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public void setPageCache(final HttpServletResponse response,
-                             final JSONObject settings)
-            throws ActionException, IOException {
-        if (!userUtils.isAdminLoggedIn()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-            return;
-        }
-
-        final Transaction transaction = userRepository.beginTransaction();
-        try {
-            final boolean pageCacheEnabled =
-                    settings.getBoolean(Preference.PAGE_CACHE_ENABLED);
-
-            final JSONObject preference = preferenceUtils.getPreference();
-            preference.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
-
-            preferenceUtils.setPreference(preference);
-
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, "Sets page cache error: {0}",
-                       e.getMessage());
-            throw new ActionException(e);
-        }
-
-        PageCaches.removeAll();
     }
 
     /**
