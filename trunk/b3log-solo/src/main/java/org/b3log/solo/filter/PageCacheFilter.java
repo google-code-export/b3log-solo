@@ -80,7 +80,7 @@ public final class PageCacheFilter implements Filter {
         "/admin-draft-list.do",
         "/admin-user-list.do",
         "/admin-plugin-list.do",
-        "/admin-cache.do",
+        "/admin-cache.do", // XXX: plugin conf hard coding....
         "/rm-all-data.do",
         "/init.do",
         "/clear-cache.do",
