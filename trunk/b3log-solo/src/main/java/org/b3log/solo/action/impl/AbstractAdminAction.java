@@ -21,6 +21,7 @@ import freemarker.template.Template;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
@@ -94,10 +95,13 @@ public abstract class AbstractAdminAction extends AbstractAction {
                 return ret;
             }
 
+            final Locale locale = Latkes.getDefaultLocale();
             final Map<String, String> langs =
-                    langPropsService.getAll(Latkes.getDefaultLocale());
+                    langPropsService.getAll(locale);
             ret.putAll(langs);
-
+            
+            ret.put(Preference.LOCALE_STRING, locale.toString());
+            
             // For admin-preference.ftl only
             final StringBuilder timeZoneIdOptions = new StringBuilder();
             final String[] availableIDs = TimeZone.getAvailableIDs();
