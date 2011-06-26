@@ -70,27 +70,17 @@
     border-top-width: 0;
     padding: 12px;
 }
-.pagination-clear {
-    clear: both;
-    font-size: 0;
-    line-height: 0;
-}
-.pagination-pagination span {
-    cursor: pointer;
-    display: block;
+.paginate-paginate div, .paginate-paginate a, .paginate-pageCount{
     float: left;
-    line-height: 19px;
-    margin: 0 5px 0 4px;
+    height: 20px;
+    line-height: 20px;
+    margin-left: 10px;
+    text-decoration: none;
 }
-.pagination-page, .pagination-nextPage, .pagination-lastPage, .pagination-firstPage, .pagination-prePage, .pagination-prePageHover, .pagination-nextPageHover {
-    color: #4272DB;
-}
-.pagination-pageCurrent {
-    color: #000;
-    font-weight: bold;
-}
-.pagination-goInput {
-    width: 18px;
+
+.paginate-inputPage {
+    height: 14px;
+    width: 24px;
 }
 .table-main {
     margin: 0;
@@ -99,23 +89,20 @@
     position: relative;
 }
 .table-main table {
-    background: url(/images/icon.png) center bottom;
-    border-left: 1px solid #CCC;
+    background: url("/images/icon.png") repeat scroll center bottom transparent;
     table-layout: fixed;
     word-break: break-all;
     word-wrap: break-word;
-}
-.table-main table:hover {
-    border-left: 1px solid #BBB;
 }
 .table-header,.table-body {
     overflow: auto;
 }
 .table-header th {
-    border: 1px solid;
-    border-color: #CCC #BBBBBB #A0A0A0;
-    border-left-style: none;
+    border-bottom: 1px solid #A0A0A0;
     height: 28px;
+    text-align: left;
+    text-indent: 4px;
+    font-size: 14px;
 }
 .table-main td {
     border-bottom: 1px solid #D0D0D0;
@@ -126,8 +113,9 @@
 .table-lineHover .table-hasExpend td {
     border-bottom: 0px;
 }
-.table-heiglight td,.table-lineHover td {
-    background-color: #FFC;
+.table-heiglight td, .table-lineHover td {
+    background-color: #F5F5F5;
+    border-right-color: #F5F5F5;
 }
 .table-oddRow {
     background-color: #FFF;
@@ -142,7 +130,6 @@
     background-color: #999999;
     border-radius: 3px;
     color: #FFFFFF;
-    font-size: 11px;
     padding: 2px 6px;
     text-decoration: none;
     margin-right: 5px;
