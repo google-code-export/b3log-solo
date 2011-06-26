@@ -11,7 +11,7 @@
             "paginationPageSize": adminUtil.PAGE_SIZE,
             "paginationWindowSize": adminUtil.WINDOW_SIZE
         };
-        jsonRpc.adminService.getPlugins(function (result, error) {
+        jsonRpc.pluginService.getPlugins(function (result, error) {
             try {
                 switch (result.sc) {
                     case "GET_PLUGINS_SUCC":
