@@ -57,7 +57,7 @@
 	height: 16px;
 }
 .dialog-close-icon {
-	background: url("../images/icon.png") repeat scroll -49px -16px transparent;
+	background: url("/images/icon.png") repeat scroll -49px -16px transparent;
 	cursor: pointer;
 	float: right;
 	height: 6px;
@@ -99,7 +99,7 @@
 	position: relative;
 }
 .table-main table {
-	background: url(../images/icon.png) center bottom;
+	background: url(/images/icon.png) center bottom;
 	border-left: 1px solid #CCC;
 	table-layout: fixed;
 	word-break: break-all;
