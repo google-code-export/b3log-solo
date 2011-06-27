@@ -1,25 +1,33 @@
 <div class="tabPanel">
-    <div class="tabs">
-        <span class="selected" id="preferences" onclick="changePreferenceTab(this);">
-            ${paramSettingsLabel}
-        </span>
-        <span id="skins" onclick="changePreferenceTab(this);">
-            ${skinLabel}
-        </span>
-        <span id="signs" onclick="changePreferenceTab(this);">
-            ${signLabel}
-        </span>
-        <span id="tencent" onclick="changePreferenceTab(this);">
-            ${tencentLabel}
-        </span>
-        <!--
-        <span id="syncGoogle" onclick="changePreferenceTab(this);">
-            ${googleLabel}
-        </span>
-        -->
+    <div id="tabspreference">
+        <ul>
+            <li>
+                <div data-index="preferences">
+                    <a href="#preference/preferences">${paramSettingsLabel}</a>
+                </div>
+            </li>
+            <li>
+                <div data-index="skins">
+                    <a href="#preference/skins">${skinLabel}</a>
+                </div>
+            </li>
+            <li>
+                <div data-index="signs">
+                    <a href="#preference/signs">${signLabel}</a>
+                </div>
+            </li>
+            <li>
+                <div data-index="tencent">
+                    <a href="#preference/tencent">${tencentLabel}</a>
+                </div>
+                <!--<div data-index="syncGoogle">
+                   ${googleLabel}
+               </div>-->
+            </li>
+        </ul>
     </div>
-    <div class="tabMain">
-        <div id="preferencesPanel">
+    <div class="tabMain" id="tabspreferenceContent">
+        <div id="tabspreference_preferences">
             <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
@@ -205,7 +213,7 @@
                 </tbody>
             </table>
         </div>
-        <div id="skinsPanel" class="none">
+        <div id="tabspreference_skins">
             <button onclick="changePreference();" class="right">${updateLabel}</button>
             <div class="clear"></div>
             <div id="skinMain">
@@ -213,7 +221,7 @@
             <button onclick="changePreference();" class="right">${updateLabel}</button>
             <div class="clear"></div>
         </div>
-        <div id="signsPanel" class="none">
+        <div id="tabspreference_signs">
             <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
@@ -253,7 +261,7 @@
                 </tbody>
             </table>
         </div>
-        <!--        <div id="syncGooglePanel" class="none">
+        <!--        <div id="preferences_syncGoogle" class="none">
                     <table class="form" width="99%" cellpadding="0" cellspacing="9px">
                         <tbody>
                             <tr>
@@ -289,11 +297,11 @@
                         </tbody>
                     </table>
                 </div>-->
-        <div id="tencentPanel" class="none">
+        <div id="tabspreference_tencent">
             <table class="form" width="99%" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
-                        <th width="260">
+                        <th width="160">
                             ${appKey1Label}
                         </th>
                         <td colspan="3">
@@ -301,7 +309,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th width="260">
+                        <th>
                             ${appSecret1Label}
                         </th>
                         <td colspan="3">
@@ -412,22 +420,11 @@
                 $("#loadMsg").text("");
             } catch (e) {}
         });
+        
+        $("#tabspreference").tabs();
     }
     
     getPreference();
-    
-    var changePreferenceTab = function (it) {
-        var tabs = ['preferences', 'skins', 'signs', 'syncGoogle', 'tencent'];
-        for (var i = 0; i < tabs.length; i++) {
-            if (it.id === tabs[i]) {
-                $("#" + tabs[i] + "Panel").show();
-                $("#" + tabs[i]).addClass("selected");
-            } else {
-                $("#" + tabs[i] + "Panel").hide();
-                $("#" + tabs[i]).removeClass("selected");
-            }
-        }
-    }
     
     var changePreference = function () {
         $("#loadMsg").text("${loadingLabel}");

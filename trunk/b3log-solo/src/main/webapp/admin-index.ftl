@@ -36,7 +36,7 @@
             </div>
             <div id="allPanel">
                 <div id="tabs">
-                    <ul id="sideNavi">
+                    <ul>
                         <li>
                             <div data-index="article">
                                 <a href="#article"><div class="left postIcon"></div>${postArticleLabel}</a>
@@ -147,6 +147,7 @@
             });
 
             adminUtil.init();
+            
             // Removes functions if enabled multiple users support
                 <#if enabledMultipleUserSupport>
                 var unUsed = ['article-sync'];

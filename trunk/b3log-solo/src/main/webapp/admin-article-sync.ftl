@@ -1,12 +1,17 @@
 <div class="tabPanel">
-    <div class="tabs">
-        <span id="syncSetting" class="selected" onclick="changeSyncTab(this);">
-            ${blogSyncMgmtLabel}
-        </span>
-        <span id="sync" onclick="changeSyncTab(this);">
-            ${blogArticleImportLabel}
-        </span>
-        <div class="clear"></div>
+    <div id="tabsarticlesync">
+        <ul>
+            <li>
+                <div data-index="syncSetting">
+                    <a href="#article-sync/syncSetting">${blogSyncMgmtLabel}</a>
+                </div>
+            </li>
+            <li>
+                <div data-index="sync">
+                    <a href="#article-sync/sync">${blogArticleImportLabel}</a>
+                </div>
+            </li>
+        </ul>
         <div id="syncBlogType">
             ${chooseBlog1Label}
             <select id="blogType" onchange="changeBlogType();">
@@ -20,8 +25,8 @@
             </span>
         </div>
     </div>
-    <div class="tabMain">
-        <div id="syncSettingPanel">
+    <div class="tabMain" id="tabsarticlesyncContent">
+        <div id="tabsarticlesync_syncSetting">
             <fieldset>
                 <legend>
                     ${syncMgmtLabel}
@@ -79,7 +84,7 @@
                 </table>
             </fieldset>
         </div>
-        <div id="syncPanel" class="none">
+        <div id="tabsarticle-syn_csync">
             <table id="archiveDatePanel" class="form none" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
@@ -157,6 +162,8 @@
             }
         });
         $("#loadMsg").text("");
+        
+        $("#tabsarticlesync").tabs();
     }
     initSync();
 
@@ -249,19 +256,6 @@
                     $("#loadMsg").text("");
                 } catch (e) {}
             }, requestJSONObject);
-        }
-    }
-
-    var changeSyncTab = function (it) {
-        var tabs = ['sync', 'syncSetting'];
-        for (var i = 0; i < tabs.length; i++) {
-            if (it.id === tabs[i]) {
-                $("#" + tabs[i] + "Panel").show();
-                $("#" + tabs[i]).addClass("selected");
-            } else {
-                $("#" + tabs[i] + "Panel").hide();
-                $("#" + tabs[i]).removeClass("selected");
-            }
         }
     }
 

@@ -105,6 +105,25 @@ $.extend(AdminUtil.prototype, {
         });
     },
 
+    setCurByHash: function () {
+        // 根据 hash 设置当前 tab，如果 hash 为空时，默认为发布文章
+        var hash = window.location.hash;
+        if (hash !== "") {
+            var tag = hash.substr(1, hash.length - 1);
+            var tab = tag.split("/")[0],
+            subTab = tag.split("/")[1];
+            $("#tabs_" + tab).load("admin-" + tab + ".do", function () {
+                if (subTab) {
+                    $("#tabs" + tab.replace("-", "")).tabs("select", subTab);
+                } 
+                $("#tabs").tabs("select", tab);
+            });
+        } else {
+            $("#tabs_article").load("admin-article.do");
+            window.location.hash = "#article";
+        }
+    },
+    
     init: function () {
         // 不支持 IE 6
         Util.killIE();      
@@ -140,16 +159,7 @@ $.extend(AdminUtil.prototype, {
             }]
         });
         
-        // 根据 hash 设置当前 tab，如果 hash 为空时，默认为发布文章
-        var hash = window.location.hash;
-        if (hash !== "") {
-            var tabId = hash.substr(1, hash.length - 1);
-            $("#tabs_" + tabId).load("admin-" + tabId + ".do");
-            $("#tabs").tabs("select", tabId);
-        } else {
-            $("#tabs_article").load("admin-article.do");
-            window.location.hash = "#article";
-        }
+        this.setCurByHash();
         
         // Removes functions with the current user role
         if (this.tip.userRole !== "adminRole") {
