@@ -84,7 +84,7 @@
                 </table>
             </fieldset>
         </div>
-        <div id="tabsarticle-syn_csync">
+        <div id="tabsarticlesync_sync">
             <table id="archiveDatePanel" class="form none" cellpadding="0" cellspacing="9px">
                 <tbody>
                     <tr>
@@ -123,35 +123,32 @@
         $("#articleSyncList").table({
             height: 357,
             colModel: [{
-                    name: "选择",
+                    text: "选择",
                     index: "selected",
                     width: 26,
                     inputType: "checkbox",
                     align: "center",
                     allSelected: true
                 }, {
-                    name: "${titleLabel}",
+                    text: "${titleLabel}",
                     index: "title",
                     width: 320,
                     style: "padding-left: 6px;"
                 },  {
-                    name: "${categoryLabel}",
+                    text: "${categoryLabel}",
                     index: "tags",
                     minWidth: 120
                 }, {
                     align: "center",
-                    name: "${createDateLabel}",
+                    text: "${createDateLabel}",
                     index: "date",
                     width: 79
                 }, {
                     align: "center",
-                    name: "${importedLabel}",
+                    text: "${importedLabel}",
                     index: "imported",
                     width: 61,
                     style: "margin-left:22px;"
-                }, {
-                    visible: false,
-                    index: "id"
                 }]
         });
 
@@ -294,9 +291,6 @@
         $("#loadMsg").html("${loadingLabel}");
         $("#articlesPanel").show();
         $("#articlesCount").html("${sumLabel} 0 ${countLabel}");
-        $("#articleSyncList").table("update",{
-            data: []
-        });
 
         var requestJSONObject = {
             "blogSyncExternalBloggingSys": $("#blogType").val(),
@@ -333,7 +327,10 @@
                 }
                 
                 $("#articleSyncList").table("update",{
-                    data: articleData
+                    data: {
+                        "groupName": "all", 
+                        "groupData": articleData
+                    }
                 });
 
                 articleSyncDataTemp = articleData;
@@ -372,7 +369,10 @@
                     }
 
                     $("#articleSyncList").table("update",{
-                        data: articleSyncDataTemp
+                        data: {
+                            "groupName": "all", 
+                            "groupData": articleSyncDataTemp
+                        }
                     });
 
                     if (selectedOIds.length !== oIds.length) {

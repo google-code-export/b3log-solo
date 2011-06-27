@@ -34,11 +34,11 @@
                 }, {
                     text: "${commentLabel}",
                     index: "comments",
-                    width: 65,
+                    width: 80,
                     style: "padding-left: 6px;"
                 }, {
                     text: "${viewLabel}",
-                    width: 36,
+                    width: 80,
                     index: "articleViewCount",
                     style: "padding-left: 6px;"
                 }],
