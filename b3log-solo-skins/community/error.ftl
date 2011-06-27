@@ -1,19 +1,15 @@
+<#include "macro.ftl">
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>
-        <title>${notFoundLabel} - ${blogTitle}</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <@head title="${notFoundLabel} - ${blogTitle}">
         <meta name="keywords" content="${notFoundLabel},${metaKeywords}"/>
         <meta name="description" content="${sorryLabel},${notFoundLabel},${metaDescription}"/>
         <meta name="robots" content="noindex, follow"/>
-        <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
-        <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
-        <link rel="icon" type="image/png" href="/favicon.png"/>
-        ${htmlHead}
+        </@head>
     </head>
     <body>
-        <#include "common-top.ftl">
+        <#include "top-nav.ftl">
         <div class="header">
             <div class="header-navi">
                 <div class="header-navi-main content">
