@@ -308,14 +308,14 @@ $.extend(AdminUtil.prototype, {
                             var topClass = articles[i].articlePutTop ? adminUtil.tip.cancelPutTopLabel : adminUtil.tip.putTopLabel;
                             articleData[i].expendRow = "<a target='_blank' href='" + articles[i].articlePermalink + "'>" + adminUtil.tip.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"adminUtil.updateArticle('" + articles[i].oId + "', true);\">" + adminUtil.tip.updateLabel + "</a>  \
-                                <a href='javascript:void(0)' onclick=\"removeArticle('" + articles[i].oId + "')\">" + adminUtil.tip.removeLabel + "</a>  \
+                                <a href='javascript:void(0)' onclick=\"adminUtil.removeArticle('" + articles[i].oId + "', 'article')\">" + adminUtil.tip.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"popTop(this, '" + articles[i].oId + "')\">" + topClass + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"adminUtil.popComment('" + articles[i].oId + "', '" + fromId + "')\">" + adminUtil.tip.commentLabel + "</a>";
                             
                             if (fromId === "draft") {
                                 articleData[i].title = articles[i].articleTitle;
                                 articleData[i].expendRow = "<a href='javascript:void(0)' onclick=\"adminUtil.updateArticle('" + articles[i].oId + "', false);\">" + adminUtil.tip.updateLabel + "</a>  \
-                                <a href='javascript:void(0)' onclick=\"removeArticle('" + articles[i].oId + "')\">" + adminUtil.tip.removeLabel + "</a>  \
+                                <a href='javascript:void(0)' onclick=\"adminUtil.removeArticle('" + articles[i].oId + "', 'draft')\">" + adminUtil.tip.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"adminUtil.popComment('" + articles[i].oId + "', '" + fromId + "')\">" + adminUtil.tip.commentLabel + "</a>";
                             }
                         }

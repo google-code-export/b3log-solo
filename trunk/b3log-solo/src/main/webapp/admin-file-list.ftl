@@ -81,25 +81,21 @@
                     index: "name",
                     minWidth: 260
                 }, {
-                    align: "center",
                     text: "${uploadDateLabel}",
                     index: "uploadDate",
                     width: 200
                 }, {
-                    align: "center",
                     text: "${sizeLabel} (Bytes)",
                     index: "size",
                     width: 150
                 }, {
-                    align: "center",
                     text: "${downloadCountLabel}",
                     index: "downloadCnt",
                     width: 80
                 }, {
-                    align: "center",
                     text: "${removeLabel}",
                     index: "remove",
-                    width: 56,
+                    width: 80,
                     bind: [{
                             'type': 'click',
                             'action': function (event, data) {

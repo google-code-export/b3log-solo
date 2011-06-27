@@ -160,7 +160,7 @@
                     align: "center",
                     text: "${updateLabel}",
                     index: "update",
-                    width: 56,
+                    width: 80,
                     bind: [{
                             'type': 'click',
                             'action': function (event, data) {
@@ -201,7 +201,7 @@
                     align: "center",
                     text: "${removeLabel}",
                     index: "deleted",
-                    width: 56,
+                    width: 80,
                     bind: [{
                             'type': 'click',
                             'action': function (event, data) {
@@ -246,7 +246,7 @@
                     style: "padding-left: 36px;",
                     text: "${administratorLabel}",
                     index: "isAdmin",
-                    width: 89
+                    width: 120
                 }]
         });
 

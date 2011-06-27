@@ -159,7 +159,7 @@
                     align: "center",
                     text: "${updateLabel}",
                     index: "update",
-                    width: 49,
+                    width: 80,
                     bind: [{
                             'type': 'click',
                             'action': function (event, data) {
@@ -191,7 +191,7 @@
                     align: "center",
                     text: "${removeLabel}",
                     index: "deleted",
-                    width: 53,
+                    width: 80,
                     bind: [{
                             'type': 'click',
                             'action': function (event, data) {
@@ -241,7 +241,7 @@
                     align: "center",
                     text: "${commentLabel}",
                     index: "comments",
-                    width: 65,
+                    width: 80,
                     bind: [{
                             'type': 'click',
                             'action': function (event, data) {
