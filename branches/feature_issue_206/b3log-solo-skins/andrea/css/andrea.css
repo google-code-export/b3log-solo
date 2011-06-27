@@ -1,5 +1,5 @@
 body {
-    background-image: url("images/bg-grey.jpg");
+    background-image: url("../images/bg-grey.jpg");
     background-color: #000000;
     color: #363636;
     font-family: 微软雅黑, Arial,Verdana,sans-serif;
@@ -25,7 +25,7 @@ a:hover {
 
 .brush-icon, .article .month , .article .day, .pagination a, #greyBG,
 #brownBG, #blueBG,  #goTop, .side-tool ul ul li a, .comment-form button  {
-    background-image: url('images/icon.png');
+    background-image: url('../images/icon.png');
 }
 
 /* frame */
@@ -47,7 +47,7 @@ a:hover {
 
 /* header */
 .header {
-    background: url('images/bgs.png') no-repeat;
+    background: url('../images/bgs.png') no-repeat;
     width: 910px;
     height: 185px;
     float: left;
@@ -123,7 +123,7 @@ a:hover {
 }
 
 .main-footer {
-    background: url('images/bgs.png') 0 -185px;
+    background: url('../images/bgs.png') 0 -185px;
     height: 14px;
     width: 627px;
 }
@@ -136,7 +136,7 @@ a:hover {
 }
 
 #brush {
-    background: url("images/paint.png") no-repeat fixed 98px -150px transparent;
+    background: url("../images/paint.png") no-repeat fixed 98px -150px transparent;
     position: relative;
     top: -27px;
     width: 82px;
@@ -256,7 +256,7 @@ a:hover {
     -moz-border-radius: 0 5px 5px 0;
     -webkit-border-radius: 0 5px 5px 0;
     border-radius: 0 5px 5px 0;
-    background: url("images/bg-transparent.png") repeat scroll 0 0 transparent;
+    background: url("../images/bg-transparent.png") repeat scroll 0 0 transparent;
     border: 1px solid #999999;
     float: left;
     margin-top: 23px;
@@ -280,7 +280,7 @@ a:hover {
 }
 
 .side-navi .item dd li:hover {
-    background: url("images/bg-transparent.png") repeat scroll 0 0 transparent;
+    background: url("../images/bg-transparent.png") repeat scroll 0 0 transparent;
     border-bottom: 1px solid #BAB8B5;
 }
 
@@ -336,7 +336,7 @@ a:hover {
 
 /* footer */
 .footer {
-    background-image: url("images/footer.png");
+    background-image: url("../images/footer.png");
     color: #EAE7E0;
     height: 411px;
     padding: 21px 0 0 95px;
@@ -589,7 +589,7 @@ h2.comment-label {
 }
 
 .comment-body-ref {
-    background: url("images/bg-transparent.png") repeat scroll 0 0 transparent;
+    background: url("../images/bg-transparent.png") repeat scroll 0 0 transparent;
     padding: 12px 0;
     position: absolute;
     width: 537px;
