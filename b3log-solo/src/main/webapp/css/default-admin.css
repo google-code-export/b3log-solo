@@ -48,28 +48,65 @@
 #tipMsg {
     top: 25px;
 }
-#sideNavi {
+/* first tab */
+#tabs ul {
     height: 30px;
 }
-#sideNavi li {
+#tabs ul li {
     float: left;
     list-style: none outside none;
     margin-left: 0;
 }
-#sideNavi li a {
+#tabs ul li a {
     color: #000000;
     display: block;
     line-height: 16px;
     padding: 8px 15px 6px;
     text-decoration: none;
 }
-#sideNavi li.hover {
+#tabs ul li.hover a {
     background-color: #DDE5FF;
 }
-#sideNavi .tabs-middle-selected {
+#tabs ul .tabs-middle-selected a {
     background-color: #BCF;
     font-weight: bold;
 }
+
+/* sub tabs */
+.tabPanel {
+    background-color: #BCF;
+}
+
+.tabMain {
+    background-color: #E3E9FF;
+    padding: 12px;
+}
+
+.tabs-nav {
+    list-style: none;
+    height: 28px;
+    line-height: 28px;
+}
+.tabs-nav li {
+    float: left;
+    margin-left: 0;
+}
+
+.tabs-nav li a {
+    color: #000000;
+    padding: 7px 15px;
+    text-decoration: none;
+}
+
+.tabs-nav .tabs-middle-selected a {
+    background-color: #E3E9FF;
+    font-weight: bold;
+}
+
+.tabs-nav li.hover a {
+    background-color: #FFFFFF;
+}
+
 #syncBlogType {
     background-color: #E3E9FF;
     padding: 12px 0 0 12px;
@@ -124,25 +161,6 @@
 .skinItem:hover {
     border-color: #CCCCFF #BBCCFF #BBBBFF;
     border-style: solid;
-}
-.tabPanel {
-    background-color: #BCF;
-}
-.tabs {
-    line-height: 26px;
-}
-.tabs span {
-    cursor: pointer;
-    padding: 6px 12px;
-}
-.tabMain {
-    background-color: #E3E9FF;
-    padding: 12px;
-}
-.tabs span.selected {
-    background-color: #E3E9FF;
-    font-weight: bold;
-    padding: 6px 12px;
 }
 .f-blue, .error-msg {
     color: #3366CC;
