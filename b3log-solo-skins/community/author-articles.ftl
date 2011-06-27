@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="TODO${blogTitle}">
+        <@head title="${authorName} - ${blogTitle}">
         <meta name="keywords" content="${metaKeywords}"/>
         <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
         </@head>
@@ -14,7 +14,7 @@
         </div>
         <div class="content">
             <h2>
-                ${commentName1Label}TODO
+                ${commentName1Label}${authorName}
             </h2>
             <#include "article-list.ftl">
         </div>

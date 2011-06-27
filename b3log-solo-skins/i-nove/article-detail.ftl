@@ -1,28 +1,19 @@
+<#include "macro.ftl">
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head> 
-        <title>${article.articleTitle} - ${blogTitle}</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+    <head>
+        <@head title="${article.articleTitle} - ${blogTitle}">
         <meta name="keywords" content="<#list article.articleTags?split(',') as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>"/>
         <meta name="description" content="${article.articleAbstract}"/>
-        <meta name="author" content="B3log Team"/>
-        <meta name="generator" content="B3log"/>
-        <meta name="copyright" content="B3log"/>
-        <meta name="revised" content="B3log,${article.articleCreateDate?string('yyyy-MM-dd HH:mm:ss')}"/>
-        <meta http-equiv="Window-target" content="_top"/>
+        </@head>
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css"/>
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css"/>
-        <link type="text/css" rel="stylesheet" href="/styles/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
-        <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
-        <link rel="icon" type="image/png" href="/favicon.png"/>
-        ${htmlHead}
     </head>
     <body>
-        <#include "common-top.ftl">
+        <#include "top-nav.ftl">
         <div class="wrapper">
             <div class="content">
-                <#include "article-header.ftl">
+                <#include "header.ftl">
                 <div class="body">
                     <div class="left main">
                         <div class="article">
@@ -220,12 +211,12 @@
                         </table>
                     </div>
                     <div class="right">
-                        <#include "article-side.ftl">
+                        <#include "side.ftl">
                     </div>
                     <div class="clear"></div>
                 </div>
                 <div class="footer">
-                    <#include "article-footer.ftl">
+                    <#include "footer.ftl">
                 </div>
             </div>
         </div>
