@@ -67,7 +67,7 @@
 #tabs ul li.hover a {
     background-color: #DDE5FF;
 }
-#tabs ul .tabs-middle-selected a {
+#tabs ul li .tabs-middle-selected a {
     background-color: #BCF;
     font-weight: bold;
 }
@@ -97,14 +97,13 @@
     padding: 7px 15px;
     text-decoration: none;
 }
-
-.tabs-nav .tabs-middle-selected a {
-    background-color: #E3E9FF;
-    font-weight: bold;
+.tabs-nav li.hover a {
+    background-color: #DDE5FF;
 }
 
-.tabs-nav li.hover a {
-    background-color: #FFFFFF;
+.tabs-nav li .tabs-middle-selected a {
+    background-color: #E3E9FF;
+    font-weight: bold;
 }
 
 #syncBlogType {
