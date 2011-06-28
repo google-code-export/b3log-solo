@@ -1,4 +1,4 @@
-#summary 开发问题
+#summary svn使用问题
 
 =查看`google code`托管的svn工程密码，连接被重置问题=
 _本文来源为：[http://yk1001.blog.163.com/blog/static/182476920108180520844/ Peter's Blog ]_
