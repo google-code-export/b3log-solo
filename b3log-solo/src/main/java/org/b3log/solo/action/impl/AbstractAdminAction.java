@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Abstract admin action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 26, 2011
+ * @version 1.0.0.6, Jun 28, 2011
  */
 public abstract class AbstractAdminAction extends AbstractAction {
 
@@ -99,9 +99,9 @@ public abstract class AbstractAdminAction extends AbstractAction {
             final Map<String, String> langs =
                     langPropsService.getAll(locale);
             ret.putAll(langs);
-            
+
             ret.put(Preference.LOCALE_STRING, locale.toString());
-            
+
             // For admin-preference.ftl only
             final StringBuilder timeZoneIdOptions = new StringBuilder();
             final String[] availableIDs = TimeZone.getAvailableIDs();
@@ -134,16 +134,16 @@ public abstract class AbstractAdminAction extends AbstractAction {
     }
 
     @Override
-    protected Template beforeDoFreeMarkerAction(
-            final HttpServletRequest request, final HttpServletResponse response)
-            throws ActionException {
-        final String pageName = getPageName(request.getRequestURI());
+    protected Template getTemplate(final HttpServletRequest request) {
+        final String pageName = getTemplateName(request.getRequestURI());
 
         try {
             return configuration.getTemplate(pageName);
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
+            LOGGER.log(Level.SEVERE, "Can't find template by the specified request[URI="
+                                     + request.getRequestURI() + "]",
+                       e.getMessage());
+            return null;
         }
     }
 }

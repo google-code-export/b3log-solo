@@ -19,7 +19,7 @@ package org.b3log.solo.util;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import org.b3log.solo.filter.PageCacheFilter;
+import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
@@ -29,7 +29,7 @@ import org.b3log.solo.repository.impl.PageGAERepository;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 26, 2011
+ * @version 1.0.0.7, Jun 28, 2011
  */
 public final class Permalinks {
 
@@ -65,7 +65,7 @@ public final class Permalinks {
         RESERVED_LINKS.add("/file-access.do");
         RESERVED_LINKS.add("/datastore-file-access.do");
 
-        RESERVED_LINKS.addAll(Arrays.asList(PageCacheFilter.ADMIN_ACTIONS));
+        RESERVED_LINKS.addAll(Arrays.asList(Skips.ADMIN_ACTIONS));
     }
 
     /**

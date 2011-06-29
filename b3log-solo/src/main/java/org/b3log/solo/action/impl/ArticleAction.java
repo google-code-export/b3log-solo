@@ -60,7 +60,7 @@ import org.jsoup.Jsoup;
  * Article action. article-detail.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, Jun 19, 2011
+ * @version 1.0.3.0, Jun 28, 2011
  */
 public final class ArticleAction extends AbstractCacheablePageAction {
 
@@ -107,31 +107,53 @@ public final class ArticleAction extends AbstractCacheablePageAction {
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
-    
+
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
+     * Article view count +1.
+     * </p>
+     */
+    @Override
+    protected void processPageCacheHit(final JSONObject cachedPageContentObject) {
+        try {
+            final String oId = cachedPageContentObject.getString(
+                    AbstractCacheablePageAction.CACHED_OID);
+            LOGGER.log(Level.FINEST, "Page cached object[id={0}, type={1}]",
+                       new Object[]{oId, cachedPageContentObject.optString(
+                        AbstractCacheablePageAction.CACHED_TYPE)});
+
+            statistics.incArticleViewCount(oId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Process page cache hit error", e);
+        }
+    }
+
     @Override
     protected Map<?, ?> doFreeMarkerAction(
             final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
-        
+
         try {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
-            
+
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString));
-            
+
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ARTICLE));
-            
+
             final JSONObject queryStringJSONObject =
                     getQueryStringJSONObject(request);
             String articleId =
@@ -139,26 +161,26 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             if (Strings.isEmptyOrNull(articleId)) {
                 articleId = (String) request.getAttribute(Keys.OBJECT_ID);
             }
-            
+
             if (Strings.isEmptyOrNull(articleId)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return ret;
             }
-            
+
             final JSONObject article = articleRepository.get(articleId);
             if (null == article
                 || !article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return ret;
             }
-            
+
             request.setAttribute(CACHED_OID, articleId);
             request.setAttribute(CACHED_TITLE,
                                  article.getString(Article.ARTICLE_TITLE));
             statistics.incArticleViewCount(articleId);
-            
+
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
             ret.put(Article.ARTICLE, article);
@@ -167,25 +189,25 @@ public final class ArticleAction extends AbstractCacheablePageAction {
             final String metaDescription = Jsoup.parse(article.getString(
                     Article.ARTICLE_ABSTRACT)).text();
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
-            
+
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }
-            
+
             final JSONObject author = articleUtils.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
             article.put(Common.AUTHOR_NAME, authorName);
             final String authorId = author.getString(Keys.OBJECT_ID);
             article.put(Common.AUTHOR_ID, authorId);
             article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
-            
+
             LOGGER.finer("Getting article sign....");
             article.put(Article.ARTICLE_SIGN_REF,
                         articleUtils.getSign(articleId, preference));
             LOGGER.finer("Got article sign");
-            
+
             LOGGER.finer("Getting the previous article....");
             final JSONObject previousArticle =
                     articleRepository.getPreviousArticle(articleId);
@@ -196,7 +218,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                         previousArticle.getString(Article.ARTICLE_TITLE));
                 LOGGER.finer("Got the previous article");
             }
-            
+
             LOGGER.finer("Getting the next article....");
             final JSONObject nextArticle =
                     articleRepository.getNextArticle(articleId);
@@ -207,13 +229,13 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                         nextArticle.getString(Article.ARTICLE_TITLE));
                 LOGGER.finer("Got the next article");
             }
-            
+
             LOGGER.finer("Getting article's comments....");
             final List<JSONObject> articleComments =
                     articleUtils.getComments(articleId);
             ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
             LOGGER.finer("Got article's comments");
-            
+
             LOGGER.finer("Getting relevant articles....");
             final List<JSONObject> relevantArticles = getRelevantArticles(
                     articleId,
@@ -221,26 +243,26 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     preference);
             ret.put(Common.RELEVANT_ARTICLES, relevantArticles);
             LOGGER.finer("Got relevant articles....");
-            
+
             ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                     preference.getInt(
                     Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
-            
+
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            
+
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return ret;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
         }
-        
+
         return ret;
     }
 
@@ -262,7 +284,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
         if (null == preference) {
             throw new RepositoryException("Not found preference");
         }
-        
+
         final int displayCnt =
                 preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
         final String[] tagTitles = articleTagsString.split(",");
@@ -277,7 +299,7 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                     tagArticleRepository.getByTagId(tagId, 1, displayCnt);
             final JSONArray tagArticleRelations =
                     result.getJSONArray(Keys.RESULTS);
-            
+
             final int relationSize = displayCnt < tagArticleRelations.length()
                                      ? displayCnt : tagArticleRelations.length();
             for (int j = 0; j < relationSize; j++) {
@@ -289,11 +311,11 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                 if (articleId.equals(relatedArticleId)) {
                     continue;
                 }
-                
+
                 if (articleRepository.isPublished(relatedArticleId)) {
                     final JSONObject article =
                             articleRepository.get(relatedArticleId);
-                    
+
                     boolean existed = false;
                     for (final JSONObject relevantArticle : articles) {
                         if (relevantArticle.getString(Keys.OBJECT_ID).
@@ -301,20 +323,20 @@ public final class ArticleAction extends AbstractCacheablePageAction {
                             existed = true;
                         }
                     }
-                    
+
                     if (!existed) {
                         articles.add(article);
                     }
                 }
             }
         }
-        
+
         Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
-        
+
         if (displayCnt > articles.size()) {
             return articles;
         }
-        
+
         final List<Integer> randomIntegers =
                 CollectionUtils.getRandomIntegers(0,
                                                   articles.size() - 1,
@@ -323,10 +345,10 @@ public final class ArticleAction extends AbstractCacheablePageAction {
         for (final int index : randomIntegers) {
             ret.add(articles.get(index));
         }
-        
+
         return ret;
     }
-    
+
     @Override
     protected JSONObject doAjaxAction(final JSONObject data,
                                       final HttpServletRequest request,

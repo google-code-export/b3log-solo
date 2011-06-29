@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * B3log Solo initialization action. init.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jun 25, 2011
+ * @version 1.0.0.4, Jun 28, 2011
  */
 public final class InitAction extends AbstractAction {
 
@@ -116,16 +116,16 @@ public final class InitAction extends AbstractAction {
     }
 
     @Override
-    protected Template beforeDoFreeMarkerAction(
-            final HttpServletRequest request, final HttpServletResponse response)
-            throws ActionException {
-        final String pageName = getPageName(request.getRequestURI());
+    protected Template getTemplate(final HttpServletRequest request) {
+        final String pageName = getTemplateName(request.getRequestURI());
 
         try {
             return configuration.getTemplate(pageName);
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
+            LOGGER.log(Level.SEVERE, "Can't find template by the specified request[URI="
+                                     + request.getRequestURI() + "]",
+                       e.getMessage());
+            return null;
         }
     }
 }

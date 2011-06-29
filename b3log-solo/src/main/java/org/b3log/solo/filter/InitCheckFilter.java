@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Checks initialization filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.2, Jun 28, 2011
  */
 public final class InitCheckFilter implements Filter {
 
@@ -70,24 +70,26 @@ public final class InitCheckFilter implements Filter {
                                                          ServletException {
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
+        final String requestURI = httpServletRequest.getRequestURI();
+        LOGGER.log(Level.FINEST, "Request[URI={0}]", requestURI);
+
+        if (Skips.shouldSkip(requestURI)) {
+            LOGGER.log(Level.FINEST, "Skip filter request[URI={0}]",
+                       requestURI);
+            chain.doFilter(request, response);
+
+            return;
+        }
 
         try {
-            final String requestURI = httpServletRequest.getRequestURI();
             if (SoloServletListener.isInited()) {
                 chain.doFilter(request, response);
 
                 return;
             }
 
-            if (PageCacheFilter.shouldSkip(requestURI)) {
-                LOGGER.log(Level.FINEST, "Skip filter request[URI={0}]",
-                           requestURI);
-                chain.doFilter(request, response);
-
-                return;
-            }
-
-            // Try to get preference to confirm whether the preference exixts
+            LOGGER.finer(
+                    "Try to get preference to confirm whether the preference exixts");
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 LOGGER.log(Level.WARNING,
