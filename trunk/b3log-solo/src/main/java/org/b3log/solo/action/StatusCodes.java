@@ -178,6 +178,10 @@ public enum StatusCodes {
      */
     ADD_PAGE_FAIL_DUPLICATED_PERMALINK,
     /**
+     * Indicates add an page fails, caused by invalid permalink format.
+     */
+    ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT,
+    /**
      * Indicates remove a page successfully.
      */
     REMOVE_PAGE_SUCC,
@@ -193,6 +197,10 @@ public enum StatusCodes {
      * Indicates update a page fails, caused by duplicated permalink.
      */
     UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK,
+    /**
+     * Indicates update an page fails, caused by invalid permalink format.
+     */
+    UPDATE_PAGE_FAIL_INVALID_PERMALINK_FORMAT,
     /**
      * Indicates get pages successfully.
      */

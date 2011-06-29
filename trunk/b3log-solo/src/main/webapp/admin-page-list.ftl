@@ -105,8 +105,8 @@
                         }
 
                         $("#pagePagination").paginate("update", {
-                                currentPage: pageNum,
-                                pageCount: pageListPageCount
+                            currentPage: pageNum,
+                            pageCount: pageListPageCount
                         });
                         break;
                     default:
@@ -259,7 +259,7 @@
         });
 
         $("#pagePagination").paginate({
-         "bind": function(currentPage) {
+            "bind": function(currentPage) {
                 getPageList(currentPage);
                 return true;
             },
@@ -326,6 +326,10 @@
             jsonRpc.pageService.updatePage(function (result, error) {
                 try {
                     switch (result.sc) {
+                        case "UPDATE_PAGE_FAIL_INVALID_PERMALINK_FORMAT":
+                            var msg = "${addFailLabel}, ${invalidPermalinkFormatLabel}";
+                            $("#tipMsg").text(msg);
+                            break;
                         case "UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK":
                             var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
                             $("#tipMsg").text(msg);
@@ -360,6 +364,10 @@
             jsonRpc.pageService.addPage(function (result, error) {
                 try {
                     switch (result.sc) {
+                        case "ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT":
+                            var msg = "${addFailLabel}, ${invalidPermalinkFormatLabel}";
+                            $("#tipMsg").text(msg);
+                            break;
                         case "ADD_PAGE_FAIL_DUPLICATED_PERMALINK":
                             var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
                             $("#tipMsg").text(msg);
