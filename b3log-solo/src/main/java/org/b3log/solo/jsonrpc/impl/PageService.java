@@ -33,6 +33,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.jsonrpc.PermalinkException;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
@@ -239,19 +240,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
             newPage.put(Page.PAGE_COMMENT_COUNT,
                         oldPage.getInt(Page.PAGE_COMMENT_COUNT));
             String permalink = page.optString(Page.PAGE_PERMALINK).trim();
-            if (!Strings.isEmptyOrNull(permalink)) {
-                if (permalink.startsWith("/")) {
-                    permalink = permalink.substring(1);
-                }
-
-                if (permalinks.invalidPermalinkFormat(permalink)) {
-                    ret.put(Keys.CODE,
-                            StatusCodes.UPDATE_PAGE_FAIL_INVALID_PERMALINK_FORMAT);
-
-                    throw new Exception("Add page fail, caused by invalid permalink format["
-                                        + permalink + "]");
-                }
-            }
 
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
             if (!oldPermalink.equals(permalink)) {
@@ -263,13 +251,21 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     permalink = "/" + permalink;
                 }
 
+                if (permalinks.invalidPagePermalinkFormat(permalink)) {
+                    ret.put(Keys.STATUS_CODE,
+                            StatusCodes.UPDATE_PAGE_FAIL_INVALID_PERMALINK_FORMAT);
+
+                    throw new PermalinkException("Update page fail, caused by invalid permalink format["
+                                                 + ret + "]");
+                }
+
                 if (!oldPermalink.equals(permalink)
                     && permalinks.exist(permalink)) {
                     ret.put(Keys.STATUS_CODE,
                             StatusCodes.UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK);
 
-                    throw new Exception("Update page fail, caused by duplicated permalink["
-                                        + permalink + "]");
+                    throw new PermalinkException("Update page fail, caused by duplicated permalink["
+                                                 + permalink + "]");
                 }
             }
             newPage.put(Page.PAGE_PERMALINK, permalink);
@@ -280,6 +276,12 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PAGE_SUCC);
 
             LOGGER.log(Level.FINER, "Updated a page[oId={0}]", pageId);
+        } catch (final PermalinkException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
@@ -393,19 +395,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
             page.put(Page.PAGE_ORDER, maxOrder + 1);
             final String pageId = pageRepository.add(page);
             String permalink = page.optString(Page.PAGE_PERMALINK);
-            if (!Strings.isEmptyOrNull(permalink)) {
-                if (permalink.startsWith("/")) {
-                    permalink = permalink.substring(1);
-                }
-
-                if (permalinks.invalidPermalinkFormat(permalink)) {
-                    ret.put(Keys.CODE,
-                            StatusCodes.ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT);
-
-                    throw new Exception("Add page fail, caused by invalid permalink format["
-                                        + permalink + "]");
-                }
-            } else {
+            if (Strings.isEmptyOrNull(permalink)) {
                 permalink = "/pages/" + pageId + ".html";
             }
 
@@ -413,14 +403,20 @@ public final class PageService extends AbstractGAEJSONRpcService {
                 permalink = "/" + permalink;
             }
 
+            if (permalinks.invalidPagePermalinkFormat(permalink)) {
+                ret.put(Keys.STATUS_CODE,
+                        StatusCodes.ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT);
 
+                throw new PermalinkException("Add page fail, caused by invalid permalink format["
+                                             + ret + "]");
+            }
 
             if (permalinks.exist(permalink)) {
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.ADD_PAGE_FAIL_DUPLICATED_PERMALINK);
 
-                throw new Exception("Add page fail, caused by duplicated permalink["
-                                    + permalink + "]");
+                throw new PermalinkException("Add page fail, caused by duplicated permalink["
+                                             + permalink + "]");
             }
             page.put(Page.PAGE_PERMALINK, permalink);
 
@@ -430,6 +426,12 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.OBJECT_ID, pageId);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_PAGE_SUCC);
+        } catch (final PermalinkException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
