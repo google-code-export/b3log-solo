@@ -19,6 +19,7 @@ package org.b3log.solo.util;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
@@ -29,7 +30,7 @@ import org.b3log.solo.repository.impl.PageGAERepository;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jun 28, 2011
+ * @version 1.0.0.8, Jun 29, 2011
  */
 public final class Permalinks {
 
@@ -64,6 +65,35 @@ public final class Permalinks {
         RESERVED_LINKS.add("/datastore-file-access.do");
 
         RESERVED_LINKS.addAll(Arrays.asList(Skips.ADMIN_ACTIONS));
+    }
+
+    /**
+     * Checks whether the specified permalink is invalid on format.
+     * 
+     * @param permalink the specified permalink
+     * @return {@code true} if invalid, returns {@code false} otherwise
+     */
+    public boolean invalidPermalinkFormat(
+            final String permalink) {
+        if (Strings.isEmptyOrNull(permalink)) {
+            return true;
+        }
+
+        int slashCnt = 0;
+
+        for (int i = 0; i < permalink.length(); i++) {
+            if ('/' == permalink.charAt(i)) {
+                slashCnt++;
+            }
+
+            if (slashCnt > 1) {
+                return true;
+            }
+        }
+
+        // FIXME: URL format check
+
+        return false;
     }
 
     /**

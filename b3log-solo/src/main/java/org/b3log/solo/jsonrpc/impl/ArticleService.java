@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.6, Apr 30, 2011
+ * @version 1.0.3.7, Jun 29, 2011
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -242,6 +242,14 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             if (!permalink.startsWith("/")) {
                 permalink = "/" + permalink;
+            }
+
+            if (permalinks.invalidPermalinkFormat(permalink)) {
+                status.put(Keys.CODE,
+                           StatusCodes.ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
+
+                throw new Exception("Add article fail, caused by invalid permalink format["
+                                    + permalink + "]");
             }
 
             if (permalinks.exist(permalink)) {
@@ -1040,6 +1048,15 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throws Exception {
         final String articleId = article.getString(Keys.OBJECT_ID);
         String ret = article.optString(ARTICLE_PERMALINK).trim();
+
+        if (permalinks.invalidPermalinkFormat(ret)) {
+            status.put(Keys.CODE,
+                       StatusCodes.UPDATE_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
+
+            throw new Exception("Update article fail, caused by invalid permalink format["
+                                + ret + "]");
+        }
+
         final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
         if (!oldPermalink.equals(ret)) {
             if (Strings.isEmptyOrNull(ret)) {
