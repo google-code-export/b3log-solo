@@ -1,7 +1,2 @@
-<button class="margin12" onclick="adminUtil.removeUnusedTags();">${removeUnusedTagsLabel}</button>
-<script type="text/javascript">    
-    (function () {
-        $("#loadMsg").text("");
-    })();
-</script>
+<button class="margin12" onclick="admin.others.removeUnusedTags();">${removeUnusedTagsLabel}</button>
 ${plugins}

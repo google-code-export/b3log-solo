@@ -5,20 +5,20 @@
     <div class="clear"></div>
 </div>
 <script type="text/javascript">
-    plugins["cache-list"] = {};
+    plugins.cacheList = {};
     
     
     
     
     
     
-    var getCacheList = function (pageNum) {
+    plugins.cacheList.getCacheList = function (pageNum) {
         $("#loadMsg").text("${loadingLabel}");
         
         var requestJSONObject = {
             "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": adminUtil.PAGE_SIZE,
-            "paginationWindowSize": adminUtil.WINDOW_SIZE
+            "paginationPageSize": Label.PAGE_SIZE,
+            "paginationWindowSize": Label.WINDOW_SIZE
         };
         
         jsonRpc.adminCacheService.getPages(function (result, error) {
@@ -56,7 +56,27 @@
         }, requestJSONObject);
     }
         
-    plugins["cache-list"].initCache = function () {     
+    
+    plugins["cacheList"].changeCacheStatus = function (it) {
+        var $it = $(it);
+        if ($it.text() === "${enabledLabel}") {
+            $it.text("${disabledLabel}");
+            
+            var requestJSONObject = {
+                "pageCacheEnabled": false
+            };
+            jsonRpc.adminCacheService.setPageCache(requestJSONObject);
+        } else {
+            $it.text("${enabledLabel}");
+            
+            var requestJSONObject = {
+                "pageCacheEnabled": true
+            };
+            jsonRpc.adminCacheService.setPageCache(requestJSONObject);
+        }
+    }
+    
+    plugins.cacheList.initCache = function () {     
         $("#loadMsg").text("${loadingLabel}");
         jsonRpc.adminCacheService.getPageCache(function (result, error) {
             try {
@@ -70,7 +90,7 @@
                     + " &nbsp; </span>${hitCount1Label}<span class='f-blue'>" + result.cacheHitCount
                     + " &nbsp; </span>${hitBytes1Label}<span class='f-blue'>" + result.cacheHitBytes
                     + " &nbsp; </span>${missCount1Label}<span class='f-blue'>" + result.cacheMissCount 
-                    + " &nbsp; </span>${pageCacheStatus1Label} &nbsp; <button onclick='changeCacheStatus(this);'>" 
+                    + " &nbsp; </span>${pageCacheStatus1Label} &nbsp; <button onclick=\"window.plugins.cacheList.changeCacheStatus(this);\">" 
                     + pageCacheStatusLabel
                     + "</button>"; 
                 $("#cacheContent").html(cacheHTML);
@@ -94,7 +114,7 @@
         
         $("#cachePagination").paginate({
             "bind": function(currentPage) {
-                getCacheList(currentPage);
+                plugins.cacheList.getCacheList(currentPage);
                 return true;
             },
             "currentPage": 1,
@@ -103,26 +123,7 @@
             "previousPageText": "${previousPageLabel}",
             "goText": "${gotoLabel}"            
         });
-        getCacheList(1);
-    };
-    
-    var changeCacheStatus = function (it) {
-        var $it = $(it);
-        if ($it.text() === "${enabledLabel}") {
-            $it.text("${disabledLabel}");
-            
-            var requestJSONObject = {
-                "pageCacheEnabled": false
-            };
-            jsonRpc.adminService.setPageCache(requestJSONObject);
-        } else {
-            $it.text("${enabledLabel}");
-            
-            var requestJSONObject = {
-                "pageCacheEnabled": true
-            };
-            jsonRpc.adminService.setPageCache(requestJSONObject);
-        }
+        plugins.cacheList.getCacheList(1);
     }
     
     
@@ -135,22 +136,28 @@
     
     
     $("#tabs").tabs("add", {
-        "id": "cache-list",
+        "id": "cacheList",
         "text": "<a href=\"#cache-list\"><div class=\"left cacheIcon\"></div>cache</a>",
         "content": $("#cachePlugin").html()
     });
     
     var hash = window.location.hash;
-    $("#tabs").tabs("select", hash.substr(1, hash.length - 1));
     if (hash === "#cache-list") {
-        plugins["cache-list"].initCache();
+        plugins.cacheList.initCache();
+    } else {
+        var index = hash.length - 1;
+        if(hash.indexOf("/") > -1) {
+            index = hash.indexOf("/") - 1;
+        }
+        var tag = hash.substr(1, index);
+        $("#tabs").tabs("select", tag);
     }
     $("#tabs").tabs("bind", [{
             "type": "click",
             "action": function (event, data) {
-                plugins["cache-list"].initCache();
+                plugins.cacheList.initCache();
             }
-        }], "cache-list");
+        }], "cacheList");
         
     $("#cachePlugin").remove();
 </script>

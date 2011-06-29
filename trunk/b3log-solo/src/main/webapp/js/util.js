@@ -18,14 +18,27 @@ var Util = function (tips) {
     this.tips = tips;
 }
 
-Util.killIE =  function () {
-    if ($.browser.msie) {
-        if ($.browser.version === "6.0") {
-            alert("Let's kill IE 6!");
-            return;
+$.extend(Util, {
+    killIE: function () {
+        if ($.browser.msie) {
+            if ($.browser.version === "6.0") {
+                alert("Let's kill IE 6!");
+                return;
+            }
         }
+    },
+
+    trimUnique:function(a){
+        for(var i=0;i<a.length;i++){
+            a[i]=a[i].replace(/(^\s*)|(\s*$)/g,"");
+            if(a[i]===""){
+                a.splice(i,1);
+                i--
+            }
+        }
+        return $.unique(a)
     }
-};
+});
 
 $.extend(Util.prototype, {    
     goTop:function (type) {
@@ -38,7 +51,7 @@ $.extend(Util.prototype, {
                 break;
         }
     },
-
+    
     goBottom: function () {
         switch (this.tips.skinDirName) {
             case undefined:
