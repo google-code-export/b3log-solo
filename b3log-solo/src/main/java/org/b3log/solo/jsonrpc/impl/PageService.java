@@ -239,6 +239,19 @@ public final class PageService extends AbstractGAEJSONRpcService {
             newPage.put(Page.PAGE_COMMENT_COUNT,
                         oldPage.getInt(Page.PAGE_COMMENT_COUNT));
             String permalink = page.optString(Page.PAGE_PERMALINK).trim();
+            if (!Strings.isEmptyOrNull(permalink)) {
+                if (permalink.startsWith("/")) {
+                    permalink = permalink.substring(1);
+                }
+
+                if (permalinks.invalidPermalinkFormat(permalink)) {
+                    ret.put(Keys.CODE,
+                            StatusCodes.UPDATE_PAGE_FAIL_INVALID_PERMALINK_FORMAT);
+
+                    throw new Exception("Add page fail, caused by invalid permalink format["
+                                        + permalink + "]");
+                }
+            }
 
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
             if (!oldPermalink.equals(permalink)) {
@@ -380,13 +393,27 @@ public final class PageService extends AbstractGAEJSONRpcService {
             page.put(Page.PAGE_ORDER, maxOrder + 1);
             final String pageId = pageRepository.add(page);
             String permalink = page.optString(Page.PAGE_PERMALINK);
-            if (Strings.isEmptyOrNull(permalink)) {
+            if (!Strings.isEmptyOrNull(permalink)) {
+                if (permalink.startsWith("/")) {
+                    permalink = permalink.substring(1);
+                }
+
+                if (permalinks.invalidPermalinkFormat(permalink)) {
+                    ret.put(Keys.CODE,
+                            StatusCodes.ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT);
+
+                    throw new Exception("Add page fail, caused by invalid permalink format["
+                                        + permalink + "]");
+                }
+            } else {
                 permalink = "/pages/" + pageId + ".html";
             }
 
             if (!permalink.startsWith("/")) {
                 permalink = "/" + permalink;
             }
+
+
 
             if (permalinks.exist(permalink)) {
                 ret.put(Keys.STATUS_CODE,

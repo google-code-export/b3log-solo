@@ -235,21 +235,25 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             archiveDateUtils.archiveDate(article);
             // Step 9: Set permalink
             String permalink = article.optString(ARTICLE_PERMALINK);
-            if (Strings.isEmptyOrNull(permalink)) {
+            if (!Strings.isEmptyOrNull(permalink)) {
+                if (permalink.startsWith("/")) {
+                    permalink = permalink.substring(1);
+                }
+
+                if (permalinks.invalidPermalinkFormat(permalink)) {
+                    status.put(Keys.CODE,
+                               StatusCodes.ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
+
+                    throw new Exception("Add article fail, caused by invalid permalink format["
+                                        + permalink + "]");
+                }
+            } else {
                 permalink = "/articles/" + PERMALINK_FORMAT.format(date) + "/"
                             + articleId + ".html";
             }
 
             if (!permalink.startsWith("/")) {
                 permalink = "/" + permalink;
-            }
-
-            if (permalinks.invalidPermalinkFormat(permalink)) {
-                status.put(Keys.CODE,
-                           StatusCodes.ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
-
-                throw new Exception("Add article fail, caused by invalid permalink format["
-                                    + permalink + "]");
             }
 
             if (permalinks.exist(permalink)) {
@@ -1048,13 +1052,18 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throws Exception {
         final String articleId = article.getString(Keys.OBJECT_ID);
         String ret = article.optString(ARTICLE_PERMALINK).trim();
+        if (!Strings.isEmptyOrNull(ret)) {
+            if (ret.startsWith("/")) {
+                ret = ret.substring(1);
+            }
+            
+            if (permalinks.invalidPermalinkFormat(ret)) {
+                status.put(Keys.CODE,
+                           StatusCodes.UPDATE_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
 
-        if (permalinks.invalidPermalinkFormat(ret)) {
-            status.put(Keys.CODE,
-                       StatusCodes.UPDATE_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
-
-            throw new Exception("Update article fail, caused by invalid permalink format["
-                                + ret + "]");
+                throw new Exception("Update article fail, caused by invalid permalink format["
+                                    + ret + "]");
+            }
         }
 
         final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
