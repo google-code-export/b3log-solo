@@ -32,7 +32,7 @@
                 <tbody>
                     <tr>
                         <td colspan="2" align="right">
-                            <button onclick="changePreference();">${updateLabel}</button>
+                            <button onclick="admin.preference.update()">${updateLabel}</button>
                         </td>
                     </tr>
                     <tr>
@@ -207,18 +207,18 @@
                     </tr>
                     <tr>
                         <th colspan="2">
-                            <button onclick="changePreference();">${updateLabel}</button>
+                            <button onclick="admin.preference.update()">${updateLabel}</button>
                         </th>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div id="tabspreference_skins">
-            <button onclick="changePreference();" class="right">${updateLabel}</button>
+            <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
             <div class="clear"></div>
             <div id="skinMain">
             </div>
-            <button onclick="changePreference();" class="right">${updateLabel}</button>
+            <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
             <div class="clear"></div>
         </div>
         <div id="tabspreference_signs">
@@ -226,7 +226,7 @@
                 <tbody>
                     <tr>
                         <th colspan="2">
-                            <button onclick="changePreference();" class="right">${updateLabel}</button>
+                            <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
                         </th>
                     </tr>
                     <tr>
@@ -255,7 +255,7 @@
                     </tr>
                     <tr>
                         <th colspan="2">
-                            <button onclick="changePreference();" class="right">${updateLabel}</button>
+                            <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
                         </th>
                     </tr>
                 </tbody>
@@ -291,7 +291,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <button onclick="changePreference();">${saveLabel}</button>
+                                    <button onclick="admin.preference.update()">${saveLabel}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -322,7 +322,7 @@
                         </th>
                         <td width="20%">
                             <img class="pointer" src="images/tencent-microblog.png"
-                                 onclick="oauthTencentMicroblog();" alt="${authorizeTencentMicroblog1Label}"/>
+                                 onclick="admin.preference.oauthTencent();" alt="${authorizeTencentMicroblog1Label}"/>
                         </td>
                         <th width="20%">
                             ${postToTencentMicroblogWhilePublishArticleLabel}
@@ -333,7 +333,7 @@
                     </tr>
                     <tr>
                         <th colspan="4">
-                            <button onclick="changePreference();">${saveLabel}</button>
+                            <button onclick="admin.preference.update()">${saveLabel}</button>
                         </th>
                     </tr>
                 </tbody>
@@ -341,204 +341,4 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    var localeString = "";
-    var getPreference = function () {
-        $("#loadMsg").text("${loadingLabel}");
-        jsonRpc.preferenceService.getPreference(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_PREFERENCE_SUCC":
-                        // preference
-                        var preference = result.preference;
-                        $("#metaKeywords").val(preference.metaKeywords),
-                        $("#metaDescription").val(preference.metaDescription),
-                        $("#blogTitle").val(preference.blogTitle),
-                        $("#blogSubtitle").val(preference.blogSubtitle),
-                        $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
-                        $("#mostViewArticleDisplayCount").val(preference.mostViewArticleDisplayCount),
-                        $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
-                        $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
-                        $("#articleListDisplayCount").val(preference.articleListDisplayCount);
-                        $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
-                        $("#blogHost").val(preference.blogHost);
-                        $("#localeString").val(preference.localeString);
-                        $("#timeZoneId").val(preference.timeZoneId);
-                        $("#noticeBoard").val(preference.noticeBoard);
-                        $("#htmlHead").val(preference.htmlHead);
-                        $("#secret").val(preference.googleOAuthConsumerSecret);
-                        $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
-                        $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
-                        $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
-                        $("#keyOfSolo").val(preference.keyOfSolo);
-                        preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
-                        preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
-
-                        // Tencent micro blog settings
-                        preference.enablePostToTencentMicroblog ? $("#postToTencentMicroblog").attr("checked", "checked") : $("#postToTencentMicroblog").removeAttr("checked");
-                        $("#tencentMicroblogAppKey").val(preference.tencentMicroblogAppKey);
-                        $("#tencentMicroblogAppSecret").val(preference.tencentMicroblogAppSecret);
-
-                        localeString = preference.localeString;
-
-                        // skin
-                        $("#skinMain").data("skinDirName", preference.skinDirName);
-                        var skins = eval('(' + preference.skins + ')');
-                        var skinsHTML = "";
-                        for (var i = 0; i < skins.length; i++) {
-                            if (skins[i].skinName === preference.skinName
-                                && skins[i].skinDirName === preference.skinDirName ) {
-                                skinsHTML += "<div title='" + skins[i].skinDirName
-                                    + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
-                                    + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
-                            } else {
-                                skinsHTML += "<div title='" + skins[i].skinDirName
-                                    + "' class='left skinItem'><img class='skinPreview' src='skins/"
-                                    + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
-                            }
-                        }
-                        $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
-
-                        $(".skinItem").click(function () {
-                            $(".skinItem").removeClass("selected");
-                            $(this).addClass("selected");
-                            $("#skinMain").data("skinDirName", this.title);
-                        });
-
-                        // sign
-                        var signs = eval('(' + preference.signs + ')');
-                        for (var i = 0; i < signs.length; i++) {
-                            var oId = parseInt(signs[i].oId);
-                            if (oId !== 0) {
-                                $("#preferenceSign" + oId).val(signs[i].signHTML);
-                            }
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
-            } catch (e) {}
-        });
-        
-        $("#tabspreference").tabs();
-    }
-    
-    getPreference();
-    
-    var changePreference = function () {
-        $("#loadMsg").text("${loadingLabel}");
-        $("#tipMsg").text("");
-        if ($("#syncGoogle").hasClass("selected")) {
-            if ("" === $("#secret").val().replace(/\s/g, "")) {
-                $("#tipMsg").text("${contentEmptyLabel}");
-                return;
-            }
-        }
-
-        var signs = [{
-                "oId": 0,
-                "signHTML": ""
-            }, {
-                "oId": 1,
-                "signHTML": $("#preferenceSign1").val()
-            }, {
-                "oId": 2,
-                "signHTML": $("#preferenceSign2").val()
-            }, {
-                "oId": 3,
-                "signHTML": $("#preferenceSign3").val()
-            }];
-        
-        var requestJSONObject = {
-            "preference": {
-                "metaKeywords": $("#metaKeywords").val(),
-                "metaDescription": $("#metaDescription").val(),
-                "blogTitle": $("#blogTitle").val(),
-                "blogSubtitle": $("#blogSubtitle").val(),
-                "mostCommentArticleDisplayCount": $("#mostCommentArticleDisplayCount").val(),
-                "mostViewArticleDisplayCount": $("#mostViewArticleDisplayCount").val(),
-                "recentArticleDisplayCount": 10, // XXX: remove recentArticleDisplayCount
-                "recentCommentDisplayCount": $("#recentCommentDisplayCount").val(),
-                "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
-                "articleListDisplayCount": $("#articleListDisplayCount").val(),
-                "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
-                "skinDirName": $("#skinMain").data("skinDirName"),
-                "blogHost": $("#blogHost").val(),
-                "localeString": $("#localeString").val(),
-                "timeZoneId": $("#timeZoneId").val(),
-                "noticeBoard": $("#noticeBoard").val(),
-                "htmlHead": $("#htmlHead").val(),
-                "googleOAuthConsumerSecret": ""/*$("#secret").val()*/,
-                "externalRelevantArticlesDisplayCount": $("#externalRelevantArticlesDisplayCount").val(),
-                "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
-                "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
-                "enablePostToBuzz": false /*$("#syncBuzz").attr("checked")*/,
-                "enableArticleUpdateHint": $("#enableArticleUpdateHint").attr("checked"),
-                "signs": signs,
-                "tencentMicroblogAppKey": $("#tencentMicroblogAppKey").val(),
-                "tencentMicroblogAppSecret": $("#tencentMicroblogAppSecret").val(),
-                "enablePostToTencentMicroblog": $("#postToTencentMicroblog").attr("checked"),
-                "keyOfSolo": $("#keyOfSolo").val()
-            }
-        }
-
-        jsonRpc.preferenceService.updatePreference(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "UPDATE_PREFERENCE_SUCC":
-                        $("#tipMsg").text("${updateSuccLabel}");
-                        if ($("#localeString").val() !== localeString) {
-                            window.location.reload();
-                        }
-                        
-                        // update article signs
-                        for (var i = 1; i < signs.length; i++) {
-                            $("#articleSign" + signs[i].oId).tip("option", "content", signs[i].signHTML === "" ? "该签名档为空" : signs[i].signHTML);
-                        }
-                        break;
-                    case "UPDATE_PREFERENCE_FAIL_":
-                        $("#tipMsg").text("${updatePreferenceFailLabel}");
-                        break;
-                    case "UPDATE_PREFERENCE_FAIL_CANNT_BE_LOCALHOST":
-                        $("#tipMsg").text('${canntBeLocalhostOnProductionLabel}');
-                        break;
-                    case "UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS":
-                        $("#tipMsg").text("${updatePreferenceFailNeedMulUsersLabel}");
-                        break;
-                    default:
-                        break;
-                }
-                $("#loadMsg").text("");
-            } catch (e) {}
-        }, requestJSONObject);
-    }
-
-    var oauthBuzz = function () {
-        if ("" === $("#secret").val().replace(/\s/g, "")) {
-            $("#tipMsg").text("${contentEmptyLabel}");
-            return;
-        }
-        $("#loadMsg").text("${loadingLabel}");
-        window.location = "buzz-oauth.do?googleOAuthConsumerSecret=" + encodeURIComponent($("#secret").val());
-    }
-
-    var oauthTencentMicroblog = function () {
-        if ("" === $("#tencentMicroblogAppKey").val().replace(/\s/g, "")) {
-            $("#tipMsg").text("${contentEmptyLabel}");
-            return;
-        }
-
-        if ("" === $("#tencentMicroblogAppSecret").val().replace(/\s/g, "")) {
-            $("#tipMsg").text("${contentEmptyLabel}");
-            return;
-        }
-
-        $("#loadMsg").text("${loadingLabel}");
-        window.location = "tencent-microblog-oauth-authorize-token.do?appKey="
-            + $("#tencentMicroblogAppKey").val()
-            + "&appSecret=" + $("#tencentMicroblogAppSecret").val();
-
-    }
-</script>
 ${plugins}

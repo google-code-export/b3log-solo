@@ -1,0 +1,78 @@
+<script type="text/javascript">
+    var Label = {
+        "userRole": "${userRole}",
+        "PAGE_SIZE": 18,
+        "WINDOW_SIZE": 10,
+        "localeString": "${localeString}",
+        
+        
+        "loadingLabel": "${loadingLabel}",
+        "removeSuccLabel": "${removeSuccLabel}",
+        "removeFailLabel": "${removeFailLabel}",
+        "getSuccLabel": "${getSuccLabel}",
+        "noCommentLabel": "${noCommentLabel}",
+        "confirmRemoveLabel": "${confirmRemoveLabel}",
+        "forbiddenLabel": "${forbiddenLabel}",
+        "removeSuccLabel": "${removeSuccLabel}",
+        "removeLabel": "${removeLabel}",
+        "cancelPutTopLabel": "${cancelPutTopLabel}",
+        "putTopLabel": "${putTopLabel}",
+        "viewLabel": "${viewLabel}",
+        "updateLabel": "${updateLabel}",
+        "commentLabel": "${commentLabel}",
+        "syncBlogJavaFailLabel": "${syncBlogJavaFailLabel}",
+        "syncCSDNBlogFailLabel": "${syncCSDNBlogFailLabel}",
+        "syncCnBlogsFailLabel": "${syncCnBlogsFailLabel}",
+        "titleLabel": "${titleLabel}",
+        "tagsLabel": "${tagsLabel}",
+        "authorLabel": "${authorLabel}",
+        "createDateLabel": "${createDateLabel}",
+        "previousPageLabel": "${previousPageLabel}",
+        "nextPagePabel": "${nextPagePabel}",
+        "gotoLabel": "${gotoLabel}",
+        "cancelTopSuccLabel": "${cancelTopSuccLabel}",
+        "cancelTopFailLabel": "${cancelTopFailLabel}",
+        "putTopSuccLabel": "${putTopSuccLabel}",
+        "putTopFailLabel": "${putTopFailLabel}",
+        "addFailLabel": "${addFailLabel}",
+        "duplicatedPermalinkLabel": "${duplicatedPermalinkLabel}",
+        "addSuccLabel": "${addSuccLabel}",
+        "updateSuccLabel": "${updateSuccLabel}",
+        "updateFailLabel": "${updateFailLabel}",
+        "unPulbishSuccLabel": "${unPulbishSuccLabel}",
+        "unPulbishFailLabel": "${unPulbishFailLabel}",
+        "fileNameLabel": "${fileNameLabel}",
+        "uploadDateLabel": "${uploadDateLabel}",
+        "sizeLabel": "${sizeLabel}",
+        "downloadCountLabel": "${downloadCountLabel}",
+        "downloadLabel": "${downloadLabel}",
+        "permalinkLabel": "${permalinkLabel}",
+        "getFailLabel": "${getFailLabel}",
+        "titleEmptyLabel": "${titleEmptyLabel}",
+        "contentEmptyLabel": "${contentEmptyLabel}",
+        "linkTitleLabel": "${linkTitleLabel}",
+        "urlLabel": "${urlLabel}",
+        "addressEmptyLabel": "${addressEmptyLabel}",
+        "updatePreferenceFailLabel": "${updatePreferenceFailLabel}",
+        "canntBeLocalhostOnProductionLabel": "${canntBeLocalhostOnProductionLabel}",
+        "updatePreferenceFailNeedMulUsersLabel": "${updatePreferenceFailNeedMulUsersLabel}",
+        "pluginNameLabel": "${pluginNameLabel}",
+        "statusLabel": "${statusLabel}",
+        "versionLabel": "${versionLabel}",
+        "commentNameLabel": "${commentNameLabel}",
+        "commentEmailLabel": "${commentEmailLabel}",
+        "administratorLabel": "${administratorLabel}",
+        "duplicatedEmailLabel": "${duplicatedEmailLabel}",
+        "nameEmptyLabel": "${nameEmptyLabel}",
+        "mailInvalidLabel": "${mailInvalidLabel}",
+        "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
+        "removeUserFailSkinNeedMulUsersLabel": "${removeUserFailSkinNeedMulUsersLabel}"
+    };
+    var admin = new Admin();
+
+    admin.init();
+    
+        <#if enabledMultipleUserSupport>
+        $("#tabs li")[6].style.display = "none";
+        </#if>
+</script>
