@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 12, 2011
+ * @version 1.0.0.4, Jun 28, 2011
  */
 public final class PagePermalinkFilter implements Filter {
 
@@ -73,7 +73,7 @@ public final class PagePermalinkFilter implements Filter {
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
-        if (PageCacheFilter.shouldSkip(requestURI)) {
+        if (Skips.shouldSkip(requestURI)) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 
