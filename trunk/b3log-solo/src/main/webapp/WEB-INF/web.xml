@@ -174,7 +174,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>TagArticlesAction</servlet-name>
-        <url-pattern>/tag-articles.do</url-pattern>
         <url-pattern>/tags/*</url-pattern>
     </servlet-mapping>
     <servlet>
@@ -191,7 +190,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>TagsAction</servlet-name>
-        <url-pattern>/tags.do</url-pattern>
         <url-pattern>/tags.html</url-pattern>
     </servlet-mapping>
     <servlet>

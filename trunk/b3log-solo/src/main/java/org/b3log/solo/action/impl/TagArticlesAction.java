@@ -42,7 +42,6 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -113,21 +112,13 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
         JSONObject tag = null;
 
         try {
-            final JSONObject queryStringJSONObject =
-                    getQueryStringJSONObject(request);
             final String requestURI = request.getRequestURI();
-            String tagId = queryStringJSONObject.optString(Keys.OBJECT_ID);
-            String tagTitle = null;
-            if (Strings.isEmptyOrNull(tagId)) {
-                tagTitle = requestURI.substring(
-                        ("/" + Tag.TAGS + "/").length());
-                tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
-                tag = tagRepository.getByTitle(tagTitle);
-                // FIXME: issue 214, http://code.google.com/p/b3log-solo/issues/detail?id=214
-                tagId = tag.getString(Keys.OBJECT_ID);
-            } else {
-                tag = tagRepository.get(tagId);
-            }
+            String tagTitle = requestURI.substring(
+                    ("/" + Tag.TAGS + "/").length());
+            tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
+            LOGGER.log(Level.FINER, "Tag[title={0}]", tagTitle);
+
+            tag = tagRepository.getByTitle(tagTitle);
 
             if (null == tag) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -135,13 +126,14 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                 return ret;
             }
 
+            final String tagId = tag.getString(Keys.OBJECT_ID);
+
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return ret;
             }
-
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
@@ -152,6 +144,8 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
+            final JSONObject queryStringJSONObject =
+                    getQueryStringJSONObject(request);
             final int currentPageNum = queryStringJSONObject.optInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
             final int pageSize = preference.getInt(
