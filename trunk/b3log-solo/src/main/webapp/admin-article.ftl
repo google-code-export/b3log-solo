@@ -224,6 +224,10 @@
             jsonRpc.articleService.addArticle(function (result, error) {
                 try {
                     switch (result.status.code) {
+                        case "ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT":
+                            var msg = "${addFailLabel}, ${invalidPermalinkFormatLabel}";
+                            $("#tipMsg").text(msg);
+                            break;
                         case "ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK":
                             var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";
                             $("#tipMsg").text(msg);
@@ -319,6 +323,10 @@
                     switch (result.status.code) {
                         case "UPDATE_ARTICLE_FAIL_FORBIDDEN":
                             $("#tipMsg").text("${forbiddenLabel}");
+                            break;
+                        case "UPDATE_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT":
+                            var msg = "${addFailLabel}, ${invalidPermalinkFormatLabel}";
+                            $("#tipMsg").text(msg);
                             break;
                         case "UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK":
                             var msg = "${addFailLabel}, ${duplicatedPermalinkLabel}";

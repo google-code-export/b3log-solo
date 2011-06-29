@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Jan 20, 2011
+ * @version 1.0.1.2, Jun 29, 2011
  */
 public final class PageService extends AbstractGAEJSONRpcService {
 
