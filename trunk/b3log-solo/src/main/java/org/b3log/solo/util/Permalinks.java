@@ -19,6 +19,8 @@ package org.b3log.solo.util;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.ArticleRepository;
@@ -68,19 +70,86 @@ public final class Permalinks {
     }
 
     /**
-     * Checks whether the specified permalink is invalid on format.
+     * Checks whether the specified article permalink matches the system 
+     * generated format pattern ("/articles/yyyy/MM/dd/${articleId}.html").
      * 
      * @param permalink the specified permalink
+     * @return {@code true} if matches, returns {@code false} otherwise
+     */
+    public static boolean matchDefaultArticlePermalinkFormat(
+            final String permalink) {
+        final Pattern pattern = Pattern.compile(
+                "/articles/\\d{4}/\\d{2}/\\d{2}/\\d+\\.html");
+        final Matcher matcher = pattern.matcher(permalink);
+
+        return matcher.matches();
+    }
+
+    /**
+     * Checks whether the specified page permalink matches the system generated 
+     * format pattern ("/pages/${pageId}.html").
+     * 
+     * @param permalink the specified permalink
+     * @return {@code true} if matches, returns {@code false} otherwise
+     */
+    public static boolean matchDefaultPagePermalinkFormat(
+            final String permalink) {
+        final Pattern pattern = Pattern.compile(
+                "/pages/\\d+\\.html");
+        final Matcher matcher = pattern.matcher(permalink);
+
+        return matcher.matches();
+    }
+
+    /**
+     * Checks whether the specified article permalink is invalid on format.
+     * 
+     * @param permalink the specified article permalink
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
-    public boolean invalidPermalinkFormat(
-            final String permalink) {
+    public boolean invalidArticlePermalinkFormat(final String permalink) {
+        if (Strings.isEmptyOrNull(permalink)) {
+            return true;
+        }
+
+        if (matchDefaultArticlePermalinkFormat(permalink)) {
+            return false;
+        }
+
+        return invalidUserDefinedPermalinkFormat(permalink);
+    }
+    
+    
+    /**
+     * Checks whether the specified page permalink is invalid on format.
+     * 
+     * @param permalink the specified page permalink
+     * @return {@code true} if invalid, returns {@code false} otherwise
+     */
+    public boolean invalidPagePermalinkFormat(final String permalink) {
+        if (Strings.isEmptyOrNull(permalink)) {
+            return true;
+        }
+
+        if (matchDefaultPagePermalinkFormat(permalink)) {
+            return false;
+        }
+
+        return invalidUserDefinedPermalinkFormat(permalink);
+    }
+
+    /**
+     * Checks whether the specified user-defined permalink is invalid on format.
+     * 
+     * @param permalink the specified user-defined permalink
+     * @return {@code true} if invalid, returns {@code false} otherwise
+     */
+    private boolean invalidUserDefinedPermalinkFormat(final String permalink) {
         if (Strings.isEmptyOrNull(permalink)) {
             return true;
         }
 
         int slashCnt = 0;
-
         for (int i = 0; i < permalink.length(); i++) {
             if ('/' == permalink.charAt(i)) {
                 slashCnt++;
