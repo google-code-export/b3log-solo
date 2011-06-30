@@ -67,12 +67,9 @@
         "mailInvalidLabel": "${mailInvalidLabel}",
         "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
         "removeUserFailSkinNeedMulUsersLabel": "${removeUserFailSkinNeedMulUsersLabel}"
-    };
-    var admin = new Admin();
-
-    admin.init();
-    
+    };    
         <#if enabledMultipleUserSupport>
         $("#tabs li")[6].style.display = "none";
         </#if>
+        admin.init();
 </script>

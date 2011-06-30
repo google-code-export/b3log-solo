@@ -18,7 +18,7 @@
  * article list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 28, 2011
+ * @version 1.0.0.3, Jun 30, 2011
  */
 
 /* article-list 相关操作 */
@@ -172,3 +172,11 @@ admin.articleList = {
     }
 };
 
+/*
+ * 注册到 admin 进行管理 
+ */
+admin.register["article-list"] =  {
+    "obj": admin.articleList,
+    "init": admin.articleList.init,
+    "refresh": admin.articleList.getList
+}

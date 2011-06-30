@@ -18,9 +18,8 @@
  *  article for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 28, 2011
+ * @version 1.0.0.3, Jun 30, 2011
  */
-
 admin.article = {
     status: undefined,
     
@@ -513,3 +512,14 @@ admin.article = {
     }
 }
 
+/*
+ * 注册到 admin 进行管理 
+ */
+admin.register.article =  {
+    "obj": admin.article,
+    "init": admin.article.init,
+    "refresh": function () {
+        admin.article.clear();
+        $("#loadMsg").text("");
+    }
+}

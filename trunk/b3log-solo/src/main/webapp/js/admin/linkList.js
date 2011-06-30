@@ -18,7 +18,7 @@
  * link list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 29, 2011
+ * @version 1.0.0.2, Jun 30, 2011
  */
 
 /* link-list 相关操作 */
@@ -36,20 +36,20 @@ admin.linkList = {
      */
     init: function () {
         this.tablePagination.buildTable([{
-                text: "",
-                index: "linkOrder",
-                width: 60
-            },{
-                style: "padding-left: 12px;",
-                text: Label.linkTitleLabel,
-                index: "linkTitle",
-                width: 230
-            }, {
-                style: "padding-left: 12px;",
-                text: Label.urlLabel,
-                index: "linkAddress",
-                minWidth: 180
-            }]);
+            text: "",
+            index: "linkOrder",
+            width: 60
+        },{
+            style: "padding-left: 12px;",
+            text: Label.linkTitleLabel,
+            index: "linkTitle",
+            width: 230
+        }, {
+            style: "padding-left: 12px;",
+            text: Label.urlLabel,
+            index: "linkAddress",
+            minWidth: 180
+        }]);
     
         this.tablePagination.initPagination();
         this.getList(1);
@@ -106,7 +106,7 @@ admin.linkList = {
                             }
                             linkData[i].linkTitle = links[i].linkTitle;
                             linkData[i].linkAddress = "<a target='_blank' class='no-underline' href='" + links[i].linkAddress + "'>"
-                                + links[i].linkAddress + "</a>";
+                            + links[i].linkAddress + "</a>";
                             linkData[i].expendRow = "<span><a href='" + links[i].linkAddress + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.get('" + links[i].oId + "')\">" + Label.updateLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.del('" + links[i].oId + "')\">" + Label.removeLabel + "</a></span>";
@@ -308,3 +308,11 @@ admin.linkList = {
         }, id.toString(), srcOrder);
     }
 };
+
+/*
+ * 注册到 admin 进行管理 
+ */
+admin.register["link-list"] =  {
+    "obj": admin.linkList,
+    "init": admin.linkList.init
+}

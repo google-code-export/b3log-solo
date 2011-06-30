@@ -18,7 +18,7 @@
  * plugin list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 29, 2011
+ * @version 1.0.0.2, Jun 30, 2011
  */
 
 /* plugin-list 相关操作 */
@@ -83,3 +83,11 @@ admin.pluginList = {
         }, requestJSONObject);
     }    
 };
+
+/*
+ * 注册到 admin 进行管理 
+ */
+admin.register["plugin-list"] =  {
+    "obj": admin.pluginList,
+    "init": admin.pluginList.init
+}

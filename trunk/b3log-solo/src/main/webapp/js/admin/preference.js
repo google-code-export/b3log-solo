@@ -18,7 +18,7 @@
  * preference for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 29, 2011
+ * @version 1.0.0.2, Jun 30, 2011
  */
 
 /* preference 相关操作 */
@@ -224,7 +224,7 @@ admin.preference = {
 
     }
     
-    /*
+/*
      * Buzz 认证
     oauthBuzz: function () {
         if ("" === $("#secret").val().replace(/\s/g, "")) {
@@ -236,3 +236,11 @@ admin.preference = {
     }
      */
 };
+
+/*
+ * 注册到 admin 进行管理 
+ */
+admin.register["preference"] =  {
+    "obj": admin.preference,
+    "init": admin.preference.init
+}

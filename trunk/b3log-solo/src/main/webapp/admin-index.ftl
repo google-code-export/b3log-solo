@@ -13,7 +13,7 @@
         <script type="text/javascript" src="/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script type="text/javascript" src="/js/lib/tiny_mce/tiny_mce.js"></script>
     </head>
-    <body>
+    <body onhashchange="admin.setCurByHash();">
         <div id="loadMsg">${loadingLabel}</div>
         <div id="tipMsg"></div>
         <div id="adminMain">
@@ -124,7 +124,6 @@
         </div>
         <script type="text/javascript" src="js/${miniDir}util${miniPostfix}.js"></script>
         <script type="text/javascript" src="js/admin/admin.js"></script>
-        <#include "admin-label.ftl">
         <script type="text/javascript" src="js/admin/tablePaginate.js"></script>
         <script type="text/javascript" src="js/admin/article.js"></script>
         <script type="text/javascript" src="js/admin/comment.js"></script>
@@ -138,6 +137,7 @@
         <script type="text/javascript" src="js/admin/preference.js"></script>
         <script type="text/javascript" src="js/admin/pluginList.js"></script>
         <script type="text/javascript" src="js/admin/userList.js"></script>
+        <#include "admin-label.ftl">
     </body>
 </html>
 ${plugins}
