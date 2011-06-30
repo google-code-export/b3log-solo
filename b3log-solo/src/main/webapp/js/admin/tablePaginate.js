@@ -18,7 +18,7 @@
  * table and paginate util
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 28, 2011
+ * @version 1.0.0.3, Jun 30, 2011
  */
 
 var TablePaginate = function (id) {
@@ -90,6 +90,9 @@ $.extend(TablePaginate.prototype, {
             }]
         });
                     
+        if (pageCount === 0) {
+            currentPage = 0;
+        }
         $("#" + this.id + "Pagination").paginate("update", {
             pageCount: pageCount,
             currentPage: currentPage

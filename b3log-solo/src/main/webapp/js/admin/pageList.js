@@ -18,7 +18,7 @@
  * page list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 29, 2011
+ * @version 1.0.0.2, Jun 30, 2011
  */
 
 /* page-list 相关操作 */
@@ -359,3 +359,12 @@ admin.pageList = {
         }, id.toString(), srcOrder);
     }
 };
+
+/*
+ * 注册到 admin 进行管理 
+ */
+admin.register["page-list"] =  {
+    "obj": admin.pageList,
+    "init": admin.pageList.init,
+    "refresh": admin.pageList.getList
+}

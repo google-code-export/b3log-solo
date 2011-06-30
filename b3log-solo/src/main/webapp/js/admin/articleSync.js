@@ -18,7 +18,7 @@
  * article sync for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 29, 2011
+ * @version 1.0.0.2, Jun 30, 2011
  */
 
 /* article sync 相关操作 */
@@ -300,3 +300,11 @@ admin.articleSync = {
         }
     }
 };
+
+/*
+ * 注册到 admin 进行管理 
+ */
+admin.register["article-sync"] =  {
+    "obj": admin.articleSync,
+    "init": admin.articleSync.init
+}

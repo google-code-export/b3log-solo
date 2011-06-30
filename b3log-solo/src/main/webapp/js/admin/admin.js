@@ -18,10 +18,11 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 28, 2011
+ * @version 1.0.0.3, Jun 30, 2011
  */
 
 var Admin = function () {
+    this.register = {};
 };
 
 $.extend(Admin.prototype, {
@@ -56,75 +57,30 @@ $.extend(Admin.prototype, {
      * @action2 当前页面已经载入，载入后执行的 action
      */
     tabsAction: function (hash, action, action2) {
-        if ($("#tabs_" + hash).length > 0) {
-            if ($("#tabs_" + hash).html().replace(/\s/g, "") === "") {
-                $("#tabs_" + hash).load("admin-" + hash + ".do", function () {
-                    switch (hash) {
-                        case "article":
-                            admin.article.init();
-                            break;
-                        case "page-list":
-                            admin.pageList.init();
-                            break;
-                        case "article-list":
-                            admin.articleList.init();
-                            break;
-                        case "draft-list":
-                            admin.draftList.init();
-                            break;
-                        case "file-list":
-                            admin.fileList.init();
-                            break;
-                        case "others":
-                            $("#loadMsg").text("");
-                            break;
-                        case "link-list":
-                            admin.linkList.init();
-                            break;
-                        case "article-sync":
-                            admin.articleSync.init();
-                            break;
-                        case "preference":
-                            admin.preference.init();
-                            break;
-                        case "plugin-list":
-                            admin.pluginList.init();
-                            break;
-                        case "user-list":
-                            admin.userList.init();
-                            break;
-                        default:
-                            break;
-                    }
-                
-                    if (action) {
-                        action();
-                    }
-                });
+        if ($("#tabs_" + hash).html().replace(/\s/g, "") === "") {
+            $("#tabs_" + hash).load("admin-" + hash + ".do", function () {
+                admin.register[hash].init.call(admin.register[hash].obj);
+                if (action) {
+                    action();
+                }
+            });
+        } else if (admin.register[hash].obj.type) {
+            if (!admin.register[hash].obj.isInit) {
+                admin.register[hash].init.call(admin.register[hash].obj);
+                admin.register[hash].obj.isInit = true;
             } else {
-                switch (hash) {
-                    case "article":
-                        admin.article.clear();
-                        $("#loadMsg").text("");
-                        break;
-                    case "page-list":
-                        admin.pageList.getList(1);
-                        break;
-                    case "article-list":
-                        admin.articleList.getList(1);
-                        break;
-                    case "draft-list":
-                        admin.draftList.getList(1);
-                        break;
-                    default:
-                        $("#loadMsg").text("");                        
-                        break;
+                if (admin.register[hash].refresh) {
+                    admin.register[hash].refresh.call(admin.register[hash].obj, 1);
                 }
-                if (action2) {
-                    action2();
-                }
-            }  
-        }
+            }
+        } else{
+            if (admin.register[hash].refresh) {
+                admin.register[hash].refresh.call(admin.register[hash].obj, 1);
+            }
+            if (action2) {
+                action2();
+            }
+        }  
     },
     
     /*
@@ -147,6 +103,7 @@ $.extend(Admin.prototype, {
         } else {
             $("#loadMsg").text("");
         }
+        $("#tabs").tabs("select", tab);
     },
     
     /*
@@ -157,18 +114,9 @@ $.extend(Admin.prototype, {
         Util.killIE();   
         
         $("#loadMsg").text(Label.loadingLabel);
-        // 构建 tabs 及其点击事件
-        $("#tabs").tabs({
-            "bind":[{
-                "type": "click",
-                "action": function (event, data) {
-                    $("#loadMsg").text(Label.loadingLabel);
-                    admin.tabsAction(data.id);
-                }
-            }]
-        });
         
-        this.setCurByHash();
+        // 构建 tabs
+        $("#tabs").tabs();
         
         // Removes functions with the current user role
         if (Label.userRole !== "adminRole") {
@@ -183,8 +131,9 @@ $.extend(Admin.prototype, {
             if($("#tipMsg").text() !== "") {
                 setTimeout(function () {
                     $("#tipMsg").text("");
-                }, 8000);
+                }, 7000);
             }
         }, 6000);
     }
 });
+var admin = new Admin();

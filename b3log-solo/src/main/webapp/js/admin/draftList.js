@@ -18,7 +18,7 @@
  * draft list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 28, 2011
+ * @version 1.0.0.3, Jun 30, 2011
  */
 
 /* draft-list 相关操作 */
@@ -109,3 +109,12 @@ admin.draftList = {
         }, requestJSONObject);
     }
 };
+
+/*
+ * 注册到 admin 进行管理 
+ */
+admin.register["draft-list"] =  {
+    "obj": admin.draftList,
+    "init": admin.draftList.init,
+    "refresh": admin.draftList.getList
+}

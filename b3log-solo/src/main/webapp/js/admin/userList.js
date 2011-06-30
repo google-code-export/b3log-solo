@@ -18,7 +18,7 @@
  * user list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, Jun 29, 2011
+ * @version 1.0.0.2, Jun 30, 2011
  */
 
 /* user-list 相关操作 */
@@ -303,3 +303,11 @@ admin.userList = {
         return false;
     }
 };
+
+/*
+ * 注册到 admin 进行管理 
+ */
+admin.register["user-list"] =  {
+    "obj": admin.userList,
+    "init": admin.userList.init
+}
