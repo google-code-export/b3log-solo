@@ -41,6 +41,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
@@ -59,7 +60,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Jun 19, 2011
+ * @version 1.0.1.8, Jul 1, 2011
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -112,6 +113,22 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
+            final String requestURI = request.getRequestURI();
+            final String archiveDateString = getArchiveDate(requestURI);
+            final int currentPageNum = getCurrentPageNum(requestURI);
+            LOGGER.log(Level.FINER,
+                       "Request archive date[string={0}, currentPageNum={1}]",
+                       new Object[]{archiveDateString});
+
+            final JSONObject archiveDate =
+                    archiveDateRepository.getByArchiveDate(archiveDateString);
+            if (null == archiveDate) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return ret;
+            }
+
+            final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
+
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -126,13 +143,6 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
 
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
-
-            final JSONObject queryStringJSONObject =
-                    getQueryStringJSONObject(request);
-            final String archiveDateId =
-                    queryStringJSONObject.getString(Keys.OBJECT_ID);
-            final int currentPageNum = queryStringJSONObject.optInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -194,15 +204,13 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                     pageNums.get(pageNums.size() - 1));
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-            ret.put(Common.ACTION_NAME, Common.ARCHIVED_DATE_ARTICLES);
+            ret.put(Common.PATH, "/archives/" + archiveDateString);
             ret.put(Keys.OBJECT_ID, archiveDateId);
 
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
 
-            final JSONObject archiveDate =
-                    archiveDateRepository.get(archiveDateId);
             final Date date = (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
             final String dateString = ArchiveDate.DATE_FORMAT.format(date);
             final String[] dateStrings = dateString.split("/");
@@ -242,11 +250,58 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
         return ret;
     }
 
+    /**
+     * Returns "archive-date-articles.ftl".
+     * 
+     * <p>
+     * Ignores the specified request URI
+     * </p>
+     * 
+     * @param requestURI the specified request URI
+     * @return "archive-date-articles.ftl"
+     */
+    @Override
+    protected String getTemplateName(final String requestURI) {
+        return "archive-date-articles.ftl";
+    }
+
     @Override
     protected JSONObject doAjaxAction(final JSONObject data,
                                       final HttpServletRequest request,
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Gets archive date from the specified URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return archive date
+     */
+    private static String getArchiveDate(final String requestURI) {
+        final String path = requestURI.substring("/archives/".length());
+
+        return path.substring(0, "yyyy/MM".length());
+    }
+
+    /**
+     * Gets the request page number from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return page number
+     */
+    private static int getCurrentPageNum(final String requestURI) {
+        if (!requestURI.endsWith("/")) {
+            return 1;
+        }
+        
+        final String ret = requestURI.substring("/archives/yyyy/MM/".length());
+
+        if (Strings.isNumeric(ret)) {
+            return Integer.valueOf(ret);
+        } else {
+            return 1;
+        }
     }
 }

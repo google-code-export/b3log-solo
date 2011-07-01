@@ -92,6 +92,7 @@ public final class Skips {
                || requestURI.contains("/images")
                || requestURI.contains("/styles")
                || requestURI.contains("/tags/")
+               || requestURI.contains("/archives")
                || equalAdminActions(requestURI);
     }
 

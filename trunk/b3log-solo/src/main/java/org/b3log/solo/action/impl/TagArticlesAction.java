@@ -42,6 +42,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -58,7 +59,7 @@ import org.json.JSONObject;
  * Get articles by tag action. tag-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Jun 19, 2011
+ * @version 1.0.2.4, Jul 1, 2011
  */
 public final class TagArticlesAction extends AbstractCacheablePageAction {
 
@@ -113,11 +114,12 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
 
         try {
             final String requestURI = request.getRequestURI();
-            String tagTitle = requestURI.substring(
-                    ("/" + Tag.TAGS + "/").length());
-            tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
-            LOGGER.log(Level.FINER, "Tag[title={0}]", tagTitle);
+            String tagTitle = getTagTitle(requestURI);
+            final int currentPageNum = getCurrentPageNum(requestURI, tagTitle);
+            LOGGER.log(Level.FINER, "Tag[title={0}, currentPageNum={1}]",
+                       new Object[]{tagTitle, currentPageNum});
 
+            tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
             tag = tagRepository.getByTitle(tagTitle);
 
             if (null == tag) {
@@ -144,10 +146,6 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
-            final JSONObject queryStringJSONObject =
-                    getQueryStringJSONObject(request);
-            final int currentPageNum = queryStringJSONObject.optInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(
@@ -224,7 +222,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                     pageNums.get(pageNums.size() - 1));
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-            ret.put(Common.ACTION_NAME, Common.TAG_ARTICLES);
+            ret.put(Common.PATH, "/tags/" + tagTitle);
             ret.put(Keys.OBJECT_ID, tagId);
             ret.put(Tag.TAG, tag);
 
@@ -257,5 +255,44 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
     @Override
     protected String getTemplateName(final String requestURI) {
         return "tag-articles.ftl";
+    }
+
+    /**
+     * Gets tag title from the specified URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return tag title
+     */
+    private static String getTagTitle(final String requestURI) {
+        final String path = requestURI.substring("/tags/".length());
+
+        if (path.contains("/")) {
+            return path.substring(0, path.indexOf("/"));
+        } else {
+            return path.substring(0);
+        }
+    }
+
+    /**
+     * Gets the request page number from the specified request URI and tag title.
+     * 
+     * @param requestURI the specified request URI
+     * @param tagTitle the specified tag title
+     * @return page number
+     */
+    private static int getCurrentPageNum(final String requestURI,
+                                         final String tagTitle) {
+        if (!requestURI.endsWith("/")) {
+            return 1;
+        }
+
+        final String ret = requestURI.substring(("/tags/" + tagTitle + "/").
+                length());
+
+        if (Strings.isNumeric(ret)) {
+            return Integer.valueOf(ret);
+        } else {
+            return 1;
+        }
     }
 }
