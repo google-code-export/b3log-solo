@@ -23,14 +23,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeEnv;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
@@ -44,7 +39,7 @@ import org.json.JSONObject;
  * Archive date Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 20, 2011
+ * @version 1.0.0.5, Jun 30, 2011
  */
 public final class ArchiveDateGAERepository extends AbstractGAERepository
         implements ArchiveDateRepository {
@@ -54,23 +49,6 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArchiveDateGAERepository.class.getName());
-    /**
-     * Cache.
-     */
-    private static final Cache<String, Object> CACHE;
-
-    static {
-        final RuntimeEnv runtime = Latkes.getRuntimeEnv();
-        if (!runtime.equals(RuntimeEnv.GAE)) {
-            throw new IllegalStateException(
-                    "GAE repository can only runs on Google App Engine, please "
-                    + "check your configuration and make sure "
-                    + "Latkes.setRuntimeEnv(RuntimeEnv.GAE) was invoked before "
-                    + "using GAE repository.");
-        }
-
-        CACHE = CacheFactory.getCache("ArchiveDateGAERepositoryCache");
-    }
 
     @Override
     public String getName() {
@@ -93,9 +71,7 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
                 return null;
             }
 
-            final Map<String, Object> properties = entity.getProperties();
-
-            return new JSONObject(properties);
+            return entity2JSONObject(entity);
         } catch (final ParseException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);

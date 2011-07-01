@@ -174,13 +174,6 @@ $.extend(Util.prototype, {
                     $it.addClass("selected");
                 }
             });
-
-            if ($("#nextPage").length > 0) {
-                $("#nextPage").attr("href", $("#nextPage").attr("href").replace("{paginationLastPageNum}", parseInt(currentPage) + 1));
-            }
-            if ($("#previousPage").length > 0) {
-                $("#previousPage").attr("href", $("#previousPage").attr("href").replace("{paginationFirstPageNum}", parseInt(currentPage) - 1));
-            }
         }
     },
 

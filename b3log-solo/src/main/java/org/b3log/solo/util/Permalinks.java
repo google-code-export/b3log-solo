@@ -53,9 +53,7 @@ public final class Permalinks {
 
     static {
         RESERVED_LINKS.add("/");
-        RESERVED_LINKS.add("/index.do");
         RESERVED_LINKS.add("/article-detail.do");
-        RESERVED_LINKS.add("/archive-date-articles.do");
         RESERVED_LINKS.add("/tags.html");
         RESERVED_LINKS.add("/tags");
         RESERVED_LINKS.add("/page.do");
