@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import java.io.File;
@@ -80,15 +79,20 @@ public final class Skins {
 
         if (!skinDirNames.contains(currentSkinDirName)) {
             LOGGER.log(Level.WARNING,
-                       "Configred skin[dirName=" + currentSkinDirName
-                       + "] can not find, try to use default skin[dirName=classic] instead.");
+                       "Configred skin[dirName={0}] can not find, try to use "
+                       + "default skin[dirName=classic] instead.",
+                       currentSkinDirName);
             if (!skinDirNames.contains("classic")) {
                 LOGGER.log(Level.SEVERE, "Can not find skin[dirName=classic]");
 
                 throw new IllegalStateException(
                         "Can not find default skin[dirName=classic], please "
-                        + "redeploy your B3log Solo and make sure contains this default skin!");
+                        + "redeploy your B3log Solo and make sure contains this "
+                        + "default skin!");
             }
+
+            preference.put(SKIN_DIR_NAME, "classic");
+            preference.put(SKIN_NAME, "经典淡蓝");
         }
 
         preference.put(SKINS, skinArray.toString());
