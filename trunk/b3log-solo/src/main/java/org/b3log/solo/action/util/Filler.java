@@ -18,7 +18,6 @@ package org.b3log.solo.action.util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +61,6 @@ import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
-import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Tags;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,7 +71,7 @@ import org.jsoup.Jsoup;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.8, Jun 24, 2011
+ * @version 1.0.3.9, Jul 2, 2011
  */
 public final class Filler {
 
@@ -117,10 +115,6 @@ public final class Filler {
      * Page repository.
      */
     private PageRepository pageRepository = PageGAERepository.getInstance();
-    /**
-     * Archive date utilities.
-     */
-    private ArchiveDates archiveDateUtils = ArchiveDates.getInstance();
     /**
      * Statistic repository.
      */
@@ -250,8 +244,8 @@ public final class Filler {
         final String language = Locales.getLanguage(localeString);
 
         for (final JSONObject archiveDate : archiveDates) {
-            final Date date = (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
-            final String dateString = ArchiveDate.DATE_FORMAT.format(date);
+            final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+            final String dateString = ArchiveDate.DATE_FORMAT.format(time);
             final String[] dateStrings = dateString.split("/");
             final String year = dateStrings[0];
             final String month = dateStrings[1];

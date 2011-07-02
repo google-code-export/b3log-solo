@@ -60,9 +60,9 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
             throws RepositoryException {
         try {
             final Query query = new Query(getName());
-            query.addFilter(ArchiveDate.ARCHIVE_DATE,
+            query.addFilter(ArchiveDate.ARCHIVE_TIME,
                             Query.FilterOperator.EQUAL,
-                            ArchiveDate.DATE_FORMAT.parse(archiveDate));
+                            ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime());
             final PreparedQuery preparedQuery = getDatastoreService().prepare(
                     query);
             final Entity entity = preparedQuery.asSingleEntity();
@@ -89,7 +89,7 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
             ret = new ArrayList<JSONObject>();
             final org.b3log.latke.repository.Query
                     query = new org.b3log.latke.repository.Query().
-                    addSort(ArchiveDate.ARCHIVE_DATE, SortDirection.DESCENDING);
+                    addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING);
             final JSONObject result = get(query);
 
             try {

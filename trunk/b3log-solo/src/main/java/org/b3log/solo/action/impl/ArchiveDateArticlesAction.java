@@ -21,7 +21,6 @@ import org.b3log.latke.action.ActionException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -214,8 +213,8 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
 
-            final Date date = (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
-            final String dateString = ArchiveDate.DATE_FORMAT.format(date);
+            final long time =  archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+            final String dateString = ArchiveDate.DATE_FORMAT.format(time);
             final String[] dateStrings = dateString.split("/");
             final String year = dateStrings[0];
             final String month = dateStrings[1];
