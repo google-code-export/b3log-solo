@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Jul 1, 2011
+ * @version 1.0.1.9, Jul 2, 2011
  */
 public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
 
@@ -123,6 +123,9 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final JSONObject archiveDate =
                     archiveDateRepository.getByArchiveDate(archiveDateString);
             if (null == archiveDate) {
+                LOGGER.log(Level.WARNING, "Can not find articles for the specified "
+                                          + "archive date[string={0}]",
+                           archiveDate);
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
@@ -295,7 +298,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
         if (!requestURI.endsWith("/")) {
             return 1;
         }
-        
+
         final String ret = requestURI.substring("/archives/yyyy/MM/".length());
 
         if (Strings.isNumeric(ret)) {
