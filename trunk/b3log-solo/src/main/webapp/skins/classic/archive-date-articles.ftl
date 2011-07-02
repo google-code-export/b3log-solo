@@ -16,7 +16,7 @@
             <div class="body">
                 <div class="left main">
                     <div>
-                        <h2 class="marginLeft12">${archive1Label}
+                        <h2 class="marginLeft12 marginBottom12">${archive1Label}
                             <#if "en" == localeString?substring(0, 2)>
                             ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
                             <#else>

@@ -32,32 +32,33 @@ admin.articleSync = {
         $("#articleSyncList").table({
             height: 357,
             colModel: [{
-                text: "选择",
                 index: "selected",
                 width: 26,
-                inputType: "checkbox",
-                align: "center",
-                allSelected: true
+                type:"checkbox",
+                allSelected: true,
+                style: "padding-left: 4px;"
             }, {
-                text: "${titleLabel}",
+                text: Label.titleLabel,
                 index: "title",
                 width: 320,
-                style: "padding-left: 6px;"
+                style: "padding-left: 12px;"
             },  {
-                text: "${categoryLabel}",
+                text: Label.tagsLabel,
                 index: "tags",
-                minWidth: 120
+                minWidth: 120,
+                style: "padding-left: 12px;"
             }, {
                 align: "center",
-                text: "${createDateLabel}",
+                text: Label.createDateLabel,
                 index: "date",
-                width: 79
+                width: 79,
+                style: "padding-left: 12px;"
             }, {
                 align: "center",
-                text: "${importedLabel}",
+                text: Label.importedLabel,
                 index: "imported",
                 width: 61,
-                style: "margin-left:22px;"
+                style: "padding-left: 12px;"
             }]
         });
 
@@ -76,13 +77,13 @@ admin.articleSync = {
     
     validate: function () {
         if ("" === $("#blogType").val()) {
-            $("#tipMsg").text("${blogEmptyLabel}");
+            $("#tipMsg").text(Label.blogEmptyLabel);
             $("#blogType").focus();
         } else if ("" === $("#magName").val().replace(/\s/g, "")) {
-            $("#tipMsg").text("${nameEmptyLabel}");
+            $("#tipMsg").text(Label.nameEmptyLabel);
             $("#magName").focus().val("");
         } else if ("" === $("#magPassword").val()){
-            $("#tipMsg").text("${passwordEmptyLabel}");
+            $("#tipMsg").text(Label.passwordEmptyLabel);
             $("#magPassword").focus().val();
         } else {
             return true;
@@ -92,55 +93,54 @@ admin.articleSync = {
     
     changeBlogType: function () {
         if ("" !== $("#blogType").val()) {
-            $("#loadMsg").text("${loadingLabel}");
+            $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             jsonRpc.blogSyncService.getBlogSyncMgmt(function (result, error) {
                 try {
                     if (result) {
                         $("#magName").val(result.blogSyncExternalBloggingSysUserName);
                         $("#magPassword").val(result.blogSyncExternalBloggingSysUserPassword);
-                        result.blogSyncMgmtAddEnabled ? $("#addSync").attr("checked", "checked") : $("#addSync").removeAttr("checked");
-                        result.blogSyncMgmtUpdateEnabled ? $("#updateSync").attr("checked", "checked") : $("#updateSync").removeAttr("checked");
-                        result.blogSyncMgmtRemoveEnabled ? $("#deleteSync").attr("checked", "checked") : $("#deleteSync").removeAttr("checked");
-                        $("#tipMsg").text("${getSuccLabel}");
-                        $("#blogSyncTip").text("");
+                        $("#addSync").prop("checked", result.blogSyncMgmtAddEnabled) 
+                        $("#updateSync").prop("checked", result.blogSyncMgmtUpdateEnabled);
+                        $("#deleteSync").prop("checked", result.blogSyncMgmtRemoveEnabled);
+                        $("#tipMsg").text(Label.getSuccLabel);
                         $("#getDateButton").show();
                     } else {
                         $("#magName").val("");
                         $("#magPassword").val("");
-                        $("#addSync").removeAttr("checked");
-                        $("#updateSync").removeAttr("checked");
-                        $("#deleteSync").removeAttr("checked");
-                        $("#tipMsg").text("${noSettingLabel}");
-                        $("#blogSyncTip").text("");
+                        $("#addSync").prop("checked", false);
+                        $("#updateSync").prop("checked", false);
+                        $("#deleteSync").prop("checked", false);
+                        $("#tipMsg").text(Label.noSettingLabel);
                         $("#getDateButton").hide();
                     }
                     $("#archiveDatePanel").hide();
                     $("#articlesPanel").hide();
                     $("#loadMsg").text("");
-                } catch (e) {}
+                } catch (e) {
+                    console.error(e);
+                }
             }, {
                 "blogSyncExternalBloggingSys": $("#blogType").val()
             });
         } else {
             $("#magName").val("");
             $("#magPassword").val("");
-            $("#addSync").removeAttr("checked");
-            $("#updateSync").removeAttr("checked");
-            $("#deleteSync").removeAttr("checked");
-            $("#tipMsg").text("${blogEmptyLabel}");
-            $("#blogSyncTip").text("${blogEmptyLabel}");
+            $("#addSync").prop("checked", false);
+            $("#updateSync").prop("checked", false);
+            $("#deleteSync").prop("checked", false);
+            $("#tipMsg").text(Label.blogEmptyLabel);
             $("#getDateButton").hide();
         }
     },
     
     syncSetting: function () {
-        if (validateSyncSetting()) {
-            $("#loadMsg").text("${loadingLabel}");
+        if (this.validate()) {
+            $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            var addSync = $("#addSync").attr("checked"),
-            updateSync = $("#updateSync").attr("checked"),
-            deleteSync =  $("#deleteSync").attr("checked");
+            var addSync = $("#addSync").prop("checked"),
+            updateSync = $("#updateSync").prop("checked"),
+            deleteSync =  $("#deleteSync").prop("checked");
             var requestJSONObject = {
                 "blogSyncExternalBloggingSys": $("#blogType").val(),
                 "blogSyncExternalBloggingSysUserName": $("#magName").val(),
@@ -153,10 +153,10 @@ admin.articleSync = {
             jsonRpc.blogSyncService.setBlogSyncMgmt(function (result, error) {
                 try {
                     if (result.sc === "SET_BLOG_SYNC_MGMT_SUCC") {
-                        $("#tipMsg").html("${updateSuccLabel}");
+                        $("#tipMsg").html(Label.updateSuccLabel);
                         $("#getDateButton").show();
                     } else {
-                        $("#tipMsg").html("${setFailLabel}");
+                        $("#tipMsg").html(Label.setFailLabel);
                     }
                     $("#archiveDatePanel").hide();
                     $("#articlesPanel").hide();
@@ -166,16 +166,16 @@ admin.articleSync = {
         }
     },
 
-    getBlogArticleArchiveDate: function () {
-        if (validateSyncSetting()) {
+    getDate: function () {
+        if (this.validate()) {
             $("#tipMsg").text("");
-            $("#loadMsg").text("${loadingLabel}");
+            $("#loadMsg").text(Label.loadingLabel);
             $("#archiveDatePanel").hide();
             jsonRpc.blogSyncService.getExternalArticleArchiveDate(function (result, error) {
                 try {
                     var archveDates = "";
                     if (result.blogSyncExternalArchiveDates.length === 0) {
-                        $("#tipMsg").text("${syncImportErrorLabel}");
+                        $("#tipMsg").text(Label.syncImportErrorLabel);
                     } else {
                         for (var i = 0; i < result.blogSyncExternalArchiveDates.length; i++) {
                             archveDates += "<option>" + result.blogSyncExternalArchiveDates[i] + "</option>";
@@ -184,7 +184,7 @@ admin.articleSync = {
                         $("#archiveDatePanel").show();
                         $("#articlesPanel").hide();
                         $("#getDateButton").hide();
-                        $("#tipMsg").text("${getSuccLabel}");
+                        $("#tipMsg").text(Label.getSuccLabel);
                     }
                     $("#loadMsg").text("");
                 } catch (e) {}
@@ -196,11 +196,11 @@ admin.articleSync = {
         }
     },
 
-    getBlogArticlesByArchiveDate: function () {
+    getList: function () {
         $("#tipMsg").html("");
-        $("#loadMsg").html("${loadingLabel}");
+        $("#loadMsg").html(Label.loadingLabel);
         $("#articlesPanel").show();
-        $("#articlesCount").html("${sumLabel} 0 ${countLabel}");
+        $("#articlesCount").html(Label.sumLabel + " 0 " + Label.countLabel);
 
         var requestJSONObject = {
             "blogSyncExternalBloggingSys": $("#blogType").val(),
@@ -214,7 +214,7 @@ admin.articleSync = {
             jsonRpc.blogSyncService.getExternalArticlesByArchiveDate(requestJSONObject);
             var articles = result.blogSyncExternalArticles;
             if (articles.length === $("#articleSyncListTableMain tr").length && articles.length !== 0) {
-                $("#tipMsg").text("${getSuccLabel}");
+                $("#tipMsg").text(Label.getSuccLabel);
                 break;
             }
             if (articles.length > 0) {
@@ -237,16 +237,16 @@ admin.articleSync = {
                 }
                 
                 $("#articleSyncList").table("update",{
-                    data: {
+                    data: [{
                         "groupName": "all", 
                         "groupData": articleData
-                    }
+                    }]
                 });
 
                 articleSyncDataTemp = articleData;
-                $("#articlesCount").html("${sumLabel} " + articleData.length + " ${countLabel}");
+                $("#articlesCount").html(Label.sumLabel + " " + articleData.length + " " + Label.countLabel);
             } else {
-                $("#tipMsg").text("${getFailLabel}");
+                $("#tipMsg").text(Label.getFailLabel);
                 break;
             }
         }
@@ -254,16 +254,17 @@ admin.articleSync = {
     },
     
     sync: function () {
-        var selectedOIds = $("#articleSyncList_selected").data("id");
-        if (selectedOIds.length === 0) {
-            $("#tipMsg").text("${blogArticleEmptyLabel}");
+        var selectedList = $("#articleSyncList").table("getRows"),
+        oIds = [];
+        for (var i =  0; i < selectedList.length; i++) {
+            oIds.push(selectedList[i].id);
+        }
+        if (selectedList.length === 0) {
+            $("#tipMsg").text(Label.blogArticleEmptyLabel);
         } else {
-            $("#loadMsg").text("${loadingLabel}");
+            $("#loadMsg").text(Label.loadingLabel);
             jsonRpc.blogSyncService.importExternalArticles(function (result, error) {
                 try {
-                    if (typeof(getArticleList) === "function") {
-                        getArticleList(1);
-                    }
                     var oIds = result.oIds;
                 
                     for (var i = 0; i < articleSyncDataTemp.length; i++) {
@@ -279,22 +280,24 @@ admin.articleSync = {
                     }
 
                     $("#articleSyncList").table("update",{
-                        data: {
+                        data: [{
                             "groupName": "all", 
                             "groupData": articleSyncDataTemp
-                        }
+                        }]
                     });
 
-                    if (selectedOIds.length !== oIds.length) {
-                        $("#tipMsg").text("${importFailLabel}");
+                    if (selectedList.length !== oIds.length) {
+                        $("#tipMsg").text(Label.importFailLabel);
                     } else {
-                        $("#tipMsg").text("${importSuccLabel}");
+                        $("#tipMsg").text(Label.importSuccLabel);
                     }
                 
                     $("#loadMsg").text("");
-                } catch (e) {}
+                } catch (e) {
+                    console.error(e);
+                }
             }, {
-                "oIds": selectedOIds,
+                "oIds": oIds,
                 "blogSyncExternalBloggingSys": $("#blogType").val()
             });
         }

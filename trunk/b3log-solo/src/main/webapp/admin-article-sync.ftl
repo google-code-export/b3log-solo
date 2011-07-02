@@ -14,15 +14,12 @@
         </ul>
         <div id="syncBlogType">
             ${chooseBlog1Label}
-            <select id="blogType" onchange="changeBlogType();">
+            <select id="blogType" onchange="admin.articleSync.changeBlogType();">
                 <option value="">&nbsp;</option>
                 <option value="blogSyncCSDNBlog">${CSDNBlogLabel}</option>
                 <option value="blogSyncBlogJava">${BlogJavaLabel}</option>
                 <option value="blogSyncCnBlogs">${CnBlogsLabel}</option>
             </select>
-            <span class="error-msg" id="blogSyncTip">
-                ${blogEmptyLabel}
-            </span>
         </div>
     </div>
     <div class="tabMain" id="tabsarticlesyncContent">
@@ -77,7 +74,7 @@
                         </tr>
                         <tr>
                             <th colspan="6">
-                                <button onclick="syncSetting();">${updateLabel}</button>
+                                <button onclick="admin.articleSync.syncSetting();">${updateLabel}</button>
                             </th>
                         </tr>
                     </tbody>
@@ -97,21 +94,21 @@
                             </select>
                         </td>
                         <td>
-                            <button onclick="getBlogArticlesByArchiveDate();">
+                            <button onclick="admin.articleSync.getList();">
                                 ${getArticleLabel}
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
-            <button id="getDateButton" class="none" onclick="getBlogArticleArchiveDate();">${getDateLabel}</button>
+            <button id="getDateButton" class="none" onclick="admin.articleSync.getDate();">${getDateLabel}</button>
             &nbsp;
             <div id="articlesPanel" class="none">
-                <button onclick="sync();">${importLabel}</button>
+                <button onclick="admin.articleSync.sync();">${importLabel}</button>
                 <span id="articlesCount" class="red"></span>
                 <div class="clear"></div>
                 <div id="articleSyncList" class="paddingTop12 paddingBottom12"></div>
-                <button onclick="sync();">${importLabel}</button>
+                <button onclick="admin.articleSync.sync();">${importLabel}</button>
             </div>
         </div>
     </div>
