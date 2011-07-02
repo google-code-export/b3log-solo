@@ -116,8 +116,7 @@ public final class Permalinks {
 
         return invalidUserDefinedPermalinkFormat(permalink);
     }
-    
-    
+
     /**
      * Checks whether the specified page permalink is invalid on format.
      * 
