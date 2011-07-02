@@ -8,7 +8,7 @@
         <link type="text/css" rel="stylesheet" href="/css/${miniDir}default-bowknot${miniPostfix}.css"/>
         <link type="text/css" rel="stylesheet" href="/css/${miniDir}default-base${miniPostfix}.css"/>
         <link rel="icon" type="image/png" href="/favicon.png"/>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
         <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
         <script type="text/javascript" src="/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script type="text/javascript" src="/js/lib/tiny_mce/tiny_mce.js"></script>

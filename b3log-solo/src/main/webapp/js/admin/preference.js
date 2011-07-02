@@ -18,7 +18,7 @@
  * preference for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.2, Jun 30, 2011
+ * @version 1.0.0.3, July 3, 2011
  */
 
 /* preference 相关操作 */
@@ -29,8 +29,6 @@ admin.preference = {
      * 初始化
      */
     init: function () {
-        $("#loadMsg").text(Label.loadingLabel);
-        
         $("#tabspreference").tabs();
          
         jsonRpc.preferenceService.getPreference(function (result, error) {

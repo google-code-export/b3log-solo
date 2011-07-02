@@ -18,7 +18,7 @@
  *  article for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.3, Jun 30, 2011
+ * @version 1.0.0.4, July 2, 2011
  */
 admin.article = {
     status: undefined,
@@ -383,7 +383,6 @@ admin.article = {
      */
     init: function () {
         admin.article.clear();
-        
         // Inits Signs.
         jsonRpc.preferenceService.getSigns(function (result, error) {
             try {
@@ -426,6 +425,8 @@ admin.article = {
                     });
                 }
             } catch (e) {}
+            
+            $("#loadMsg").text("");
         });
 
         // submit action
@@ -469,8 +470,6 @@ admin.article = {
             relative_urls: false,
             remove_script_host: false
         });
-
-        $("#loadMsg").text("");
     },
     
     /*
@@ -478,15 +477,15 @@ admin.article = {
      */
     validate: function () {
         if ($("#title").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${titleEmptyLabel}");
+            $("#tipMsg").text(Label.titleEmptyLabel);
             $("#title").focus().val("");
         } else if (tinyMCE.get('articleContent').getContent().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${contentEmptyLabel}");
+            $("#tipMsg").text(Label.contentEmptyLabel);
         } else if ($("#tag").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${tagsEmptyLabel}");
+            $("#tipMsg").text(Label.tagsEmptyLabel);
             $("#tag").focus().val("");
         } else if(tinyMCE.get('abstract').getContent().replace(/\s/g, "") === "") {
-            $("#tipMsg").text("${abstractEmptyLabel}");
+            $("#tipMsg").text(Label.abstractEmptyLabel);
         } else {
             return true;
         }
