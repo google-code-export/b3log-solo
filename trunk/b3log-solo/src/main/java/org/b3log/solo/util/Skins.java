@@ -59,10 +59,10 @@ public final class Skins {
     public void loadSkins(final JSONObject preference) throws JSONException {
         LOGGER.info("Loading skins....");
 
-        final String skinDirName = preference.getString(SKIN_DIR_NAME);
-        preference.put(SKIN_DIR_NAME, skinDirName);
+        final String currentSkinDirName = preference.getString(SKIN_DIR_NAME);
+        preference.put(SKIN_DIR_NAME, currentSkinDirName);
 
-        final String skinName = getSkinName(skinDirName);
+        final String skinName = getSkinName(currentSkinDirName);
         preference.put(SKIN_NAME, skinName);
         LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
 
@@ -78,11 +78,25 @@ public final class Skins {
             skin.put(SKIN_DIR_NAME, dirName);
         }
 
+        if (!skinDirNames.contains(currentSkinDirName)) {
+            LOGGER.log(Level.WARNING,
+                       "Configred skin[dirName=" + currentSkinDirName
+                       + "] can not find, try to use default skin[dirName=classic] instead.");
+            if (!skinDirNames.contains("classic")) {
+                LOGGER.log(Level.SEVERE, "Can not find skin[dirName=classic]");
+
+                throw new IllegalStateException(
+                        "Can not find default skin[dirName=classic], please "
+                        + "redeploy your B3log Solo and make sure contains this default skin!");
+            }
+        }
+
         preference.put(SKINS, skinArray.toString());
 
         try {
             final String webRootPath = SoloServletListener.getWebRoot();
-            final String skinPath = webRootPath + SKINS + "/" + skinDirName;
+            final String skinPath = webRootPath + SKINS + "/"
+                                    + currentSkinDirName;
             Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                     new File(skinPath));
         } catch (final IOException e) {
