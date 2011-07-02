@@ -19,7 +19,10 @@ package org.b3log.solo.util;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import org.b3log.solo.filter.PageCacheFilter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.b3log.latke.util.Strings;
+import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
@@ -29,7 +32,7 @@ import org.b3log.solo.repository.impl.PageGAERepository;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 26, 2011
+ * @version 1.0.0.8, Jun 29, 2011
  */
 public final class Permalinks {
 
@@ -50,11 +53,7 @@ public final class Permalinks {
 
     static {
         RESERVED_LINKS.add("/");
-        RESERVED_LINKS.add("/index.do");
         RESERVED_LINKS.add("/article-detail.do");
-        RESERVED_LINKS.add("/tag-articles.do");
-        RESERVED_LINKS.add("/archive-date-articles.do");
-        RESERVED_LINKS.add("/tags.do");
         RESERVED_LINKS.add("/tags.html");
         RESERVED_LINKS.add("/tags");
         RESERVED_LINKS.add("/page.do");
@@ -65,7 +64,103 @@ public final class Permalinks {
         RESERVED_LINKS.add("/file-access.do");
         RESERVED_LINKS.add("/datastore-file-access.do");
 
-        RESERVED_LINKS.addAll(Arrays.asList(PageCacheFilter.ADMIN_ACTIONS));
+        RESERVED_LINKS.addAll(Arrays.asList(Skips.ADMIN_ACTIONS));
+    }
+
+    /**
+     * Checks whether the specified article permalink matches the system 
+     * generated format pattern ("/articles/yyyy/MM/dd/${articleId}.html").
+     * 
+     * @param permalink the specified permalink
+     * @return {@code true} if matches, returns {@code false} otherwise
+     */
+    public static boolean matchDefaultArticlePermalinkFormat(
+            final String permalink) {
+        final Pattern pattern = Pattern.compile(
+                "/articles/\\d{4}/\\d{2}/\\d{2}/\\d+\\.html");
+        final Matcher matcher = pattern.matcher(permalink);
+
+        return matcher.matches();
+    }
+
+    /**
+     * Checks whether the specified page permalink matches the system generated 
+     * format pattern ("/pages/${pageId}.html").
+     * 
+     * @param permalink the specified permalink
+     * @return {@code true} if matches, returns {@code false} otherwise
+     */
+    public static boolean matchDefaultPagePermalinkFormat(
+            final String permalink) {
+        final Pattern pattern = Pattern.compile(
+                "/pages/\\d+\\.html");
+        final Matcher matcher = pattern.matcher(permalink);
+
+        return matcher.matches();
+    }
+
+    /**
+     * Checks whether the specified article permalink is invalid on format.
+     * 
+     * @param permalink the specified article permalink
+     * @return {@code true} if invalid, returns {@code false} otherwise
+     */
+    public boolean invalidArticlePermalinkFormat(final String permalink) {
+        if (Strings.isEmptyOrNull(permalink)) {
+            return true;
+        }
+
+        if (matchDefaultArticlePermalinkFormat(permalink)) {
+            return false;
+        }
+
+        return invalidUserDefinedPermalinkFormat(permalink);
+    }
+    
+    
+    /**
+     * Checks whether the specified page permalink is invalid on format.
+     * 
+     * @param permalink the specified page permalink
+     * @return {@code true} if invalid, returns {@code false} otherwise
+     */
+    public boolean invalidPagePermalinkFormat(final String permalink) {
+        if (Strings.isEmptyOrNull(permalink)) {
+            return true;
+        }
+
+        if (matchDefaultPagePermalinkFormat(permalink)) {
+            return false;
+        }
+
+        return invalidUserDefinedPermalinkFormat(permalink);
+    }
+
+    /**
+     * Checks whether the specified user-defined permalink is invalid on format.
+     * 
+     * @param permalink the specified user-defined permalink
+     * @return {@code true} if invalid, returns {@code false} otherwise
+     */
+    private boolean invalidUserDefinedPermalinkFormat(final String permalink) {
+        if (Strings.isEmptyOrNull(permalink)) {
+            return true;
+        }
+
+        int slashCnt = 0;
+        for (int i = 0; i < permalink.length(); i++) {
+            if ('/' == permalink.charAt(i)) {
+                slashCnt++;
+            }
+
+            if (slashCnt > 1) {
+                return true;
+            }
+        }
+
+        // FIXME: URL format check
+
+        return false;
     }
 
     /**

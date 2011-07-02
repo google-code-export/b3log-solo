@@ -47,6 +47,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.jsonrpc.PermalinkException;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
@@ -71,7 +72,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.6, Apr 30, 2011
+ * @version 1.0.3.7, Jun 29, 2011
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -244,12 +245,20 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 permalink = "/" + permalink;
             }
 
+            if (permalinks.invalidArticlePermalinkFormat(permalink)) {
+                status.put(Keys.CODE,
+                           StatusCodes.ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
+
+                throw new PermalinkException("Add article fail, caused by invalid permalink format["
+                                             + permalink + "]");
+            }
+
             if (permalinks.exist(permalink)) {
                 status.put(Keys.CODE,
                            StatusCodes.ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK);
 
-                throw new Exception("Add article fail, caused by duplicated permalink["
-                                    + permalink + "]");
+                throw new PermalinkException("Add article fail, caused by duplicated permalink["
+                                             + permalink + "]");
             }
             article.put(ARTICLE_PERMALINK, permalink);
             // Step 10: Add article-sign relation
@@ -284,6 +293,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             transaction.commit();
 
             status.put(Keys.CODE, StatusCodes.ADD_ARTICLE_SUCC);
+        } catch (final PermalinkException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
@@ -891,6 +906,12 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
             ret.put(Keys.STATUS, status);
             LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
+        } catch (final PermalinkException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -1049,6 +1070,14 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             if (!ret.startsWith("/")) {
                 ret = "/" + ret;
+            }
+
+            if (permalinks.invalidArticlePermalinkFormat(ret)) {
+                status.put(Keys.CODE,
+                           StatusCodes.UPDATE_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
+
+                throw new Exception("Update article fail, caused by invalid permalink format["
+                                    + ret + "]");
             }
 
             if (!oldPermalink.equals(ret)

@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Get articles by author action. author-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jun 19, 2011
+ * @version 1.0.2.3, Jul 1, 2011
  */
 public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
@@ -110,18 +110,10 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
-            final JSONObject queryStringJSONObject =
-                    getQueryStringJSONObject(request);
-            final String authorId =
-                    queryStringJSONObject.optString(Keys.OBJECT_ID);
-            if (Strings.isEmptyOrNull(authorId)) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            final String requestURI = request.getRequestURI();
+            final String authorId = getAuthorId(requestURI);
+            final int currentPageNum = getCurrentPageNum(requestURI, authorId);
 
-                return ret;
-            }
-
-            final int currentPageNum = queryStringJSONObject.optInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(
@@ -173,7 +165,7 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
             ret.put(Article.ARTICLES, articles);
-            ret.put(Common.ACTION_NAME, Common.AUTHOR_ARTICLES);
+            ret.put(Common.PATH, "/authors/" + authorId);
             ret.put(Keys.OBJECT_ID, authorId);
 
             final String authorName = author.getString(User.USER_NAME);
@@ -203,5 +195,45 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    protected String getTemplateName(final String requestURI) {
+        return "author-articles.ftl";
+    }
+
+    /**
+     * Gets author id from the specified URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return author id
+     */
+    private static String getAuthorId(final String requestURI) {
+        final String path = requestURI.substring("/authors/".length());
+
+        return path.substring(0, path.indexOf("/"));
+    }
+
+    /**
+     * Gets the request page number from the specified request URI and author id.
+     * 
+     * @param requestURI the specified request URI
+     * @param authorId the specified author id
+     * @return page number
+     */
+    private static int getCurrentPageNum(final String requestURI,
+                                         final String authorId) {
+        if (!requestURI.endsWith("/")) {
+            return 1;
+        }
+
+        final String ret = requestURI.substring(("/authors/" + authorId + "/").
+                length());
+
+        if (Strings.isNumeric(ret)) {
+            return Integer.valueOf(ret);
+        } else {
+            return 1;
+        }
     }
 }

@@ -13,7 +13,7 @@
         <script type="text/javascript" src="/js/lib/jquery/jquery.bowknot.min.js"></script>
         <script type="text/javascript" src="/js/lib/tiny_mce/tiny_mce.js"></script>
     </head>
-    <body>
+    <body onhashchange="admin.setCurByHash();">
         <div id="loadMsg">${loadingLabel}</div>
         <div id="tipMsg"></div>
         <div id="adminMain">
@@ -30,13 +30,13 @@
                     <span class="left">${userName}&nbsp;|&nbsp;</span>
                     <span class='left homeIcon' onclick="window.location='/';" title='${indexLabel}'></span>
                     <span class='left'>&nbsp;|&nbsp;</span>
-                    <span onclick='adminUtil.adminLogout();' class='left logoutIcon' title='${logoutLabel}'></span>
+                    <span onclick='admin.logout();' class='left logoutIcon' title='${logoutLabel}'></span>
                 </span>
                 <div class="clear"></div>
             </div>
             <div id="allPanel">
                 <div id="tabs">
-                    <ul id="sideNavi">
+                    <ul>
                         <li>
                             <div data-index="article">
                                 <a href="#article"><div class="left postIcon"></div>${postArticleLabel}</a>
@@ -128,40 +128,22 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="js/${miniDir}adminUtil${miniPostfix}.js"></script>
         <script type="text/javascript" src="js/${miniDir}util${miniPostfix}.js"></script>
-        <script type="text/javascript">
-            var adminUtil = new AdminUtil({
-                "userRole": "${userRole}",
-                "loadingLabel": "${loadingLabel}",
-                "removeSuccLabel": "${removeSuccLabel}",
-                "removeFailLabel": "${removeFailLabel}",
-                "getSuccLabel": "${getSuccLabel}",
-                "noCommentLabel": "${noCommentLabel}",
-                "confirmRemoveLabel": "${confirmRemoveLabel}",
-                "forbiddenLabel": "${forbiddenLabel}",
-                "removeSuccLabel": "${removeSuccLabel}",
-                "removeLabel": "${removeLabel}",
-                "cancelPutTopLabel": "${cancelPutTopLabel}",
-                "putTopLabel": "${putTopLabel}",
-                "viewLabel": "${viewLabel}",
-                "updateLabel": "${updateLabel}",
-                "commentLabel": "${commentLabel}",
-                "syncBlogJavaFailLabel": "${syncBlogJavaFailLabel}",
-                "syncCSDNBlogFailLabel": "${syncCSDNBlogFailLabel}",
-                "syncCnBlogsFailLabel": "${syncCnBlogsFailLabel}"
-            });
-
-            adminUtil.init();
-            // Removes functions if enabled multiple users support
-                <#if enabledMultipleUserSupport>
-                var unUsed = ['article-sync'];
-            for (var i = 0; i < unUsed.length; i++) {
-                $("#" + unUsed[i] + "Tab").remove();
-                $("#" + unUsed[i] + "Panel").remove();
-            }
-                </#if>
-        </script>
+        <script type="text/javascript" src="js/admin/admin.js"></script>
+        <script type="text/javascript" src="js/admin/tablePaginate.js"></script>
+        <script type="text/javascript" src="js/admin/article.js"></script>
+        <script type="text/javascript" src="js/admin/comment.js"></script>
+        <script type="text/javascript" src="js/admin/articleList.js"></script>
+        <script type="text/javascript" src="js/admin/draftList.js"></script>
+        <script type="text/javascript" src="js/admin/fileList.js"></script>
+        <script type="text/javascript" src="js/admin/pageList.js"></script>
+        <script type="text/javascript" src="js/admin/others.js"></script>
+        <script type="text/javascript" src="js/admin/linkList.js"></script>
+        <script type="text/javascript" src="js/admin/articleSync.js"></script>
+        <script type="text/javascript" src="js/admin/preference.js"></script>
+        <script type="text/javascript" src="js/admin/pluginList.js"></script>
+        <script type="text/javascript" src="js/admin/userList.js"></script>
+        <#include "admin-label.ftl">
     </body>
 </html>
 ${plugins}

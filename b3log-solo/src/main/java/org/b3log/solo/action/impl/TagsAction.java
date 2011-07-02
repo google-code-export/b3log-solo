@@ -146,7 +146,7 @@ public final class TagsAction extends AbstractCacheablePageAction {
     }
 
     @Override
-    protected String getPageName(final String requestURI) {
+    protected String getTemplateName(final String requestURI) {
         return "tags.ftl";
     }
 }
