@@ -19,7 +19,7 @@
 
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.1.9, Jun 26, 2011
+    Version: 1.0.2.1, Jun 29, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -42,14 +42,6 @@
         <url-pattern>/admin-draft-list.do</url-pattern>
         <url-pattern>/admin-user-list.do</url-pattern>
         <url-pattern>/admin-plugin-list.do</url-pattern>
-    </filter-mapping>
-    <filter>
-        <filter-name>PageCacheFilter</filter-name>
-        <filter-class>org.b3log.solo.filter.PageCacheFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PageCacheFilter</filter-name>
-        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>ArticlePermalinkFilter</filter-name>
@@ -169,7 +161,6 @@
     <servlet-mapping>
         <servlet-name>IndexAction</servlet-name>
         <url-pattern>/</url-pattern>
-        <url-pattern>/index.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>ArticleAction</servlet-name>
@@ -185,7 +176,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>TagArticlesAction</servlet-name>
-        <url-pattern>/tag-articles.do</url-pattern>
         <url-pattern>/tags/*</url-pattern>
     </servlet-mapping>
     <servlet>
@@ -194,7 +184,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ArchiveDateArticlesAction</servlet-name>
-        <url-pattern>/archive-date-articles.do</url-pattern>
+        <url-pattern>/archives/*</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>TagsAction</servlet-name>
@@ -202,7 +192,6 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>TagsAction</servlet-name>
-        <url-pattern>/tags.do</url-pattern>
         <url-pattern>/tags.html</url-pattern>
     </servlet-mapping>
     <servlet>

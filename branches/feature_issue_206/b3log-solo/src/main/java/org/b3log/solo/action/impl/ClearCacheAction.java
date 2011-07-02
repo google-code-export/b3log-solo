@@ -28,7 +28,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.util.PageCacheKeys;
+import org.b3log.latke.util.PageCacheKeys;
 import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Cache clear action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 3, 2011
+ * @version 1.0.0.1, Jun 28, 2011
  */
 public final class ClearCacheAction extends AbstractAction {
 
@@ -54,10 +54,6 @@ public final class ClearCacheAction extends AbstractAction {
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
-    /**
-     * Page cache utilities.
-     */
-    private PageCacheKeys pageCacheKeys = PageCacheKeys.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -118,7 +114,7 @@ public final class ClearCacheAction extends AbstractAction {
         }
 
         String pageCacheKey = uri;
-        pageCacheKey = pageCacheKeys.getPageCacheKey(uri, null);
+        pageCacheKey = PageCacheKeys.getPageCacheKey(uri, null);
 
         LOGGER.log(Level.INFO, "Clears page cache[pageCacheKey={0}]",
                    pageCacheKey);

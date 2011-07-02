@@ -126,6 +126,9 @@
 .table-expendRow td {
     padding: 2px 0 6px 36px;
 }
+.table-expendRow td  span {
+    margin-left: 60px;
+}
 .table-expendRow td a {
     background-color: #999999;
     border-radius: 3px;
@@ -139,6 +142,18 @@
 }
 .table-center {
     margin: 0 auto;
+}
+.table-upIcon,.table-downIcon {
+	background-image: url("../images/icon.png");
+	cursor: pointer;
+	float: left;
+	height: 16px;
+	width: 16px;
+        background-position: -79px -32px;
+}
+.table-upIcon {
+	background-position: -64px -32px;
+	margin-right: 6px;
 }
 .bowknot-none {
     display: none;

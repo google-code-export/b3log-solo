@@ -20,7 +20,7 @@ package org.b3log.solo.action;
  * This enumeration defines all response status codes of actions.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Jun 26, 2011
+ * @version 1.0.2.4, Jun 29, 2011
  */
 public enum StatusCodes {
 
@@ -32,6 +32,10 @@ public enum StatusCodes {
      * Indicates add an article fails, caused by duplicated permalink.
      */
     ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK,
+    /**
+     * Indicates add an article fails, caused by invalid permalink format.
+     */
+    ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT,
     /**
      * Indicates get articles successfully.
      */
@@ -80,6 +84,10 @@ public enum StatusCodes {
      * Indicates update an article fails, caused by duplicated permalink.
      */
     UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK,
+    /**
+     * Indicates update an article fails, caused by invalid permalink format.
+     */
+    UPDATE_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT,
     /**
      * Indicates update an article fails caused by forbidden.
      */
@@ -149,7 +157,6 @@ public enum StatusCodes {
      * Indicates update preference fails, caused by needing multiple users.
      */
     UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS,
-
     /**
      * Indicates get preference successfully.
      */
@@ -171,6 +178,10 @@ public enum StatusCodes {
      */
     ADD_PAGE_FAIL_DUPLICATED_PERMALINK,
     /**
+     * Indicates add an page fails, caused by invalid permalink format.
+     */
+    ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT,
+    /**
      * Indicates remove a page successfully.
      */
     REMOVE_PAGE_SUCC,
@@ -186,6 +197,10 @@ public enum StatusCodes {
      * Indicates update a page fails, caused by duplicated permalink.
      */
     UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK,
+    /**
+     * Indicates update an page fails, caused by invalid permalink format.
+     */
+    UPDATE_PAGE_FAIL_INVALID_PERMALINK_FORMAT,
     /**
      * Indicates get pages successfully.
      */
@@ -267,5 +282,4 @@ public enum StatusCodes {
      * Indicates get plugins successfully.
      */
     GET_PLUGINS_SUCC
-    
 }

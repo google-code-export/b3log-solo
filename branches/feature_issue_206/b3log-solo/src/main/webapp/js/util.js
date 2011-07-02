@@ -18,14 +18,27 @@ var Util = function (tips) {
     this.tips = tips;
 }
 
-Util.killIE =  function () {
-    if ($.browser.msie) {
-        if ($.browser.version === "6.0") {
-            alert("Let's kill IE 6!");
-            return;
+$.extend(Util, {
+    killIE: function () {
+        if ($.browser.msie) {
+            if ($.browser.version === "6.0") {
+                alert("Let's kill IE 6!");
+                return;
+            }
         }
+    },
+
+    trimUnique:function(a){
+        for(var i=0;i<a.length;i++){
+            a[i]=a[i].replace(/(^\s*)|(\s*$)/g,"");
+            if(a[i]===""){
+                a.splice(i,1);
+                i--
+            }
+        }
+        return $.unique(a)
     }
-};
+});
 
 $.extend(Util.prototype, {    
     goTop:function (type) {
@@ -38,7 +51,7 @@ $.extend(Util.prototype, {
                 break;
         }
     },
-
+    
     goBottom: function () {
         switch (this.tips.skinDirName) {
             case undefined:
@@ -161,13 +174,6 @@ $.extend(Util.prototype, {
                     $it.addClass("selected");
                 }
             });
-
-            if ($("#nextPage").length > 0) {
-                $("#nextPage").attr("href", $("#nextPage").attr("href").replace("{paginationLastPageNum}", parseInt(currentPage) + 1));
-            }
-            if ($("#previousPage").length > 0) {
-                $("#previousPage").attr("href", $("#previousPage").attr("href").replace("{paginationFirstPageNum}", parseInt(currentPage) - 1));
-            }
         }
     },
 

@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, Jun 24, 2011
+ * @version 1.0.3.1, Jul 1, 2011
  */
 public final class Common {
 
@@ -80,9 +80,9 @@ public final class Common {
      */
     public static final String AUTHOR_ARTICLES = "author-articles";
     /**
-     * Action name.
+     * Key of path.
      */
-    public static final String ACTION_NAME = "actionName";
+    public static final String PATH = "path";
     /**
      * Version.
      */

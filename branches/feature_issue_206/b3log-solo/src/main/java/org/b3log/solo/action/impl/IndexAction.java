@@ -30,6 +30,7 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -41,7 +42,7 @@ import org.json.JSONObject;
  * Index action. index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Jun 19, 2011
+ * @version 1.0.1.3, Jul 1, 2011
  */
 public final class IndexAction extends AbstractCacheablePageAction {
 
@@ -74,12 +75,10 @@ public final class IndexAction extends AbstractCacheablePageAction {
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
-        try {
-            final JSONObject queryStringJSONObject =
-                    getQueryStringJSONObject(request);
-            final int currentPageNum = queryStringJSONObject.optInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
+        final String requestURI = request.getRequestURI();
+        final int currentPageNum = getCurrentPageNum(requestURI);
 
+        try {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -103,6 +102,8 @@ public final class IndexAction extends AbstractCacheablePageAction {
                                  langs.get(PageTypes.INDEX_ARTICLES));
 
             if ("valentine".equals(preference.getString(Skin.SKIN_DIR_NAME))) {
+                final JSONObject queryStringJSONObject =
+                        getQueryStringJSONObject(request);
                 final int leftCurrentPageNum = queryStringJSONObject.optInt(
                         Pagination.PAGINATION_CURRENT_PAGE_NUM
                         + Common.LEFT_PART_NAME, 1);
@@ -115,10 +116,34 @@ public final class IndexAction extends AbstractCacheablePageAction {
             } else {
                 filler.fillIndexArticles(ret, currentPageNum, preference);
             }
+
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
-            ret.put(Common.ACTION_NAME, Common.INDEX);
+
+            final String previousPageNum =
+                    Integer.toString(currentPageNum > 1 ? currentPageNum - 1
+                                     : 0);
+            ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
+                    "0".equals(previousPageNum) ? "" : previousPageNum);
+
+            final Integer pageCnt =
+                    (Integer) ret.get(Pagination.PAGINATION_PAGE_COUNT);
+            if (null != pageCnt) {
+                if (pageCnt == currentPageNum + 1) { // The next page is the last page
+                    ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+                } else {
+                    ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
+                                                                 + 1);
+                }
+            }
+            final String nextPageNum =
+                    Integer.toString(currentPageNum > 1 ? currentPageNum - 1
+                                     : 0);
+            ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
+                    "0".equals(nextPageNum) ? "" : nextPageNum);
+
+            ret.put(Common.PATH, "");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -135,10 +160,31 @@ public final class IndexAction extends AbstractCacheablePageAction {
     }
 
     @Override
+    protected String getTemplateName(final String requestURI) {
+        return "index.ftl";
+    }
+
+    @Override
     protected JSONObject doAjaxAction(final JSONObject data,
                                       final HttpServletRequest request,
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Gets the request page number from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return page number
+     */
+    private static int getCurrentPageNum(final String requestURI) {
+        final String ret = requestURI.substring("/".length());
+
+        if (Strings.isNumeric(ret)) {
+            return Integer.valueOf(ret);
+        } else {
+            return 1;
+        }
     }
 }
