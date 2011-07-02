@@ -48,9 +48,12 @@ $.extend(TablePaginate.prototype, {
      * 初始化分页
      */
     initPagination: function () {
-        $("#" + this.id + "Pagination").paginate({
+        var id = this.id;
+        $("#" + id + "Pagination").paginate({
             "bind": function(currentPage) {
-                adminUtil.getArticleList(currentPage, "article");
+                var hash = window.location.hash;
+                var tag = hash.substr(1, hash.length - 1);
+                admin.register[tag].obj.getList(currentPage);
                 this.currentPage = currentPage;
                 return true;
             },
