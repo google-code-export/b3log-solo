@@ -181,9 +181,9 @@ public final class V026ToV030 extends HttpServlet {
     }
 
     /**
-     * Gets archive dates.
+     * Gets old version (0.2.6) archive dates.
      * 
-     * @return archive dates
+     * @return archive dates, returns an empty list if not found
      * @throws RepositoryException repository exception
      */
     private List<JSONObject> getOldArchiveDates() throws RepositoryException {
