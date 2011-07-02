@@ -66,7 +66,7 @@
     <div class="pagination">
         <#if 1 != paginationPageNums?first>
         <a href="${path}/1">${firstPageLabel}</a>
-        <a id="previousPage" href="${path}/{paginationFirstPageNum}">${previousPageLabel}</a>
+        <a id="previousPage" href="${path}/${paginationFirstPageNum}">${previousPageLabel}</a>
         </#if>
         <#list paginationPageNums as paginationPageNum>
           <#if paginationPageNum == paginationCurrentPageNum>
