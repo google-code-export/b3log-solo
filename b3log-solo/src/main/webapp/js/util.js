@@ -156,27 +156,6 @@ $.extend(Util.prototype, {
         }
     },
 
-    setCurrentPage: function () {
-        if ($(".pagination").length >= 1) {
-            var local = window.location.search.substring(1),
-            currentPage = "1";
-            var paramURL = local.split("&");
-            for (var i = 0; i < paramURL.length; i++) {
-                if (paramURL[i].split("=")[0] === "paginationCurrentPageNum") {
-                    currentPage = paramURL[i].split("=")[1];
-                }
-            }
-
-            $(".pagination a").each(function () {
-                var $it = $(this);
-                $it.removeClass("selected");
-                if ($it.text() === currentPage) {
-                    $it.addClass("selected");
-                }
-            });
-        }
-    },
-
     // tags
     randomColor: function () {
         var arrHex = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];

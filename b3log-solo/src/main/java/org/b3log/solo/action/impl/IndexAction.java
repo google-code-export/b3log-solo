@@ -121,6 +121,7 @@ public final class IndexAction extends AbstractCacheablePageAction {
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
 
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final String previousPageNum =
                     Integer.toString(currentPageNum > 1 ? currentPageNum - 1
                                      : 0);

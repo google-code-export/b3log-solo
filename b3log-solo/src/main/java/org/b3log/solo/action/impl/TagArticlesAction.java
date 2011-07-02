@@ -216,7 +216,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
             ret.put(Article.ARTICLES, articles);
-
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             ret.put(Pagination.PAGINATION_LAST_PAGE_NUM,
                     pageNums.get(pageNums.size() - 1));

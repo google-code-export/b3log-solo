@@ -170,7 +170,7 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
             final String authorName = author.getString(User.USER_NAME);
             ret.put(Common.AUTHOR_NAME, authorName);
-
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
