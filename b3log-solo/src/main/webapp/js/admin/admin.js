@@ -26,7 +26,7 @@ var Admin = function () {
 };
 
 $.extend(Admin.prototype, {
-    adminUtil: {
+    copyright: {
         version:"0.0.0.2",
         author: "lly219@gmail.com"
     },
