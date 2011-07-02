@@ -31,7 +31,6 @@ import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.PageTypes;
@@ -106,16 +105,7 @@ public final class PageAction extends AbstractCacheablePageAction {
             ret.putAll(langs);
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
 
-            String pageId = queryStringJSONObject.optString(Keys.OBJECT_ID);
-            if (Strings.isEmptyOrNull(pageId)) {
-                pageId = (String) request.getAttribute(Keys.OBJECT_ID);
-            }
-
-            if (Strings.isEmptyOrNull(pageId)) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
-            }
+            final String pageId = (String) request.getAttribute(Keys.OBJECT_ID);
 
             final JSONObject page = pageRepository.get(pageId);
             if (null == page) {
