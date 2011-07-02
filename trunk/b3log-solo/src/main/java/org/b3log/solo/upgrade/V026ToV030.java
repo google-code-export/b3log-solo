@@ -138,7 +138,7 @@ public final class V026ToV030 extends HttpServlet {
                            new Object[]{date, date.getTime(),
                                         round, round.getTime()});
                 archiveDate.put(ArchiveDate.ARCHIVE_TIME, round.getTime());
-                archiveDate.remove(ArchiveDate.ARCHIVE_DATE);
+                archiveDate.remove(ArchiveDate.ARCHIVE_DATE); // Removes the old version property
 
                 archiveDateRepository.updateAsync(archiveDate.getString(
                         Keys.OBJECT_ID), archiveDate);
