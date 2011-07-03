@@ -251,15 +251,14 @@ public final class Filler {
             final String month = dateStrings[1];
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
 
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
             if ("en".equals(language)) {
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
-                                Dates.EN_MONTHS.get(month));
-            } else {
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
+                final String monthName = Dates.EN_MONTHS.get(month);
+                archiveDate.put(Common.MONTH_NAME, monthName);
             }
-        }
 
-        dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates);
+            dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates);
+        }
     }
 
     /**

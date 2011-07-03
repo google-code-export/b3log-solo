@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.util;
 
 import java.io.File;
@@ -51,7 +50,8 @@ public final class Skins {
     private static final Logger LOGGER = Logger.getLogger(Skins.class.getName());
 
     /**
-     * Loads skins for the specified preference.
+     * Loads skins for the specified preference and initializes templates 
+     * loading.
      *
      * @param preference the specified preference
      * @throws JSONException json exception
@@ -97,17 +97,7 @@ public final class Skins {
         }
 
         preference.put(SKINS, skinArray.toString());
-
-        try {
-            final String webRootPath = SoloServletListener.getWebRoot();
-            final String skinPath = webRootPath + SKINS + "/"
-                                    + currentSkinDirName;
-            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
-                    new File(skinPath));
-        } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, "Loads skins error!", e);
-            throw new IllegalStateException(e);
-        }
+        setDirectoryForTemplateLoading(currentSkinDirName);
 
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
@@ -116,6 +106,25 @@ public final class Skins {
         }
 
         LOGGER.info("Loaded skins....");
+    }
+
+    /**
+     * Sets the directory for template loading with the specified skin directory
+     * name.
+     * 
+     * @param skinDirName the specified skin directory name
+     */
+    private void setDirectoryForTemplateLoading(final String skinDirName) {
+        try {
+            final String webRootPath = SoloServletListener.getWebRoot();
+            final String skinPath = webRootPath + SKINS + "/"
+                                    + skinDirName;
+            Templates.CONFIGURATION.setDirectoryForTemplateLoading(
+                    new File(skinPath));
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Loads skins error!", e);
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
