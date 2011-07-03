@@ -8,7 +8,7 @@
 *公共的模板变量*
  <table border="1">
   <tr><th>变量名</th><th>类型</th><th>说明</th><th>备注</th></tr>
-  <tr><td>actionName</td><td>String</td><td>Action 名</td><td>当前页面的 pathname </td></tr>
+  <tr><td>path</td><td>String</td><td>Action 名</td><td>当前页面的 pathname </td></tr>
   <tr><td>archiveDates</td><td>List`<`JSONObject`>`</td><td>存档日期列表</td><td></td></tr>
   <tr><td>articles</td><td>List`<`JSONObject`>`</td><td>存档文章列表</td><td></td></tr>
   <tr><td>blogTitle</td><td>String</td><td>博客标题</td><td></td></tr>
