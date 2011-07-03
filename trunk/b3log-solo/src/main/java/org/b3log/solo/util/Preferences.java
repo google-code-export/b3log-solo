@@ -16,15 +16,14 @@
 
 package org.b3log.solo.util;
 
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import static org.b3log.solo.model.Preference.*;
 
@@ -95,11 +94,19 @@ public final class Preferences {
      * repository.
      *
      * @param preference the specified preference
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws Exception exception
      */
-    public void setPreference(final JSONObject preference)
-            throws JSONException, RepositoryException {
+    public void setPreference(final JSONObject preference) throws Exception {
+        @SuppressWarnings("unchecked")
+        final Iterator<String> keys = preference.keys();
+        while (keys.hasNext()) {
+            final String key = keys.next();
+            if (preference.isNull(key)) {
+                throw new Exception("A value is null of preference[key=" + key
+                                    + "]");
+            }
+        }
+
         preferenceRepository.update(PREFERENCE, preference);
         userPreferenceCache.put(PREFERENCE, preference.toString());
 
@@ -108,7 +115,7 @@ public final class Preferences {
         } else {
             Latkes.disablePageCache();
         }
-        
+
         LOGGER.log(Level.FINER, "Set preference successfully");
     }
 

@@ -260,6 +260,11 @@ public final class Preference {
          */
         public static final boolean DEFAULT_ENABLE_ARTICLE_UPDATE_HINT = true;
         /**
+         * Default enable post to Tencent microblog.
+         */
+        public static final boolean DEFAULT_ENABLE_POST_TO_TENCENT_MICROBLOG =
+                false;
+        /**
          * Default notice board.
          */
         public static final String DEFAULT_NOTICE_BOARD =
