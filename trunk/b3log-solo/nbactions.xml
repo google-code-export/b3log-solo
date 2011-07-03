@@ -84,10 +84,10 @@
         </goals>
     </action>
     <action>
-            <actionName>CUSTOM-minify-minify</actionName>
-            <displayName>min-min</displayName>
-            <goals>
-                <goal>min:min</goal>
-            </goals>
-        </action>
+        <actionName>CUSTOM-min-min</actionName>
+        <displayName>min-min</displayName>
+        <goals>
+            <goal>min:min</goal>
+        </goals>
+    </action>
 </actions>
