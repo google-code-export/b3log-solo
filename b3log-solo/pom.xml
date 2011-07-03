@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.7.2, Jun 27, 2011
+    Version: 1.0.7.3, Jul 3, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -42,6 +42,7 @@
         <maven-gae-plugin.version>0.8.4</maven-gae-plugin.version>
         <gae.dev_sever.port>8080</gae.dev_sever.port>
         <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
+        <maven-min-plugin.version>0.0.1-SNAPSHOT</maven-min-plugin.version>
         <!-- Unit Test -->
         <testng.version>5.9</testng.version>
         <!-- -->
@@ -371,7 +372,7 @@
             <plugin>
                 <groupId>org.b3log</groupId>
                 <artifactId>maven-min-plugin</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${maven-min-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>process-resources</phase>
