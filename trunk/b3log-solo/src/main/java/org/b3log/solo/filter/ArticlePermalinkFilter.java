@@ -51,7 +51,7 @@ public final class ArticlePermalinkFilter implements Filter {
      */
     private ArticleRepository articleRepository =
             ArticleGAERepository.getInstance();
-
+    
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
     }

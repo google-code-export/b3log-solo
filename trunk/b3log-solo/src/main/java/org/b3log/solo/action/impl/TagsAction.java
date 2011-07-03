@@ -31,7 +31,6 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
@@ -51,7 +50,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.4, Jun 19, 2011
  */
-public final class TagsAction extends AbstractCacheablePageAction {
+public final class TagsAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
