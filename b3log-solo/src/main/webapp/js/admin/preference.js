@@ -169,7 +169,7 @@ admin.preference = {
                 "keyOfSolo": $("#keyOfSolo").val()
             }
         }
-
+        
         jsonRpc.preferenceService.updatePreference(function (result, error) {
             try {
                 switch (result.sc) {

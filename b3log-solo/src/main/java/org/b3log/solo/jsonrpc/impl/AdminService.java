@@ -715,6 +715,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
         ret.put(ENABLE_ARTICLE_UPDATE_HINT,
                 Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
+        ret.put(ENABLE_POST_TO_TENCENT_MICROBLOG, 
+                Default.DEFAULT_ENABLE_POST_TO_TENCENT_MICROBLOG);
         ret.put(Preference.CURRENT_VERSION_NUMBER, SoloServletListener.VERSION);
         ret.put(SIGNS, Default.DEFAULT_SIGNS);
         ret.put(TIME_ZONE_ID, Default.DEFAULT_TIME_ZONE);
