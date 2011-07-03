@@ -80,6 +80,7 @@ import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
@@ -87,7 +88,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.7, Jul 2, 2011
+ * @version 1.0.4.6, Jun 26, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -204,21 +205,38 @@ public final class SoloServletListener extends AbstractServletListener {
 
     /**
      * Loading preference.
+     * 
+     * <p>
+     * Loads preference from repository, loads skins from skin directory then
+     * sets it into preference, puts preference into cache and saves it to 
+     * repository finally.
+     * </p>
+     * 
+     * <p>
+     *   <b>Note</b>: Do NOT use method {@linkplain Preferences#getPreference()}
+     *   to load it, caused by the method may retrieve it from cache.
+     * </p>
      */
     private void loadPreference() {
         LOGGER.info("Loading preference....");
 
+        final PreferenceRepository preferenceRepository =
+                PreferenceGAERepository.getInstance();
         JSONObject preference = null;
 
         try {
-            preference = Preferences.getInstance().getPreference();
+            preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) {
                 LOGGER.log(Level.SEVERE,
                            "Can't not init default skin, please init B3log Solo first");
                 return;
             }
 
+            final Skins skins = Skins.getInstance();
+            skins.loadSkins(preference);
+
             final EventManager eventManager = EventManager.getInstance();
+
             eventManager.fireEventSynchronously(// for upgrade extensions
                     new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
                                           preference));
