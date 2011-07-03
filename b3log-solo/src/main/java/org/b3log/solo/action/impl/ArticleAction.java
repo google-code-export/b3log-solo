@@ -62,7 +62,7 @@ import org.jsoup.Jsoup;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.3.0, Jun 28, 2011
  */
-public final class ArticleAction extends AbstractCacheablePageAction {
+public final class ArticleAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
@@ -112,19 +112,19 @@ public final class ArticleAction extends AbstractCacheablePageAction {
      * {@inheritDoc}
      * 
      * <p>
-     * Article view count +1.
+     * Blog statistic view count +1 and article view count +1.
      * </p>
      */
     @Override
     protected void processPageCacheHit(final JSONObject cachedPageContentObject) {
+        super.processPageCacheHit(cachedPageContentObject);
+        
         try {
             final String oId = cachedPageContentObject.getString(
                     AbstractCacheablePageAction.CACHED_OID);
             LOGGER.log(Level.FINEST, "Page cached object[id={0}, type={1}]",
                        new Object[]{oId, cachedPageContentObject.optString(
                         AbstractCacheablePageAction.CACHED_TYPE)});
-
-            statistics.incArticleViewCount(oId);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Process page cache hit error", e);
         }

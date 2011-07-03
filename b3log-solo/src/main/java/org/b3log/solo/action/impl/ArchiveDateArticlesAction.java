@@ -29,7 +29,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
@@ -61,7 +60,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.9, Jul 2, 2011
  */
-public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
+public final class ArchiveDateArticlesAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
