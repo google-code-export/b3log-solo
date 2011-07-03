@@ -28,7 +28,6 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
-import org.b3log.latke.util.PageCacheKeys;
 import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +36,7 @@ import org.json.JSONObject;
  * Cache clear action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jun 28, 2011
+ * @version 1.0.0.2, Jul 3, 2011
  */
 public final class ClearCacheAction extends AbstractAction {
 
@@ -113,9 +112,7 @@ public final class ClearCacheAction extends AbstractAction {
             return;
         }
 
-        String pageCacheKey = uri;
-        pageCacheKey = PageCacheKeys.getPageCacheKey(uri, null);
-
+        final String pageCacheKey = PageCaches.getPageCacheKey(uri, null);
         LOGGER.log(Level.INFO, "Clears page cache[pageCacheKey={0}]",
                    pageCacheKey);
 
