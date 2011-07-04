@@ -21,7 +21,6 @@ import org.b3log.latke.action.ActionException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -30,7 +29,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
@@ -60,9 +58,9 @@ import org.json.JSONObject;
  * Get articles by archive date. archive-articles.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Jul 1, 2011
+ * @version 1.0.1.9, Jul 2, 2011
  */
-public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction {
+public final class ArchiveDateArticlesAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
@@ -123,6 +121,9 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             final JSONObject archiveDate =
                     archiveDateRepository.getByArchiveDate(archiveDateString);
             if (null == archiveDate) {
+                LOGGER.log(Level.WARNING, "Can not find articles for the specified "
+                                          + "archive date[string={0}]",
+                           archiveDate);
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
@@ -199,6 +200,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
             ret.put(Article.ARTICLES, articles);
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             ret.put(Pagination.PAGINATION_LAST_PAGE_NUM,
                     pageNums.get(pageNums.size() - 1));
@@ -211,8 +213,8 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
 
-            final Date date = (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
-            final String dateString = ArchiveDate.DATE_FORMAT.format(date);
+            final long time =  archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+            final String dateString = ArchiveDate.DATE_FORMAT.format(time);
             final String[] dateStrings = dateString.split("/");
             final String year = dateStrings[0];
             final String month = dateStrings[1];
@@ -295,7 +297,7 @@ public final class ArchiveDateArticlesAction extends AbstractCacheablePageAction
         if (!requestURI.endsWith("/")) {
             return 1;
         }
-        
+
         final String ret = requestURI.substring("/archives/yyyy/MM/".length());
 
         if (Strings.isNumeric(ret)) {

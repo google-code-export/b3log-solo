@@ -1,3 +1,9 @@
+/*
+ * admin style
+ *
+ * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @version 1.0.0.2, July 3, 2011
+ */
 #adminMain {
     height: 100%;
     position: absolute;
@@ -32,17 +38,15 @@
 }
 #tipMsg, #loadMsg {
     background-color: #E5E7EB;
-    border-radius: 6px;
+    border-radius: 3px 3px 3px 3px;
     font-weight: bold;
     left: 48%;
     margin: 0 auto;
-    moz-border-radius: 6px;
     overflow: hidden;
     padding: 2px 0;
-    position: absolute;
+    position: fixed;
     text-align: center;
     top: 1px;
-    webkit-border-radius: 6px;
     z-index: 2;
 }
 #tipMsg {
@@ -105,7 +109,7 @@
     background-color: #E3E9FF;
     font-weight: bold;
 }
-
+/* article sync */
 #syncBlogType {
     background-color: #E3E9FF;
     padding: 12px 0 0 12px;
@@ -122,8 +126,8 @@
     webkit-border-radius: 12px;
     width: 411px;
 }
-#archiveDatePanel {
-    margin-left: -9px;
+#articlesCount {
+    line-height: 28px;
 }
 .subTable {
     background-color: #BCF;

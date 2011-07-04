@@ -88,8 +88,9 @@ public final class ArchiveDates {
         if (null == archiveDate) {
             archiveDate = new JSONObject();
             try {
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE,
-                                ArchiveDate.DATE_FORMAT.parse(createDateString));
+                archiveDate.put(ArchiveDate.ARCHIVE_TIME,
+                                ArchiveDate.DATE_FORMAT.parse(createDateString).
+                        getTime());
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 0);
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
                                 0);

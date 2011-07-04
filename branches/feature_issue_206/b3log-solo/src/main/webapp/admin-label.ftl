@@ -66,7 +66,21 @@
         "nameEmptyLabel": "${nameEmptyLabel}",
         "mailInvalidLabel": "${mailInvalidLabel}",
         "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
-        "removeUserFailSkinNeedMulUsersLabel": "${removeUserFailSkinNeedMulUsersLabel}"
+        "removeUserFailSkinNeedMulUsersLabel": "${removeUserFailSkinNeedMulUsersLabel}",
+        "noSettingLabel": "${noSettingLabel}",
+        "blogEmptyLabel": "${blogEmptyLabel}",
+        "syncImportErrorLabel": "${syncImportErrorLabel}",
+        "sumLabel": "${sumLabel}",
+        "countLabel": "${countLabel}",
+        "blogArticleEmptyLabel": "${blogArticleEmptyLabel}",
+        "importFailLabel": "${importFailLabel}",
+        "importSuccLabel": "${importSuccLabel}",
+        "categoryLabel": "${categoryLabel}",
+        "importedLabel": "${importedLabel}",
+        "passwordEmptyLabel": "${passwordEmptyLabel}",
+        "setFailLabel": "${setFailLabel}",
+        "tagsEmptyLabel": "${tagsEmptyLabel}",
+        "abstractEmptyLabel": "${abstractEmptyLabel}"
     };    
         <#if enabledMultipleUserSupport>
         $("#tabs li")[6].style.display = "none";

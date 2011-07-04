@@ -18,19 +18,32 @@ package org.b3log.solo.upgrade;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.time.DateUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PreferenceRepository;
+import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.util.Preferences;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -47,7 +60,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jun 18, 2011
+ * @version 1.0.0.1, Jul 2, 2011
  */
 public final class V026ToV030 extends HttpServlet {
 
@@ -69,6 +82,11 @@ public final class V026ToV030 extends HttpServlet {
      */
     private PreferenceRepository preferenceRepository =
             PreferenceGAERepository.getInstance();
+    /**
+     * Archive date repository.
+     */
+    private ArchiveDateRepository archiveDateRepository =
+            ArchiveDateGAERepository.getInstance();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -79,6 +97,7 @@ public final class V026ToV030 extends HttpServlet {
             LOGGER.info("Checking for consistency....");
 
             upgradePreference();
+            upgradeArchiveDates();
 
             final String upgraded =
                     "Upgraded from v026 to v030 successfully :-)";
@@ -101,7 +120,42 @@ public final class V026ToV030 extends HttpServlet {
     }
 
     /**
-     * Upgrades preference model..
+     * Upgrades archive dates model.
+     * 
+     * @throws ServletException upgrade fails
+     */
+    private void upgradeArchiveDates() throws ServletException {
+        final Transaction transaction = archiveDateRepository.beginTransaction();
+        try {
+            final List<JSONObject> archiveDates = getOldArchiveDates();
+            for (final JSONObject archiveDate : archiveDates) {
+                final Date date =
+                        (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
+                final Date round =
+                        DateUtils.round(date, Calendar.MONTH);
+                LOGGER.log(Level.FINER,
+                           "date={0}, time={1}, round={2}, roundTime={3}",
+                           new Object[]{date, date.getTime(),
+                                        round, round.getTime()});
+                archiveDate.put(ArchiveDate.ARCHIVE_TIME, round.getTime());
+                archiveDate.remove(ArchiveDate.ARCHIVE_DATE); // Removes the old version property
+
+                archiveDateRepository.updateAsync(archiveDate.getString(
+                        Keys.OBJECT_ID), archiveDate);
+            }
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            LOGGER.log(Level.SEVERE, "Upgrade archive dates fail.", e);
+            throw new ServletException("Upgrade fail from v026 to v030");
+        }
+    }
+
+    /**
+     * Upgrades preference model.
      *
      * @throws ServletException upgrade fails
      */
@@ -124,5 +178,33 @@ public final class V026ToV030 extends HttpServlet {
             LOGGER.log(Level.SEVERE, "Upgrade preference fail.", e);
             throw new ServletException("Upgrade fail from v026 to v030");
         }
+    }
+
+    /**
+     * Gets old version (0.2.6) archive dates.
+     * 
+     * @return archive dates, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     */
+    private List<JSONObject> getOldArchiveDates() throws RepositoryException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final org.b3log.latke.repository.Query query =
+                new org.b3log.latke.repository.Query().addSort(
+                ArchiveDate.ARCHIVE_DATE, SortDirection.DESCENDING);
+        final JSONObject result = archiveDateRepository.get(query);
+
+        try {
+            final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
+
+            for (int i = 0; i < archiveDates.length(); i++) {
+                final JSONObject archiveDate = archiveDates.getJSONObject(i);
+                ret.add(archiveDate);
+            }
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
+
+        return ret;
     }
 }

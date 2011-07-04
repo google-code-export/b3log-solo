@@ -17,17 +17,17 @@
 package org.b3log.solo.repository;
 
 import java.util.List;
-import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.gae.GAERepository;
 import org.json.JSONObject;
 
 /**
  * Archive date repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 17, 2011
+ * @version 1.0.0.2, Jul 2, 2011
  */
-public interface ArchiveDateRepository extends Repository {
+public interface ArchiveDateRepository extends GAERepository {
 
     /**
      * Gets an archive date by the specified archive date string.

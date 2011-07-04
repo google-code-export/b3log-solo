@@ -25,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
@@ -44,7 +43,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.3, Jul 1, 2011
  */
-public final class IndexAction extends AbstractCacheablePageAction {
+public final class IndexAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
@@ -121,6 +120,7 @@ public final class IndexAction extends AbstractCacheablePageAction {
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
 
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final String previousPageNum =
                     Integer.toString(currentPageNum > 1 ? currentPageNum - 1
                                      : 0);

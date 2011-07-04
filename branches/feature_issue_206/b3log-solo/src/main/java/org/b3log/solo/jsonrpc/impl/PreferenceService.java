@@ -158,7 +158,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "signs": "[{
      *             "oId": "",
      *             "signHTML": ""
-     *         }, ...]"
+     *         }, ...]",
+     *         "enablePostToTencentMicroblog": boolean
      *     }
      *     "sc": "GET_PREFERENCE_SUCC"
      * }
@@ -218,7 +219,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "signs": [{
      *             "oId": "",
      *             "signHTML": ""
-     *         }, ...]
+     *         }, ...],
+     *         "enablePostToTencentMicroblog": boolean
      *     }
      * }, see {@link org.b3log.solo.model.Preference} for more details
      * </pre>

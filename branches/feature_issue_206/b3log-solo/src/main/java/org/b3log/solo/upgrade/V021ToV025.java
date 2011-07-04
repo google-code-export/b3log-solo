@@ -381,7 +381,7 @@ public final class V021ToV025 extends HttpServlet {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.log(Level.SEVERE, "Upgrade archive date fail.", e);
+            LOGGER.log(Level.SEVERE, "Upgrade admin fail.", e);
             throw new ServletException("Upgrade fail from v021 to v025");
         }
     }
