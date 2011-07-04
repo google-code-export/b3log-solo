@@ -1,4 +1,10 @@
-*,html,body {
+/*
+ * base style
+ *
+ * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @version 1.0.0.1, July 3, 2011
+ */
+ *,html,body {
     margin: 0;
     padding: 0;
 }

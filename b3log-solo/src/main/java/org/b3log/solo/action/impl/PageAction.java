@@ -27,11 +27,9 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.PageTypes;
@@ -47,7 +45,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.7, Jun 19, 2011
  */
-public final class PageAction extends AbstractCacheablePageAction {
+public final class PageAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
@@ -106,16 +104,7 @@ public final class PageAction extends AbstractCacheablePageAction {
             ret.putAll(langs);
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
 
-            String pageId = queryStringJSONObject.optString(Keys.OBJECT_ID);
-            if (Strings.isEmptyOrNull(pageId)) {
-                pageId = (String) request.getAttribute(Keys.OBJECT_ID);
-            }
-
-            if (Strings.isEmptyOrNull(pageId)) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
-            }
+            final String pageId = (String) request.getAttribute(Keys.OBJECT_ID);
 
             final JSONObject page = pageRepository.get(pageId);
             if (null == page) {

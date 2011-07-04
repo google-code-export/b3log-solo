@@ -126,18 +126,6 @@
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /*
      * before load script, init namespace
      * 1. add tab
@@ -149,7 +137,7 @@
     
     $("#tabs").tabs("add", {
         "id": "cache-list",
-        "text": "<a href=\"#cache-list\"><div class=\"left cacheIcon\"></div>cache</a>",
+        "text": "<a href=\"#cache-list\"><div class=\"left cacheIcon\"></div>${cacheMgmtLabel}</a>",
         "content": $("#cachePlugin").html()
     });
      
@@ -163,7 +151,6 @@
         "init": plugins.cacheList.init,
         "refresh":  plugins.cacheList.init
     }
-    
     
     admin.setCurByHash();
 </script>

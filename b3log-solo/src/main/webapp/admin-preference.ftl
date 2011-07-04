@@ -328,7 +328,7 @@
                             ${postToTencentMicroblogWhilePublishArticleLabel}
                         </th>
                         <td>
-                            <input type="checkbox" class="normalInput" id="postToTencentMicroblog"/>
+                            <input id="postToTencentMicroblog" type="checkbox" class="normalInput"/>
                         </td>
                     </tr>
                     <tr>

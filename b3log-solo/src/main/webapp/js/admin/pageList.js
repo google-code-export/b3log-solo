@@ -153,7 +153,7 @@ admin.pageList = {
      * @id 自定义页面 id
      */
     get: function (id) {
-        $("#loadMsg").text("${loadingLabel}");
+        $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
         var requestJSONObject = {
             "oId": id

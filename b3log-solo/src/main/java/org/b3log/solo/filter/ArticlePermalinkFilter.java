@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Article permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jun 28, 2011
+ * @version 1.0.0.9, Jul 2, 2011
  */
 public final class ArticlePermalinkFilter implements Filter {
 
@@ -51,7 +51,7 @@ public final class ArticlePermalinkFilter implements Filter {
      */
     private ArticleRepository articleRepository =
             ArticleGAERepository.getInstance();
-
+    
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
     }
@@ -93,7 +93,8 @@ public final class ArticlePermalinkFilter implements Filter {
             final String articleId = article.getString(Keys.OBJECT_ID);
 
             final RequestDispatcher requestDispatcher =
-                    httpServletRequest.getRequestDispatcher("/article-detail.do");
+                    httpServletRequest.getRequestDispatcher("/article-detail.do?"
+                                                            + requestURI);
             request.setAttribute(Keys.OBJECT_ID, articleId);
             requestDispatcher.forward(request, response);
         } catch (final Exception e) {

@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
@@ -54,7 +53,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.2.3, Jul 1, 2011
  */
-public final class AuthorArticlesAction extends AbstractCacheablePageAction {
+public final class AuthorArticlesAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
@@ -170,7 +169,7 @@ public final class AuthorArticlesAction extends AbstractCacheablePageAction {
 
             final String authorName = author.getString(User.USER_NAME);
             ret.put(Common.AUTHOR_NAME, authorName);
-
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);

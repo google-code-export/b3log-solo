@@ -18,7 +18,7 @@
  * preference for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.2, Jun 30, 2011
+ * @version 1.0.0.3, July 3, 2011
  */
 
 /* preference 相关操作 */
@@ -29,8 +29,6 @@ admin.preference = {
      * 初始化
      */
     init: function () {
-        $("#loadMsg").text(Label.loadingLabel);
-        
         $("#tabspreference").tabs();
          
         jsonRpc.preferenceService.getPreference(function (result, error) {
@@ -61,7 +59,6 @@ admin.preference = {
                         $("#keyOfSolo").val(preference.keyOfSolo);
                         preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
                         preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
-
                         // Tencent micro blog settings
                         preference.enablePostToTencentMicroblog ? $("#postToTencentMicroblog").attr("checked", "checked") : $("#postToTencentMicroblog").removeAttr("checked");
                         $("#tencentMicroblogAppKey").val(preference.tencentMicroblogAppKey);
@@ -163,15 +160,15 @@ admin.preference = {
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
                 "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
                 "enablePostToBuzz": false /*$("#syncBuzz").attr("checked")*/,
-                "enableArticleUpdateHint": $("#enableArticleUpdateHint").attr("checked"),
+                "enableArticleUpdateHint": $("#enableArticleUpdateHint").attr("checked") ? true : false,
                 "signs": signs,
                 "tencentMicroblogAppKey": $("#tencentMicroblogAppKey").val(),
                 "tencentMicroblogAppSecret": $("#tencentMicroblogAppSecret").val(),
-                "enablePostToTencentMicroblog": $("#postToTencentMicroblog").attr("checked"),
+                "enablePostToTencentMicroblog": $("#postToTencentMicroblog").attr("checked") ? true : false,
                 "keyOfSolo": $("#keyOfSolo").val()
             }
         }
-
+        
         jsonRpc.preferenceService.updatePreference(function (result, error) {
             try {
                 switch (result.sc) {

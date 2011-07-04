@@ -3,3 +3,4 @@ Disallow: /admin-index.do
 Disallow: /admin-error.do
 Disallow: /init.do
 Disallow: /article-detail.do
+Disallow: /page.do

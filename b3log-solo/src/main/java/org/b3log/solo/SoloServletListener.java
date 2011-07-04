@@ -205,6 +205,17 @@ public final class SoloServletListener extends AbstractServletListener {
 
     /**
      * Loading preference.
+     * 
+     * <p>
+     * Loads preference from repository, loads skins from skin directory then
+     * sets it into preference, puts preference into cache and saves it to 
+     * repository finally.
+     * </p>
+     * 
+     * <p>
+     *   <b>Note</b>: Do NOT use method {@linkplain Preferences#getPreference()}
+     *   to load it, caused by the method may retrieve it from cache.
+     * </p>
      */
     private void loadPreference() {
         LOGGER.info("Loading preference....");

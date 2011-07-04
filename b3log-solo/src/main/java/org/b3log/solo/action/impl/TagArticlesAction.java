@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
@@ -61,7 +60,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.2.4, Jul 1, 2011
  */
-public final class TagArticlesAction extends AbstractCacheablePageAction {
+public final class TagArticlesAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
@@ -216,7 +215,7 @@ public final class TagArticlesAction extends AbstractCacheablePageAction {
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
             ret.put(Article.ARTICLES, articles);
-
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             ret.put(Pagination.PAGINATION_LAST_PAGE_NUM,
                     pageNums.get(pageNums.size() - 1));

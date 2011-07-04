@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
  * This class defines all archive date model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 3, 2010
+ * @version 1.0.0.3, Jul 2, 2011
  */
 public final class ArchiveDate {
 
@@ -35,6 +35,10 @@ public final class ArchiveDate {
      * Archive dates.
      */
     public static final String ARCHIVE_DATES = "archiveDates";
+    /**
+     * Archive time.
+     */
+    public static final String ARCHIVE_TIME = "archiveTime";
     /**
      * Key of archive date article count.
      */

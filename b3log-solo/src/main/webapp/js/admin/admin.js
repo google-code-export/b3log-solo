@@ -26,7 +26,7 @@ var Admin = function () {
 };
 
 $.extend(Admin.prototype, {
-    adminUtil: {
+    copyright: {
         version:"0.0.0.2",
         author: "lly219@gmail.com"
     },
@@ -58,6 +58,7 @@ $.extend(Admin.prototype, {
      */
     tabsAction: function (hash, action, action2) {
         if ($("#tabs_" + hash).html().replace(/\s/g, "") === "") {
+            $("#loadMsg").text(Label.loadingLabel);
             $("#tabs_" + hash).load("admin-" + hash + ".do", function () {
                 admin.register[hash].init.call(admin.register[hash].obj);
                 if (action) {
@@ -92,7 +93,7 @@ $.extend(Admin.prototype, {
         var tag = hash.substr(1, hash.length - 1);
         var tab = tag.split("/")[0],
         subTab = tag.split("/")[1];
-        if (hash !== "") {
+        if (tab !== "") {
             if (subTab) {
                 this.tabsAction(tab, function () {
                     $("#tabs" + tab.replace("-", "")).tabs("select", subTab);
@@ -100,9 +101,8 @@ $.extend(Admin.prototype, {
             } else {
                 this.tabsAction(tab);
             }
-        } else {
-            $("#loadMsg").text("");
         }
+            
         $("#tabs").tabs("select", tab);
     },
     
@@ -134,6 +134,7 @@ $.extend(Admin.prototype, {
                 }, 7000);
             }
         }, 6000);
+        $("#loadMsg").text("");
     }
 });
 var admin = new Admin();

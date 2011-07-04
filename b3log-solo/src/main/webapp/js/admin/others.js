@@ -18,7 +18,7 @@
  * others for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.2, Jun 30, 2011
+ * @version 1.0.0.3, July 3, 2011
  */
 
 /* oterhs 相关操作 */
