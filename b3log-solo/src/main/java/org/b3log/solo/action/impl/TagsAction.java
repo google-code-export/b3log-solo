@@ -45,7 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Tag action. tags.ftl.
+ * Tag action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.4, Jun 19, 2011

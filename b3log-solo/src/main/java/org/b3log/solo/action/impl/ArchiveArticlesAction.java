@@ -55,12 +55,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Get articles by archive date. archive-articles.ftl.
+ * Get articles by archive date.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Jul 2, 2011
+ * @version 1.0.2.0, Jul 9, 2011
  */
-public final class ArchiveDateArticlesAction extends AbstractFrontPageAction {
+public final class ArchiveArticlesAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
@@ -70,7 +70,7 @@ public final class ArchiveDateArticlesAction extends AbstractFrontPageAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArchiveDateArticlesAction.class.getName());
+            Logger.getLogger(ArchiveArticlesAction.class.getName());
     /**
      * Archive date repository.
      */
@@ -253,7 +253,7 @@ public final class ArchiveDateArticlesAction extends AbstractFrontPageAction {
     }
 
     /**
-     * Returns "archive-date-articles.ftl".
+     * Returns "archive-articles.ftl".
      * 
      * <p>
      * Ignores the specified request URI

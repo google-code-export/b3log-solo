@@ -55,7 +55,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Get articles by tag action. tag-articles.ftl.
+ * Get articles by tag action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.2.4, Jul 1, 2011

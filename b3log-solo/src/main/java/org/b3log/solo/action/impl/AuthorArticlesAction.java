@@ -48,7 +48,7 @@ import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
- * Get articles by author action. author-articles.ftl.
+ * Get articles by author action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.2.3, Jul 1, 2011
