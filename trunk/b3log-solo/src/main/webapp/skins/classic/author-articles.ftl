@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${allTagsLabel} - ${blogTitle}">
-        <meta name="keywords" content="${metaKeywords},${allTagsLabel}"/>
-        <meta name="description" content="<#list tags as tag>${tag.tagTitle}<#if tag_has_next>,</#if></#list>"/>
+        <@head title="${authorName} - ${blogTitle}">
+        <meta name="keywords" content="${metaKeywords},${authorName}"/>
+        <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
         </@head>
     </head>
     <body>
@@ -15,8 +15,12 @@
             </div>
             <div class="body">
                 <div class="left main">
-                    <div id="tagsPanel" class="marginLeft12">
+                    <div>
+                        <h2 class="marginLeft12 marginBottom12">
+                            ${commentName1Label}${authorName}
+                        </h2>
                     </div>
+                    <#include "article-list.ftl">
                 </div>
                 <div class="right side">
                     <#include "side.ftl">
@@ -29,14 +33,5 @@
         </div>
         <div class='goTopIcon' onclick='goTop();'></div>
         <div class='goBottomIcon' onclick='goBottom();'></div>
-        <script type="text/javascript">
-            util.setTagsPanel([<#list tags as tag>{
-                    tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",
-                    tagName: "${tag.tagTitle}",
-                    tagCount: ${tag.tagPublishedRefCount},
-                    tagId: ${tag.oId}
-                }<#if tag_has_next>,</#if>
-                    </#list>]);
-        </script>
     </body>
 </html>
