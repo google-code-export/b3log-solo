@@ -84,9 +84,9 @@ $.extend(Common.prototype, {
                     var loginHTML = "<div class='left'>" + result.userName + "&nbsp;| &nbsp;</div>";
 
                     if (result.isAdmin) {
-                        loginHTML += "<span class='left' onclick=\"util.clearCache('all');\">"
+                        loginHTML += "<span class='left' onclick=\"common.clearCache('all');\">"
                         + tips.clearAllCacheLabel + "&nbsp;|&nbsp;</span>"
-                        + "<span class='left' onclick='util.clearCache();'>"
+                        + "<span class='left' onclick='common.clearCache();'>"
                         + tips.clearCacheLabel + "&nbsp;|&nbsp;</span>";
                     }
                     loginHTML += "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='"

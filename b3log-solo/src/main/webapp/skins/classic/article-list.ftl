@@ -34,7 +34,7 @@
                     </span>
                     </#list>
                     by 
-                    <a href="/author/${article.authorId}">
+                    <a href="/authors/${article.authorId}">
                         ${article.authorName}
                     </a>
                 </div>

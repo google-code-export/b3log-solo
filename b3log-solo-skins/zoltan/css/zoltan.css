@@ -216,8 +216,11 @@ a:hover {
 
 .ico-footer {
     background-position: 0 -145px;
+    cursor: pointer;
     height: 39px;
-    width: 345px;
+    line-height: 39px;
     margin-top: 15px;
+    text-align: center;
+    width: 345px;
 }
 /* end footer */

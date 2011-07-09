@@ -49,6 +49,10 @@
                                                 ${articleTag}</a><#if articleTag_has_next>,</#if>
                                         </span>
                                         </#list>
+                                        by 
+                                        <a href="/authors/${article.authorId}">
+                                            ${article.authorName}
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="clear"></div>
@@ -238,7 +242,7 @@
                 <#include "footer.ftl">
             </div>
         </div>
-        <script type="text/javascript" src="/js/${miniDir}article${miniPostfix}.js"></script>
+        <script type="text/javascript" src="/js/article.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript">

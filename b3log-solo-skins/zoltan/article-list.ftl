@@ -22,7 +22,7 @@
                 ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
             </a>
             by
-            <a href="/authors/${article.authorId}/1">
+            <a href="/authors/${article.authorId}">
                 ${article.authorName}
             </a>
             -

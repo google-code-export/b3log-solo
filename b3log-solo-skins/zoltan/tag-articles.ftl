@@ -2,9 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${allTagsLabel} - ${blogTitle}">
-        <meta name="keywords" content="${metaKeywords},${allTagsLabel}"/>
-        <meta name="description" content="<#list tags as tag>${tag.tagTitle}<#if tag_has_next>,</#if></#list>"/>
+        <@head title="${tag.tagTitle} - ${blogTitle}">
+        <meta name="keywords" content="${metaKeywords},${tag.tagTitle}"/>
+        <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
         </@head>
     </head>
     <body>
@@ -15,9 +15,10 @@
             </div>
             <div class="wrap">
                 <div class="left main">
-                    <#list tags as tag>
-                    <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
-                    </#list>
+                    <h2 class="sub-title">
+                        ${tag1Label}${tag.tagTitle}(${tag.tagPublishedRefCount})
+                    </h2>
+                    <#include "article-list.ftl">
                 </div>
                 <div class="right side">
                     <#include "side.ftl">

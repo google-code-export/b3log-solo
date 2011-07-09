@@ -3,7 +3,7 @@
 <html>
     <head>
         <@head title="${allTagsLabel} - ${blogTitle}">
-        <meta name="keywords" content="${metaKeywords}"/>
+        <meta name="keywords" content="${metaKeywords},${tag.tagTitle}"/>
         <meta name="description" content="<#list tags as tag>${tag.tagTitle}<#if tag_has_next>,</#if></#list>"/>
         </@head>
     </head>

@@ -12,7 +12,7 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 <div class='goTopIcon' onclick='common.goTop();'></div>
 <div class='goBottomIcon' onclick='common.goBottom();'></div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script type="text/javascript" src="/js/${miniDir}common${miniPostfix}.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript" src="/js/lib/json2.js"></script>
 <script type="text/javascript">
     var common = new Common({
