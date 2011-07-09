@@ -245,7 +245,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthorArticlesAction</servlet-name>
-        <url-pattern>/author-articles.do</url-pattern>
+        <url-pattern>/authors/*</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>CheckLoggedInAction</servlet-name>

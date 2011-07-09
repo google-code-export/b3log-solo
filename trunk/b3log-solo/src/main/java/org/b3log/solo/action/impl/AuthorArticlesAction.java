@@ -97,11 +97,19 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
             final String requestURI = request.getRequestURI();
             final String authorId = getAuthorId(requestURI);
 
+            LOGGER.log(Level.FINER,
+                       "Request author articles[requestURI={0}, authorId={1}]",
+                       new Object[]{requestURI, authorId});
+
             final int currentPageNum = getCurrentPageNum(requestURI, authorId);
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
+
+            LOGGER.log(Level.FINER,
+                       "Request author articles[authorId={0}, currentPageNum={1}]",
+                       new Object[]{authorId, currentPageNum});
 
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
