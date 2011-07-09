@@ -37,7 +37,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
+import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -158,11 +158,11 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
             final Iterator<JSONObject> iterator = articles.iterator();
             while (iterator.hasNext()) {
                 final JSONObject article = iterator.next();
-                 if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     iterator.remove();
                 }
             }
-            
+
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -265,15 +265,7 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
                                          final String authorId) {
         final String pageNumString =
                 requestURI.substring(("/authors/" + authorId + "/").length());
-
-        if (Strings.isEmptyOrNull(pageNumString)) {
-            return 1;
-        }
-
-        if (!Strings.isNumeric(pageNumString)) {
-            return -1;
-        }
-
-        return Integer.valueOf(pageNumString);
+        
+        return Requests.getCurrentPageNum(pageNumString);
     }
 }

@@ -30,7 +30,7 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
+import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
@@ -200,14 +200,6 @@ public final class IndexAction extends AbstractFrontPageAction {
     private static int getCurrentPageNum(final String requestURI) {
         final String pageNumString = requestURI.substring("/".length());
 
-        if (Strings.isEmptyOrNull(pageNumString)) {
-            return 1;
-        }
-
-        if (!Strings.isNumeric(pageNumString)) {
-            return -1;
-        }
-
-        return Integer.valueOf(pageNumString);
+        return Requests.getCurrentPageNum(pageNumString);
     }
 }
