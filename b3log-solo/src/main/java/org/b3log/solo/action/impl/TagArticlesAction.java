@@ -162,10 +162,9 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                     tagArticleRepository.getByTagId(tagId,
                                                     currentPageNum,
                                                     pageSize);
-            final int pageCount = result.getJSONObject(
-                    Pagination.PAGINATION).getInt(
-                    Pagination.PAGINATION_PAGE_COUNT);
-            if (0 == pageCount) {
+            final JSONArray tagArticleRelations =
+                    result.getJSONArray(Keys.RESULTS);
+            if (0 == tagArticleRelations.length()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -175,8 +174,7 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                 }
             }
 
-            final JSONArray tagArticleRelations =
-                    result.getJSONArray(Keys.RESULTS);
+
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation =
@@ -205,6 +203,9 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                 articles.add(article);
             }
 
+            final int pageCount = result.getJSONObject(
+                    Pagination.PAGINATION).getInt(
+                    Pagination.PAGINATION_PAGE_COUNT);
             LOGGER.log(Level.FINEST,
                        "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
                        new Object[]{currentPageNum,
