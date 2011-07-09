@@ -63,8 +63,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Adds article comment from <a href="http://www.b3log.org">B3log community
- * (Symphony)</a> action.
+ * Adds article comment from <a href="http://symphony.b3log.org">B3log
+ * Symphony</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Mar 2, 2011

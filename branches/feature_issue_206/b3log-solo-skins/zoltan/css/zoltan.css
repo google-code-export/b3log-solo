@@ -1,0 +1,223 @@
+/*
+ * zoltan skin style
+ *
+ * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @version 1.0.0.1, July 6, 2011
+*/
+body {
+    background: url("../images/bg.jpg") repeat scroll 0 0 #EAE5D3;
+    color: #846D55;
+    font-family: 'PTSans',"Lucida Sans",Helvetica,Tahoma,Arial,Verdana,Sans-serif;
+    font-size: 13px;
+}   
+
+a, a:link, a:active, a:visited {
+    text-decoration: none;
+    color: #AF7347;
+    font-weight: bold;
+}
+
+a:hover { 
+    color: #503B26;
+}
+
+:focus {
+    outline: 0 none;
+}
+
+*::-moz-selection {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.error-msg {
+    color: #FFFFFF;
+}
+
+.wrapper {
+    background: url("../images/header-bg.png") repeat-x scroll center top transparent;
+    min-height: 790px;
+}
+
+.wrap {
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.s-l, .s-r, .ico-footer {
+    background-image: url("../images/icon.png");
+}
+
+/* start header */
+.header .btn-nav {
+    margin-top: 20px;
+}
+
+.btn-nav .bg {
+    background: url("../images/nav-bg.png") repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    float: left;
+    height: 49px;
+    line-height: 49px;
+    padding: 0 7px;
+}
+
+.btn-nav:hover .bg {
+    text-shadow: 0 0 10px #FFFFFF;
+}
+
+.btn-nav .s-r, .btn-nav .s-l {
+    background-position: -245px -4px;
+    float: left;
+    height: 49px;
+    width: 4px;
+}
+
+.btn-nav .s-l {
+    margin-left: 10px;
+    background-position: -241px -4px;
+}
+
+.title .bg {
+    background: url("../images/logo-bg.png") repeat-x scroll 0 0 transparent;
+    float: left;
+    height: 92px;
+    max-width: 630px;
+}
+
+.title .s-l, .title .s-r  {
+    background-position: -167px -2px;
+    float: left;
+    height: 92px;
+    width: 29px;
+}
+
+.title .s-r {
+    background-position: -199px -2px;
+    width: 41px;
+}
+
+.header .title .bg a {
+    color: #3E3D2C;
+    font-style: italic;
+    line-height: 58px;
+}
+
+.header .title .bg span {
+    color: #FFFFFF;
+    text-shadow: -1px -1px 0 #3E3D2C;
+    line-height: 16px;
+}
+
+.header .left {
+    margin-top: 50px;
+}
+
+.header .right {
+    margin-top: 93px;
+}
+/* end header */
+
+/* start article list */
+.main {
+    width: 650px;
+    margin-top: 70px;
+}
+
+.main .sub-title {
+    color: #503B26;
+    font-size: 28px;
+    line-height: 150%;
+    margin-bottom: 10px;
+}
+
+.article-header h2 a {
+    color: #503B26;
+    line-height: 36px;
+    font-size: 24px;
+}
+
+.article-header h2 a:hover {
+    color: #AF7347;
+}
+
+.article-header div {
+    font-size: 11px;
+}
+
+.article-item .article-body {
+    margin: 15px 0;
+    line-height: 150%;
+}
+
+.article-item {
+    margin-bottom: 50px;
+}
+
+.pagination a {
+    color: #65890D;
+}
+.pagination {
+    background-color: #F7F7F7;
+    border: 5px solid #F3F1E3;
+    box-shadow: 0 0 1px #FFFFFF;
+    color: #65890D;
+    font-weight: normal;
+    line-height: 26px;
+    padding: 0 15px;
+    text-align: center;
+}
+/* end article list*/
+
+/* start side */
+.side {
+    margin-top: 70px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 300px;
+}
+
+.side ul {
+    margin-bottom: 40px;
+    list-style: none;
+}
+
+.side li {
+    line-height: 150%;
+    margin-left: 0;
+}
+
+.side h4 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #503B26;
+    margin-bottom: 10px;
+}
+/* end side */
+
+/* start footer */
+.footer {
+    background-image: url("../images/footer-bg.png");
+    color: #DABA98;
+    height: 73px;
+    line-height: 24px;
+    margin-top: 40px;
+    padding: 60px 0 33px;
+}
+
+.footer a {
+    color: #DDDACD;
+    text-decoration: underline;
+    font-style: italic;
+}
+
+.footer a:hover {
+    text-decoration: none;
+}
+
+.ico-footer {
+    background-position: 0 -145px;
+    height: 39px;
+    width: 345px;
+    margin-top: 15px;
+}
+/* end footer */
