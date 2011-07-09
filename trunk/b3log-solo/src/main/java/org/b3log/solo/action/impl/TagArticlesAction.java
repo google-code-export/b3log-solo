@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Get articles by tag action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Jul 1, 2011
+ * @version 1.0.2.5, Jul 9, 2011
  */
 public final class TagArticlesAction extends AbstractFrontPageAction {
 
@@ -115,6 +115,12 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
             final String requestURI = request.getRequestURI();
             String tagTitle = getTagTitle(requestURI);
             final int currentPageNum = getCurrentPageNum(requestURI, tagTitle);
+            if (-1 == currentPageNum) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            }
+
             LOGGER.log(Level.FINER, "Tag[title={0}, currentPageNum={1}]",
                        new Object[]{tagTitle, currentPageNum});
 
@@ -130,12 +136,6 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceUtils.getPreference();
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
-            }
-
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -288,21 +288,22 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
      * 
      * @param requestURI the specified request URI
      * @param tagTitle the specified tag title
-     * @return page number
+     * @return page number, returns {@code -1} if the specified request URI
+     * can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI,
                                          final String tagTitle) {
-        if (!requestURI.endsWith("/")) {
+        final String pageNumString =
+                requestURI.substring(("/tags/" + tagTitle + "/").length());
+
+        if (Strings.isEmptyOrNull(pageNumString)) {
             return 1;
         }
 
-        final String ret = requestURI.substring(("/tags/" + tagTitle + "/").
-                length());
-
-        if (Strings.isNumeric(ret)) {
-            return Integer.valueOf(ret);
-        } else {
-            return 1;
+        if (!Strings.isNumeric(pageNumString)) {
+            return -1;
         }
+
+        return Integer.valueOf(pageNumString);
     }
 }

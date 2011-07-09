@@ -77,18 +77,12 @@ public final class IndexAction extends AbstractFrontPageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         final String requestURI = request.getRequestURI();
-        final String pageNumString = requestURI.substring("/".length());
-
         try {
-            if (!Strings.isNumeric(pageNumString)) {
-                // The request URI is not a article permalink, because it has been 
-                // filterd by ArticlePermalinkFilter. So, redirects to not found 
-                // page.
+            final int currentPageNum = getCurrentPageNum(requestURI);
+            if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;
             }
-
-            final int currentPageNum = Integer.valueOf(pageNumString);
 
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
@@ -194,5 +188,26 @@ public final class IndexAction extends AbstractFrontPageAction {
                                       final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * Gets the request page number from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return page number, returns {@code -1} if the specified request URI
+     * can not convert to an number
+     */
+    private static int getCurrentPageNum(final String requestURI) {
+        final String pageNumString = requestURI.substring("/".length());
+
+        if (Strings.isEmptyOrNull(pageNumString)) {
+            return 1;
+        }
+
+        if (!Strings.isNumeric(pageNumString)) {
+            return -1;
+        }
+
+        return Integer.valueOf(pageNumString);
     }
 }
