@@ -6,7 +6,7 @@
         <meta name="keywords" content="${notFoundLabel},${metaKeywords}"/>
         <meta name="description" content="${sorryLabel},${notFoundLabel},${metaDescription}"/>
         <meta name="robots" content="noindex, follow"/>
-        <link type="text/css" rel="stylesheet" href="/css/${miniDir}default-base${miniPostfix}.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
@@ -19,8 +19,8 @@
             <div id="content-page">
                 <div id="single-pagecontents">
                     <div class="error-panel">
-                        <h1 class="error-title">从前有座山，山里有座庙，<br/>
-                            庙里有个页面，现在${notFoundLabel}</h1>
+                        <h1 class="error-title">娴犲骸澧犻張澶婇獓鐏炴唻绱濈仦閬嶅櫡閺堝楠囨惔娆欑礉<br/>
+                            鎼存瑩鍣烽張澶夐嚋妞ょ敻娼伴敍宀�箛閸︼拷{notFoundLabel}</h1>
                         <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                         </div>
                         <p align="center">
                             <img src="http://code.google.com/appengine/images/appengine-silver-120x30.gif"
-                                 alt="由 Google App Engine 提供支持" />
+                                 alt="閻拷Google App Engine 閹绘劒绶甸弨顖涘瘮" />
                         </p>
 
                         <p align="center">

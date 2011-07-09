@@ -9,8 +9,8 @@
 <meta http-equiv="Window-target" content="_top"/>
 <link href='http://fonts.googleapis.com/css?family=Neucha' rel='stylesheet' type='text/css'/>
 <link href='http://fonts.googleapis.com/css?family=Reenie+Beanie' rel='stylesheet' type='text/css'/>
-<link type="text/css" rel="stylesheet" href="/css/${miniDir}default-base${miniPostfix}.css"/>
-<link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/css/${miniDir}${skinDirName}${miniPostfix}.css"/>
+<link type="text/css" rel="stylesheet" href="/css/default-base.css"/>
+<link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/css/${skinDirName}.css"/>
 <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
 <link rel="icon" type="image/png" href="/favicon.png"/>
 ${htmlHead}

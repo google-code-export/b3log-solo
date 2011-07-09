@@ -3,7 +3,7 @@
 <html>
     <head>
         <@head title="${page.pageTitle} - ${blogTitle}">
-        <meta name="keywords" content="${metaKeywords}"/>
+        <meta name="keywords" content="${metaKeywords},${page.pageTitle}"/>
         <meta name="description" content="${metaDescription}"/>
         </@head>
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css"/>
@@ -154,7 +154,7 @@
                 <#include "footer.ftl">
             </div>
         </div>
-        <script type="text/javascript" src="/js/${miniDir}article${miniPostfix}.js"></script>
+        <script type="text/javascript" src="/js/article.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript">
