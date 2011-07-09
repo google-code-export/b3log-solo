@@ -1,6 +1,4 @@
 User-agent: *
-Disallow: /admin-index.do
-Disallow: /admin-error.do
-Disallow: /init.do
-Disallow: /article-detail.do
-Disallow: /page.do
+Allow: /blog-articles-feed.do
+Allow: /tag-articles-feed.do*
+Disallow: /*.do
