@@ -9,14 +9,13 @@
     </head>
     <body>
         <#include "top-nav.ftl">
-        <div class="content">
-            <div class="header">
+        <div class="wrapper">
+            <div class="wrap header">
                 <#include "header.ftl">
             </div>
-            <div class="body">
+            <div class="wrap">
                 <div class="left main">
-                    <div id="tagsPanel" class="marginLeft12">
-                    </div>
+                    <div id="tagsPanel" class="marginBottom40"></div>
                 </div>
                 <div class="right side">
                     <#include "side.ftl">
@@ -27,8 +26,6 @@
                 <#include "footer.ftl">
             </div>
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
         <script type="text/javascript">
             util.setTagsPanel([<#list tags as tag>{
                     tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",

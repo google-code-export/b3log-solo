@@ -24,7 +24,6 @@
                         ${topArticleLabel}
                     </sup>
                     </#if>
-
                 </h2>
                 <div class="article-tags">
                     ${tags1Label}
@@ -34,6 +33,10 @@
                             ${articleTag}</a><#if articleTag_has_next>,</#if>
                     </span>
                     </#list>
+                    by 
+                    <a href="/author/${article.authorId}">
+                        ${article.authorName}
+                    </a>
                 </div>
             </div>
             <div class="clear"></div>
@@ -69,11 +72,11 @@
         <a id="previousPage" href="${path}/${paginationPreviousPageNum}">${previousPageLabel}</a>
         </#if>
         <#list paginationPageNums as paginationPageNum>
-          <#if paginationPageNum == paginationCurrentPageNum>
-          <a href="${path}/${paginationPageNum}" class="selected">${paginationPageNum}</a>
-          <#else>
-            <a href="${path}/${paginationPageNum}">${paginationPageNum}</a>
-          </#if>
+        <#if paginationPageNum == paginationCurrentPageNum>
+        <a href="${path}/${paginationPageNum}" class="selected">${paginationPageNum}</a>
+        <#else>
+        <a href="${path}/${paginationPageNum}">${paginationPageNum}</a>
+        </#if>
         </#list>
         <#if paginationPageNums?last != paginationPageCount>
         <a id="nextPage" href="${path}/${paginationNextPageNum}">${nextPagePabel}</a>

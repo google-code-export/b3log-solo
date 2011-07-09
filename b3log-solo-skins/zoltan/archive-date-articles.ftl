@@ -9,34 +9,29 @@
     </head>
     <body>
         <#include "top-nav.ftl">
-        <#include "side-tool.ftl">
         <div class="wrapper">
-            <#include "header.ftl">
-            <div>
-                <div class="main">
-                    <div class="main-content">
-                        <h2>${archive1Label}
+            <div class="wrap header">
+                <#include "header.ftl">
+            </div>
+            <div class="wrap">
+                <div class="left main">
+                    <h2 class="sub-title">
+                        ${archive1Label}
                         <#if "en" == localeString?substring(0, 2)>
                         ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
                         <#else>
                         ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
                         </#if>
-                        </h2>
-                        <#include "article-list.ftl">
-                    </div>
-                    <div class="main-footer"></div>
+                    </h2>
+                    <#include "article-list.ftl">
                 </div>
-                <div class="side-navi">
+                <div class="right side">
                     <#include "side.ftl">
                 </div>
                 <div class="clear"></div>
-                <div class="brush">
-                    <div class="brush-icon"></div>
-                    <div id="brush"></div>
-                </div>
-                <div class="footer">
-                    <#include "footer.ftl">
-                </div>
+            </div>
+            <div class="footer">
+                <#include "footer.ftl">
             </div>
         </div>
     </body>
