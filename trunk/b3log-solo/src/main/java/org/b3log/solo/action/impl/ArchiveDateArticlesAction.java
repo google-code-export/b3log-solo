@@ -264,7 +264,7 @@ public final class ArchiveDateArticlesAction extends AbstractFrontPageAction {
      */
     @Override
     protected String getTemplateName(final String requestURI) {
-        return "archive-date-articles.ftl";
+        return "archive-articles.ftl";
     }
 
     @Override
