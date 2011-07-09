@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import org.b3log.latke.action.ActionException;
@@ -116,6 +115,18 @@ public final class IndexAction extends AbstractFrontPageAction {
                 filler.fillIndexArticles(ret, currentPageNum, preference);
             }
 
+            final Integer pageCount =
+                    (Integer) ret.get(Pagination.PAGINATION_PAGE_COUNT);
+            if (0 == pageCount) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                    return ret;
+                } catch (final IOException ex) {
+                    LOGGER.severe(ex.getMessage());
+                }
+            }
+
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
@@ -127,10 +138,8 @@ public final class IndexAction extends AbstractFrontPageAction {
             ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
                     "0".equals(previousPageNum) ? "" : previousPageNum);
 
-            final Integer pageCnt =
-                    (Integer) ret.get(Pagination.PAGINATION_PAGE_COUNT);
-            if (null != pageCnt) {
-                if (pageCnt == currentPageNum + 1) { // The next page is the last page
+            if (null != pageCount) {
+                if (pageCount == currentPageNum + 1) { // The next page is the last page
                     ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
                 } else {
                     ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum

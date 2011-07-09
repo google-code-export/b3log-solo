@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import org.b3log.latke.Keys;
@@ -157,6 +156,16 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
             final int pageCount = result.getJSONObject(
                     Pagination.PAGINATION).getInt(
                     Pagination.PAGINATION_PAGE_COUNT);
+            if (0 == pageCount) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                    return ret;
+                } catch (final IOException ex) {
+                    LOGGER.severe(ex.getMessage());
+                }
+            }
+
             final JSONArray archiveDateArticleRelations = result.getJSONArray(
                     Keys.RESULTS);
             final List<JSONObject> articles = new ArrayList<JSONObject>();
@@ -213,7 +222,7 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
 
-            final long time =  archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+            final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
             final String dateString = ArchiveDate.DATE_FORMAT.format(time);
             final String[] dateStrings = dateString.split("/");
             final String year = dateStrings[0];
