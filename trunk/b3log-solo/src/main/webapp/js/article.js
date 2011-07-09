@@ -75,29 +75,6 @@ $.extend(Article.prototype, {
         return false;
     },
     
-    hideComment: function (id) {
-        $("#commentItemRef" + id).hide();
-    },
-
-    addCommentAjax: function (commentHTML, state) {
-        if ($("#comments .comments-header").length > 0) {
-            $("#comments .comments-header").after(commentHTML);
-        } else if ($("#comments>div").first().length === 1) {
-            $("#comments>div").first().before(commentHTML);
-        } else {
-            $("#comments").html(commentHTML);
-        }
-
-        if (state === "") {
-            $("#commentErrorTip").html("");
-            $("#comment").val("");
-            $("#commentValidate").val("");
-            $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
-        } else {
-            $("#replyForm").remove();
-        }
-    },
-    
     replaceCommentsEm: function (selector) {
         var $commentContents = $(selector);
         for (var i = 0; i < $commentContents.length; i++) {
@@ -177,7 +154,7 @@ $.extend(Article.prototype, {
             }
         });
     },
-
+    
     loadExternalRelevantArticles: function (tags) {
         var tips = this.tips;
         $.ajax({
@@ -211,7 +188,7 @@ $.extend(Article.prototype, {
             }
         });
     },
-
+    
     submitComment: function (commentId, statue) {
         if (!statue) {
             statue = '';
@@ -284,6 +261,29 @@ $.extend(Article.prototype, {
             }
         }
         this.currentCommentId = id;
+    },
+
+    hideComment: function (id) {
+        $("#commentItemRef" + id).hide();
+    },
+
+    addCommentAjax: function (commentHTML, state) {
+        if ($("#comments .comments-header").length > 0) {
+            $("#comments .comments-header").after(commentHTML);
+        } else if ($("#comments>div").first().length === 1) {
+            $("#comments>div").first().before(commentHTML);
+        } else {
+            $("#comments").html(commentHTML);
+        }
+
+        if (state === "") {
+            $("#commentErrorTip").html("");
+            $("#comment").val("");
+            $("#commentValidate").val("");
+            $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
+        } else {
+            $("#replyForm").remove();
+        }
     }
 });
 
