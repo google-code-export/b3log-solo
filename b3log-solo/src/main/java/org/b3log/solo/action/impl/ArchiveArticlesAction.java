@@ -115,6 +115,11 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
             final String requestURI = request.getRequestURI();
             final String archiveDateString = getArchiveDate(requestURI);
             final int currentPageNum = getCurrentPageNum(requestURI);
+            if (-1 == currentPageNum) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return ret;
+            }
+
             LOGGER.log(Level.FINER,
                        "Request archive date[string={0}, currentPageNum={1}]",
                        new Object[]{archiveDateString});
@@ -132,11 +137,6 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
             final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceUtils.getPreference();
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return ret;
-            }
-
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -318,19 +318,21 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
      * Gets the request page number from the specified request URI.
      * 
      * @param requestURI the specified request URI
-     * @return page number
+     * @return page number, returns {@code -1} if the specified request URI
+     * can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI) {
-        if (!requestURI.endsWith("/")) {
+        final String pageNumString = requestURI.substring("/archives/yyyy/MM/".
+                length());
+
+        if (Strings.isEmptyOrNull(pageNumString)) {
             return 1;
         }
 
-        final String ret = requestURI.substring("/archives/yyyy/MM/".length());
-
-        if (Strings.isNumeric(ret)) {
-            return Integer.valueOf(ret);
-        } else {
-            return 1;
+        if (!Strings.isNumeric(pageNumString)) {
+            return -1;
         }
+
+        return Integer.valueOf(pageNumString);
     }
 }

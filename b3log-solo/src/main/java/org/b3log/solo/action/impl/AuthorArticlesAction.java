@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Get articles by author action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Jul 1, 2011
+ * @version 1.0.2.4, Jul 9, 2011
  */
 public final class AuthorArticlesAction extends AbstractFrontPageAction {
 
@@ -94,6 +94,15 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
+            final String requestURI = request.getRequestURI();
+            final String authorId = getAuthorId(requestURI);
+
+            final int currentPageNum = getCurrentPageNum(requestURI, authorId);
+            if (-1 == currentPageNum) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return ret;
+            }
+
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -108,10 +117,6 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
                     Locales.getCountry(localeString));
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
-
-            final String requestURI = request.getRequestURI();
-            final String authorId = getAuthorId(requestURI);
-            final int currentPageNum = getCurrentPageNum(requestURI, authorId);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -233,17 +238,17 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
      */
     private static int getCurrentPageNum(final String requestURI,
                                          final String authorId) {
-        if (!requestURI.endsWith("/")) {
+        final String pageNumString =
+                requestURI.substring(("/authors/" + authorId + "/").length());
+
+        if (Strings.isEmptyOrNull(pageNumString)) {
             return 1;
         }
 
-        final String ret = requestURI.substring(("/authors/" + authorId + "/").
-                length());
-
-        if (Strings.isNumeric(ret)) {
-            return Integer.valueOf(ret);
-        } else {
-            return 1;
+        if (!Strings.isNumeric(pageNumString)) {
+            return -1;
         }
+
+        return Integer.valueOf(pageNumString);
     }
 }
