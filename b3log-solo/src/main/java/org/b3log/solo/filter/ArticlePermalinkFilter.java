@@ -93,7 +93,7 @@ public final class ArticlePermalinkFilter implements Filter {
             final String articleId = article.getString(Keys.OBJECT_ID);
 
             final RequestDispatcher requestDispatcher =
-                    httpServletRequest.getRequestDispatcher("/article-detail.do?"
+                    httpServletRequest.getRequestDispatcher("/article.do?"
                                                             + requestURI);
             request.setAttribute(Keys.OBJECT_ID, articleId);
             requestDispatcher.forward(request, response);

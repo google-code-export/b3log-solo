@@ -19,7 +19,7 @@
 
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.2.1, Jun 29, 2011
+    Version: 1.0.2.2, Jul 9, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -165,7 +165,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ArticleAction</servlet-name>
-        <url-pattern>/article-detail.do</url-pattern>
+        <url-pattern>/article.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>TagArticlesAction</servlet-name>
