@@ -57,7 +57,7 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
 /**
- * Article action. article-detail.ftl.
+ * Article action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.3.0, Jun 28, 2011
