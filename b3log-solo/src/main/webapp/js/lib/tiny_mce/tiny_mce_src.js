@@ -11850,7 +11850,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 			while (n = w.nextNode()) {
 				c++;
 
-				// Index by node
+				// Common by node
 				if (t == 0 && n == s)
 					return c;
 

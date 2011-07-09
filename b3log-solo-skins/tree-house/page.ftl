@@ -165,7 +165,7 @@
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript">
-            var articleUtil = new ArticleUtil({
+            var articleUtil = new Article({
                 "nameTooLongLabel": "${nameTooLongLabel}",
                 "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
                 "mailInvalidLabel": "${mailInvalidLabel}",

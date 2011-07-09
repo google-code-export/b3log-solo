@@ -327,6 +327,15 @@ button:hover,.button:hover {
     width: 32px;
 }
 /* start emotions */
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
+.em10, .em11, .em12, .em13, .em14 {
+    background-image: url("/images/emotions-classic.png");
+    cursor: pointer;
+    float: left;
+    height: 24px;
+    margin-right: 5px;
+    width: 24px;
+}
 .em01 {
     background-position: 0 -24px;
 }
@@ -368,5 +377,9 @@ button:hover,.button:hover {
 }
 .em14 {
     background-position: -48px -96px;
+}
+.em-span {
+    line-height: 24px;
+    float: left;
 }
 /* end emotions */

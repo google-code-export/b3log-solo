@@ -42,7 +42,7 @@
                 </a>
             </div>
         </div>
-        <script type="text/javascript" src="js/${miniDir}util${miniPostfix}.js"></script>
+        <script type="text/javascript" src="js/${miniDir}common${miniPostfix}.js"></script>
         <script type="text/javascript">
             var initInit = function () {
                 Util.killIE();

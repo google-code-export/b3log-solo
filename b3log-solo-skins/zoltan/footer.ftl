@@ -32,7 +32,7 @@
 <script type="text/javascript" src="/js/${miniDir}util${miniPostfix}.js"></script>
 <script type="text/javascript" src="/js/lib/json2.js"></script>
 <script type="text/javascript">  
-    var util = new Util({
+    var util = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",

@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-var ArticleUtil = function (tips) {
+/**
+ *  index for admin
+ *
+ * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @version 1.0.0.3, Jun 30, 2011
+ */
+var Article = function (tips) {
     this.currentCommentId = "";
     this.tips = tips;
 };
 
-$.extend(ArticleUtil.prototype, {
-    articleUtil: {
-        version:"0.0.0.2",
-        author: "lly219@gmail.com"
-    },
-    
+$.extend(Article.prototype, {    
     insertEmotions:  function (name) {
         if (name === undefined) {
             name = "";
@@ -32,7 +33,7 @@ $.extend(ArticleUtil.prototype, {
         
         $("#emotions" + name + " span").click(function () {
             var $comment = $("#comment" + name);
-            var endPosition = articleUtil.getCursorEndPosition($comment[0]);
+            var endPosition = Util.getCursorEndPosition($comment[0]);
             var key = "[" + this.className + "]",
             textValue  = $comment[0].value;
             textValue = textValue.substring(0, endPosition) + key + textValue.substring(endPosition, textValue.length);
@@ -48,25 +49,6 @@ $.extend(ArticleUtil.prototype, {
                 $comment[0].setSelectionRange(endPosition + 6, endPosition + 6);
             }
         });
-    },
-
-    getCursorEndPosition: function (textarea) {
-        textarea.focus();
-        if (textarea.setSelectionRange) { // W3C
-            return textarea.selectionEnd;
-        } else if (document.selection) { // IE
-            var i = 0,
-            oS = document.selection.createRange(),
-            oR = document.body.createTextRange(); 
-            oR.moveToElementText(textarea);
-            oS.getBookmark();
-            for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i ++) {
-                if (textarea.value.charAt(i) == '\n') {
-                    i ++;
-                }
-            }
-            return i;
-        }
     },
 
     validateComment: function (state) {
@@ -115,47 +97,33 @@ $.extend(ArticleUtil.prototype, {
             $("#replyForm").remove();
         }
     },
-
-    replaceCommentsEmString: function (commentContentHTML) {
-        var commentContents = commentContentHTML.split("[em");
-        commentContentHTML = commentContents[0];
-        for (var j = 1; j < commentContents.length; j++) {
-            var key = commentContents[j].substr(0, 2),
-            emImgHTML = "<img src='/skins/" + this.tips.skinDirName + "/emotions/em" + key + ".png'/>";
-            commentContentHTML += emImgHTML + commentContents[j].slice(3);
+    
+    replaceCommentsEm: function (selector) {
+        var $commentContents = $(selector);
+        for (var i = 0; i < $commentContents.length; i++) {
+            var str = $commentContents[i].innerHTML;
+            $commentContents[i].innerHTML =  this.replaceEmString(str);;
         }
-        return commentContentHTML;
     },
     
-    getDate: function (time,type) {
-        var c = new Date(time);
-        var d=c.getFullYear(),month=c.getMonth()+1,day=c.getDate(),hours=c.getHours(),seconds=c.getSeconds(),minutes=c.getMinutes();
-        if(month<10){
-            month="0"+month.toString();
+    replaceEmString: function (str) {
+        var commentSplited = str.split("[em");
+        if (commentSplited.length === 1) {
+            return str;
         }
-        if(day<10){
-            day="0"+day.toString();
+        str = "<span class='em-span'>" + commentSplited[0] + "</span>";
+        if ($.trim(commentSplited[0]) === "") {
+            str = "";
         }
-        if(hours<10){
-            hours="0"+hours.toString();
+        for (var j = 1; j < commentSplited.length; j++) {
+            var key = commentSplited[j].substr(0, 2);
+            str += "<span class='em" + key + "'></span>" + "<span class='em-span'>" +  commentSplited[j].slice(3) + "</span>";
         }
-        if(minutes<10){
-            minutes="0"+minutes.toString();
-        }
-        if(seconds<10){
-            seconds="0"+seconds.toString();
-        }
-        switch(type){
-            case undefined:
-                return d + "-" + month + "-" + day;
-            case "yyyy-mm-dd hh:mm:ss":
-                return d + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
-            default:
-                return false;
-        }
+        return str;
     },
 
     load: function () {
+        var that = this;
         // emotions
         this.insertEmotions();
         
@@ -174,7 +142,7 @@ $.extend(ArticleUtil.prototype, {
         // submit comment
         $("#commentValidate").keypress(function (event) {
             if (event.keyCode === 13) {
-                articleUtil.submitComment();
+                that.submitComment();
             }
         });
 
@@ -219,7 +187,7 @@ $.extend(ArticleUtil.prototype, {
             dataType:"jsonp",
             jsonp: "callback",
             error: function(){
-                // alert("Error loading articles from Rhythm");
+            // alert("Error loading articles from Rhythm");
             },
             success: function(data, textStatus){
                 var articles = data.articles;
@@ -296,6 +264,7 @@ $.extend(ArticleUtil.prototype, {
     },
 
     addReplyForm: function (id, commentFormHTML) {
+        var that = this;
         if (id === this.currentCommentId) {
             $("#commentNameReply").focus();
             return;
@@ -304,7 +273,7 @@ $.extend(ArticleUtil.prototype, {
             $("#commentItem" + id).append(commentFormHTML);
             $("#commentValidateReply").keypress(function (event) {
                 if (event.keyCode === 13) {
-                    articleUtil.submitComment(id, 'Reply');
+                    that.submitComment(id, 'Reply');
                 }
             });
             this.insertEmotions("Reply");
