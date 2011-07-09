@@ -94,7 +94,10 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final String requestURI = request.getRequestURI();
+            String requestURI = request.getRequestURI();
+            if (!requestURI.endsWith("/")) {
+                requestURI += "/";
+            }
             final String authorId = getAuthorId(requestURI);
 
             LOGGER.log(Level.FINER,
