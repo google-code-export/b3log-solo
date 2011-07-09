@@ -135,10 +135,10 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
                     articleRepository.getByAuthorEmail(authorEmail,
                                                        currentPageNum,
                                                        pageSize);
-            final int pageCount = result.getJSONObject(
-                    Pagination.PAGINATION).getInt(
-                    Pagination.PAGINATION_PAGE_COUNT);
-            if (0 == pageCount) {
+            final List<JSONObject> articles =
+                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
+                    getJSONArray(Keys.RESULTS));
+            if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -148,6 +148,9 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
                 }
             }
 
+            final int pageCount = result.getJSONObject(
+                    Pagination.PAGINATION).getInt(
+                    Pagination.PAGINATION_PAGE_COUNT);
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
@@ -161,9 +164,7 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-            final List<JSONObject> articles =
-                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
-                    getJSONArray(Keys.RESULTS));
+
             filler.putArticleExProperties(articles, preference);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {

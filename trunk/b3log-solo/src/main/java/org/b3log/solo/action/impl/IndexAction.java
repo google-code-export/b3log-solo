@@ -19,6 +19,7 @@ package org.b3log.solo.action.impl;
 import org.b3log.latke.action.ActionException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
@@ -30,6 +31,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -116,9 +118,10 @@ public final class IndexAction extends AbstractFrontPageAction {
                 filler.fillIndexArticles(ret, currentPageNum, preference);
             }
 
-            final Integer pageCount =
-                    (Integer) ret.get(Pagination.PAGINATION_PAGE_COUNT);
-            if (0 == pageCount) {
+            @SuppressWarnings("unchecked")
+            final List<JSONObject> articles =
+                    (List<JSONObject>) ret.get(Article.ARTICLES);
+            if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -138,7 +141,8 @@ public final class IndexAction extends AbstractFrontPageAction {
                                      : 0);
             ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
                     "0".equals(previousPageNum) ? "" : previousPageNum);
-
+            final Integer pageCount =
+                    (Integer) ret.get(Pagination.PAGINATION_PAGE_COUNT);
             if (null != pageCount) {
                 if (pageCount == currentPageNum + 1) { // The next page is the last page
                     ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");

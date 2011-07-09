@@ -155,10 +155,10 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
                     archiveDateArticleRepository.getByArchiveDateId(
                     archiveDateId, currentPageNum, pageSize);
 
-            final int pageCount = result.getJSONObject(
-                    Pagination.PAGINATION).getInt(
-                    Pagination.PAGINATION_PAGE_COUNT);
-            if (0 == pageCount) {
+            @SuppressWarnings("unchecked")
+            final JSONArray archiveDateArticleRelations = result.getJSONArray(
+                    Keys.RESULTS);
+            if (0 == archiveDateArticleRelations.length()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -168,8 +168,6 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
                 }
             }
 
-            final JSONArray archiveDateArticleRelations = result.getJSONArray(
-                    Keys.RESULTS);
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < archiveDateArticleRelations.length(); i++) {
                 final JSONObject archiveDateArticleRelation =
@@ -182,7 +180,7 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
                 if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     continue;
                 }
-                // Puts author name
+
                 final JSONObject author = articleUtils.getAuthor(article);
                 final String authorName = author.getString(User.USER_NAME);
                 article.put(Common.AUTHOR_NAME, authorName);
@@ -199,12 +197,15 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
                 articles.add(article);
             }
 
+            final int pageCount = result.getJSONObject(
+                    Pagination.PAGINATION).getInt(
+                    Pagination.PAGINATION_PAGE_COUNT);
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
-            
+
             sort(preference, articles);
-            
+
             ret.put(Article.ARTICLES, articles);
             ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
