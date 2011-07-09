@@ -234,7 +234,7 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
     private static String getAuthorId(final String requestURI) {
         final String path = requestURI.substring("/authors/".length());
 
-        int idx = path.indexOf("/");
+        final int idx = path.indexOf("/");
         if (-1 == idx) {
             return path.substring(0);
         } else {
