@@ -39,7 +39,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
