@@ -332,7 +332,7 @@
                 });
             }
 
-            var loadAction = function () {
+            (function () {
                 // comment url
                 $("#commentURL").focus(function (event) {
                     if ($.browser.version !== "7.0") {
@@ -352,8 +352,7 @@
                     <#if 0 != externalRelevantArticlesDisplayCount>
                     article.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
                     </#if>
-                }
-            loadAction();
+                })();
         </script>
     </body>
 </html>
