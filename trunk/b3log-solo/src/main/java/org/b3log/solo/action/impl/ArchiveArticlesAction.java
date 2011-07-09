@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.b3log.solo.action.impl;
 
 import org.b3log.latke.Keys;
@@ -51,6 +52,7 @@ import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -200,14 +202,9 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
                                        windowSize);
-
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                Collections.sort(articles,
-                                 Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
-            } else {
-                Collections.sort(articles,
-                                 Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-            }
+            
+            sort(preference, articles);
+            
             ret.put(Article.ARTICLES, articles);
             ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
@@ -259,6 +256,26 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
         }
 
         return ret;
+    }
+
+    /**
+     * Sorts the specified articles by the specified preference.
+     * 
+     * @param preference the specified preference
+     * @param articles the specified articles
+     * @throws JSONException json exception
+     * @see Comparators#ARTICLE_UPDATE_DATE_COMPARATOR
+     * @see Comparators#ARTICLE_CREATE_DATE_COMPARATOR
+     */
+    private void sort(final JSONObject preference,
+                      final List<JSONObject> articles) throws JSONException {
+        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            Collections.sort(articles,
+                             Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+        } else {
+            Collections.sort(articles,
+                             Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
+        }
     }
 
     /**
