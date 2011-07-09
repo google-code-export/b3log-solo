@@ -41,7 +41,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
+import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -299,14 +299,6 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
         final String pageNumString =
                 requestURI.substring(("/tags/" + tagTitle + "/").length());
 
-        if (Strings.isEmptyOrNull(pageNumString)) {
-            return 1;
-        }
-
-        if (!Strings.isNumeric(pageNumString)) {
-            return -1;
-        }
-
-        return Integer.valueOf(pageNumString);
+        return Requests.getCurrentPageNum(pageNumString);
     }
 }

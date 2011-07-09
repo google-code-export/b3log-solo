@@ -40,6 +40,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
@@ -354,15 +355,7 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
     private static int getCurrentPageNum(final String requestURI) {
         final String pageNumString = requestURI.substring("/archives/yyyy/MM/".
                 length());
-
-        if (Strings.isEmptyOrNull(pageNumString)) {
-            return 1;
-        }
-
-        if (!Strings.isNumeric(pageNumString)) {
-            return -1;
-        }
-
-        return Integer.valueOf(pageNumString);
+       
+        return Requests.getCurrentPageNum(pageNumString);
     }
 }
