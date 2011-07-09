@@ -112,7 +112,11 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final String requestURI = request.getRequestURI();
+            String requestURI = request.getRequestURI();
+            if (!requestURI.endsWith("/")) {
+                requestURI += "/";
+            }
+
             final String archiveDateString = getArchiveDate(requestURI);
             final int currentPageNum = getCurrentPageNum(requestURI);
             if (-1 == currentPageNum) {
@@ -181,18 +185,7 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
                     continue;
                 }
 
-                final JSONObject author = articleUtils.getAuthor(article);
-                final String authorName = author.getString(User.USER_NAME);
-                article.put(Common.AUTHOR_NAME, authorName);
-                final String authorId = author.getString(Keys.OBJECT_ID);
-                article.put(Common.AUTHOR_ID, authorId);
-
-                if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                    article.put(Common.HAS_UPDATED,
-                                articleUtils.hasUpdated(article));
-                } else {
-                    article.put(Common.HAS_UPDATED, false);
-                }
+                fillExtraProperties(article, preference);
 
                 articles.add(article);
             }
@@ -257,6 +250,43 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
         }
 
         return ret;
+    }
+
+    /**
+     * Fills some extra properties into the specified article with the specified 
+     * preference.
+     * 
+     * <p>
+     * Some extra properties for the specified article:
+     * <pre>
+     * {
+     *     ...., 
+     *     "authorName": "",
+     *     "authorId": "",
+     *     "hasUpdated": boolean
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param article the specified article
+     * @param preference the specified preference
+     * @throws JSONException json exception
+     */
+    private void fillExtraProperties(final JSONObject article,
+                                     final JSONObject preference)
+            throws JSONException {
+        final JSONObject author = articleUtils.getAuthor(article);
+        final String authorName = author.getString(User.USER_NAME);
+        article.put(Common.AUTHOR_NAME, authorName);
+        final String authorId = author.getString(Keys.OBJECT_ID);
+        article.put(Common.AUTHOR_ID, authorId);
+
+        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            article.put(Common.HAS_UPDATED,
+                        articleUtils.hasUpdated(article));
+        } else {
+            article.put(Common.HAS_UPDATED, false);
+        }
     }
 
     /**

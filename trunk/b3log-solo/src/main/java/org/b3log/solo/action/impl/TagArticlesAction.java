@@ -112,7 +112,10 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
         JSONObject tag = null;
 
         try {
-            final String requestURI = request.getRequestURI();
+            String requestURI = request.getRequestURI();
+            if (!requestURI.endsWith("/")) {
+                requestURI += "/";
+            }
             String tagTitle = getTagTitle(requestURI);
             final int currentPageNum = getCurrentPageNum(requestURI, tagTitle);
             if (-1 == currentPageNum) {
