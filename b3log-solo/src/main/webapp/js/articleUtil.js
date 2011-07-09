@@ -30,10 +30,10 @@ $.extend(ArticleUtil.prototype, {
             name = "";
         }
         
-        $("#emotions" + name + " img").click(function () {
+        $("#emotions" + name + " span").click(function () {
             var $comment = $("#comment" + name);
             var endPosition = articleUtil.getCursorEndPosition($comment[0]);
-            var key = this.className,
+            var key = "[" + this.className + "]",
             textValue  = $comment[0].value;
             textValue = textValue.substring(0, endPosition) + key + textValue.substring(endPosition, textValue.length);
             $("#comment" + name).val(textValue);
