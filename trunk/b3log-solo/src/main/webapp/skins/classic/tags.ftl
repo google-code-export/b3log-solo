@@ -15,8 +15,9 @@
             </div>
             <div class="body">
                 <div class="left main">
-                    <div id="tagsPanel" class="marginLeft12">
-                    </div>
+                    <#list tags as tag>
+                    <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
+                    </#list>
                 </div>
                 <div class="right side">
                     <#include "side.ftl">
@@ -27,16 +28,5 @@
                 <#include "footer.ftl">
             </div>
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
-        <script type="text/javascript">
-            util.setTagsPanel([<#list tags as tag>{
-                    tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",
-                    tagName: "${tag.tagTitle}",
-                    tagCount: ${tag.tagPublishedRefCount},
-                    tagId: ${tag.oId}
-                }<#if tag_has_next>,</#if>
-                    </#list>]);
-        </script>
     </body>
 </html>

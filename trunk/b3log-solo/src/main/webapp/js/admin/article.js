@@ -154,8 +154,7 @@ admin.article = {
         if (admin.article.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            var tagArray = $("#tag").val().split(","),
-            signId = "";
+            var signId = "";
             $(".signs button").each(function () {
                 if (this.className === "selected") {
                     signId = this.id.substr(this.id.length - 1, 1);
@@ -167,7 +166,7 @@ admin.article = {
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
-                    "articleTags": Util.trimUnique(tagArray).toString(),
+                    "articleTags": this.trimUnique($("#tag").val()).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
                     "articleSign_oId": signId,
@@ -234,8 +233,7 @@ admin.article = {
         if (admin.article.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            var tagArray = $("#tag").val().split(","),
-            signId = "";
+            var signId = "";
             $(".signs button").each(function () {
                 if (this.className === "selected") {
                     signId = this.id.substr(this.id.length - 1, 1);
@@ -248,7 +246,7 @@ admin.article = {
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
-                    "articleTags": Util.trimUnique(tagArray).toString(),
+                    "articleTags": this.trimUnique($("#tag").val()).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
                     "articleSign_oId": signId
@@ -508,6 +506,19 @@ admin.article = {
         }, {
             oId: admin.article.status.oId
         });
+    },
+    
+    trimUniqueArray: function(str){
+        var arr = str.split(",");
+        for(var i = 0; i < arr.length; i++) {
+            str[i] = str[i].replace(/(^\s*)|(\s*$)/g,"");
+            if( str[i] === "" ){
+                str.splice(i, 1);
+                i--
+            }
+        }
+        var unique =  $.unique(str);
+        return unique.toString();
     }
 }
 

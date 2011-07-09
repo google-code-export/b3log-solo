@@ -36,7 +36,7 @@
                                         &nbsp;@&nbsp;<a
                                             href="http://${blogHost}${page.pagePermalink}#${comment.commentOriginalCommentId}"
                                             onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                            onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                            onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                         </#if>
                                         <div class="right">
                                             ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -95,21 +95,21 @@
                                                 ${commentEmotions1Label}
                                             </th>
                                             <td id="emotions">
-                                                <img class="[em00]" src="/skins/${skinDirName}/emotions/em00.png" alt="${em00Label}" title="${em00Label}" />
-                                                <img class="[em01]" src="/skins/${skinDirName}/emotions/em01.png" alt="${em01Label}" title="${em01Label}" />
-                                                <img class="[em02]" src="/skins/${skinDirName}/emotions/em02.png" alt="${em02Label}" title="${em02Label}" />
-                                                <img class="[em03]" src="/skins/${skinDirName}/emotions/em03.png" alt="${em03Label}" title="${em03Label}" />
-                                                <img class="[em04]" src="/skins/${skinDirName}/emotions/em04.png" alt="${em04Label}" title="${em04Label}" />
-                                                <img class="[em05]" src="/skins/${skinDirName}/emotions/em05.png" alt="${em05Label}" title="${em05Label}" />
-                                                <img class="[em06]" src="/skins/${skinDirName}/emotions/em06.png" alt="${em06Label}" title="${em06Label}" />
-                                                <img class="[em07]" src="/skins/${skinDirName}/emotions/em07.png" alt="${em07Label}" title="${em07Label}" />
-                                                <img class="[em08]" src="/skins/${skinDirName}/emotions/em08.png" alt="${em08Label}" title="${em08Label}" />
-                                                <img class="[em09]" src="/skins/${skinDirName}/emotions/em09.png" alt="${em09Label}" title="${em09Label}" />
-                                                <img class="[em10]" src="/skins/${skinDirName}/emotions/em10.png" alt="${em10Label}" title="${em10Label}" />
-                                                <img class="[em11]" src="/skins/${skinDirName}/emotions/em11.png" alt="${em11Label}" title="${em11Label}" />
-                                                <img class="[em12]" src="/skins/${skinDirName}/emotions/em12.png" alt="${em12Label}" title="${em12Label}" />
-                                                <img class="[em13]" src="/skins/${skinDirName}/emotions/em13.png" alt="${em13Label}" title="${em13Label}" />
-                                                <img class="[em14]" src="/skins/${skinDirName}/emotions/em14.png" alt="${em14Label}" title="${em14Label}" />
+                                                <span class="em00" title="${em00Label}"></span>
+                                                <span class="em01" title="${em01Label}"></span>
+                                                <span class="em02" title="${em02Label}"></span>
+                                                <span class="em03" title="${em03Label}"></span>
+                                                <span class="em04" title="${em04Label}"></span>
+                                                <span class="em05" title="${em05Label}"></span>
+                                                <span class="em06" title="${em06Label}"></span>
+                                                <span class="em07" title="${em07Label}"></span>
+                                                <span class="em08" title="${em08Label}"></span>
+                                                <span class="em09" title="${em09Label}"></span>
+                                                <span class="em10" title="${em10Label}"></span>
+                                                <span class="em11" title="${em11Label}"></span>
+                                                <span class="em12" title="${em12Label}"></span>
+                                                <span class="em13" title="${em13Label}"></span>
+                                                <span class="em14" title="${em14Label}"></span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -134,7 +134,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3" align="right">
-                                                <button id="submitCommentButton" onclick="articleUtil.submitComment();">${submmitCommentLabel}</button>
+                                                <button id="submitCommentButton" onclick="page.submitComment();">${submmitCommentLabel}</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -152,13 +152,11 @@
                 <#include "footer.ftl">
             </div>
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
-        <script type="text/javascript" src="/js/${miniDir}articleUtil${miniPostfix}.js"></script>
+        <script type="text/javascript" src="/js/${miniDir}article${miniPostfix}.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript">
-            var articleUtil = new ArticleUtil({
+            var page = new Article({
                 "nameTooLongLabel": "${nameTooLongLabel}",
                 "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
                 "mailInvalidLabel": "${mailInvalidLabel}",
@@ -182,10 +180,10 @@
                 }
 
                 if (state !== "") {
-                    var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId).find(".comment-title a").first().text();
-                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + articleUtil.currentCommentId + '"'
-                        + 'onmouseover="showComment(this, \'' + articleUtil.currentCommentId + '\');"'
-                        + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                    var commentOriginalCommentName = $("#commentItem" + page.currentCommentId).find(".comment-title a").first().text();
+                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
+                        + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
+                        + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                 }
 
                 commentHTML += '<div class="right">' + result.commentDate
@@ -193,11 +191,11 @@
                     + '</div><div class="clear"></div></div><div class="comment-body">'
                     + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
                     + '" src="' + result.commentThumbnailURL + '"/>'
-                    + '</div><div class="comment-content">' + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
+                    + '</div><div class="comment-content">' + page.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
                     + '</div><div class="clear"></div>'
                     + '</div></div></div>';
 
-                articleUtil.addCommentAjax(commentHTML, state);
+                page.addCommentAjax(commentHTML, state);
             }
 
             var replyTo = function (id) {
@@ -214,17 +212,17 @@
                     + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
                     + "<span class='error-msg' id='commentErrorTipReply'/>"
                     + "</th></tr><tr><td colspan='3' align='right'>"
-                    + "<button id=\"submitCommentButtonReply\" onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
+                    + "<button id=\"submitCommentButtonReply\" onclick=\"page.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
                     + "</td></tr></tbody></table>";
                 
-                articleUtil.addReplyForm(id, commentFormHTML);
+                page.addReplyForm(id, commentFormHTML);
                 $("#commentURLReply").focus(function (event) {
                     if ($.browser.version !== "7.0") {
                         $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
                     }
                 }).blur(function () {
                     $("#commentURLLabelReply").css({"border":"2px inset #CCCCCC","border-right":"0px"});
-                }).width($("#commentReply").width() - $("#commentURLLabelReply").width());
+                });
             }
             
             var showComment = function (it, id) {
@@ -244,7 +242,7 @@
             }
 
             var loadAction = function () {
-                articleUtil.load();
+                page.load();
 
                 // comment url
                 $("#commentURL").focus(function (event) {
@@ -253,10 +251,10 @@
                     }
                 }).blur(function () {
                     $("#commentURLLabel").css({"border":"2px inset #CCCCCC","border-right":"0px"});
-                }).width($("#comment").width() - $("#commentURLLabel").width());
+                });
                 
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content");
+                page.replaceCommentsEm("#comments .comment-content");
             }
             loadAction();
         </script>

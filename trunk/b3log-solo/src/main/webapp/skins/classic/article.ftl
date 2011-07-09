@@ -120,7 +120,7 @@
                                             &nbsp;@&nbsp;<a
                                                 href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
                                                 onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                                                onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                                                onmouseout="article.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                             </#if>
                                         </div>
                                         <div class="right">
@@ -219,7 +219,7 @@
                                         </tr>
                                         <tr>
                                             <td colspan="3" align="right">
-                                                <button id="submitCommentButton" onclick="articleUtil.submitComment();">${submmitCommentLabel}</button>
+                                                <button id="submitCommentButton" onclick="article.submitComment();">${submmitCommentLabel}</button>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -238,13 +238,11 @@
                 <#include "footer.ftl">
             </div>
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
-        <script type="text/javascript" src="/js/${miniDir}articleUtil${miniPostfix}.js"></script>
+        <script type="text/javascript" src="/js/${miniDir}article${miniPostfix}.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript">
-            var articleUtil = new ArticleUtil({
+            var article = new Article({
                 "nameTooLongLabel": "${nameTooLongLabel}",
                 "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
                 "mailInvalidLabel": "${mailInvalidLabel}",
@@ -271,10 +269,10 @@
                 }
 
                 if (state !== "") {
-                    var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId).find(".comment-title a").first().text();
-                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + articleUtil.currentCommentId + '"'
-                        + 'onmouseover="showComment(this, \'' + articleUtil.currentCommentId + '\');"'
-                        + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                    var commentOriginalCommentName = $("#commentItem" + article.currentCommentId).find(".comment-title a").first().text();
+                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + article.currentCommentId + '"'
+                        + 'onmouseover="showComment(this, \'' + article.currentCommentId + '\');"'
+                        + 'onmouseout="article.hideComment(\'' + article.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                 }
 
                 commentHTML += '</div><div class="right">' + result.commentDate
@@ -283,11 +281,11 @@
                     + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
                     + '" src="' + result.commentThumbnailURL + '"/>'
                     + '</div><div class="comment-content">' 
-                    + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
+                    + article.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
                     + '</div><div class="clear"></div>'
                     + '</div></div></div>';
 
-                articleUtil.addCommentAjax(commentHTML, state);
+                article.addCommentAjax(commentHTML, state);
             }
 
             var replyTo = function (id) {
@@ -304,9 +302,9 @@
                     + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
                     + "<span class='error-msg' id='commentErrorTipReply'/>"
                     + "</th></tr><tr><td colspan='3' align='right'>"
-                    + "<button id=\"submitCommentButtonReply\" onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
+                    + "<button id=\"submitCommentButtonReply\" onclick=\"article.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
                     + "</td></tr></tbody></table>";
-                articleUtil.addReplyForm(id, commentFormHTML);
+                article.addReplyForm(id, commentFormHTML);
 
                 // reply comment url
                 $("#commentURLReply").focus(function (event) {
@@ -345,14 +343,14 @@
                 }).width($("#comment").width() - $("#commentURLLabel").width());
 
                 // emotions
-                util.replaceCommentsEm("#comments .comment-content");
+                article.replaceCommentsEm("#comments .comment-content");
 
-                articleUtil.load();
-                articleUtil.loadRandomArticles();
+                article.load();
+                article.loadRandomArticles();
 
                 // externalRelevantArticles
                     <#if 0 != externalRelevantArticlesDisplayCount>
-                    articleUtil.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
+                    article.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
                     </#if>
                 }
             loadAction();

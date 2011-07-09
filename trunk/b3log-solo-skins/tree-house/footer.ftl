@@ -12,7 +12,7 @@ Theme by <a href="http://www.thepixel.com/blog" target="_blank">Pixel</a> & <a h
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 <script type="text/javascript" src="/js/util.js"></script>
 <script type="text/javascript">
-    var util = new Util({
+    var util = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
