@@ -6,6 +6,8 @@
         <meta name="keywords" content="${metaKeywords}"/>
         <meta name="description" content="${metaDescription}"/>
         </@head>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css"/>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css"/>
     </head>
     <body>
         <#include "top-nav.ftl">
@@ -241,22 +243,19 @@
                 });
             }
 
-            var loadAction = function () {
+            (function () {
                 page.load();
 
                 // comment url
                 $("#commentURL").focus(function (event) {
-                    if ($.browser.version !== "7.0") {
-                        $("#commentURLLabel").css({"border":"2px solid #73A6FF","border-right":"0px"});
-                    }
+                    $("#commentURLLabel").css({"border":"2px solid #73A6FF","border-right":"0px"});
                 }).blur(function () {
                     $("#commentURLLabel").css({"border":"2px inset #CCCCCC","border-right":"0px"});
                 });
                 
                 // emotions
                 page.replaceCommentsEm("#comments .comment-content");
-            }
-            loadAction();
+            })();
         </script>
     </body>
 </html>

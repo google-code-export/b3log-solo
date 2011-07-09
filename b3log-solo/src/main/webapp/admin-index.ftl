@@ -122,7 +122,7 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="js/${miniDir}util${miniPostfix}.js"></script>
+        <script type="text/javascript" src="js/${miniDir}common${miniPostfix}.js"></script>
         <script type="text/javascript" src="js/admin/admin.js"></script>
         <script type="text/javascript" src="js/admin/tablePaginate.js"></script>
         <script type="text/javascript" src="js/admin/article.js"></script>

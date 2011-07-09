@@ -111,7 +111,7 @@ $.extend(Admin.prototype, {
      */
     init: function () {
         // 不支持 IE 6
-        Common.killIE();   
+        Util.killIE();   
         
         $("#loadMsg").text(Label.loadingLabel);
         
@@ -138,3 +138,4 @@ $.extend(Admin.prototype, {
     }
 });
 var admin = new Admin();
+var plugins = {};
