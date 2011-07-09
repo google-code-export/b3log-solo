@@ -189,12 +189,15 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
                     Pagination.PAGINATION_WINDOW_SIZE);
 
             final List<JSONObject> pages = new ArrayList<JSONObject>();
+            
+            PageCaches.syncKeys();
+            
             final Set<String> keys = PageCaches.getKeys();
             for (final String key : keys) {
                 LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
                 try {
                     final JSONObject cachedPage = PageCaches.get(key);
-
+                    
                     final JSONObject page = new JSONObject();
                     page.put(Link.LINK, key);
                     page.put(CACHED_TYPE, cachedPage.getString(CACHED_TYPE));
