@@ -16,6 +16,7 @@
 
 package org.b3log.solo.action.impl;
 
+import java.util.Iterator;
 import java.util.logging.Level;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
@@ -154,6 +155,14 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
             final List<JSONObject> articles =
                     org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                     getJSONArray(Keys.RESULTS));
+            final Iterator<JSONObject> iterator = articles.iterator();
+            while (iterator.hasNext()) {
+                final JSONObject article = iterator.next();
+                 if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    iterator.remove();
+                }
+            }
+            
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
