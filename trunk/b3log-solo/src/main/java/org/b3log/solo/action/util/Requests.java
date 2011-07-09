@@ -42,7 +42,7 @@ public final class Requests {
      * can not convert to an number
      */
     public static int getCurrentPageNum(final String path) {
-        String pageNumString = path.replaceAll("/", "");
+        final String pageNumString = path.replaceAll("/", "");
 
         LOGGER.log(Level.FINEST, "Page number[string={0}]", pageNumString);
 
