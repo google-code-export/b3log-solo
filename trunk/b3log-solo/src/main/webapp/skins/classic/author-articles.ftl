@@ -17,7 +17,7 @@
                 <div class="left main">
                     <div>
                         <h2 class="marginLeft12 marginBottom12">
-                            ${commentName1Label}${authorName}
+                            ${author1Label}${authorName}
                         </h2>
                     </div>
                     <#include "article-list.ftl">
