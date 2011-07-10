@@ -67,11 +67,11 @@
                                 <a href="#link-list"><div class="left linkIcon"></div>${linkManagementLabel}</a>
                             </div>
                         </li>
-                        <li>
+                        <!--li>
                             <div data-index="article-sync">
                                 <a href="#article-sync"><div class="left blogSyncIcon"></div>${blogSyncLabel}</a>
                             </div>
-                        </li>
+                        </li-->
                         <li>
                             <div data-index="preference">
                                 <a href="#preference"><div class="left preferenceIcon"></div>${preferenceLabel}</a>
@@ -101,7 +101,7 @@
                         <div id="tabs_draft-list"></div>
                         <div id="tabs_link-list"></div>
                         <div id="tabs_preference"></div>
-                        <div id="tabs_article-sync"></div>
+                        <!--div id="tabs_article-sync"></div-->
                         <div id="tabs_page-list"></div>
                         <div id="tabs_file-list"></div>
                         <div id="tabs_others"></div>
@@ -133,7 +133,6 @@
         <script type="text/javascript" src="js/admin/pageList.js"></script>
         <script type="text/javascript" src="js/admin/others.js"></script>
         <script type="text/javascript" src="js/admin/linkList.js"></script>
-        <script type="text/javascript" src="js/admin/articleSync.js"></script>
         <script type="text/javascript" src="js/admin/preference.js"></script>
         <script type="text/javascript" src="js/admin/pluginList.js"></script>
         <script type="text/javascript" src="js/admin/userList.js"></script>

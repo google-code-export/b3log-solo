@@ -68,10 +68,9 @@
                             <div class="article-details-footer">
                                 <div class="left">
                                     <#if nextArticlePermalink??>
-                                    <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                                    <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a><br/>
                                     </#if>
                                     <#if previousArticlePermalink??>
-                                    <br/>
                                     <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
                                     </#if>
                                 </div>
@@ -79,10 +78,10 @@
                                     <span class="article-create-date left">
                                         ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
                                     </span>
-                                    <span class="left commentIcon" title="${commentLabel}"></span>
-                                    <span class="left">
-                                        &nbsp;${article.articleCommentCount}&nbsp;&nbsp;
-                                    </span>
+                                    <a href="${article.articlePermalink}#comments" class="left">
+                                        <span class="left commentIcon" title="${commentLabel}"></span>
+                                        <span class="left">${article.articleCommentCount}</span>&nbsp;&nbsp;
+                                    </a>
                                     <a href="${article.articlePermalink}" class="left">
                                         <span class="left browserIcon" title="${viewLabel}"></span>
                                         <span id="articleViewCount">${article.articleViewCount}</span>
@@ -104,20 +103,24 @@
                                 </ul>
                             </div>
                             </#if>
-                            <div id="randomArticles" class="left"></div>
+                            <div id="randomArticles" class="left article-relative"></div>
                             <div class="clear"></div>
-                            <div id="externalRelevantArticles"></div>
+                            <div id="externalRelevantArticles" class="article-relative"></div>
                         </div>
-                        <div class="comments" id="comments" name="comments">
+                        <h2 class="marginLeft12 marginBottom12">${commentLabel}</h2>
+                        <div class="comments" id="comments">
+                            <#if 0 == articleComments?size>
+                            ${noCommentLabel}
+                            </#if>
                             <#list articleComments as comment>
-                            <div id="commentItem${comment.oId}">
+                            <div id="${comment.oId}">
                                 <div class="comment-panel">
                                     <div class="comment-title">
                                         <div class="left">
                                             <#if "http://" == comment.commentURL>
-                                            <a name="${comment.oId}">${comment.commentName}</a>
+                                            <a>${comment.commentName}</a>
                                             <#else>
-                                            <a name="${comment.oId}" href="${comment.commentURL}"
+                                            <a href="${comment.commentURL}"
                                                target="_blank">${comment.commentName}</a>
                                             </#if>
                                             <#if comment.isReply>
@@ -146,6 +149,8 @@
                                 </div>
                             </div>
                             </#list>
+                        </div>
+                        <div class="comments">
                             <div class="comment-title">
                                 ${postCommentsLabel}
                             </div>
@@ -263,17 +268,16 @@
             });
 
             var addComment = function (result, state) {
-                var commentHTML = '<div id="commentItem' + result.oId + '"><div class="comment-panel"><div class="comment-title"><div class="left">';
+                var commentHTML = '<div id="' + result.oId + '"><div class="comment-panel"><div class="comment-title"><div class="left">';
 
                 if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-                    commentHTML += '<a name="' + result.oId + '">' + $("#commentName" + state).val() + '</a>';
+                    commentHTML += '<a>' + $("#commentName" + state).val() + '</a>';
                 } else {
-                    commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
-                        + result.oId + '">' + $("#commentName" + state).val() + '</a>';
+                    commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank">' + $("#commentName" + state).val() + '</a>';
                 }
 
                 if (state !== "") {
-                    var commentOriginalCommentName = $("#commentItem" + article.currentCommentId).find(".comment-title a").first().text();
+                    var commentOriginalCommentName = $("#" + article.currentCommentId).find(".comment-title a").first().text();
                     commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + article.currentCommentId + '"'
                         + 'onmouseover="showComment(this, \'' + article.currentCommentId + '\');"'
                         + 'onmouseout="article.hideComment(\'' + article.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
@@ -292,59 +296,38 @@
                 article.addCommentAjax(commentHTML, state);
             }
 
-            var replyTo = function (id) {
-                var commentFormHTML = "<table class='form comment-reply' id='replyForm'><tbody><tr><th>${commentName1Label}"
-                    + "</th><td colspan='2'><input type='text' class='normalInput' id='commentNameReply' value='" + Cookie.readCookie("commentName") + "'/>"
-                    + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
-                    + "<input type='text' class='normalInput' id='commentEmailReply' value='" + Cookie.readCookie("commentEmail") + "'/></td></tr><tr>"
-                    + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
-                    + "http://</div><input type='text' id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/>"
-                    + "</td></tr><tr><th>${commentEmotions1Label}</th><td id='emotionsReply'>" + $("#emotions").html()
-                    + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
-                    + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                    + "<th>${captcha1Label}</th><td><input type='text' class='normalInput' id='commentValidateReply'/>"
-                    + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
-                    + "<span class='error-msg' id='commentErrorTipReply'/>"
-                    + "</th></tr><tr><td colspan='3' align='right'>"
-                    + "<button id=\"submitCommentButtonReply\" onclick=\"article.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
-                    + "</td></tr></tbody></table>";
+            var replyTo = function (id) {                
+                var commentFormHTML = "<table class='form comment-reply' id='replyForm'>";
                 article.addReplyForm(id, commentFormHTML);
-
+                
                 // reply comment url
                 $("#commentURLReply").focus(function (event) {
-                    if ($.browser.version !== "7.0") {
-                        $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
-                    }
+                    $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
                 }).blur(function () {
                     $("#commentURLLabelReply").css({"border":"2px inset #CCCCCC","border-right":"0px"});
-                }).width($("#commentReply").width() - $("#commentURLLabelReply").width());
+                });
             }
 
             var showComment = function (it, id) {
-                if ( $("#commentItemRef" + id).length > 0) {
-                    $("#commentItemRef" + id).show();
+                if ( $("#commentRef" + id).length > 0) {
+                    $("#commentRef" + id).show();
                 } else {
-                    var $refComment = $("#commentItem" + id + " .comment-panel").clone();
-                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
+                    var $refComment = $("#" + id + " .comment-panel").clone();
+                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentRef" + id);
                     $refComment.find(".comment-title .right a").remove();
                     $("#comments").append($refComment);
                 }
                 var position =  $(it).position();
-                $("#commentItemRef" + id).css({
-                    "top": (position.top + 23) + "px",
-                    "left": "88px"
-                });
-            }
+                $("#commentRef" + id).css("top", (position.top + 23) + "px");
+            };
 
             (function () {
                 // comment url
                 $("#commentURL").focus(function (event) {
-                    if ($.browser.version !== "7.0") {
-                        $("#commentURLLabel").css({"border":"2px solid #73A6FF","border-right":"0px"});
-                    }
+                    $("#commentURLLabel").css({"border":"2px solid #73A6FF","border-right":"0px"});
                 }).blur(function () {
                     $("#commentURLLabel").css({"border":"2px inset #CCCCCC","border-right":"0px"});
-                }).width($("#comment").width() - $("#commentURLLabel").width());
+                });
 
                 // emotions
                 article.replaceCommentsEm("#comments .comment-content");

@@ -149,8 +149,8 @@ $.extend(Article.prototype, {
                     listHtml += randomArticleLiHtml;
                 }
 
-                var randomArticleListHtml = "<h5>" + randomArticles1Label + "</h5>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
-                $("#randomArticles").append(randomArticleListHtml).addClass("article-relative");
+                var randomArticleListHtml = "<h4>" + randomArticles1Label + "</h4>" + "<ul class='marginLeft12'>" + listHtml + "</ul>";
+                $("#randomArticles").append(randomArticleListHtml);
             }
         });
     },
@@ -181,10 +181,10 @@ $.extend(Article.prototype, {
                     listHtml += articleLiHtml
                 }
                 
-                var randomArticleListHtml = "<h5>" + tips.externalRelevantArticles1Label + "</h5>"
+                var randomArticleListHtml = "<h4>" + tips.externalRelevantArticles1Label + "</h4>"
                 + "<ul class='marginLeft12'>"
                 + listHtml + "</ul>";
-                $("#externalRelevantArticles").append(randomArticleListHtml).addClass("article-relative");
+                $("#externalRelevantArticles").append(randomArticleListHtml);
             }
         });
     },
@@ -243,11 +243,33 @@ $.extend(Article.prototype, {
     addReplyForm: function (id, commentFormHTML) {
         var that = this;
         if (id === this.currentCommentId) {
-            $("#commentNameReply").focus();
+            if (Cookie.readCookie("commentName")  === "") {
+                $("#commentNameReply").focus();
+            } else {
+                $("#commentReply").focus();
+            }
             return;
         } else {
             $("#replyForm").remove();
-            $("#commentItem" + id).append(commentFormHTML);
+            $("#" + id).append(commentFormHTML  + $("table").html() + "</table>");
+            
+            // change id, bind event and set value
+            $("#replyForm input, #replyForm button, #replyForm textarea").each(function () {
+                this.id = this.id + "Reply";
+            });
+            $("#submitCommentButtonReply").removeAttr("onclick").click(function () {
+                that.submitComment(id, 'Reply');
+            });
+            $("#emotions").attr("id", $("#emotions").attr("id") + "Reply");
+            $("#commentErrorTip").attr("id", $("#commentErrorTip").attr("id") + "Reply");
+            var $label = $("#commentURLLabel");
+            if ($label.length === 1) {
+                $label.attr("id", $label.attr("id") + "Reply");
+            }
+            $("#commentNameReply").val(Cookie.readCookie("commentName"));
+            $("#commentEmailReply").val(Cookie.readCookie("commentEmail"));
+            $("#commentURLReply").val(Cookie.readCookie("commentURL"));
+            
             $("#commentValidateReply").keypress(function (event) {
                 if (event.keyCode === 13) {
                     that.submitComment(id, 'Reply');
@@ -264,13 +286,11 @@ $.extend(Article.prototype, {
     },
 
     hideComment: function (id) {
-        $("#commentItemRef" + id).hide();
+        $("#commentRef" + id).hide();
     },
 
     addCommentAjax: function (commentHTML, state) {
-        if ($("#comments .comments-header").length > 0) {
-            $("#comments .comments-header").after(commentHTML);
-        } else if ($("#comments>div").first().length === 1) {
+        if ($("#comments>div").first().length === 1) {
             $("#comments>div").first().before(commentHTML);
         } else {
             $("#comments").html(commentHTML);
