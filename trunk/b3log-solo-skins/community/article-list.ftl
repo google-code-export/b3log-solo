@@ -71,8 +71,9 @@
             </li>
             </#list>
             <li>
-                ${createDateLabel}:
-                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm")}
+                <a href="${article.articlePermalink}">
+                    ${createDateLabel}:${article.articleCreateDate?string("yyyy-MM-dd HH:mm")}
+                </a>
             </li>
         </ul>
     </div>
@@ -81,17 +82,21 @@
 </#list>
 <#if 0 != paginationPageCount>
 <div class="pagination">
-    <#if paginationPageNums?first != 1>
-    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=1">${firstPageLabel}</a>
-    <a id="previousPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationFirstPageNum}">${previousPageLabel}</a>
+    <#if 1 != paginationPageNums?first>
+    <a href="${path}/1">${firstPageLabel}</a>
+    <a id="previousPage" href="${path}/${paginationPreviousPageNum}">${previousPageLabel}</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
-    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
-    </#list>
-    <#if paginationPageNums?last!=paginationPageCount>
-    <a id="nextPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationLastPageNum}">${nextPagePabel}</a>
-    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}">${lastPageLabel}</a>
+    <#if paginationPageNum == paginationCurrentPageNum>
+    <a href="${path}/${paginationPageNum}" class="selected">${paginationPageNum}</a>
+    <#else>
+    <a href="${path}/${paginationPageNum}">${paginationPageNum}</a>
     </#if>
-    ${sumLabel} ${paginationPageCount} ${pageLabel}
+    </#list>
+    <#if paginationPageNums?last != paginationPageCount>
+    <a id="nextPage" href="${path}/${paginationNextPageNum}">${nextPagePabel}</a>
+    <a href="${path}/${paginationPageCount}">${lastPageLabel}</a>
+    </#if>
+    &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
 </#if>

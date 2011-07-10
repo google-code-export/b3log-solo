@@ -34,6 +34,13 @@
                             </#if>
                         </h2>
                         <div>
+                            ${tags1Label}<#list article.articleTags?split(",") as articleTag><span><a href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if></span></#list>
+                            &nbsp;&nbsp;${viewCount1Label}
+                            <a href="${article.articlePermalink}">
+                                ${article.articleViewCount}  
+                            </a>
+                        </div>
+                        <div>
                             ${createDateLabel}:
                             <a href="${article.articlePermalink}">
                                 ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -56,43 +63,32 @@
                         </div>
                         </#if>
                     </div>
-                    <div>
-                        ${tags1Label}<#list article.articleTags?split(",") as articleTag><span><a href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if></span></#list>
-                        &nbsp;&nbsp;${viewCount1Label}
-                        <a href="${article.articlePermalink}">
-                            ${article.articleViewCount}  
-                        </a>
-                    </div>
-                    <div class="marginTop12 marginBottom12 right">
+                    <div class="marginTop12 marginBottom12">
                         <#if nextArticlePermalink??>
-                        ${nextArticle1Label}<a href="${nextArticlePermalink}">${nextArticleTitle}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <b>${nextArticle1Label}</b><a href="${nextArticlePermalink}">${nextArticleTitle}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </#if>
                         <#if previousArticlePermalink??>
-                        ${previousArticle1Label}<a href="${previousArticlePermalink}">${previousArticleTitle}</a>
+                        <b>${previousArticle1Label}</b><a href="${previousArticlePermalink}">${previousArticleTitle}</a>
                         </#if>
                     </div>
-                    <div class="clear"></div>
                     <#if 0 != relevantArticles?size>
-                    <div class="left" style="width: 50%;">
-                        <h4>${relevantArticles1Label}</h4>
-                        <ul class="marginLeft12">
-                            <#list relevantArticles as relevantArticle>
-                            <li>
-                                <a href="${relevantArticle.articlePermalink}">
-                                    ${relevantArticle.articleTitle}
-                                </a>
-                            </li>
-                            </#list>
-                        </ul>
-                    </div>
+                    <h4>${relevantArticles1Label}</h4>
+                    <ul class="marginLeft12">
+                        <#list relevantArticles as relevantArticle>
+                        <li>
+                            <a href="${relevantArticle.articlePermalink}">
+                                ${relevantArticle.articleTitle}
+                            </a>
+                        </li>
+                        </#list>
+                    </ul>
                     </#if>
-                    <div id="randomArticles" class="left"></div>
-                    <div class="clear"></div>
+                    <div id="randomArticles" class="marginTop12"></div>
                     <div id="externalRelevantArticles" class="marginTop12"></div>
                     <h2 class="comments-title">${commentLabel}</h2>
                     <div class="comments" id="comments">
                         <#if 0 == articleComments?size>
-                            ${noCommentLabel}
+                        ${noCommentLabel}
                         </#if>
                         <#list articleComments as comment>
                         <div id="${comment.oId}">
