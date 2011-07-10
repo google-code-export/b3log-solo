@@ -19,6 +19,8 @@ package org.b3log.solo.action.feed;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +45,7 @@ import org.json.JSONObject;
  * Blog articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Jan 20, 2011
+ * @version 1.0.1.8, Jul 10, 2011
  */
 public final class BlogArticlesFeedServlet extends HttpServlet {
 
@@ -51,6 +53,11 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
      * Default serial version uid.
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(BlogArticlesFeedServlet.class.getName());
     /**
      * Article repository.
      */
@@ -148,6 +155,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
             writer.write(feed.toString());
             writer.close();
         } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Get blog article feed error", e);
             throw new IOException(e);
         }
     }
