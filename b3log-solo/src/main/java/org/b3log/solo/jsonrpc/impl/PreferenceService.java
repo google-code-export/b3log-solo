@@ -270,7 +270,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 blogHost = blogHost.substring(0, blogHost.length() - 1);
             }
 
-            LOGGER.log(Level.FINE, "Blog Host[{0}]", blogHost);
+            LOGGER.log(Level.FINER, "Blog Host[{0}]", blogHost);
 
             String domain = null;
             final boolean hasPort = blogHost.contains(":");
@@ -324,7 +324,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             }
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
-            LOGGER.log(Level.FINE, "Skin path[{0}]", skinPath);
+            LOGGER.log(Level.FINER, "Skin path[{0}]", skinPath);
             Templates.CACHE.clear();
 
             preference.put(Skin.SKINS, skinArray.toString());
