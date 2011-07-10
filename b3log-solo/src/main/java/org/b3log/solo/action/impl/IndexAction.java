@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import org.b3log.latke.action.ActionException;
@@ -147,19 +146,12 @@ public final class IndexAction extends AbstractFrontPageAction {
                     "0".equals(previousPageNum) ? "" : previousPageNum);
             final Integer pageCount =
                     (Integer) ret.get(Pagination.PAGINATION_PAGE_COUNT);
-            if (null != pageCount) {
-                if (pageCount == currentPageNum + 1) { // The next page is the last page
-                    ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
-                } else {
-                    ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
-                                                                 + 1);
-                }
+            if (pageCount == currentPageNum + 1) { // The next page is the last page
+                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+            } else {
+                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
+                                                             + 1);
             }
-            final String nextPageNum =
-                    Integer.toString(currentPageNum > 1 ? currentPageNum - 1
-                                     : 0);
-            ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
-                    "0".equals(nextPageNum) ? "" : nextPageNum);
 
             ret.put(Common.PATH, "");
         } catch (final Exception e) {

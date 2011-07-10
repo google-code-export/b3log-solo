@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import java.util.Iterator;
@@ -189,6 +188,19 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+            final String previousPageNum =
+                    Integer.toString(currentPageNum > 1 ? currentPageNum - 1
+                                     : 0);
+            ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
+                    "0".equals(previousPageNum) ? "" : previousPageNum);
+            if (pageCount == currentPageNum + 1) { // The next page is the last page
+                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+            } else {
+                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
+                                                             + 1);
+            }
+
             filler.setArticlesExProperties(articles, preference);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
@@ -264,7 +276,7 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
                                          final String authorId) {
         final String pageNumString =
                 requestURI.substring(("/authors/" + authorId + "/").length());
-        
+
         return Requests.getCurrentPageNum(pageNumString);
     }
 }
