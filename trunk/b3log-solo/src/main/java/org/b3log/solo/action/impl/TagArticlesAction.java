@@ -186,7 +186,7 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
                     continue;
                 }
                 // Puts author name

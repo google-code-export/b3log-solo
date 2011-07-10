@@ -181,11 +181,11 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
                                                              + "_"
                                                              + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) { // Skips the unpublished article
                     continue;
                 }
 
-                fillExtraProperties(article, preference);
+                filler.setArticleExProperties(article, preference);
 
                 articles.add(article);
             }
@@ -250,43 +250,6 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
         }
 
         return ret;
-    }
-
-    /**
-     * Fills some extra properties into the specified article with the specified 
-     * preference.
-     * 
-     * <p>
-     * Some extra properties for the specified article:
-     * <pre>
-     * {
-     *     ...., 
-     *     "authorName": "",
-     *     "authorId": "",
-     *     "hasUpdated": boolean
-     * }
-     * </pre>
-     * </p>
-     * 
-     * @param article the specified article
-     * @param preference the specified preference
-     * @throws JSONException json exception
-     */
-    private void fillExtraProperties(final JSONObject article,
-                                     final JSONObject preference)
-            throws JSONException {
-        final JSONObject author = articleUtils.getAuthor(article);
-        final String authorName = author.getString(User.USER_NAME);
-        article.put(Common.AUTHOR_NAME, authorName);
-        final String authorId = author.getString(Keys.OBJECT_ID);
-        article.put(Common.AUTHOR_ID, authorId);
-
-        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-            article.put(Common.HAS_UPDATED,
-                        articleUtils.hasUpdated(article));
-        } else {
-            article.put(Common.HAS_UPDATED, false);
-        }
     }
 
     /**

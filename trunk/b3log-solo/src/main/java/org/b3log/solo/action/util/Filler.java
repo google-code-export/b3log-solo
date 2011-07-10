@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.util;
 
 import java.util.ArrayList;
@@ -178,7 +177,7 @@ public final class Filler {
 
         final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.
                 jsonArrayToList(result.getJSONArray(Keys.RESULTS));
-        putArticleExProperties(articles, preference);
+        setArticlesExProperties(articles, preference);
 
         dataModel.put(Article.ARTICLES, articles);
     }
@@ -499,7 +498,7 @@ public final class Filler {
 
         articles.addAll(articlesL);
         articles.addAll(articlesR);
-        putArticleExProperties(articles, preference);
+        setArticlesExProperties(articles, preference);
 
         dataModel.put(Article.ARTICLES, articles);
     }
@@ -609,37 +608,74 @@ public final class Filler {
     }
 
     /**
-     * Puts ext properties for the specified articles.
+     * Sets some extra properties into the specified article with the specified 
+     * preference.
+     * 
+     * <p>
+     * Article ext properties:
+     * <pre>
+     * {
+     *     ...., 
+     *     "authorName": "",
+     *     "authorId": "",
+     *     "hasUpdated": boolean
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param article the specified article
+     * @param preference the specified preference
+     * @throws JSONException json exception
+     * @see #setArticlesExProperties(java.util.List, org.json.JSONObject) 
+     */
+    public void setArticleExProperties(final JSONObject article,
+                                       final JSONObject preference)
+            throws JSONException {
+        final JSONObject author = articleUtils.getAuthor(article);
+        final String authorName = author.getString(User.USER_NAME);
+        article.put(Common.AUTHOR_NAME, authorName);
+        final String authorId = author.getString(Keys.OBJECT_ID);
+        article.put(Common.AUTHOR_ID, authorId);
+
+        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            article.put(Common.HAS_UPDATED,
+                        articleUtils.hasUpdated(article));
+        } else {
+            article.put(Common.HAS_UPDATED, false);
+        }
+    }
+
+    /**
+     * Sets some extra properties into the specified article with the specified 
+     * preference.
+     * 
+     * <p>
+     * The batch version of method 
+     * {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
+     * </p>
      *
      * <p>
      * Article ext properties:
-     * <ul>
-     *   <li>{@value Common#HAS_UPDATED}: boolean</li>
-     *   <li>{@value Common#AUTHOR_ID}: ""</li>
-     *   <li>{@value Common#AUTHOR_NAME}: ""</li>
-     * </ul>
+     * <pre>
+     * {
+     *     ...., 
+     *     "authorName": "",
+     *     "authorId": "",
+     *     "hasUpdated": boolean
+     * }
+     * </pre>
      * </p>
      *
      * @param articles the specified articles
      * @param preference the specified preference
      * @throws JSONException json exception
+     * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject) 
      */
-    public void putArticleExProperties(final List<JSONObject> articles,
-                                       final JSONObject preference)
+    public void setArticlesExProperties(final List<JSONObject> articles,
+                                        final JSONObject preference)
             throws JSONException {
         for (final JSONObject article : articles) {
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
-            } else {
-                article.put(Common.HAS_UPDATED, false);
-            }
-
-            // Puts author name
-            final JSONObject author = articleUtils.getAuthor(article);
-            final String authorName = author.getString(User.USER_NAME);
-            article.put(Common.AUTHOR_NAME, authorName);
-            final String authorId = author.getString(Keys.OBJECT_ID);
-            article.put(Common.AUTHOR_ID, authorId);
+            setArticleExProperties(article, preference);
         }
     }
 

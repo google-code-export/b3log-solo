@@ -158,7 +158,7 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
             final Iterator<JSONObject> iterator = articles.iterator();
             while (iterator.hasNext()) {
                 final JSONObject article = iterator.next();
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
                     iterator.remove();
                 }
             }
@@ -189,8 +189,7 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-
-            filler.putArticleExProperties(articles, preference);
+            filler.setArticlesExProperties(articles, preference);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles,
