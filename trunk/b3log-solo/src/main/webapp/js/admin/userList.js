@@ -87,13 +87,7 @@ admin.userList = {
                         var userData = [];
                         admin.userList.pageInfo.currentCount = users.length;
                         admin.userList.pageInfo.pageCount = result.pagination.paginationPageCount;
-                        if (1 < users.length) {
-                            // Disable article sync mgmt if exists more than one users
-                            $("#tabs li")[6].style.display = "none";
-                        } else if (1 === users.length) {
-                            // Enable article sync mgmt if exists one user exactly
-                            $("#tabs li")[6].style.display = "block";
-                        } else {
+                        if (users.length < 1) {
                             alert("A error occurs, please report this issue on http://code.google.com/p/b3log-solo/issues/list");
                         }
                     

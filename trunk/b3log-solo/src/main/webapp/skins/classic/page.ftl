@@ -23,16 +23,19 @@
                                 ${page.pageContent}
                             </div>
                         </div>
-                        <div class="comments" id="comments" name="comments">
+                        <h2 class="marginLeft12 marginBottom12">${commentLabel}</h2>
+                        <div class="comments" id="comments">
+                            <#if 0 == pageComments?size>
+                            ${noCommentLabel}
+                            </#if>
                             <#list pageComments as comment>
-                            <div id="commentItem${comment.oId}">
+                            <div id="${comment.oId}">
                                 <div class="comment-panel">
                                     <div class="comment-title">
                                         <#if "http://" == comment.commentURL>
-                                        <a name="${comment.oId}" class="left">${comment.commentName}</a>
+                                        <a>${comment.commentName}</a>
                                         <#else>
-                                        <a name="${comment.oId}" href="${comment.commentURL}"
-                                           target="_blank" class="left">${comment.commentName}</a>
+                                        <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                                         </#if>
                                         <#if comment.isReply>
                                         &nbsp;@&nbsp;<a
@@ -172,17 +175,17 @@
             });
 
             var addComment = function (result, state) {
-                var commentHTML = '<div id="commentItem' + result.oId + '"><div class="comment-panel"><div class="comment-title">';
+                var commentHTML = '<div id="' + result.oId + '"><div class="comment-panel"><div class="comment-title">';
 
                 if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-                    commentHTML += '<a name="' + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
+                    commentHTML += '<a>' + $("#commentName" + state).val() + '</a>';
                 } else {
-                    commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
-                        + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
+                    commentHTML += '<a href="http://' + $("#commentURL" + state).val() + 
+                        '" target="_blank">' + $("#commentName" + state).val() + '</a>';
                 }
 
                 if (state !== "") {
-                    var commentOriginalCommentName = $("#commentItem" + page.currentCommentId).find(".comment-title a").first().text();
+                    var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-title a").first().text();
                     commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                         + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
                         + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
@@ -201,21 +204,7 @@
             }
 
             var replyTo = function (id) {
-                var commentFormHTML = "<table class='form comment-reply' id='replyForm'><tbody><tr><th>${commentName1Label}"
-                    + "</th><td colspan='2'><input type='text' class='normalInput' id='commentNameReply' value='" + Cookie.readCookie("commentName") + "'/>"
-                    + "</td></tr><tr><th>${commentEmail1Label}</th><td colspan='2'>"
-                    + "<input type='text' class='normalInput' id='commentEmailReply' value='" + Cookie.readCookie("commentEmail") + "'/></td></tr><tr>"
-                    + "<th>${commentURL1Label}</th><td colspan='2'><div id='commentURLLabelReply'>"
-                    + "http://</div><input type='text' id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/>"
-                    + "</td></tr><tr><th>${commentEmotions1Label}</th><td id='emotionsReply'>" + $("#emotions").html()
-                    + "</td></tr><tr><th valign='top'>${commentContent1Label}</th><td colspan='2'>"
-                    + "<textarea rows='10' cols='96' id='commentReply'></textarea></td></tr><tr>"
-                    + "<th>${captcha1Label}</th><td><input type='text' class='normalInput' id='commentValidateReply'/>"
-                    + "<img id='captchaReply' alt='validate' src='/captcha.do?" + new Date().getTime() + "'></img></td><th>"
-                    + "<span class='error-msg' id='commentErrorTipReply'/>"
-                    + "</th></tr><tr><td colspan='3' align='right'>"
-                    + "<button id=\"submitCommentButtonReply\" onclick=\"page.submitComment('" + id + "', 'Reply');\">${submmitCommentLabel}</button>"
-                    + "</td></tr></tbody></table>";
+                var commentFormHTML = "<table class='form comment-reply' id='replyForm'>";
                 
                 page.addReplyForm(id, commentFormHTML);
                 $("#commentURLReply").focus(function (event) {
@@ -228,20 +217,16 @@
             }
             
             var showComment = function (it, id) {
-                if ( $("#commentItemRef" + id).length > 0) {
-                    $("#commentItemRef" + id).show();
+                if ( $("#commentRef" + id).length > 0) {
+                    $("#commentRef" + id).show();
                 } else {
-                    var $refComment = $("#commentItem" + id + " .comment-panel").clone();
-                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
+                    var $refComment = $("#" + id + " .comment-panel").clone();
+                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentRef" + id);
                     $refComment.find(".comment-title .right a").remove();
                     $("#comments").append($refComment);
                 }
-                var position =  $(it).position();
-                $("#commentItemRef" + id).css({
-                    "top": (position.top + 23) + "px",
-                    "left": "88px"
-                });
-            }
+                $("#commentRef" + id).css("top", ($(it).position().top + 23) + "px");
+            };
 
             (function () {
                 page.load();

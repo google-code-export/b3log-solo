@@ -27,7 +27,7 @@
             </a>
             -
             <a href="${article.articlePermalink}#comments">
-                ${article.articleViewCount} ${commentLabel}
+                ${article.articleCommentCount} ${commentLabel}
             </a>
         </div>
     </div>
@@ -38,7 +38,7 @@
         ${tags1Label}<#list article.articleTags?split(",") as articleTag><span><a href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if></span></#list>
         &nbsp;&nbsp;${viewCount1Label}
         <a href="${article.articlePermalink}">
-            ${article.articleCommentCount}
+            ${article.articleViewCount}
         </a>
     </div>
 </div>
