@@ -66,19 +66,19 @@ button:hover,.button:hover {
     padding: 12px;
 }
 .paddingBottom12 {
-    padding-bottom: 12px;
+    padding-bottom: 12px !important;
 }
 .paddingTop12 {
-    padding-top: 12px;
+    padding-top: 12px !important;
 }
 .margin12 {
     margin: 12px;
 }
 .marginTop12 {
-    margin-top: 12px;
+    margin-top: 12px !important;
 }
 .marginBottom12 {
-    margin-bottom: 12px;
+    margin-bottom: 12px !important;
 }
 .marginLeft12 {
     margin-left: 12px;
