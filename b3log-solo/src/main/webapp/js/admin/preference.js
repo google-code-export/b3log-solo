@@ -179,8 +179,10 @@ admin.preference = {
                         }
                         
                         // update article signs
-                        for (var i = 1; i < signs.length; i++) {
-                            $("#articleSign" + signs[i].oId).tip("option", "content", signs[i].signHTML === "" ? "该签名档为空" : signs[i].signHTML);
+                        if ( $("#articleSign" + signs[0].oId).length > 1) {
+                            for (var i = 1; i < signs.length; i++) {
+                                $("#articleSign" + signs[i].oId).tip("option", "content", signs[i].signHTML === "" ? "该签名档为空" : signs[i].signHTML);
+                            }
                         }
                         break;
                     case "UPDATE_PREFERENCE_FAIL_":
@@ -194,9 +196,11 @@ admin.preference = {
                         break;
                     default:
                         break;
-                }
+                } 
                 $("#loadMsg").text("");
-            } catch (e) {}
+            } catch (e) {
+                console.error(e);
+            }
         }, requestJSONObject);
     },
     
