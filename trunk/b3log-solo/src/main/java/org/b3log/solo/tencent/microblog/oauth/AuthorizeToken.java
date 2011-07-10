@@ -79,7 +79,7 @@ public final class AuthorizeToken extends HttpServlet {
         final String resp = api.getRequestToken(appKey, appSecret,
                                                 callbackURL);
 
-        LOGGER.log(Level.FINE, "Response[{0}]", resp);
+        LOGGER.log(Level.FINER, "Response[{0}]", resp);
 
         final OauthKey oauthKey = parseToken(resp);
         if (null == oauthKey) {
