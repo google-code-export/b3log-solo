@@ -35,7 +35,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
