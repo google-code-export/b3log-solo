@@ -19,17 +19,12 @@ package org.b3log.solo.filter;
 import java.util.logging.Logger;
 
 /**
- * Page cache filter.
- *
- * <p>
- * All request URI ends with ".ftl" will be redirected to "/".
- * </p>
+ * Skips for request filtering.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.3, Jun 28, 2011
+ * @version 1.0.3.4, Jul 11, 2011
  * @see #shouldSkip(java.lang.String) 
  */
-// FIXME: page cache filter
 public final class Skips {
 
     /**
@@ -88,11 +83,11 @@ public final class Skips {
                || requestURI.equals("/flush-stat.do")
                || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")
-               || requestURI.contains("/skins")
-               || requestURI.contains("/images")
-               || requestURI.contains("/styles")
+               || requestURI.contains("/skins/")
+               || requestURI.contains("/images/")
+               || requestURI.contains("/styles/")
                || requestURI.contains("/tags/")
-               || requestURI.contains("/archives")
+               || requestURI.contains("/archives/")
                || equalAdminActions(requestURI);
     }
 

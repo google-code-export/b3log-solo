@@ -19,7 +19,7 @@
 
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.2.2, Jul 9, 2011
+    Version: 1.0.2.3, Jul 11, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -41,6 +41,14 @@
         <url-pattern>/admin-draft-list.do</url-pattern>
         <url-pattern>/admin-user-list.do</url-pattern>
         <url-pattern>/admin-plugin-list.do</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>PageCacheFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.PageCacheFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>PageCacheFilter</filter-name>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>ArticlePermalinkFilter</filter-name>

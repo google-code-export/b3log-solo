@@ -29,6 +29,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.json.JSONObject;
@@ -37,7 +38,7 @@ import org.json.JSONObject;
  * Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jul 2, 2011
+ * @version 1.0.0.6, Jul 11, 2011
  */
 public final class PagePermalinkFilter implements Filter {
 
@@ -93,6 +94,12 @@ public final class PagePermalinkFilter implements Filter {
             final RequestDispatcher requestDispatcher =
                     httpServletRequest.getRequestDispatcher("/page.do?"
                                                             + requestURI);
+            final String queryString =
+                    httpServletRequest.getQueryString();
+            final String pageCacheKey =
+                    PageCaches.getPageCacheKey(requestURI, queryString);
+
+            request.setAttribute(Keys.PAGE_CACHE_KEY, pageCacheKey);
             request.setAttribute(Keys.OBJECT_ID, pageId);
             requestDispatcher.forward(request, response);
         } catch (final Exception e) {
