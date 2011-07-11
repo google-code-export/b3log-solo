@@ -54,7 +54,7 @@
     <a href="${path}/${paginationPageNum}" class="f-bold">${paginationPageNum}</a>
     <#else>
     <a href="${path}/${paginationPageNum}">${paginationPageNum}</a>
-    </#if>
+    </#if><#if paginationPageNum_has_next> | </#if>
     </#list>
     <#if paginationPageNums?last != paginationPageCount>
     <a href="${path}/${paginationNextPageNum}">${nextPagePabel}</a>

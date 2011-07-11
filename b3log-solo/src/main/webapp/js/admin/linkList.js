@@ -68,6 +68,9 @@ admin.linkList = {
      */
     getList: function (pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
+        if (pageNum === 0) {
+            pageNum = 1;
+        }
         this.pageInfo.currentPage = pageNum;
         var that = this;
         var requestJSONObject = {

@@ -315,7 +315,7 @@ a.header-title {
     border-bottom: 1px solid #E3E3E3;
     border-right: 1px solid #E3E3E3;
     padding: 20px;
-    width: 807px;
+    width: 798px;
     margin-bottom: 10px;
 }
 
@@ -350,12 +350,14 @@ a.header-title {
     border: 1px solid #E3E3E3;
     background-color: #FFFFFF;
     padding: 10px 0 0 10px;
+    left: 177px;    
+    opacity: 0.9;
 }
 
 #comments .comment-body-ref .comment-panel{
     border-width: 0px;
     margin-bottom: 0;
-    width: 629px;
+    width: 620px;
     padding: 10px;
 }
 
@@ -464,7 +466,7 @@ a.header-title {
     line-height: 22px;
 }
 
-.recent-comments img {
+.recent-comments img, #comments>div>img {
     background-color: #FFFFFF;
     border-bottom: 1px solid #C2C2C2;
     border-right: 1px solid #C2C2C2;
@@ -473,7 +475,7 @@ a.header-title {
     height: 75px;
 }
 
-.recent-comments img:hover {
+.recent-comments img:hover, #comments>div>img:hover {
     border-color: #5A5A5A;
 }
 

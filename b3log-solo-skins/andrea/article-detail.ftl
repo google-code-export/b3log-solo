@@ -43,7 +43,7 @@
                                     ${article.articleCreateDate?string("yyyy HH:mm:ss")}
                                     </#if>
                                     by
-                                    <a title="${article.authorName}" href="/author-articles.do?oId=${article.authorId}">
+                                    <a title="${article.authorName}" href="/authors/${article.authorId}">
                                         ${article.authorName}</a> |
                                     <a href="${article.articlePermalink}#comments">
                                         ${article.articleCommentCount}${commentLabel}

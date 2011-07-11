@@ -1,5 +1,5 @@
 <aside>
-	<!--
+    <!--
 	<h4>Search</h4>
 	<form action="http://www.google.com/cse" id="cse-search-box" class="s" target="_blank">
 	  <div>
@@ -11,33 +11,33 @@
 	    <input type="hidden" name="sa" value="site-search"/>
 	  </div>
 	</form>-->
-	<nav>
-		<h4>Navigation</h4>
-		<ul>
+    <nav>
+        <h4>Navigation</h4>
+        <ul>
             <li>
                 <a class="home" href="/">${indexLabel}</a>
             </li>
-		    <#list pageNavigations as page>
-		    <li>
-		        <a href="${page.pagePermalink}">
+            <#list pageNavigations as page>
+            <li>
+                <a href="${page.pagePermalink}">
 		            ${page.pageTitle}
-		        </a>
-		    </li>
-		    </#list>
-		    <li>
-		        <a href="/tags.html">${allTagsLabel}</a>
-		    </li>
-		    <li>
-		        <a href="/blog-articles-feed.do">
+                </a>
+            </li>
+            </#list>
+            <li>
+                <a href="/tags.html">${allTagsLabel}</a>
+            </li>
+            <li>
+                <a href="/blog-articles-feed.do">
 		            ${atomLabel}
-		            <img src="/images/feed.png" alt="Atom"/>
-		        </a>
-		    </li>
-		    <li>
-		        <a class="lastNavi" href="javascript:void(0);"></a>
-		    </li>
-		</ul>
-	</nav>
+                    <img src="/images/feed.png" alt="Atom"/>
+                </a>
+            </li>
+            <li>
+                <a class="lastNavi" href="javascript:void(0);"></a>
+            </li>
+        </ul>
+    </nav>
     <h4>${noticeBoardLabel}</h4>
     <div id="c">
         <p>
@@ -52,16 +52,16 @@
                  alt='${comment.commentName}'
                  src='${comment.commentThumbnailURL}' width="32" height="32"/>
             <div class="left">
-	            <div>
-		            <a target="_blank" href="${comment.commentURL}">
+                <div>
+                    <a target="_blank" href="${comment.commentURL}">
 		            ${comment.commentName}
-		            </a>
-	            </div>
-	            <div>
-		            <a title="${comment.commentContent}" class='side-comment' href="${comment.commentSharpURL}">
+                    </a>
+                </div>
+                <div>
+                    <a title="${comment.commentContent}" class='side-comment' href="${comment.commentSharpURL}">
 		            ${comment.commentContent}
-		            </a>
-	            </div>
+                    </a>
+                </div>
             </div>
             <div class='clear'></div>
         </li>
@@ -72,8 +72,8 @@
         <#list mostCommentArticles as article>
         <li>
             <sup>[${article.articleCommentCount}]</sup>&nbsp<a
-               title="${article.articleTitle}"
-               href="${article.articlePermalink}"><#if 20 < article.articleTitle?length>${article.articleTitle[0..20]}...<#else>${article.articleTitle}</#if></a>
+                title="${article.articleTitle}"
+                href="${article.articlePermalink}"><#if 20 < article.articleTitle?length>${article.articleTitle[0..20]}...<#else>${article.articleTitle}</#if></a>
         </li>
         </#list>
     </ul>
@@ -82,7 +82,7 @@
         <#list mostViewCountArticles as article>
         <li>
             <sup>[${article.articleViewCount}]</sup>&nbsp<a title="${article.articleTitle}"
-               href="${article.articlePermalink}"><#if 20 < article.articleTitle?length>${article.articleTitle[0..20]}...<#else>${article.articleTitle}</#if></a>
+                                                            href="${article.articlePermalink}"><#if 20 < article.articleTitle?length>${article.articleTitle[0..20]}...<#else>${article.articleTitle}</#if></a>
         </li>
         </#list>
     </ul>
@@ -113,12 +113,12 @@
         <#list archiveDates as archiveDate>
         <li>
             <#if "en" == localeString?substring(0, 2)>
-            <a href="/archive-date-articles.do?oId=${archiveDate.oId}"
-               title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
-                ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDatePublishedArticleCount})
+            <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+               title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
+                ${archiveDate.monthName} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDatePublishedArticleCount})
             <#else>
-            <a href="/archive-date-articles.do?oId=${archiveDate.oId}"
-               title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})">
+            <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+               title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
                 ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}</a>(${archiveDate.archiveDatePublishedArticleCount})
             </#if>
         </li>

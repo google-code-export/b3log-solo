@@ -149,6 +149,10 @@ a:hover {
     line-height: 36px;
 }
 
+.article-header sup {
+    font-size: 12px;
+}
+
 .article-header h2 a:hover {
     color: #AF7347;
 }
@@ -168,7 +172,9 @@ a:hover {
 
 .pagination a {
     color: #65890D;
+    font-weight: normal;
 }
+
 .pagination {
     background-color: #F7F7F7;
     border: 5px solid #F3F1E3;

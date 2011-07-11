@@ -15,7 +15,7 @@
                 <span class="left">
                     by&nbsp;
                 </span>
-                <a class="left" title="${article.authorName}" href="/author-articles.do?oId=${article.authorId}">
+                <a class="left" title="${article.authorName}" href="/authors/${article.authorId}">
                     ${article.authorName}
                 </a>
                 <span class="clear"></span>

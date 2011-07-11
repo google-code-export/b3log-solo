@@ -3,7 +3,7 @@
     <div class="content">
         <div class="moon-current-icon"></div>
         <#list users as user>
-        <a class="star-icon" href="/author-articles.do?oId=${user.oId}">
+        <a class="star-icon" href="/authors/${article.authorId}">
             ${user.userName}
         </a>
         </#list>

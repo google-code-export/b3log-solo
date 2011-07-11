@@ -63,7 +63,7 @@
         "em13Label": "${em13Label}",
         "em14Label": "${em14Label}"
     }),
-    maxLength = parseInt("${mostCommentArticles?size}");;
+    maxLength = parseInt("${mostCommentArticles?size}");
 
     (function () {
         // article header: user list.
@@ -80,6 +80,7 @@
         }
 
         common.init();
+        common.replaceSideEm($(".recent-comments div"));
         
         $(".footer-block").each(function (num) {
             var $lis = $(this).find("li");
