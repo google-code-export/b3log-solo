@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Tag articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Jul 10, 2011
+ * @version 1.0.1.5, Jul 11, 2011
  */
 public final class TagArticlesFeedServlet extends HttpServlet {
 
@@ -111,6 +111,11 @@ public final class TagArticlesFeedServlet extends HttpServlet {
                     tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
             final JSONArray tagArticleRelations =
                     tagArticleResult.getJSONArray(Keys.RESULTS);
+            if (0 == tagArticleRelations.length()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation =
