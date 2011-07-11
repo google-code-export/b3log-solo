@@ -3,9 +3,11 @@
 <html>
     <head>
         <@head title="${page.pageTitle} - ${blogTitle}">
-        <meta name="keywords" content="${metaKeywords}"/>
+        <meta name="keywords" content="${metaKeywords},${page.pageTitle}"/>
         <meta name="description" content="${metaDescription}"/>
         </@head>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css"/>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css"/>
     </head>
     <body>
         <#include "top-nav.ftl">
@@ -18,21 +20,21 @@
             </div>
             <div class="comments" id="comments" name="comments">
                 <#list pageComments as comment>
-                <div id="commentItem${comment.oId}">
+                <div id="${comment.oId}">
                     <img class="left" alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                     <div class="comment-panel left">
                         <div class="comment-top">
                             <#if "http://" == comment.commentURL>
-                            <a name="${comment.oId}" class="left">${comment.commentName}</a>&nbsp;
+                            <a name="${comment.oId}" class="left">${comment.commentName}</a>
                             <#else>
                             <a name="${comment.oId}" href="${comment.commentURL}"
-                               target="_blank" class="left">${comment.commentName}</a>&nbsp;
+                               target="_blank" class="left">${comment.commentName}</a>
                             </#if>
                             <#if comment.isReply>
                             @
                             <a href="http://${blogHost}${page.pagePermalink}#${comment.commentOriginalCommentId}"
                                onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                               onmouseout="articleUtil.hideComment('${comment.commentOriginalCommentId}')">
+                               onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">
                                 ${comment.commentOriginalCommentName}</a>
                             </#if>
                             ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -142,7 +144,7 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <input id="submitCommentButton" type="button" onclick="articleUtil.submitComment();" value="${submmitCommentLabel}"/>
+                            <input id="submitCommentButton" type="button" onclick="page.submitComment();" value="${submmitCommentLabel}"/>
                         </td>
                     </tr>
                 </tbody>
@@ -156,9 +158,9 @@
         </div>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
-        <script type="text/javascript" src="/js/articleUtil.js"></script>
+        <script type="text/javascript" src="/js/article.js"></script>
         <script type="text/javascript">
-            var articleUtil = new Article({
+            var page = new Article({
                 "nameTooLongLabel": "${nameTooLongLabel}",
                 "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
                 "mailInvalidLabel": "${mailInvalidLabel}",
@@ -172,75 +174,53 @@
             });
 
             var addComment = function (result, state) {
-                var commentHTML = '<div id="commentItem' + result.oId + '">'
+                var commentHTML = '<div id="' + result.oId + '">'
                     + '<img class="left" alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL
                     + '"/><div class="comment-panel left"><div class="comment-top">';
 
                 if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-                    commentHTML += '<a name="' + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
+                    commentHTML += '<a>' + $("#commentName" + state).val() + '</a>';
                 } else {
-                    commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
-                        + result.oId + '" class="left">' + $("#commentName" + state).val() + '</a>';
+                    commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank">' + $("#commentName" + state).val() + '</a>';
                 }
 
                 if (state !== "") {
-                    var commentOriginalCommentName = $("#commentItem" + articleUtil.currentCommentId + " .comment-top a").first().text();
-                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + articleUtil.currentCommentId + '"'
-                        + 'onmouseover="showComment(this, \'' + articleUtil.currentCommentId + '\');"'
-                        + 'onmouseout="articleUtil.hideComment(\'' + articleUtil.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                    var commentOriginalCommentName = $("#" + page.currentCommentId + " .comment-top a").first().text();
+                    commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
+                        + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
+                        + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                 }
 
                 commentHTML += '&nbsp;' + result.commentDate
-                    + '</div><div class="comment-content">' + articleUtil.replaceCommentsEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
+                    + '</div><div class="comment-content">' + page.replaceCommentsEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
                     + '</div><div class="reply"><a href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
                     + '</div></div><div class="clear"></div></div>';
 
-                articleUtil.addCommentAjax(commentHTML, state);
+                page.addCommentAjax(commentHTML, state);
             }
 
             var replyTo = function (id) {
-                var commentFormHTML = "<table width='100%' cellspacing='0' cellpadding='0' class='comment' id='replyForm'><tbody>"
-                    + "<tr><th width='200px'><div>${commentNameLabel}</div><span class='arrow-right'></span></th>"
-                    + "<td colspan='2'><input type='text' id='commentNameReply' value='" + Cookie.readCookie("commentName") + "'/></td></tr>"
-                    + "<tr><th><div>${commentEmailLabel}</div><span class='arrow-right'></span></th>"
-                    + "<td colspan='2'><input type='text' id='commentEmailReply' value='" + Cookie.readCookie("commentEmail") + "'/></td></tr>"
-                    + "<tr><th><div>${commentURL1Label}</div><span class='arrow-right'></span></th>"
-                    + "<td colspan='2'><div id='commentURLLabelReply'>http://</div><input type='text' id='commentURLReply' value='" + Cookie.readCookie("commentURL") + "'/></td></tr>"
-                    + "<tr><th><div>${commentEmotionsLabel}</div><span class='arrow-right'></span></th>"
-                    + "<td id='emotionsReply'>" + $("#emotions").html() + "</td></tr>"
-                    + "<tr><th valign='top'><div>${commentContentLabel}</div><span class='arrow-right'></span></th>"
-                    + "<td colspan='2'><textarea rows='10' cols='96' id='commentReply'></textarea></td></tr>"
-                    + "<tr><th><div>${captchaLabel}</div><span class='arrow-right'></span></th>"
-                    + "<td><input type='text' id='commentValidateReply'/><img id='captchaReply' alt='validate' src='/captcha.do?"
-                    + new Date().getTime() + "'></img></td><th><span class='error-msg right' id='commentErrorTipReply'/></th></tr>"
-                    + "<tr><td colspan='3'><input id=\"submitCommentButtonReply\" type='button' onclick=\"articleUtil.submitComment('" + id + "', 'Reply');\" value='${submmitCommentLabel}'/>"
-                    + "</td></tr></tbody></table>";
-                articleUtil.addReplyForm(id, commentFormHTML);
+                var commentFormHTML = "<table width='100%' cellspacing='0' cellpadding='0' class='comment' id='replyForm'>";
+                page.addReplyForm(id, commentFormHTML);
             }
 
             var showComment = function (it, id) {
-                if ( $("#commentItemRef" + id).length > 0) {
-                    $("#commentItemRef" + id).show();
+                if ( $("#commentRef" + id).length > 0) {
+                    $("#commentRef" + id).show();
                 } else {
-                    var $refComment = $("#commentItem" + id).clone();
-                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentItemRef" + id);
+                    var $refComment = $("#comment" + id).clone();
+                    $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentRef" + id);
                     $refComment.find("#replyForm, .reply").remove();
                     $("#comments").append($refComment);
                 }
                 var position =  $(it).position();
-                $("#commentItemRef" + id).css({
-                    "top": (position.top + 16) + "px",
-                    "left": "177px"
-                });
-            }
+                $("#commentRef" + id).css("top", (position.top + 11) + "px");
+            };
 
-            var loadAction = function () {
-                articleUtil.load();
-
-                // emotions
-                util.replaceCommentsEm("#comments .comment-content");
-            }
-            loadAction();
+            (function () {
+                page.load();
+                page.replaceCommentsEm("#comments .comment-content");
+            })();
         </script>
     </body>
 </html>

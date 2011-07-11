@@ -38,8 +38,8 @@
                                         <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                                         </#if>
                                         <#if comment.isReply>
-                                        &nbsp;@&nbsp;<a
-                                            href="http://${blogHost}${page.pagePermalink}#${comment.commentOriginalCommentId}"
+                                        @
+                                        <a href="http://${blogHost}${page.pagePermalink}#${comment.commentOriginalCommentId}"
                                             onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
                                             onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                         </#if>

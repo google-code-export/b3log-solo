@@ -9,7 +9,7 @@
     <div class="item navi-comments">
         <h4>${recentCommentsLabel}</h4>
         <ul>
-             <#list recentComments as comment>
+            <#list recentComments as comment>
             <li>
                 <img class='left' title='${comment.commentName}'
                      alt='${comment.commentName}'
@@ -17,12 +17,12 @@
                 <div class='left'>
                     <div>
                         <a target="_blank" href="${comment.commentURL}">
-                        ${comment.commentName}
+                            ${comment.commentName}
                         </a>
                     </div>
                     <div>
                         <a title="${comment.commentContent}" class='side-comment' href="${comment.commentSharpURL}">
-                        ${comment.commentContent}
+                            ${comment.commentContent}
                         </a>
                     </div>
                 </div>
@@ -38,8 +38,8 @@
             <#list mostCommentArticles as article>
             <li>
                 <sup>[${article.articleCommentCount}]</sup><a
-                   title="${article.articleTitle}"
-                   href="${article.articlePermalink}">${article.articleTitle}
+                    title="${article.articleTitle}"
+                    href="${article.articlePermalink}">${article.articleTitle}
                 </a>
             </li>
             </#list>
@@ -51,7 +51,7 @@
             <#list mostViewCountArticles as article>
             <li>
                 <sup>[${article.articleViewCount}]</sup><a title="${article.articleTitle}"
-                   href="${article.articlePermalink}">
+                                                           href="${article.articlePermalink}">
                     ${article.articleTitle}
                 </a>
             </li>
@@ -93,12 +93,12 @@
             <#list archiveDates as archiveDate>
             <li>
                 <#if "en" == localeString?substring(0, 2)>
-                <a href="/archive-date-articles.do?oId=${archiveDate.oId}"
-                   title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
-                    ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDatePublishedArticleCount})
+                <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                   title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
+                    ${archiveDate.monthName} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDatePublishedArticleCount})
                 <#else>
-                <a href="/archive-date-articles.do?oId=${archiveDate.oId}"
-                   title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}${archiveDate.archiveDatePublishedArticleCount}">
+                <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                   title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
                     ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}</a>(${archiveDate.archiveDatePublishedArticleCount})
                 </#if>
             </li>

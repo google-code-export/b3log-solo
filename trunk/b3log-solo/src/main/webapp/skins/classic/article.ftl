@@ -124,8 +124,8 @@
                                                target="_blank">${comment.commentName}</a>
                                             </#if>
                                             <#if comment.isReply>
-                                            &nbsp;@&nbsp;<a
-                                                href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
+                                            @
+                                            <a href="${article.articlePermalink}#${comment.commentOriginalCommentId}"
                                                 onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
                                                 onmouseout="article.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                                             </#if>
