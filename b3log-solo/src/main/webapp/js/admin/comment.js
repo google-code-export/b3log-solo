@@ -17,7 +17,7 @@
 /**
  *  common comment for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.1, Jun 28, 2011
  */
 

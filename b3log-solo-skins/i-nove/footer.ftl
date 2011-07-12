@@ -12,28 +12,43 @@
     Theme by <a href="http://www.neoease.com" target="_blank">NeoEase</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
 <div class="right goTop">
-    <span onclick="util.goTop();">${goTopLabel}</span>
+    <span onclick="common.goTop();">${goTopLabel}</span>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript">
-    var util = new Common({
+    var common = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
         "logoutLabel": "${logoutLabel}",
         "skinDirName": "${skinDirName}",
-        "loginLabel": "${loginLabel}"
+        "loginLabel": "${loginLabel}",
+        "em00Label": "${em00Label}",
+        "em01Label": "${em01Label}",
+        "em02Label": "${em02Label}",
+        "em03Label": "${em03Label}",
+        "em04Label": "${em04Label}",
+        "em05Label": "${em05Label}",
+        "em06Label": "${em06Label}",
+        "em07Label": "${em07Label}",
+        "em08Label": "${em08Label}",
+        "em09Label": "${em09Label}",
+        "em10Label": "${em10Label}",
+        "em11Label": "${em11Label}",
+        "em12Label": "${em12Label}",
+        "em13Label": "${em13Label}",
+        "em14Label": "${em14Label}"
     });
-    util.init();
-    util.replaceCommentsEm(".side-navi .navi-comments .side-comment");
+    common.init();
+    common.replaceSideEm($(".side-navi .navi-comments .side-comment"));
     
     // set selected navi
     $("#header-navi li").each(function (i) {
         if (i < $("#header-navi li").length - 1) {
             var $it = $(this),
             locationURL = window.location.pathname + window.location.search;
-            if (i === 0 && (locationURL.indexOf("/index.do") > -1 || locationURL === "/")) {
+            if (i === 0 && (locationURL === "/")) {
                 $it.addClass("selected");
                 return;
             }

@@ -1,4 +1,4 @@
-<#include "macro.ftl">
+<#include "macro-head.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,8 +14,9 @@
                 <#include "header.ftl">
                 <div class="body">
                     <div class="left main">
-                        <div id="tagsPanel">
-                        </div>
+                        <#list tags as tag>
+                        <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
+                        </#list>
                     </div>
                     <div class="right">
                         <#include "side.ftl">
@@ -27,14 +28,5 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            util.setTagsPanel([<#list tags as tag>{
-                    tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",
-                    tagName: "${tag.tagTitle}",
-                    tagCount: ${tag.tagPublishedRefCount},
-                    tagId: ${tag.oId}
-                }<#if tag_has_next>,</#if>
-                    </#list>]);
-        </script>
     </body>
 </html>

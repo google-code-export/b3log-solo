@@ -70,7 +70,7 @@
         var isAuthorArticle = false;
         $(".header-user a").each(function () {
             var it = this;
-            if (window.location.search === it.search) {
+            if (window.location.pathname === it.pathname) {
                 it.className = "star-current-icon";
                 isAuthorArticle = true;
             }
