@@ -1,13 +1,13 @@
 /*
  * zoltan skin style
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.1, July 6, 2011
 */
 body {
     background: url("../images/bg.jpg") repeat scroll 0 0 #EAE5D3;
     color: #846D55;
-    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, '宋体';
+    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, '瀹嬩綋';
     font-size: 13px;
 }   
 
@@ -22,7 +22,7 @@ h2 {
 input, textarea {
     color: #846D55;
     font-size: 13px;
-    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, '宋体';
+    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, '瀹嬩綋';
 }
 
 a, a:link, a:active, a:visited {
