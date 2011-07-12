@@ -115,7 +115,6 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
         final long cachedBytes = cache.getCachedBytes();
         final long hitBytes = cache.getHitBytes();
 
-
         try {
             ret.put(Cache.CACHE_CACHED_COUNT, cachedCount);
             ret.put(Cache.CACHE_HIT_COUNT, hitCount);
