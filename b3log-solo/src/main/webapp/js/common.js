@@ -134,16 +134,13 @@ $.extend(Common.prototype, {
         for (var i = 0; i < comments.length; i++) {
             var $comment = $(comments[i]);
             var commentSplited = $comment.html().split("[em");
-            if (commentSplited.length === 1) {
-                break;  
-            }
             var replacedStr = commentSplited[0];
             for (var j = 1; j < commentSplited.length; j++) {
                 var key = commentSplited[j].substr(0, 2);
                 replacedStr += "[" + this.tips["em" + key + "Label"]  +
                     "]" + commentSplited[j].slice(3);
             }
-            $comment.attr("title", replacedStr).html(replacedStr);
+            $comment.html(replacedStr);
         }
     }
 });
