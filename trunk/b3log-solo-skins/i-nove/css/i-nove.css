@@ -25,7 +25,10 @@ h5{font-size:12px;}
 #header-navi li.selected a{background-position:0 -62px;}
 #header-navi li.selected a.home{background-position:0 -155px;}
 #statistic{line-height:31px;margin-right:15px;font-size:11px;}
-.footer .copyright{padding-top:12px;width:880px;}
+.footer .copyright{  
+    padding: 12px;
+    width: 857px;
+}
 .footer .copyright span{margin:0px;}
 .footer .copyright a span{margin:0px -1px;}
 .footer .goTop{background:url("../images/icons.gif") no-repeat scroll 0 -304px transparent;color:#2A2A2A;cursor:pointer;line-height:18px;margin:5px 17px 0 0;padding-left:16px;width:22px;}

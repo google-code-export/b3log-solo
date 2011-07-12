@@ -17,7 +17,7 @@
 /**
  * plugin list for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.2, Jun 30, 2011
  */
 

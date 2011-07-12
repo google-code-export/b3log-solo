@@ -17,8 +17,8 @@
 /**
  *  index for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.3, Jun 30, 2011
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.0.4, July 12, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";

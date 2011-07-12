@@ -17,8 +17,8 @@
 /**
  *  util and every page should be userd.
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.1, July 9, 2011
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.0.2, July 12, 2011
  */
 
 var Util = {
