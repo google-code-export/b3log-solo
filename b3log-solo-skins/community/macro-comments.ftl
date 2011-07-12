@@ -199,7 +199,7 @@
     (function () {
         page.load();
         page.replaceCommentsEm("#comments .comment-content");
-        <#nested>
-    })();
+            <#nested>
+        })();
 </script>
 </#macro>
