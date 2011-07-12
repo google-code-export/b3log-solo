@@ -64,11 +64,14 @@ public final class Preferences {
      * @return user preference, returns {@code null} if not found
      */
     public JSONObject getPreference() {
+        LOGGER.log(Level.FINER, "Getting preference....");
+        LOGGER.log(Level.FINER, "Try to get preference from cache");
         final Object preferenceString = userPreferenceCache.get(PREFERENCE);
         JSONObject ret = null;
         try {
             if (null == preferenceString) {
-                LOGGER.info("Load preference from datastore");
+                LOGGER.finer("Can't get preference from cache, "
+                             + "so loads it from datastore");
                 ret = preferenceRepository.get(PREFERENCE);
 
                 if (null == ret) {
@@ -87,6 +90,8 @@ public final class Preferences {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
+
+        LOGGER.log(Level.FINER, "Got preference");
 
         return ret;
     }
