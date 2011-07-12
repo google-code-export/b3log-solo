@@ -31,7 +31,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 19, 2011
+ * @version 1.0.0.6, Jul 12, 2011
  */
 public final class Preferences {
 
@@ -72,6 +72,8 @@ public final class Preferences {
                 ret = preferenceRepository.get(PREFERENCE);
 
                 if (null == ret) {
+                    LOGGER.log(Level.WARNING,
+                               "Can not load preference from datastore");
                     return null;
                 }
 
