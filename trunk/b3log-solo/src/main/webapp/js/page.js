@@ -20,12 +20,12 @@
  * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
  * @version 1.0.0.3, Jun 30, 2011
  */
-var Article = function (tips) {
+var Page = function (tips) {
     this.currentCommentId = "";
     this.tips = tips;
 };
 
-$.extend(Article.prototype, {    
+$.extend(Page.prototype, {    
     insertEmotions:  function (name) {
         if (name === undefined) {
             name = "";
@@ -195,7 +195,7 @@ $.extend(Article.prototype, {
         }
         var tips = this.tips,
         type = "article";
-        if (tips.randomArticles1Label === undefined) {
+        if (tips.externalRelevantArticlesDisplayCount === undefined) {
             type = "page";
         }
         if (this.validateComment(statue)) {
@@ -254,28 +254,36 @@ $.extend(Article.prototype, {
             $("#" + id).append(commentFormHTML  + $("table").html() + "</table>");
             
             // change id, bind event and set value
-            $("#replyForm input, #replyForm button, #replyForm textarea").each(function () {
+            $("#replyForm input, #replyForm textarea").each(function () {
                 this.id = this.id + "Reply";
             });
-            $("#submitCommentButtonReply").removeAttr("onclick").click(function () {
-                that.submitComment(id, 'Reply');
-            });
-            $("#emotions").attr("id", $("#emotions").attr("id") + "Reply");
-            $("#commentErrorTip").attr("id", $("#commentErrorTip").attr("id") + "Reply");
+            
+            $("#commentNameReply").val(Cookie.readCookie("commentName"));
+            
+            $("#commentEmailReply").val(Cookie.readCookie("commentEmail"));
+            
             var $label = $("#commentURLLabel");
             if ($label.length === 1) {
                 $label.attr("id", $label.attr("id") + "Reply");
             }
-            $("#commentNameReply").val(Cookie.readCookie("commentName"));
-            $("#commentEmailReply").val(Cookie.readCookie("commentEmail"));
             $("#commentURLReply").val(Cookie.readCookie("commentURL"));
             
-            $("#commentValidateReply").keypress(function (event) {
+            $("#emotions").attr("id", $("#emotions").attr("id") + "Reply");
+            this.insertEmotions("Reply");
+            
+             $("#commentValidateReply").keypress(function (event) {
                 if (event.keyCode === 13) {
                     that.submitComment(id, 'Reply');
                 }
             });
-            this.insertEmotions("Reply");
+            $("#captcha").attr("id", $("#captcha").attr("id") + "Reply");
+            $("#commentErrorTip").attr("id", $("#commentErrorTip").attr("id") + "Reply").html("");
+            
+            $("#submitCommentButtonReply").attr("id", $("#submitCommentButtonReply").attr("id") + "Reply").
+            removeAttr("onclick").click(function () {
+                that.submitComment(id, 'Reply');
+            });
+            
             if (Cookie.readCookie("commentName")  === "") {
                 $("#commentNameReply").focus();
             } else {
