@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount}) - ${blogTitle}">
-        <meta name="keywords" content="${metaKeywords},${archiveDate.archiveDateYear}${archiveDate.archiveDateMonth}"/>
+        <@head title="${authorName} - ${blogTitle}">
+        <meta name="keywords" content="${metaKeywords},${authorName}"/>
         <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
         </@head>
     </head>
@@ -15,14 +15,10 @@
                 <div class="body">
                     <div class="left main">
                         <div class="kind-title">
-                            ${archive1Label}
+                            ${commentName1Label}
                         </div>
                         <div class="kind-panel">
-                            <#if "en" == localeString?substring(0, 2)>
-                            ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
-                            <#else>
-                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
-                            </#if>
+                            ${authorName}
                         </div>
                         <#include "article-list.ftl"> 
                     </div>

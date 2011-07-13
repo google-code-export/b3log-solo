@@ -41,7 +41,7 @@
         "em14Label": "${em14Label}"
     });
     common.init();
-    common.replaceSideEm($(".side-navi .navi-comments .side-comment"));
+    common.replaceSideEm($(".side-navi .navi-comments li div.left"));
     
     // set selected navi
     $("#header-navi li").each(function (i) {
