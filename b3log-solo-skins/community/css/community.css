@@ -417,12 +417,9 @@ a.header-title {
     width: 240px;
 }
 
-#emotions img {
-    height: 24px;
-    width: 24px;
-    cursor: pointer;
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
+    background-image: url("/images/emotions-black.png");
 }
-
 /* footer secondary */
 .footer-secondary {
     background: url("..../images/indentline-light.png") repeat-x scroll left top #DEDEDE;

@@ -49,9 +49,8 @@
                                             <a href="/tags/${articleTag?url('UTF-8')}">
                                                 ${articleTag}</a><#if articleTag_has_next>,</#if>
                                         </span>
-                                        </#list>
-                                        by 
-                                        <a href="/authors/${article.authorId}">
+                                        </#list>&nbsp;&nbsp;&nbsp;
+                                        ${author1Label}<a href="/authors/${article.authorId}">
                                             ${article.authorName}
                                         </a>
                                     </div>

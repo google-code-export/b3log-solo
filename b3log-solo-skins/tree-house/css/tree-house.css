@@ -16,7 +16,11 @@ h5{font-size:12px;}
 .side{width:256px;margin:0 0 0 -21px;}
 .body{padding-bottom:682px;min-height:643px;}
 .main{width:634px;}
-.footer{color:Lavender;}
+.footer{    
+    color: Lavender;
+    padding: 12px;
+    text-align: center;
+}
 .footer a{font-weight:bold;}
 .article{overflow:hidden;width:553px;}
 .article-header sup{color:red;font-size:12px;}
@@ -25,10 +29,16 @@ h5{font-size:12px;}
 .article-header h2 a:hover{background-color:#242323;color:#EC0A8B;}
 .article-info{margin:10px 0 0 9px;width:109px;}
 .article-main{margin:10px 0 0 9px;min-height:150px;width:426px;}
-.article-tags{background-color:#EC0A8B;color:#FFFFFF;font-style:normal;padding:3px 10px 4px;}
-.article-tags a{color:#FFFFFF;font-weight:bold;text-decoration:none;}
-.article-tags a:hover{text-decoration:underline;}
-.article-abstract{color:#42423D;line-height:20px;padding:16px 10px 12px 0;text-align:justify;}
+.article-tags{
+    background-color: #EC0A8B;
+    float: left;
+    font-style: normal;
+    height: 21px;
+    line-height: 21px;
+    margin: 0 10px 10px 0;
+    padding: 3px 10px;
+}
+.article-abstract{color:#42423D;line-height:20px;padding:6px 10px 12px 0;text-align:justify;}
 .main .line{background:url("../images/bg-branch.png") no-repeat scroll 0 0 transparent;height:108px;width:575px;}
 .article-date{-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#D4F2FB;border:6px solid #A8D3ED;padding:6px;width:65px;margin-left:16px;}
 .article-comment{background:url("../images/bg-comments.png") no-repeat scroll 0 0 transparent;font-size:12px;height:22px;margin:24px 0 0;padding:29px 0 0;text-align:center;}
@@ -41,21 +51,33 @@ h5{font-size:12px;}
 .article-details-footer a{line-height:16px;}
 .article-details-footer{margin:36px 12px 0 0;}
 .article-relative{line-height:20px;margin:12px 0;}
-.comments{padding:26px 0 0 99px;position:relative;}
-.comments-header{position:relative;background:url("../images/balloons.png") no-repeat scroll 0 0 transparent;height:88px;margin:-11px 0 -29px;width:440px;z-index:10;}
+.comments{padding-left: 99px;position:relative;}
+.comments-header{
+    background: url("../images/balloons.png") no-repeat scroll 0 0 transparent;
+    height: 88px;
+    left: 100px;
+    position: relative;
+    top: 40px;
+    width: 440px;
+    z-index: 10;
+}
 .comment-top{background:url("../images/bg-comments-top.png") no-repeat scroll 0 0 transparent;height:22px;}
 .comment-body{background:url("../images/bg-comments-body.png") repeat-y scroll 0 0 transparent;padding:0 27px 2px 27px;width:401px;margin-left:-1px;color:#42423D;}
 .comment-body td{white-space:normal;}
 .comment-bottom{background:url("../images/bg-comments-bottom.png") no-repeat scroll 0 0 transparent;height:23px;}
 .comment-title{padding-bottom:6px;}
 .comment-title a{font-weight:bold;color:#42423D;}
-.comment-body-ref{left:54px;opacity:0.9;position:absolute;top:16px;z-index:16;}
+.comment-body-ref{left:182px;opacity:0.9;position:absolute;top:16px;z-index:16;}
 #emotions img, #emotionsReply img{cursor:pointer;display:block;float:left;margin-right:2px;}
 img.comment-picture{width:60px;height:60px;padding:0px 6px 4px 0;}
 .comment-reply{margin:0 auto 24px auto;}
 #commentURLLabel, #commentURLLabelReply{border-width:2px 0px 2px 2px;border-style:inset none inset inset;border-color:#CCCCCC;float:left;height:24px;line-height:24px;background-color:#FFFFFF;*margin-top:1px;}
 #commentURL, #commentURLReply{border-left:0px;width:287px;}
-#comment, #commentReply{width:321px;}
+#comment, #commentReply{width:321px;resize: vertical;}
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
+    background-image: url("/images/emotions-blue.png");
+    margin-right: 2px;
+}
 .error-msg{color:#EC0A8B;font-weight:bold;white-space:normal;}
 #sideNavi .line{background:url("../images/bg-branch-small.png") no-repeat;height:69px;margin-top:12px;}
 #sideNavi .block{margin-left:64px;}
@@ -85,6 +107,3 @@ img.comment-picture{width:60px;height:60px;padding:0px 6px 4px 0;}
 .error-title{width:553px;}
 .error-panel{padding:24px;}
 .error-title{background-color:#242323;color:#EC0A8B;display:block;padding:3px 10px 4px 10px;position:relative;}
-.commentIcon, .browserIcon{width:16px;height:16px;background-image:url("../images/icon.png");cursor:pointer;margin-right:3px;}
-.commentIcon{background-position:-32px -16px;}
-.browserIcon{background-position:-128px -16px;}

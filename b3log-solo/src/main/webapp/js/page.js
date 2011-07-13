@@ -221,6 +221,7 @@ $.extend(Page.prototype, {
                     switch (result.sc) {
                         case "COMMENT_" + type.toUpperCase() + "_SUCC":
                             addComment(result, statue);
+                            window.location.hash = "#comments";
                             break;
                         case "CAPTCHA_ERROR":
                             $("#commentErrorTip" + statue).html(tips.captchaErrorLabel);
@@ -240,7 +241,7 @@ $.extend(Page.prototype, {
         }
     },
 
-    addReplyForm: function (id, commentFormHTML) {
+    addReplyForm: function (id, commentFormHTML, endHTML) {
         var that = this;
         if (id === this.currentCommentId) {
             if (Cookie.readCookie("commentName")  === "") {
@@ -251,7 +252,8 @@ $.extend(Page.prototype, {
             return;
         } else {
             $("#replyForm").remove();
-            $("#" + id).append(commentFormHTML  + $("table").html() + "</table>");
+            endHTML = endHTML ? endHTML : "";
+            $("#" + id).append(commentFormHTML  + $("table").html() + "</table>" + endHTML);
             
             // change id, bind event and set value
             $("#replyForm input, #replyForm textarea").each(function () {
@@ -271,12 +273,13 @@ $.extend(Page.prototype, {
             $("#emotions").attr("id", $("#emotions").attr("id") + "Reply");
             this.insertEmotions("Reply");
             
-             $("#commentValidateReply").keypress(function (event) {
+            $("#commentValidateReply").keypress(function (event) {
                 if (event.keyCode === 13) {
                     that.submitComment(id, 'Reply');
                 }
             });
-            $("#captcha").attr("id", $("#captcha").attr("id") + "Reply");
+            $("#captcha").attr("id", $("#captcha").attr("id") + "Reply").
+            attr("src", "/captcha.do?" + new Date().getTime());
             $("#commentErrorTip").attr("id", $("#commentErrorTip").attr("id") + "Reply").html("");
             
             $("#submitCommentButton").attr("id", $("#submitCommentButtonReply").attr("id") + "Reply").

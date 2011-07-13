@@ -62,10 +62,10 @@ $.extend(Common.prototype, {
     goBottom: function () {
         switch (this.tips.skinDirName) {
             case "tree-house":
-                window.scrollTo(0, $(window).height() - 350);
+                window.scrollTo(0, $("body").height() - $(window).height() - 700);
                 break;
             default :
-                window.scrollTo(0, $(window).height());
+                window.scrollTo(0, $("body").height() - $(window).height());
                 break;
         }
     },
