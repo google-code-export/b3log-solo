@@ -18,7 +18,7 @@
  * file list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Jun 30, 2011
+ * @version 1.0.0.3, July 12, 2011
  */
 
 /* file-list 相关操作 */
@@ -36,7 +36,7 @@ admin.fileList = {
      */
     init: function () {
         this.tablePagination.buildTable([{
-            style: "padding-left: 12px;font-size:16px;",
+            style: "padding-left: 12px;font-size:14px;",
             text: Label.fileNameLabel,
             index: "name",
             minWidth: 260

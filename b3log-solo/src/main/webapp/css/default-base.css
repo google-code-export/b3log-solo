@@ -2,7 +2,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, July 3, 2011
+ * @version 1.0.0.2, July 13, 2011
 */
 *,html,body {
     margin: 0;
@@ -12,7 +12,7 @@ body {
     background-color: #FFF;
     color: #000;
     font-family: Helvetica,Arial,sans-serif;
-    font-size: small;
+    font-size: 12px;
 }
 a,a:link {
     color: #00C;
