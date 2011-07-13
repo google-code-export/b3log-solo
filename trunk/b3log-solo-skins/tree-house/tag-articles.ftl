@@ -33,7 +33,5 @@
                 </div>
             </div>
         </div>
-        <div class='goTopIcon' onclick='util.goTop();'></div>
-        <div class='goBottomIcon' onclick='util.goBottom();'></div>
     </body>
 </html>

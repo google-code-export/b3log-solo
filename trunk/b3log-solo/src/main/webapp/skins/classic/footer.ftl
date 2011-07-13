@@ -39,5 +39,5 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         "em14Label": "${em14Label}"
     });
     common.init();
-    common.replaceSideEm($("#recentComments li .side-comment"));
+    common.replaceSideEm($("#recentComments li"));
 </script>

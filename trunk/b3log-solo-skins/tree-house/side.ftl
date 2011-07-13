@@ -106,15 +106,31 @@
                 <#if "en" == localeString?substring(0, 2)>
                 <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                    title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
-                    ${archiveDate.monthName} ${archiveDate.archiveDateYear}</a>(${archiveDate.archiveDatePublishedArticleCount})
+                    ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
                 <#else>
                 <a href="/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                    title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
-                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}</a>(${archiveDate.archiveDatePublishedArticleCount})
+                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
                 </#if>
             </li>
             </#list>
         </ul>
         <div class='clear'></div>
     </div>
+    <#if 1 != users?size>
+    <div class="line"></div>
+    <div class="block">
+        <h3>${authorLabel}</h3>
+        <ul>
+            <#list users as user>
+            <li>
+                <a class="star-icon" href="/authors/${user.oId}">
+                    ${user.userName}
+                </a>
+            </li>
+            </#list>
+        </ul>
+        <div class='clear'></div>
+    </div>
+    </#if>
 </div>

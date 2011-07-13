@@ -81,13 +81,13 @@ button:hover,.button:hover {
     margin-bottom: 12px !important;
 }
 .marginLeft12 {
-    margin-left: 12px;
+    margin-left: 12px !important;;
 }
 .marginLeft6 {
-    margin-left: 6px;
+    margin-left: 6px !important;;
 }
 .marginRight12 {
-    margin-right: 12px;
+    margin-right: 12px !important;;
 }
 .f-bold {
     font-weight: bold !important;
