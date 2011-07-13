@@ -17,12 +17,18 @@
     </h2>
     <div class="margin5">
         <div class="article-date left">
-            <span class="dateIcon left"></span>
-            <#if article.hasUpdated>
-            ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
-            <#else>
-            ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
-            </#if>
+            <a class="left" title="${article.authorName}" href="/authors/${article.authorId}">
+                <span class="authorIcon"></span>
+                ${article.authorName}
+            </a>
+            <span class="dateIcon"></span>
+            <span class="left">
+                <#if article.hasUpdated>
+                ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
+                <#else>
+                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+                </#if>
+            </span>
         </div>
         <div class="right">
             <a href="${article.articlePermalink}#comments" class="left">
