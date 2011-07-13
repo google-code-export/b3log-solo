@@ -3,7 +3,7 @@
 <html>
     <head>
         <@head title="${allTagsLabel} - ${blogTitle}">
-        <meta name="keywords" content="${metaKeywords},${tag.tagTitle}"/>
+        <meta name="keywords" content="${metaKeywords},${allTagsLabel}"/>
         <meta name="description" content="<#list tags as tag>${tag.tagTitle}<#if tag_has_next>,</#if></#list>"/>
         </@head>
     </head>
@@ -16,6 +16,7 @@
                     <div class="left main">
                         <#list tags as tag>
                         <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
+                        &nbsp;&nbsp;
                         </#list>
                     </div>
                     <div class="right">
