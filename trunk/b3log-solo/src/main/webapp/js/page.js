@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 12, 2011
+ * @version 1.0.0.5, July 13, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -96,7 +96,7 @@ $.extend(Page.prototype, {
             var key = commentSplited[j].substr(0, 2);
             str += "<span class='em" + key + "'></span>" + "<span class='em-span'>" +  commentSplited[j].slice(3) + "</span>";
         }
-        return str;
+        return str + "<div class='clear'></div>";
     },
 
     load: function () {
@@ -279,7 +279,7 @@ $.extend(Page.prototype, {
             $("#captcha").attr("id", $("#captcha").attr("id") + "Reply");
             $("#commentErrorTip").attr("id", $("#commentErrorTip").attr("id") + "Reply").html("");
             
-            $("#submitCommentButtonReply").attr("id", $("#submitCommentButtonReply").attr("id") + "Reply").
+            $("#submitCommentButton").attr("id", $("#submitCommentButtonReply").attr("id") + "Reply").
             removeAttr("onclick").click(function () {
                 that.submitComment(id, 'Reply');
             });

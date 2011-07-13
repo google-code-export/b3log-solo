@@ -18,7 +18,7 @@
  * page list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Jun 30, 2011
+ * @version 1.0.0.3, July 12, 2011
  */
 
 /* page-list 相关操作 */
@@ -39,7 +39,7 @@ admin.pageList = {
             text: "",
             index: "pageOrder",
             width: 60,
-            style: "padding-left: 12px;font-size:16px;"
+            style: "padding-left: 12px;font-size:14px;"
         }, {
             style: "padding-left: 12px;",
             text: Label.titleLabel,
@@ -112,12 +112,12 @@ admin.pageList = {
                                 if (pages.length === 1) {
                                     pageData[i].pageOrder = "";
                                 } else {
-                                    pageData[i].pageOrder = '<div class="table-center" style="width:16px">\
+                                    pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
                                         <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" \
                                         class="table-downIcon"></span></div>';
                                 }
                             } else if (i === pages.length - 1) {
-                                pageData[i].pageOrder = '<div class="table-center" style="width:16px">\
+                                pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
                                     <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
                                     </div>';
                             } else {
