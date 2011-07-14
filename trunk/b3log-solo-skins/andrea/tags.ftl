@@ -15,8 +15,10 @@
             <div>
                 <div class="main">
                     <div class="main-content">
-                        <div id="tagsPanel">
-                        </div>
+                        <#list tags as tag>
+                        <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
+                        &nbsp;&nbsp;
+                        </#list>
                     </div>
                     <div class="main-footer"></div>
                 </div>
@@ -33,14 +35,5 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript">
-            util.setTagsPanel([<#list tags as tag>{
-                    tagNameURLEncoded: "${tag.tagTitle?url('UTF-8')}",
-                    tagName: "${tag.tagTitle}",
-                    tagCount: ${tag.tagPublishedRefCount},
-                    tagId: ${tag.oId}
-                }<#if tag_has_next>,</#if>
-                    </#list>]);
-        </script>
     </body>
 </html>

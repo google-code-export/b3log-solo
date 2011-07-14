@@ -49,21 +49,20 @@
 </dl>
 <#if 0 != paginationPageCount>
 <div class="pagination right">
-    <#if paginationPageNums?first != 1>
-    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=1" title="${firstPageLabel}"><<</a>
-    <a id="previousPage"
-       href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationFirstPageNum}"
-       title="${previousPageLabel}"><</a>
+    <#if 1 != paginationPageNums?first>
+    <a href="${path}/1"><<}</a>
+    <a id="previousPage" href="${path}/${paginationPreviousPageNum}">${previousPageLabel}</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
-    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
+    <#if paginationPageNum == paginationCurrentPageNum>
+    <a href="${path}/${paginationPageNum}" class="selected">${paginationPageNum}</a>
+    <#else>
+    <a href="${path}/${paginationPageNum}">${paginationPageNum}</a>
+    </#if>
     </#list>
-    <#if paginationPageNums?last!=paginationPageCount>
-    <a id="nextPage"
-       href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationLastPageNum}"
-       title="${nextPagePabel}">></a>
-    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}"
-       title="${lastPageLabel}">>></a>
+    <#if paginationPageNums?last != paginationPageCount>
+    <a id="nextPage" href="${path}/${paginationNextPageNum}">${nextPagePabel}</a>
+    <a href="${path}/${paginationPageCount}">>></a>
     </#if>
     &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
