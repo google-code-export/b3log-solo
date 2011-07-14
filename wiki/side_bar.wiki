@@ -30,7 +30,7 @@
  * 入伙
     * [join_us 加入 B3log 团队]
     * [about_us 关于我们]
- *FAQ
+ * FAQ
    * [dev_faq 开发常见问题]
    
   
