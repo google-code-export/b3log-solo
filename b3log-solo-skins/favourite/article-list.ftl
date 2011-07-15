@@ -16,26 +16,26 @@
         </#if>
     </h2>
     <div class="posttime-blue">
-         <div class="posttime-MY">
+        <div class="posttime-MY">
             <#if article.hasUpdated>
             ${article.articleUpdateDate?string("MMM yyyy")}
             <#else>
             ${article.articleCreateDate?string("MMM yyyy")}
             </#if>
-         </div>
-         <div class="posttime-D">
+        </div>
+        <div class="posttime-D">
             <#if article.hasUpdated>
             ${article.articleUpdateDate?string("dd")}
             <#else>
             ${article.articleCreateDate?string("dd")}
             </#if>
-         </div>
+        </div>
     </div>
     <div class="article-abstract">
         <div class="note">
             <div class="corner"></div>
             <div class="substance">
-            ${article.articleAbstract}
+                ${article.articleAbstract}
             </div>
         </div>
     </div>
@@ -58,29 +58,33 @@
             <span class="count">${article.articleCommentCount}</span>
         </a>
         <div class="right more">
-        <a href="${article.articlePermalink}" class="right">
-            ${readmoreLabel}
-        </a>
+            <a href="${article.articlePermalink}" class="right">
+                ${readmoreLabel}
+            </a>
         </div>
         <div class="clear"></div>
     </div>
-    <div class="article-footer">
+    <div class="footer">
         <div class="clear"></div>
     </div>
 </div>
 </#list>
 <#if 0 != paginationPageCount>
 <div class="pagination">
-    <#if paginationPageNums?first != 1>
-    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=1">${firstPageLabel}</a>
-    <a id="previousPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationFirstPageNum}">${previousPageLabel}</a>
+    <#if 1 != paginationPageNums?first>
+    <a href="${path}/1">${firstPageLabel}</a>
+    <a id="previousPage" href="${path}/${paginationPreviousPageNum}">${previousPageLabel}</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
-    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageNum}">${paginationPageNum}</a>
+    <#if paginationPageNum == paginationCurrentPageNum>
+    <a href="${path}/${paginationPageNum}" class="selected">${paginationPageNum}</a>
+    <#else>
+    <a href="${path}/${paginationPageNum}">${paginationPageNum}</a>
+    </#if>
     </#list>
-    <#if paginationPageNums?last!=paginationPageCount>
-    <a id="nextPage" href="${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum={paginationLastPageNum}">${nextPagePabel}</a>
-    <a href="/${actionName}.do?<#if oId??>oId=${oId}&</#if>paginationCurrentPageNum=${paginationPageCount}">${lastPageLabel}</a>
+    <#if paginationPageNums?last != paginationPageCount>
+    <a id="nextPage" href="${path}/${paginationNextPageNum}">${nextPagePabel}</a>
+    <a href="${path}/${paginationPageCount}">${lastPageLabel}</a>
     </#if>
     &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
