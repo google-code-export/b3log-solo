@@ -422,7 +422,7 @@ a.header-title {
 }
 /* footer secondary */
 .footer-secondary {
-    background: url("..../images/indentline-light.png") repeat-x scroll left top #DEDEDE;
+    background: url("../images/indentline-light.png") repeat-x scroll left top #DEDEDE;
     padding: 40px 0;
 }
 
@@ -492,7 +492,7 @@ a.header-title {
     color: #000000;
     height: 25px;
     padding: 0 0 15px;
-    background: url("../images/indentlimagesine.png") repeat-x scroll left bottom transparent;
+    background: url("../images/indentline.png") repeat-x scroll left bottom transparent;
 }
 
 .footer-block ul {

@@ -15,7 +15,7 @@
             <h4 id="recentComments">${recentCommentsLabel}</h4>
         </div>
         <ul>
-             <#list recentComments as comment>
+            <#list recentComments as comment>
             <li>
                 <img class='left' title='${comment.commentName}'
                      alt='${comment.commentName}'
@@ -23,12 +23,12 @@
                 <div class='left'>
                     <div>
                         <a href="${comment.commentURL}">
-                        ${comment.commentName}
+                            ${comment.commentName}
                         </a>
                     </div>
                     <div class="comm">
                         <a class='side-comment' href="${comment.commentSharpURL}">
-                        ${comment.commentContent}
+                            ${comment.commentContent}
                         </a>
                     </div>
                 </div>
@@ -79,7 +79,8 @@
                     <img alt="${tag.tagTitle}" src="/images/feed.png"/>
                 </a>
                 <a title="${tag.tagTitle}" href="/tags/${tag.tagTitle?url('UTF-8')}">
-                    ${tag.tagTitle}</a>(${tag.tagPublishedRefCount})
+                    ${tag.tagTitle}(${tag.tagPublishedRefCount})
+                </a>
             </li>
             </#list>
         </ul>
@@ -100,7 +101,9 @@
         </ul>
     </div>
     <div class="line"></div>
+    <#if 1 = users?size>
     <div class="rings"></div>
+    </#if>
     <div class="item">
         <div class="archivio">
             <h4>${archiveLabel}</h4>
@@ -121,4 +124,22 @@
             </#list>
         </ul>
     </div>
+    <#if 1 != users?size>
+    <div class="line"></div>
+    <div class="rings"></div>
+    <div class="item">
+        <div class="archivio">
+            <h4>${authorLabel}</h4>
+        </div>
+        <ul id="sideAuthor">
+            <#list users as user>
+            <li>
+                <a href="/authors/${user.oId}" title="${user.userName}">
+                    ${user.userName}
+                </a>
+            </li>
+            </#list>
+        </ul>
+    </div>
+    </#if>
 </div>

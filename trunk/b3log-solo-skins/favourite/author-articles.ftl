@@ -2,10 +2,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${notFoundLabel} - ${blogTitle}">
-        <meta name="keywords" content="${notFoundLabel},${metaKeywords}"/>
-        <meta name="description" content="${sorryLabel},${notFoundLabel},${metaDescription}"/>
-        <meta name="robots" content="noindex, follow"/>
+        <@head title="${authorName} - ${blogTitle}">
+        <meta name="keywords" content="${metaKeywords},${authorName}"/>
+        <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
         </@head>
     </head>
     <body>
@@ -16,11 +15,13 @@
                 <div class="roundtop"></div>
                 <div class="body">
                     <div class="left main">
-                        <div class="error-panel">
-                            <h1 class="error-title">${notFoundLabel}</h1>
-                            <a href="http://${blogHost}">${returnTo1Label}${blogTitle}</a>
-
+                        <div class="kind-title">
+                            ${author1Label}
                         </div>
+                        <div class="kind-panel">
+                            ${authorName}
+                        </div>
+                        <#include "article-list.ftl">
                     </div>
                     <div class="right">
                         <#include "side.ftl">

@@ -17,10 +17,10 @@
         ${htmlHead}
     </head>
     <body>
-        <#include "common-top.ftl">
+        <#include "top-nav.ftl">
         <div class="wrapper">
             <div class="content">
-                <#include "article-header.ftl">
+                <#include "header.ftl">
                 <div class="roundtop"></div>
                 <div class="body">
                     <div class="left main">
@@ -133,7 +133,7 @@
                         </table>
                     </div>
                     <div class="right">
-                        <#include "article-side.ftl">
+                        <#include "side.ftl">
                     </div>
                     <div class="clear"></div>
                 </div>
@@ -142,7 +142,7 @@
         </div>
         <div class="footer">
             <div class="footer-icon"><#include "statistic.ftl"></div>
-            <#include "article-footer.ftl">
+            <#include "footer.ftl">
         </div>
         <script type="text/javascript" src="/js/articleUtil.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
