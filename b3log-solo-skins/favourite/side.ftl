@@ -128,7 +128,7 @@
     <div class="line"></div>
     <div class="rings"></div>
     <div class="item">
-        <div class="archivio">
+        <div class="side-author">
             <h4>${authorLabel}</h4>
         </div>
         <ul id="sideAuthor">
