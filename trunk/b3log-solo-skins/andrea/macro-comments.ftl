@@ -174,13 +174,11 @@
         var commentFormHTML = "<table class='comment-form' id='replyForm' cellpadding='0' cellspacing='0'>";
                 
         page.addReplyForm(id, commentFormHTML);
-        if ($.browser.version !== "7.0") {
-            $("#commentURLReply").focus(function () {
-                $("#commentURLLabelReply").addClass("selected");
-            }).blur(function () {
-                $("#commentURLLabelReply").removeClass("selected");
-            });
-        }
+        $("#commentURLReply").focus(function () {
+            $("#commentURLLabelReply").addClass("selected");
+        }).blur(function () {
+            $("#commentURLLabelReply").removeClass("selected");
+        });
     }
             
     var showComment = function (it, id) {
@@ -199,14 +197,11 @@
     (function () {
         page.load();
         // comment url
-        if ($.browser.version !== "7.0") {
-            $("#commentURL").focus(function () {
-                $("#commentURLLabel").addClass("selected");
-            }).blur(function () {
-                $("#commentURLLabel").removeClass("selected");
-            });
-        }
-
+        $("#commentURL").focus(function () {
+            $("#commentURLLabel").addClass("selected");
+        }).blur(function () {
+            $("#commentURLLabel").removeClass("selected");
+        });
         // emotions
         page.replaceCommentsEm("#comments .comment-content");
             <#nested>
