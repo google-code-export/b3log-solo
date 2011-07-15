@@ -8,9 +8,10 @@
                     <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                 </div>
                 <#if "http://" == comment.commentURL>
-                <a class="left">${comment.commentName}</a>
+                <a name="${comment.oId}">${comment.commentName}</a>
                 <#else>
-                <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
+                <a name="${comment.oId}" href="${comment.commentURL}"
+                   target="_blank">${comment.commentName}</a>
                 </#if>
             </div>
             <div class="left comment-info">
@@ -58,10 +59,7 @@
         </tr>
         <tr>
             <td>
-                <div id="commentURLLabel">
-                    http://
-                </div>
-                <input type="text" id="commentURL"/>
+                <input type="text" class="normalInput" id="commentURL"/>
             </td>
             <td colspan="2">
                 ${commentURLLabel}
@@ -104,7 +102,7 @@
         </tr>
         <tr>
             <td colspan="3" align="right">
-                <button id="submitCommentButton" onclick="page.submitComment();">${submmitCommentLabel}</button>
+                <button onclick="page.submitComment();">${submmitCommentLabel}</button>
             </td>
         </tr>
     </tbody>
@@ -112,9 +110,9 @@
 </#macro>
 
 <#macro comment_script oId>
+<script type="text/javascript" src="/js/page.js"></script>
 <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
 <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
-<script type="text/javascript" src="/js/page.js"></script>
 <script type="text/javascript">
     var page = new Page({
         "nameTooLongLabel": "${nameTooLongLabel}",
@@ -143,7 +141,7 @@
         }
         commentHTML += '</div><div class="left comment-info"><div class="left">' + result.commentDate;
         if (state !== "") {
-            var commentOriginalCommentName = $("#commentItem" + page.currentCommentId).find(".comment-author a").text();
+            var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-author a").text();
             commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
@@ -162,7 +160,7 @@
         var commentFormHTML = "<table class='marginTop12 comment-form' id='replyForm'>";
         page.addReplyForm(id, commentFormHTML);
     }
-
+            
     var showComment = function (it, id) {
         if ( $("#commentRef" + id).length > 0) {
             $("#commentRef" + id).show();
@@ -173,14 +171,15 @@
             $("#comments").append($refComment);
         }
         var position =  $(it).position();
-        $("#commentRef" + id).css("top", (position.top + 18) + "px");
+        $("#commentRef" + id).css("top", ($(it).position().top + 18) + "px");
     };
-
+    
     (function () {
+        page.load();
         if ($("#comments div").length === 0) {
             $("#comments").removeClass("comments");
         }
-        page.load();
+        // emotions
         page.replaceCommentsEm("#comments .comment-content");
             <#nested>
         })();

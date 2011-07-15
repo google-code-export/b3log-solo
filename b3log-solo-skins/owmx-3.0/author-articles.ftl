@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${tag.tagTitle} - ${blogTitle}">
-        <meta name="keywords" content="${metaKeywords},${tag.tagTitle}"/>
+        <@head title="${authorName} - ${blogTitle}">
+        <meta name="keywords" content="${metaKeywords},${authorName}"/>
         <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
         </@head>
     </head>
@@ -13,11 +13,9 @@
             <#include "header.ftl">
             <div id="b">
                 <article>
-                    <cite>${tag1Label}</cite>
+                    <cite>${author1Label}</cite>
                     <blockquote>
-                        <span id="tagArticlesTag">
-                            ${tag.tagTitle}
-                        </span>(${tag.tagPublishedRefCount})
+                        ${authorName}
                     </blockquote>
                     <#include "article-list.ftl">
                 </article>
