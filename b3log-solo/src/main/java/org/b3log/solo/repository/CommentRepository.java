@@ -17,8 +17,9 @@
 package org.b3log.solo.repository;
 
 import java.util.List;
-import org.b3log.latke.repository.Repository;
+
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.gae.GAERepository;
 import org.json.JSONObject;
 
 /**
@@ -27,7 +28,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Jan 17, 2011
  */
-public interface CommentRepository extends Repository {
+public interface CommentRepository extends GAERepository {
 
     /**
      * Gets post comments recently with the specified fetch.
