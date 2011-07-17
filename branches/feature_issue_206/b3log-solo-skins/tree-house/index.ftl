@@ -1,4 +1,4 @@
-<#include "macro.ftl">
+<#include "macro-head.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,7 +30,5 @@
                 </div>
             </div>
         </div>
-        <div class='goTopIcon' onclick='util.goTop();'></div>
-        <div class='goBottomIcon' onclick='util.goBottom();'></div>
     </body>
 </html>

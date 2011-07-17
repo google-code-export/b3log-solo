@@ -16,6 +16,7 @@
 
 package org.b3log.solo.action.impl;
 
+import java.util.Iterator;
 import java.util.logging.Level;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
@@ -36,7 +37,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
+import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -48,10 +49,10 @@ import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
- * Get articles by author action. author-articles.ftl.
+ * Get articles by author action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Jul 1, 2011
+ * @version 1.0.2.4, Jul 9, 2011
  */
 public final class AuthorArticlesAction extends AbstractFrontPageAction {
 
@@ -94,6 +95,26 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
+            String requestURI = request.getRequestURI();
+            if (!requestURI.endsWith("/")) {
+                requestURI += "/";
+            }
+            final String authorId = getAuthorId(requestURI);
+
+            LOGGER.log(Level.FINER,
+                       "Request author articles[requestURI={0}, authorId={1}]",
+                       new Object[]{requestURI, authorId});
+
+            final int currentPageNum = getCurrentPageNum(requestURI, authorId);
+            if (-1 == currentPageNum) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return ret;
+            }
+
+            LOGGER.log(Level.FINER,
+                       "Request author articles[authorId={0}, currentPageNum={1}]",
+                       new Object[]{authorId, currentPageNum});
+
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -108,10 +129,6 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
                     Locales.getCountry(localeString));
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
-
-            final String requestURI = request.getRequestURI();
-            final String authorId = getAuthorId(requestURI);
-            final int currentPageNum = getCurrentPageNum(requestURI, authorId);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -135,6 +152,27 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
                     articleRepository.getByAuthorEmail(authorEmail,
                                                        currentPageNum,
                                                        pageSize);
+            final List<JSONObject> articles =
+                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
+                    getJSONArray(Keys.RESULTS));
+            final Iterator<JSONObject> iterator = articles.iterator();
+            while (iterator.hasNext()) {
+                final JSONObject article = iterator.next();
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
+                    iterator.remove();
+                }
+            }
+
+            if (articles.isEmpty()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                    return ret;
+                } catch (final IOException ex) {
+                    LOGGER.severe(ex.getMessage());
+                }
+            }
+
             final int pageCount = result.getJSONObject(
                     Pagination.PAGINATION).getInt(
                     Pagination.PAGINATION_PAGE_COUNT);
@@ -151,10 +189,20 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
             ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-            final List<JSONObject> articles =
-                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
-                    getJSONArray(Keys.RESULTS));
-            filler.putArticleExProperties(articles, preference);
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+            final String previousPageNum =
+                    Integer.toString(currentPageNum > 1 ? currentPageNum - 1
+                                     : 0);
+            ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
+                    "0".equals(previousPageNum) ? "" : previousPageNum);
+            if (pageCount == currentPageNum + 1) { // The next page is the last page
+                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+            } else {
+                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
+                                                             + 1);
+            }
+
+            filler.setArticlesExProperties(articles, preference);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles,
@@ -210,7 +258,12 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
     private static String getAuthorId(final String requestURI) {
         final String path = requestURI.substring("/authors/".length());
 
-        return path.substring(0, path.indexOf("/"));
+        final int idx = path.indexOf("/");
+        if (-1 == idx) {
+            return path.substring(0);
+        } else {
+            return path.substring(0, idx);
+        }
     }
 
     /**
@@ -222,17 +275,9 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
      */
     private static int getCurrentPageNum(final String requestURI,
                                          final String authorId) {
-        if (!requestURI.endsWith("/")) {
-            return 1;
-        }
+        final String pageNumString =
+                requestURI.substring(("/authors/" + authorId + "/").length());
 
-        final String ret = requestURI.substring(("/authors/" + authorId + "/").
-                length());
-
-        if (Strings.isNumeric(ret)) {
-            return Integer.valueOf(ret);
-        } else {
-            return 1;
-        }
+        return Requests.getCurrentPageNum(pageNumString);
     }
 }

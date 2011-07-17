@@ -17,8 +17,8 @@
 /**
  * link list for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.2, Jun 30, 2011
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.0.3, July 12, 2011
  */
 
 /* link-list 相关操作 */
@@ -68,6 +68,9 @@ admin.linkList = {
      */
     getList: function (pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
+        if (pageNum === 0) {
+            pageNum = 1;
+        }
         this.pageInfo.currentPage = pageNum;
         var that = this;
         var requestJSONObject = {
@@ -90,12 +93,12 @@ admin.linkList = {
                                 if (links.length === 1) {
                                     linkData[i].linkOrder = "";
                                 } else {
-                                    linkData[i].linkOrder = '<div class="table-center" style="width:16px">\
+                                    linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
                             </div>';
                                 }
                             } else if (i === links.length - 1) {
-                                linkData[i].linkOrder = '<div class="table-center" style="width:16px">\
+                                linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
                             </div>';
                             } else {

@@ -19,6 +19,7 @@ package org.b3log.solo.action.impl;
 import org.b3log.latke.action.ActionException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
@@ -29,7 +30,8 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
+import org.b3log.solo.action.util.Requests;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -38,7 +40,7 @@ import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
- * Index action. index.ftl.
+ * Index action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.3, Jul 1, 2011
@@ -75,9 +77,13 @@ public final class IndexAction extends AbstractFrontPageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         final String requestURI = request.getRequestURI();
-        final int currentPageNum = getCurrentPageNum(requestURI);
-
         try {
+            final int currentPageNum = getCurrentPageNum(requestURI);
+            if (-1 == currentPageNum) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return ret;
+            }
+
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -116,6 +122,19 @@ public final class IndexAction extends AbstractFrontPageAction {
                 filler.fillIndexArticles(ret, currentPageNum, preference);
             }
 
+            @SuppressWarnings("unchecked")
+            final List<JSONObject> articles =
+                    (List<JSONObject>) ret.get(Article.ARTICLES);
+            if (articles.isEmpty()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                    return ret;
+                } catch (final IOException ex) {
+                    LOGGER.severe(ex.getMessage());
+                }
+            }
+
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
@@ -126,22 +145,14 @@ public final class IndexAction extends AbstractFrontPageAction {
                                      : 0);
             ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
                     "0".equals(previousPageNum) ? "" : previousPageNum);
-
-            final Integer pageCnt =
+            final Integer pageCount =
                     (Integer) ret.get(Pagination.PAGINATION_PAGE_COUNT);
-            if (null != pageCnt) {
-                if (pageCnt == currentPageNum + 1) { // The next page is the last page
-                    ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
-                } else {
-                    ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
-                                                                 + 1);
-                }
+            if (pageCount == currentPageNum + 1) { // The next page is the last page
+                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+            } else {
+                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
+                                                             + 1);
             }
-            final String nextPageNum =
-                    Integer.toString(currentPageNum > 1 ? currentPageNum - 1
-                                     : 0);
-            ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
-                    "0".equals(nextPageNum) ? "" : nextPageNum);
 
             ret.put(Common.PATH, "");
         } catch (final Exception e) {
@@ -176,15 +187,12 @@ public final class IndexAction extends AbstractFrontPageAction {
      * Gets the request page number from the specified request URI.
      * 
      * @param requestURI the specified request URI
-     * @return page number
+     * @return page number, returns {@code -1} if the specified request URI
+     * can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI) {
-        final String ret = requestURI.substring("/".length());
+        final String pageNumString = requestURI.substring("/".length());
 
-        if (Strings.isNumeric(ret)) {
-            return Integer.valueOf(ret);
-        } else {
-            return 1;
-        }
+        return Requests.getCurrentPageNum(pageNumString);
     }
 }

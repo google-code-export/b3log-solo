@@ -40,7 +40,7 @@ import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
- * Page action. page.ftl.
+ * Page action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.7, Jun 19, 2011

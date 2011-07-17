@@ -15,7 +15,7 @@
         </goals>
     </action>
     <action>
-        <actionName>CUSTOM-gae-deploy</actionName>
+        <actionName>CUSTOM-gae-rollback</actionName>
         <displayName>gae-rollback</displayName>
         <goals>
             <goal>gae:rollback</goal>

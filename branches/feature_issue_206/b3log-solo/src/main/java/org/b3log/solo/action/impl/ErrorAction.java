@@ -35,7 +35,7 @@ import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
- * Error action. error.ftl.
+ * Error action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.9, Jun 18, 2011

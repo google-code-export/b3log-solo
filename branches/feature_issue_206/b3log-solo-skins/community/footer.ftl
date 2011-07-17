@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content paddingTop12 paddingBottom12">
     <div class="left">
         <div>
             <span style="color: gray;">&copy; ${year}</span> - <a href="http://${blogHost}">${blogTitle}</a>
@@ -15,7 +15,7 @@
         Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a> & <a href="http://demo.woothemes.com/skeptical/" target="_blank">Skeptical</a>.
     </div>
     <div class="right nowrap">
-        <div class="goTop right" onclick="util.goTop();">${goTopLabel}</div>
+        <div class="goTop right" onclick="common.goTop();">${goTopLabel}</div>
         <br/>
         <div class="right">
             ${viewCount1Label}
@@ -37,23 +37,40 @@
     <div class="clear"></div>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script type="text/javascript" src="/js/util.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
 <script type="text/javascript">
-    var util = new Util({
+    var common = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
         "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
         "logoutLabel": "${logoutLabel}",
         "skinDirName": "${skinDirName}",
-        "loginLabel": "${loginLabel}"
-    });
+        "loginLabel": "${loginLabel}",
+        "loginLabel": "${loginLabel}",
+        "em00Label": "${em00Label}",
+        "em01Label": "${em01Label}",
+        "em02Label": "${em02Label}",
+        "em03Label": "${em03Label}",
+        "em04Label": "${em04Label}",
+        "em05Label": "${em05Label}",
+        "em06Label": "${em06Label}",
+        "em07Label": "${em07Label}",
+        "em08Label": "${em08Label}",
+        "em09Label": "${em09Label}",
+        "em10Label": "${em10Label}",
+        "em11Label": "${em11Label}",
+        "em12Label": "${em12Label}",
+        "em13Label": "${em13Label}",
+        "em14Label": "${em14Label}"
+    }),
+    maxLength = parseInt("${mostCommentArticles?size}");
 
-    var init = function () {
+    (function () {
         // article header: user list.
         var isAuthorArticle = false;
         $(".header-user a").each(function () {
             var it = this;
-            if (window.location.search === it.search) {
+            if (window.location.pathname === it.pathname) {
                 it.className = "star-current-icon";
                 isAuthorArticle = true;
             }
@@ -62,13 +79,9 @@
             $(".moon-current-icon").removeClass().addClass("moon-icon");
         }
 
-        util.init();
-    }
-
-    init();
-
-    var maxLength = parseInt("${mostCommentArticles?size}");
-    var footerBlock = function () {
+        common.init();
+        common.replaceSideEm($(".recent-comments div"));
+        
         $(".footer-block").each(function (num) {
             var $lis = $(this).find("li");
             if ($lis.length > maxLength) {
@@ -78,8 +91,7 @@
                 $(this).find("h4").append("<span class='down-icon' onmouseover=\"showFooterBlock(this, " + num + ");\"></span>");
             }
         });
-    }
-    footerBlock();
+    })();
 
     var showFooterBlock = function (it, num) {
         var $li = $($(".footer-block").get(num)).find("li");

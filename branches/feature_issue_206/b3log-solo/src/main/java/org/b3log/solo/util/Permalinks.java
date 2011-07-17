@@ -145,6 +145,12 @@ public final class Permalinks {
         if (Strings.isEmptyOrNull(permalink)) {
             return true;
         }
+        
+        if (Strings.isNumeric(permalink)) {
+            // See issue 120 (http://code.google.com/p/b3log-solo/issues/detail?id=120#c4)
+            // for more details
+            return true;
+        }
 
         int slashCnt = 0;
         for (int i = 0; i < permalink.length(); i++) {
@@ -158,7 +164,7 @@ public final class Permalinks {
         }
 
         // FIXME: URL format check
-
+        
         return false;
     }
 

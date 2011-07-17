@@ -4,9 +4,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="none"/>
         <title>${blogTitle} - ${adminConsoleLabel}</title>
-        <link type="text/css" rel="stylesheet" href="/css/${miniDir}default-admin${miniPostfix}.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/${miniDir}default-bowknot${miniPostfix}.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/${miniDir}default-base${miniPostfix}.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/default-base.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/default-admin.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/default-bowknot.css"/>
         <link rel="icon" type="image/png" href="/favicon.png"/>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
         <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
@@ -72,11 +72,11 @@
                                 <a href="#link-list"><div class="left linkIcon"></div>${linkManagementLabel}</a>
                             </div>
                         </li>
-                        <li>
+                        <!--li>
                             <div data-index="article-sync">
                                 <a href="#article-sync"><div class="left blogSyncIcon"></div>${blogSyncLabel}</a>
                             </div>
-                        </li>
+                        </li-->
                         <li>
                             <div data-index="preference">
                                 <a href="#preference"><div class="left preferenceIcon"></div>${preferenceLabel}</a>
@@ -107,7 +107,7 @@
                         <div id="tabs_draft-list"></div>
                         <div id="tabs_link-list"></div>
                         <div id="tabs_preference"></div>
-                        <div id="tabs_article-sync"></div>
+                        <!--div id="tabs_article-sync"></div-->
                         <div id="tabs_page-list"></div>
                         <div id="tabs_file-list"></div>
                         <div id="tabs_others"></div>
@@ -128,7 +128,7 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="js/${miniDir}util${miniPostfix}.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript" src="js/admin/admin.js"></script>
         <script type="text/javascript" src="js/admin/tablePaginate.js"></script>
         <script type="text/javascript" src="js/admin/article.js"></script>
@@ -139,7 +139,6 @@
         <script type="text/javascript" src="js/admin/pageList.js"></script>
         <script type="text/javascript" src="js/admin/others.js"></script>
         <script type="text/javascript" src="js/admin/linkList.js"></script>
-        <script type="text/javascript" src="js/admin/articleSync.js"></script>
         <script type="text/javascript" src="js/admin/preference.js"></script>
         <script type="text/javascript" src="js/admin/pluginList.js"></script>
         <script type="text/javascript" src="js/admin/userList.js"></script>

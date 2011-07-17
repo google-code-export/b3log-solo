@@ -1,8 +1,8 @@
 /*
  * admin style
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
- * @version 1.0.0.2, July 3, 2011
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.0.3, July 11, 2011
  */
 #adminMain {
     height: 100%;
@@ -52,6 +52,12 @@
 #tipMsg {
     top: 25px;
 }
+
+.footer {
+    margin: 12px 0;
+    text-align: center;
+}
+
 /* first tab */
 #tabs ul {
     height: 30px;

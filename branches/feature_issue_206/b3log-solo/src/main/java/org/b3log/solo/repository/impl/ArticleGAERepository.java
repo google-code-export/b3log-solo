@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Article Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, Mar 8, 2011
+ * @version 1.0.3.1, Jul 10, 2011
  */
 public final class ArticleGAERepository extends AbstractGAERepository
         implements ArticleRepository {
@@ -79,7 +79,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
         query.addFilter(Article.ARTICLE_AUTHOR_EMAIL,
                         Query.FilterOperator.EQUAL, authorEmail);
         query.addSort(Article.ARTICLE_UPDATE_DATE,
-                      Query.SortDirection.ASCENDING);
+                      Query.SortDirection.DESCENDING);
 
         final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
         final int count = preparedQuery.countEntities(

@@ -31,7 +31,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 19, 2011
+ * @version 1.0.0.6, Jul 12, 2011
  */
 public final class Preferences {
 
@@ -64,14 +64,19 @@ public final class Preferences {
      * @return user preference, returns {@code null} if not found
      */
     public JSONObject getPreference() {
+        LOGGER.log(Level.FINER, "Getting preference....");
+        LOGGER.log(Level.FINER, "Try to get preference from cache");
         final Object preferenceString = userPreferenceCache.get(PREFERENCE);
         JSONObject ret = null;
         try {
             if (null == preferenceString) {
-                LOGGER.info("Load preference from datastore");
+                LOGGER.finer("Can't get preference from cache, "
+                             + "so loads it from datastore");
                 ret = preferenceRepository.get(PREFERENCE);
 
                 if (null == ret) {
+                    LOGGER.log(Level.WARNING,
+                               "Can not load preference from datastore");
                     return null;
                 }
 
@@ -85,6 +90,8 @@ public final class Preferences {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
+
+        LOGGER.log(Level.FINER, "Got preference");
 
         return ret;
     }

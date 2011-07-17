@@ -22,12 +22,12 @@
                 ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
             </a>
             by
-            <a href="/authors/${article.authorId}/1">
+            <a href="/authors/${article.authorId}">
                 ${article.authorName}
             </a>
             -
             <a href="${article.articlePermalink}#comments">
-                ${article.articleViewCount} ${commentLabel}
+                ${article.articleCommentCount} ${commentLabel}
             </a>
         </div>
     </div>
@@ -38,7 +38,7 @@
         ${tags1Label}<#list article.articleTags?split(",") as articleTag><span><a href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if></span></#list>
         &nbsp;&nbsp;${viewCount1Label}
         <a href="${article.articlePermalink}">
-            ${article.articleCommentCount}
+            ${article.articleViewCount}
         </a>
     </div>
 </div>
@@ -54,7 +54,7 @@
     <a href="${path}/${paginationPageNum}" class="f-bold">${paginationPageNum}</a>
     <#else>
     <a href="${path}/${paginationPageNum}">${paginationPageNum}</a>
-    </#if>
+    </#if><#if paginationPageNum_has_next> | </#if>
     </#list>
     <#if paginationPageNums?last != paginationPageCount>
     <a href="${path}/${paginationNextPageNum}">${nextPagePabel}</a>
