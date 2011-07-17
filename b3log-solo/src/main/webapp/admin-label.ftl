@@ -5,7 +5,7 @@
         "WINDOW_SIZE": 10,
         "localeString": "${localeString}",
         
-        
+        "commentContentLabel": "${commentContentLabel}",
         "loadingLabel": "${loadingLabel}",
         "removeSuccLabel": "${removeSuccLabel}",
         "removeFailLabel": "${removeFailLabel}",
