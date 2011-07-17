@@ -113,7 +113,7 @@ admin.commentList = {
      */
     del: function (id) {
         if (confirm(Label.confirmRemoveLabel)) {
-            $("#loadMsg").text("${loadingLabel}");
+            $("#loadMsg").text(Label.loadingLabel);
             jsonRpc.commentService.removeCommentOfArticle(function (result, error) {
                 try {
                     switch (result.sc) {
@@ -130,7 +130,7 @@ admin.commentList = {
                         default:
                             break;
                     }
-                    $("#loadMsg").text("${loadingLabel}");
+                    $("#loadMsg").text(Label.loadingLabel);
                 } catch (e) {
                     console.error(e);
                 }
