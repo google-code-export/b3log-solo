@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Jun 30, 2011
+ * @version 1.0.0.4, July 17, 2011
  */
 
 var Admin = function () {
@@ -42,11 +42,9 @@ $.extend(Admin.prototype, {
     /*
      * 设置某个 tab 被选择
      * @id tab id
-     * @action 选中 tab 后触发的事件
      */
-    selectTab: function (id, action) {
+    selectTab: function (id) {
         $("#tabs").tabs("select", id);
-        this.tabsAction(id, action, action);
         window.location.hash = "#" + id;
     },
     
@@ -54,13 +52,17 @@ $.extend(Admin.prototype, {
      * 点击 tab 后产生的事件
      * @hash location.hash
      * @action 当前页面还未载入，载入后执行的 action
-     * @action2 当前页面已经载入，载入后执行的 action
      */
-    tabsAction: function (hash, action, action2) {
+    tabsAction: function (hash, action) {
         if ($("#tabs_" + hash).html().replace(/\s/g, "") === "") {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tabs_" + hash).load("admin-" + hash + ".do", function () {
                 admin.register[hash].init.call(admin.register[hash].obj);
+                
+                if (hash === "article" && admin.article.status.id) {
+                    admin.article.getAndSet();
+                    return;
+                }
                 if (action) {
                     action();
                 }
@@ -75,11 +77,12 @@ $.extend(Admin.prototype, {
                 }
             }
         } else{
+            if (hash === "article" && admin.article.status.id) {
+                admin.article.getAndSet();
+                return;
+            }
             if (admin.register[hash].refresh) {
                 admin.register[hash].refresh.call(admin.register[hash].obj, 1);
-            }
-            if (action2) {
-                action2();
             }
         }  
     },

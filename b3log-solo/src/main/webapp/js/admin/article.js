@@ -18,76 +18,85 @@
  *  article for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 2, 2011
+ * @version 1.0.0.5, July 17, 2011
  */
 admin.article = {
-    status: undefined,
+    status: {
+        id: undefined,
+        isArticle: undefined,
+        articleHadBeenPublished: undefined
+    },
     
-    /* 获取文章并把值塞入发布文章页面 */
+    /* 
+     * 获取文章并把值塞入发布文章页面 
+     * @id 文章 id
+     * @isArticle 文章或者草稿
+     */
     get: function (id, isArticle) {
+        this.status.id = id;
+        this.status.isArticle = isArticle
+        admin.selectTab("article");
+    },
+    
+    getAndSet: function () {
         $("#loadMsg").text(Label.loadingLabel);
-        admin.selectTab("article", function () {
-            var requestJSONObject = {
-                "oId": id
-            };
-            jsonRpc.articleService.getArticle(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "GET_ARTICLE_SUCC":
-                            // set default value for article.
-                            $("#title").val(result.article.articleTitle).data("articleStatus", {
-                                "isArticle": isArticle,
-                                'oId': id,
-                                "articleHadBeenPublished": result.article.articleHadBeenPublished
-                            });
-                            if (tinyMCE.get('articleContent')) {
-                                tinyMCE.get('articleContent').setContent(result.article.articleContent);
+        var requestJSONObject = {
+            "oId": this.status.id
+        };
+        jsonRpc.articleService.getArticle(function (result, error) {
+            try {
+                switch (result.sc) {
+                    case "GET_ARTICLE_SUCC":
+                        // set default value for article.
+                        $("#title").val(result.article.articleTitle);
+                        admin.article.status.articleHadBeenPublished =  result.article.articleHadBeenPublished;
+                        if (tinyMCE.get('articleContent')) {
+                            tinyMCE.get('articleContent').setContent(result.article.articleContent);
+                        } else {
+                            $("#articleContent").val(result.article.articleContent);
+                        }
+                        if (tinyMCE.get('abstract')) {
+                            tinyMCE.get('abstract').setContent(result.article.articleAbstract);
+                        } else {
+                            $("#abstract").val(result.article.articleAbstract);
+                        }
+
+                        var tags = result.article.articleTags,
+                        tagsString = '';
+                        for (var i = 0; i < tags.length; i++) {
+                            if (0 === i) {
+                                tagsString = tags[i].tagTitle;
                             } else {
-                                $("#articleContent").val(result.article.articleContent);
+                                tagsString += "," + tags[i].tagTitle;
                             }
-                            if (tinyMCE.get('abstract')) {
-                                tinyMCE.get('abstract').setContent(result.article.articleAbstract);
+                        }
+                        $("#tag").val(tagsString);
+                        $("#permalink").val(result.article.articlePermalink);
+
+                        // signs
+                        var signs = result.article.signs;
+                        $(".signs button").each(function (i) {
+                            if (parseInt(result.article.articleSign_oId) === parseInt(signs[i].oId)) {
+                                $("#articleSign" + signs[i].oId).addClass("selected");
                             } else {
-                                $("#abstract").val(result.article.articleAbstract);
+                                $("#articleSign" + signs[i].oId).removeClass("selected");
                             }
+                        });
 
-                            var tags = result.article.articleTags,
-                            tagsString = '';
-                            for (var i = 0; i < tags.length; i++) {
-                                if (0 === i) {
-                                    tagsString = tags[i].tagTitle;
-                                } else {
-                                    tagsString += "," + tags[i].tagTitle;
-                                }
-                            }
-                            $("#tag").val(tagsString);
-                            $("#permalink").val(result.article.articlePermalink);
-
-                            // signs
-                            var signs = result.article.signs;
-                            $(".signs button").each(function (i) {
-                                if (parseInt(result.article.articleSign_oId) === parseInt(signs[i].oId)) {
-                                    $("#articleSign" + signs[i].oId).addClass("selected");
-                                } else {
-                                    $("#articleSign" + signs[i].oId).removeClass("selected");
-                                }
-                            });
-
-                            admin.article.setStatus();
-                            $("#tabs").tabs("select", "article");
-                        
-                            $("#tipMsg").text(Label.getSuccLabel);
-                            break;
-                        case "GET_ARTICLE_FAIL_":
-                            break;
-                        default:
-                            break;
-                    }
-                    $("#loadMsg").text("");
-                } catch (e) {
+                        admin.article.setStatus();
+                        $("#tabs").tabs("select", "article");
+                        $("#tipMsg").text(Label.getSuccLabel);
+                        break;
+                    case "GET_ARTICLE_FAIL_":
+                        break;
+                    default:
+                        break;
                 }
-            }, requestJSONObject);
-        });
+                $("#loadMsg").text("");
+            } catch (e) {
+                console.error(e);
+            }
+        }, requestJSONObject);
     },
     
     /*
@@ -203,15 +212,13 @@ admin.article = {
                                 //                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
                                 //                                msg += ", ${postToBuzzFailLabel}";
                                 //                            }
+                                admin.article.status.id = undefined;
                                 $("#tipMsg").text(msg);
                                 admin.selectTab("article-list");
                             } else {
                                 $("#tipMsg").text(Label.addSuccLabel);
                                 admin.selectTab("draft-list");
                             }
-                        
-                            // reset article form
-                            admin.article.clear();
                             break;
                         default:
                             $("#tipMsg").text(Label.addFailLabel);
@@ -242,7 +249,7 @@ admin.article = {
             
             var requestJSONObject = {
                 "article": {
-                    "oId": this.status.oId,
+                    "oId": this.status.id,
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
@@ -310,6 +317,7 @@ admin.article = {
                                     this.className = "";
                                 }
                             });
+                            admin.article.status.id = undefined;
                             break;
                         default:
                             $("#tipMsg").text(Label.updateFailLabel);
@@ -325,7 +333,6 @@ admin.article = {
      * 发布文章页面设置文章按钮、发布到社区等状态的显示
      */
     setStatus: function () {
-        this.status = $("#title").data("articleStatus");
         // set button status
         if (this.status) {
             if (this.status.isArticle) { 
@@ -353,7 +360,11 @@ admin.article = {
      * 清除发布文章页面的输入框的内容
      */
     clear: function () {
-        $("#title").removeData("articleStatus").val("");
+        this.status = {
+            id: undefined,
+            isArticle: undefined,
+            articleHadBeenPublished: undefined
+        };
         this.setStatus();
         if (tinyMCE.get("articleContent")) {
             tinyMCE.get('articleContent').setContent("");
@@ -366,6 +377,7 @@ admin.article = {
             $("#abstract").val("");
         }
         $("#tag").val("");
+        $("#title").val("");
         $("#permalink").val("");
         $(".signs button").each(function (i) {
             if (i === $(".signs button").length - 1) {
@@ -380,7 +392,7 @@ admin.article = {
      * 初始化发布文章页面
      */
     init: function () {
-        admin.article.clear();
+        //admin.article.clear();
         // Inits Signs.
         jsonRpc.preferenceService.getSigns(function (result, error) {
             try {
@@ -429,7 +441,7 @@ admin.article = {
 
         // submit action
         $("#submitArticle").click(function () {
-            if (admin.article.status) {
+            if (admin.article.status.id) {
                 admin.article.update(true);
             } else {
                 admin.article.add(true);
@@ -437,7 +449,7 @@ admin.article = {
         });
         
         $("#saveArticle").click(function () {
-            if (admin.article.status) {
+            if (admin.article.status.id) {
                 admin.article.update(admin.article.status.isArticle);
             } else {
                 admin.article.add(false);
@@ -499,12 +511,13 @@ admin.article = {
                 if (result.sc === "CANCEL_PUBLISH_ARTICLE_SUCC") {
                     $("#tipMsg").text(Label.unPulbishSuccLabel);
                     admin.selectTab("draft-list");
+                    admin.article.status.id = undefined;
                 } else {
                     $("#tipMsg").text(Label.unPulbishFailLabel);
                 }
             } catch (e) {}
         }, {
-            oId: admin.article.status.oId
+            oId: admin.article.status.id
         });
     },
     
