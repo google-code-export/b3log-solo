@@ -45,7 +45,7 @@
         <maven-gae-plugin.version>0.8.4</maven-gae-plugin.version>
         <gae.dev_sever.port>8080</gae.dev_sever.port>
         <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
-        <maven-min-plugin.version>0.0.1-SNAPSHOT</maven-min-plugin.version>
+        <maven-min-plugin.version>0.5.0-SNAPSHOT</maven-min-plugin.version>
         <!-- Unit Test -->
         <testng.version>6.1.1</testng.version>
         <!-- -->
@@ -372,7 +372,7 @@
             </plugin>
             
             <plugin>
-                <groupId>org.b3log</groupId>
+                <groupId>org.b3log.latke</groupId>
                 <artifactId>maven-min-plugin</artifactId>
                 <version>${maven-min-plugin.version}</version>
                 <executions>

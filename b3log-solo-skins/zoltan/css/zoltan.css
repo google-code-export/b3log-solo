@@ -1,15 +1,29 @@
 /*
  * zoltan skin style
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.1, July 6, 2011
 */
 body {
     background: url("../images/bg.jpg") repeat scroll 0 0 #EAE5D3;
     color: #846D55;
-    font-family: 'PTSans',"Lucida Sans",Helvetica,Tahoma,Arial,Verdana,Sans-serif;
+    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, '瀹嬩綋';
     font-size: 13px;
 }   
+
+h1, h2, h3, h4, h5 {
+    color: #503B26;
+}
+
+h2 {
+    font-size: 24px;
+}
+
+input, textarea {
+    color: #846D55;
+    font-size: 13px;
+    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, '瀹嬩綋';
+}
 
 a, a:link, a:active, a:visited {
     text-decoration: none;
@@ -43,7 +57,8 @@ a:hover {
     margin: 0 auto;
 }
 
-.s-l, .s-r, .ico-footer {
+.s-l, .s-r, .ico-footer, .comments img, .input-reply .top, .input-reply .bottom, 
+.ico-name, .ico-email, .ico-message {
     background-image: url("../images/icon.png");
 }
 
@@ -124,7 +139,6 @@ a:hover {
 }
 
 .main .sub-title {
-    color: #503B26;
     font-size: 28px;
     line-height: 150%;
     margin-bottom: 10px;
@@ -133,7 +147,10 @@ a:hover {
 .article-header h2 a {
     color: #503B26;
     line-height: 36px;
-    font-size: 24px;
+}
+
+.article-header sup {
+    font-size: 12px;
 }
 
 .article-header h2 a:hover {
@@ -144,7 +161,7 @@ a:hover {
     font-size: 11px;
 }
 
-.article-item .article-body {
+.article-body {
     margin: 15px 0;
     line-height: 150%;
 }
@@ -155,7 +172,9 @@ a:hover {
 
 .pagination a {
     color: #65890D;
+    font-weight: normal;
 }
+
 .pagination {
     background-color: #F7F7F7;
     border: 5px solid #F3F1E3;
@@ -189,7 +208,6 @@ a:hover {
 .side h4 {
     font-size: 16px;
     font-weight: bold;
-    color: #503B26;
     margin-bottom: 10px;
 }
 /* end side */
@@ -216,8 +234,135 @@ a:hover {
 
 .ico-footer {
     background-position: 0 -145px;
+    cursor: pointer;
     height: 39px;
-    width: 345px;
+    line-height: 39px;
     margin-top: 15px;
+    text-align: center;
+    width: 345px;
+    color: #DDDACD;
 }
 /* end footer */
+
+/* start comments */
+.comments {
+    position: relative;
+}
+
+.comments-title {
+    margin: 50px 0 30px;
+}
+
+.comments > div > img {
+    background-position: -110px -4px;
+    float: left;
+    height: 50px;
+    margin-bottom: 10px;
+    padding: 9px 4px 14px;
+    width: 50px;
+}
+
+.comments .panel {
+    background: none repeat scroll 0 0 #F3F1E3;
+    border: 1px solid white;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 0 10px 70px;
+    padding: 15px;
+}
+
+.comments .ref {
+    left: 59px;
+    opacity: 0.9;
+    position: absolute;
+    width: 579px;
+}
+
+.post-comment h3 {
+    font-size: 18px;
+    margin: 35px 0 15px;
+}
+
+table.reply th {
+    color: #38291A;
+    padding: 8px 20px 2px 0;
+    text-align: left;
+}
+table.reply td {
+    padding: 3px 0 2px;
+}
+
+.input-reply .top {
+    background-position: 0 -131px;
+    height: 10px;
+    width: 347px;
+}
+
+.input-reply .bg { 
+    background: url(../images/textarea-bg.png) 0 -131px;
+    width: 347px;
+}
+
+table.reply input, table.reply textarea {
+    background-color: transparent;
+    border: 0 none;
+    float: left;
+    height: 17px;
+    line-height: 17px;
+    margin-left: 10px;
+    width: 300px;
+}
+
+.input-reply .bottom {
+    background-position: 0 -117px;
+    height: 10px;
+    width: 347px;
+}
+
+.ico-name, .ico-email, .ico-message {
+    background-position: -288px -1px;
+    float: left;
+    height: 17px;
+    margin-left: 10px;
+    width: 17px;
+}
+
+.ico-email {
+    background-position: -269px 0;;
+}
+
+.ico-message {
+    background-position: -251px 0;
+}
+
+#commentURLLabel, #commentURLLabelReply {
+    float: left;
+    line-height: 17px;
+    margin-left: 10px;
+    width: 36px;
+}
+
+#commentURL, #commentURLReply {
+    margin-left: 0;
+    width: 295px;
+}
+
+#captcha, #captchaReply {
+    float: left;
+    margin-left: 10px;
+}
+
+#commentValidate, #commentValidateReply {
+    width: 275px;
+}
+
+#comment, #commentReply {
+    height: 130px;
+    resize: vertical;
+}
+
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, 
+.em09, .em10, .em11, .em12, .em13, .em14 {
+    margin-right: -1px;
+}
+/* end comments*/

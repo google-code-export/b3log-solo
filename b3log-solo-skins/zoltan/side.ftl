@@ -16,7 +16,7 @@
                 ${comment.commentName}<#else>
                 <a target="_blank" href="${comment.commentURL}">
                     ${comment.commentName}</a></#if>:
-                <a title="${comment.commentContent}" href="${comment.commentSharpURL}">
+                <a class="side-comment" title="${comment.commentContent}" href="${comment.commentSharpURL}">
                     ${comment.commentContent}
                 </a>
             </li>

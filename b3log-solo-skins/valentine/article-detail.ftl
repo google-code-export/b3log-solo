@@ -12,7 +12,7 @@
         <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css"/>
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/${miniDir}default-base${miniPostfix}.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/default-base.css"/>
         <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/default-index.css"/>
         <link href="/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
@@ -28,7 +28,7 @@
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
         <script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
         <script type="text/javascript">
-            var articleUtil = new ArticleUtil({
+            var articleUtil = new Article({
                 "nameTooLongLabel": "${nameTooLongLabel}",
                 "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
                 "mailInvalidLabel": "${mailInvalidLabel}",

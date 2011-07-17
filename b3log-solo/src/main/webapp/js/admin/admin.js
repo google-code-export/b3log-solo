@@ -17,7 +17,7 @@
 /**
  *  index for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.3, Jun 30, 2011
  */
 
@@ -138,3 +138,4 @@ $.extend(Admin.prototype, {
     }
 });
 var admin = new Admin();
+var plugins = {};

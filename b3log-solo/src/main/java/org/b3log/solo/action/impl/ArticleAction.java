@@ -57,10 +57,10 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
 /**
- * Article action. article-detail.ftl.
+ * Article action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, Jun 28, 2011
+ * @version 1.0.3.1, Jul 11, 2011
  */
 public final class ArticleAction extends AbstractFrontPageAction {
 
@@ -112,7 +112,7 @@ public final class ArticleAction extends AbstractFrontPageAction {
      * {@inheritDoc}
      * 
      * <p>
-     * Blog statistic view count +1 and article view count +1.
+     * Article statistic view count +1 and article view count +1.
      * </p>
      */
     @Override
@@ -125,6 +125,8 @@ public final class ArticleAction extends AbstractFrontPageAction {
             LOGGER.log(Level.FINEST, "Page cached object[id={0}, type={1}]",
                        new Object[]{oId, cachedPageContentObject.optString(
                         AbstractCacheablePageAction.CACHED_TYPE)});
+            
+            statistics.incArticleViewCount(oId);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Process page cache hit error", e);
         }

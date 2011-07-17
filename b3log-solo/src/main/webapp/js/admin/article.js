@@ -17,7 +17,7 @@
 /**
  *  article for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">LiYuan Li</a>
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.4, July 2, 2011
  */
 admin.article = {
@@ -154,8 +154,7 @@ admin.article = {
         if (admin.article.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            var tagArray = $("#tag").val().split(","),
-            signId = "";
+            var signId = "";
             $(".signs button").each(function () {
                 if (this.className === "selected") {
                     signId = this.id.substr(this.id.length - 1, 1);
@@ -167,7 +166,7 @@ admin.article = {
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
-                    "articleTags": Util.trimUnique(tagArray).toString(),
+                    "articleTags": this.trimUniqueArray($("#tag").val()).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
                     "articleSign_oId": signId,
@@ -234,8 +233,7 @@ admin.article = {
         if (admin.article.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            var tagArray = $("#tag").val().split(","),
-            signId = "";
+            var signId = "";
             $(".signs button").each(function () {
                 if (this.className === "selected") {
                     signId = this.id.substr(this.id.length - 1, 1);
@@ -248,7 +246,7 @@ admin.article = {
                     "articleTitle": $("#title").val(),
                     "articleContent": tinyMCE.get('articleContent').getContent(),
                     "articleAbstract": tinyMCE.get('abstract').getContent(),
-                    "articleTags": Util.trimUnique(tagArray).toString(),
+                    "articleTags": this.trimUniqueArray($("#tag").val()).toString(),
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
                     "articleSign_oId": signId
@@ -508,6 +506,20 @@ admin.article = {
         }, {
             oId: admin.article.status.oId
         });
+    },
+    
+    trimUniqueArray: function(str){
+        str = str.toString();
+        var arr = str.split(",");
+        for(var i = 0; i < arr.length; i++) {
+            arr[i] = arr[i].replace(/(^\s*)|(\s*$)/g,"");
+            if( arr[i] === "" ){
+                arr.splice(i, 1);
+                i--
+            }
+        }
+        var unique =  $.unique(arr);
+        return unique.toString();
     }
 }
 

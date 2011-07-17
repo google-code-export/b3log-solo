@@ -217,7 +217,7 @@ public final class Statistics {
             ++blogViewCnt;
             statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
             statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
-            LOGGER.log(Level.FINE, "Current blog view count[{0}]", blogViewCnt);
+            LOGGER.log(Level.FINER, "Current blog view count[{0}]", blogViewCnt);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }

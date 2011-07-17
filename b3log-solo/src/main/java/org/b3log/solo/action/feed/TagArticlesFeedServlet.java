@@ -21,6 +21,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +49,7 @@ import org.json.JSONObject;
  * Tag articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Jan 12, 2011
+ * @version 1.0.1.5, Jul 11, 2011
  */
 public final class TagArticlesFeedServlet extends HttpServlet {
 
@@ -55,6 +57,11 @@ public final class TagArticlesFeedServlet extends HttpServlet {
      * Default serial version uid.
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(TagArticlesFeedServlet.class.getName());
     /**
      * Article repository.
      */
@@ -104,6 +111,11 @@ public final class TagArticlesFeedServlet extends HttpServlet {
                     tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
             final JSONArray tagArticleRelations =
                     tagArticleResult.getJSONArray(Keys.RESULTS);
+            if (0 == tagArticleRelations.length()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation =
@@ -112,7 +124,7 @@ public final class TagArticlesFeedServlet extends HttpServlet {
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
-                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
                     articles.add(article);
                 }
             }
@@ -177,6 +189,7 @@ public final class TagArticlesFeedServlet extends HttpServlet {
             writer.write(feed.toString());
             writer.close();
         } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Get tag article feed error", e);
             throw new IOException(e);
         }
     }

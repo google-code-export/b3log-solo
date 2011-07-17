@@ -82,8 +82,5 @@
         "tagsEmptyLabel": "${tagsEmptyLabel}",
         "abstractEmptyLabel": "${abstractEmptyLabel}"
     };    
-        <#if enabledMultipleUserSupport>
-        $("#tabs li")[6].style.display = "none";
-        </#if>
-        admin.init();
+    admin.init();
 </script>

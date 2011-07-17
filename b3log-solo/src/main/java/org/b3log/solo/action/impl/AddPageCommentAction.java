@@ -326,7 +326,7 @@ public final class AddPageCommentAction extends AbstractAction {
 
         final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
-            LOGGER.log(Level.FINE,
+            LOGGER.log(Level.FINER,
                        "Do not send comment notification mail to admin itself[{0}]",
                        adminEmail);
             return;
@@ -336,7 +336,7 @@ public final class AddPageCommentAction extends AbstractAction {
             final String originalEmail =
                     originalComment.getString(Comment.COMMENT_EMAIL);
             if (originalEmail.equalsIgnoreCase(adminEmail)) {
-                LOGGER.log(Level.FINE,
+                LOGGER.log(Level.FINER,
                            "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
                            commentId);
                 return;

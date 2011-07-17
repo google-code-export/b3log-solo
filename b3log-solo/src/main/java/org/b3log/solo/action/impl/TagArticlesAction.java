@@ -41,7 +41,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
+import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -55,10 +55,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Get articles by tag action. tag-articles.ftl.
+ * Get articles by tag action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Jul 1, 2011
+ * @version 1.0.2.5, Jul 9, 2011
  */
 public final class TagArticlesAction extends AbstractFrontPageAction {
 
@@ -112,9 +112,18 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
         JSONObject tag = null;
 
         try {
-            final String requestURI = request.getRequestURI();
+            String requestURI = request.getRequestURI();
+            if (!requestURI.endsWith("/")) {
+                requestURI += "/";
+            }
             String tagTitle = getTagTitle(requestURI);
             final int currentPageNum = getCurrentPageNum(requestURI, tagTitle);
+            if (-1 == currentPageNum) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            }
+
             LOGGER.log(Level.FINER, "Tag[title={0}, currentPageNum={1}]",
                        new Object[]{tagTitle, currentPageNum});
 
@@ -130,12 +139,6 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceUtils.getPreference();
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
-            }
-
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             final Locale locale = new Locale(
@@ -162,11 +165,19 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                     tagArticleRepository.getByTagId(tagId,
                                                     currentPageNum,
                                                     pageSize);
-            final int pageCount = result.getJSONObject(
-                    Pagination.PAGINATION).getInt(
-                    Pagination.PAGINATION_PAGE_COUNT);
             final JSONArray tagArticleRelations =
                     result.getJSONArray(Keys.RESULTS);
+            if (0 == tagArticleRelations.length()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                    return ret;
+                } catch (final IOException ex) {
+                    LOGGER.severe(ex.getMessage());
+                }
+            }
+
+
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation =
@@ -175,7 +186,7 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
                     continue;
                 }
                 // Puts author name
@@ -195,6 +206,9 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                 articles.add(article);
             }
 
+            final int pageCount = result.getJSONObject(
+                    Pagination.PAGINATION).getInt(
+                    Pagination.PAGINATION_PAGE_COUNT);
             LOGGER.log(Level.FINEST,
                        "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
                        new Object[]{currentPageNum,
@@ -277,21 +291,14 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
      * 
      * @param requestURI the specified request URI
      * @param tagTitle the specified tag title
-     * @return page number
+     * @return page number, returns {@code -1} if the specified request URI
+     * can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI,
                                          final String tagTitle) {
-        if (!requestURI.endsWith("/")) {
-            return 1;
-        }
+        final String pageNumString =
+                requestURI.substring(("/tags/" + tagTitle + "/").length());
 
-        final String ret = requestURI.substring(("/tags/" + tagTitle + "/").
-                length());
-
-        if (Strings.isNumeric(ret)) {
-            return Integer.valueOf(ret);
-        } else {
-            return 1;
-        }
+        return Requests.getCurrentPageNum(pageNumString);
     }
 }

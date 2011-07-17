@@ -1,4 +1,4 @@
-<#include "macro.ftl">
+<#include "macro-head.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +17,7 @@
                 <div class="left main">
                     <div>
                         <h2 class="marginLeft12 marginBottom12">
-                            ${commentName1Label}${authorName}
+                            ${author1Label}${authorName}
                         </h2>
                     </div>
                     <#include "article-list.ftl">
@@ -31,7 +31,5 @@
                 <#include "footer.ftl">
             </div>
         </div>
-        <div class='goTopIcon' onclick='goTop();'></div>
-        <div class='goBottomIcon' onclick='goBottom();'></div>
     </body>
 </html>

@@ -315,7 +315,7 @@ a.header-title {
     border-bottom: 1px solid #E3E3E3;
     border-right: 1px solid #E3E3E3;
     padding: 20px;
-    width: 807px;
+    width: 798px;
     margin-bottom: 10px;
 }
 
@@ -350,12 +350,14 @@ a.header-title {
     border: 1px solid #E3E3E3;
     background-color: #FFFFFF;
     padding: 10px 0 0 10px;
+    left: 177px;    
+    opacity: 0.9;
 }
 
 #comments .comment-body-ref .comment-panel{
     border-width: 0px;
     margin-bottom: 0;
-    width: 629px;
+    width: 620px;
     padding: 10px;
 }
 
@@ -415,19 +417,16 @@ a.header-title {
     width: 240px;
 }
 
-#emotions img {
-    height: 24px;
-    width: 24px;
-    cursor: pointer;
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
+    background-image: url("/images/emotions-black.png");
 }
-
 /* footer secondary */
 .footer-secondary {
-    background: url("..../images/indentline-light.png") repeat-x scroll left top #DEDEDE;
+    background: url("../images/indentline-light.png") repeat-x scroll left top #DEDEDE;
     padding: 40px 0;
 }
 
-.footer-secondary h4, .article-date, .comment th div{
+.footer-secondary h4, .article-date, .comment th span.comment-label {
     background-color: #333333;
     color: #FFFFFF;
     float: left;
@@ -464,7 +463,7 @@ a.header-title {
     line-height: 22px;
 }
 
-.recent-comments img {
+.recent-comments img, #comments>div>img {
     background-color: #FFFFFF;
     border-bottom: 1px solid #C2C2C2;
     border-right: 1px solid #C2C2C2;
@@ -473,7 +472,7 @@ a.header-title {
     height: 75px;
 }
 
-.recent-comments img:hover {
+.recent-comments img:hover, #comments>div>img:hover {
     border-color: #5A5A5A;
 }
 
@@ -493,7 +492,7 @@ a.header-title {
     color: #000000;
     height: 25px;
     padding: 0 0 15px;
-    background: url("../images/indentlimagesine.png") repeat-x scroll left bottom transparent;
+    background: url("../images/indentline.png") repeat-x scroll left bottom transparent;
 }
 
 .footer-block ul {
@@ -573,9 +572,10 @@ a.header-title {
 }
 
 .error-panel {
-    border-right: 1px solid #E3E3E3;
-    border-bottom: 1px solid #E3E3E3;
     background-color: #FFFFFF;
+    border-bottom: 1px solid #E3E3E3;
+    border-right: 1px solid #E3E3E3;
+    margin-bottom: 50px;
     padding: 20px;
 }
 
