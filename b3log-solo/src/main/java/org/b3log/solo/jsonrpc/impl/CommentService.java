@@ -31,7 +31,6 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.SoloServletListener;
@@ -40,6 +39,7 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -53,7 +53,6 @@ import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Pages;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
@@ -69,7 +68,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.0, Jan 17, 2011
+ * @version 1.0.4.1, Jul 17, 2011
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -122,76 +121,39 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
-    /**
-     * Preference utilities.
-     */
-    private Preferences preferenceUtils = Preferences.getInstance();
 
-//    /**
-//     * Gets recent comments with the specified http servlet request and response.
-//     *
-//     * @param request the specified http servlet request
-//     * @param response the specified http servlet response
-//     * @return for example:
-//     * <pre>
-//     * {
-//     *     "recentComments": [{
-//     *         "oId": "",
-//     *         "commentName": "",
-//     *         "thumbnailUrl": "",
-//     *         "commentURL": "",
-//     *         "commentContent": "",
-//     *         "commentDate": "",
-//     *      }, ....]
-//     *     "sc": "GET_COMMENTS_SUCC"
-//     * }
-//     * </pre>
-//     * @throws ActionException action exception
-//     * @throws IOException io exception
-//     */
-//    public JSONObject getRecentComments(final HttpServletRequest request,
-//                                        final HttpServletResponse response)
-//            throws ActionException, IOException {
-//        final JSONObject ret = new JSONObject();
-//        try {
-//            final JSONObject preference = preferenceUtils.getPreference();
-//            if (null == preference) {
-//                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-//                return ret;
-//            }
-//
-//            final int fetchSize = preference.getInt(
-//                    Preference.RECENT_COMMENT_DISPLAY_CNT);
-//            final List<JSONObject> recentComments =
-//                    commentRepository.getRecentComments(fetchSize);
-//            // Erase email for security reason
-//            for (final JSONObject comment : recentComments) {
-//                comment.remove(Comment.COMMENT_EMAIL);
-//            }
-//
-//            ret.put(Common.RECENT_COMMENTS, recentComments);
-//            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
-//        } catch (final Exception e) {
-//            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-//            throw new ActionException(e);
-//        }
-//
-//        return ret;
-//    }
-//    
     /**
-     * @throws RepositoryException
+     * Gets comments with the specified request json object, request and response.
      * 
-     * 
-     * 
-     * 
+     * @param requestJSONObject the specified request json object
+     * @param request the specified request
+     * @param response the specified response
+     * @return for example,
+     * <pre>
+     * {
+     *     "comments": [{
+     *         "oId": "",
+     *         "commentTitle": "",
+     *         "commentName": "",
+     *         "commentEmail": "",
+     *         "thumbnailUrl": "",
+     *         "commentURL": "",
+     *         "commentContent": "",
+     *         "commentDate": "",
+     *         "commentSharpURL": ""
+     *      }, ....]
+     *     "sc": "GET_COMMENTS_SUCC"
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
      */
     public JSONObject getComments(final JSONObject requestJSONObject,
                                   final HttpServletRequest request,
                                   final HttpServletResponse response)
             throws ActionException, IOException {
 
-        JSONObject ret = new JSONObject();
+        final JSONObject ret = new JSONObject();
         if (!userUtils.isLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
@@ -210,25 +172,41 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                                   SortDirection.DESCENDING);
             final JSONObject result = commentRepository.get(query);
             final JSONArray comments = result.getJSONArray(Keys.RESULTS);
+
+            // Sets comment title and content escaping
             for (int i = 0; i < comments.length(); i++) {
                 final JSONObject comment = comments.getJSONObject(i);
-                final JSONObject articleCommentrelationship =
-                        articleCommentRepository.getByCommentId(comment.
-                        getString(Keys.OBJECT_ID));
+                final String cmtId = comment.getString(Keys.OBJECT_ID);
+                String title = null;
 
-                final JSONObject article =
-                        articleRepository.get(articleCommentrelationship.
-                        getString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
+                final JSONObject articleCommentRel =
+                        articleCommentRepository.getByCommentId(cmtId);
+                if (null != articleCommentRel) {
 
-                // the extra data that comment-list need show
-                comment.put(Comment.COMMENT_ARTICLE_TITLE,
-                            article.getString(Article.ARTICLE_TITLE));
+                    final JSONObject article =
+                            articleRepository.get(articleCommentRel.getString(
+                            Article.ARTICLE + "_" + Keys.OBJECT_ID));
+                    title = article.getString(Article.ARTICLE_TITLE);
+                } else {
+                    final JSONObject pageCommentRel =
+                            pageCommentRepository.getByCommentId(cmtId);
+
+                    final JSONObject page = pageRepository.get(pageCommentRel.
+                            getString(Page.PAGE + "_" + Keys.OBJECT_ID));
+                    title = page.getString(Page.PAGE_TITLE);
+                }
+
+                comment.put(Common.COMMENT_TITLE, title);
+
+                final String content =
+                        comment.getString(Comment.COMMENT_CONTENT).
+                        replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+                comment.put(Comment.COMMENT_CONTENT, content);
             }
 
             ret.put(Comment.COMMENTS, comments);
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
 
-            // page
+
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);
             final JSONObject pagination = new JSONObject();
@@ -239,6 +217,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                                               windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
@@ -374,6 +354,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                                       + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
+                final String content =
+                        comment.getString(Comment.COMMENT_CONTENT).
+                        replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+                comment.put(Comment.COMMENT_CONTENT, content);
+
                 comments.add(comment);
             }
 
