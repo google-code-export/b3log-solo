@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.2, Jul 2, 2011
+ * @version 1.0.3.3, Jul 17, 2011
  */
 public final class Common {
 
@@ -179,7 +179,7 @@ public final class Common {
     /**
      * Key of minified directory.
      */
-    public static final String MINI_DIR  = "miniDir";
+    public static final String MINI_DIR = "miniDir";
     /**
      * Key of mini postfix.
      */
@@ -196,6 +196,10 @@ public final class Common {
      * Key of month name.
      */
     public static final String MONTH_NAME = "monthName";
+    /**
+     * Key of comment title (article/page).
+     */
+    public static final String COMMENT_TITLE = "commentTitle";
 
     /**
      * Private default constructor.
