@@ -23,24 +23,31 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.action.StatusCodes;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.repository.ArticleCommentRepository;
-import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.ArticleCommentRepository;
+import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
@@ -49,6 +56,7 @@ import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Users;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -89,6 +97,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      */
     private PageCommentRepository pageCommentRepository =
             PageCommentGAERepository.getInstance();
+    /**
+     * Article repository.
+     */
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
     /**
      * Page repository.
      */
@@ -165,6 +178,74 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 //
 //        return ret;
 //    }
+//    
+    /**
+     * @throws RepositoryException
+     * 
+     * 
+     * 
+     * 
+     */
+    public JSONObject getComments(final JSONObject requestJSONObject,
+                                  final HttpServletRequest request,
+                                  final HttpServletResponse response)
+            throws ActionException, IOException {
+
+        JSONObject ret = new JSONObject();
+        if (!userUtils.isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+
+        try {
+            final int currentPageNum = requestJSONObject.getInt(
+                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
+            final int pageSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_PAGE_SIZE);
+            final int windowSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_WINDOW_SIZE);
+
+            final Query query = new Query().setCurrentPageNum(currentPageNum).
+                    setPageSize(pageSize).addSort(Comment.COMMENT_DATE,
+                                                  SortDirection.DESCENDING);
+            final JSONObject result = commentRepository.get(query);
+            final JSONArray comments = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < comments.length(); i++) {
+                final JSONObject comment = comments.getJSONObject(i);
+                final JSONObject articleCommentrelationship =
+                        articleCommentRepository.getByCommentId(comment.
+                        getString(Keys.OBJECT_ID));
+
+                final JSONObject article =
+                        articleRepository.get(articleCommentrelationship.
+                        getString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
+
+                // the extra data that comment-list need show
+                comment.put(Comment.COMMENT_ARTICLE_TITLE,
+                            article.getString(Article.ARTICLE_TITLE));
+            }
+
+            ret.put(Comment.COMMENTS, comments);
+            ret.put(Keys.STATUS_CODE, StatusCodes.GET_COMMENTS_SUCC);
+
+            // page
+            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
+                    getInt(Pagination.PAGINATION_PAGE_COUNT);
+            final JSONObject pagination = new JSONObject();
+            ret.put(Pagination.PAGINATION, pagination);
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum,
+                                                              pageSize,
+                                                              pageCount,
+                                                              windowSize);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ActionException(e);
+        }
+
+        return ret;
+    }
 
     /**
      * Gets comments of an article specified by the article id for administrator.
@@ -221,7 +302,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                                          + Keys.OBJECT_ID);
 
                 final JSONObject comment = commentRepository.get(commentId);
-                final String content = comment.getString(Comment.COMMENT_CONTENT).
+                final String content =
+                        comment.getString(Comment.COMMENT_CONTENT).
                         replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
                 comment.put(Comment.COMMENT_CONTENT, content);
                 comments.add(comment);

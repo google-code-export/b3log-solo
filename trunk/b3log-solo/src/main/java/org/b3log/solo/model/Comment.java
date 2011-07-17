@@ -78,6 +78,9 @@ public final class Comment {
      */
     public static final DateFormat DATE_FORMAT =
             new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    
+    //============extra key for show-no data in DB
+	public static final String COMMENT_ARTICLE_TITLE = "commentArticleTitle";
 
     /**
      * Private default constructor.
