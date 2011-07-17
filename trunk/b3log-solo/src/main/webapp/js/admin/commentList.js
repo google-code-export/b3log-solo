@@ -18,7 +18,7 @@
  * comment list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, July 17, 2011
+ * @version 1.0.0.2, July 17, 2011
  */
 
 /* comment-list 相关操作 */
@@ -46,6 +46,11 @@ admin.commentList = {
             text: Label.authorLabel,
             index: "userName",
             width: 100,
+            style: "padding-left: 12px;"
+        }, {
+            text: Label.commentEmailLabel,
+            index: "userEmail",
+            width: 150,
             style: "padding-left: 12px;"
         }, {
             text: Label.createDateLabel,
@@ -85,7 +90,9 @@ admin.commentList = {
                             commentsData[i].userName = "<a href='" + comments[i].commentURL +
                             "' target='_blank'>" + comments[i].commentName + 
                             "</a>";
-                            commentsData[i].date = comments[i].commentDate.time;
+                            commentsData[i].userEmail = "<a href='mailto:" + comments[i].commentEmail +
+                            "'>" + comments[i].commentEmail + "</a>";
+                            commentsData[i].date = $.bowknot.getDate(comments[i].commentDate.time, 1);
                             commentsData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.commentList.del('" + comments[i].oId + "', 'article')\">" + Label.removeLabel + "</a>";
                         }
                         that.tablePagination.updateTablePagination(commentsData, pageNum, result.pagination.paginationPageCount);

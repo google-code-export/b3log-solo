@@ -39,7 +39,7 @@
                     <ul>
                         <li>
                             <div data-index="article">
-                                <a href="#article"><div class="left postIcon"></div>${postArticleLabel}</a>
+                                <a href="#article" onclick="admin.article.clear()"><div class="left postIcon"></div>${postArticleLabel}</a>
                             </div>
                         </li>
                         <li>
