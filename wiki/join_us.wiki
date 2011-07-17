@@ -1,4 +1,6 @@
+#summary 加入我们
 #labels Featured
+
 ==加入到 B3log 团队==
 ===1、写在前面的话===
   欢迎你打开这一页面，想必你有兴趣加入到 B3log 团队。B3log Solo 是一个基于 Google App Engine Java 版的博客程序，B3log 首页：[http://www.b3log.org]， B3log 社区：[http://symphony.b3log.org]——自由、平等、奔放。
