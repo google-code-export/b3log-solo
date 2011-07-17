@@ -168,7 +168,7 @@
             + '</div><div class="clear"></div></div><div><img alt="' + $("#commentName" + state).val()
             + '" src="' + result.commentThumbnailURL + '" class="comment-picture left"/>'
             + '<div class="comment-content">'
-            + page.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
+            + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
             + '</div>'
             + ' <div class="clear"></div></div></div><div class="comment-bottom"></div></div></div>';
 

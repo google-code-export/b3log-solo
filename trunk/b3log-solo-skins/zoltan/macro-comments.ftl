@@ -195,7 +195,7 @@
         commentHTML += '</br>' + result.commentDate
             + '&nbsp;<a href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
             + '</div><div class="marginTop12">' 
-            + page.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
+            + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
             + '</div><div class="clear"></div></div></div>';
 
         page.addCommentAjax(commentHTML, state);

@@ -18,7 +18,7 @@
  *  util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, July 12, 2011
+ * @version 1.0.0.3, July 12, 2011
  */
 
 var Util = {
@@ -47,6 +47,22 @@ var Util = {
             }
             return i;
         }
+    },
+    
+    replaceEmString: function (str) {
+        var commentSplited = str.split("[em");
+        if (commentSplited.length === 1) {
+            return str;
+        }
+        str = "<span class='em-span'>" + commentSplited[0] + "</span>";
+        if ($.trim(commentSplited[0]) === "") {
+            str = "";
+        }
+        for (var j = 1; j < commentSplited.length; j++) {
+            var key = commentSplited[j].substr(0, 2);
+            str += "<span class='em" + key + "'></span>" + "<span class='em-span'>" +  commentSplited[j].slice(3) + "</span>";
+        }
+        return str + "<div class='clear'></div>";
     }
 };
 
@@ -138,7 +154,7 @@ $.extend(Common.prototype, {
             for (var j = 1; j < commentSplited.length; j++) {
                 var key = commentSplited[j].substr(0, 2);
                 replacedStr += "[" + this.tips["em" + key + "Label"]  +
-                    "]" + commentSplited[j].slice(3);
+                "]" + commentSplited[j].slice(3);
             }
             $comment.html(replacedStr);
         }

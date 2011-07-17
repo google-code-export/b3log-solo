@@ -53,6 +53,11 @@
                             </div>
                         </li>
                         <li>
+                            <div data-index="comment-list">
+                                <a href="#comment-list"><div class="left othersIcon"></div>${commentListLabel}</a>
+                            </div>
+                        </li>
+                        <li>
                             <div data-index="file-list">
                                 <a href="#file-list"><div class="left fileIcon"></div>${fileListLabel}</a>
                             </div>
@@ -106,6 +111,7 @@
                         <div id="tabs_file-list"></div>
                         <div id="tabs_others"></div>
                         <div id="tabs_user-list"></div>
+                        <div id="tabs_comment-list"></div>
                         <div id="tabs_plugin-list"></div>
                     </div>
                 </div>
@@ -136,6 +142,7 @@
         <script type="text/javascript" src="js/admin/preference.js"></script>
         <script type="text/javascript" src="js/admin/pluginList.js"></script>
         <script type="text/javascript" src="js/admin/userList.js"></script>
+        <script type="text/javascript" src="js/admin/commentList.js"></script>
         <#include "admin-label.ftl">
     </body>
 </html>

@@ -79,26 +79,10 @@ $.extend(Page.prototype, {
         var $commentContents = $(selector);
         for (var i = 0; i < $commentContents.length; i++) {
             var str = $commentContents[i].innerHTML;
-            $commentContents[i].innerHTML =  this.replaceEmString(str);;
+            $commentContents[i].innerHTML =  Util.replaceEmString(str);
         }
     },
     
-    replaceEmString: function (str) {
-        var commentSplited = str.split("[em");
-        if (commentSplited.length === 1) {
-            return str;
-        }
-        str = "<span class='em-span'>" + commentSplited[0] + "</span>";
-        if ($.trim(commentSplited[0]) === "") {
-            str = "";
-        }
-        for (var j = 1; j < commentSplited.length; j++) {
-            var key = commentSplited[j].substr(0, 2);
-            str += "<span class='em" + key + "'></span>" + "<span class='em-span'>" +  commentSplited[j].slice(3) + "</span>";
-        }
-        return str + "<div class='clear'></div>";
-    },
-
     load: function () {
         var that = this;
         // emotions
