@@ -48,11 +48,6 @@
                             </div>
                         </li>
                         <li>
-                            <div data-index="comment-list">
-                                <a href="#comment-list"><div class="left articlesIcon"></div>${commentListLabel}</a>
-                            </div>
-                        </li>
-                        <li>
                             <div data-index="draft-list">
                                 <a href="#draft-list"><div class="left draftsIcon"></div>${draftListLabel}</a>
                             </div>
@@ -103,7 +98,6 @@
                     <div class="content" id="tabsContent">
                         <div id="tabs_article"></div>
                         <div id="tabs_article-list"></div>
-                        <div id="tabs_comment-list"></div>
                         <div id="tabs_draft-list"></div>
                         <div id="tabs_link-list"></div>
                         <div id="tabs_preference"></div>
