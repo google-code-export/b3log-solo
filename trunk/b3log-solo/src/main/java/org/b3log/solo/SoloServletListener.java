@@ -54,15 +54,6 @@ import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.rhythm.ArticleSender;
-import org.b3log.solo.event.sync.impl.BlogJavaAddArticleProcessor;
-import org.b3log.solo.event.sync.impl.BlogJavaRemoveArticleProcessor;
-import org.b3log.solo.event.sync.impl.BlogJavaUpdateArticleProcessor;
-import org.b3log.solo.event.sync.impl.CSDNBlogAddArticleProcessor;
-import org.b3log.solo.event.sync.impl.CSDNBlogRemoveArticleProcessor;
-import org.b3log.solo.event.sync.impl.CSDNBlogUpdateArticleProcessor;
-import org.b3log.solo.event.sync.impl.CnBlogsAddArticleProcessor;
-import org.b3log.solo.event.sync.impl.CnBlogsRemoveArticleProcessor;
-import org.b3log.solo.event.sync.impl.CnBlogsUpdateArticleProcessor;
 import org.b3log.solo.event.tencent.microblog.TencentMicroblogSender;
 import org.b3log.solo.jsonrpc.impl.AdminService;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
@@ -88,7 +79,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.6, Jun 26, 2011
+ * @version 1.0.4.7, Jul 17, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -345,7 +336,13 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final EventManager eventManager = EventManager.getInstance();
 
-//            new ActivityCreator(eventManager);
+            /**
+             * See issue 38 (http://code.google.com/p/b3log-solo/issues/detail?id=38)
+             * for more details.
+             * 
+             * new ActivityCreator(eventManager);
+             */
+            
             eventManager.registerListener(new TencentMicroblogSender());
             eventManager.registerListener(new ArticleCommentReplyNotifier());
             eventManager.registerListener(new PageCommentReplyNotifier());
@@ -353,15 +350,22 @@ public final class SoloServletListener extends AbstractServletListener {
             eventManager.registerListener(
                     new UpdateArticleGoogleBlogSearchPinger());
             eventManager.registerListener(new ArticleSender());
-            eventManager.registerListener(new BlogJavaAddArticleProcessor());
-            eventManager.registerListener(new BlogJavaRemoveArticleProcessor());
-            eventManager.registerListener(new BlogJavaUpdateArticleProcessor());
-            eventManager.registerListener(new CSDNBlogAddArticleProcessor());
-            eventManager.registerListener(new CSDNBlogRemoveArticleProcessor());
-            eventManager.registerListener(new CSDNBlogUpdateArticleProcessor());
-            eventManager.registerListener(new CnBlogsAddArticleProcessor());
-            eventManager.registerListener(new CnBlogsRemoveArticleProcessor());
-            eventManager.registerListener(new CnBlogsUpdateArticleProcessor());
+            
+            /* 
+             * See issue 225 (http://code.google.com/p/b3log-solo/issues/detail?id=225#c4)
+             * for more details.
+             * 
+             * eventManager.registerListener(new BlogJavaAddArticleProcessor());
+             * eventManager.registerListener(new BlogJavaRemoveArticleProcessor());
+             * eventManager.registerListener(new BlogJavaUpdateArticleProcessor());
+             * eventManager.registerListener(new CSDNBlogAddArticleProcessor());
+             * eventManager.registerListener(new CSDNBlogRemoveArticleProcessor());
+             * eventManager.registerListener(new CSDNBlogUpdateArticleProcessor());
+             * eventManager.registerListener(new CnBlogsAddArticleProcessor());
+             * eventManager.registerListener(new CnBlogsRemoveArticleProcessor());
+             * eventManager.registerListener(new CnBlogsUpdateArticleProcessor());
+             */
+            
             eventManager.registerListener(new ViewLoadEventHandler());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
