@@ -8,7 +8,7 @@
 ----
 
 <p align="right">[#Top]</p> 
-=<font style="background-color:#BEE8E8">code.google.com 查看项目密码被重置?</font>= 
+=`code.google.com 查看项目密码被重置?`= 
    修改本地 dns 设置，添加 “66.249.89.104 code.google.com“ 记录，其中 66.249.89.104 为 google.com 的 dns 解析结果。
  # 打开命令行窗口，执行 {{{ping code.google.com}}} ，得到当前可用的 Google ip “66.249.89.104” 。
  # 找到本地的 dns 配置文件路径，windows 7 下为 “C:\Windows\System32\drivers\etc\hosts“ 。
