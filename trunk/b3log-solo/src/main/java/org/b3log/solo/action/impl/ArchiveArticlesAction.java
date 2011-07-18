@@ -125,7 +125,7 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
 
             LOGGER.log(Level.FINER,
                        "Request archive date[string={0}, currentPageNum={1}]",
-                       new Object[]{archiveDateString});
+                       new Object[]{archiveDateString, currentPageNum});
 
             final JSONObject archiveDate =
                     archiveDateRepository.getByArchiveDate(archiveDateString);
