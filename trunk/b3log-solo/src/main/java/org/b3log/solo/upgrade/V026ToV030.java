@@ -131,8 +131,7 @@ public final class V026ToV030 extends HttpServlet {
             for (final JSONObject archiveDate : archiveDates) {
                 final Date date =
                         (Date) archiveDate.get(ArchiveDate.ARCHIVE_DATE);
-                final Date round =
-                        DateUtils.round(date, Calendar.MONTH);
+                final Date round = DateUtils.round(date, Calendar.MONTH);
                 LOGGER.log(Level.FINER,
                            "date={0}, time={1}, round={2}, roundTime={3}",
                            new Object[]{date, date.getTime(),
