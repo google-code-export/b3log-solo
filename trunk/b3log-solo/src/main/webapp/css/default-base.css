@@ -2,7 +2,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, July 13, 2011
+ * @version 1.0.0.3, July 18, 2011
 */
 *,html,body {
     margin: 0;
@@ -47,17 +47,15 @@ h4 {
 li {
     margin-left: 12px;
 }
-button,.button {
+button, .button {
     background: url(/images/icon.png) repeat center bottom;
     border: 1px solid;
     border-color: #CCC #BBBBBB #A0A0A0;
     border-radius: 4px;
     height: 28px;
     margin: 0;
-    moz-border-radius: 4px;
     padding: 0 6px;
     vertical-align: top;
-    webkit-border-radius: 4px;
 }
 button:hover,.button:hover {
     border-color: #BBB;

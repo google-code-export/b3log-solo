@@ -18,7 +18,7 @@
  * link list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, July 12, 2011
+ * @version 1.0.0.4, July 18, 2011
  */
 
 /* link-list 相关操作 */
@@ -115,7 +115,7 @@ admin.linkList = {
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.del('" + links[i].oId + "')\">" + Label.removeLabel + "</a></span>";
                         }
 
-                        that.tablePagination.updateTablePagination(linkData, pageNum, result.pagination.paginationPageCount);
+                        that.tablePagination.updateTablePagination(linkData, pageNum, result.pagination);
                         break;
                     default:
                         break;

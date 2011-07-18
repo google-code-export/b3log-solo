@@ -18,7 +18,7 @@
  * plugin list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Jun 30, 2011
+ * @version 1.0.0.3, July 18, 2011
  */
 
 /* plugin-list 相关操作 */
@@ -71,7 +71,7 @@ admin.pluginList = {
             try {
                 switch (result.sc) {
                     case "GET_PLUGINS_SUCC":
-                        that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination.paginationPageCount);
+                        that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
                         break;
                     default:
                         break;

@@ -18,7 +18,7 @@
  * article list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 12, 2011
+ * @version 1.0.0.5, July 18, 2011
  */
 
 /* article-list 相关操作 */
@@ -102,7 +102,7 @@ admin.articleList = {
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + articles[i].oId + "', 'article')\">" + Label.commentLabel + "</a>";
                         }
                     
-                        that.tablePagination.updateTablePagination(articleData, pageNum, result.pagination.paginationPageCount);
+                        that.tablePagination.updateTablePagination(articleData, pageNum, result.pagination);
                         break;
                     default:
                         break;
