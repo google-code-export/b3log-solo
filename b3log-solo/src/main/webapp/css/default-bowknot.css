@@ -2,9 +2,9 @@
  * jQuly plugin: bowknot style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, July 3, 2011
- */
- .completed-panel {
+ * @version 1.0.0.2, July 18, 2011
+*/
+.completed-panel {
     background-color: #E3E9FF;
     border: 1px solid #555;
     color: #00C;
@@ -80,8 +80,26 @@
     float: left;
     height: 20px;
     line-height: 20px;
-    margin-left: 10px;
+    margin: 0 5px;
     text-decoration: none;
+}
+.pagination-pages {
+    background: url(/images/icon.png) repeat center bottom;
+    border: 1px solid;
+    border-color: #CCC #BBBBBB #A0A0A0;
+    border-radius: 4px;
+    padding: 0 6px;
+    cursor: pointer;
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    margin: 0 5px;
+}
+
+.pagination-current-page {
+    cursor: auto;
+    font-weight: bold;
+    border-color: #BBB;
 }
 
 .paginate-inputPage {
@@ -150,16 +168,16 @@
     margin: 0 auto;
 }
 .table-upIcon,.table-downIcon {
-	background-image: url("../images/icon.png");
-	cursor: pointer;
-	float: left;
-	height: 16px;
-	width: 16px;
-        background-position: -79px -32px;
+    background-image: url("../images/icon.png");
+    cursor: pointer;
+    float: left;
+    height: 16px;
+    width: 16px;
+    background-position: -79px -32px;
 }
 .table-upIcon {
-	background-position: -64px -32px;
-	margin-right: 6px;
+    background-position: -64px -32px;
+    margin-right: 6px;
 }
 .bowknot-none {
     display: none;
