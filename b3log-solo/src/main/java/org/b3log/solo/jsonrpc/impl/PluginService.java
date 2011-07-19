@@ -127,16 +127,18 @@ public final class PluginService extends AbstractGAEJSONRpcService {
                     case ENABLED:
                         jsonObject.put(Plugin.PLUGIN_STATUS,
                                        langs.get("enabledLabel"));
+                        pluginJSONObjects.add(jsonObject);
                         break;
                     case DISABLED:
                         jsonObject.put(Plugin.PLUGIN_STATUS,
                                        langs.get("disabledLabel"));
+                        pluginJSONObjects.add(jsonObject);
                         break;
                     default:
-                        throw new AssertionError();
+                        LOGGER.log(Level.SEVERE,
+                                   "Wrong plugin status[pluginName={0}, pluginStatus]",
+                                   new Object[]{plugin.getName(), status});
                 }
-
-                pluginJSONObjects.add(jsonObject);
             }
 
             final int pageCount = (int) Math.ceil((double) pluginJSONObjects.
