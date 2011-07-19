@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 2, 2011
+ * @version 1.0.0.4, Jul 19, 2011
  */
 public final class Skins {
 
@@ -137,6 +137,8 @@ public final class Skins {
      *     <b>classic</b>/
      *     <b>simple-art</b>/
      * </pre>
+     * Skips files that name starts with . and {@linkplain File#isHidden() 
+     * hidden} files.
      *
      * @return a set of skin name, returns an empty set if not found
      */
@@ -146,8 +148,8 @@ public final class Skins {
         final File[] skinDirs = webRoot.listFiles(new FileFilter() {
 
             @Override
-            public boolean accept(final File pathname) {
-                return pathname.isDirectory() ? true : false;
+            public boolean accept(final File file) {
+                return file.isDirectory() && !file.getName().startsWith(".");
             }
         });
 
