@@ -50,9 +50,7 @@
                                                 ${articleTag}</a><#if articleTag_has_next>,</#if>
                                         </span>
                                         </#list>&nbsp;&nbsp;&nbsp;
-                                        ${author1Label}<a href="/authors/${article.authorId}">
-                                            ${article.authorName}
-                                        </a>
+                                        ${author1Label}<a href="/authors/${article.authorId}">${article.authorName}</a>
                                     </div>
                                 </div>
                                 <div class="clear"></div>
