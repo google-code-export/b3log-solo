@@ -191,34 +191,13 @@ admin.article = {
                             $("#tipMsg").text(msg);
                             break;
                         case "ADD_ARTICLE_SUCC":
-                            var events = result.status.events;
-                            if (events) {
-                                var msg = Label.addSuccLabel;
-                                if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                    msg += ", " + Label.syncCSDNBlogFailLabel + ": "
-                                    + events.blogSyncCSDNBlog.msg;
-                                }
-
-                                if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                    msg += ", " + Label.syncCnBlogsFailLabel + ": "
-                                    + events.blogSyncCnBlogs.msg;
-                                }
-
-                                if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                    msg += ", " + Labe.syncBlogJavaFailLabel + ": "
-                                    + events.blogSyncBlogJava.msg;
-                                }
-
-                                //                            if ("POST_TO_BUZZ_FAIL" === events.postToGoogleBuzz.code) {
-                                //                                msg += ", ${postToBuzzFailLabel}";
-                                //                            }
+                            if (articleIsPublished) {
                                 admin.article.status.id = undefined;
-                                $("#tipMsg").text(msg);
                                 admin.selectTab("article-list");
                             } else {
-                                $("#tipMsg").text(Label.addSuccLabel);
                                 admin.selectTab("draft-list");
                             }
+                            $("#tipMsg").text(Label.addSuccLabel);
                             break;
                         default:
                             $("#tipMsg").text(Label.addFailLabel);
@@ -272,31 +251,12 @@ admin.article = {
                             break;
                         case "UPDATE_ARTICLE_SUCC":
                             if (articleIsPublished){
-                                var events = result.status.events;
-                                if (events) {
-                                    var msg = Label.updateSuccLabel;
-                                    if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                        msg += ", " + Label.syncCSDNBlogFailLabel + ": "
-                                        + events.blogSyncCSDNBlog.msg;
-                                    }
-
-                                    if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                        msg += ", " + Label.syncCnBlogsFailLabel + ": "
-                                        + events.blogSyncCnBlogs.msg;
-                                    }
-
-                                    if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                        msg += ", " + Label.syncBlogJavaFailLabel + ": "
-                                        + events.blogSyncBlogJava.msg;
-                                    }
-
-                                    $("#tipMsg").text(msg);
-                                    admin.selectTab("article-list");
-                                }
+                                admin.selectTab("article-list");
                             } else {
-                                $("#tipMsg").text(Label.updateSuccLabel);
                                 admin.selectTab("draft-list");
                             }
+                            
+                            $("#tipMsg").text(Label.updateSuccLabel);
                             // reset article form
                             if (tinyMCE.get("articleContent")) {
                                 tinyMCE.get('articleContent').setContent("");
@@ -324,7 +284,9 @@ admin.article = {
                             break;
                     }
                     $("loadMsg").text("");
-                } catch (e) {}
+                } catch (e) {
+                    console.error(e);
+                }
             }, requestJSONObject);
         }
     },
