@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -44,6 +45,7 @@ import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginLoader;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
@@ -150,7 +152,7 @@ public final class SoloServletListener extends AbstractServletListener {
         registerRemoteJSServices();
         registerEventProcessor();
 
-        PluginLoader.load();
+        loadPlugins();
 
         final PreferenceRepository preferenceRepository =
                 PreferenceGAERepository.getInstance();
@@ -166,6 +168,7 @@ public final class SoloServletListener extends AbstractServletListener {
         }
 
         loadCaptchas();
+
         registerRemoteJSServiceSerializers();
 
         LOGGER.info("Initialized the context");
@@ -192,6 +195,23 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
+    }
+
+    /**
+     * Loads plugins.
+     * 
+     * <p>
+     * Loads plugins from directory {@literal webRoot/plugins/}, sets 
+     * {@linkplain AbstractPlugin#status plugin status} read from datastore.
+     * </p>
+     * 
+     * <p>
+     * If the loaded plugins are different (the same names but different versions) 
+     * from persisted descriptions in datastore, updates these differences.
+     * </p>
+     */
+    private void loadPlugins() {
+        final List<AbstractPlugin> plugins = PluginLoader.getPlugins();
     }
 
     /**
@@ -342,7 +362,6 @@ public final class SoloServletListener extends AbstractServletListener {
              * 
              * new ActivityCreator(eventManager);
              */
-            
             eventManager.registerListener(new TencentMicroblogSender());
             eventManager.registerListener(new ArticleCommentReplyNotifier());
             eventManager.registerListener(new PageCommentReplyNotifier());
@@ -350,7 +369,7 @@ public final class SoloServletListener extends AbstractServletListener {
             eventManager.registerListener(
                     new UpdateArticleGoogleBlogSearchPinger());
             eventManager.registerListener(new ArticleSender());
-            
+
             /* 
              * See issue 225 (http://code.google.com/p/b3log-solo/issues/detail?id=225#c4)
              * for more details.
@@ -365,7 +384,7 @@ public final class SoloServletListener extends AbstractServletListener {
              * eventManager.registerListener(new CnBlogsRemoveArticleProcessor());
              * eventManager.registerListener(new CnBlogsUpdateArticleProcessor());
              */
-            
+
             eventManager.registerListener(new ViewLoadEventHandler());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
@@ -420,7 +439,7 @@ public final class SoloServletListener extends AbstractServletListener {
             final TagService tagService = TagService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(tagService.
                     getServiceObjectName(), tagService);
-            
+
             final PluginService pluginService = PluginService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(pluginService.
                     getServiceObjectName(), pluginService);
