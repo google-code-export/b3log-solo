@@ -211,7 +211,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * </p>
      */
     private void loadPlugins() {
-        final List<AbstractPlugin> plugins = PluginLoader.getPlugins();
+        final List<AbstractPlugin> plugins = PluginLoader.load();
     }
 
     /**
