@@ -75,15 +75,15 @@
                     if (result.pageCacheEnabled) {
                         pageCacheStatusLabel = "${enabledLabel}";
                     }
-                    var cacheHTML = "${pageCachedCnt1Label}<span class='f-blue'>" + result.pageCachedCnt
-                        + " &nbsp; </span>${cachedBytes1Label}<span class='f-blue'> " + result.cacheCachedBytes
-                        + " &nbsp; </span>${cachedCount1Label}<span class='f-blue'>" + result.cacheCachedCount
-                        + " &nbsp; </span>${hitCount1Label}<span class='f-blue'>" + result.cacheHitCount
-                        + " &nbsp; </span>${hitBytes1Label}<span class='f-blue'>" + result.cacheHitBytes
-                        + " &nbsp; </span>${missCount1Label}<span class='f-blue'>" + result.cacheMissCount 
-                        + " &nbsp; </span>${pageCacheStatus1Label} &nbsp; <button onclick=\"window.plugins.cacheList.changeStatus(this);\">" 
+                    var cacheHTML = "</span>${cachedBytes1Label}<span class='f-blue'> " + result.cacheCachedBytes
+                        + " </span>&nbsp;${cachedCount1Label}<span class='f-blue'>" + result.cacheCachedCount
+                        + " </span>&nbsp;${hitCount1Label}<span class='f-blue'>" + result.cacheHitCount
+                        + " </span>&nbsp;${hitBytes1Label}<span class='f-blue'>" + result.cacheHitBytes
+                        + " </span>&nbsp;${missCount1Label}<span class='f-blue'>" + result.cacheMissCount 
+                        + " </span>&nbsp;${pageCacheStatus1Label} &nbsp; <button onclick=\"window.plugins.cacheList.changeStatus(this);\">" 
                         + pageCacheStatusLabel
-                        + "</button>"; 
+                        + "</button><br/>"
+                        + "${pageCachedCnt1Label}<span class='f-blue'>" + result.pageCachedCnt; 
                     $("#cacheContent").html(cacheHTML);
                     $("#loadMsg").text("");
                 } catch (e) {
