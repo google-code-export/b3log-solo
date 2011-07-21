@@ -44,7 +44,6 @@ $.extend(Admin.prototype, {
      * @id tab id
      */
     selectTab: function (id) {
-        $("#tabs").tabs("select", id);
         window.location.hash = "#" + id;
     },
     
@@ -54,6 +53,7 @@ $.extend(Admin.prototype, {
      * @action 当前页面还未载入，载入后执行的 action
      */
     tabsAction: function (hash, action) {
+        console.log(hash);
         if ($("#tabs_" + hash).html().replace(/\s/g, "") === "") {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tabs_" + hash).load("admin-" + hash + ".do", function () {
@@ -85,6 +85,9 @@ $.extend(Admin.prototype, {
                 admin.register[hash].refresh.call(admin.register[hash].obj, 1);
             }
         }  
+        if (!$("#tab_" + hash + " a").hasClass("tab-current")) {
+            $("#tab_" + hash).click();
+        }
     },
     
     /*
@@ -105,8 +108,6 @@ $.extend(Admin.prototype, {
                 this.tabsAction(tab);
             }
         }
-            
-        $("#tabs").tabs("select", tab);
     },
     
     /*
@@ -123,9 +124,19 @@ $.extend(Admin.prototype, {
         
         // Removes functions with the current user role
         if (Label.userRole !== "adminRole") {
-            var unUsed = ['link-list', 'preference', 'file-list', 'article-sync', 'page', 'others', 'user-list'];
+            var unUsed = ['link-list', 'preference', 'file-list', 'page', 'others', 'user-list'];
             for (var i = 0; i < unUsed.length; i++) {
                 $("#tab").tabs("remove", unUsed[i]);
+            }
+        }
+        
+        // 当前 tab 属于 Tools 时，设其展开
+        // TODO: 插件
+        var tools = ['#page-list', '#file-list', '#link-list', '#preference', 
+            '#user-list', '#plugin-list', '#cache-list', '#others'];
+        for (var j = 0; j < tools.length; j++) {
+            if (window.location.hash === tools[j]) {
+                $("#tabs>ul>li>div")[2].click();
             }
         }
         
@@ -138,6 +149,17 @@ $.extend(Admin.prototype, {
             }
         }, 6000);
         $("#loadMsg").text("");
+    },
+    
+    collapseNav: function (it) {
+        var subNav = $(it).next()[0];
+        if (subNav.className === "none") {
+            $(it).find(".ico-arrow-down")[0].className = "ico-arrow-up";
+            subNav.className = "collapsed";
+        } else {
+            $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
+            subNav.className = "none";
+        }
     }
 });
 var admin = new Admin();

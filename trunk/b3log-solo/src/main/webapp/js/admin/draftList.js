@@ -37,7 +37,7 @@ admin.draftList = {
         }, {
             text: Label.tagsLabel,
             index: "tags",
-            width: 400,
+            width: 350,
             style: "padding-left: 12px;"
         }, {
             text: Label.authorLabel,

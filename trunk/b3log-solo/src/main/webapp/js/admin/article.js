@@ -84,7 +84,6 @@ admin.article = {
                         });
 
                         admin.article.setStatus();
-                        $("#tabs").tabs("select", "article");
                         $("#tipMsg").text(Label.getSuccLabel);
                         break;
                     case "GET_ARTICLE_FAIL_":

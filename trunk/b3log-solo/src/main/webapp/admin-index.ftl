@@ -16,116 +16,117 @@
     <body onhashchange="admin.setCurByHash();">
         <div id="loadMsg">${loadingLabel}</div>
         <div id="tipMsg"></div>
-        <div id="adminMain">
+        <div id="allPanel">
             <div id="top">
-                <a href="http://b3log-solo.googlecode.com" class="logo" target="_blank">
-                    <span style="color: orange;margin-left:0px;">B</span>
+                <a href="http://b3log-solo.googlecode.com" target="_blank" class="hover">
+                    B3log Solo
+                </a>
+                <span class="right">
+                    <a href="#">${userName}</a><a href="/" title='${indexLabel}'>${indexLabel}</a><a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
+                </span>
+                <div class="clear"></div>
+            </div>
+            <div id="tabs">
+                <ul>
+                    <li>
+                        <div onclick="admin.collapseNav(this)">
+                            <span class="left articlesIcon"></span>
+                            文章
+                            <span class="ico-arrow-up"></span>
+                        </div>
+                        <ul class="collapsed">
+                            <li>
+                                <div id="tab_article">
+                                    <a href="#article" onclick="admin.article.clear()">${postArticleLabel}</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="tab_article-list">
+                                    <a href="#article-list">${articleListLabel}</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="tab_draft-list">
+                                    <a href="#draft-list">${draftListLabel}</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <div id="tab_comment-list">
+                            <a href="#comment-list">
+                                <span class="left commentIcon"></span>${commentListLabel}
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div onclick="admin.collapseNav(this)">
+                            <span class="left preferenceIcon"></span>
+                            Tool
+                            <span class="ico-arrow-down"></span>
+                        </div>
+                        <ul class="none">
+                            <li>
+                                <div id="tab_file-list">
+                                    <a href="#file-list">${fileListLabel}</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="tab_page-list">
+                                    <a href="#page-list">${pageMgmtLabel}</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="tab_link-list">
+                                    <a href="#link-list">${linkManagementLabel}</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="tab_preference">
+                                    <a href="#preference">${preferenceLabel}</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="tab_user-list">
+                                    <a href="#user-list">${userManageLabel}</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="tab_plugin-list">
+                                    <a href="#plugin-list">${pluginMgmtLabel}</a>
+                                </div>
+                            </li>
+                            <li>
+                                <div id="tab_others">
+                                    <a href="#others">${othersLabel}</a>
+                                </div>
+                            </li>   
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="main">
+                <div id="tabs_article"></div>
+                <div id="tabs_article-list"></div>
+                <div id="tabs_draft-list"></div>
+                <div id="tabs_link-list"></div>
+                <div id="tabs_preference"></div>
+                <div id="tabs_page-list"></div>
+                <div id="tabs_file-list"></div>
+                <div id="tabs_others"></div>
+                <div id="tabs_user-list"></div>
+                <div id="tabs_comment-list"></div>
+                <div id="tabs_plugin-list"></div>
+            </div>
+            <div class="footer">
+                Powered by
+                <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
+                    <span style="color: orange;">B</span>
                     <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
                     <span style="color: green;">L</span>
                     <span style="color: red;">O</span>
                     <span style="color: blue;">G</span>&nbsp;
-                    <span style="color: orangered; font-weight: bold;">Solo</span>
-                </a>
-                <span class="right">
-                    <span class="left">${userName}&nbsp;|&nbsp;</span>
-                    <span class='left homeIcon' onclick="window.location='/';" title='${indexLabel}'></span>
-                    <span class='left'>&nbsp;|&nbsp;</span>
-                    <span onclick='admin.logout();' class='left logoutIcon' title='${logoutLabel}'></span>
-                </span>
-                <div class="clear"></div>
-            </div>
-            <div id="allPanel">
-                <div id="tabs">
-                    <ul>
-                        <li>
-                            <div data-index="article">
-                                <a href="#article" onclick="admin.article.clear()"><div class="left postIcon"></div>${postArticleLabel}</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div data-index="article-list">
-                                <a href="#article-list"><div class="left articlesIcon"></div>${articleListLabel}</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div data-index="draft-list">
-                                <a href="#draft-list"><div class="left draftsIcon"></div>${draftListLabel}</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div data-index="comment-list">
-                                <a href="#comment-list"><div class="left othersIcon"></div>${commentListLabel}</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div data-index="file-list">
-                                <a href="#file-list"><div class="left fileIcon"></div>${fileListLabel}</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div data-index="page-list">
-                                <a href="#page-list"><div class="left pageIcon"></div>${pageMgmtLabel}</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div data-index="link-list">
-                                <a href="#link-list"><div class="left linkIcon"></div>${linkManagementLabel}</a>
-                            </div>
-                        </li>
-                        <!--li>
-                            <div data-index="article-sync">
-                                <a href="#article-sync"><div class="left blogSyncIcon"></div>${blogSyncLabel}</a>
-                            </div>
-                        </li-->
-                        <li>
-                            <div data-index="preference">
-                                <a href="#preference"><div class="left preferenceIcon"></div>${preferenceLabel}</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div data-index="user-list">
-                                <a href="#user-list"><div class="left usersIcon"></div>${userManageLabel}</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div data-index="plugin-list">
-                                <a href="#plugin-list"><div class="left othersIcon"></div>${pluginMgmtLabel}</a>
-                            </div>
-                        </li>
-                        <li>
-                            <div data-index="others">
-                                <a href="#others"><div class="left othersIcon"></div>${othersLabel}</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div id="main">
-                    <div class="content" id="tabsContent">
-                        <div id="tabs_article"></div>
-                        <div id="tabs_article-list"></div>
-                        <div id="tabs_draft-list"></div>
-                        <div id="tabs_link-list"></div>
-                        <div id="tabs_preference"></div>
-                        <!--div id="tabs_article-sync"></div-->
-                        <div id="tabs_page-list"></div>
-                        <div id="tabs_file-list"></div>
-                        <div id="tabs_others"></div>
-                        <div id="tabs_user-list"></div>
-                        <div id="tabs_comment-list"></div>
-                        <div id="tabs_plugin-list"></div>
-                    </div>
-                </div>
-                <div class="footer">
-                    Powered by
-                    <a href="http://b3log-solo.googlecode.com" target="_blank">
-                        <span style="color: orange;">B</span>
-                        <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
-                        <span style="color: green;">L</span>
-                        <span style="color: red;">O</span>
-                        <span style="color: blue;">G</span>&nbsp;
-                        <span style="color: orangered; font-weight: bold;">Solo</span>,
-                    </a>ver ${version}
-                </div>
+                    <span style="color: orangered; font-weight: bold;">Solo</span></a>, ver ${version}
             </div>
         </div>
         <script type="text/javascript" src="js/common.js"></script>
@@ -144,6 +145,6 @@
         <script type="text/javascript" src="js/admin/userList.js"></script>
         <script type="text/javascript" src="js/admin/commentList.js"></script>
         <#include "admin-label.ftl">
+        ${plugins}
     </body>
 </html>
-${plugins}

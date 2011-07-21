@@ -77,7 +77,7 @@ admin.comment = {
                             + comments[i].oId + "', '" + fromId + "')\"></span><span class='right'><a href='mailto:"
                             + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
                             + $.bowknot.getDate(comments[i].commentDate.time, 1)
-                            + "&nbsp;</span><div class='clear'></div></div><div class='comment-body'>"
+                            + "&nbsp;</span><div class='clear'></div></div><div class='margin12'>"
                             + contentHTML + "</div>";
                         }
                         if ("" === commentsHTML) {
