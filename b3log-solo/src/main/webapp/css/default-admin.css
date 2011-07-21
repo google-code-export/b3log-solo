@@ -2,40 +2,57 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, July 11, 2011
+ * @version 1.0.0.5, July 21, 2011
 */
-#adminMain {
+/* start resset */
+*, input, textarea {
+    font-family: '微软雅黑';
+}
+html, body {
     height: 100%;
-    position: absolute;
-    width: 100%;
-    z-index: 1;
+    min-width: 1024px;
+}
+a:link {
+    color: #21759B;
+}
+a:visited {
+    color: #551A8B;
+}
+a:active {
+    color: #D54121;
+}
+a:hover {
+    color: #D54121;
+}
+/* end reset */
+
+/* start ico */
+.ico-arrow-down, .ico-arrow-up {
+    background: url("/images/arrows.png") repeat scroll 0 4px transparent;
+    float: right;
+    height: 20px;
+    margin: 2px 3px 0 0;
+    width: 18px;
+}
+.ico-arrow-up {
+    background-position: 0 -30px;
+}
+/* end ico */
+
+/* start frame */
+#allPanel {
+    height: auto;
+    min-height: 100%;
+    position: relative;
 }
 #main {
-    background-color: #BBCCFF;
-    margin-left: 100px;
-    min-height: 500px;
+    margin: 24px 0 0 151px;
     padding: 6px;
 }
-#allPanel {
-    margin-top: 24px;
-    min-width: 885px;
-}
-.content {
-    background-color: #E3E9FF;
-    height: 100%;
-    min-height: 300px;
-}
-.comment-title {
-    background-color: #E3E9FF;
-    border-top: 1px solid #36C;
-    padding: 3px 0 3px 12px;
-}
-.comment-body {
-    margin: 12px;
-}
-#comments {
-    height: 462px;
-    overflow: auto;
+
+#main>div {
+    margin-bottom: 36px;
+    display: none;
 }
 #tipMsg, #loadMsg {
     background-color: #E5E7EB;
@@ -51,43 +68,97 @@
     z-index: 2;
 }
 #tipMsg {
-    top: 25px;
+    top: 30px;
 }
-
 .footer {
-    margin: 12px 0;
+    bottom: 12px;
+    position: absolute;
     text-align: center;
+    width: 100%;
+}
+/* end frame */
+
+.comment-title {
+    background-color: #ECECEC;
+    border-bottom: 1px solid #DFDFDF;
+    border-top: 1px solid #F9F9F9;
+    padding: 3px 0 3px 12px;
+}
+#comments {
+    height: 462px;
+    overflow: auto;
 }
 
 /* first tab */
 #tabs {
-    float: left;
-    width: 100px;
+    background-color: #ECECEC;
+    border-radius: 0 9px 9px 0;
+    border-right: 1px solid #CCCCCC;
+    bottom: 0;
+    box-shadow: 6px 0 6px #ECECEC;
+    min-height: 450px;
+    padding: 10px 0;
+    position: absolute;
+    top: 48px;
+    width: 145px;
 }
 
 #tabs ul {
-    height: 30px;
+    list-style: none;
 }
-#tabs ul li {
-    float: left;
-    list-style: none outside none;
-    margin-left: 0;
+
+#tabs li {
+    margin-left: 0px;
 }
-#tabs ul li a {
-    color: #000000;
+
+#tabs a, #tabs>ul>li>div {
+    color: #21759B;
     display: block;
-    line-height: 16px;
-    padding: 8px 15px 6px;
+    height: 28px;
+    line-height: 28px;
     text-decoration: none;
+    cursor: pointer;
 }
-#tabs ul li.hover a {
-    background-color: #DDE5FF;
+#tabs a:hover, #tabs>ul>li>div:hover {
+    color: #D54121;
 }
-#tabs ul li .tabs-middle-selected a {
-    background-color: #BCF;
+#tabs>ul>li>div {
+    border-bottom: 1px solid #DFDFDF;
+    border-top: 1px solid #F9F9F9;
+    font-weight: bold;
+    padding-left: 12px;
+}
+
+#tabs>ul>li>div>a.tab-current{
+    background-color: #777777;
+    border-bottom: 1px solid #6D6D6D;
+    border-top: 1px solid #808080;
+    color: #FFFFFF;
+    margin-left: -12px;
+    padding-left: 12px;
+    text-shadow: 0 -1px 0 #333333;
+}
+
+#tabs li li a {
+    background-color: #FFFFFF;
+    font-size: 12px;
+    padding-left: 12px;
+}
+
+#tabs .tab-current {
+    background-color: #EAF2FA;
+    color: #333333;
     font-weight: bold;
 }
 
+#tabs li li a:hover {
+    background-color: #EAF2FA;
+    color: #333333;
+}
+
+#tabs .commentIcon, #tabs .articlesIcon, #tabs .preferenceIcon {
+    margin: 6px 9px 0 0;
+}
 /* sub tabs */
 .tabPanel {
     background-color: #BCF;
@@ -184,7 +255,7 @@
     margin: 0 12px;
 }
 .signs button.selected {
-    background-color: #BBCCFF;
+    background-color: #ECECEC;
     background-image: none;
     color: #555555;
 }

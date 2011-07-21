@@ -135,9 +135,11 @@
      */ 
     plugins.cacheList.type = "plugin";
     
+    
     $("#tabs").tabs("add", {
         "id": "cache-list",
-        "text": "<a href=\"#cache-list\"><div class=\"left cacheIcon\"></div>${cacheMgmtLabel}</a>",
+        "text": "${cacheMgmtLabel}",
+        "path": "/tools/plugin-list",
         "content": $("#cachePlugin").html()
     });
      
@@ -152,5 +154,5 @@
         "refresh":  plugins.cacheList.init
     }
     
-    admin.setCurByHash();
+        admin.setCurByHash();
 </script>

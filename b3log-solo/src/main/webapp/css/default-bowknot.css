@@ -2,12 +2,12 @@
  * jQuly plugin: bowknot style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, July 18, 2011
+ * @version 1.0.0.3, July 21, 2011
 */
 .completed-panel {
-    background-color: #E3E9FF;
-    border: 1px solid #555;
-    color: #00C;
+    background-color: #ECECEC;
+    border: 1px solid #CCCCCC;
+    color: #0000CC;
     display: none;
     overflow: auto;
     padding: 2px;
@@ -19,8 +19,8 @@
     text-decoration: none;
 }
 .completed-panel a.selected {
-    background-color: #BCF;
-    font-weight: bold;
+    background-color: #FFFFFF;
+    color: #D54121;
 }
 .dialog-background {
     background-color: #000000;
@@ -117,6 +117,7 @@
     table-layout: fixed;
     word-break: break-all;
     word-wrap: break-word;
+    table-layout: fixed;
 }
 .table-header,.table-body {
     overflow: auto;
@@ -127,6 +128,7 @@
     text-align: left;
     text-indent: 4px;
     font-size: 14px;
+    font-weight: normal;
 }
 .table-main td {
     border-bottom: 1px solid #D0D0D0;

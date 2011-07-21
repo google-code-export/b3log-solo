@@ -37,7 +37,7 @@ admin.articleList = {
         }, {
             text: Label.tagsLabel,
             index: "tags",
-            width: 400,
+            width: 300,
             style: "padding-left: 12px;"
         }, {
             text: Label.authorLabel,
