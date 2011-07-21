@@ -33,10 +33,15 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.PluginLoader;
 import org.b3log.latke.plugin.PluginStatus;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
+import org.b3log.solo.repository.PluginRepository;
+import org.b3log.solo.repository.impl.PluginGAERepository;
 import org.b3log.solo.util.Users;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -60,6 +65,98 @@ public final class PluginService extends AbstractGAEJSONRpcService {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Plugin repository.
+     */
+    private PluginRepository pluginRepository =
+            PluginGAERepository.getInstance();
+
+    /**
+     * Sets a plugin's status with the specified plugin id, status.
+     * 
+     * @param pluginId the specified plugin id
+     * @param status the specified status, see {@link PluginStatus}
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @return for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": "" 
+     * }
+     * </pre>
+     * @throws ActionException action exception
+     * @throws IOException io exception
+     */
+    public JSONObject setPluginStatus(final String pluginId, final String status,
+                                      final HttpServletRequest request,
+                                      final HttpServletResponse response)
+            throws ActionException, IOException {
+        final JSONObject ret = new JSONObject();
+
+        if (!userUtils.isLoggedIn()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return ret;
+        }
+
+        Map<String, String> langs = null;
+        try {
+            langs = langPropsService.getAll(Latkes.getDefaultLocale());
+        } catch (final ServiceException e) {
+            try {
+                ret.put(Keys.STATUS_CODE, false);
+                ret.put(Keys.MSG, langs.get("setFailLabel"));
+                return ret;
+            } catch (final JSONException ex) {
+                throw new ActionException(
+                        "Set plugin status fatal error!");
+            }
+        }
+
+        final List<AbstractPlugin> plugins = PluginLoader.getPlugins();
+
+        for (final AbstractPlugin plugin : plugins) {
+            if (plugin.getId().equals(pluginId)) {
+                plugin.setStatus(PluginStatus.valueOf(status));
+
+                final Transaction transaction =
+                        pluginRepository.beginTransaction();
+                try {
+                    pluginRepository.update(pluginId, plugin.toJSONObject());
+
+                    transaction.commit();
+
+                    ret.put(Keys.STATUS_CODE, true);
+                    ret.put(Keys.MSG, langs.get("setSuccLabel"));
+                    return ret;
+                } catch (final Exception e) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    LOGGER.log(Level.SEVERE, "Set plugin status error", e);
+
+                    try {
+                        ret.put(Keys.STATUS_CODE, false);
+                        ret.put(Keys.MSG, langs.get("setFailLabel"));
+                        return ret;
+                    } catch (final JSONException ex) {
+                        throw new ActionException(
+                                "Set plugin status fatal error!");
+                    }
+                }
+            }
+        }
+
+        try {
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, langs.get("refreshAndRetryLabel"));
+
+            return ret;
+        } catch (final JSONException ex) {
+            throw new ActionException("Set plugin status fatal error!");
+        }
+    }
 
     /**
      * Gets plugins by the specified request json object.
