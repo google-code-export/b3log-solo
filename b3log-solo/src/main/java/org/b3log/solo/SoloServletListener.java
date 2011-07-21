@@ -72,6 +72,7 @@ import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.util.Plugins;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
@@ -81,7 +82,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.7, Jul 17, 2011
+ * @version 1.0.4.8, Jul 21, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -152,13 +153,13 @@ public final class SoloServletListener extends AbstractServletListener {
         registerRemoteJSServices();
         registerEventProcessor();
 
-        loadPlugins();
-
         final PreferenceRepository preferenceRepository =
                 PreferenceGAERepository.getInstance();
         final Transaction transaction = preferenceRepository.beginTransaction();
         try {
+            loadPlugins();
             loadPreference();
+
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -201,17 +202,23 @@ public final class SoloServletListener extends AbstractServletListener {
      * Loads plugins.
      * 
      * <p>
-     * Loads plugins from directory {@literal webRoot/plugins/}, sets 
-     * {@linkplain AbstractPlugin#status plugin status} read from datastore.
+     * Loads plugins from directory {@literal webRoot/plugins/}, and 
+     * {@linkplain Plugins#refresh(java.util.List) refreshes these plugins}.
      * </p>
      * 
-     * <p>
-     * If the loaded plugins are different (the same names but different versions) 
-     * from persisted descriptions in datastore, updates these differences.
-     * </p>
+     * @see PluginLoader#load()
+     * @see Plugins#refresh(java.util.List) 
      */
     private void loadPlugins() {
         final List<AbstractPlugin> plugins = PluginLoader.load();
+        
+        try {
+            Plugins.refresh(plugins);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
@@ -257,13 +264,6 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             throw new IllegalStateException(e);
-        }
-
-        try {
-            LOGGER.log(Level.INFO, "Loaded preference[{0}]",
-                       preference.toString(JSON_PRINT_INDENT_FACTOR));
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
     }
 
