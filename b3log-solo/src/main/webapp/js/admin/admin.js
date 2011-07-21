@@ -102,7 +102,7 @@ $.extend(Admin.prototype, {
         if (tab !== "") {
             if (subTab) {
                 this.tabsAction(tab, function () {
-                    $("#tabs" + tab.replace("-", "")).tabs("select", subTab);
+                    $("#tab_" + subTab).click();
                 });
             } else {
                 this.tabsAction(tab);
@@ -135,7 +135,7 @@ $.extend(Admin.prototype, {
         var tools = ['#page-list', '#file-list', '#link-list', '#preference', 
             '#user-list', '#plugin-list', '#cache-list', '#others'];
         for (var j = 0; j < tools.length; j++) {
-            if (window.location.hash === tools[j]) {
+            if (window.location.hash.indexOf(tools[j]) > -1) {
                 $("#tabs>ul>li>div")[2].click();
             }
         }

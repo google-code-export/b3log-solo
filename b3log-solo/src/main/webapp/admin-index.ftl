@@ -105,7 +105,7 @@
                     </li>
                 </ul>
             </div>
-            <div id="main">
+            <div id="tabsPanel">
                 <div id="tabs_article"></div>
                 <div id="tabs_article-list"></div>
                 <div id="tabs_draft-list"></div>

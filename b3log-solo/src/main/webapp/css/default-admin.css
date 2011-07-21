@@ -45,13 +45,12 @@ a:hover {
     min-height: 100%;
     position: relative;
 }
-#main {
+#tabsPanel {
     margin: 24px 0 0 151px;
-    padding: 6px;
 }
 
-#main>div {
-    margin-bottom: 36px;
+#tabsPanel>div {
+    padding-bottom: 36px;
     display: none;
 }
 #tipMsg, #loadMsg {
@@ -160,38 +159,37 @@ a:hover {
     margin: 6px 9px 0 0;
 }
 /* sub tabs */
-.tabPanel {
-    background-color: #BCF;
+#preference {
+    border-bottom: 1px solid #DFDFDF;
+    height: 30px;
 }
-
-.tabMain {
-    background-color: #E3E9FF;
+#preference ul {
+    list-style: none;
+}
+#preference li {
+    float: left;
+}
+#preference li a {
+    background-color: #F5F5F5;
+    border: 1px solid #DFDFDF;
+    border-bottom: 0px;
+    border-radius: 5px 5px 0 0;
+    color: #333333;
+    display: block;
+    line-height: 29px;
+    padding: 0 12px;
+    text-decoration: none;
+}
+#preference .tab-current, #preference a:hover {
+    background-color: #FFFFFF;
+    font-weight: bold;
+}
+#preferencePanel {
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #DFDFDF;
     padding: 12px;
 }
 
-.tabs-nav {
-    list-style: none;
-    height: 28px;
-    line-height: 28px;
-}
-.tabs-nav li {
-    float: left;
-    margin-left: 0;
-}
-
-.tabs-nav li a {
-    color: #000000;
-    padding: 7px 15px;
-    text-decoration: none;
-}
-.tabs-nav li.hover a {
-    background-color: #DDE5FF;
-}
-
-.tabs-nav li .tabs-middle-selected a {
-    background-color: #E3E9FF;
-    font-weight: bold;
-}
 /* article sync */
 #syncBlogType {
     background-color: #E3E9FF;
@@ -213,12 +211,10 @@ a:hover {
     line-height: 28px;
 }
 .subTable {
-    background-color: #BCF;
+    background-color: #FFFFFF;
     border-radius: 12px;
     margin: 12px;
-    moz-border-radius: 12px;
     padding: 12px;
-    webkit-border-radius: 12px;
 }
 #skinsPanel {
     min-width: 328px;
