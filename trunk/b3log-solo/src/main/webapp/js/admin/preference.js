@@ -29,7 +29,7 @@ admin.preference = {
      * 初始化
      */
     init: function () {
-        $("#tabspreference").tabs();
+        $("#preference").tabs();
          
         jsonRpc.preferenceService.getPreference(function (result, error) {
             try {
