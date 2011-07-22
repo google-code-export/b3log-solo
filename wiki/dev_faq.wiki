@@ -2,7 +2,9 @@
 =Top= 
 <p align="center"><font size=4 color='blue'>* 今天你遇到问题了吗？*</font>
 </p> 
-<br><br>
+<br>
+ * 有开发问题或者想与大家分享你解决的问题，可以发送你的内容至lamb52gao@gmail.com
+<br>
 ----
 <wiki:toc max_depth="3"/> 
 ----
