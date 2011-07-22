@@ -24,7 +24,11 @@
 /* plugin-list 相关操作 */
 admin.pluginList = {
     tablePagination:  new TablePaginate("plugin"),
-    
+    pageInfo: {
+        currentCount: 1,
+        pageCount: 1,
+        currentPage: 1
+    },
     /* 
      * 初始化 table, pagination
      */
@@ -70,7 +74,8 @@ admin.pluginList = {
         jsonRpc.pluginService.getPlugins(function (result, error) {
             try {
                 switch (result.sc) {
-                    case "GET_PLUGINS_SUCC":
+                    case "GET_PLUGINS_SUCC":            
+                        admin.pluginList.pageInfo.currentPage = pageNum;
                         var datas = result.plugins;
                         for (var i = 0; i < datas.length; i++) {
                             datas[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.pluginList.changeStatus('" + 
@@ -98,15 +103,8 @@ admin.pluginList = {
     
     changeStatus: function (pluginId, status, it) {
         jsonRpc.pluginService.setPluginStatus(function () {
-            var $it = $(it);
-            if (status === "ENABLED") {
-                $it.html(Label.enabledLabel).attr("onclick", $it.attr("onclick").replace("ENABLED", "DISABLED"));
-            } else {
-                $it.html(Label.disabledLabel).attr("onclick", $it.attr("onclick").replace("DISABLED", "ENABLED"));
-            }
+            admin.pluginList.getList(admin.pluginList.pageInfo.currentPage);
         }, pluginId, status);
-        
-        admin.pluginList.getList(1);
     }
 };
 
