@@ -181,7 +181,7 @@ public final class PluginService extends AbstractGAEJSONRpcService {
      *         "name": "",
      *         "version": "",
      *         "author": "",
-     *         "status": {@link PluginStatus}
+     *         "status": "", // Enumeration name of {@link PluginStatus}
      *      }, ....]
      *     "sc": "GET_PLUGINS_SUCC"
      * }
@@ -214,8 +214,6 @@ public final class PluginService extends AbstractGAEJSONRpcService {
             for (final AbstractPlugin plugin : plugins) {
                 final JSONObject jsonObject = plugin.toJSONObject();
 
-                final PluginStatus status = plugin.getStatus();
-                jsonObject.put(Plugin.PLUGIN_STATUS, status);
                 pluginJSONObjects.add(jsonObject);
             }
 
