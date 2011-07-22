@@ -79,7 +79,7 @@ admin.pluginList = {
                         var datas = result.plugins;
                         for (var i = 0; i < datas.length; i++) {
                             datas[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.pluginList.changeStatus('" + 
-                            datas[i].oId + "', '" + datas[i].status + "', this)\">";
+                            datas[i].oId + "', '" + datas[i].status + "')\">";
                             if (datas[i].status === "ENABLED") {
                                 datas[i].status = Label.enabledLabel;
                                 datas[i].expendRow += Label.disabledLabel;
@@ -101,7 +101,10 @@ admin.pluginList = {
         }, requestJSONObject);
     },
     
-    changeStatus: function (pluginId, status, it) {
+    changeStatus: function (pluginId, status) {
+        if (status === "ENABLED") {
+            status = "DISABLED";
+        }
         jsonRpc.pluginService.setPluginStatus(function () {
             admin.pluginList.getList(admin.pluginList.pageInfo.currentPage);
         }, pluginId, status);
