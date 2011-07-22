@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Plugin service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jun 26, 2011
+ * @version 1.0.0.1, Jul 22, 2011
  */
 public final class PluginService extends AbstractGAEJSONRpcService {
 
@@ -181,7 +181,7 @@ public final class PluginService extends AbstractGAEJSONRpcService {
      *         "name": "",
      *         "version": "",
      *         "author": "",
-     *         "status": ""
+     *         "status": {@link PluginStatus}
      *      }, ....]
      *     "sc": "GET_PLUGINS_SUCC"
      * }
@@ -208,33 +208,15 @@ public final class PluginService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Map<String, String> langs =
-                    langPropsService.getAll(Latkes.getDefaultLocale());
-
             final List<JSONObject> pluginJSONObjects =
                     new ArrayList<JSONObject>();
             final List<AbstractPlugin> plugins = PluginLoader.getPlugins();
             for (final AbstractPlugin plugin : plugins) {
                 final JSONObject jsonObject = plugin.toJSONObject();
 
-                // Fills plugin status with i18n string
                 final PluginStatus status = plugin.getStatus();
-                switch (status) {
-                    case ENABLED:
-                        jsonObject.put(Plugin.PLUGIN_STATUS,
-                                       langs.get("enabledLabel"));
-                        pluginJSONObjects.add(jsonObject);
-                        break;
-                    case DISABLED:
-                        jsonObject.put(Plugin.PLUGIN_STATUS,
-                                       langs.get("disabledLabel"));
-                        pluginJSONObjects.add(jsonObject);
-                        break;
-                    default:
-                        LOGGER.log(Level.SEVERE,
-                                   "Wrong plugin status[pluginName={0}, pluginStatus]",
-                                   new Object[]{plugin.getName(), status});
-                }
+                jsonObject.put(Plugin.PLUGIN_STATUS, status);
+                pluginJSONObjects.add(jsonObject);
             }
 
             final int pageCount = (int) Math.ceil((double) pluginJSONObjects.
