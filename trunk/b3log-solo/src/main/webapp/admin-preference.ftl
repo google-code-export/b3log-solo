@@ -186,7 +186,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${enableArticleUpdateHint1Label}
+                        <label for="enableArticleUpdateHint">${enableArticleUpdateHint1Label}</label>
                     </th>
                     <td>
                         <input id="enableArticleUpdateHint" type="checkbox"
@@ -321,7 +321,7 @@
                              onclick="admin.preference.oauthTencent();" alt="${authorizeTencentMicroblog1Label}"/>
                     </td>
                     <th width="20%">
-                        ${postToTencentMicroblogWhilePublishArticleLabel}
+                        <label for="postToTencentMicroblog">${postToTencentMicroblogWhilePublishArticleLabel}</label>
                     </th>
                     <td>
                         <input id="postToTencentMicroblog" type="checkbox" class="normalInput"/>
