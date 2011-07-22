@@ -178,7 +178,7 @@ admin.article = {
                     "articlePermalink": $("#permalink").val(),
                     "articleIsPublished": articleIsPublished,
                     "articleSign_oId": signId,
-                    "postToCommunity": $("#postToCommunity").attr("checked")
+                    "postToCommunity": $("#postToCommunity").prop("checked")
                 }
             };
 

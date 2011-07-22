@@ -24,7 +24,7 @@
 </div>
 <div id="preferencePanel">
     <div id="tabs_preferences">
-        <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
+        <table class="form subTable" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
                     <td colspan="2" align="right">
@@ -89,7 +89,7 @@
                 </tr>
             </tbody>
         </table>
-        <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
+        <table class="form subTable" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
                     <th width="234px">
@@ -218,7 +218,7 @@
         <div class="clear"></div>
     </div>
     <div id="tabs_signs" class="none">
-        <table class="form subTable" width="99%" cellpadding="0" cellspacing="9px">
+        <table class="form subTable" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
                     <th colspan="2">
@@ -294,7 +294,7 @@
                 </table>
             </div>-->
     <div id="tabs_tencent" class="none">
-        <table class="form" width="99%" cellpadding="0" cellspacing="9px">
+        <table class="form" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
                     <th width="160">

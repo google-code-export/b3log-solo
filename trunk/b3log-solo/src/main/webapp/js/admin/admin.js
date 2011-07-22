@@ -54,6 +54,10 @@ $.extend(Admin.prototype, {
      */
     tabsAction: function (hash, action) {
         console.log(hash);
+        
+        if (!$("#tab_" + hash + " a").hasClass("tab-current")) {
+            $("#tab_" + hash).click();
+        }
         if ($("#tabs_" + hash).html().replace(/\s/g, "") === "") {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tabs_" + hash).load("admin-" + hash + ".do", function () {
@@ -85,9 +89,6 @@ $.extend(Admin.prototype, {
                 admin.register[hash].refresh.call(admin.register[hash].obj, 1);
             }
         }  
-        if (!$("#tab_" + hash + " a").hasClass("tab-current")) {
-            $("#tab_" + hash).click();
-        }
     },
     
     /*
