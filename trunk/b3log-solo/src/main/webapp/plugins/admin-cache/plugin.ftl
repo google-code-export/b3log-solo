@@ -153,6 +153,4 @@
         "init": plugins.cacheList.init,
         "refresh":  plugins.cacheList.init
     }
-    
-    admin.setCurByHash();
 </script>

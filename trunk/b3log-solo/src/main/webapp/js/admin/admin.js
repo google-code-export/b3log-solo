@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 17, 2011
+ * @version 1.0.0.4, July 22, 2011
  */
 
 var Admin = function () {
@@ -134,13 +134,15 @@ $.extend(Admin.prototype, {
         // 当前 tab 属于 Tools 时，设其展开
         // TODO: 插件
         var tools = ['#page-list', '#file-list', '#link-list', '#preference', 
-            '#user-list', '#plugin-list', '#cache-list', '#others'];
+        '#user-list', '#plugin-list', '#cache-list', '#others'];
         for (var j = 0; j < tools.length; j++) {
             if (window.location.hash.indexOf(tools[j]) > -1) {
                 $("#tabs>ul>li>div")[2].click();
             }
         }
         
+        this.setCurByHash();
+            
         // tipMsg
         setInterval(function () {
             if($("#tipMsg").text() !== "") {

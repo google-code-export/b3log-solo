@@ -18,7 +18,7 @@
  * plugin list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, July 18, 2011
+ * @version 1.0.0.4, July 22, 2011
  */
 
 /* plugin-list 相关操作 */
@@ -104,6 +104,8 @@ admin.pluginList = {
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";
+        } else {
+            status = "ENABLED";
         }
         jsonRpc.pluginService.setPluginStatus(function () {
             admin.pluginList.getList(admin.pluginList.pageInfo.currentPage);
