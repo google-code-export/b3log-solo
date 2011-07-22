@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo.
-    Version: 1.0.7.4, Jul 9, 2011
+    Version: 1.0.7.5, Jul 22, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -39,7 +39,7 @@
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
         <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.9</maven-surefire-plugin.version>
-        <maven-license-plugin.version>1.8.0</maven-license-plugin.version>
+        <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
         <maven-checkstyle-plugin.version>2.6</maven-checkstyle-plugin.version>
         <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
         <maven-gae-plugin.version>0.8.4</maven-gae-plugin.version>
@@ -313,7 +313,7 @@
                     <strictCheck>true</strictCheck>
                     <includes>
                         <include>**/src/*/java/**/*.java</include>
-                        <include>**/src/*/webapp/js/*.js</include>
+                        <include>**/src/*/webapp/js/**/*.js</include>
                         <include>**/src/*/resources/*.properties</include>
                         <include>**/src/*/webapp/WEB-INF/*.xml</include>
                     </includes>

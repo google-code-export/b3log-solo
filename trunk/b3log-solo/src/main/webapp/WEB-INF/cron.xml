@@ -16,7 +16,6 @@
     limitations under the License.
 
 -->
-
 <!--
     Description: Cron job for GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html

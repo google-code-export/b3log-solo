@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.action.impl;
 
 import com.google.appengine.api.mail.MailService;
@@ -186,6 +185,8 @@ public final class AddArticleCommentAction extends AbstractAction {
                                    final HttpServletRequest request,
                                    final HttpServletResponse response)
             throws ActionException {
+        // TODO: add article comment args check
+        
         return addArticleComment(requestJSONObject, request, response);
     }
 

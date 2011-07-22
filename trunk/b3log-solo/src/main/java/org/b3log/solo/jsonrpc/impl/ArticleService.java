@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.b3log.solo.jsonrpc.impl;
 
 import java.io.IOException;
@@ -192,6 +191,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
+        
+        // TODO: add article args check
 
         final Transaction transaction = articleRepository.beginTransaction();
         final JSONObject status = new JSONObject();
