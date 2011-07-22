@@ -49,7 +49,7 @@ admin.pluginList = {
             text: Label.versionLabel,
             index: "version",
             width: 120
-        }], true);
+        }]);
     
         this.tablePagination.initPagination();
         this.getList(1);
@@ -71,6 +71,19 @@ admin.pluginList = {
             try {
                 switch (result.sc) {
                     case "GET_PLUGINS_SUCC":
+                        var datas = result.plugins;
+                        for (var i = 0; i < datas.length; i++) {
+                            datas[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.pluginList.changeStatus('" + 
+                            datas[i].oId + "', '" + datas[i].status + "', this)\">";
+                            if (datas[i].status === "ENABLED") {
+                                datas[i].status = Label.enabledLabel;
+                                datas[i].expendRow += Label.disabledLabel;
+                            } else {
+                                datas[i].status = Label.disabledLabel;
+                                datas[i].expendRow += Label.enabledLabel;
+                            }
+                            datas[i].expendRow += "</a>";
+                        }
                         that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
                         break;
                     default:
@@ -81,7 +94,20 @@ admin.pluginList = {
                 console.error(e);
             }
         }, requestJSONObject);
-    }    
+    },
+    
+    changeStatus: function (pluginId, status, it) {
+        jsonRpc.pluginService.setPluginStatus(function () {
+            var $it = $(it);
+            if (status === "ENABLED") {
+                $it.html(Label.enabledLabel).attr("onclick", $it.attr("onclick").replace("ENABLED", "DISABLED"));
+            } else {
+                $it.html(Label.disabledLabel).attr("onclick", $it.attr("onclick").replace("DISABLED", "ENABLED"));
+            }
+        }, pluginId, status);
+        
+        admin.pluginList.getList(1);
+    }
 };
 
 /*

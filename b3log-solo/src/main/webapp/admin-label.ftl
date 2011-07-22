@@ -78,7 +78,9 @@
         "tagsEmptyLabel": "${tagsEmptyLabel}",
         "abstractEmptyLabel": "${abstractEmptyLabel}",
         "commonUserLabel": "${commonUserLabel}",
-        "articleLabel": "${articleLabel}"
+        "articleLabel": "${articleLabel}",
+        "enabledLabel": "${enabledLabel}",
+        "disabledLabel": "${disabledLabel}"
     };    
     admin.init();
 </script>
