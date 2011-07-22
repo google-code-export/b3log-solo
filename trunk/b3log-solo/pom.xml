@@ -313,7 +313,8 @@
                     <strictCheck>true</strictCheck>
                     <includes>
                         <include>**/src/*/java/**/*.java</include>
-                        <include>**/src/*/webapp/js/**/*.js</include>
+                        <include>**/src/*/webapp/js/*.js</include>
+                        <include>**/src/*/webapp/js/admin/*.js</include>
                         <include>**/src/*/resources/*.properties</include>
                         <include>**/src/*/webapp/WEB-INF/*.xml</include>
                     </includes>
