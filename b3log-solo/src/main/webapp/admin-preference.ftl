@@ -1,4 +1,4 @@
-<div id="preference">
+<div id="tabPreference">
     <ul>
         <li>
             <div id="tab_preferences">
@@ -22,7 +22,7 @@
         </li>
     </ul>
 </div>
-<div id="preferencePanel">
+<div id="tabPreferencePanel">
     <div id="tabs_preferences">
         <table class="form subTable" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>

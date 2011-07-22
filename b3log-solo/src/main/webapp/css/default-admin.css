@@ -181,17 +181,17 @@ a:hover {
     margin: 6px 9px 0 0;
 }
 /* sub tabs */
-#preference {
+#tabPreference {
     border-bottom: 1px solid #DFDFDF;
     height: 30px;
 }
-#preference ul {
+#tabPreference ul {
     list-style: none;
 }
-#preference li {
+#tabPreference li {
     float: left;
 }
-#preference li a {
+#tabPreference li a {
     background-color: #F5F5F5;
     border: 1px solid #DFDFDF;
     border-bottom: 0px;
@@ -202,11 +202,11 @@ a:hover {
     padding: 0 12px;
     text-decoration: none;
 }
-#preference .tab-current, #preference a:hover {
+#tabPreference .tab-current, #tabPreference a:hover {
     background-color: #FFFFFF;
     font-weight: bold;
 }
-#preferencePanel {
+#tabPreferencePanel {
     background-color: #F5F5F5;
     border-bottom: 1px solid #DFDFDF;
     padding: 12px;
@@ -249,22 +249,19 @@ a:hover {
     width: 280px;
 }
 .skinItem {
-    border: 1px solid #E3E9FF;
-    border-radius: 4px;
-    margin: 12px;
-    moz-border-radius: 4px;
-    text-align: center;
-    webkit-border-radius: 4px;
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 0 0 3px #333333;
     line-height: 16px;
+    margin: 24px 12px;
+    padding: 10px 5px;
+    text-align: center;
     width: 304px;
 }
-.skinItem.selected {
-    border: 1px solid;
-    border-color: #BBCCFF;
+#skinMain .skinItem.selected {
+    background-color: #D54121;
 }
 .skinItem:hover {
-    border-color: #CCCCFF #BBCCFF #BBBBFF;
-    border-style: solid;
+    background-color: #FFFFFF;
 }
 .f-blue, .error-msg {
     color: #3366CC;
