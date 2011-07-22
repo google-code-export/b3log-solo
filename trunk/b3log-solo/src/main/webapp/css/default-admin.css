@@ -215,7 +215,16 @@ a:hover {
     border-bottom: 1px solid #DFDFDF;
     padding: 12px;
 }
-
+/* start common */
+.form>div {
+    margin: 12px 0;
+}
+.form>div label {
+    font-weight: bold;
+    line-height: 28px;
+    margin-right: 12px;
+}
+/* end common */
 /* article sync */
 #syncBlogType {
     background-color: #E3E9FF;
