@@ -16,7 +16,6 @@
     limitations under the License.
 
 -->
-
 <!--
     Description: Datastore index configuration for GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/indexconfig.html
