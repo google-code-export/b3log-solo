@@ -37,6 +37,9 @@ a:hover {
 .ico-arrow-up {
     background-position: 0 -30px;
 }
+.commentIcon {
+    background-position: 0 -48px;
+}
 /* end ico */
 
 /* start frame */
@@ -177,7 +180,7 @@ a:hover {
     color: #333333;
 }
 
-#tabs .commentIcon, #tabs .articlesIcon, #tabs .preferenceIcon {
+#tabs .commentIcon, #tabs .postIcon, #tabs .preferenceIcon {
     margin: 6px 9px 0 0;
 }
 /* sub tabs */
@@ -201,6 +204,7 @@ a:hover {
     line-height: 29px;
     padding: 0 12px;
     text-decoration: none;
+    width: 80px;
 }
 #tabPreference .tab-current, #tabPreference a:hover {
     background-color: #FFFFFF;
@@ -250,7 +254,7 @@ a:hover {
 }
 .skinItem {
     border-radius: 4px 4px 4px 4px;
-    box-shadow: 0 0 3px #333333;
+    box-shadow: 0 0 2px #333333;
     line-height: 16px;
     margin: 24px 12px;
     padding: 10px 5px;

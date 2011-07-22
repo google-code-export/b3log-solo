@@ -30,8 +30,8 @@
                 <ul>
                     <li>
                         <div onclick="admin.collapseNav(this)">
-                            <span class="left articlesIcon"></span>
-                            文章
+                            <span class="left postIcon"></span>
+                            ${articleLabel}
                             <span class="ico-arrow-up"></span>
                         </div>
                         <ul class="collapsed">

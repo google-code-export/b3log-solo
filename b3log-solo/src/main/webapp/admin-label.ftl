@@ -76,7 +76,9 @@
         "passwordEmptyLabel": "${passwordEmptyLabel}",
         "setFailLabel": "${setFailLabel}",
         "tagsEmptyLabel": "${tagsEmptyLabel}",
-        "abstractEmptyLabel": "${abstractEmptyLabel}"
+        "abstractEmptyLabel": "${abstractEmptyLabel}",
+        "commonUserLabel": "${commonUserLabel}",
+        "articleLabel": "${articleLabel}"
     };    
     admin.init();
 </script>

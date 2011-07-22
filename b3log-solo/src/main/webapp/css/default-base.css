@@ -131,6 +131,7 @@ button:hover,.button:hover {
     font-size: 12px;
     outline: medium none;
     width: 100%;
+    padding: 0 3px;
 }
 
 .form textarea {
@@ -139,7 +140,8 @@ button:hover,.button:hover {
 .form input {
     height: 24px;
     line-height: 24px;
-}.form input[type='checkbox'] {
+}
+.form input[type='checkbox'] {
     border: 0px;
     vertical-align: top;
 }
@@ -189,12 +191,6 @@ button:hover,.button:hover {
 }
 
 .logo {
-    background: -moz-linear-gradient(center bottom , #AAAAAA, #CECECE) repeat scroll 0 0 transparent;
-    background: -webkit-gradient(linear, left top, left bottom, from(#AAAAAA), to(#CECECE));
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#AAAAAA', endColorstr='#CECECE');
-    border-left: 1px solid #808080;
-    border-radius: 12px;
-    border-right: 1px solid #686868;
     padding: 0 5px;
     text-decoration: none;
     text-shadow: 0 0 1px #EEEEEE;

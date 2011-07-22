@@ -63,8 +63,8 @@ h5{font-size:12px;}
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
     background-image: url("/images/emotions-blue.png");
 }
-#commentURLLabel, #commentURLLabelReply{padding-left: 2px;background:url("../images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;border:1px solid #A6A6A6;border-right:0px;float:left;height:20px;line-height:20px;color: #555555;}
-#commentURL, #commentURLReply{border-left:0 none;width:169px;color: #555555;}
+#commentURLLabel, #commentURLLabelReply{background:url("../images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;border:1px solid #A6A6A6;border-right:0px;float:left;height:20px;line-height:20px;color: #555555;}
+#commentURL, #commentURLReply{border-left:0 none;width:166px;color: #555555;}
 .error-msg{color:#3366CC;}
 .side-navi .item{padding:15px 12px 15px 30px;}
 .side-navi .navi-comments img{width:32px;height:32px;border:1px solid #999999;padding:1px;margin-right:7px;}

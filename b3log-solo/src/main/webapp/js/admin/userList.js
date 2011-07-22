@@ -97,14 +97,14 @@ admin.userList = {
                             userData[i].userEmail = users[i].userEmail;
                             
                             if ("adminRole" === users[i].userRole) {
-                                userData[i].isAdmin = "<div class='falseIcon'></div>";
+                                userData[i].isAdmin = "&nbsp;" + Label.administratorLabel;
                                 userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
                                 users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>";
                             } else {
                                 userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
                                 users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "')\">" + Label.removeLabel + "</a>";
-                                userData[i].isAdmin = "<div class='trueIcon'></div>";
+                                userData[i].isAdmin = Label.commonUserLabel;
                             }
                             
                         }

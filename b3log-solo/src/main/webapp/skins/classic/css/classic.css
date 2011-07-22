@@ -123,18 +123,21 @@ h5 {
     width: 88%;
 }
 #commentURLLabel, #commentURLLabelReply {
-    border-color: #CCCCCC;
-    border-style: inset none inset inset;
-    border-width: 2px 0px 2px 2px;
+    border-color: #C0C0C0 -moz-use-text-color #D9D9D9 #D9D9D9;
+    border-style: solid none solid solid;
+    border-width: 1px 0 1px 1px;
     float: left;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 12px;
     height: 24px;
     line-height: 24px;
-    margin-top: 1px;
+    outline: medium none;
+    padding-left: 3px;
+    width: 31px;
 }
 #commentURL, #commentURLReply {
     border-left: 0px;
     width: 570px;
-    margin-top: 1px;
 }
 #comment, #commentReply {
     width: 604px;
