@@ -15,7 +15,7 @@
 <li>关于管理</li>
 平等、分享、责任是我们的管理理念，我们有一个“核心小组”，他们负责新成员的加入，工作安排，如果你乐意，你也可以成为他们中的一员。（嗯，那么你得准备为 B3log 付出更多。）
 <li>关于可贡献时间</li>
-我们需要保持项目进度，所以我们需要你有基本稳定的可贡献时间，你需要每周为 B3log 贡献 3-5 个小时。如果你渴望加入 B3log 团队而无法提供稳定的贡献时间，我们只能遗憾的告诉你：生活要紧，谢谢你的关注。欢迎你以后加入。
+我们需要保持项目进度，所以我们需要你有基本稳定的可贡献时间，你需要每周为 B3log 贡献 <font color='red'><b>3-5</b></font> 个小时。如果你渴望加入 B3log 团队而无法提供稳定的贡献时间，我们只能遗憾的告诉你：生活要紧，谢谢你的关注。欢迎你以后加入。
 </ul>
 ===3、加入我们你会获得什么===
  加入我们，money 肯定是没有的，你会牺牲更多的业余时间。那么你会得到什么？
@@ -26,7 +26,7 @@
  * 加入我们，B3log 会成为我们在互联网世界的一个小小的梦想，不是吗！
  * 实在想不到其他的了，如果你加入后有额外的收获(在这里面找到女朋友的可能性蛮低哦，女童鞋稀缺)，请与大家分享，嘿嘿。
 ===4、如何加入我们===
- * 第一步：你得部署你自己的 B3log（[http://code.google.com/p/b3log-solo/wiki/pre_installation 怎么部署]），加入我们 B3log Symphony（[http://symphony.b3log.org B3log 社区]，[http://symphony.b3log.org/about 了解B3log Symphony]），加入 B3log 爱好者 QQ 群 13139268，验证信息：B3log。
+ * 第一步：你得部署你自己的 B3log（[http://code.google.com/p/b3log-solo/wiki/pre_installation 怎么部署]），加入我们 B3log Symphony（[http://symphony.b3log.org B3log 社区]，[http://symphony.b3log.org/about 了解 B3log Symphony]），加入 B3log 爱好者 QQ 群 13139268，验证信息：B3log。
  * 第二步：联系群主（叫他 [http://88250.b3log.org/about-me.html D 吧]），表达加入想法。
  * 最后，你可能要经历一个小小的考察（参与一些实质工作）。之后你就会出现在我们的团队名单中，我们会定期讨论 B3log 的发展，分配任务……
 ===5、加入后....===
