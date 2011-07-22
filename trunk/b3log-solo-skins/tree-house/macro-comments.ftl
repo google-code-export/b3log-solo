@@ -183,9 +183,9 @@
         
         // reply comment url
         $("#commentURLReply").focus(function (event) {
-            $("#commentURLLabelReply").css({"border":"2px solid #73A6FF","border-right":"0px"});
+            $("#commentURLLabelReply").css("box-shadow", "0 1px 2px rgba(0, 0, 0, 0.3) inset");
         }).blur(function () {
-            $("#commentURLLabelReply").css({"border":"2px inset #CCCCCC","border-right":"0px"});
+            $("#commentURLLabelReply").css("box-shadow", "");
         });
     }
             
@@ -205,9 +205,9 @@
         page.load();
         // comment url
         $("#commentURL").focus(function (event) {
-            $("#commentURLLabel").css({"border":"2px solid #73A6FF","border-right":"0px"});
+            $("#commentURLLabel").css("box-shadow", "0 1px 2px rgba(0, 0, 0, 0.3) inset");
         }).blur(function () {
-            $("#commentURLLabel").css({"border":"2px inset #CCCCCC","border-right":"0px"});
+            $("#commentURLLabel").css("box-shadow", "");
         });
         // emotions
         page.replaceCommentsEm("#comments .comment-content");

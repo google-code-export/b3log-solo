@@ -71,7 +71,20 @@ h5{font-size:12px;}
 #emotions img, #emotionsReply img{cursor:pointer;display:block;float:left;margin-right:2px;}
 img.comment-picture{width:60px;height:60px;padding:0px 6px 4px 0;}
 .comment-reply{margin:0 auto 24px auto;}
-#commentURLLabel, #commentURLLabelReply{border-width:2px 0px 2px 2px;border-style:inset none inset inset;border-color:#CCCCCC;float:left;height:24px;line-height:24px;background-color:#FFFFFF;*margin-top:1px;}
+#commentURLLabel, #commentURLLabelReply {
+    border-color: #C0C0C0 -moz-use-text-color #D9D9D9 #D9D9D9;
+    border-style: solid none solid solid;
+    border-width: 1px 0 1px 1px;
+    float: left;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 12px;
+    height: 24px;
+    line-height: 24px;
+    outline: medium none;
+    padding-left: 3px;
+    width: 31px;
+    background-color: #FFFFFF;
+}
 #commentURL, #commentURLReply{border-left:0px;width:287px;}
 #comment, #commentReply{width:321px;resize: vertical;}
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
