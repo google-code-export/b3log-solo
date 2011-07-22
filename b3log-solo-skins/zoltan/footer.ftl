@@ -16,7 +16,7 @@
         </div>
         &copy; ${year}- <a href="http://${blogHost}">${blogTitle}</a><br/>
         Powered by
-        <a href="http://b3log-solo.googlecode.com" target="_blank" class="no-underline">
+        <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo no-underline">
             <span style="color: orange;">B</span>
             <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
             <span style="color: green;">L</span>

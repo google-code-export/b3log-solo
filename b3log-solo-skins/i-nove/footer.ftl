@@ -1,7 +1,7 @@
 <div class="left copyright">
     <span style="color: gray;">&copy; ${year}</span> - <a href="http://${blogHost}">${blogTitle}</a><br/>
     Powered by
-    <a href="http://b3log-solo.googlecode.com" target="_blank">
+    <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
         <span style="color: orange;">B</span>
         <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
         <span style="color: green;">L</span>

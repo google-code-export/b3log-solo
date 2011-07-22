@@ -97,23 +97,24 @@ $.extend(Common.prototype, {
             url: "/check-login.do",
             success: function(result){
                 if (result.isLoggedIn) {
-                    var loginHTML = "<div class='left'>" + result.userName + "&nbsp;| &nbsp;</div>";
+                    var loginHTML = "<a href='#'>" + result.userName + "</a>";
 
                     if (result.isAdmin) {
-                        loginHTML += "<span class='left' onclick=\"common.clearCache('all');\">"
-                        + tips.clearAllCacheLabel + "&nbsp;|&nbsp;</span>"
-                        + "<span class='left' onclick='common.clearCache();'>"
-                        + tips.clearCacheLabel + "&nbsp;|&nbsp;</span>";
+                        loginHTML += "<a href=\"javascript:common.clearCache('all');\">"
+                        + tips.clearAllCacheLabel + "</a>"
+                        + "<a href='javascript:common.clearCache();'>"
+                        + tips.clearCacheLabel + "</a>";
                     }
-                    loginHTML += "<div class='left adminIcon' onclick=\"window.location='/admin-index.do';\" title='"
-                    + tips.adminLabel + "'></div>" + "<div class='left'>&nbsp;|&nbsp;</div>"
-                    + "<div onclick=\"window.location.href='"
-                    + result.logoutURL + "';\" class='left logoutIcon' title='" + tips.logoutLabel+ "'></div>";
+                    
+                    loginHTML += "<a href='admin-index.do' title='"
+                    + tips.adminLabel + "'>" + tips.adminLabel + "</a>"
+                    + "<a href='" + result.logoutURL + "' title='" + 
+                    tips.logoutLabel+ "'>" + tips.logoutLabel+ "</a>";
                 
                     $("#admin").append(loginHTML);
                 } else {
-                    $("#admin").append("<div class='left loginIcon' onclick=\"window.location.href='"
-                        + result.loginURL + "';\" title='" + tips.loginLabel + "'></div>");
+                    $("#admin").append("<a href='"
+                        + result.loginURL + "' title='" + tips.loginLabel + "'>" + tips.loginLabel + "</a>");
                 }
             },
             error: function (event, XMLHttpRequest, ajaxOptions, thrownError) {

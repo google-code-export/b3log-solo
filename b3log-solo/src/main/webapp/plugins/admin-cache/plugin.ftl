@@ -124,7 +124,7 @@
             this.getList(1);
             $("#loadMsg").text();
         }
-    }
+    };
     
     /*
      * before load script, init namespace
@@ -154,5 +154,5 @@
         "refresh":  plugins.cacheList.init
     }
     
-        admin.setCurByHash();
+    admin.setCurByHash();
 </script>

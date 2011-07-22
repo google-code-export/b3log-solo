@@ -58,7 +58,6 @@ admin.preference = {
                         $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                         $("#keyOfSolo").val(preference.keyOfSolo);
                         preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
-                        preference.enablePostToBuzz ? $("#syncBuzz").attr("checked", "checked") : $("#syncBuzz").removeAttr("checked");
                         // Tencent micro blog settings
                         preference.enablePostToTencentMicroblog ? $("#postToTencentMicroblog").attr("checked", "checked") : $("#postToTencentMicroblog").removeAttr("checked");
                         $("#tencentMicroblogAppKey").val(preference.tencentMicroblogAppKey);
@@ -160,11 +159,11 @@ admin.preference = {
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
                 "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
                 "enablePostToBuzz": false /*$("#syncBuzz").attr("checked")*/,
-                "enableArticleUpdateHint": $("#enableArticleUpdateHint").attr("checked") ? true : false,
+                "enableArticleUpdateHint": $("#enableArticleUpdateHint").prop("checked"),
                 "signs": signs,
                 "tencentMicroblogAppKey": $("#tencentMicroblogAppKey").val(),
                 "tencentMicroblogAppSecret": $("#tencentMicroblogAppSecret").val(),
-                "enablePostToTencentMicroblog": $("#postToTencentMicroblog").attr("checked") ? true : false,
+                "enablePostToTencentMicroblog": $("#postToTencentMicroblog").prop("checked"),
                 "keyOfSolo": $("#keyOfSolo").val()
             }
         }

@@ -117,4 +117,4 @@ admin.register["draft-list"] =  {
     "obj": admin.draftList,
     "init": admin.draftList.init,
     "refresh": admin.draftList.getList
-}
+};
