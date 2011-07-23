@@ -87,9 +87,13 @@ admin.commentList = {
                             commentsData[i].title = "<a href='" + comments[i].commentSharpURL + 
                             "' target='_blank'>" + comments[i].commentTitle +
                             "</a>";
-                            commentsData[i].userName = "<a href='" + comments[i].commentURL +
-                            "' target='_blank'>" + comments[i].commentName + 
-                            "</a>";
+                            if ("http://" === comments[i].commentURL) {
+                                commentsData[i].userName =comments[i].commentName;
+                            } else {
+                                commentsData[i].userName = "<a href='" + comments[i].commentURL +
+                                "' target='_blank'>" + comments[i].commentName + 
+                                "</a>";
+                            }
                             commentsData[i].userEmail = "<a href='mailto:" + comments[i].commentEmail +
                             "'>" + comments[i].commentEmail + "</a>";
                             commentsData[i].date = $.bowknot.getDate(comments[i].commentDate.time, 1);
