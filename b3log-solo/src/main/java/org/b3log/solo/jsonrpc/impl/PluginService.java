@@ -30,7 +30,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Plugin;
-import org.b3log.latke.plugin.PluginLoader;
+import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -112,18 +112,21 @@ public final class PluginService extends AbstractGAEJSONRpcService {
             }
         }
 
-        final List<AbstractPlugin> plugins = PluginLoader.getPlugins();
+        final PluginManager pluginManager = PluginManager.getInstance();
+        final List<AbstractPlugin> plugins = pluginManager.getPlugins();
 
         for (final AbstractPlugin plugin : plugins) {
             if (plugin.getId().equals(pluginId)) {
-                plugin.setStatus(PluginStatus.valueOf(status));
-
                 final Transaction transaction =
                         pluginRepository.beginTransaction();
                 try {
+                    plugin.setStatus(PluginStatus.valueOf(status));
+                    
                     pluginRepository.update(pluginId, plugin.toJSONObject());
 
                     transaction.commit();
+
+                    pluginManager.update(plugin);
 
                     ret.put(Keys.STATUS_CODE, true);
                     ret.put(Keys.MSG, langs.get("setSuccLabel"));
@@ -210,7 +213,8 @@ public final class PluginService extends AbstractGAEJSONRpcService {
 
             final List<JSONObject> pluginJSONObjects =
                     new ArrayList<JSONObject>();
-            final List<AbstractPlugin> plugins = PluginLoader.getPlugins();
+            final List<AbstractPlugin> plugins =
+                    PluginManager.getInstance().getPlugins();
             for (final AbstractPlugin plugin : plugins) {
                 final JSONObject jsonObject = plugin.toJSONObject();
 
