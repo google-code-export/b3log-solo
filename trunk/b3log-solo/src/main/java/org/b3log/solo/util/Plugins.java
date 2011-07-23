@@ -16,9 +16,12 @@
 package org.b3log.solo.util;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
-import org.b3log.latke.plugin.PluginLoader;
+import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.repository.PluginRepository;
@@ -30,10 +33,15 @@ import org.json.JSONObject;
  * Plugin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 21, 2011
+ * @version 1.0.0.1, Jul 23, 2011
  */
 public final class Plugins {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(Plugins.class.getName());
     /**
      * Plugin repository.
      */
@@ -41,13 +49,7 @@ public final class Plugins {
             PluginGAERepository.getInstance();
 
     /**
-     * Updates datastore plugin descriptions with the specified plugins and 
-     * refreshes these plugins' id.
-     * 
-     * <p>
-     * Invokes this method will clear all plugin descriptions in datastore and 
-     * adds the specified plugins into datastore.
-     * </p>
+     * Updates datastore plugin descriptions with the specified plugins.
      * 
      * @param plugins the specified plugins
      * @throws Exception exception 
@@ -58,21 +60,50 @@ public final class Plugins {
         final JSONArray pluginArray = result.getJSONArray(Keys.RESULTS);
         final List<JSONObject> persistedPlugins =
                 CollectionUtils.jsonArrayToList(pluginArray);
-        
-        // Clears all plugin descriptions in datastore
+
+        // Reads plugin status from datastore and clear plugin datastore
         for (final JSONObject oldPluginDesc : persistedPlugins) {
-            PLUGIN_REPOS.remove(oldPluginDesc.getString(Keys.OBJECT_ID));
+            final String descId = oldPluginDesc.getString(Keys.OBJECT_ID);
+            final AbstractPlugin plugin = get(plugins, descId);
+
+            PLUGIN_REPOS.remove(descId);
+
+            if (null != plugin) {
+                final String status =
+                        oldPluginDesc.getString(Plugin.PLUGIN_STATUS);
+                plugin.setStatus(PluginStatus.valueOf(status));
+            }
         }
-        
-        // Adds all plugins into datastore and refreshes ids
+
+        // Adds these plugins into datastore
         for (final AbstractPlugin plugin : plugins) {
-            final JSONObject jsonObject = plugin.toJSONObject();
-            final String id = PLUGIN_REPOS.add(jsonObject);
+            final JSONObject pluginDesc = plugin.toJSONObject();
+            PLUGIN_REPOS.add(pluginDesc);
             
-            plugin.setId(id); // Refreshes id
+            LOGGER.log(Level.FINEST, "Refreshed plugin[{0}]", pluginDesc);
         }
-        
-        PluginLoader.set(plugins);
+    }
+
+    /**
+     * Gets a plugin in the specified plugins with the specified id.
+     * 
+     * @param plugins the specified plugins
+     * @param id the specified id, must NOT be {@code null}
+     * @return a plugin, returns {@code null} if not found
+     */
+    private static AbstractPlugin get(final List<AbstractPlugin> plugins,
+                                      final String id) {
+        if (null == id) {
+            throw new IllegalArgumentException("id must not be null");
+        }
+
+        for (final AbstractPlugin plugin : plugins) {
+            if (id.equals(plugin.getId())) {
+                return plugin;
+            }
+        }
+
+        return null;
     }
 
     /**

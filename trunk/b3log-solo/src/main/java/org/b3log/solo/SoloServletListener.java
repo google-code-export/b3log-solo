@@ -29,7 +29,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -44,8 +43,7 @@ import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.plugin.AbstractPlugin;
-import org.b3log.latke.plugin.PluginLoader;
+import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
@@ -68,10 +66,10 @@ import org.b3log.solo.jsonrpc.impl.StatisticService;
 import org.b3log.solo.jsonrpc.impl.TagService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
+import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
-import org.b3log.solo.util.Plugins;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
@@ -81,7 +79,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.8, Jul 21, 2011
+ * @version 1.0.4.9, Jul 23, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -156,7 +154,8 @@ public final class SoloServletListener extends AbstractServletListener {
                 PreferenceGAERepository.getInstance();
         final Transaction transaction = preferenceRepository.beginTransaction();
         try {
-            loadPlugins();
+            PluginManager.getInstance().load();
+
             loadPreference();
 
             transaction.commit();
@@ -195,29 +194,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
-    }
-
-    /**
-     * Loads plugins.
-     * 
-     * <p>
-     * Loads plugins from directory {@literal webRoot/plugins/}, and 
-     * {@linkplain Plugins#refresh(java.util.List) refreshes these plugins}.
-     * </p>
-     * 
-     * @see PluginLoader#load()
-     * @see Plugins#refresh(java.util.List) 
-     */
-    private void loadPlugins() {
-        final List<AbstractPlugin> plugins = PluginLoader.load();
-        
-        try {
-            Plugins.refresh(plugins);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            throw new IllegalStateException(e);
-        }
     }
 
     /**
@@ -384,6 +360,7 @@ public final class SoloServletListener extends AbstractServletListener {
              * eventManager.registerListener(new CnBlogsUpdateArticleProcessor());
              */
 
+            eventManager.registerListener(new PluginRefresher());
             eventManager.registerListener(new ViewLoadEventHandler());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
