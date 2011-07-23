@@ -140,6 +140,7 @@ $.extend(Common.prototype, {
         $.ajax({
             type: "POST",
             url: "/clear-cache.do",
+            contentType: "application/json",
             data: JSON.stringify(data),
             success: function(result){
                 window.location.reload();

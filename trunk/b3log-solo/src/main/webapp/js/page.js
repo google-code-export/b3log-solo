@@ -200,6 +200,7 @@ $.extend(Page.prototype, {
             $.ajax({
                 type: "POST",
                 url: "/add-" + type + "-comment.do",
+                contentType: "application/json",
                 data: JSON.stringify(requestJSONObject),
                 success: function(result){
                     switch (result.sc) {
