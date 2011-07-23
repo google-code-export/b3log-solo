@@ -106,7 +106,7 @@ $.extend(Common.prototype, {
                         + tips.clearCacheLabel + "</a>";
                     }
                     
-                    loginHTML += "<a href='admin-index.do' title='"
+                    loginHTML += "<a href='/admin-index.do' title='"
                     + tips.adminLabel + "'>" + tips.adminLabel + "</a>"
                     + "<a href='" + result.logoutURL + "' title='" + 
                     tips.logoutLabel+ "'>" + tips.logoutLabel+ "</a>";
