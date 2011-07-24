@@ -87,7 +87,7 @@ $.extend(TablePaginate.prototype, {
      */
     updateTablePagination: function (data, currentPage, pageInfo) {
         currentPage = parseInt(currentPage);
-        if (currentPage > pageInfo.paginationPageCount) {
+        if (currentPage > pageInfo.paginationPageCount && currentPage > 1) {
             alert(Label.pageLabel + ":" + currentPage + " " + Label.noDataLable);
             return;
         }
