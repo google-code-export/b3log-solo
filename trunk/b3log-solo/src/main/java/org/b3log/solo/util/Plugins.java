@@ -24,7 +24,6 @@ import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginGAERepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,7 +32,7 @@ import org.json.JSONObject;
  * Plugin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jul 23, 2011
+ * @version 1.0.0.2, Jul 24, 2011
  */
 public final class Plugins {
 
@@ -45,7 +44,7 @@ public final class Plugins {
     /**
      * Plugin repository.
      */
-    private static final PluginRepository PLUGIN_REPOS =
+    private static final PluginGAERepository PLUGIN_REPOS =
             PluginGAERepository.getInstance();
 
     /**
@@ -60,6 +59,9 @@ public final class Plugins {
         final JSONArray pluginArray = result.getJSONArray(Keys.RESULTS);
         final List<JSONObject> persistedPlugins =
                 CollectionUtils.jsonArrayToList(pluginArray);
+        
+        // Disables plugin repository cache to avoid remove all cache
+        PLUGIN_REPOS.setCacheEnabled(false);
 
         // Reads plugin status from datastore and clear plugin datastore
         for (final JSONObject oldPluginDesc : persistedPlugins) {
@@ -78,10 +80,12 @@ public final class Plugins {
         // Adds these plugins into datastore
         for (final AbstractPlugin plugin : plugins) {
             final JSONObject pluginDesc = plugin.toJSONObject();
-            PLUGIN_REPOS.add(pluginDesc);
+            PLUGIN_REPOS.addAsync(pluginDesc);
             
             LOGGER.log(Level.FINEST, "Refreshed plugin[{0}]", pluginDesc);
         }
+        
+        PLUGIN_REPOS.setCacheEnabled(true);
     }
 
     /**
