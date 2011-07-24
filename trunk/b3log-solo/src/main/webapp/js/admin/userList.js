@@ -142,7 +142,12 @@ admin.userList = {
                                 admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
                                 admin.userList.pageInfo.pageCount++;
                             }
-                            admin.userList.getList(admin.userList.pageInfo.pageCount);
+                            var hashList = window.location.hash.split("/");
+                            if (admin.userList.pageInfo.pageCount == hashList[hashList.length - 1]) {
+                                admin.userList.getList(admin.userList.pageInfo.pageCount);
+                            } else {
+                                admin.setHashByPage(admin.userList.pageInfo.pageCount);
+                            }
                             $("#tipMsg").text(Label.addSuccLabel);
                             break;
                         case "ADD_USER_FAIL_DUPLICATED_EMAIL":
@@ -256,7 +261,12 @@ admin.userList = {
                                 admin.userList.pageInfo.pageCount--;
                                 pageNum = admin.userList.pageInfo.pageCount;
                             }
-                            admin.userList.getList(pageNum);
+                            var hashList = window.location.hash.split("/");
+                            if (pageNum == hashList[hashList.length - 1]) {
+                                admin.userList.getList(pageNum);
+                            } else {
+                                admin.setHashByPage(pageNum);
+                            }
                             $("#tipMsg").text(Label.removeSuccLabel);
                             break;
                         case "REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS":

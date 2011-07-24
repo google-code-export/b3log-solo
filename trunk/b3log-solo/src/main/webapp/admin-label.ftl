@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var Label = {
         "userRole": "${userRole}",
-        "PAGE_SIZE": 18,
+        "PAGE_SIZE": 2,
         "WINDOW_SIZE": 10,
         "localeString": "${localeString}",
         
@@ -25,6 +25,7 @@
         "authorLabel": "${authorLabel}",
         "createDateLabel": "${createDateLabel}",
         "previousPageLabel": "${previousPageLabel}",
+        "pageLabel": "${pageLabel}",
         "nextPagePabel": "${nextPagePabel}",
         "gotoLabel": "${gotoLabel}",
         "cancelTopSuccLabel": "${cancelTopSuccLabel}",
@@ -81,7 +82,8 @@
         "articleLabel": "${articleLabel}",
         "enabledLabel": "${enabledLabel}",
         "disabledLabel": "${disabledLabel}",
-        "signIsNullLabel": "${signIsNullLabel}"
+        "signIsNullLabel": "${signIsNullLabel}",
+        "noDataLable": "${noDataLable}"
     };    
     admin.init();
 </script>

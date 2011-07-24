@@ -150,7 +150,12 @@ admin.linkList = {
                                 admin.linkList.pageInfo.currentPage === admin.linkList.pageInfo.pageCount) {
                                 admin.linkList.pageInfo.pageCount++;
                             }
-                            admin.linkList.getList(admin.linkList.pageInfo.pageCount);
+                            var hashList = window.location.hash.split("/");
+                            if (admin.linkList.pageInfo.pageCount == hashList[hashList.length - 1]) {
+                                admin.linkList.getList(admin.linkList.pageInfo.pageCount);
+                            } else {
+                                admin.setHashByPage(admin.linkList.pageInfo.pageCount);
+                            }
                             $("#tipMsg").text(Label.addSuccLabel);
                             break;
                         default:
@@ -249,7 +254,12 @@ admin.linkList = {
                                 admin.linkList.pageInfo.pageCount--;
                                 pageNum = admin.linkList.pageInfo.pageCount;
                             }
-                            admin.linkList.getList(pageNum);
+                            var hashList = window.location.hash.split("/");
+                            if (pageNum == hashList[hashList.length - 1]) {
+                                admin.linkList.getList(pageNum);
+                            } else {
+                                admin.setHashByPage(pageNum);
+                            }
                             $("#tipMsg").text(Label.removeSuccLabel);
                             break;
                         case "REMOVE_LINK_FAIL_":
