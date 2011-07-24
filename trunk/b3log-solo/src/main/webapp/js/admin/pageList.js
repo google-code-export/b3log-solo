@@ -18,7 +18,7 @@
  * page list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 18, 2011
+ * @version 1.0.0.5, July 24, 2011
  */
 
 /* page-list 相关操作 */
@@ -34,7 +34,7 @@ admin.pageList = {
     /* 
      * 初始化 table, pagination, comments dialog
      */
-    init: function () {
+    init: function (page) {
         this.tablePagination.buildTable([{
             text: "",
             index: "pageOrder",
@@ -58,7 +58,7 @@ admin.pageList = {
         }]);
         this.tablePagination.initPagination();
         this.tablePagination.initCommentsDialog();
-        this.getList(1);
+        this.getList(page);
         
         var language = Label.localeString.substring(0, 2);
         tinyMCE.init({

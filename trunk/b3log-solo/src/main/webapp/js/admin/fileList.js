@@ -18,7 +18,7 @@
  * file list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 18, 2011
+ * @version 1.0.0.5, July 24, 2011
  */
 
 /* file-list 相关操作 */
@@ -34,7 +34,7 @@ admin.fileList = {
     /* 
      * 初始化 table, pagination 
      */
-    init: function () {
+    init: function (page) {
         this.tablePagination.buildTable([{
             style: "padding-left: 12px;font-size:14px;",
             text: Label.fileNameLabel,
@@ -57,7 +57,7 @@ admin.fileList = {
             style: "padding-left: 12px;"
         }]);
         this.tablePagination.initPagination();
-        this.getList(1);
+        this.getList(page);
         
         $("#formActionHidden").load(function () {
             admin.fileList.getList(1);
@@ -157,5 +157,6 @@ admin.fileList = {
  */
 admin.register["file-list"] =  {
     "obj": admin.fileList,
-    "init": admin.fileList.init
+    "init": admin.fileList.init,
+    "refresh": admin.fileList.getList
 }

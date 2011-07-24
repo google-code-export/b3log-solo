@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var Label = {
         "userRole": "${userRole}",
-        "PAGE_SIZE": 18,
+        "PAGE_SIZE": 1,
         "WINDOW_SIZE": 10,
         "localeString": "${localeString}",
         
@@ -80,7 +80,8 @@
         "commonUserLabel": "${commonUserLabel}",
         "articleLabel": "${articleLabel}",
         "enabledLabel": "${enabledLabel}",
-        "disabledLabel": "${disabledLabel}"
+        "disabledLabel": "${disabledLabel}",
+        "signIsNullLabel": "${signIsNullLabel}"
     };    
     admin.init();
 </script>

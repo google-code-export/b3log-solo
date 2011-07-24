@@ -18,7 +18,7 @@
  * preference for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, July 3, 2011
+ * @version 1.0.0.4, July 24, 2011
  */
 
 /* preference 相关操作 */
@@ -91,11 +91,12 @@ admin.preference = {
 
                         // sign
                         var signs = eval('(' + preference.signs + ')');
-                        for (var i = 0; i < signs.length; i++) {
-                            var oId = parseInt(signs[i].oId);
-                            if (oId !== 0) {
-                                $("#preferenceSign" + oId).val(signs[i].signHTML);
-                            }
+                        for (var j = 1; j < signs.length; j++) {
+                            $("#preferenceSign" + j).val(signs[j].signHTML);
+                            $("#preferenceSignButton" + j).tip({
+                                content: signs[j].signHTML === "" ? Label.signIsNullLabel : signs[j].signHTML.replace(/<script.*<\/script>/ig, ""),
+                                position: "bottom"
+                            });
                         }
                         break;
                     default:
@@ -177,11 +178,14 @@ admin.preference = {
                             window.location.reload();
                         }
                         
-                        // update article signs
-                        if ( $("#articleSign" + signs[0].oId).length > 1) {
-                            for (var i = 1; i < signs.length; i++) {
-                                $("#articleSign" + signs[i].oId).tip("option", "content", signs[i].signHTML === "" ? "该签名档为空" : signs[i].signHTML);
+                        // update article and preferences signs
+                        for (var i = 1; i < signs.length; i++) {
+                            if ($("#articleSign" + signs[i].oId).length === 1) {
+                                $("#articleSign" + signs[i].oId).tip("option", "content", 
+                                    signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/<script.*<\/script>/ig, ""));
                             }
+                            $("#preferenceSignButton" + signs[i].oId).tip("option", "content", 
+                                signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/<script.*<\/script>/ig, ""));
                         }
                         break;
                     case "UPDATE_PREFERENCE_FAIL_":

@@ -18,11 +18,13 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 22, 2011
+ * @version 1.0.0.5, July 24, 2011
  */
 
 var Admin = function () {
     this.register = {};
+    this.tools = ['#page-list', '#file-list', '#link-list', '#preference', 
+    '#user-list', '#plugin-list', '#others'];
 };
 
 $.extend(Admin.prototype, {
@@ -52,16 +54,16 @@ $.extend(Admin.prototype, {
      * @hash location.hash
      * @action 当前页面还未载入，载入后执行的 action
      */
-    tabsAction: function (hash, action) {
-        console.log(hash);
-        
+    tabsAction: function (hash, action, page) {
         if (!$("#tab_" + hash + " a").hasClass("tab-current")) {
             $("#tab_" + hash).click();
+            console.log(hash);
         }
         if ($("#tabs_" + hash).html().replace(/\s/g, "") === "") {
+            // 还未加载 HTML
             $("#loadMsg").text(Label.loadingLabel);
             $("#tabs_" + hash).load("admin-" + hash + ".do", function () {
-                admin.register[hash].init.call(admin.register[hash].obj);
+                admin.register[hash].init.call(admin.register[hash].obj, page);
                 
                 if (hash === "article" && admin.article.status.id) {
                     admin.article.getAndSet();
@@ -71,22 +73,24 @@ $.extend(Admin.prototype, {
                     action();
                 }
             });
-        } else if (admin.register[hash].obj.type) {
+        } else if (admin.register[hash].obj.hash) {
+            // plugin 已经存在，不需 load HTML
             if (!admin.register[hash].obj.isInit) {
                 admin.register[hash].init.call(admin.register[hash].obj);
                 admin.register[hash].obj.isInit = true;
             } else {
                 if (admin.register[hash].refresh) {
-                    admin.register[hash].refresh.call(admin.register[hash].obj, 1);
+                    admin.register[hash].refresh.call(admin.register[hash].obj, page);
                 }
             }
         } else{
+            // 已加载过 HTML
             if (hash === "article" && admin.article.status.id) {
                 admin.article.getAndSet();
                 return;
             }
             if (admin.register[hash].refresh) {
-                admin.register[hash].refresh.call(admin.register[hash].obj, 1);
+                admin.register[hash].refresh.call(admin.register[hash].obj, page);
             }
         }  
     },
@@ -95,18 +99,31 @@ $.extend(Admin.prototype, {
      * 根据当前 hash 设置当前 tab
      */
     setCurByHash: function () {
-        // 根据 hash 设置当前 tab，如果 hash 为空时，默认为发布文章
+        // 根据 hash 设置当前 tab
         var hash = window.location.hash;
         var tag = hash.substr(1, hash.length - 1);
-        var tab = tag.split("/")[0],
-        subTab = tag.split("/")[1];
+        var tagList = tag.split("/");
+        var tab = "",
+        subTab = "",
+        page = 1;
+        for (var i = 0; i < tagList.length; i++) {
+            if (i === 0) {
+                tab = tagList[i];
+            } else {
+                if (/^\d+$/.test(tagList[i])) {
+                    page = tagList[i];
+                } else {
+                    subTab = tagList[i];
+                }
+            }
+        }
         if (tab !== "") {
             if (subTab) {
                 this.tabsAction(tab, function () {
                     $("#tab_" + subTab).click();
                 });
             } else {
-                this.tabsAction(tab);
+                this.tabsAction(tab, undefined, page);
             }
         }
     },
@@ -117,31 +134,10 @@ $.extend(Admin.prototype, {
     init: function () {
         // 不支持 IE 6
         Util.killIE();   
-        
         $("#loadMsg").text(Label.loadingLabel);
         
         // 构建 tabs
         $("#tabs").tabs();
-        
-        // Removes functions with the current user role
-        if (Label.userRole !== "adminRole") {
-            var unUsed = ['link-list', 'preference', 'file-list', 'page', 'others', 'user-list'];
-            for (var i = 0; i < unUsed.length; i++) {
-                $("#tab").tabs("remove", unUsed[i]);
-            }
-        }
-        
-        // 当前 tab 属于 Tools 时，设其展开
-        // TODO: 插件
-        var tools = ['#page-list', '#file-list', '#link-list', '#preference', 
-        '#user-list', '#plugin-list', '#cache-list', '#others'];
-        for (var j = 0; j < tools.length; j++) {
-            if (window.location.hash.indexOf(tools[j]) > -1) {
-                $("#tabs>ul>li>div")[2].click();
-            }
-        }
-        
-        this.setCurByHash();
             
         // tipMsg
         setInterval(function () {
@@ -163,7 +159,25 @@ $.extend(Admin.prototype, {
             $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
             subNav.className = "none";
         }
+    },
+    
+    inited: function () {
+        // Removes functions with the current user role
+        if (Label.userRole !== "adminRole") {
+            var unUsed = ['link-list', 'preference', 'file-list', 'page', 'others', 'user-list'];
+            for (var i = 0; i < unUsed.length; i++) {
+                $("#tab").tabs("remove", unUsed[i]);
+            }
+        }
+        
+        // 当前 tab 属于 Tools 时，设其展开
+        for (var j = 0; j < this.tools.length; j++) {
+            if (window.location.hash.indexOf(this.tools[j]) > -1) {
+                $("#tabs>ul>li>div")[2].click();
+            }
+        }
+        
+        this.setCurByHash();
     }
 });
 var admin = new Admin();
-var plugins = {};

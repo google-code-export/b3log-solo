@@ -18,7 +18,7 @@
  * table and paginate util
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 18, 2011
+ * @version 1.0.0.5, July 24, 2011
  */
 
 var TablePaginate = function (id) {
@@ -51,10 +51,14 @@ $.extend(TablePaginate.prototype, {
         var id = this.id;
         $("#" + id + "Pagination").paginate({
             "bind": function(currentPage) {
-                var hash = window.location.hash;
-                var tag = hash.substr(1, hash.length - 1);
-                admin.register[tag].obj.getList(currentPage);
-                this.currentPage = currentPage;
+                var hash = window.location.hash,
+                hashList = hash.split("/");
+                if (/^\d*$/.test(hashList[hashList.length - 1])) {
+                    hashList[hashList.length - 1] = currentPage;
+                } else {
+                    hashList.push(currentPage);
+                }
+                window.location.hash = hashList.join("/");
                 return true;
             },
             "currentPage": 1,
@@ -88,6 +92,7 @@ $.extend(TablePaginate.prototype, {
      * 更新 table & paginateion
      */
     updateTablePagination: function (data, currentPage, pageInfo) {
+        currentPage = parseInt(currentPage);
         $("#" + this.id + "Table").table("update",{
             data: [{
                 groupName: "all",
@@ -96,7 +101,7 @@ $.extend(TablePaginate.prototype, {
         });
                     
         if (pageInfo.paginationPageCount === 0) {
-            pageInfo.paginationPageCount = 0;
+            pageInfo.paginationPageCount = 1;
         }
         $("#" + this.id + "Pagination").paginate("update", {
             pageCount: pageInfo.paginationPageCount,

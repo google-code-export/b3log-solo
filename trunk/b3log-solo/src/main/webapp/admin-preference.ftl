@@ -117,7 +117,7 @@
                         ${indexTagDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="mostUsedTagDisplayCount" class="normalInput"/>
+                        <input id="mostUsedTagDisplayCount" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -125,7 +125,7 @@
                         ${indexRecentCommentDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="recentCommentDisplayCount" class="normalInput"/>
+                        <input id="recentCommentDisplayCount" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -133,7 +133,7 @@
                         ${indexMostCommentArticleDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="mostCommentArticleDisplayCount" class="normalInput"/>
+                        <input id="mostCommentArticleDisplayCount" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -141,7 +141,7 @@
                         ${indexMostViewArticleDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="mostViewArticleDisplayCount" class="normalInput"/>
+                        <input id="mostViewArticleDisplayCount" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -149,7 +149,7 @@
                         ${pageSize1Label}
                     </th>
                     <td>
-                        <input id="articleListDisplayCount" class="normalInput"/>
+                        <input id="articleListDisplayCount" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -157,7 +157,7 @@
                         ${windowSize1Label}
                     </th>
                     <td>
-                        <input id="articleListPaginationWindowSize" class="normalInput"/>
+                        <input id="articleListPaginationWindowSize" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -165,7 +165,7 @@
                         ${randomArticlesDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="randomArticlesDisplayCount" class="normalInput"/>
+                        <input id="randomArticlesDisplayCount" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -173,7 +173,7 @@
                         ${relevantArticlesDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="relevantArticlesDisplayCount" class="normalInput"/>
+                        <input id="relevantArticlesDisplayCount" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -181,7 +181,7 @@
                         ${externalRelevantArticlesDisplayCnt1Label}
                     </th>
                     <td>
-                        <input id="externalRelevantArticlesDisplayCount" class="normalInput"/>
+                        <input id="externalRelevantArticlesDisplayCount" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -198,7 +198,7 @@
                         ${keyOfSolo1Label}
                     </th>
                     <td>
-                        <input id="keyOfSolo" class="normalInput"/>
+                        <input id="keyOfSolo" class="normalInput" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -227,7 +227,7 @@
                 </tr>
                 <tr>
                     <th valign="top" width="80">
-                        ${signLabel}1:
+                        <button id="preferenceSignButton1">${signLabel}1</button>
                     </th>
                     <td>
                         <textarea rows="8" id="preferenceSign1"></textarea>
@@ -235,7 +235,7 @@
                 </tr>
                 <tr>
                     <th valign="top">
-                        ${signLabel}2:
+                        <button id="preferenceSignButton2">${signLabel}2</button>
                     </th>
                     <td>
                         <textarea rows="8" id="preferenceSign2"></textarea>
@@ -243,7 +243,7 @@
                 </tr>
                 <tr>
                     <th valign="top">
-                        ${signLabel}3:
+                        <button id="preferenceSignButton3">${signLabel}3</button>
                     </th>
                     <td>
                         <textarea rows="8" id="preferenceSign3"></textarea>

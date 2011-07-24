@@ -18,7 +18,7 @@
  * user list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, July 18, 2011
+ * @version 1.0.0.4, July 24, 2011
  */
 
 /* user-list 相关操作 */
@@ -37,7 +37,7 @@ admin.userList = {
     /* 
      * 初始化 table, pagination
      */
-    init: function () {
+    init: function (page) {
         this.tablePagination.buildTable([{
             style: "padding-left: 12px;",
             text: Label.commentNameLabel,
@@ -56,7 +56,7 @@ admin.userList = {
         }]);
     
         this.tablePagination.initPagination();
-        this.getList(1);
+        this.getList(page);
         
         $("#userUpdate").dialog({
             width: 700,
@@ -303,5 +303,6 @@ admin.userList = {
  */
 admin.register["user-list"] =  {
     "obj": admin.userList,
-    "init": admin.userList.init
+    "init": admin.userList.init,
+    "refresh": admin.userList.getList
 }

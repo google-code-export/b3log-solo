@@ -18,7 +18,7 @@
  * draft list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, July 18, 2011
+ * @version 1.0.0.6, July 24, 2011
  */
 
 /* draft-list 相关操作 */
@@ -28,7 +28,7 @@ admin.draftList = {
     /* 
      * 初始化 table, pagination, comments dialog 
      */
-    init: function () {
+    init: function (page) {
         this.tablePagination.buildTable([{
             text: Label.titleLabel,
             index: "title",
@@ -62,7 +62,7 @@ admin.draftList = {
         }]);
         this.tablePagination.initPagination();
         this.tablePagination.initCommentsDialog();
-        this.getList(1);
+        this.getList(page);
     },
 
     /* 
