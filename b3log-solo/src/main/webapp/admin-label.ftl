@@ -1,7 +1,7 @@
 <script type="text/javascript">
     var Label = {
         "userRole": "${userRole}",
-        "PAGE_SIZE": 1,
+        "PAGE_SIZE": 18,
         "WINDOW_SIZE": 10,
         "localeString": "${localeString}",
         
