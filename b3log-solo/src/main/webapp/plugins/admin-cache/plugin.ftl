@@ -6,6 +6,7 @@
 </div>
 <script type="text/javascript">
     plugins.cacheList = {
+        hash: "cache-list",
         getList: function (pageNum) {
             $("#loadMsg").text("${loadingLabel}");
         
@@ -35,7 +36,7 @@
                                 }]
                         });
                         if (result.pagination.paginationPageCount === 0) {
-                            pageNum = 0;
+                            result.pagination.paginationPageCount = 1;
                         }
                         $("#cachePagination").paginate("update", {
                             currentPage: pageNum,
@@ -50,25 +51,28 @@
         },        
     
         changeStatus: function (it) {
-            var $it = $(it);
+            $("#loadMsg").text("${loadingLabel}");
+            var $it = $(it),
+            requestJSONObject = {};
             if ($it.text() === "${enabledLabel}") {
-                $it.text("${disabledLabel}");
-            
-                var requestJSONObject = {
-                    "pageCacheEnabled": false
-                };
-                jsonRpc.adminCacheService.setPageCache(requestJSONObject);
+                requestJSONObject.pageCacheEnabled = false;
             } else {
-                $it.text("${enabledLabel}");
-            
-                var requestJSONObject = {
-                    "pageCacheEnabled": true
-                };
-                jsonRpc.adminCacheService.setPageCache(requestJSONObject);
+                requestJSONObject.pageCacheEnabled = true;
             }
+            
+            jsonRpc.adminCacheService.setPageCache(function () {
+                if ($it.text() === "${enabledLabel}") {
+                    $it.text("${disabledLabel}");
+                } else {
+                    $it.text("${enabledLabel}");
+                }
+                $("#tipMsg").text("${updateSuccLabel}");
+                $("#loadMsg").text("");
+            }, requestJSONObject);
         },
         
         getCache: function () {
+            $("#loadMsg").text("${loadingLabel}");
             jsonRpc.adminCacheService.getPageCache(function (result, error) {
                 try {
                     var pageCacheStatusLabel = "${disabledLabel}";
@@ -93,8 +97,6 @@
         },
     
         init: function () {     
-            $("#loadMsg").text("${loadingLabel}");
-        
             $("#cacheList").table({
                 colModel: [{
                         style: "padding-left: 6px;",
@@ -122,28 +124,8 @@
             });
             this.getCache();
             this.getList(1);
-            $("#loadMsg").text();
         }
     };
-    
-    /*
-     * before load script, init namespace
-     * 1. add tab
-     * 2. remove origin html code
-     * 3. register init and refresh function
-     * 4. after add all plugins, invok setCurByHash()
-     */ 
-    plugins.cacheList.type = "plugin";
-    
-    
-    $("#tabs").tabs("add", {
-        "id": "cache-list",
-        "text": "${cacheMgmtLabel}",
-        "path": "/tools/plugin-list",
-        "content": $("#cachePlugin").html()
-    });
-     
-    $("#cachePlugin").remove();
     
     /*
      * 注册到 admin 进行管理 
@@ -153,4 +135,17 @@
         "init": plugins.cacheList.init,
         "refresh":  plugins.cacheList.init
     }
+    
+    /*
+     * 添加插件
+     */
+    admin.plugin.add({
+        "id": "cache-list",
+        "text": "${cacheMgmtLabel}",
+        "path": "/tools/plugin-list",
+        "content": $("#cachePlugin").html()
+    });
+    
+    // 移除现有内容
+    $("#cachePlugin").remove();
 </script>

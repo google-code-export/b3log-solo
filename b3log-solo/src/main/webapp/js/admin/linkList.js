@@ -18,7 +18,7 @@
  * link list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 18, 2011
+ * @version 1.0.0.5, July 24, 2011
  */
 
 /* link-list 相关操作 */
@@ -34,7 +34,7 @@ admin.linkList = {
     /* 
      * 初始化 table, pagination
      */
-    init: function () {
+    init: function (page) {
         this.tablePagination.buildTable([{
             text: "",
             index: "linkOrder",
@@ -52,7 +52,7 @@ admin.linkList = {
         }]);
     
         this.tablePagination.initPagination();
-        this.getList(1);
+        this.getList(page);
         
         $("#updateLink").dialog({
             width: 700,
@@ -317,5 +317,6 @@ admin.linkList = {
  */
 admin.register["link-list"] =  {
     "obj": admin.linkList,
-    "init": admin.linkList.init
+    "init": admin.linkList.init,
+    "refresh": admin.linkList.getList
 }

@@ -18,7 +18,7 @@
  * comment list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, July 18, 2011
+ * @version 1.0.0.4, July 24, 2011
  */
 
 /* comment-list 相关操作 */
@@ -31,7 +31,7 @@ admin.commentList = {
     /* 
      * 初始化 table, pagination, comments dialog 
      */
-    init: function () {
+    init: function (page) {
         this.tablePagination.buildTable([{
             text: Label.commentContentLabel,
             index: "content",
@@ -59,7 +59,7 @@ admin.commentList = {
             style: "padding-left: 12px;"
         }]);
         this.tablePagination.initPagination();
-        this.getList(1);
+        this.getList(page);
     },
 
     /* 

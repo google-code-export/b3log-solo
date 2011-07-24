@@ -18,7 +18,7 @@
  * plugin list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 22, 2011
+ * @version 1.0.0.5, July 24, 2011
  */
 
 /* plugin-list 相关操作 */
@@ -32,7 +32,7 @@ admin.pluginList = {
     /* 
      * 初始化 table, pagination
      */
-    init: function () {
+    init: function (page) {
         this.tablePagination.buildTable([{
             style: "padding-left: 12px;",
             text: Label.pluginNameLabel,
@@ -56,7 +56,7 @@ admin.pluginList = {
         }]);
     
         this.tablePagination.initPagination();
-        this.getList(1);
+        this.getList(page);
     },
 
     /* 
@@ -109,6 +109,7 @@ admin.pluginList = {
         }
         jsonRpc.pluginService.setPluginStatus(function () {
             admin.pluginList.getList(admin.pluginList.pageInfo.currentPage);
+            $("#tipMsg").text(Label.updateSuccLabel);
         }, pluginId, status);
     }
 };
@@ -118,5 +119,6 @@ admin.pluginList = {
  */
 admin.register["plugin-list"] =  {
     "obj": admin.pluginList,
-    "init": admin.pluginList.init
+    "init": admin.pluginList.init,
+        "refresh": admin.pluginList.getList
 }

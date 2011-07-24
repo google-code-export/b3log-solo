@@ -18,7 +18,7 @@
  *  article for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, July 17, 2011
+ * @version 1.0.0.6, July 24, 2011
  */
 admin.article = {
     status: {
@@ -363,7 +363,7 @@ admin.article = {
                         $("#articleSign0").addClass("selected");
                     } else {
                         $("#articleSign" + result[i].oId).tip({
-                            content: result[i].signHTML === "" ? "该签名档为空" : result[i].signHTML,
+                            content: result[i].signHTML === "" ? Label.signIsNullLabel : result[i].signHTML.replace(/<script.*<\/script>/ig, ""),
                             position: "top"
                         });
                     }

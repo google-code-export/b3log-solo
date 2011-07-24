@@ -144,7 +144,11 @@
         <script type="text/javascript" src="js/admin/pluginList.js"></script>
         <script type="text/javascript" src="js/admin/userList.js"></script>
         <script type="text/javascript" src="js/admin/commentList.js"></script>
+        <script type="text/javascript" src="js/admin/plugin.js"></script>
         <#include "admin-label.ftl">
         ${plugins}
+        <script type="text/javascript">
+            admin.inited();
+        </script>
     </body>
 </html>
