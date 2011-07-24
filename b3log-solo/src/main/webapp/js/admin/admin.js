@@ -96,6 +96,21 @@ $.extend(Admin.prototype, {
     },
     
     /*
+     * 根据当前页数设置 hash
+     * @currentPage 当前页
+     */
+    setHashByPage: function (currentPage) {
+        var hash = window.location.hash,
+        hashList = hash.split("/");
+        if (/^\d*$/.test(hashList[hashList.length - 1])) {
+            hashList[hashList.length - 1] = currentPage;
+        } else {
+            hashList.push(currentPage);
+        }
+        window.location.hash = hashList.join("/");
+    },
+    
+    /*
      * 根据当前 hash 设置当前 tab
      */
     setCurByHash: function () {

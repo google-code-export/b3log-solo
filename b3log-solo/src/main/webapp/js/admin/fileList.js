@@ -134,7 +134,12 @@ admin.fileList = {
                                 admin.fileList.pageInfo.pageCount--;
                                 pageNum = admin.fileList.pageInfo.pageCount;
                             }
-                            admin.fileList.getList(pageNum);
+                            var hashList = window.location.hash.split("/");
+                            if (pageNum == hashList[hashList.length - 1]) {
+                                admin.fileList.getList(pageNum);
+                            } else {
+                                admin.setHashByPage(pageNum);
+                            }
                             $("#tipMsg").text(Label.removeSuccLabel);
                             break;
                         case "REMOVE_FILE_FAIL_":

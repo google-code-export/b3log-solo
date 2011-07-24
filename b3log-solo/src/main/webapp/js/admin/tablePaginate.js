@@ -51,14 +51,7 @@ $.extend(TablePaginate.prototype, {
         var id = this.id;
         $("#" + id + "Pagination").paginate({
             "bind": function(currentPage) {
-                var hash = window.location.hash,
-                hashList = hash.split("/");
-                if (/^\d*$/.test(hashList[hashList.length - 1])) {
-                    hashList[hashList.length - 1] = currentPage;
-                } else {
-                    hashList.push(currentPage);
-                }
-                window.location.hash = hashList.join("/");
+                admin.setHashByPage(currentPage);
                 return true;
             },
             "currentPage": 1,
@@ -67,7 +60,8 @@ $.extend(TablePaginate.prototype, {
             "previousPageText": Label.previousPageLabel,
             "goText": Label.gotoLabel,
             "type": "custom",
-            "custom": [1]
+            "custom": [1],
+            "pageCount": 1
         });
     },
 
@@ -93,6 +87,10 @@ $.extend(TablePaginate.prototype, {
      */
     updateTablePagination: function (data, currentPage, pageInfo) {
         currentPage = parseInt(currentPage);
+        if (currentPage > pageInfo.paginationPageCount) {
+            alert(Label.pageLabel + ":" + currentPage + " " + Label.noDataLable);
+            return;
+        }
         $("#" + this.id + "Table").table("update",{
             data: [{
                 groupName: "all",
@@ -103,6 +101,7 @@ $.extend(TablePaginate.prototype, {
         if (pageInfo.paginationPageCount === 0) {
             pageInfo.paginationPageCount = 1;
         }
+        
         $("#" + this.id + "Pagination").paginate("update", {
             pageCount: pageInfo.paginationPageCount,
             currentPage: currentPage,

@@ -203,7 +203,12 @@ admin.pageList = {
                                 admin.pageList.pageInfo.pageCount--;
                                 pageNum = admin.pageList.pageInfo.pageCount;
                             }
-                            admin.pageList.getList(pageNum);
+                            var hashList = window.location.hash.split("/");
+                            if (pageNum == hashList[hashList.length - 1]) {
+                                admin.pageList.getList(pageNum);
+                            } else {
+                                admin.setHashByPage(pageNum);
+                            }
                             $("#tipMsg").text(Label.removeSuccLabel);
                             break;
                         case "REMOVE_PAGE_FAIL_":
@@ -255,7 +260,12 @@ admin.pageList = {
                                 admin.pageList.pageInfo.currentPage === dmin.pageList.pageInfo.pageCount) {
                                 admin.pageList.pageInfo.pageCount++;
                             }
-                            admin.pageList.getList(admin.pageList.pageInfo.pageCount);
+                           var hashList = window.location.hash.split("/");
+                            if (admin.pageList.pageInfo.pageCount == hashList[hashList.length - 1]) {
+                                admin.pageList.getList(admin.pageList.pageInfo.pageCount);
+                            } else {
+                                admin.setHashByPage(admin.pageList.pageInfo.pageCount);
+                            }
                             $("#tipMsg").text(Label.addSuccLabel);
                             break;
                         default:
