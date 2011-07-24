@@ -55,9 +55,9 @@ $.extend(Admin.prototype, {
      * @action 当前页面还未载入，载入后执行的 action
      */
     tabsAction: function (hash, action, page) {
+        console.log(hash);
         if (!$("#tab_" + hash + " a").hasClass("tab-current")) {
             $("#tab_" + hash).click();
-            console.log(hash);
         }
         if ($("#tabs_" + hash).html().replace(/\s/g, "") === "") {
             // 还未加载 HTML
