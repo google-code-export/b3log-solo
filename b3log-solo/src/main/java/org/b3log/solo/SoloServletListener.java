@@ -131,7 +131,7 @@ public final class SoloServletListener extends AbstractServletListener {
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Latkes.setRuntimeEnv(RuntimeEnv.GAE);
-
+        
         final Value gaeEnvValue = SystemProperty.environment.value();
         if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
             LOGGER.info("B3log Solo runs in [production] mode");
