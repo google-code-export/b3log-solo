@@ -2,3 +2,6 @@
 
 Ansen：
 [http://www.ansen.me/articles/2011/05/01/1304270393591.html B3log部署至GAE服务器图文教程之Windows篇]
+
+Vanessa：
+[http://vanessa.b3log.org/b3log-skin B3log 皮肤介绍]
