@@ -20,7 +20,7 @@
     Description: Cron job for GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/cron.html
                  for more details.
-    Version: 1.0.0.6, Jan 30, 2011
+    Version: 1.0.0.7, Jul 23, 2011
     Author: Liang Ding
 -->
 <cronentries>
@@ -32,9 +32,9 @@
     </cron>
 
     <cron>
-        <url>/article-random-double-gen.do?cnt=5</url>
+        <url>/article-random-double-gen.do?cnt=10</url>
         <description>Regenerate article random double.</description>
-        <schedule>every 1 minutes</schedule>
+        <schedule>every 1 hours</schedule>
     </cron>
 
 </cronentries>
