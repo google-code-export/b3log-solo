@@ -1,4 +1,4 @@
-#summary 部署相关
+#summary 非官方文档
 
 Ansen：
 [http://www.ansen.me/articles/2011/05/01/1304270393591.html B3log部署至GAE服务器图文教程之Windows篇]
