@@ -1,7 +1,7 @@
 #summary 升级
 
 ==升级==
-如果部署了新版本，除了按照新版的升级操作步骤（该步骤会在每次新版本的发布记录里说明）进行操作，还需要在 [http://appengine.google.com GAE 管理控制台]进行版本切换。
+如果部署了新版本，除了按照新版的升级操作步骤（该步骤会在每次新版本的[http://code.google.com/p/b3log-solo/wiki/upgrade#%E5%8F%91%E5%B8%83%E8%AE%B0%E5%BD%95 发布记录]里说明）进行操作，还需要在 [http://appengine.google.com GAE 管理控制台]进行版本切换。
 
 ===发布记录===
  # [http://88250.b3log.org/b3log-solo-release-026.html GAE 博客——B3log Solo 0.2.6 正式版发布了！]
