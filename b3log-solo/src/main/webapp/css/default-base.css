@@ -166,7 +166,7 @@ button:hover,.button:hover {
     background: -webkit-gradient(linear, left bottom, left top, from(#E5E5E5), to(#FFFFFF));
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E5E5E5');
     border-bottom: 1px solid #E5E5E5;
-    height: 26px;
+    height: 27px;
     line-height: 26px;
 }
 

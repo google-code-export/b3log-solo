@@ -39,7 +39,10 @@ a:hover {
     outline: 0 none;
 }
 
-*::-moz-selection {
+::-moz-selection {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+::selection {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -201,7 +204,7 @@ a:hover {
 }
 
 .side li {
-    line-height: 150%;
+    line-height: 26px;
     margin-left: 0;
 }
 
