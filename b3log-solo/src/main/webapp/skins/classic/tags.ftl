@@ -16,10 +16,16 @@
             <div class="body">
                 <div class="left main">
                     <div>
-                        <#list tags as tag>
-                        <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
-                        &nbsp;&nbsp;
-                        </#list>
+                        <ul id="tags">
+                            <#list tags as tag>
+                            <li>
+                                <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
+                                    <span>${tag.tagTitle}</span>
+                                    (<b>${tag.tagPublishedRefCount}</b>)
+                                </a>
+                            </li>
+                            </#list>
+                        </ul>
                     </div>
                 </div>
                 <div class="right side">
@@ -31,5 +37,8 @@
                 <#include "footer.ftl">
             </div>
         </div>
+        <script type="text/javascript">
+            common.buildTags();
+        </script>
     </body>
 </html>

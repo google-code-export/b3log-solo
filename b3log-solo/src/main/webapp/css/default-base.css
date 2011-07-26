@@ -2,7 +2,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, July 18, 2011
+ * @version 1.0.0.4, July 26, 2011
 */
 *,html,body {
     margin: 0;
@@ -400,3 +400,42 @@ button:hover,.button:hover {
     float: left;
 }
 /* end emotions */
+
+/* start tags */
+#tags li {
+    border: 1px solid;
+    border-radius: 3px;
+    box-shadow: 1px 1px 1px;
+    float: left;
+    padding: 2px 12px;
+}
+
+#tags {
+    list-style: none;
+}
+
+#tags .tags1 {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#tags .tags2 {
+    font-size: 16px;
+    font-weight: normal;
+}
+
+#tags .tags3 {
+    font-size: 24px;
+    font-weight: normal;
+}
+
+#tags .tags4 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+#tags .tags5 {
+    font-size: 42px;
+    font-weight: bold;
+}
+/* end tags */
