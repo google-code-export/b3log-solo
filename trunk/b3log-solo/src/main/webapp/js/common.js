@@ -18,7 +18,7 @@
  *  util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, July 12, 2011
+ * @version 1.0.0.4, July 26, 2011
  */
 
 var Util = {
@@ -159,6 +159,39 @@ $.extend(Common.prototype, {
                 "]" + commentSplited[j].slice(3);
             }
             $comment.html(replacedStr);
+        }
+    },
+    
+    buildTags: function () {
+        // 按字母进行排序
+        $("#tags").html($("#tags li").get().sort(function(a, b) {
+            var valA = $(a).find("span").text().toLowerCase();
+            var valB = $(b).find("span").text().toLowerCase();
+            return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;		
+        }));
+        
+        // 按引用次数进行排序
+        var aList = $("#tags a").get();
+        aList.sort(function(a, b) {
+            var valA = parseInt($(a).find("b").text());
+            var valB = parseInt($(b).find("b").text());
+            return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;		
+        });
+                
+        // 根据引用次数添加样式，产生云效果
+        var aLength = aList.length,
+        classes = ["tags1", "tags2", "tags3", "tags4", "tags5"];
+        var arr = Math.round(aLength / classes.length);
+        for (var i = 0, c = 0; i < aLength; i++) {
+            if (c < classes.length - 1) {
+                for (var j = 0; j < arr; j++) {
+                    aList[i++].className = classes[c];
+                }
+                c++;
+                i--;
+            } else {
+                aList[i].className = classes[c];
+            }
         }
     }
 });

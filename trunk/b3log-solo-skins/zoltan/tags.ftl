@@ -5,7 +5,7 @@
         <@head title="${allTagsLabel} - ${blogTitle}">
         <meta name="keywords" content="${metaKeywords},${allTagsLabel}"/>
         <meta name="description" content="<#list tags as tag>${tag.tagTitle}<#if tag_has_next>,</#if></#list>"/>
-        </@head>
+        </@head>   
     </head>
     <body>
         <#include "top-nav.ftl">
@@ -15,10 +15,16 @@
             </div>
             <div class="wrap">
                 <div class="left main">
-                    <#list tags as tag>
-                    <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">${tag.tagTitle}(${tag.tagPublishedRefCount})</a>
-                    &nbsp;&nbsp;
-                    </#list>
+                    <ul id="tags">
+                        <#list tags as tag>
+                        <li>
+                            <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
+                                <span>${tag.tagTitle}</span>
+                                (<b>${tag.tagPublishedRefCount}</b>)
+                            </a>
+                        </li>
+                        </#list>
+                    </ul>
                 </div>
                 <div class="right side">
                     <#include "side.ftl">
@@ -29,5 +35,8 @@
                 <#include "footer.ftl">
             </div>
         </div>
+        <script type="text/javascript">
+            common.buildTags();
+        </script>
     </body>
 </html>
