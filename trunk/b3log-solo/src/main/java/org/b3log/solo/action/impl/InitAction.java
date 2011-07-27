@@ -19,6 +19,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import org.b3log.latke.action.ActionException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,13 +34,14 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.action.util.Filler;
+import org.b3log.solo.model.Common;
 import org.json.JSONObject;
 
 /**
  * B3log Solo initialization action. init.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jun 28, 2011
+ * @version 1.0.0.6, Jul 27, 2011
  */
 public final class InitAction extends AbstractAction {
 
@@ -79,6 +81,8 @@ public final class InitAction extends AbstractAction {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
+        ret.put(Common.YEAR,
+                String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         filler.fillMinified(ret);
 
         try {
