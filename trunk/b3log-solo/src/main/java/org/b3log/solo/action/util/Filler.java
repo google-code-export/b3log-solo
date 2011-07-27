@@ -70,7 +70,7 @@ import org.jsoup.Jsoup;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.9, Jul 2, 2011
+ * @version 1.0.4.0, Jul 27, 2011
  */
 public final class Filler {
 
@@ -416,11 +416,9 @@ public final class Filler {
     public void fillMinified(final Map<String, Object> dataModel) {
         switch (Latkes.getRuntimeMode()) {
             case DEVELOPMENT:
-                dataModel.put(Common.MINI_DIR, "");
                 dataModel.put(Common.MINI_POSTFIX, "");
                 break;
             case PRODUCTION:
-                dataModel.put(Common.MINI_DIR, Common.MINI_DIR_VALUE);
                 dataModel.put(Common.MINI_POSTFIX, Common.MINI_POSTFIX_VALUE);
                 break;
             default:
