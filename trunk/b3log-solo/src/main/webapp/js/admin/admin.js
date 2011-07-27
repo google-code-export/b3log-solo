@@ -18,13 +18,16 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, July 24, 2011
+ * @version 1.0.0.6, July 27, 2011
  */
 
 var Admin = function () {
     this.register = {};
     this.tools = ['#page-list', '#file-list', '#link-list', '#preference', 
     '#user-list', '#plugin-list', '#others'];
+    // 多用户时，一般用户不能使用的功能
+    this.adTools = ['link-list', 'preference', 'file-list', 'page-list', 'others', 
+    'user-list', 'plugin-list']
 };
 
 $.extend(Admin.prototype, {
@@ -56,13 +59,13 @@ $.extend(Admin.prototype, {
      */
     tabsAction: function (hash, action, page) {
         console.log(hash);
-        if (!$("#tab_" + hash + " a").hasClass("tab-current")) {
-            $("#tab_" + hash).click();
+        if (!$("#tabs_" + hash + " a").hasClass("tab-current")) {
+            $("#tabs_" + hash).click();
         }
-        if ($("#tabs_" + hash).html().replace(/\s/g, "") === "") {
+        if ($("#tabsPanel_" + hash).html().replace(/\s/g, "") === "") {
             // 还未加载 HTML
             $("#loadMsg").text(Label.loadingLabel);
-            $("#tabs_" + hash).load("admin-" + hash + ".do", function () {
+            $("#tabsPanel_" + hash).load("admin-" + hash + ".do", function () {
                 admin.register[hash].init.call(admin.register[hash].obj, page);
                 
                 if (hash === "article" && admin.article.status.id) {
@@ -135,7 +138,7 @@ $.extend(Admin.prototype, {
         if (tab !== "") {
             if (subTab) {
                 this.tabsAction(tab, function () {
-                    $("#tab_" + subTab).click();
+                    $("#tabPreference_" + subTab).click();
                 });
             } else {
                 this.tabsAction(tab, undefined, page);
@@ -179,19 +182,18 @@ $.extend(Admin.prototype, {
     inited: function () {
         // Removes functions with the current user role
         if (Label.userRole !== "adminRole") {
-            var unUsed = ['link-list', 'preference', 'file-list', 'page', 'others', 'user-list'];
-            for (var i = 0; i < unUsed.length; i++) {
-                $("#tab").tabs("remove", unUsed[i]);
+            for (var i = 0; i < this.adTools.length; i++) {
+                $("#tabs").tabs("remove", this.adTools[i]);
+            }
+            $("#tabs>ul>li").last().remove();
+        } else {
+            // 当前 tab 属于 Tools 时，设其展开
+            for (var j = 0; j < this.tools.length; j++) {
+                if (window.location.hash.indexOf(this.tools[j]) > -1) {
+                    $("#tabs>ul>li>div")[2].click();
+                }
             }
         }
-        
-        // 当前 tab 属于 Tools 时，设其展开
-        for (var j = 0; j < this.tools.length; j++) {
-            if (window.location.hash.indexOf(this.tools[j]) > -1) {
-                $("#tabs>ul>li>div")[2].click();
-            }
-        }
-        
         this.setCurByHash();
     }
 });

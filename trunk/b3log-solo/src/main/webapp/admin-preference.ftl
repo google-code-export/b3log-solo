@@ -1,29 +1,29 @@
 <div id="tabPreference">
     <ul>
         <li>
-            <div id="tab_preferences">
+            <div id="tabPreference_preferences">
                 <a class="tab-current" href="#preference/preferences">${paramSettingsLabel}</a>
             </div>
         </li>
         <li>
-            <div id="tab_skins">
+            <div id="tabPreference_skins">
                 <a href="#preference/skins">${skinLabel}</a>
             </div>
         </li>
         <li>
-            <div id="tab_signs">
+            <div id="tabPreference_signs">
                 <a href="#preference/signs">${signLabel}</a>
             </div>
         </li>
         <li>
-            <div id="tab_tencent">
+            <div id="tabPreference_tencent">
                 <a href="#preference/tencent">${tencentLabel}</a>
             </div>
         </li>
     </ul>
 </div>
 <div id="tabPreferencePanel">
-    <div id="tabs_preferences">
+    <div id="tabPreferencePanel_preferences">
         <table class="form subTable" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
@@ -209,7 +209,7 @@
             </tbody>
         </table>
     </div>
-    <div id="tabs_skins" class="none">
+    <div id="tabPreferencePanel_skins" class="none">
         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
         <div class="clear"></div>
         <div id="skinMain">
@@ -217,7 +217,7 @@
         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
         <div class="clear"></div>
     </div>
-    <div id="tabs_signs" class="none">
+    <div id="tabPreferencePanel_signs" class="none">
         <table class="form subTable" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
@@ -257,43 +257,8 @@
             </tbody>
         </table>
     </div>
-    <!--        <div id="preferences_syncGoogle" class="none">
-                <table class="form" width="99%" cellpadding="0" cellspacing="9px">
-                    <tbody>
-                        <tr>
-                            <th width="260">
-                                ${OAuthConsumerSecret1Label}
-                            </th>
-                            <td>
-                                <input id="secret"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                ${authorizeGoogleBuzz1Label}
-                            </th>
-                            <td>
-                                <img class="pointer" src="images/buzz.png"
-                                     onclick="oauthBuzz();" alt="${authorizeGoogleBuzz1Label}"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>
-                                ${postToBuzzWhilePublishArticleLabel}
-                            </th>
-                            <td align="left">
-                                <input type="checkbox" class="normalInput" id="syncBuzz"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="right">
-                                <button onclick="admin.preference.update()">${saveLabel}</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>-->
-    <div id="tabs_tencent" class="none">
+    
+    <div id="tabPreferencePanel_tencent" class="none">
         <table class="form" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
