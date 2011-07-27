@@ -2,30 +2,38 @@
  * init b3log page style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, July 3, 2011
- */
- body {
+ * @version 1.0.0.2, July 27, 2011
+*/
+html {
+    height: 100%;
+}
+body {
     background-color: #F3F1E5;
-    border-top: 5px solid #E6E5D9;
     color: #4D505D;
-    font-family: Helvetica,Arial,sans-serif;
-    font-size: small;
-    margin: 0px;
-    padding: 0px;
+    height: 100%;
 }
 .wrapper {
-    margin: 60px auto 0 auto;
-    width: 700px;
+    height: auto;
+    min-height: 100%;
+    position: relative;
 }
-.intro {
+
+.wrap {
+    border-top: 5px solid #E6E5D9;
+    min-height: 400px;
+}
+
+.content {
     background: url("/images/zz.jpg") repeat-x scroll center bottom white;
     border-color: #E6E5D9;
     border-style: solid solid none;
     border-width: 1px;
     height: 278px;
+    margin: 60px auto 0;
     position: relative;
-    width: 698px;
+    width: 700px;
 }
+
 .introSign {
     position: absolute;
     right: -1px;
@@ -80,8 +88,8 @@
     background-color: #FFFFFF;
     border-top: 1px solid #E6E5D9;
     bottom: 0;
-    position: fixed;
+    padding: 12px 0;
+    position: absolute;
     text-align: center;
     width: 100%;
-    z-index: -1;
 }

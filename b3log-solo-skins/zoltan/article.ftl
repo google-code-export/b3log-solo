@@ -73,19 +73,21 @@
                         </#if>
                     </div>
                     <#if 0 != relevantArticles?size>
-                    <h4>${relevantArticles1Label}</h4>
-                    <ul class="marginLeft12">
-                        <#list relevantArticles as relevantArticle>
-                        <li>
-                            <a href="${relevantArticle.articlePermalink}">
-                                ${relevantArticle.articleTitle}
-                            </a>
-                        </li>
-                        </#list>
-                    </ul>
+                    <div class="article-relative">
+                        <h4>${relevantArticles1Label}</h4>
+                        <ul class="marginLeft12">
+                            <#list relevantArticles as relevantArticle>
+                            <li>
+                                <a href="${relevantArticle.articlePermalink}">
+                                    ${relevantArticle.articleTitle}
+                                </a>
+                            </li>
+                            </#list>
+                        </ul>
+                    </div>
                     </#if>
-                    <div id="randomArticles" class="marginTop12"></div>
-                    <div id="externalRelevantArticles" class="marginTop12"></div>
+                    <div id="randomArticles" class="marginTop12 article-relative"></div>
+                    <div id="externalRelevantArticles" class="marginTop12 article-relative"></div>
                     <@comments commentList=articleComments permalink=article.articlePermalink></@comments>
                 </div>
                 <div class="right side">

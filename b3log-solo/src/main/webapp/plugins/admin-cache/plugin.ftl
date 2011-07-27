@@ -1,13 +1,15 @@
 <div id="cachePlugin">
     <div id="cacheContent"></div>
-    <div id="cacheList"></div>
+    <div id="cacheTable"></div>
     <div id="cachePagination" class="margin12 right"></div>
     <div class="clear"></div>
 </div>
 <script type="text/javascript">
     plugins.cacheList = {
         hash: "cache-list",
+        tablePagination:  new TablePaginate("cache"),
         getList: function (pageNum) {
+            var that = this;
             $("#loadMsg").text("${loadingLabel}");
         
             var requestJSONObject = {
@@ -18,10 +20,13 @@
         
             jsonRpc.adminCacheService.getPages(function (result, error) {
                 try {
+                    if (!result) {
+                        alert("${pageLabel}" + ":" + pageNum + " " + "${noDataLable}");
+                        return;
+                    }
                     if (result.sc) {
                         var caches = result.pages;
                         var cacheData = [];
-                    
                         for (var i = 0; i < caches.length; i++) {
                             cacheData[i] = {};
                             cacheData[i].cachedTitle = "<a href='" + caches[i].link + "'  target='_blank'>" 
@@ -29,19 +34,7 @@
                             cacheData[i].cachedType = caches[i].cachedType;
                         }
 
-                        $("#cacheList").table("update",{
-                            data: [{
-                                    groupName: "all",
-                                    groupData: cacheData
-                                }]
-                        });
-                        if (result.pagination.paginationPageCount === 0) {
-                            result.pagination.paginationPageCount = 1;
-                        }
-                        $("#cachePagination").paginate("update", {
-                            currentPage: pageNum,
-                            pageCount: result.pagination.paginationPageCount
-                        });
+                        that.tablePagination.updateTablePagination(cacheData, pageNum, result.pagination);
                     }
                     $("#loadMsg").text("");
                 } catch (e) {
@@ -96,34 +89,22 @@
             });
         },
     
-        init: function () {     
-            $("#cacheList").table({
-                colModel: [{
-                        style: "padding-left: 6px;",
-                        text: "${typeLabel}",
-                        index: "cachedType",
-                        width: 120
-                    }, {
-                        style: "padding-left: 6px;",
-                        text: "${titleLabel}",
-                        index: "cachedTitle",
-                        minWidth: 300
-                    }]
-            });
-        
-            $("#cachePagination").paginate({
-                "bind": function(currentPage) {
-                    plugins.cacheList.getList(currentPage);
-                    return true;
-                },
-                "currentPage": 1,
-                "errorMessage": "${inputErrorLabel}",
-                "nextPageText": "${nextPagePabel}",
-                "previousPageText": "${previousPageLabel}",
-                "goText": "${gotoLabel}"            
-            });
+        init: function (page) {   
+            this.tablePagination.buildTable([{
+                    style: "padding-left: 6px;",
+                    text: "${typeLabel}",
+                    index: "cachedType",
+                    width: 120
+                }, {
+                    style: "padding-left: 6px;",
+                    text: "${titleLabel}",
+                    index: "cachedTitle",
+                    minWidth: 300
+                }]);
+    
+            this.tablePagination.initPagination();
+            this.getList(page);
             this.getCache();
-            this.getList(1);
         }
     };
     

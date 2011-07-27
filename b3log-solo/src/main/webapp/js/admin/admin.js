@@ -79,7 +79,7 @@ $.extend(Admin.prototype, {
         } else if (admin.register[hash].obj.hash) {
             // plugin 已经存在，不需 load HTML
             if (!admin.register[hash].obj.isInit) {
-                admin.register[hash].init.call(admin.register[hash].obj);
+                admin.register[hash].init.call(admin.register[hash].obj, page);
                 admin.register[hash].obj.isInit = true;
             } else {
                 if (admin.register[hash].refresh) {
