@@ -81,6 +81,7 @@ public final class InitAction extends AbstractAction {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
+        ret.put(Common.VERSION, SoloServletListener.VERSION);
         ret.put(Common.YEAR,
                 String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         filler.fillMinified(ret);
