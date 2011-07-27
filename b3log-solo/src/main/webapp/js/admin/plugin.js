@@ -29,6 +29,7 @@ admin.plugin = {
         // 当插件属于 tools 时，当前页面属于 tools，导航需展开 
         if (data.path.indexOf("/tools/") === 0) {
             admin.tools.push("#" + data.id);
+            admin.adTools.push(data.id);
         }
     }
 };

@@ -4,9 +4,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="none"/>
         <title>${blogTitle} - ${adminConsoleLabel}</title>
-        <link type="text/css" rel="stylesheet" href="/css/default-base.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/default-admin.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/default-bowknot.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/default-base${miniPostfix}.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/default-admin${miniPostfix}.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/default-bowknot${miniPostfix}.css"/>
         <link rel="icon" type="image/png" href="/favicon.png"/>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
         <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
@@ -36,24 +36,24 @@
                         </div>
                         <ul class="collapsed">
                             <li>
-                                <div id="tab_article">
+                                <div id="tabs_article">
                                     <a href="#article" onclick="admin.article.clear()">${postArticleLabel}</a>
                                 </div>
                             </li>
                             <li>
-                                <div id="tab_article-list">
+                                <div id="tabs_article-list">
                                     <a href="#article-list">${articleListLabel}</a>
                                 </div>
                             </li>
                             <li>
-                                <div id="tab_draft-list">
+                                <div id="tabs_draft-list">
                                     <a href="#draft-list">${draftListLabel}</a>
                                 </div>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <div id="tab_comment-list">
+                        <div id="tabs_comment-list">
                             <a href="#comment-list">
                                 <span class="left commentIcon"></span>${commentListLabel}
                             </a>
@@ -67,37 +67,37 @@
                         </div>
                         <ul class="none">
                             <li>
-                                <div id="tab_file-list">
+                                <div id="tabs_file-list">
                                     <a href="#file-list">${fileListLabel}</a>
                                 </div>
                             </li>
                             <li>
-                                <div id="tab_page-list">
+                                <div id="tabs_page-list">
                                     <a href="#page-list">${pageMgmtLabel}</a>
                                 </div>
                             </li>
                             <li>
-                                <div id="tab_link-list">
+                                <div id="tabs_link-list">
                                     <a href="#link-list">${linkManagementLabel}</a>
                                 </div>
                             </li>
                             <li>
-                                <div id="tab_preference">
+                                <div id="tabs_preference">
                                     <a href="#preference">${preferenceLabel}</a>
                                 </div>
                             </li>
                             <li>
-                                <div id="tab_user-list">
+                                <div id="tabs_user-list">
                                     <a href="#user-list">${userManageLabel}</a>
                                 </div>
                             </li>
                             <li>
-                                <div id="tab_plugin-list">
+                                <div id="tabs_plugin-list">
                                     <a href="#plugin-list">${pluginMgmtLabel}</a>
                                 </div>
                             </li>
                             <li>
-                                <div id="tab_others">
+                                <div id="tabs_others">
                                     <a href="#others">${othersLabel}</a>
                                 </div>
                             </li>   
@@ -106,17 +106,17 @@
                 </ul>
             </div>
             <div id="tabsPanel">
-                <div id="tabs_article"></div>
-                <div id="tabs_article-list"></div>
-                <div id="tabs_draft-list"></div>
-                <div id="tabs_link-list"></div>
-                <div id="tabs_preference"></div>
-                <div id="tabs_page-list"></div>
-                <div id="tabs_file-list"></div>
-                <div id="tabs_others"></div>
-                <div id="tabs_user-list"></div>
-                <div id="tabs_comment-list"></div>
-                <div id="tabs_plugin-list"></div>
+                <div id="tabsPanel_article"></div>
+                <div id="tabsPanel_article-list"></div>
+                <div id="tabsPanel_draft-list"></div>
+                <div id="tabsPanel_link-list"></div>
+                <div id="tabsPanel_preference"></div>
+                <div id="tabsPanel_page-list"></div>
+                <div id="tabsPanel_file-list"></div>
+                <div id="tabsPanel_others"></div>
+                <div id="tabsPanel_user-list"></div>
+                <div id="tabsPanel_comment-list"></div>
+                <div id="tabsPanel_plugin-list"></div>
             </div>
             <div class="footer">
                 Powered by

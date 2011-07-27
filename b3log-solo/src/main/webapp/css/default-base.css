@@ -2,7 +2,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 26, 2011
+ * @version 1.0.0.5, July 27, 2011
 */
 *,html,body {
     margin: 0;
@@ -166,7 +166,7 @@ button:hover,.button:hover {
     background: -webkit-gradient(linear, left bottom, left top, from(#E5E5E5), to(#FFFFFF));
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E5E5E5');
     border-bottom: 1px solid #E5E5E5;
-    height: 27px;
+    height: 26px;
     line-height: 26px;
 }
 
@@ -174,7 +174,7 @@ button:hover,.button:hover {
     border-right: 1px solid #D9D9D9;
     color: #4C4C4C;
     float: left;
-    line-height: 16px;
+    line-height: 14px;
     margin: 6px 0;
     padding: 0 6px;
     text-decoration: none;
@@ -402,16 +402,23 @@ button:hover,.button:hover {
 /* end emotions */
 
 /* start tags */
+#tags {
+    list-style: none;
+}
+
 #tags li {
-    border: 1px solid;
-    border-radius: 3px;
-    box-shadow: 1px 1px 1px;
+    margin: 3px 6px;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 1px 1px 3px;
     float: left;
     padding: 2px 12px;
 }
+#tags li:hover {
+    text-shadow: 0 0 2px;
+}
 
-#tags {
-    list-style: none;
+#tags a {
+    text-decoration: none;
 }
 
 #tags .tags1 {
@@ -425,17 +432,17 @@ button:hover,.button:hover {
 }
 
 #tags .tags3 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: normal;
 }
 
 #tags .tags4 {
-    font-size: 36px;
+    font-size: 24px;
     font-weight: bold;
 }
 
 #tags .tags5 {
-    font-size: 42px;
+    font-size: 28px;
     font-weight: bold;
 }
 /* end tags */
