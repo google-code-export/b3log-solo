@@ -18,7 +18,7 @@
  * user list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 24, 2011
+ * @version 1.0.0.5, July 27, 2011
  */
 
 /* user-list 相关操作 */
@@ -89,6 +89,8 @@ admin.userList = {
                         admin.userList.pageInfo.pageCount = result.pagination.paginationPageCount;
                         if (users.length < 1) {
                             alert("A error occurs, please report this issue on http://code.google.com/p/b3log-solo/issues/list");
+                             $("#loadMsg").text("");
+                            return;
                         }
                     
                         for (var i = 0; i < users.length; i++) {

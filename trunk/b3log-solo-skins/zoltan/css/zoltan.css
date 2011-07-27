@@ -164,6 +164,10 @@ a:hover {
     font-size: 11px;
 }
 
+.article-relative {
+    line-height: 24px;
+}
+
 .article-body {
     margin: 15px 0;
     line-height: 150%;
@@ -204,7 +208,7 @@ a:hover {
 }
 
 .side li {
-    line-height: 26px;
+    line-height: 24px;
     margin-left: 0;
 }
 

@@ -14,7 +14,7 @@
     <div onclick="common.goTop();">${goTopLabel}</div>
 </footer>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/common${miniPostfix}.js"></script>
 <script type="text/javascript">
     var common = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
