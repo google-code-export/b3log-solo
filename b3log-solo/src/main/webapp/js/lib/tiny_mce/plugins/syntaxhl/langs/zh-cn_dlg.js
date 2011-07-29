@@ -1,4 +1,4 @@
-tinyMCE.addI18n('zh.syntaxhl_dlg',{
+tinyMCE.addI18n('zh-ch.syntaxhl_dlg',{
     title : '\u4f7f\u7528 Syntaxhighlighter \u63d2\u5165\u4ee3\u7801',
     highlight_options : '\u9ad8\u4eae\u9009\u9879',
     paste : '\u4ee3\u7801\u7c98\u8d34',
