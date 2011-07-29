@@ -61,6 +61,9 @@ admin.pageList = {
         this.getList(page);
         
         var language = Label.localeString.substring(0, 2);
+        if (language === "zh") {
+            language = "zh-cn";
+        }
         tinyMCE.init({
             // General options
             language: language,
@@ -260,7 +263,7 @@ admin.pageList = {
                                 admin.pageList.pageInfo.currentPage === dmin.pageList.pageInfo.pageCount) {
                                 admin.pageList.pageInfo.pageCount++;
                             }
-                           var hashList = window.location.hash.split("/");
+                            var hashList = window.location.hash.split("/");
                             if (admin.pageList.pageInfo.pageCount == hashList[hashList.length - 1]) {
                                 admin.pageList.getList(admin.pageList.pageInfo.pageCount);
                             } else {

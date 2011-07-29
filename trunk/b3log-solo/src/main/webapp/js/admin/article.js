@@ -418,8 +418,10 @@ admin.article = {
         });
 
         // editor
-        var localeString = Label.localeString;
-        var language = localeString.substring(0, 2);
+        var language = Label.localeString.substring(0, 2);
+        if (language === "zh") {
+            language = "zh-cn";
+        }
         tinyMCE.init({
             // General options
             language: language,
