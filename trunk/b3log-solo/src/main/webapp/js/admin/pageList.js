@@ -18,7 +18,7 @@
  * page list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, July 24, 2011
+ * @version 1.0.0.6, July 30, 2011
  */
 
 /* page-list 相关操作 */
@@ -70,7 +70,7 @@ admin.pageList = {
             mode : "exact",
             elements : "pageContent",
             theme : "advanced",
-            plugins : "style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl",
+            plugins : "autosave,style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl",
 
             // Theme options
             theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
