@@ -18,9 +18,10 @@
  *  article for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, July 24, 2011
+ * @version 1.0.0.7, July 30, 2011
  */
 admin.article = {
+    isConfirm: true,
     status: {
         id: undefined,
         isArticle: undefined,
@@ -197,6 +198,7 @@ admin.article = {
                                 admin.selectTab("draft-list");
                             }
                             $("#tipMsg").text(Label.addSuccLabel);
+                            admin.article.isConfirm = false;
                             break;
                         default:
                             $("#tipMsg").text(Label.addFailLabel);
@@ -277,6 +279,7 @@ admin.article = {
                                 }
                             });
                             admin.article.status.id = undefined;
+                            admin.article.isConfirm = false;
                             break;
                         default:
                             $("#tipMsg").text(Label.updateFailLabel);
@@ -428,7 +431,7 @@ admin.article = {
             mode : "exact",
             elements : "articleContent, abstract",
             theme : "advanced",
-            plugins : "style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl",
+            plugins : "autosave,style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl",
 
             // Theme options
             theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
@@ -475,6 +478,7 @@ admin.article = {
                     $("#tipMsg").text(Label.unPulbishSuccLabel);
                     admin.selectTab("draft-list");
                     admin.article.status.id = undefined;
+                    admin.article.isConfirm = false;
                 } else {
                     $("#tipMsg").text(Label.unPulbishFailLabel);
                 }
@@ -496,6 +500,18 @@ admin.article = {
         }
         var unique =  $.unique(arr);
         return unique.toString();
+    },
+    
+    /*
+     * 点击发文文章时的处理
+     */
+    prePost:function () {
+        if (window.location.hash === "#article" && 
+            tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
+            if (confirm(Label.editorPostLabel)) {
+                admin.article.clear();
+            }
+        }
     }
 }
 
@@ -504,9 +520,5 @@ admin.article = {
  */
 admin.register.article =  {
     "obj": admin.article,
-    "init": admin.article.init,
-    "refresh": function () {
-        admin.article.clear();
-        $("#loadMsg").text("");
-    }
+    "init": admin.article.init
 }

@@ -18,12 +18,13 @@
  *  plugin manager for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, July 24, 2011
+ * @version 1.0.0.2, July 30, 2011
  */
 var plugins = {};
 
 admin.plugin = {
     add: function (data) {  
+        data.targetId = this.analysePath(data.path);
         $("#tabs").tabs("add", data);
         
         // 当插件属于 tools 时，当前页面属于 tools，导航需展开 
@@ -31,5 +32,10 @@ admin.plugin = {
             admin.tools.push("#" + data.id);
             admin.adTools.push(data.id);
         }
+    },
+    
+    analysePath: function (path) {
+        var paths = path.split("/");
+        return paths[2];
     }
 };

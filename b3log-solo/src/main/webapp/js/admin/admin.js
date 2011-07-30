@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, July 27, 2011
+ * @version 1.0.0.7, July 30, 2011
  */
 
 var Admin = function () {
@@ -27,75 +27,16 @@ var Admin = function () {
     '#user-list', '#plugin-list', '#others'];
     // 多用户时，一般用户不能使用的功能
     this.adTools = ['link-list', 'preference', 'file-list', 'page-list', 'others', 
-    'user-list', 'plugin-list']
+    'user-list', 'plugin-list'];
 };
 
-$.extend(Admin.prototype, {
-    copyright: {
-        version:"0.0.0.2",
-        author: "lly219@gmail.com"
-    },
-    
+$.extend(Admin.prototype, {    
     /*
      * 登出
      */
     logout: function () {
         var logoutURL = jsonRpc.adminService.getLogoutURL();
         window.location.href = logoutURL;
-    },
-    
-    /*
-     * 设置某个 tab 被选择
-     * @id tab id
-     */
-    selectTab: function (id) {
-        window.location.hash = "#" + id;
-    },
-    
-    /*
-     * 点击 tab 后产生的事件
-     * @hash location.hash
-     * @action 当前页面还未载入，载入后执行的 action
-     */
-    tabsAction: function (hash, action, page) {
-        console.log(hash);
-        if (!$("#tabs_" + hash + " a").hasClass("tab-current")) {
-            $("#tabs_" + hash).click();
-        }
-        if ($("#tabsPanel_" + hash).html().replace(/\s/g, "") === "") {
-            // 还未加载 HTML
-            $("#loadMsg").text(Label.loadingLabel);
-            $("#tabsPanel_" + hash).load("admin-" + hash + ".do", function () {
-                admin.register[hash].init.call(admin.register[hash].obj, page);
-                
-                if (hash === "article" && admin.article.status.id) {
-                    admin.article.getAndSet();
-                    return;
-                }
-                if (action) {
-                    action();
-                }
-            });
-        } else if (admin.register[hash].obj.hash) {
-            // plugin 已经存在，不需 load HTML
-            if (!admin.register[hash].obj.isInit) {
-                admin.register[hash].init.call(admin.register[hash].obj, page);
-                admin.register[hash].obj.isInit = true;
-            } else {
-                if (admin.register[hash].refresh) {
-                    admin.register[hash].refresh.call(admin.register[hash].obj, page);
-                }
-            }
-        } else{
-            // 已加载过 HTML
-            if (hash === "article" && admin.article.status.id) {
-                admin.article.getAndSet();
-                return;
-            }
-            if (admin.register[hash].refresh) {
-                admin.register[hash].refresh.call(admin.register[hash].obj, page);
-            }
-        }  
     },
     
     /*
@@ -114,36 +55,103 @@ $.extend(Admin.prototype, {
     },
     
     /*
-     * 根据当前 hash 设置当前 tab
+     * 设置某个 tab 被选择
+     * @id tab id
      */
-    setCurByHash: function () {
-        // 根据 hash 设置当前 tab
+    selectTab: function (id) {
+        window.location.hash = "#" + id;
+       
+    },
+    
+    analyseHash: function () {
         var hash = window.location.hash;
         var tag = hash.substr(1, hash.length - 1);
         var tagList = tag.split("/");
-        var tab = "",
-        subTab = "",
-        page = 1;
+        var tags = {};
+        tags.page = 1;
         for (var i = 0; i < tagList.length; i++) {
             if (i === 0) {
-                tab = tagList[i];
+                tags.tab = tagList[i];
             } else {
                 if (/^\d+$/.test(tagList[i])) {
-                    page = tagList[i];
+                    tags.page = tagList[i];
                 } else {
-                    subTab = tagList[i];
+                    tags.subTab = tagList[i];
                 }
             }
         }
-        if (tab !== "") {
-            if (subTab) {
-                this.tabsAction(tab, function () {
-                    $("#tabPreference_" + subTab).click();
-                });
-            } else {
-                this.tabsAction(tab, undefined, page);
+        return tags;
+    },
+    
+    /*
+     * 根据当前 hash 设置当前 tab
+     */
+    setCurByHash: function () {
+        var tags = this.analyseHash();
+        
+        if (!tags.tab) {
+            return;
+        }
+        
+        if (tinyMCE.get('articleContent')) {
+            if (tags.tab !== "article" && admin.article.isConfirm &&
+                tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
+                if (!confirm(Label.editorLeaveLabel)) {
+                    window.location.hash = "#article";
+                    return;
+                }
+            }
+            if (tags.tab === "article" && admin.article.isConfirm &&
+                tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
+                return;
             }
         }
+        
+        //console.log(tags.tab);
+        $("#tabs").tabs("setCurrent", tags.tab); 
+        
+        if ($("#tabsPanel_" + tags.tab).html().replace(/\s/g, "") === "") {
+            // 还未加载 HTML
+            $("#loadMsg").text(Label.loadingLabel);
+            $("#tabsPanel_" + tags.tab).load("admin-" + tags.tab + ".do", function () {
+                // 回调加载页面初始化函数
+                if (tags.tab === "article" && admin.article.status.id) {
+                    admin.article.getAndSet();
+                }
+                
+                admin.register[tags.tab].init.call(admin.register[tags.tab].obj, tags.page);
+                
+                if (tags.subTab) {
+                    $("#tabPreference").tabs("setCurrent", tags.subTab);
+                }
+            });
+        } else if (admin.register[tags.tab].obj.hash) {
+            // plugin 已经存在
+            if (!admin.register[tags.tab].obj.isInit) {
+                admin.register[tags.tab].init.call(admin.register[tags.tab].obj, tags.page);
+                admin.register[tags.tab].obj.isInit = true;
+            } else {
+                if (admin.register[tags.tab].refresh) {
+                    admin.register[tags.tab].refresh.call(admin.register[tags.tab].obj, tags.page);
+                }
+            }
+        } else{
+            if (tags.tab === "article" && admin.article.status.id) {
+                admin.article.getAndSet();
+                return;
+            }
+            
+            // 已加载过 HTML
+            if (admin.register[tags.tab].refresh) {
+                admin.register[tags.tab].refresh.call(admin.register[tags.tab].obj, tags.page);
+            }
+        }  
+        
+        // clear article 
+        if (tags.tab !== "article") {
+            admin.article.clear();
+        }
+        admin.article.isConfirm = true;
     },
     
     /*

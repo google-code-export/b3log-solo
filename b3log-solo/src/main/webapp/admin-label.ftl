@@ -83,7 +83,9 @@
         "enabledLabel": "${enabledLabel}",
         "disabledLabel": "${disabledLabel}",
         "signIsNullLabel": "${signIsNullLabel}",
-        "noDataLable": "${noDataLable}"
+        "noDataLable": "${noDataLable}",
+        "editorLeaveLabel": "${editorLeaveLabel}",
+        "editorPostLabel": "${editorPostLabel}"
     };    
     admin.init();
 </script>

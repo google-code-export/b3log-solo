@@ -37,7 +37,7 @@
                         <ul class="collapsed">
                             <li>
                                 <div id="tabs_article">
-                                    <a href="#article" onclick="admin.article.clear()">${postArticleLabel}</a>
+                                    <a href="#article" onclick="admin.article.prePost()">${postArticleLabel}</a>
                                 </div>
                             </li>
                             <li>
