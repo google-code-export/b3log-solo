@@ -145,6 +145,10 @@ $.extend(Admin.prototype, {
             if (admin.register[tags.tab].refresh) {
                 admin.register[tags.tab].refresh.call(admin.register[tags.tab].obj, tags.page);
             }
+            
+            if (tags.subTab) {
+                $("#tabPreference").tabs("setCurrent", tags.subTab);
+            }
         }  
         
         // clear article 

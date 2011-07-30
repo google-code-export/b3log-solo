@@ -113,8 +113,9 @@ admin.pluginList = {
             status = "ENABLED";
         }
         jsonRpc.pluginService.setPluginStatus(function () {
-            admin.pluginList.getList(admin.pluginList.pageInfo.currentPage);
+            //admin.pluginList.getList(admin.pluginList.pageInfo.currentPage);
             $("#tipMsg").text(Label.updateSuccLabel);
+            window.location.reload();
         }, pluginId, status);
     }
 };
