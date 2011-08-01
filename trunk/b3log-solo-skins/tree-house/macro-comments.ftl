@@ -198,7 +198,7 @@
             $("#comments").append($refComment);
         }
         var position =  $(it).position();
-        $("#commentRef" + id).css("top", (position.top + 12) + "px");
+        $("#commentRef" + id).css("top", (position.top + 15) + "px");
     };
 
     (function () {

@@ -19,10 +19,10 @@
                 <div class="body">
                     <div class="left main">
                         <div class="article">
-                            <div class="article-body">
+                            <div class="article-abstract">
                                 <div class="note">
                                     <div class="corner"></div>
-                                    <div class="substance">
+                                    <div class="substance article-body">
                                         ${page.pageContent}
                                     </div>
                                 </div>

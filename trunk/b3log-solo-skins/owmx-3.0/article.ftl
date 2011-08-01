@@ -55,14 +55,14 @@
                             </#list>
                         </p>
                     </section>
-                    <p>
+                    <div class="article-body">
                         ${article.articleContent}
                         <#if "" != article.articleSign.signHTML?trim>
-                    <div class="marginTop12">
-                        ${article.articleSign.signHTML}
+                        <div class="marginTop12">
+                            ${article.articleSign.signHTML}
+                        </div>
+                        </#if>
                     </div>
-                    </#if>
-                    </p>
                     <div class="marginBottom12">
                         <#if nextArticlePermalink??>
                         <a class="left" href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>

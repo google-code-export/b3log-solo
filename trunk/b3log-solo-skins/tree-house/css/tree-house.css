@@ -38,7 +38,7 @@ h5{font-size:12px;}
     margin: 0 10px 10px 0;
     padding: 3px 10px;
 }
-.article-abstract{color:#42423D;line-height:20px;padding:6px 10px 12px 0;text-align:justify;}
+.article-abstract{word-wrap:break-word;overflow: hidden;color:#42423D;line-height:20px;padding:6px 10px 12px 0;text-align:justify;}
 .main .line{background:url("../images/bg-branch.png") no-repeat scroll 0 0 transparent;height:108px;width:575px;}
 .article-date{-moz-border-radius:5px;-webkit-border-radius:5px;background-color:#D4F2FB;border:6px solid #A8D3ED;padding:6px;width:65px;margin-left:16px;}
 .article-comment{background:url("../images/bg-comments.png") no-repeat scroll 0 0 transparent;font-size:12px;height:22px;margin:24px 0 0;padding:29px 0 0;text-align:center;}
@@ -62,7 +62,7 @@ h5{font-size:12px;}
     z-index: 10;
 }
 .comment-top{background:url("../images/bg-comments-top.png") no-repeat scroll 0 0 transparent;height:22px;}
-.comment-body{background:url("../images/bg-comments-body.png") repeat-y scroll 0 0 transparent;padding:0 27px 2px 27px;width:401px;margin-left:-1px;color:#42423D;}
+.comment-body{word-wrap:break-word;overflow: hidden;background:url("../images/bg-comments-body.png") repeat-y scroll 0 0 transparent;padding:0 27px 2px 27px;width:401px;margin-left:-1px;color:#42423D;}
 .comment-body td{white-space:normal;}
 .comment-bottom{background:url("../images/bg-comments-bottom.png") no-repeat scroll 0 0 transparent;height:23px;}
 .comment-title{padding-bottom:6px;}

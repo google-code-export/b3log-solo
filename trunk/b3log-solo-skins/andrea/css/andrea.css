@@ -497,6 +497,8 @@ h2.comment-label {
 
 .comment-info {
     margin-right: 12px;
+    word-wrap:break-word;
+    overflow: hidden;
     width: 423px;
 }
 
