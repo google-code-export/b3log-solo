@@ -2,7 +2,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, July 27, 2011
+ * @version 1.0.0.6, Aug 1, 2011
 */
 *,html,body {
     margin: 0;
@@ -302,6 +302,7 @@ button:hover,.button:hover {
 }
 .article-body {
     overflow: hidden;
+    word-wrap: break-word;
 }
 .article-body blockquote {
     border: 1px dotted #98A47F;
