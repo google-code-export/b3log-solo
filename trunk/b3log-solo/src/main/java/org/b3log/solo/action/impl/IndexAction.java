@@ -34,7 +34,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
@@ -105,21 +104,7 @@ public final class IndexAction extends AbstractFrontPageAction {
             request.setAttribute(CACHED_TYPE,
                                  langs.get(PageTypes.INDEX_ARTICLES));
 
-            if ("valentine".equals(preference.getString(Skin.SKIN_DIR_NAME))) {
-                final JSONObject queryStringJSONObject =
-                        getQueryStringJSONObject(request);
-                final int leftCurrentPageNum = queryStringJSONObject.optInt(
-                        Pagination.PAGINATION_CURRENT_PAGE_NUM
-                        + Common.LEFT_PART_NAME, 1);
-                final int rightCurrentPageNum = queryStringJSONObject.optInt(
-                        Pagination.PAGINATION_CURRENT_PAGE_NUM
-                        + Common.RIGHT_PART_NAME, 1);
-                filler.fillIndexArticlesForValentine(ret, leftCurrentPageNum,
-                                                     rightCurrentPageNum,
-                                                     preference);
-            } else {
-                filler.fillIndexArticles(ret, currentPageNum, preference);
-            }
+            filler.fillIndexArticles(ret, currentPageNum, preference);
 
             @SuppressWarnings("unchecked")
             final List<JSONObject> articles =

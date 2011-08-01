@@ -153,10 +153,6 @@ public enum StatusCodes {
      */
     UPDATE_PREFERENCE_FAIL_CANNT_BE_LOCALHOST,
     /**
-     * Indicates update preference fails, caused by needing multiple users.
-     */
-    UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS,
-    /**
      * Indicates get preference successfully.
      */
     GET_PREFERENCE_SUCC,
@@ -256,11 +252,6 @@ public enum StatusCodes {
      * Indicates removes a user successfully.
      */
     REMOVE_USER_SUCC,
-    /**
-     * Indicates removes a user fails, caused by the current skin need multiple
-     * users.
-     */
-    REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS,
     /**
      * Indicates updates a user successfully.
      */

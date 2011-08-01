@@ -15,12 +15,10 @@
  */
 package org.b3log.solo.action.util;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.Articles;
@@ -451,57 +449,6 @@ public final class Filler {
     }
 
     /**
-     * Fills articles in index.ftl for skin {@literal valentine}. The left part
-     * contains administrator's articles, the right part contains another user's 
-     * articles.
-     *
-     * @param dataModel data model
-     * @param leftCurrentPageNum left part page number
-     * @param rightCurrentPageNum right part current page number
-     * @param preference the specified preference
-     * @throws Exception exception
-     */
-    public void fillIndexArticlesForValentine(
-            final Map<String, Object> dataModel,
-            final int leftCurrentPageNum,
-            final int rightCurrentPageNum, final JSONObject preference)
-            throws Exception {
-        LOGGER.finer("Filling article list for skin valentine....");
-        final int pageSize =
-                preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
-        final int windowSize =
-                preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-
-        final JSONObject result = userRepository.get(new Query());
-        final JSONArray users = result.getJSONArray(Keys.RESULTS);
-
-        final String adminEmail =
-                users.getJSONObject(0).getString(User.USER_EMAIL);
-        final List<JSONObject> articlesL =
-                fillPart(preference, leftCurrentPageNum, pageSize, windowSize,
-                         dataModel, Common.LEFT_PART_NAME, adminEmail);
-
-        List<JSONObject> articlesR = new ArrayList<JSONObject>();
-        if (1 < users.length()) {
-            final String anotherUserEmail =
-                    users.getJSONObject(1).getString(User.USER_EMAIL);
-            articlesR = fillPart(preference, rightCurrentPageNum, pageSize,
-                                 windowSize,
-                                 dataModel, Common.RIGHT_PART_NAME,
-                                 anotherUserEmail);
-        }
-        dataModel.put(Article.ARTICLES + Common.RIGHT_PART_NAME, articlesR);
-
-        final List<JSONObject> articles = new ArrayList<JSONObject>();
-
-        articles.addAll(articlesL);
-        articles.addAll(articlesR);
-        setArticlesExProperties(articles, preference);
-
-        dataModel.put(Article.ARTICLES, articles);
-    }
-
-    /**
      * Fills page navigations.
      *
      * @param dataModel data model
@@ -531,78 +478,6 @@ public final class Filler {
         statistic.remove(Statistic.STATISTIC_BLOG_COMMENT_COUNT);
 
         dataModel.put(Statistic.STATISTIC, statistic);
-    }
-
-    /**
-     * Fills left(admin) or right part for skin {@literal valentine} with the
-     * specified parameters.
-     *
-     * @param preference the specified preference
-     * @param currentPageNum the specified current page number
-     * @param pageSize the specified page size
-     * @param windowSize the specified window size
-     * @param dataModel the specified data model
-     * @param partName the specified part name
-     * @param authorEmail the specified authror email
-     * @return the filled articles
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    private List<JSONObject> fillPart(final JSONObject preference,
-                                      final int currentPageNum,
-                                      final int pageSize,
-                                      final int windowSize,
-                                      final Map<String, Object> dataModel,
-                                      final String partName,
-                                      final String authorEmail)
-            throws JSONException, RepositoryException {
-        LOGGER.log(Level.FINEST, "Filling part[name={0}, authorEmail={1}]",
-                   new String[]{partName, authorEmail});
-
-        final Query query = new Query().addFilter(Article.ARTICLE_IS_PUBLISHED,
-                                                  FilterOperator.EQUAL,
-                                                  PUBLISHED).
-                addFilter(Article.ARTICLE_AUTHOR_EMAIL,
-                          FilterOperator.EQUAL,
-                          authorEmail);
-
-        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-            query.addSort(Article.ARTICLE_UPDATE_DATE,
-                          SortDirection.DESCENDING);
-        } else {
-            query.addSort(Article.ARTICLE_CREATE_DATE,
-                          SortDirection.DESCENDING);
-        }
-
-        query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final JSONObject result = articleRepository.get(query);
-        final int pageCount = result.getJSONObject(Pagination.PAGINATION).
-                getInt(Pagination.PAGINATION_PAGE_COUNT);
-        final List<Integer> pageNums =
-                Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                   windowSize);
-        if (0 != pageNums.size()) {
-            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM + partName,
-                          pageNums.get(0));
-            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM + partName,
-                          pageNums.get(pageNums.size() - 1));
-        }
-        dataModel.put(Pagination.PAGINATION_PAGE_COUNT + partName, pageCount);
-        dataModel.put(Pagination.PAGINATION_PAGE_NUMS + partName, pageNums);
-        final List<JSONObject> ret =
-                org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
-                getJSONArray(Keys.RESULTS));
-        for (final JSONObject article : ret) {
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
-            } else {
-                article.put(Common.HAS_UPDATED, false);
-            }
-        }
-
-        dataModel.put(Article.ARTICLES + partName, ret);
-
-        return ret;
     }
 
     /**

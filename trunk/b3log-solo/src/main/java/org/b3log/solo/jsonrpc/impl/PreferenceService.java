@@ -247,19 +247,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject preference =
                     requestJSONObject.getJSONObject(PREFERENCE);
-
-            if ("valentine".equals(preference.getString(Skin.SKIN_DIR_NAME))) {
-                if (!userUtils.hasMultipleUsers()) {
-                    ret.put(Keys.STATUS_CODE,
-                            StatusCodes.UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS);
-                    if (transaction.isActive()) {
-                        transaction.rollback();
-                    }
-
-                    return ret;
-                }
-            }
-
             String blogHost = preference.getString(BLOG_HOST).
                     toLowerCase().trim();
             if (blogHost.startsWith("http://")) {
