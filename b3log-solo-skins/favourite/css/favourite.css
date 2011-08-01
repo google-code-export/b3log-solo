@@ -123,8 +123,8 @@ h5{font-size:12px;}
     background: url("../images/thinks.png") no-repeat scroll left top transparent;
     height: 420px;
     position: absolute;
-    right: 12px;
-    top: 36px;
+    right: -120px;
+    top: 10px;
     width: 388px;
     z-index: 1;
 }
