@@ -107,6 +107,8 @@ h5 {
 }
 .comment-body {
     padding: 9px 12px 12px;
+    word-wrap: break-word;
+    overflow: hidden;
 }
 .comment-picture {
     margin-right: 12px;

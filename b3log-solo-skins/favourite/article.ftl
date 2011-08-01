@@ -50,10 +50,10 @@
                                     </#if>
                                 </div>
                             </div>
-                            <div class="article-body">
+                            <div class="article-abstract">
                                 <div class="note">
                                     <div class="corner"></div>
-                                    <div class="substance">
+                                    <div class="substance article-body">
                                         ${article.articleContent}
                                         <#if "" != article.articleSign.signHTML?trim>
                                         <div class="marginTop12">

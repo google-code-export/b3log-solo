@@ -318,6 +318,8 @@ a.header-title {
     padding: 20px;
     width: 798px;
     margin-bottom: 10px;
+    word-wrap:break-word;
+    overflow: hidden;
 }
 
 #comments .comment-top {

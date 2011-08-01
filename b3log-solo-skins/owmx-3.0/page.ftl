@@ -16,7 +16,7 @@
             <#include "header.ftl">
             <div id="b">
                 <article>
-                    <div class="single_page">
+                    <div class="single_page article-body">
 			${page.pageContent}
                     </div>
                     <@comments commentList=pageComments permalink=page.pagePermalink></@comments>

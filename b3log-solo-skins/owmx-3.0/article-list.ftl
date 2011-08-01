@@ -14,7 +14,7 @@
     </sup>
     </#if>
 </h1>
-<p>${article.articleAbstract}</p>
+<div class="article-body">${article.articleAbstract}</div>
 <section class="meta">
     <p>
         ${author1Label}<a href="/authors/${article.authorId}">${article.authorName}</a> |
