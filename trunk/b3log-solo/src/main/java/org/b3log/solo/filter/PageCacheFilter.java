@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 11, 2011
+ * @version 1.0.0.1, Aug 1, 2011
  */
 public final class PageCacheFilter implements Filter {
 
@@ -54,11 +54,11 @@ public final class PageCacheFilter implements Filter {
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
-  /**
+    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
-    
+
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
     }
@@ -101,7 +101,8 @@ public final class PageCacheFilter implements Filter {
         final String pageCacheKey =
                 PageCaches.getPageCacheKey(requestURI, queryString);
 
-        final JSONObject cachedPageContentObject = PageCaches.get(pageCacheKey);
+        final JSONObject cachedPageContentObject = PageCaches.get(pageCacheKey,
+                                                                  true);
 
         if (null == cachedPageContentObject) {
             LOGGER.log(Level.FINER, "Page cache miss");

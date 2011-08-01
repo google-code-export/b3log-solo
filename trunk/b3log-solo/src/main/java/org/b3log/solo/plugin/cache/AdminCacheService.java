@@ -33,7 +33,6 @@ import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
-import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.util.Users;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
@@ -49,7 +48,7 @@ import org.json.JSONObject;
  * Admin cache service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jun 25, 2011
+ * @version 1.0.0.2, Aug 1, 2011
  */
 public final class AdminCacheService extends AbstractGAEJSONRpcService {
 
@@ -187,23 +186,18 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
                     Pagination.PAGINATION_WINDOW_SIZE);
 
             final List<JSONObject> pages = new ArrayList<JSONObject>();
-            
+
             PageCaches.syncKeys();
-            
+
             final Set<String> keys = PageCaches.getKeys();
             for (final String key : keys) {
                 LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
-                try {
-                    final JSONObject cachedPage = PageCaches.get(key);
-                    
-                    final JSONObject page = new JSONObject();
-                    page.put(Link.LINK, key);
-                    page.put(CACHED_TYPE, cachedPage.getString(CACHED_TYPE));
-                    page.put(CACHED_TITLE, cachedPage.getString(CACHED_TITLE));
 
-                    pages.add(page);
-                } catch (final JSONException ex) {
-                    LOGGER.log(Level.SEVERE, "Admin cache plug failed", ex);
+                final JSONObject cachedPage = PageCaches.get(key, false);
+
+                if (null != cachedPage) {
+                    cachedPage.remove(CACHED_CONTENT);
+                    pages.add(cachedPage);
                 }
             }
 
