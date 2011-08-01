@@ -26,12 +26,11 @@
                     }
                     if (result.sc) {
                         var caches = result.pages;
-                        var cacheData = [];
+                        var cacheData = caches;
                         for (var i = 0; i < caches.length; i++) {
-                            cacheData[i] = {};
                             cacheData[i].cachedTitle = "<a href='" + caches[i].link + "'  target='_blank'>" 
                                 + caches[i].cachedTitle + "</a>";
-                            cacheData[i].cachedType = caches[i].cachedType;
+                            cacheData[i].cachedTime = $.bowknot.getDate(cacheData[i].cachedTime, 1);
                         }
 
                         that.tablePagination.updateTablePagination(cacheData, pageNum, result.pagination);
@@ -94,12 +93,22 @@
                     style: "padding-left: 6px;",
                     text: "${typeLabel}",
                     index: "cachedType",
-                    width: 120
+                    width: 220
                 }, {
                     style: "padding-left: 6px;",
                     text: "${titleLabel}",
                     index: "cachedTitle",
                     minWidth: 300
+                }, {
+                    style: "padding-left: 6px;",
+                    text: "${createDateLabel}",
+                    index: "cachedTime",
+                    width: 160
+                }, {
+                    style: "padding-left: 6px;",
+                    text: "${sizeLabel}(Byte)",
+                    index: "cachedBtypesLength",
+                    width: 120
                 }]);
     
             this.tablePagination.initPagination();
