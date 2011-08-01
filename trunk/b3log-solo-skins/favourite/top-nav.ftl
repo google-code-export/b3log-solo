@@ -14,6 +14,6 @@
         <a href="${page.pagePermalink}" class="${page.pageTitle}">${page.pageTitle}</a>
         </#list>
         <a href="/blog-articles-feed.do" class="classifiche">${atomLabel}</a>
-        <div class="thinks"></div>
     </div>
+    <div class="thinks"></div>
 </div>
