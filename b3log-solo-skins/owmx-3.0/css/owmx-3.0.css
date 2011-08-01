@@ -35,6 +35,10 @@ A, A:LINK, A:ACTIVE, A:VISITED{
 A:HOVER {
     color : #DB0202;
 }
+a.selected {
+    font-weight: bold;
+    color: #000000;
+}
 
 H1, H3, H4, H5, H6 {
     background : url(../images/ai4.png) no-repeat 0 7px;
