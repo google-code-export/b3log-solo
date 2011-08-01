@@ -157,23 +157,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         final Transaction transaction = userRepository.beginTransaction();
         try {
             final String userId = requestJSONObject.getString(Keys.OBJECT_ID);
-
-            final int userLength = userRepository.get(new Query()).getJSONArray(
-                    Keys.RESULTS).length();
-            if (2 == userLength) {
-                if ("valentine".equals(
-                        preferenceUtils.getPreference().getString(
-                        Skin.SKIN_DIR_NAME))) {
-                    if (transaction.isActive()) {
-                        transaction.rollback();
-                    }
-
-                    ret.put(Keys.STATUS_CODE,
-                            StatusCodes.REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS);
-                    return ret;
-                }
-            }
-
             userRepository.remove(userId);
             transaction.commit();
 
