@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Tag action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Jun 19, 2011
+ * @version 1.0.1.5, Aug 2, 2011
  */
 public final class TagsAction extends AbstractFrontPageAction {
 
@@ -106,6 +106,7 @@ public final class TagsAction extends AbstractFrontPageAction {
             request.setAttribute(CACHED_OID, "No id");
             request.setAttribute(CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
+            request.setAttribute(CACHED_LINK, "/tags.html");
 
             final JSONObject result = tagRepository.get(new Query());
             final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);

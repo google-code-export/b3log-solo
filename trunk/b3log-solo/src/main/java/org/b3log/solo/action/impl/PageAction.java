@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Page action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jun 19, 2011
+ * @version 1.0.0.8, Aug 2, 2011
  */
 public final class PageAction extends AbstractFrontPageAction {
 
@@ -84,9 +84,6 @@ public final class PageAction extends AbstractFrontPageAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject queryStringJSONObject =
-                    getQueryStringJSONObject(request);
-
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -114,6 +111,8 @@ public final class PageAction extends AbstractFrontPageAction {
             request.setAttribute(CACHED_OID, pageId);
             request.setAttribute(CACHED_TITLE,
                                  page.getString(Page.PAGE_TITLE));
+            request.setAttribute(CACHED_LINK,
+                                 page.getString(Page.PAGE_PERMALINK));
 
             ret.put(Page.PAGE, page);
             final List<JSONObject> comments = pageUtils.getComments(pageId);

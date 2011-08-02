@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Get articles by tag action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Jul 9, 2011
+ * @version 1.0.2.6, Aug 2, 2011
  */
 public final class TagArticlesAction extends AbstractFrontPageAction {
 
@@ -108,8 +108,6 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
-        JSONObject tag = null;
-
         try {
             String requestURI = request.getRequestURI();
             if (!requestURI.endsWith("/")) {
@@ -127,7 +125,7 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                        new Object[]{tagTitle, currentPageNum});
 
             tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
-            tag = tagRepository.getByTitle(tagTitle);
+            final JSONObject tag = tagRepository.getByTitle(tagTitle);
 
             if (null == tag) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -159,6 +157,7 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                     + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
                     + langs.get("tagLabel") + "=" + tagTitle + "]");
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
+            request.setAttribute(CACHED_LINK, requestURI);
 
             final JSONObject result =
                     tagArticleRepository.getByTagId(tagId,

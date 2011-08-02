@@ -59,7 +59,7 @@ import org.jsoup.Jsoup;
  * Article action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Jul 11, 2011
+ * @version 1.0.3.2, Aug 2, 2011
  */
 public final class ArticleAction extends AbstractFrontPageAction {
 
@@ -180,6 +180,8 @@ public final class ArticleAction extends AbstractFrontPageAction {
             request.setAttribute(CACHED_OID, articleId);
             request.setAttribute(CACHED_TITLE,
                                  article.getString(Article.ARTICLE_TITLE));
+            request.setAttribute(CACHED_LINK, 
+                                 article.getString(Article.ARTICLE_PERMALINK));
             statistics.incArticleViewCount(articleId);
 
             LOGGER.log(Level.FINEST, "Article[title={0}]",
