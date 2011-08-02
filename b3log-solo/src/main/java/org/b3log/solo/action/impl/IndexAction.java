@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Index action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Jul 1, 2011
+ * @version 1.0.1.4, Aug 2, 2011
  */
 public final class IndexAction extends AbstractFrontPageAction {
 
@@ -103,6 +103,7 @@ public final class IndexAction extends AbstractFrontPageAction {
                                  + currentPageNum + "]");
             request.setAttribute(CACHED_TYPE,
                                  langs.get(PageTypes.INDEX_ARTICLES));
+            request.setAttribute(CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(ret, currentPageNum, preference);
 

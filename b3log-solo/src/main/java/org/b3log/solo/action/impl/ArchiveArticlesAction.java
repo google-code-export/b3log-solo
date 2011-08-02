@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.action.util.Filler;
-import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.action.util.Paginator;
@@ -57,7 +56,7 @@ import org.json.JSONObject;
  * Get articles by archive date.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Jul 9, 2011
+ * @version 1.0.2.1, Aug 2, 2011
  */
 public final class ArchiveArticlesAction extends AbstractFrontPageAction {
 
@@ -89,10 +88,6 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
      * Filler.
      */
     private Filler filler = Filler.getInstance();
-    /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
     /**
      * Language service.
      */
@@ -235,6 +230,7 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
             request.setAttribute(CACHED_TITLE,
                                  cachedTitle + "  [" + langs.get("pageNumLabel")
                                  + "=" + currentPageNum + "]");
+            request.setAttribute(CACHED_LINK, requestURI);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

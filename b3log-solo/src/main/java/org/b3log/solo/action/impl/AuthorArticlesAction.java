@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Get articles by author action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Jul 9, 2011
+ * @version 1.0.2.5, Aug 2, 2011
  */
 public final class AuthorArticlesAction extends AbstractFrontPageAction {
 
@@ -145,6 +145,7 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
                     + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
                     + langs.get("authorLabel") + "=" + author.getString(
                     User.USER_NAME) + "]");
+            request.setAttribute(CACHED_LINK, requestURI);
 
             final String authorEmail = author.getString(User.USER_EMAIL);
             final JSONObject result =
