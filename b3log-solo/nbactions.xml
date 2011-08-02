@@ -83,11 +83,4 @@
             <goal>install</goal>
         </goals>
     </action>
-    <action>
-        <actionName>CUSTOM-min-min</actionName>
-        <displayName>min-min</displayName>
-        <goals>
-            <goal>min:min</goal>
-        </goals>
-    </action>
 </actions>
