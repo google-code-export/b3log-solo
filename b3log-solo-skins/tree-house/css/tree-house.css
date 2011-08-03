@@ -111,6 +111,9 @@ img.comment-picture{width:60px;height:60px;padding:0px 6px 4px 0;}
 #sideNavi li>div {
     display: none;
 }
+#sideNavi li p {
+    display: inline;
+}
 #sideNavi .popTags li>a{padding-left:47px;width:136px;}
 #sideNavi .popTags li img{cursor:pointer;left:16px;position:relative;top:-22px;height:16px;width:16px;}
 #sideNavi li.selected, #sideNavi li>a:hover{background:url("../images/bg-menu-active.png") repeat scroll -8px -8px transparent;color:#EC0A8B;font-weight:bold;padding-left:24px;width:159px;}
