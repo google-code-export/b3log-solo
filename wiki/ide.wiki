@@ -12,9 +12,9 @@
  # 部署项目，定制-> gae:deploy
 按提示在控制台输入账号密码即可
 ====`Eclipse`====
- * Eclipse helios: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/heliossr1
+ * Eclipse : http://www.eclipse.org
 =====配置=====
- # 安装 Maven 的插件：The Maven Integration for Eclipse，更新地址：http://m2eclipse.sonatype.org/sites/m2e
+ # 安装 Maven 的插件：The Maven Integration for Eclipse
  # Window->Preferences->Maven->installations->Add 把 Maven 的路径添加上
  # 用 SVN 把项目迁出 http://b3log-solo.googlecode.com/svn/trunk/
  # win+R->cmd进入命令行，进入项目所在目录（e.g:D: 回车；cd foldername 回车  etc...），你如果成功进入会发现pom.xml,运行命令mvn eclipse:eclipse ,静静等待，Build成功即可
