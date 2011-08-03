@@ -309,8 +309,14 @@ a:hover {
 
 #naviComments li a {
     display: inline;
+    line-height: 19px;
 }
-
+#naviComments li br {
+    display: none;
+}
+#naviComments li p {
+    display: inline;
+}
 #naviComments li a.author {
     color: #BE0700;
 }

@@ -21,9 +21,7 @@
     </div>
     <div class="block notice">
         <h3>${noticeBoardLabel}</h3>
-        <ul>
-            <li>${noticeBoard}</li>
-        </ul>
+        <div>${noticeBoard}</div>
     </div>
     <div class="line"></div>
     <div class="block">

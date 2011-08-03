@@ -171,6 +171,12 @@ h5 {
 .side-comment {
     text-decoration: none;
 }
+#recentComments p {
+    display: inline;
+}
+#recentComments div, #recentComments br {
+    display: none;
+}
 .line {
     border-top: thin dotted #BBBBBB;
     margin-top: 12px;

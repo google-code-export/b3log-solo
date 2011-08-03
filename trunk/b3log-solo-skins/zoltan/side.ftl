@@ -9,14 +9,14 @@
         <h4>${recentCommentsLabel}</h4>
     </li>
     <li>
-        <ul>
+        <ul class="side-comment">
             <#list recentComments as comment>
             <li>
                 <#if "http://" == comment.commentURL>
                 ${comment.commentName}<#else>
                 <a target="_blank" href="${comment.commentURL}">
                     ${comment.commentName}</a></#if>:
-                <a class="side-comment" title="${comment.commentContent}" href="${comment.commentSharpURL}">
+                <a title="${comment.commentContent}" href="${comment.commentSharpURL}">
                     ${comment.commentContent}
                 </a>
             </li>
