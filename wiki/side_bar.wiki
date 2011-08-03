@@ -25,11 +25,10 @@
    * 皮肤开发
      * [develop_steps 开发步骤]
      * [template_variables 模板变量]
- * [thirdparty_deploy_gae 非官方文档]
  * 入伙
     * [join_us 加入 B3log 团队]
     * [about_us 关于我们]
  * FAQ
    * [dev_faq 开发常见问题]
-   
+ * [thirdparty_deploy_gae 非官方文档] 
   
