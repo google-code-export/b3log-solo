@@ -217,6 +217,12 @@ a:hover {
     font-weight: bold;
     margin-bottom: 10px;
 }
+.side-comment p {
+    display: inline;
+}
+.side-comment div, .side-comment br {
+    display: none;
+}
 /* end side */
 
 /* start footer */

@@ -266,6 +266,10 @@ aside ul.aside-comments .side-comment{
     overflow: hidden;
     white-space: nowrap;
     width: 158px;
+    height: 18px;
+}
+aside ul.aside-comments div.left>div>div {
+    display: none;
 }
 aside ul.aside-comments .side-comment img{
     border:0px;height:24px;width:24px;padding:0px;margin-right: 0px;
