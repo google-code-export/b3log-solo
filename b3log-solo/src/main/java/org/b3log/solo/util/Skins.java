@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jul 19, 2011
+ * @version 1.0.0.5, Aug 4, 2011
  */
 public final class Skins {
 
@@ -94,10 +95,12 @@ public final class Skins {
 
             preference.put(SKIN_DIR_NAME, "classic");
             preference.put(SKIN_NAME, "经典淡蓝");
+            
+            PageCaches.removeAll();
         }
 
         preference.put(SKINS, skinArray.toString());
-        setDirectoryForTemplateLoading(currentSkinDirName);
+        setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));
 
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
