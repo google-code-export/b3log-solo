@@ -88,7 +88,7 @@ a:hover {
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#666666', endColorstr='#7F7F7F');
 }
 
-#top a {
+#top a, #top span span {
     border-right: 1px solid #686868;
     color: #CCCCCC;
     text-shadow: 0 -1px 0 #555555;
