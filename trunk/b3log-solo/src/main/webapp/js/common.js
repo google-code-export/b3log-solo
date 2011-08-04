@@ -97,7 +97,7 @@ $.extend(Common.prototype, {
             url: "/check-login.do",
             success: function(result){
                 if (result.isLoggedIn) {
-                    var loginHTML = "<a href='#'>" + result.userName + "</a>";
+                    var loginHTML = "<span>" + result.userName + "</span>";
 
                     if (result.isAdmin) {
                         loginHTML += "<a href=\"javascript:common.clearCache('all');\">"

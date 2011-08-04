@@ -22,7 +22,7 @@
                     B3log Solo
                 </a>
                 <span class="right">
-                    <a href="#">${userName}</a><a href="/" title='${indexLabel}'>${indexLabel}</a><a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
+                    <span>${userName}</span><a href="/" title='${indexLabel}'>${indexLabel}</a><a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
                 </span>
                 <div class="clear"></div>
             </div>
