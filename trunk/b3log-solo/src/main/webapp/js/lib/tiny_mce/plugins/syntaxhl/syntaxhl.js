@@ -118,7 +118,7 @@ var SyntaxHLDialog = {
 			case "xhtml":
 				type = "xml"; break;			
 			default:
-				type = "ruby"; break;			
+				type = "java"; break;			
 		}
 
 		f.syntaxhl_language.value = type;
