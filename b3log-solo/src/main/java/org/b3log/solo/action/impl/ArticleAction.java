@@ -166,9 +166,16 @@ public final class ArticleAction extends AbstractFrontPageAction {
             }
 
             final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return ret;
+            }
+
             final boolean allowVisitDraftViaPermalink = preference.getBoolean(
                     Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK);
-            if (null == article || !allowVisitDraftViaPermalink) {
+            if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)
+                && !allowVisitDraftViaPermalink) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return ret;
