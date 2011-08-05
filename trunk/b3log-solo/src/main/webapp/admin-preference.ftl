@@ -195,6 +195,15 @@
                 </tr>
                 <tr>
                     <th>
+                        <label for="allowVisitDraftViaPermalink">${allowVisitDraftViaPermalink1Label}</label>
+                    </th>
+                    <td>
+                        <input id="allowVisitDraftViaPermalink" type="checkbox"
+                               class="normalInput"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         ${keyOfSolo1Label}
                     </th>
                     <td>
@@ -257,7 +266,7 @@
             </tbody>
         </table>
     </div>
-    
+
     <div id="tabPreferencePanel_tencent" class="none">
         <table class="form" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>

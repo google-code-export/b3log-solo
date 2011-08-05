@@ -55,11 +55,15 @@ import org.json.JSONObject;
  *       Adds a property(named {@value Preference#PAGE_CACHE_ENABLED}) to
  *       entity {@link Preference preference}
  *     </li>
+ *     <li>
+ *       Adds a property(named {@value Preference#ALLOW_VISIT_DRAFT_VIA_PERMALINK}) to
+ *       entity {@link Preference preference}
+ *     </li>
  *   </ul>
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jul 2, 2011
+ * @version 1.0.0.2, Aug 5, 2011
  */
 public final class V026ToV030 extends HttpServlet {
 
@@ -165,6 +169,11 @@ public final class V026ToV030 extends HttpServlet {
             if (!preference.has(Preference.PAGE_CACHE_ENABLED)) {
                 preference.put(Preference.PAGE_CACHE_ENABLED,
                                Preference.Default.DEFAULT_PAGE_CACHE_ENABLED);
+            }
+
+            if (!preference.has(Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK)) {
+                preference.put(Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK,
+                               Preference.Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
             }
 
             preferenceUtils.setPreference(preference);

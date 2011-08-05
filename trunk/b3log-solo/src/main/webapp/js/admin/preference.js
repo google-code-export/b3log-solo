@@ -18,7 +18,7 @@
  * preference for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 24, 2011
+ * @version 1.0.0.5, Aug 5, 2011
  */
 
 /* preference 相关操作 */
@@ -62,6 +62,8 @@ admin.preference = {
                         preference.enablePostToTencentMicroblog ? $("#postToTencentMicroblog").attr("checked", "checked") : $("#postToTencentMicroblog").removeAttr("checked");
                         $("#tencentMicroblogAppKey").val(preference.tencentMicroblogAppKey);
                         $("#tencentMicroblogAppSecret").val(preference.tencentMicroblogAppSecret);
+                        
+                        preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
 
                         admin.preference.locale = preference.localeString;
 
@@ -165,7 +167,8 @@ admin.preference = {
                 "tencentMicroblogAppKey": $("#tencentMicroblogAppKey").val(),
                 "tencentMicroblogAppSecret": $("#tencentMicroblogAppSecret").val(),
                 "enablePostToTencentMicroblog": $("#postToTencentMicroblog").prop("checked"),
-                "keyOfSolo": $("#keyOfSolo").val()
+                "keyOfSolo": $("#keyOfSolo").val(),
+                "allowVisitDraftViaPermalink": $("#allowVisitDraftViaPermalink").prop("checked")
             }
         }
         
