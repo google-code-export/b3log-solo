@@ -101,14 +101,19 @@
                     minWidth: 300
                 }, {
                     style: "padding-left: 6px;",
-                    text: "${createDateLabel}",
-                    index: "cachedTime",
-                    width: 160
+                    text: "${hitCountLabel}",
+                    index: "cachedHitCount",
+                    width: 120
                 }, {
                     style: "padding-left: 6px;",
                     text: "${sizeLabel}(Byte)",
                     index: "cachedBtypesLength",
                     width: 120
+                }, {
+                    style: "padding-left: 6px;",
+                    text: "${createDateLabel}",
+                    index: "cachedTime",
+                    width: 160
                 }]);
     
             this.tablePagination.initPagination();
