@@ -83,23 +83,140 @@ $.extend(Page.prototype, {
         }
     },
     
-    load: function () {
-        var that = this;
-        // emotions
-        this.insertEmotions();
+    parseLanguage: function () {
+        var languages = [];
+        $(".article-body pre").each(function () {
+            var className = this.className;
+            if (className.indexOf("brush:") > -1) {
+                languages.push(className.substr(7, className.length - 1));
+            } 
+        });
+        
+        for (var i = 0; i < languages.length; i++) {
+            switch (languages[i]) {
+                case "groovy":
+                    languages[i] =  'groovy				/js/lib/SyntaxHighlighter/scripts/shBrushGroovy.js';
+                    break;
+                case "java":
+                    languages[i] =  'java				/js/lib/SyntaxHighlighter/scripts/shBrushJava.js';
+                    break;
+                case "php":
+                    languages[i] =  'php				/js/lib/SyntaxHighlighter/scripts/shBrushPhp.js';
+                    break;
+                case "scala":
+                    languages[i] =  'scala				/js/lib/SyntaxHighlighter/scripts/shBrushScala.js';
+                    break;
+                case "sql":
+                    languages[i] =  'sql				/js/lib/SyntaxHighlighter/scripts/shBrushSql.js';
+                    break;
+                case "applescript":
+                    languages[i] =  'applescript			/js/lib/SyntaxHighlighter/scripts/shBrushAppleScript.js';
+                    break;
+                case "as3": 
+                case "actionscript3":
+                    languages[i] =  'actionscript3 as3                  /js/lib/SyntaxHighlighter/scripts/shBrushAS3.js';
+                    break;
+                case "bash":
+                case "shell":
+                    languages[i] =  'bash shell                         /js/lib/SyntaxHighlighter/scripts/shBrushBash.js';
+                    break;
+                case "coldfusion":
+                case "cf":
+                    languages[i] =  'coldfusion cf			/js/lib/SyntaxHighlighter/scripts/shBrushColdFusion.js';
+                    break;
+                case "c#":
+                case "c-sharp":
+                case "csharp":
+                    languages[i] =  'c# c-sharp csharp                  /js/lib/SyntaxHighlighter/scripts/shBrushCSharp.js';
+                    break;
+                case "cpp":
+                case "c":
+                    languages[i] =  'cpp c				/js/lib/SyntaxHighlighter/scripts/shBrushCpp.js';
+                    break;	
+                case "css":
+                    languages[i] =  "css				/js/lib/SyntaxHighlighter/scripts/shBrushCss.js";
+                    break;
+                case "delphi":
+                case "pascal":
+                    languages[i] =  'delphi pascal			/js/lib/SyntaxHighlighter/scripts/shBrushDelphi.js';
+                    break;			
+                case "diff":
+                case "patch":
+                case "pas":
+                    languages[i] =  'diff patch pas			/js/lib/SyntaxHighlighter/scripts/shBrushDiff.js';
+                    break;			
+                case "erl":
+                case "erlang":
+                    languages[i] =  'erl erlang                         /js/lib/SyntaxHighlighter/scripts/shBrushErlang.js';
+                    break;			
+                case "js":
+                case "jscript":
+                case "javascript":
+                    languages[i] =  'js jscript javascript              /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js';
+                    break;			
+                case "jfx":
+                case "javafx":
+                    languages[i] =  'jfx javafx                 	/js/lib/SyntaxHighlighter/scripts/shBrushJavaFX.js';
+                    break;			
+                case "perl":
+                case "pl":
+                    languages[i] =  'perl pl                    	/js/lib/SyntaxHighlighter/scripts/shBrushPerl.js';
+                    break;			
+                case "plain":
+                case "text":
+                    languages[i] =  'text plain                 	/js/lib/SyntaxHighlighter/scripts/shBrushPlain.js';
+                    break;			
+                case "ps":
+                case "powershell":
+                    languages[i] =  'ps powershell                      /js/lib/SyntaxHighlighter/scripts/shBrushPowerShell.js';
+                    break;			
+                case "py":
+                case "python":
+                    languages[i] =  'py python                          /js/lib/SyntaxHighlighter/scripts/shBrushPython.js';
+                    break;			
+                case "rails":
+                case "ror":
+                case "ruby":
+                case "rb":
+                    languages[i] =  'ruby rails ror rb          	/js/lib/SyntaxHighlighter/scripts/shBrushRuby.js';
+                    break;	
+                case "sass":
+                case "scss":
+                    languages[i] =  'sass scss                  	/js/lib/SyntaxHighlighter/scripts/shBrushSass.js';
+                    break;
+                case "vb":
+                case "vbnet":
+                    languages[i] =  'vb vbnet                   	/js/lib/SyntaxHighlighter/scripts/shBrushVb.js';
+                    break;			
+                case "xml":
+                case "xhtml":
+                case "xslt": 
+                case "html":
+                    languages[i] =  'xml xhtml xslt html               /js/lib/SyntaxHighlighter/scripts/shBrushXml.js';
+                    break;	
+                default:
+                    break;
+            }
+        }
         
         // code high lighter
-        SyntaxHighlighter.autoloader(
-            'js jscript javascript  /js/lib/SyntaxHighlighter/scripts/shBrushJScript.js',
-            'java                   /js/lib/SyntaxHighlighter/scripts/shBrushJava.js',
-            'xml                    /js/lib/SyntaxHighlighter/scripts/shBrushXml.js'
-            );
-
+        //SyntaxHighlighter.autoloader.call(null, languages);
+        SyntaxHighlighter.autoloader.apply(null, languages);
         SyntaxHighlighter.config.tagName = "pre";
         SyntaxHighlighter.config.stripBrs = true;
         SyntaxHighlighter.defaults.toolbar = false;
         SyntaxHighlighter.all();
 
+    },
+    
+    load: function () {
+        var that = this;
+        // emotions
+        this.insertEmotions();
+        
+        // language
+        this.parseLanguage();
+        
         // submit comment
         $("#commentValidate").keypress(function (event) {
             if (event.keyCode === 13) {
