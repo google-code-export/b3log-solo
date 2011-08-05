@@ -59,7 +59,7 @@ import org.jsoup.Jsoup;
  * Article action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.2, Aug 2, 2011
+ * @version 1.0.3.3, Aug 5, 2011
  */
 public final class ArticleAction extends AbstractFrontPageAction {
 
@@ -117,14 +117,14 @@ public final class ArticleAction extends AbstractFrontPageAction {
     @Override
     protected void processPageCacheHit(final JSONObject cachedPageContentObject) {
         super.processPageCacheHit(cachedPageContentObject);
-        
+
         try {
             final String oId = cachedPageContentObject.getString(
                     AbstractCacheablePageAction.CACHED_OID);
             LOGGER.log(Level.FINEST, "Page cached object[id={0}, type={1}]",
                        new Object[]{oId, cachedPageContentObject.optString(
                         AbstractCacheablePageAction.CACHED_TYPE)});
-            
+
             statistics.incArticleViewCount(oId);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Process page cache hit error", e);
@@ -155,13 +155,9 @@ public final class ArticleAction extends AbstractFrontPageAction {
             ret.putAll(langs);
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ARTICLE));
 
-            final JSONObject queryStringJSONObject =
-                    getQueryStringJSONObject(request);
-            String articleId =
-                    queryStringJSONObject.optString(Keys.OBJECT_ID);
-            if (Strings.isEmptyOrNull(articleId)) {
-                articleId = (String) request.getAttribute(Keys.OBJECT_ID);
-            }
+            final String articleId =
+                    (String) request.getAttribute(Keys.OBJECT_ID);
+            LOGGER.log(Level.FINER, "Article[id={0}]", articleId);
 
             if (Strings.isEmptyOrNull(articleId)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -170,8 +166,9 @@ public final class ArticleAction extends AbstractFrontPageAction {
             }
 
             final JSONObject article = articleRepository.get(articleId);
-            if (null == article
-                || !article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+            final boolean allowVisitDraftViaPermalink = preference.getBoolean(
+                    Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+            if (null == article || !allowVisitDraftViaPermalink) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return ret;
@@ -180,7 +177,7 @@ public final class ArticleAction extends AbstractFrontPageAction {
             request.setAttribute(CACHED_OID, articleId);
             request.setAttribute(CACHED_TITLE,
                                  article.getString(Article.ARTICLE_TITLE));
-            request.setAttribute(CACHED_LINK, 
+            request.setAttribute(CACHED_LINK,
                                  article.getString(Article.ARTICLE_PERMALINK));
             statistics.incArticleViewCount(articleId);
 

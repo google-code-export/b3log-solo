@@ -79,7 +79,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.9, Jul 23, 2011
+ * @version 1.0.5.0, Aug 5, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 

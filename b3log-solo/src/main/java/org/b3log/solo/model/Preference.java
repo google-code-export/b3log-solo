@@ -26,7 +26,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jun 19, 2011
+ * @version 1.0.2.3, Aug 5, 2011
  */
 public final class Preference {
 
@@ -183,6 +183,11 @@ public final class Preference {
      * Key of page cache enabled.
      */
     public static final String PAGE_CACHE_ENABLED = "pageCacheEnabled";
+    /**
+     * Key of allow visit draft via permalink.
+     */
+    public static final String ALLOW_VISIT_DRAFT_VIA_PERMALINK =
+            "allowVisitDraftViaPermalink";
 
     /**
      * Private default constructor.
@@ -194,7 +199,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.8, Jan 2, 2011
+     * @version 1.0.0.9, Aug 5, 2011
      */
     public static final class Default {
 
@@ -315,6 +320,11 @@ public final class Preference {
          * Default page cache enabled.
          */
         public static final boolean DEFAULT_PAGE_CACHE_ENABLED = true;
+        /**
+         * Default allow visit draft via permalink.
+         */
+        public static final boolean DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK =
+                false;
 
         static {
             final JSONArray signs = new JSONArray();

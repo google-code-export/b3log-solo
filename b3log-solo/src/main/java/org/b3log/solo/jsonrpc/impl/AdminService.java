@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.6, Jun 25, 2011
+ * @version 1.0.2.7, Aug 5, 2011
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -697,12 +697,14 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
         ret.put(ENABLE_ARTICLE_UPDATE_HINT,
                 Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
-        ret.put(ENABLE_POST_TO_TENCENT_MICROBLOG, 
+        ret.put(ENABLE_POST_TO_TENCENT_MICROBLOG,
                 Default.DEFAULT_ENABLE_POST_TO_TENCENT_MICROBLOG);
         ret.put(Preference.CURRENT_VERSION_NUMBER, SoloServletListener.VERSION);
         ret.put(SIGNS, Default.DEFAULT_SIGNS);
         ret.put(TIME_ZONE_ID, Default.DEFAULT_TIME_ZONE);
         ret.put(PAGE_CACHE_ENABLED, Default.DEFAULT_PAGE_CACHE_ENABLED);
+        ret.put(ALLOW_VISIT_DRAFT_VIA_PERMALINK,
+                Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
 
         final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
         ret.put(Skin.SKIN_DIR_NAME, skinDirName);
