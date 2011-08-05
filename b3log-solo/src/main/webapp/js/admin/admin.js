@@ -92,6 +92,7 @@ $.extend(Admin.prototype, {
         if (!tags.tab) {
             return;
         }
+        
         if (tinyMCE) {
             if (tinyMCE.get('articleContent')) {
                 if (tags.tab !== "article" && admin.article.isConfirm &&
