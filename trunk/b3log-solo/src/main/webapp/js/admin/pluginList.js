@@ -87,10 +87,10 @@ admin.pluginList = {
                             datas[i].oId + "', '" + datas[i].status + "')\">";
                             if (datas[i].status === "ENABLED") {
                                 datas[i].status = Label.enabledLabel;
-                                datas[i].expendRow += Label.disabledLabel;
+                                datas[i].expendRow += Label.disableLabel;
                             } else {
                                 datas[i].status = Label.disabledLabel;
-                                datas[i].expendRow += Label.enabledLabel;
+                                datas[i].expendRow += Label.enableLabel;
                             }
                             datas[i].expendRow += "</a>";
                         }
