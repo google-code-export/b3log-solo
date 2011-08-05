@@ -85,7 +85,9 @@
         "signIsNullLabel": "${signIsNullLabel}",
         "noDataLable": "${noDataLable}",
         "editorLeaveLabel": "${editorLeaveLabel}",
-        "editorPostLabel": "${editorPostLabel}"
+        "editorPostLabel": "${editorPostLabel}",
+        "enableLabel": "${enableLabel}",
+        "disableLabel": "${disableLabel}"
     };    
     admin.init();
 </script>
