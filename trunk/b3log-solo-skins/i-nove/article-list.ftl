@@ -40,6 +40,7 @@
     </div>
     <div class="article-abstract">
         ${article.articleAbstract}
+        <div class="clear"></div>
     </div>
     <div class="article-footer">
         <a href="${article.articlePermalink}" class="left">

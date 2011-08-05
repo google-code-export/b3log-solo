@@ -38,7 +38,7 @@
         <div class="clear"></div>
         <div class="article-abstract article-body">
             ${article.articleAbstract}
-            <br/>
+            <div class="clear"></div>
             <a class="right underline" href="${article.articlePermalink}">
                 ${readmore2Label}...
             </a>

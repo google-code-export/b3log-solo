@@ -36,6 +36,7 @@
             <div class="corner"></div>
             <div class="substance">
                 ${article.articleAbstract}
+                <div class="clear"></div>
             </div>
         </div>
     </div>

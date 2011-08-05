@@ -44,7 +44,7 @@ h5 {
     font-size: 11px;
 }
 .article, .comments {
-    padding: 0px 0 12px 12px;
+    padding: 0 0 24px 12px;
 }
 .article-title {
     background-color: #E3E9FF;
@@ -68,7 +68,7 @@ h5 {
     word-wrap: break-word;
 }
 .article-body {
-    margin: 0 12px 12px;
+    margin-left: 12px;
 }
 .article-footer {
     margin-right: 12px;
