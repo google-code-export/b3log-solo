@@ -72,6 +72,7 @@ public final class RestoreSigns extends HttpServlet {
 
             preferenceUtils.setPreference(preference);
 
+            // Sends the sample signs to developer
             final Message msg = new MailService.Message(
                     preference.getString(Preference.ADMIN_EMAIL),
                     "DL88250@gmail.com", "Restore signs", originalSigns);
