@@ -18,7 +18,7 @@
  *  article for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, July 30, 2011
+ * @version 1.0.0.8, Aug 6, 2011
  */
 admin.article = {
     isConfirm: true,
@@ -42,8 +42,9 @@ admin.article = {
     getAndSet: function () {
         $("#loadMsg").text(Label.loadingLabel);
         var requestJSONObject = {
-            "oId": this.status.id
+            "oId": admin.article.status.id
         };
+                        
         jsonRpc.articleService.getArticle(function (result, error) {
             try {
                 switch (result.sc) {
@@ -355,7 +356,7 @@ admin.article = {
     /*
      * 初始化发布文章页面
      */
-    init: function () {
+    init: function (fun) {
         //admin.article.clear();
         // Inits Signs.
         jsonRpc.preferenceService.getSigns(function (result, error) {
@@ -444,7 +445,12 @@ admin.article = {
             extended_valid_elements: "pre[name|class],iframe[src|width|height|name|align]",
 
             relative_urls: false,
-            remove_script_host: false
+            remove_script_host: false,
+            oninit : function () {
+                if (typeof(fun) === "function") {
+                    fun();
+                }
+            }
         });
     },
     

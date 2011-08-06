@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, July 30, 2011
+ * @version 1.0.0.8, Aug 6, 2011
  */
 
 var Admin = function () {
@@ -118,11 +118,10 @@ $.extend(Admin.prototype, {
             $("#tabsPanel_" + tags.tab).load("admin-" + tags.tab + ".do", function () {
                 // 回调加载页面初始化函数
                 if (tags.tab === "article" && admin.article.status.id) {
-                    admin.article.getAndSet();
+                    admin.register[tags.tab].init.call(admin.register[tags.tab].obj, admin.article.getAndSet);
+                } else {
+                    admin.register[tags.tab].init.call(admin.register[tags.tab].obj, tags.page);
                 }
-                
-                admin.register[tags.tab].init.call(admin.register[tags.tab].obj, tags.page);
-                
                 if (tags.subTab) {
                     $("#tabPreference").tabs("setCurrent", tags.subTab);
                 }
