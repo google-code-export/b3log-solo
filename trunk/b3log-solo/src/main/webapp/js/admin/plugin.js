@@ -21,7 +21,6 @@
  * @version 1.0.0.3, Aug 6, 2011
  */
 var plugins = {};
-
 admin.plugin = {
     add: function (data) {
         if (data.path === "/") {
