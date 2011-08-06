@@ -59,13 +59,6 @@
                             </a>
                         </div>
                     </li>
-                    <li class="none">
-                        <div id="tabs_main">
-                            <a>
-                                <span class="left commentIcon"></span>${commentListLabel}
-                            </a>
-                        </div>
-                    </li>
                     <li>
                         <div onclick="admin.collapseNav(this)">
                             <span class="left preferenceIcon"></span>
@@ -109,6 +102,13 @@
                                 </div>
                             </li>   
                         </ul>
+                    </li>
+                    <li class="none">
+                        <div id="tabs_main">
+                            <a>
+                                <span class="left commentIcon"></span>${commentListLabel}
+                            </a>
+                        </div>
                     </li>
                 </ul>
             </div>
