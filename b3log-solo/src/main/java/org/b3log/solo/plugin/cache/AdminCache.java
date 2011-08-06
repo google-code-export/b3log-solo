@@ -22,7 +22,7 @@ import org.b3log.latke.plugin.AbstractPlugin;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Jul 17, 2011
+ * @version 1.0.0.6, Aug 6, 2011
  */
 public final class AdminCache extends AbstractPlugin {
 
@@ -30,11 +30,6 @@ public final class AdminCache extends AbstractPlugin {
      * Default servial version uid.
      */
     private static final long serialVersionUID = 1L;
-
-    @Override
-    public void unplug() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     @Override
     public String getViewName() {
