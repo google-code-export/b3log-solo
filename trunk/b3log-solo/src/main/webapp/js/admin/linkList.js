@@ -18,7 +18,7 @@
  * link list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, July 24, 2011
+ * @version 1.0.0.6, Aug 6, 2011
  */
 
 /* link-list 相关操作 */
@@ -85,7 +85,7 @@ admin.linkList = {
                         var links = result.links;
                         var linkData = [];
                         admin.linkList.pageInfo.currentCount = links.length;
-                        admin.linkList.pageInfo.pageCount = result.pagination.paginationPageCount;
+                        admin.linkList.pageInfo.pageCount = result.pagination.paginationPageCount === 0 ? 1 : result.pagination.paginationPageCount;
 
                         for (var i = 0; i < links.length; i++) {
                             linkData[i] = {};

@@ -2,7 +2,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Aug 1, 2011
+ * @version 1.0.0.7, Aug 6, 2011
 */
 *,html,body {
     margin: 0;
@@ -397,6 +397,10 @@ button:hover,.button:hover {
 .em-span {
     line-height: 24px;
     float: left;
+}
+
+.em-br {
+    line-height: 24px;
 }
 /* end emotions */
 

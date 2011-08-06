@@ -18,7 +18,7 @@
  * page list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, July 30, 2011
+ * @version 1.0.0.7, Aug 6, 2011
  */
 
 /* page-list 相关操作 */
@@ -108,7 +108,7 @@ admin.pageList = {
                         var pages = result.pages;
                         var pageData = [];
                         admin.pageList.pageInfo.currentCount = pages.length;
-                        admin.pageList.pageInfo.pageCount = result.pagination.paginationPageCount;
+                        admin.pageList.pageInfo.pageCount = result.pagination.paginationPageCount === 0 ? 1 : result.pagination.paginationPageCount;
                         for (var i = 0; i < pages.length; i++) {
                             pageData[i] = {};
                             if (i === 0) {
@@ -260,7 +260,7 @@ admin.pageList = {
                             }
                             
                             if (admin.pageList.pageInfo.currentCount === Label.PAGE_SIZE &&
-                                admin.pageList.pageInfo.currentPage === dmin.pageList.pageInfo.pageCount) {
+                                admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
                                 admin.pageList.pageInfo.pageCount++;
                             }
                             var hashList = window.location.hash.split("/");
