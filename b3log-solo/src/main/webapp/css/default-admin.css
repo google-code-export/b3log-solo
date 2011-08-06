@@ -2,7 +2,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, July 21, 2011
+ * @version 1.0.0.6, Aug 6, 2011
 */
 /* start resset */
 *, input, textarea {
@@ -55,7 +55,6 @@ a:hover {
 
 #tabsPanel>div {
     padding-bottom: 36px;
-    display: none;
 }
 #tipMsg, #loadMsg {
     background-color: #E5E7EB;

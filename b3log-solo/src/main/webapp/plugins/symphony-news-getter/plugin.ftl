@@ -1,5 +1,3 @@
-<div id="symphonyNewsGetterPlugin">
-</div>
 <script type="text/javascript">
     $.ajax({
         url: "http://symphony.b3log.org:80/get-news",
@@ -26,7 +24,16 @@
             }
             listHtml += "</ul>";
             
-            $("#indexMain").append(listHtml);
+            /*
+             * 添加插件
+             */
+            admin.plugin.add({
+                "id": "symphony-news-getter",
+                "text": "",
+                "path": "/",
+                "content": listHtml
+            });
         }
     });
+    
 </script>

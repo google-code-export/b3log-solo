@@ -18,12 +18,17 @@
  *  plugin manager for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, July 30, 2011
+ * @version 1.0.0.3, Aug 6, 2011
  */
 var plugins = {};
 
 admin.plugin = {
-    add: function (data) {  
+    add: function (data) {
+        if (data.path === "/") {
+            $("#tabsPanel_main").append(data.content);
+            return;
+        }
+        
         data.targetId = this.analysePath(data.path);
         $("#tabs").tabs("add", data);
         
