@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Admin cache service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 1, 2011
+ * @version 1.0.0.3, Aug 6, 2011
  */
 public final class AdminCacheService extends AbstractGAEJSONRpcService {
 
@@ -206,8 +206,9 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
                 @Override
                 public int compare(final JSONObject page1,
                                    final JSONObject page2) {
-                    return page1.optString(CACHED_TYPE).compareTo(page2.
-                            optString(CACHED_TYPE));
+                    return page1.optString(PageCaches.CACHED_HIT_COUNT).
+                            compareTo(page2.optString(
+                            PageCaches.CACHED_HIT_COUNT));
                 }
             });
 
