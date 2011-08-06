@@ -59,6 +59,13 @@
                             </a>
                         </div>
                     </li>
+                    <li class="none">
+                        <div id="tabs_main">
+                            <a>
+                                <span class="left commentIcon"></span>${commentListLabel}
+                            </a>
+                        </div>
+                    </li>
                     <li>
                         <div onclick="admin.collapseNav(this)">
                             <span class="left preferenceIcon"></span>
@@ -106,17 +113,18 @@
                 </ul>
             </div>
             <div id="tabsPanel">
-                <div id="tabsPanel_article"></div>
-                <div id="tabsPanel_article-list"></div>
-                <div id="tabsPanel_draft-list"></div>
-                <div id="tabsPanel_link-list"></div>
-                <div id="tabsPanel_preference"></div>
-                <div id="tabsPanel_page-list"></div>
-                <div id="tabsPanel_file-list"></div>
-                <div id="tabsPanel_others"></div>
-                <div id="tabsPanel_user-list"></div>
-                <div id="tabsPanel_comment-list"></div>
-                <div id="tabsPanel_plugin-list"></div>
+                <div id="tabsPanel_main"></div>
+                <div id="tabsPanel_article" class="none"></div>
+                <div id="tabsPanel_article-list" class="none"></div>
+                <div id="tabsPanel_draft-list" class="none"></div>
+                <div id="tabsPanel_link-list" class="none"></div>
+                <div id="tabsPanel_preference" class="none"></div>
+                <div id="tabsPanel_page-list" class="none"></div>
+                <div id="tabsPanel_file-list" class="none"></div>
+                <div id="tabsPanel_others" class="none"></div>
+                <div id="tabsPanel_user-list" class="none"></div>
+                <div id="tabsPanel_comment-list" class="none"></div>
+                <div id="tabsPanel_plugin-list" class="none"></div>
             </div>
             <div class="footer">
                 Powered by
