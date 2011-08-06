@@ -114,11 +114,16 @@ public final class TagArticleCounterRepair extends HttpServlet {
                 tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedTagRefCnt);
 
                 tagRepository.update(tagId, tag);
+
+                LOGGER.log(Level.INFO,
+                           "Repaired tag[title={0}, refCnt={1}, publishedTagRefCnt={2}]",
+                           new Object[]{tag.getString(Tag.TAG_TITLE),
+                                        tagRefCnt, publishedTagRefCnt});
             }
 
             transaction.commit();
             PageCaches.removeAll();
-            
+
             writer.println("Repair sucessfully!");
         } catch (final Exception e) {
             if (transaction.isActive()) {
