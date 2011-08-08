@@ -18,7 +18,7 @@
  * plugin list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, July 27, 2011
+ * @version 1.0.0.7, Aug 8, 2011
  */
 
 /* plugin-list 相关操作 */
@@ -125,6 +125,5 @@ admin.pluginList = {
  */
 admin.register["plugin-list"] =  {
     "obj": admin.pluginList,
-    "init": admin.pluginList.init,
-    "refresh": admin.pluginList.getList
+    "init": admin.pluginList.init
 }

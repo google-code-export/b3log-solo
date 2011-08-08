@@ -2,22 +2,22 @@
     <ul>
         <li>
             <div id="tabPreference_preferences">
-                <a class="tab-current" href="#preference/preferences">${paramSettingsLabel}</a>
+                <a class="tab-current" href="#tools/preference/preferences">${paramSettingsLabel}</a>
             </div>
         </li>
         <li>
             <div id="tabPreference_skins">
-                <a href="#preference/skins">${skinLabel}</a>
+                <a href="#tools/preference/skins">${skinLabel}</a>
             </div>
         </li>
         <li>
             <div id="tabPreference_signs">
-                <a href="#preference/signs">${signLabel}</a>
+                <a href="#tools/preference/signs">${signLabel}</a>
             </div>
         </li>
         <li>
             <div id="tabPreference_tencent">
-                <a href="#preference/tencent">${tencentLabel}</a>
+                <a href="#tools/preference/tencent">${tencentLabel}</a>
             </div>
         </li>
     </ul>

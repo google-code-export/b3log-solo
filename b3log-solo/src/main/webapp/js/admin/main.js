@@ -23,22 +23,6 @@
 
 /* main 相关操作 */
 admin.main = {
-    /*
-     * 移除未使用的 tag
-     */
-    removeUnusedTags: function () {
-        $("#tipMsg").text("");
-        jsonRpc.tagService.removeUnusedTags(function (result, error) {
-            try {
-                if (result.sc === "REMOVE_UNUSED_TAGS_SUCC") {
-                    $("#tipMsg").text(Label.removeSuccLabel);
-                } else {
-                    $("#tipMsg").text(Label.removeFailLabel);
-                }
-            } catch (e) {
-            }
-        });
-    }
 };
 
 /*

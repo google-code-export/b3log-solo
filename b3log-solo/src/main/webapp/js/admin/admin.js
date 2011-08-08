@@ -68,16 +68,17 @@ $.extend(Admin.prototype, {
         var tag = hash.substr(1, hash.length - 1);
         var tagList = tag.split("/");
         var tags = {};
-        tags.page = 1;
+        tags.page = 1,
+        tags.hashList = [];
         for (var i = 0; i < tagList.length; i++) {
-            if (i === 0) {
-                tags.tab = tagList[i];
-            } else {
+            if (i === tagList.length - 1) {
                 if (/^\d+$/.test(tagList[i])) {
                     tags.page = tagList[i];
                 } else {
-                    tags.subTab = tagList[i];
+                    tags.hashList.push(tagList[i]);
                 }
+            } else {
+                tags.hashList.push(tagList[i]);
             }
         }
         return tags;
@@ -88,21 +89,24 @@ $.extend(Admin.prototype, {
      */
     setCurByHash: function () {
         var tags = this.analyseHash();
+        var tab = tags.hashList[1], 
+        subTab = tags.hashList[2];
         
-        if (!tags.tab) {
-            return;
+        if (tags.hashList[0] === "main" || tags.hashList[0] === "comment-list") {
+            tab = tags.hashList[0];
         }
+        
         
         if (tinyMCE) {
             if (tinyMCE.get('articleContent')) {
-                if (tags.tab !== "article" && admin.article.isConfirm &&
+                if (tab !== "article" && admin.article.isConfirm &&
                     tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
                     if (!confirm(Label.editorLeaveLabel)) {
-                        window.location.hash = "#article";
+                        window.location.hash = "#article/article";
                         return;
                     }
                 }
-                if (tags.tab === "article" && admin.article.isConfirm &&
+                if (tab === "article" && admin.article.isConfirm &&
                     tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
                     return;
                 }
@@ -110,53 +114,46 @@ $.extend(Admin.prototype, {
         }
         
         //console.log(tags.tab);
-        $("#tabs").tabs("setCurrent", tags.tab); 
+        // clear article 
+        if (tab !== "article") {
+            admin.article.clear();
+        }
+        admin.article.isConfirm = true;
         
-        if ($("#tabsPanel_" + tags.tab).html().replace(/\s/g, "") === "") {
+        $("#tabs").tabs("setCurrent", tab);
+        if ($("#tabsPanel_" + tab).html().replace(/\s/g, "") === "") {
             // 还未加载 HTML
             $("#loadMsg").text(Label.loadingLabel);
-            $("#tabsPanel_" + tags.tab).load("admin-" + tags.tab + ".do", function () {
+            $("#tabsPanel_" + tab).load("admin-" + tab + ".do", function () {
                 // 回调加载页面初始化函数
-                if (tags.tab === "article" && admin.article.status.id) {
-                    admin.register[tags.tab].init.call(admin.register[tags.tab].obj, admin.article.getAndSet);
+                if (tab === "article" && admin.article.status.id) {
+                    admin.register[tab].init.call(admin.register[tab].obj, admin.article.getAndSet);
                 } else {
-                    admin.register[tags.tab].init.call(admin.register[tags.tab].obj, tags.page);
+                    admin.register[tab].init.call(admin.register[tab].obj, tags.page);
                 }
-                if (tags.subTab) {
-                    $("#tabPreference").tabs("setCurrent", tags.subTab);
+                if (subTab) {
+                    $("#tabPreference").tabs("setCurrent", subTab);
                 }
+        
+                admin.plugin.setCurByHash(tags);
             });
-        } else if (admin.register[tags.tab].obj.hash) {
-            // plugin 已经存在
-            if (!admin.register[tags.tab].obj.isInit) {
-                admin.register[tags.tab].init.call(admin.register[tags.tab].obj, tags.page);
-                admin.register[tags.tab].obj.isInit = true;
-            } else {
-                if (admin.register[tags.tab].refresh) {
-                    admin.register[tags.tab].refresh.call(admin.register[tags.tab].obj, tags.page);
-                }
-            }
-        } else{
-            if (tags.tab === "article" && admin.article.status.id) {
+        } else {
+            if (tab === "article" && admin.article.status.id) {
                 admin.article.getAndSet();
                 return;
             }
             
             // 已加载过 HTML
-            if (admin.register[tags.tab].refresh) {
-                admin.register[tags.tab].refresh.call(admin.register[tags.tab].obj, tags.page);
+            if (admin.register[tab] && admin.register[tab].refresh) {
+                admin.register[tab].refresh.call(admin.register[tab].obj, tags.page);
             }
             
-            if (tags.subTab) {
-                $("#tabPreference").tabs("setCurrent", tags.subTab);
+            if (subTab) {
+                $("#tabPreference").tabs("setCurrent", subTab);
             }
+            
+            admin.plugin.setCurByHash(tags);
         }  
-        
-        // clear article 
-        if (tags.tab !== "article") {
-            admin.article.clear();
-        }
-        admin.article.isConfirm = true;
     },
     
     /*
@@ -202,8 +199,9 @@ $.extend(Admin.prototype, {
         } else {
             // 当前 tab 属于 Tools 时，设其展开
             for (var j = 0; j < this.tools.length; j++) {
-                if (window.location.hash.indexOf(this.tools[j]) > -1) {
-                    $("#tabs>ul>li>div")[2].click();
+                if ("#" + window.location.hash.split("/")[1] === this.tools[j]) {
+                    $("#tabToolsTitle").click();
+                    break;
                 }
             }
         }

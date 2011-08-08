@@ -36,7 +36,7 @@ admin.article = {
     get: function (id, isArticle) {
         this.status.id = id;
         this.status.isArticle = isArticle
-        admin.selectTab("article");
+        admin.selectTab("article/article");
     },
     
     getAndSet: function () {
@@ -194,9 +194,9 @@ admin.article = {
                         case "ADD_ARTICLE_SUCC":
                             if (articleIsPublished) {
                                 admin.article.status.id = undefined;
-                                admin.selectTab("article-list");
+                                admin.selectTab("article/article-list");
                             } else {
-                                admin.selectTab("draft-list");
+                                admin.selectTab("article/draft-list");
                             }
                             $("#tipMsg").text(Label.addSuccLabel);
                             admin.article.isConfirm = false;
@@ -253,9 +253,9 @@ admin.article = {
                             break;
                         case "UPDATE_ARTICLE_SUCC":
                             if (articleIsPublished){
-                                admin.selectTab("article-list");
+                                admin.selectTab("article/article-list");
                             } else {
-                                admin.selectTab("draft-list");
+                                admin.selectTab("article/draft-list");
                             }
                             
                             $("#tipMsg").text(Label.updateSuccLabel);
@@ -482,7 +482,7 @@ admin.article = {
             try {
                 if (result.sc === "CANCEL_PUBLISH_ARTICLE_SUCC") {
                     $("#tipMsg").text(Label.unPulbishSuccLabel);
-                    admin.selectTab("draft-list");
+                    admin.selectTab("article/draft-list");
                     admin.article.status.id = undefined;
                     admin.article.isConfirm = false;
                 } else {

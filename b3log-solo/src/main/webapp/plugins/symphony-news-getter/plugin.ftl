@@ -1,8 +1,9 @@
-<div id="symphonyNewsGetter"></div>
+<div id="symphonyNewsGetterPanel">
+    <div id="symphonyNewsGetter"></div>
+</div>
 <script type="text/javascript">
     plugins.symphonyNewsGetter = {
-        hash: "",
-        getNews: function () {
+        init: function () {
             $.ajax({
                 url: "http://symphony.b3log.org:80/get-news",
                 type: "GET",
@@ -35,23 +36,14 @@
     };
     
     /*
-     * 注册到 admin 进行管理 
-     */
-    admin.register["symphony-news-getter"] =  {
-        "obj": plugins.symphonyNewsGetter,
-        "init": plugins.symphonyNewsGetter.getNews
-    };
-    
-    /*
      * 添加插件
      */
     admin.plugin.add({
-        "id": "symphony-news-getter",
-        "text": "",
-        "path": "/",
-        "content": $("#symphonyNewsGetter").html()
+        "id": "symphonyNewsGetter",
+        "path": "/main/panel1 ",
+        "content": $("#symphonyNewsGetterPanel").html()
     });
     
     // 移除现有内容
-    $("#cachePlugin").remove();
+    $("#symphonyNewsGetterPanel").remove();
 </script>

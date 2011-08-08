@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="robots" content="none"/>
@@ -41,20 +41,20 @@
                             ${articleLabel}
                             <span class="ico-arrow-up"></span>
                         </div>
-                        <ul class="collapsed">
+                        <ul class="collapsed" id="tabArticleMgt">
                             <li>
                                 <div id="tabs_article">
-                                    <a href="#article" onclick="admin.article.prePost()">${postArticleLabel}</a>
+                                    <a href="#article/article" onclick="admin.article.prePost()">${postArticleLabel}</a>
                                 </div>
                             </li>
                             <li>
                                 <div id="tabs_article-list">
-                                    <a href="#article-list">${articleListLabel}</a>
+                                    <a href="#article/article-list">${articleListLabel}</a>
                                 </div>
                             </li>
                             <li>
                                 <div id="tabs_draft-list">
-                                    <a href="#draft-list">${draftListLabel}</a>
+                                    <a href="#article/draft-list">${draftListLabel}</a>
                                 </div>
                             </li>
                         </ul>
@@ -67,45 +67,45 @@
                         </div>
                     </li>
                     <li>
-                        <div onclick="admin.collapseNav(this)">
+                        <div id="tabToolsTitle" onclick="admin.collapseNav(this)">
                             <span class="left preferenceIcon"></span>
                             Tool
                             <span class="ico-arrow-down"></span>
                         </div>
-                        <ul class="none">
+                        <ul class="none" id="tabTools">
                             <li>
                                 <div id="tabs_file-list">
-                                    <a href="#file-list">${fileListLabel}</a>
+                                    <a href="#tools/file-list">${fileListLabel}</a>
                                 </div>
                             </li>
                             <li>
                                 <div id="tabs_page-list">
-                                    <a href="#page-list">${pageMgmtLabel}</a>
+                                    <a href="#tools/page-list">${pageMgmtLabel}</a>
                                 </div>
                             </li>
                             <li>
                                 <div id="tabs_link-list">
-                                    <a href="#link-list">${linkManagementLabel}</a>
+                                    <a href="#tools/link-list">${linkManagementLabel}</a>
                                 </div>
                             </li>
                             <li>
                                 <div id="tabs_preference">
-                                    <a href="#preference">${preferenceLabel}</a>
+                                    <a href="#tools/preference">${preferenceLabel}</a>
                                 </div>
                             </li>
                             <li>
                                 <div id="tabs_user-list">
-                                    <a href="#user-list">${userManageLabel}</a>
+                                    <a href="#tools/user-list">${userManageLabel}</a>
                                 </div>
                             </li>
                             <li>
                                 <div id="tabs_plugin-list">
-                                    <a href="#plugin-list">${pluginMgmtLabel}</a>
+                                    <a href="#tools/plugin-list">${pluginMgmtLabel}</a>
                                 </div>
                             </li>
                             <li>
                                 <div id="tabs_others">
-                                    <a href="#others">${othersLabel}</a>
+                                    <a href="#tools/others">${othersLabel}</a>
                                 </div>
                             </li>   
                         </ul>
