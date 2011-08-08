@@ -18,14 +18,29 @@
  *  util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Aug 6, 2011
+ * @version 1.0.0.6, Aug 8, 2011
  */
 
 var Util = {
     killIE: function () {
         if ($.browser.msie) {
+            var downloadHTML = "<br/> You can download \
+                <a href='http://windows.microsoft.com/zh-CN/internet-explorer/downloads/ie' target='_blank'>IE8 / IE9</a>, \
+                <a href='http://firefox.com.cn' target='_blank'>Firefox</a>, \
+                <a href='http://www.google.com/chrome' target='_blank'>Chrome</a> or \
+                <a href='http://www.maxthon.com/mx3/' target='_blank'>Maxthon</a> and so on.";
+            // kill IE6 and IE7
             if ($.browser.version === "6.0" || $.browser.version === "7.0") {
-                $("body").html("Let's kill IE 6 and IE 7!");
+                $("body").html("Let's kill IE 6 and IE 7!" + downloadHTML);
+            }
+            
+            // kill 360
+            if (window.external && window.external.twGetRunPath) {
+                var path = external.twGetRunPath();
+                if(path && path.toLowerCase().indexOf("360se") > -1 && 
+                    window.location.href.indexOf("admin-index") > -1) {
+                    $("body").html("Let's kill 360 or return <a href='/'>index</a>!" + downloadHTML);
+                }
             }
         }
     },
