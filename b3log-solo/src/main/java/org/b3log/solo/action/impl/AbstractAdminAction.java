@@ -94,7 +94,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
                 return ret;
             }
 
-            final Locale locale = Latkes.getDefaultLocale();
+            final Locale locale = Latkes.getLocale();
             final Map<String, String> langs =
                     langPropsService.getAll(locale);
             ret.putAll(langs);

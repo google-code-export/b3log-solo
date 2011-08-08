@@ -100,7 +100,7 @@ public final class PluginService extends AbstractGAEJSONRpcService {
 
         Map<String, String> langs = null;
         try {
-            langs = langPropsService.getAll(Latkes.getDefaultLocale());
+            langs = langPropsService.getAll(Latkes.getLocale());
         } catch (final ServiceException e) {
             try {
                 ret.put(Keys.STATUS_CODE, false);
