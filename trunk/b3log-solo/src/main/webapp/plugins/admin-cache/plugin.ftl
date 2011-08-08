@@ -5,7 +5,7 @@
     <div class="clear"></div>
 </div>
 <script type="text/javascript">
-    plugins.cacheList = {
+    plugins.adminCache = {
         hash: "cache-list",
         tablePagination:  new TablePaginate("cache"),
         getList: function (pageNum) {
@@ -28,7 +28,7 @@
                         var caches = result.pages;
                         var cacheData = caches;
                         for (var i = 0; i < caches.length; i++) {
-                            cacheData[i].cachedTitle = "<a href='" + caches[i].link + "'  target='_blank'>" 
+                            cacheData[i].cachedTitle = "<a href='" + caches[i].cachedLink + "'  target='_blank'>" 
                                 + caches[i].cachedTitle + "</a>";
                             cacheData[i].cachedTime = $.bowknot.getDate(cacheData[i].cachedTime, 1);
                         }
@@ -126,9 +126,9 @@
      * 注册到 admin 进行管理 
      */
     admin.register["cache-list"] =  {
-        "obj": plugins.cacheList,
-        "init": plugins.cacheList.init,
-        "refresh":  plugins.cacheList.init
+        "obj": plugins.adminCache,
+        "init": plugins.adminCache.init,
+        "refresh":  plugins.adminCache.init
     }
     
     /*

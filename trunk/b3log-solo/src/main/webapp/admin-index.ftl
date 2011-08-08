@@ -29,6 +29,13 @@
             <div id="tabs">
                 <ul>
                     <li>
+                        <div id="tabs_main">
+                            <a href="#main">
+                                <span class="left usersIcon"></span>${adminIndexLabel}
+                            </a>
+                        </div>
+                    </li>
+                    <li>
                         <div onclick="admin.collapseNav(this)">
                             <span class="left postIcon"></span>
                             ${articleLabel}
@@ -103,17 +110,10 @@
                             </li>   
                         </ul>
                     </li>
-                    <li class="none">
-                        <div id="tabs_main">
-                            <a>
-                                <span class="left commentIcon"></span>${commentListLabel}
-                            </a>
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div id="tabsPanel">
-                <div id="tabsPanel_main"></div>
+                <div id="tabsPanel_main" class="none"></div>
                 <div id="tabsPanel_article" class="none"></div>
                 <div id="tabsPanel_article-list" class="none"></div>
                 <div id="tabsPanel_draft-list" class="none"></div>
@@ -153,6 +153,7 @@
         <script type="text/javascript" src="js/admin/userList.js"></script>
         <script type="text/javascript" src="js/admin/commentList.js"></script>
         <script type="text/javascript" src="js/admin/plugin.js"></script>
+        <script type="text/javascript" src="js/admin/main.js"></script>
         <#include "admin-label.ftl">
         ${plugins}
         <script type="text/javascript">

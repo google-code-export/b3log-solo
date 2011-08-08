@@ -179,7 +179,7 @@ a:hover {
     color: #333333;
 }
 
-#tabs .commentIcon, #tabs .postIcon, #tabs .preferenceIcon {
+#tabs .commentIcon, #tabs .postIcon, #tabs .preferenceIcon,  #tabs .usersIcon {
     margin: 6px 9px 0 0;
 }
 /* sub tabs */
