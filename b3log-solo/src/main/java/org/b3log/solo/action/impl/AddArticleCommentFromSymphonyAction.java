@@ -15,9 +15,6 @@
  */
 package org.b3log.solo.action.impl;
 
-import com.google.appengine.api.mail.MailService;
-import com.google.appengine.api.mail.MailService.Message;
-import com.google.appengine.api.mail.MailServiceFactory;
 import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
@@ -37,6 +34,9 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.mail.MailService;
+import org.b3log.latke.mail.MailService.Message;
+import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Symphony</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Mar 2, 2011
+ * @version 1.0.0.3, Aug 8, 2011
  */
 public final class AddArticleCommentFromSymphonyAction
         extends AbstractAction {
@@ -349,7 +349,8 @@ public final class AddArticleCommentFromSymphonyAction
         final String commentSharpURL =
                 comment.getString(Comment.COMMENT_SHARP_URL);
         final Message message = new Message();
-        message.setSender(adminEmail);
+        message.setFrom(adminEmail);
+        message.addRecipient(preference.getString(Preference.ADMIN_EMAIL));
         String mailSubject = null;
         String articleOrPageURL = null;
         String mailBody = null;
@@ -390,7 +391,7 @@ public final class AddArticleCommentFromSymphonyAction
         LOGGER.log(Level.FINER,
                    "Sending a mail[mailSubject={0}, mailBody=[{1}] to admins",
                    new Object[]{mailSubject, mailBody});
-        mailService.sendToAdmins(message);
+        mailService.send(message);
     }
 
     /**
