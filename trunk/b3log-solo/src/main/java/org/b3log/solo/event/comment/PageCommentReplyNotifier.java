@@ -15,15 +15,15 @@
  */
 package org.b3log.solo.event.comment;
 
-import com.google.appengine.api.mail.MailService;
-import com.google.appengine.api.mail.MailService.Message;
-import com.google.appengine.api.mail.MailServiceFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.mail.MailService;
+import org.b3log.latke.mail.MailService.Message;
+import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Jun 23, 2011
+ * @version 1.0.1.0, Aug 8, 2011
  */
 public final class PageCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -107,8 +107,8 @@ public final class PageCommentReplyNotifier
             final String commentSharpURL =
                     comment.getString(Comment.COMMENT_SHARP_URL);
             final Message message = new Message();
-            message.setSender(adminEmail);
-            message.setTo(originalCommentEmail);
+            message.setFrom(adminEmail);
+            message.addRecipient(originalCommentEmail);
             final String mailSubject = blogTitle + ": New reply of your comment";
             message.setSubject(mailSubject);
             final String pageTitle = page.getString(Page.PAGE_TITLE);

@@ -15,9 +15,6 @@
  */
 package org.b3log.solo.fix;
 
-import com.google.appengine.api.mail.MailService;
-import com.google.appengine.api.mail.MailService.Message;
-import com.google.appengine.api.mail.MailServiceFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -27,6 +24,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.mail.MailService;
+import org.b3log.latke.mail.MailService.Message;
+import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Restores the signs of preference to default.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Mar 1, 2011
+ * @version 1.0.0.1, Aug 8, 2011
  */
 public final class RestoreSigns extends HttpServlet {
 
@@ -73,9 +73,12 @@ public final class RestoreSigns extends HttpServlet {
             preferenceUtils.setPreference(preference);
 
             // Sends the sample signs to developer
-            final Message msg = new MailService.Message(
-                    preference.getString(Preference.ADMIN_EMAIL),
-                    "DL88250@gmail.com", "Restore signs", originalSigns);
+            final Message msg = new MailService.Message();
+            msg.setFrom(preference.getString(Preference.ADMIN_EMAIL));
+            msg.addRecipient("DL88250@gmail.com");
+            msg.setSubject("Restore signs");
+            msg.setHtmlBody(originalSigns);
+            
             MAIL_SVC.send(msg);
             writer.println("Restores signs succeeded.");
 
