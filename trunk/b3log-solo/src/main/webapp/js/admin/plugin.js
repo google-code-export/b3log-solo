@@ -18,28 +18,104 @@
  *  plugin manager for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Aug 6, 2011
+ * @version 1.0.0.4, Aug 8, 2011
  */
 var plugins = {};
 admin.plugin = {
+    plugins: [],
     add: function (data) {
-        if (data.path === "/") {
-            $("#tabsPanel_main").append(data.content);
-            return;
-        }
+        // 添加所有插件
+        data.isInit = false;
+        this.plugins.push(data);
         
-        data.targetId = this.analysePath(data.path);
-        $("#tabs").tabs("add", data);
-        
-        // 当插件属于 tools 时，当前页面属于 tools，导航需展开 
-        if (data.path.indexOf("/tools/") === 0) {
-            admin.tools.push("#" + data.id);
-            admin.adTools.push(data.id);
+        var pathList = this._analysePath(data.path);
+        // 添加一二级 Tab
+        if (data.hash && pathList.length === 1) {
+            this._addNew(data, pathList);
         }
     },
     
-    analysePath: function (path) {
+    setCurByHash: function (tags) {
+        var pluginList = this.plugins;
+        for (var i = 0; i < pluginList.length; i++) {
+            var data = pluginList[i];
+            var pathList = this._analysePath(data.path),
+            isCurrentPlugin = false;
+            
+            if (data.hash) {
+                if ("#" + data.hash === window.location.hash ||
+                (pathList[0] === "tools" && pathList.length === 2)) {
+                    isCurrentPlugin = true;
+                }
+            }else {
+                if(data.path.replace("/", "#").indexOf(window.location.hash) > -1) {
+                    isCurrentPlugin = true;
+                }
+            }
+            
+            if (isCurrentPlugin) {
+                if (data.isInit) {
+                    if (data.hash) {
+                        if ("#" + data.hash === window.location.hash) {
+                            plugins[data.id].refresh(tags.page);   
+                        }
+                    } else {
+                        if (plugins[data.id].refresh) {
+                            plugins[data.id].refresh(tags.page);   
+                        }
+                    }
+                } else {
+                    if (data.hash && pathList.length === 2) {
+                        this._addNew(data, pathList);
+                    } 
+                    if (!data.hash){
+                        this._addToExist(data, pathList);
+                    }
+                    plugins[data.id].init(tags.page);
+                    data.isInit = true;
+                }
+            }
+        }  
+    },
+    
+    _analysePath: function (path) {
         var paths = path.split("/");
-        return paths[2];
+        paths.splice(0, 1);
+        return paths;
+    },
+    
+    _addNew: function (data, pathList) {
+        if (pathList.length === 2) {
+            data.target = $("#tabPreference li").get(data.index - 1);
+            $("#tabPreference").tabs("add", data);
+            return;
+        } else if (pathList.length === 0) {
+            data.target = $("#tabs>ul>li").get(data.index - 1);
+        } else if (pathList[0] === "article") {
+            data.target = $("#tabArticleMgt>li").get(data.index - 1);
+        } else if (pathList[0] === "tools") {
+            admin.tools.push("#" + data.hash.split("/")[1]);
+            data.target = $("#tabTools>li").get(data.index - 1);
+        }
+        $("#tabs").tabs("add", data);
+    },
+    
+    _addToExist: function (data, pathList) {
+        switch (pathList[0]) {
+            case "main":
+                $("#mainPanel" + pathList[1].charAt(5)).append(data.content);
+                break;
+            case "tools":
+            case "article":
+                if (pathList.length === 2) {
+                    $("#tabsPanel_" + pathList[1]).append(data.content);
+                } else {
+                    $("#tabPreferencePanel_" + pathList[2]).append(data.content);
+                }
+                break;
+            case "comment-list":
+                $("#tabsPanel_comment-list").append(data.content);
+                break;
+        }
     }
 };

@@ -5,8 +5,7 @@
     <div class="clear"></div>
 </div>
 <script type="text/javascript">
-    plugins.adminCache = {
-        hash: "cache-list",
+    plugins["cache-list"] = {
         tablePagination:  new TablePaginate("cache"),
         getList: function (pageNum) {
             var that = this;
@@ -119,25 +118,23 @@
             this.tablePagination.initPagination();
             this.getList(page);
             this.getCache();
+        },
+        
+        refresh: function (page) {
+            this.getList(page);
+            this.getCache();
         }
     };
-    
-    /*
-     * 注册到 admin 进行管理 
-     */
-    admin.register["cache-list"] =  {
-        "obj": plugins.adminCache,
-        "init": plugins.adminCache.init,
-        "refresh":  plugins.adminCache.init
-    }
     
     /*
      * 添加插件
      */
     admin.plugin.add({
         "id": "cache-list",
+        "hash": "tools/cache-list",
         "text": "${cacheMgmtLabel}",
-        "path": "/tools/plugin-list",
+        "path": "/tools",
+        "index": 7,
         "content": $("#cachePlugin").html()
     });
     
