@@ -21,7 +21,7 @@ import org.b3log.latke.plugin.AbstractPlugin;
  * Getting news from <a href="http://symphony.b3log.org">B3log Symphony</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 6, 2011
+ * @version 1.0.0.1, Aug 8, 2011
  */
 public final class NewsGetter extends AbstractPlugin {
 
@@ -32,6 +32,6 @@ public final class NewsGetter extends AbstractPlugin {
 
     @Override
     public String getViewName() {
-        return "admin-index.ftl";
+        return "admin-main.ftl";
     }
 }
