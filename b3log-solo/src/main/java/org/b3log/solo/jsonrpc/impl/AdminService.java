@@ -18,7 +18,6 @@ package org.b3log.solo.jsonrpc.impl;
 import java.util.Set;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.latke.repository.RepositoryException;
-import com.google.appengine.api.users.UserServiceFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -37,6 +36,9 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.user.GeneralUser;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.action.captcha.CaptchaServlet;
@@ -79,8 +81,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * User service.
      */
-    private com.google.appengine.api.users.UserService userService =
-            UserServiceFactory.getUserService();
+    private UserService userService = UserServiceFactory.getUserService();
     /**
      * Preference repository.
      */
@@ -611,8 +612,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         LOGGER.info("Initializing admin....");
         final JSONObject admin = new JSONObject();
 
-        final com.google.appengine.api.users.User user =
-                userService.getCurrentUser();
+        final GeneralUser user = userService.getCurrentUser();
         final String name = user.getNickname();
         admin.put(User.USER_NAME, name);
         final String email = user.getEmail();
@@ -665,8 +665,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 Default.DEFAULT_META_DESCRIPTION);
         ret.put(META_KEYWORDS, Default.DEFAULT_META_KEYWORDS);
         ret.put(HTML_HEAD, Default.DEFAULT_HTML_HEAD);
-        ret.put(ENABLE_POST_TO_BUZZ,
-                Default.DEFAULT_ENABLE_POST_TO_BUZZ);
         ret.put(GOOGLE_OAUTH_CONSUMER_SECRET,
                 Default.DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
         ret.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,

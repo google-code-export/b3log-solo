@@ -15,13 +15,6 @@
  */
 package org.b3log.solo.upgrade;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.QueryResultList;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -31,12 +24,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -65,11 +59,6 @@ public final class V010ToV011 extends HttpServlet {
      * Update size in an request.
      */
     private static final int UPDATE_SIZE = 100;
-    /**
-     * GAE datastore service.
-     */
-    private final DatastoreService datastoreService =
-            DatastoreServiceFactory.getDatastoreService();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -80,19 +69,15 @@ public final class V010ToV011 extends HttpServlet {
             Transaction transaction = articleRepository.beginTransaction();
             boolean isConsistent = true;
             try {
-                final Query query = new Query(Article.ARTICLE);
-                final PreparedQuery preparedQuery =
-                        datastoreService.prepare(query);
-                final QueryResultList<Entity> queryResultList =
-                        preparedQuery.asQueryResultList(FetchOptions.Builder.
-                        withDefaults());
+                final Query query = new Query();
+                final JSONObject result = articleRepository.get(query);
+                final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
                 int cnt = 0;
 
-                for (final Entity entity : queryResultList) {
-                    if (!entity.hasProperty(Article.ARTICLE_PUT_TOP)) {
-                        final JSONObject article =
-                                AbstractGAERepository.entity2JSONObject(entity);
+                for (int i = 0; i < array.length(); i++) {
+                    final JSONObject article = array.getJSONObject(i);
+                    if (!article.has(Article.ARTICLE_PUT_TOP)) {
                         final String articleId = article.getString(
                                 Keys.OBJECT_ID);
                         article.put(Article.ARTICLE_PUT_TOP, false);

@@ -15,14 +15,15 @@
  */
 package org.b3log.solo.util;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.user.GeneralUser;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
@@ -117,8 +118,7 @@ public final class Users {
             return false;
         }
 
-        final com.google.appengine.api.users.User currentUser =
-                userService.getCurrentUser();
+        final GeneralUser currentUser = userService.getCurrentUser();
         return !isSoloUser(currentUser.getEmail());
     }
 
@@ -130,8 +130,7 @@ public final class Users {
      * returns {@code false} otherwise
      */
     public boolean isLoggedIn() {
-        final com.google.appengine.api.users.User currentUser =
-                userService.getCurrentUser();
+        final GeneralUser currentUser = userService.getCurrentUser();
         if (null == currentUser) {
             return false;
         }
@@ -155,8 +154,7 @@ public final class Users {
      * @return the current user, {@code null} if not found
      */
     public JSONObject getCurrentUser() {
-        final com.google.appengine.api.users.User currentUser =
-                userService.getCurrentUser();
+        final GeneralUser currentUser = userService.getCurrentUser();
         if (null == currentUser) {
             return null;
         }

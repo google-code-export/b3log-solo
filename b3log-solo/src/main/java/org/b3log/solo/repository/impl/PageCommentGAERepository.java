@@ -15,19 +15,21 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Comment;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageCommentRepository;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -53,39 +55,29 @@ public final class PageCommentGAERepository extends AbstractGAERepository
     @Override
     public List<JSONObject> getByPageId(final String pageId)
             throws RepositoryException {
-        final Query query = new Query(getName());
+        final Query query = new Query();
         query.addFilter(Page.PAGE + "_" + Keys.OBJECT_ID,
-                        Query.FilterOperator.EQUAL, pageId);
-        query.addSort(Keys.OBJECT_ID, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
+                        FilterOperator.EQUAL, pageId);
+        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        final JSONObject result = get(query);
 
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        for (final Entity entity : preparedQuery.asIterable()) {
-            final Map<String, Object> properties = entity.getProperties();
-            final JSONObject e = new JSONObject(properties);
+        try {
+            final JSONArray pageComments = result.getJSONArray(Keys.RESULTS);
 
-            ret.add(e);
+            return CollectionUtils.jsonArrayToList(pageComments);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
         }
-
-        return ret;
     }
 
     @Override
     public JSONObject getByCommentId(final String commentId)
             throws RepositoryException {
-        final Query query = new Query(getName());
+        final Query query = new Query();
         query.addFilter(Comment.COMMENT + "_" + Keys.OBJECT_ID,
-                        Query.FilterOperator.EQUAL, commentId);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-
-        final Entity entity = preparedQuery.asSingleEntity();
-        if (null == entity) {
-            return null;
-        }
-
-        final Map<String, Object> properties = entity.getProperties();
-
-        return new JSONObject(properties);
+                        FilterOperator.EQUAL, commentId);
+        return get(query);
     }
 
     /**

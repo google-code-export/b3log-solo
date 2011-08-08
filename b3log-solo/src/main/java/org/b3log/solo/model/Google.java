@@ -28,10 +28,6 @@ public final class Google {
      */
     public static final String GOOGLE_PROFILE_RETRIEVAL =
             "http://www.googleapis.com/buzz/v1/people/{userId}/@self?alt=json";
-    /**
-     * Key of post to buzz.
-     */
-    public static final String GOOGLE_POST_TO_BUZZ = "postToGoogleBuzz";
 
     /**
      * Private default constructor.

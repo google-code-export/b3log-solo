@@ -15,13 +15,15 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -47,16 +49,24 @@ public final class BlogSyncMgmtGAERepository extends AbstractGAERepository
     @Override
     public JSONObject getByExternalBloggingSystem(
             final String externalBloggingSystem) {
-        final Query query = new Query(getName());
+        final Query query = new Query();
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
-                        Query.FilterOperator.EQUAL, externalBloggingSystem);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
-        if (null == entity) {
+                        FilterOperator.EQUAL, externalBloggingSystem);
+
+
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             return null;
         }
-
-        return entity2JSONObject(entity);
     }
 
     /**

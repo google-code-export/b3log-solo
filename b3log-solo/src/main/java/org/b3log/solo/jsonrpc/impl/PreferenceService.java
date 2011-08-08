@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.utils.SystemProperty;
-import com.google.appengine.api.utils.SystemProperty.Environment.Value;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -27,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
@@ -149,7 +148,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "externalRelevantArticlesDisplayCount": int,
      *         "relevantArticlesDisplayCount": int,
      *         "randomArticlesDisplayCount": int,
-     *         "enablePostToBuzz": boolean,
      *         "adminEmail": "",
      *         "metaKeywords": "",
      *         "metaDescription": "",
@@ -212,7 +210,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         "externalRelevantArticlesDisplayCount": int,
      *         "relevantArticlesDisplayCount": int,
      *         "randomArticlesDisplayCount": int,
-     *         "enablePostToBuzz": boolean,
      *         "metaKeywords": "",
      *         "metaDescription": "",
      *         "enableArticleUpdateHint": boolean,
@@ -268,8 +265,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                 domain = blogHost;
             }
 
-            final Value gaeEnvValue = SystemProperty.environment.value();
-            if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
+            if (RuntimeMode.PRODUCTION == Latkes.getRuntimeMode()) {
                 if ("localhost".equals(domain)) {
                     ret.put(Keys.STATUS_CODE,
                             StatusCodes.UPDATE_PREFERENCE_FAIL_CANNT_BE_LOCALHOST);
@@ -319,25 +315,25 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
             final String timeZoneId = preference.getString(TIME_ZONE_ID);
             timeZoneUtils.setTimeZone(timeZoneId);
-            
+
             preference.put(Preference.SIGNS,
                            preference.getJSONArray(Preference.SIGNS).toString());
 
             final JSONObject oldPreference = preferenceUtils.getPreference();
             final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
             preference.put(ADMIN_EMAIL, adminEmail);
-            
-            final boolean pageCacheEnabled = 
+
+            final boolean pageCacheEnabled =
                     oldPreference.getBoolean(PAGE_CACHE_ENABLED);
             preference.put(PAGE_CACHE_ENABLED, pageCacheEnabled);
-            
+
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             LOGGER.log(Level.FINER, "Current locale[string={0}]", localeString);
             Latkes.setLocale(new Locale(
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString)));
-            
+
             preferenceUtils.setPreference(preference);
 
             PageCaches.removeAll();

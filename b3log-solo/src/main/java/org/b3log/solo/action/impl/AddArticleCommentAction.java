@@ -15,10 +15,6 @@
  */
 package org.b3log.solo.action.impl;
 
-import com.google.appengine.api.urlfetch.HTTPHeader;
-import com.google.appengine.api.urlfetch.HTTPResponse;
-import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -40,6 +36,11 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.urlfetch.HTTPHeader;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.HTTPResponse;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -186,7 +187,7 @@ public final class AddArticleCommentAction extends AbstractAction {
                                    final HttpServletResponse response)
             throws ActionException {
         // TODO: add article comment args check
-        
+
         return addArticleComment(requestJSONObject, request, response);
     }
 
@@ -475,8 +476,9 @@ public final class AddArticleCommentAction extends AbstractAction {
                     new URL(Google.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
                                                                     id));
             try {
-                final HTTPResponse response =
-                        urlFetchService.fetch(googleProfileURL);
+                final HTTPRequest request = new HTTPRequest();
+                request.setURL(googleProfileURL);
+                final HTTPResponse response = urlFetchService.fetch(request);
                 final int statusCode = response.getResponseCode();
 
                 if (HttpServletResponse.SC_OK == statusCode) {
@@ -511,7 +513,9 @@ public final class AddArticleCommentAction extends AbstractAction {
                 new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
                         + size + "&r=G");
         try {
-            final HTTPResponse response = urlFetchService.fetch(gravatarURL);
+            final HTTPRequest request = new HTTPRequest();
+            request.setURL(gravatarURL);
+            final HTTPResponse response = urlFetchService.fetch(request);
             final int statusCode = response.getResponseCode();
 
             if (HttpServletResponse.SC_OK == statusCode) {

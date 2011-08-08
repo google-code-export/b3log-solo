@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.event.ping;
 
-import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.logging.Level;
@@ -25,6 +23,9 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -106,7 +107,10 @@ public final class AddArticleGoogleBlogSearchPinger
             LOGGER.log(Level.FINER,
                        "Request Google Blog Search Service API[{0}] while adding an "
                        + "article[title=" + articleTitle + "]", spec);
-            URL_FETCH_SERVICE.fetchAsync(new URL(spec));
+            final HTTPRequest request = new HTTPRequest();
+            request.setURL(new URL(spec));
+            
+            URL_FETCH_SERVICE.fetchAsync(request);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE,
                        "Ping Google Blog Search Service fail while adding an article[title="

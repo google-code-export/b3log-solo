@@ -29,6 +29,7 @@
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
         <url-pattern>/admin-index.do</url-pattern>
+        <url-pattern>/admin-main.do</url-pattern>
         <url-pattern>/admin-article.do</url-pattern>
         <url-pattern>/admin-article-list.do</url-pattern>
         <url-pattern>/admin-comment-list.do</url-pattern>
@@ -91,6 +92,7 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Admin actions</web-resource-name>
+            <url-pattern>/admin-main.do</url-pattern>
             <url-pattern>/admin-article-list.do</url-pattern>
             <url-pattern>/admin-comment-list.do</url-pattern>
             <url-pattern>/admin-article-sync.do</url-pattern>
@@ -144,6 +146,7 @@
         <url-pattern>admin-draft-list.do</url-pattern>
         <url-pattern>/admin-user-list.do</url-pattern>
         <url-pattern>/admin-plugin-list.do</url-pattern>
+        <url-pattern>/admin-main.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>InitAction</servlet-name>

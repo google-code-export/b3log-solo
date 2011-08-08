@@ -15,13 +15,8 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -29,11 +24,14 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -76,34 +74,38 @@ public final class PageGAERepository extends AbstractGAERepository
 
     @Override
     public JSONObject getByPermalink(final String permalink) {
-        final Query query = new Query(getName());
+        final Query query = new Query();
         query.addFilter(Page.PAGE_PERMALINK,
-                        Query.FilterOperator.EQUAL, permalink);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
-        if (null == entity) {
+                        FilterOperator.EQUAL, permalink);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
             return null;
         }
-
-        final Map<String, Object> properties = entity.getProperties();
-
-        return new JSONObject(properties);
     }
 
     @Override
     public int getMaxOrder() throws RepositoryException {
-        final Query query = new Query(getName());
-        query.addSort(Page.PAGE_ORDER, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final List<Entity> links =
-                preparedQuery.asList(FetchOptions.Builder.withDefaults());
-        if (links.isEmpty()) {
+        final Query query = new Query();
+        query.addSort(Page.PAGE_ORDER, SortDirection.DESCENDING);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
             return -1;
         }
 
         try {
-            final Map<String, Object> properties = links.get(0).getProperties();
-            return new JSONObject(properties).getInt(Page.PAGE_ORDER);
+            return array.getJSONObject(0).getInt(Page.PAGE_ORDER);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
@@ -112,17 +114,22 @@ public final class PageGAERepository extends AbstractGAERepository
 
     @Override
     public JSONObject getByOrder(final int order) {
-        final Query query = new Query(getName());
-        query.addFilter(Page.PAGE_ORDER, Query.FilterOperator.EQUAL, order);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
-        if (null == entity) {
+        final Query query = new Query();
+        query.addFilter(Page.PAGE_ORDER, FilterOperator.EQUAL, order);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
             return null;
         }
-
-        final Map<String, Object> properties = entity.getProperties();
-
-        return new JSONObject(properties);
     }
 
     @Override
@@ -134,13 +141,14 @@ public final class PageGAERepository extends AbstractGAERepository
             LOGGER.log(Level.FINEST, "Got the pages from cache");
         } else {
             ret = new ArrayList<JSONObject>();
-           final org.b3log.latke.repository.Query
-                    query = new org.b3log.latke.repository.Query().
-                    addSort(Page.PAGE_ORDER, SortDirection.ASCENDING);
+            final org.b3log.latke.repository.Query query =
+                    new org.b3log.latke.repository.Query().addSort(
+                    Page.PAGE_ORDER, SortDirection.ASCENDING);
             final JSONObject result = get(query);
 
             try {
-                ret = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
+                ret =
+                        org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                         getJSONArray(Keys.RESULTS));
             } catch (final JSONException e) {
                 LOGGER.log(Level.SEVERE, e.getMessage(), e);

@@ -15,15 +15,8 @@
  */
 package org.b3log.solo;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
-import com.google.appengine.api.utils.SystemProperty;
-import com.google.appengine.api.utils.SystemProperty.Environment.Value;
 import java.io.BufferedInputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -38,10 +31,10 @@ import java.util.zip.ZipFile;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.image.ImageService;
+import org.b3log.latke.image.ImageServiceFactory;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
@@ -129,19 +122,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
-        final Value gaeEnvValue = SystemProperty.environment.value();
-        if (SystemProperty.Environment.Value.Production == gaeEnvValue) {
-            LOGGER.info("B3log Solo runs in [production] mode");
-            Latkes.setRuntimeMode(RuntimeMode.PRODUCTION);
-        } else {
-            LOGGER.info("B3log Solo runs in [development] mode");
-            Latkes.setRuntimeMode(RuntimeMode.DEVELOPMENT);
-        }
-
-        LOGGER.log(Level.INFO, "Application[id={0}, version={1}]",
-                   new Object[]{SystemProperty.applicationId.get(),
-                                SystemProperty.applicationVersion.get()});
-
         super.contextInitialized(servletContextEvent);
 
         registerRemoteJSServices();
@@ -256,6 +236,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
             }
 
+            final ImageService imageService =
+                    ImageServiceFactory.getImageService();
             final Iterator<String> i = imageNames.iterator();
             while (i.hasNext()) {
                 final String imageName = i.next();
@@ -306,16 +288,10 @@ public final class SoloServletListener extends AbstractServletListener {
     // XXX: to find a better way (isInited)?
     public static boolean isInited() {
         try {
-            final DatastoreService datastoreService =
-                    DatastoreServiceFactory.getDatastoreService();
-            final Key parentKey = KeyFactory.createKey("parentKind",
-                                                       "parentKeyName");
-            final Key key = KeyFactory.createKey(parentKey,
-                                                 Preference.PREFERENCE,
-                                                 Preference.PREFERENCE);
-            datastoreService.get(key);
-            return true;
-        } catch (final EntityNotFoundException e) {
+            final JSONObject preference =
+                    Preferences.getInstance().getPreference();
+            return null != preference;
+        } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "B3log Solo has not been initialized");
             return false;
         }

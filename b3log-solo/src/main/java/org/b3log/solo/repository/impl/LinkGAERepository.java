@@ -15,18 +15,17 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,33 +51,39 @@ public final class LinkGAERepository extends AbstractGAERepository
 
     @Override
     public JSONObject getByAddress(final String address) {
-        final Query query = new Query(getName());
-        query.addFilter(Link.LINK_ADDRESS, Query.FilterOperator.EQUAL, address);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
-        if (null == entity) {
+        final Query query = new Query();
+        query.addFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address);
+
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             return null;
         }
 
-        final Map<String, Object> properties = entity.getProperties();
-
-        return new JSONObject(properties);
     }
 
     @Override
     public int getMaxOrder() throws RepositoryException {
-        final Query query = new Query(getName());
-        query.addSort(Link.LINK_ORDER, Query.SortDirection.DESCENDING);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final List<Entity> links =
-                preparedQuery.asList(FetchOptions.Builder.withDefaults());
-        if (links.isEmpty()) {
+        final Query query = new Query();
+        query.addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
             return -1;
         }
 
         try {
-            final Map<String, Object> properties = links.get(0).getProperties();
-            return new JSONObject(properties).getInt(Link.LINK_ORDER);
+            return array.getJSONObject(0).getInt(Link.LINK_ORDER);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
@@ -87,17 +92,23 @@ public final class LinkGAERepository extends AbstractGAERepository
 
     @Override
     public JSONObject getByOrder(final int order) {
-        final Query query = new Query(getName());
-        query.addFilter(Link.LINK_ORDER, Query.FilterOperator.EQUAL, order);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
-        if (null == entity) {
+        final Query query = new Query();
+        query.addFilter(Link.LINK_ORDER, FilterOperator.EQUAL, order);
+
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
             return null;
         }
-
-        final Map<String, Object> properties = entity.getProperties();
-
-        return new JSONObject(properties);
     }
 
     /**

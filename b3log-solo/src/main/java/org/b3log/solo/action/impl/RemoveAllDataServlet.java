@@ -15,25 +15,20 @@
  */
 package org.b3log.solo.action.impl;
 
-import com.google.appengine.api.datastore.AsyncDatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Transaction;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
 import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
@@ -52,6 +47,8 @@ import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Remove all data.
@@ -87,7 +84,8 @@ public final class RemoveAllDataServlet extends HttpServlet {
             htmlBuilder.append("<script type='text/javascript'>");
             htmlBuilder.append("function remove() {");
             htmlBuilder.append("$.ajax({type: 'POST',url: '/rm-all-data.do',");
-            htmlBuilder.append("dataType: 'text/html',success: function(result){");
+            htmlBuilder.append(
+                    "dataType: 'text/html',success: function(result){");
             htmlBuilder.append("$('html').html(result);}});}</script></html>");
             final PrintWriter printWriter = response.getWriter();
 
@@ -108,66 +106,44 @@ public final class RemoveAllDataServlet extends HttpServlet {
         LOGGER.info("Removing all data....");
 
         PageCaches.removeAll();
-        LOGGER.fine("Removed all cache.");
 
         boolean succeed = false;
         try {
-            final AsyncDatastoreService datastore =
-                    DatastoreServiceFactory.getAsyncDatastoreService();
+            remove(ArchiveDateArticleGAERepository.getInstance());
 
-            remove(datastore,
-                   ArchiveDateArticleGAERepository.getInstance().getName());
+            remove(ArchiveDateGAERepository.getInstance());
 
-            remove(datastore,
-                   ArchiveDateGAERepository.getInstance().getName());
+            remove(ArticleCommentGAERepository.getInstance());
 
-            remove(datastore,
-                   ArticleCommentGAERepository.getInstance().getName());
+            remove(ArticleGAERepository.getInstance());
 
-            remove(datastore,
-                   ArticleGAERepository.getInstance().getName());
+            remove(ArticleSignGAERepository.getInstance());
 
-            remove(datastore,
-                   ArticleSignGAERepository.getInstance().getName());
+            remove(BlogSyncMgmtGAERepository.getInstance());
 
-            remove(datastore,
-                   BlogSyncMgmtGAERepository.getInstance().getName());
+            remove(CommentGAERepository.getInstance());
 
-            remove(datastore,
-                   CommentGAERepository.getInstance().getName());
+            remove(ExternalArticleSoloArticleGAERepository.getInstance());
 
-            remove(datastore,
-                   ExternalArticleSoloArticleGAERepository.getInstance().getName());
+            remove(FileGAERepository.getInstance());
 
-            remove(datastore,
-                   FileGAERepository.getInstance().getName());
+            remove(LinkGAERepository.getInstance());
 
-            remove(datastore,
-                   LinkGAERepository.getInstance().getName());
+            remove(PageCommentGAERepository.getInstance());
 
-            remove(datastore,
-                   PageCommentGAERepository.getInstance().getName());
+            remove(PageGAERepository.getInstance());
 
-            remove(datastore,
-                   PageGAERepository.getInstance().getName());
+            remove(PreferenceGAERepository.getInstance());
 
-            remove(datastore,
-                   PreferenceGAERepository.getInstance().getName());
+            remove(SkinGAERepository.getInstance());
 
-            remove(datastore,
-                   SkinGAERepository.getInstance().getName());
+            remove(StatisticGAERepository.getInstance());
 
-            remove(datastore,
-                   StatisticGAERepository.getInstance().getName());
+            remove(TagArticleGAERepository.getInstance());
 
-            remove(datastore,
-                   TagArticleGAERepository.getInstance().getName());
+            remove(TagGAERepository.getInstance());
 
-            remove(datastore,
-                   TagGAERepository.getInstance().getName());
-
-            remove(datastore,
-                   UserGAERepository.getInstance().getName());
+            remove(UserGAERepository.getInstance());
 
             succeed = true;
         } catch (final Exception e) {
@@ -176,7 +152,6 @@ public final class RemoveAllDataServlet extends HttpServlet {
 
         final StringBuilder htmlBuilder = new StringBuilder();
         htmlBuilder.append("<html><head><title>Result</title></head><body>");
-
 
         try {
             final PrintWriter printWriter = response.getWriter();
@@ -202,35 +177,36 @@ public final class RemoveAllDataServlet extends HttpServlet {
     }
 
     /**
-     * Removes the specified kind data with the specified data store.
+     * Removes data in the specified repository.
      *
-     * @param datastore the specified data store
-     * @param kind the specified kind
+     * @param repository the specified repository
      * @throws ExecutionException execution exception
      * @throws InterruptedException interrupted exception
      */
-    private void remove(final AsyncDatastoreService datastore,
-                        final String kind)
+    private void remove(final Repository repository)
             throws ExecutionException, InterruptedException {
         final long startTime = System.currentTimeMillis();
         final long step = 20000;
-        final Future<Transaction> transactionFuture =
-                datastore.beginTransaction();
-        final Set<Key> keys = new HashSet<Key>();
 
-        for (final Entity entity : datastore.prepare(new Query(kind)).
-                asIterable()) {
-            keys.add(entity.getKey());
+        final Transaction transaction = repository.beginTransaction();
 
-            if (System.currentTimeMillis() >= startTime + step) {
-                LOGGER.log(Level.INFO, "[{0}] remains to remove", kind);
+        try {
+            final JSONObject result = repository.get(new Query());
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < array.length(); i++) {
+                final JSONObject object = array.getJSONObject(i);
+                repository.remove(object.getString(Keys.OBJECT_ID));
 
-                break;
+                if (System.currentTimeMillis() >= startTime + step) {
+                    break;
+                }
+            }
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
             }
         }
-        datastore.delete(keys);
-        transactionFuture.get().commit();
-
-        LOGGER.log(Level.INFO, "Removed [{0}]", kind);
     }
 }

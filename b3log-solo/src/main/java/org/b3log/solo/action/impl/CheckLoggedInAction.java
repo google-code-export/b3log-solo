@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.action.impl;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +24,9 @@ import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.user.GeneralUser;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.util.Users;
@@ -87,8 +88,7 @@ public final class CheckLoggedInAction extends AbstractAction {
                     // 2. The collaborate administrator
                     ret.put(Common.IS_LOGGED_IN, true);
                     ret.put(Common.IS_ADMIN, true);
-                    final com.google.appengine.api.users.User admin =
-                            userService.getCurrentUser();
+                    final GeneralUser admin = userService.getCurrentUser();
                     ret.put(User.USER_NAME, admin.getNickname());
                 }
 

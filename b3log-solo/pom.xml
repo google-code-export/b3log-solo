@@ -164,6 +164,7 @@
                 <groupId>com.google.appengine</groupId>
                 <artifactId>appengine-api-1.0-sdk</artifactId>
                 <version>${gae.version}</version>
+                <!-- TODO: <scope>runtime</scope>-->
             </dependency>
 
             <dependency>

@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.jsonrpc.impl;
 
-import com.google.appengine.api.blobstore.BlobstoreService;
-import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -53,11 +51,6 @@ public final class FileService extends AbstractGAEJSONRpcService {
      */
     private static final Logger LOGGER =
             Logger.getLogger(FileService.class.getName());
-    /**
-     * Blob service.
-     */
-    private BlobstoreService blobstoreService =
-            BlobstoreServiceFactory.getBlobstoreService();
     /**
      * File repository.
      */
@@ -198,27 +191,6 @@ public final class FileService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
-    }
-
-    /**
-     * Gets the upload URL.
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return upload URL
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public String getUploadURL(final HttpServletRequest request,
-                               final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return null;
-        }
-
-        return blobstoreService.createUploadUrl("/admin-file-list.do");
     }
 
     /**
