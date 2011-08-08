@@ -131,7 +131,7 @@ public final class PageCacheFilter implements Filter {
                        new Object[]{pageCacheKey, cachedType, cachedTitle});
 
             statistics.incBlogViewCount();
-            final Locale locale = Latkes.getDefaultLocale();
+            final Locale locale = Latkes.getLocale();
             final Map<String, String> langs = langPropsService.getAll(locale);
             if (langs.get(PageTypes.ARTICLE).equals(cachedType)) {
                 final String articleId = cachedPageContentObject.getString(

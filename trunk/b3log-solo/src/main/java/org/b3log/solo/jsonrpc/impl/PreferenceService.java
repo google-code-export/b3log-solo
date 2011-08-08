@@ -334,7 +334,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             LOGGER.log(Level.FINER, "Current locale[string={0}]", localeString);
-            Latkes.setDefaultLocale(new Locale(
+            Latkes.setLocale(new Locale(
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString)));
             
