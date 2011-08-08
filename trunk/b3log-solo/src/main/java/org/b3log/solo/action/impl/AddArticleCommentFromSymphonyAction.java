@@ -15,10 +15,6 @@
  */
 package org.b3log.solo.action.impl;
 
-import com.google.appengine.api.urlfetch.HTTPHeader;
-import com.google.appengine.api.urlfetch.HTTPResponse;
-import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -38,6 +34,11 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.urlfetch.HTTPHeader;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.HTTPResponse;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -202,13 +203,14 @@ public final class AddArticleCommentFromSymphonyAction
             final String commentEmail =
                     requestJSONObject.getString("commenterEmail").trim().
                     toLowerCase();
-            final String commentURL = "http://" 
-                    + requestJSONObject.optString("commenterURL");
+            final String commentURL = "http://"
+                                      + requestJSONObject.optString(
+                    "commenterURL");
             String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT);
             commentContent += "<br/><div style='font: italic normal normal 11px Verdana'>"
-                    + "该评论来自 <a href='http://symphony.b3log.org'>"
-                    + "B3log 社区</a></div>"; // XXX: no i18n
+                              + "该评论来自 <a href='http://symphony.b3log.org'>"
+                              + "B3log 社区</a></div>"; // XXX: no i18n
             final String originalCommentId = requestJSONObject.optString(
                     Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
@@ -443,8 +445,9 @@ public final class AddArticleCommentFromSymphonyAction
                     new URL(Google.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
                                                                     id));
             try {
-                final HTTPResponse response =
-                        urlFetchService.fetch(googleProfileURL);
+                final HTTPRequest request = new HTTPRequest();
+                request.setURL(googleProfileURL);
+                final HTTPResponse response = urlFetchService.fetch(request);
                 final int statusCode = response.getResponseCode();
 
                 if (HttpServletResponse.SC_OK == statusCode) {
@@ -479,7 +482,9 @@ public final class AddArticleCommentFromSymphonyAction
                 new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
                         + size + "&r=G");
         try {
-            final HTTPResponse response = urlFetchService.fetch(gravatarURL);
+            final HTTPRequest request = new HTTPRequest();
+            request.setURL(gravatarURL);
+            final HTTPResponse response = urlFetchService.fetch(request);
             final int statusCode = response.getResponseCode();
 
             if (HttpServletResponse.SC_OK == statusCode) {

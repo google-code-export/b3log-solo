@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.action.file;
 
-import com.google.appengine.api.datastore.Blob;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -34,6 +33,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.repository.Blob;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Locales;

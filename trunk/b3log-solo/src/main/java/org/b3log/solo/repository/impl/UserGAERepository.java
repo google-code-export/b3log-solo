@@ -15,16 +15,17 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.repository.UserRepository;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,48 +51,45 @@ public final class UserGAERepository extends AbstractGAERepository
 
     @Override
     public JSONObject getByEmail(final String email) {
-        final String cacheKey = "GetByEmail[" + email + "]";
-        JSONObject ret = (JSONObject) CACHE.get(cacheKey);
-        if (null == ret) {
-            final Query query = new Query(getName());
-            query.addFilter(User.USER_EMAIL, Query.FilterOperator.EQUAL,
-                            email.toLowerCase());
-            final PreparedQuery preparedQuery = getDatastoreService().prepare(
-                    query);
-            final Entity entity = preparedQuery.asSingleEntity();
-            if (null == entity) {
+        final Query query = new Query();
+        query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL,
+                        email.toLowerCase());
+
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
                 return null;
             }
 
-            ret = entity2JSONObject(entity);
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            CACHE.put(cacheKey, ret);
+            return null;
         }
-
-        return ret;
     }
 
     @Override
     public JSONObject getAdmin() {
-        final String cacheKey = "GetAdmin";
-        JSONObject ret = (JSONObject) CACHE.get(cacheKey);
-        if (null == ret) {
-            final Query query = new Query(getName());
-            query.addFilter(User.USER_ROLE, Query.FilterOperator.EQUAL,
-                            Role.ADMIN_ROLE);
-            final PreparedQuery preparedQuery = getDatastoreService().prepare(
-                    query);
-            final Entity entity = preparedQuery.asSingleEntity();
-            if (null == entity) {
+        final Query query = new Query();
+        query.addFilter(User.USER_ROLE, FilterOperator.EQUAL,
+                        Role.ADMIN_ROLE);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
                 return null;
             }
 
-            ret = entity2JSONObject(entity);
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            CACHE.put(cacheKey, ret);
+            return null;
         }
-
-        return ret;
     }
 
     @Override

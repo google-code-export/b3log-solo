@@ -15,17 +15,17 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,22 +55,22 @@ public final class ExternalArticleSoloArticleGAERepository
     public String getSoloArticleId(final String externalArticleId,
                                    final String externalBloggingSys)
             throws RepositoryException {
-        final Query query = new Query(getName());
+        final Query query = new Query();
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID,
-                        Query.FilterOperator.EQUAL,
+                        FilterOperator.EQUAL,
                         externalArticleId);
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
-                        Query.FilterOperator.EQUAL, externalBloggingSys);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
+                        FilterOperator.EQUAL, externalBloggingSys);
 
-        if (null == entity) {
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
             return null;
         }
 
-        final Map<String, Object> properties = entity.getProperties();
-
-        return (String) properties.get(Article.ARTICLE + "_" + Keys.OBJECT_ID);
+        return array.optJSONObject(0).optString(Article.ARTICLE + "_"
+                                                + Keys.OBJECT_ID);
     }
 
     @Override
@@ -104,39 +104,52 @@ public final class ExternalArticleSoloArticleGAERepository
     public JSONObject getByExternalArticleId(final String externalArticleId,
                                              final String externalBloggingSys)
             throws RepositoryException {
-        final Query query = new Query(getName());
+        final Query query = new Query();
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID,
-                        Query.FilterOperator.EQUAL,
+                        FilterOperator.EQUAL,
                         externalArticleId);
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
-                        Query.FilterOperator.EQUAL, externalBloggingSys);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
+                        FilterOperator.EQUAL, externalBloggingSys);
 
-        if (null == entity) {
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
             return null;
         }
-
-        return entity2JSONObject(entity);
     }
 
     @Override
     public JSONObject getBySoloArticleId(final String soloArticleId,
                                          final String externalBloggingSys)
             throws RepositoryException {
-        final Query query = new Query(getName());
+        final Query query = new Query();
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        Query.FilterOperator.EQUAL, soloArticleId);
+                        FilterOperator.EQUAL, soloArticleId);
         query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
-                        Query.FilterOperator.EQUAL, externalBloggingSys);
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final Entity entity = preparedQuery.asSingleEntity();
+                        FilterOperator.EQUAL, externalBloggingSys);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-        if (null == entity) {
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
             return null;
         }
-
-        return entity2JSONObject(entity);
     }
 
     /**

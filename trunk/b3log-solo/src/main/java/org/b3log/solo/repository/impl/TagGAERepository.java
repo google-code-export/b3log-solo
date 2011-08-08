@@ -15,20 +15,21 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.QueryResultIterable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.CollectionUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,11 +52,6 @@ public final class TagGAERepository extends AbstractGAERepository
      */
     private TagArticleGAERepository tagArticleRepository =
             TagArticleGAERepository.getInstance();
-    /**
-     * Key of the most used tag cache count.
-     */
-    private static final String KEY_MOST_USED_TAG_CACHE_CNT =
-            "mostUsedTagCacheCnt";
 
     @Override
     public String getName() {
@@ -65,60 +61,41 @@ public final class TagGAERepository extends AbstractGAERepository
     @Override
     public JSONObject getByTitle(final String tagTitle)
             throws RepositoryException {
-        final String cacheKey = "getByTitle[" + tagTitle + "]";
-        JSONObject ret = (JSONObject) CACHE.get(cacheKey);
+        final Query query = new Query();
+        query.addFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, tagTitle);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-        if (null == ret) {
-            final Query query = new Query(Tag.TAG);
-            query.addFilter(Tag.TAG_TITLE, Query.FilterOperator.EQUAL, tagTitle);
-            final PreparedQuery preparedQuery = getDatastoreService().prepare(
-                    query);
-            final Entity entity = preparedQuery.asSingleEntity();
-            if (null == entity) {
+            if (0 == array.length()) {
                 return null;
             }
 
-            ret = entity2JSONObject(entity);
-            
-            CACHE.put(cacheKey, ret);
-        }
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-        return ret;
+            return null;
+        }
     }
 
     @Override
     public List<JSONObject> getMostUsedTags(final int num) {
-        final String cacheKey = KEY_MOST_USED_TAG_CACHE_CNT + "["
-                                + num + "]";
-        @SuppressWarnings("unchecked")
-        List<JSONObject> ret =
-                (List<JSONObject>) CACHE.get(cacheKey);
-        if (null != ret) {
-            LOGGER.log(Level.FINEST, "Got the most used tags from cache");
-        } else {
-            ret = new ArrayList<JSONObject>();
+        final Query query = new Query();
+        query.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                      SortDirection.DESCENDING);
+        query.setCurrentPageNum(1);
+        query.setPageSize(num);
 
-            final Query query = new Query(getName());
-            query.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                          Query.SortDirection.DESCENDING);
-            final PreparedQuery preparedQuery = getDatastoreService().prepare(
-                    query);
-            final QueryResultIterable<Entity> queryResultIterable =
-                    preparedQuery.asQueryResultIterable(FetchOptions.Builder.
-                    withLimit(num));
-
-            for (final Entity entity : queryResultIterable) {
-                final JSONObject tag = entity2JSONObject(entity);
-                ret.add(tag);
-            }
-
-            CACHE.put(cacheKey, ret);
-
-            LOGGER.log(Level.FINEST,
-                       "Got the most used tags, then put it into cache");
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+            
+            return CollectionUtils.jsonArrayToList(array);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            return Collections.emptyList();
         }
-
-        return ret;
     }
 
     @Override

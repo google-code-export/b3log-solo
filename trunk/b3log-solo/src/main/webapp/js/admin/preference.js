@@ -230,18 +230,6 @@ admin.preference = {
         + "&appSecret=" + $("#tencentMicroblogAppSecret").val();
 
     }
-    
-/*
-     * Buzz 认证
-    oauthBuzz: function () {
-        if ("" === $("#secret").val().replace(/\s/g, "")) {
-            $("#tipMsg").text("${contentEmptyLabel}");
-            return;
-        }
-        $("#loadMsg").text(Label.loadingLabel);
-        window.location = "buzz-oauth.do?googleOAuthConsumerSecret=" + encodeURIComponent($("#secret").val());
-    }
-     */
 };
 
 /*

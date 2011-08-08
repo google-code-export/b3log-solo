@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.action.impl;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import java.util.logging.Level;
 import org.b3log.latke.action.ActionException;
 import java.util.HashMap;
@@ -26,10 +24,11 @@ import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
@@ -103,28 +102,14 @@ public final class AdminIndexAction extends AbstractAdminAction {
             ret.putAll(langs);
 
             final JSONObject currentUser = userUtils.getCurrentUser();
-            String userName = null;
-            String roleName = null;
-            if (null == currentUser) {
-                // The administrators may be added via GAE Admin Console Permissions
-                final com.google.appengine.api.users.User collaborateAdmin =
-                        userService.getCurrentUser();
-                userName = collaborateAdmin.getNickname();
-                roleName = Role.ADMIN_ROLE;
-            } else {
-                userName = currentUser.getString(User.USER_NAME);
-                roleName = currentUser.getString(User.USER_ROLE);
-            }
+            final String userName = currentUser.getString(User.USER_NAME);
+            final String roleName = currentUser.getString(User.USER_ROLE);
 
             ret.put(User.USER_NAME, userName);
             ret.put(User.USER_ROLE, roleName);
 
             filler.fillBlogHeader(ret, preference);
             filler.fillBlogFooter(ret, preference);
-
-            // Comments the template variable for issue 225 (http://code.google.com/p/b3log-solo/issues/detail?id=225)
-            // final boolean hasMultipleUsers = userUtils.hasMultipleUsers();
-            // ret.put(Common.ENABLED_MULTIPLE_USER_SUPPORT, hasMultipleUsers);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);

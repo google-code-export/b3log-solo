@@ -15,10 +15,6 @@
  */
 package org.b3log.solo.event.rhythm;
 
-import com.google.appengine.api.urlfetch.HTTPMethod;
-import com.google.appengine.api.urlfetch.HTTPRequest;
-import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -28,6 +24,10 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
@@ -111,8 +111,9 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
-            final HTTPRequest httpRequest = new HTTPRequest(ADD_ARTICLE_URL,
-                                                            HTTPMethod.POST);
+            final HTTPRequest httpRequest = new HTTPRequest();
+            httpRequest.setURL(ADD_ARTICLE_URL);
+            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject();
             article.put(Keys.OBJECT_ID,

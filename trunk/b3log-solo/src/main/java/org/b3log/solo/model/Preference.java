@@ -122,11 +122,6 @@ public final class Preference {
     public static final String GOOGLE_OAUTH_CONSUMER_SECRET =
             "googleOAuthConsumerSecret";
     /**
-     * Key of enable post to Buzz.
-     */
-    public static final String ENABLE_POST_TO_BUZZ =
-            "enablePostToBuzz";
-    /**
      * Key of meta keywords.
      */
     public static final String META_KEYWORDS =
@@ -291,10 +286,6 @@ public final class Preference {
          * Default OAuth consumer secret for Google.
          */
         public static final String DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET = "";
-        /**
-         * Default enable post to Buzz.
-         */
-        public static final boolean DEFAULT_ENABLE_POST_TO_BUZZ = false;
         /**
          * Default relevant articles display count.
          */

@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.upgrade;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -32,6 +30,8 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;

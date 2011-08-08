@@ -15,13 +15,6 @@
  */
 package org.b3log.solo.upgrade;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.QueryResultList;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -31,12 +24,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -61,11 +55,6 @@ public final class V011ToV020 extends HttpServlet {
      */
     private PageRepository pageRepository =
             PageGAERepository.getInstance();
-    /**
-     * GAE datastore service.
-     */
-    private final DatastoreService datastoreService =
-            DatastoreServiceFactory.getDatastoreService();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -75,17 +64,13 @@ public final class V011ToV020 extends HttpServlet {
             LOGGER.info("Checking for consistency....");
             final Transaction transaction = pageRepository.beginTransaction();
             try {
-                final Query query = new Query(Page.PAGE);
-                final PreparedQuery preparedQuery = 
-                        datastoreService.prepare(query);
-                final QueryResultList<Entity> queryResultList =
-                        preparedQuery.asQueryResultList(FetchOptions.Builder.
-                        withDefaults());
+                final Query query = new Query();
+                final JSONObject result = pageRepository.get(query);
+                final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-                for (final Entity entity : queryResultList) {
-                    if (!entity.hasProperty(Page.PAGE_COMMENT_COUNT)) {
-                        final JSONObject page =
-                                AbstractGAERepository.entity2JSONObject(entity);
+                for (int i = 0; i < array.length(); i++) {
+                    final JSONObject page = array.getJSONObject(i);
+                    if (!page.has(Page.PAGE_COMMENT_COUNT)) {
                         final String pageId = page.getString(
                                 Keys.OBJECT_ID);
                         page.put(Page.PAGE_COMMENT_COUNT, 0);

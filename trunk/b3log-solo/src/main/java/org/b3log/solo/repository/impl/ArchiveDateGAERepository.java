@@ -15,19 +15,18 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.json.JSONArray;
@@ -58,20 +57,20 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
     public JSONObject getByArchiveDate(final String archiveDate)
             throws RepositoryException {
         try {
-            final Query query = new Query(getName());
+            final Query query = new Query();
             query.addFilter(ArchiveDate.ARCHIVE_TIME,
-                            Query.FilterOperator.EQUAL,
+                            FilterOperator.EQUAL,
                             ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime());
-            final PreparedQuery preparedQuery = getDatastoreService().prepare(
-                    query);
-            final Entity entity = preparedQuery.asSingleEntity();
-
-            if (null == entity) {
+            
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+            
+            if (0 == array.length()) {
                 return null;
             }
-
-            return entity2JSONObject(entity);
-        } catch (final ParseException e) {
+             
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
@@ -79,46 +78,31 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
 
     @Override
     public List<JSONObject> getArchiveDates() throws RepositoryException {
-        final String cacheKey = "[archiveDates]";
-        @SuppressWarnings("unchecked")
-        List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
-        if (null != ret) {
-            LOGGER.log(Level.FINEST, "Got the archive dates from cache");
-        } else {
-            ret = new ArrayList<JSONObject>();
-            final org.b3log.latke.repository.Query
-                    query = new org.b3log.latke.repository.Query().
-                    addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING);
-            final JSONObject result = get(query);
+        final org.b3log.latke.repository.Query query =
+                new org.b3log.latke.repository.Query().addSort(
+                ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING);
+        final JSONObject result = get(query);
 
-            try {
-                final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
+        List<JSONObject> ret = new ArrayList<JSONObject>();
+        try {
+            final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
 
-                for (int i = 0; i < archiveDates.length(); i++) {
-                    final JSONObject archiveDate = archiveDates.getJSONObject(i);
-                    ret.add(archiveDate);
-                }
-            } catch (final JSONException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                throw new RepositoryException(e);
-            }
+            ret = CollectionUtils.jsonArrayToList(archiveDates);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
 
-            try {
-                removeForUnpublishedArticles(ret);
-            } catch (final JSONException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            }
-
-            CACHE.put(cacheKey, ret);
-
-            LOGGER.log(Level.FINEST,
-                       "Got the archive dates, then put it into cache");
+        try {
+            removeForUnpublishedArticles(ret);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return ret;
     }
 
-     /**
+    /**
      * Removes archive dates of unpublished articles from the specified archive
      * dates.
      *

@@ -15,21 +15,21 @@
  */
 package com.mime.qweibo;
 
-import com.google.appengine.api.urlfetch.HTTPHeader;
-import com.google.appengine.api.urlfetch.HTTPMethod;
-import com.google.appengine.api.urlfetch.HTTPRequest;
-import com.google.appengine.api.urlfetch.HTTPResponse;
-import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import java.net.URL;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.urlfetch.HTTPHeader;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.HTTPResponse;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 
 /**
  * HTTP client for GAE application.
  *
  * @author unascribed
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 26, 2011
+ * @version 1.0.0.1, Aug 8, 2011
  */
 final class QHttpClient {
 
@@ -56,7 +56,8 @@ final class QHttpClient {
             url += "?" + queryString;
         }
 
-        final HTTPRequest request = new HTTPRequest(new URL(url));
+        final HTTPRequest request = new HTTPRequest();
+        request.setURL(new URL(url));
 
         try {
             final HTTPResponse response = urlFetchService.fetch(request);
@@ -85,9 +86,10 @@ final class QHttpClient {
      */
     public String httpPost(String url, String queryString) throws Exception {
         String ret = null;
-        final HTTPRequest request = new HTTPRequest(new URL(url),
-                                                    HTTPMethod.POST);
-        request.setHeader(new HTTPHeader("Content-Type",
+        final HTTPRequest request = new HTTPRequest();
+        request.setURL(new URL(url));
+        request.setRequestMethod(HTTPRequestMethod.POST);
+        request.addHeader(new HTTPHeader("Content-Type",
                                          "application/x-www-form-urlencoded"));
         if (queryString != null && !queryString.equals("")) {
             request.setPayload(queryString.getBytes("UTF-8"));

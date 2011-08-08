@@ -15,25 +15,21 @@
  */
 package org.b3log.solo.repository.impl;
 
-import com.google.appengine.api.datastore.QueryResultIterable;
 import java.util.ArrayList;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.FetchOptions;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.QueryResultList;
-import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.BlogSync;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,16 +49,6 @@ public final class ArticleGAERepository extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArticleGAERepository.class.getName());
-    /**
-     * Key of the most comment articles cache count.
-     */
-    private static final String KEY_MOST_CMT_ARTICLES_CACHE_CNT =
-            "mostCmtArticlesCacheCnt";
-    /**
-     * Key of the recent articles cache count.
-     */
-    private static final String KEY_RECENT_ARTICLES_CACHE_CNT =
-            "mostRecentArticlesCacheCnt";
 
     @Override
     public String getName() {
@@ -74,173 +60,103 @@ public final class ArticleGAERepository extends AbstractGAERepository
                                        final int currentPageNum,
                                        final int pageSize)
             throws RepositoryException {
-        final Query query = new Query(getName());
+        final Query query = new Query();
         query.addFilter(Article.ARTICLE_AUTHOR_EMAIL,
-                        Query.FilterOperator.EQUAL, authorEmail);
+                        FilterOperator.EQUAL, authorEmail);
         query.addSort(Article.ARTICLE_UPDATE_DATE,
-                      Query.SortDirection.DESCENDING);
+                      SortDirection.DESCENDING);
+        query.setCurrentPageNum(currentPageNum);
+        query.setPageSize(pageSize);
 
-        final PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        final int count = preparedQuery.countEntities(
-                FetchOptions.Builder.withDefaults());
-        final int pageCount =
-                (int) Math.ceil((double) count / (double) pageSize);
-
-        final JSONObject ret = new JSONObject();
-        final JSONObject pagination = new JSONObject();
-        try {
-            ret.put(Pagination.PAGINATION, pagination);
-            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            final int offset = pageSize * (currentPageNum - 1);
-            final QueryResultList<Entity> queryResultList =
-                    preparedQuery.asQueryResultList(
-                    withOffset(offset).limit(pageSize));
-            final JSONArray results = new JSONArray();
-            ret.put(Keys.RESULTS, results);
-            for (final Entity entity : queryResultList) {
-                final JSONObject jsonObject = entity2JSONObject(entity);
-
-                results.put(jsonObject);
-            }
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
-        }
-
-        return ret;
+        return get(query);
     }
 
     @Override
     public JSONObject getByPermalink(final String permalink) {
-        final String cacheKey = "getByPermalink[" + permalink + "]";
-        JSONObject ret = (JSONObject) CACHE.get(cacheKey);
+        final Query query = new Query();
+        query.addFilter(Article.ARTICLE_PERMALINK,
+                        FilterOperator.EQUAL, permalink);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-        if (null == ret) {
-            final Query query = new Query(getName());
-            query.addFilter(Article.ARTICLE_PERMALINK,
-                            Query.FilterOperator.EQUAL, permalink);
-            final PreparedQuery preparedQuery = getDatastoreService().prepare(
-                    query);
-            final Entity entity = preparedQuery.asSingleEntity();
-            if (null == entity) {
+            if (0 == array.length()) {
                 return null;
             }
 
-            final Map<String, Object> properties = entity.getProperties();
-
-            ret = new JSONObject(properties);
-
-            CACHE.put(cacheKey, ret);
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
-        return ret;
+        return null;
     }
 
     @Override
     public List<JSONObject> getRecentArticles(final int fetchSize) {
-        final String cacheKey = KEY_RECENT_ARTICLES_CACHE_CNT + "["
-                                + fetchSize + "]";
-        @SuppressWarnings("unchecked")
-        List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
-        if (null != ret) {
-            LOGGER.log(Level.FINEST, "Got the recent articles from cache");
-        } else {
-            ret = new ArrayList<JSONObject>();
-            final Query query = new Query(getName());
-            query.addSort(Article.ARTICLE_UPDATE_DATE,
-                          Query.SortDirection.DESCENDING);
-            final PreparedQuery preparedQuery = getDatastoreService().prepare(
-                    query);
-            final QueryResultIterable<Entity> queryResultIterable =
-                    preparedQuery.asQueryResultIterable(FetchOptions.Builder.
-                    withLimit(fetchSize));
+        final Query query = new Query();
+        query.addSort(Article.ARTICLE_UPDATE_DATE,
+                      SortDirection.DESCENDING);
+        query.setCurrentPageNum(1);
+        query.setPageSize(fetchSize);
 
-            for (final Entity entity : queryResultIterable) {
-                final JSONObject article = entity2JSONObject(entity);
-                ret.add(article);
-            }
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-            CACHE.put(cacheKey, ret);
-
-            LOGGER.log(Level.FINEST,
-                       "Got the recent articles, then put it into cache");
+            return CollectionUtils.jsonArrayToList(array);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
-        return ret;
+        return Collections.emptyList();
     }
 
     @Override
     public List<JSONObject> getMostCommentArticles(final int num) {
-        final String cacheKey = KEY_MOST_CMT_ARTICLES_CACHE_CNT
-                                + "[" + num + "]";
-        @SuppressWarnings("unchecked")
-        List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
-        if (null != ret) {
-            LOGGER.log(Level.FINEST, "Got the most comment articles from cache");
-        } else {
-            ret = new ArrayList<JSONObject>();
-            final Query query = new Query(getName());
-            query.addSort(Article.ARTICLE_COMMENT_COUNT,
-                          Query.SortDirection.DESCENDING).
-                    addSort(Article.ARTICLE_UPDATE_DATE,
-                            Query.SortDirection.DESCENDING);
-            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                            Query.FilterOperator.EQUAL, true);
-            final PreparedQuery preparedQuery = getDatastoreService().prepare(
-                    query);
-            final QueryResultIterable<Entity> queryResultIterable =
-                    preparedQuery.asQueryResultIterable(FetchOptions.Builder.
-                    withLimit(num));
+        final Query query = new Query();
+        query.addSort(Article.ARTICLE_COMMENT_COUNT,
+                      SortDirection.DESCENDING).
+                addSort(Article.ARTICLE_UPDATE_DATE,
+                        SortDirection.DESCENDING);
+        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                        FilterOperator.EQUAL, true);
+        query.setCurrentPageNum(1);
+        query.setPageSize(num);
 
-            for (final Entity entity : queryResultIterable) {
-                final JSONObject article = entity2JSONObject(entity);
-                ret.add(article);
-            }
-
-            CACHE.put(cacheKey, ret);
-
-            LOGGER.log(Level.FINEST,
-                       "Got the most comment articles, then put it into cache");
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+            return CollectionUtils.jsonArrayToList(array);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
-        return ret;
+        return Collections.emptyList();
     }
 
     @Override
     public List<JSONObject> getMostViewCountArticles(final int num) {
-        final String cacheKey = KEY_MOST_CMT_ARTICLES_CACHE_CNT
-                                + "[" + num + "]";
-        @SuppressWarnings("unchecked")
-        List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
-        if (null != ret) {
-            LOGGER.log(Level.FINEST, "Got the most viewed articles from cache");
-        } else {
-            ret = new ArrayList<JSONObject>();
-            final Query query = new Query(getName());
-            query.addSort(Article.ARTICLE_VIEW_COUNT,
-                          Query.SortDirection.DESCENDING).
-                    addSort(Article.ARTICLE_UPDATE_DATE,
-                            Query.SortDirection.DESCENDING);
-            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                            Query.FilterOperator.EQUAL, true);
-            final PreparedQuery preparedQuery = getDatastoreService().prepare(
-                    query);
-            final QueryResultIterable<Entity> queryResultIterable =
-                    preparedQuery.asQueryResultIterable(FetchOptions.Builder.
-                    withLimit(num));
+        final Query query = new Query();
+        query.addSort(Article.ARTICLE_VIEW_COUNT,
+                      SortDirection.DESCENDING).
+                addSort(Article.ARTICLE_UPDATE_DATE,
+                        SortDirection.DESCENDING);
+        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                        FilterOperator.EQUAL, true);
+        query.setCurrentPageNum(1);
+        query.setPageSize(num);
 
-            for (final Entity entity : queryResultIterable) {
-                final JSONObject article = entity2JSONObject(entity);
-                ret.add(article);
-            }
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-            CACHE.put(cacheKey, ret);
-
-            LOGGER.log(Level.FINEST,
-                       "Got the most viewed articles, then put it into cache");
+            return CollectionUtils.jsonArrayToList(array);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
-        return ret;
+        return Collections.emptyList();
     }
 
     @Override
@@ -251,35 +167,31 @@ public final class ArticleGAERepository extends AbstractGAERepository
             final Date currentDate = (Date) current.get(
                     Article.ARTICLE_CREATE_DATE);
 
-            final Query query = new Query(getName());
+            final Query query = new Query();
             query.addFilter(Article.ARTICLE_CREATE_DATE,
-                            Query.FilterOperator.LESS_THAN, currentDate);
+                            FilterOperator.LESS_THAN, currentDate);
             query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                            Query.FilterOperator.EQUAL, true);
+                            FilterOperator.EQUAL, true);
             query.addSort(Article.ARTICLE_CREATE_DATE,
-                          Query.SortDirection.DESCENDING);
+                          SortDirection.DESCENDING);
+            query.setCurrentPageNum(1);
+            query.setPageSize(1);
 
-            final PreparedQuery preparedQuery =
-                    getDatastoreService().prepare(query);
-            final List<Entity> result =
-                    preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-            if (1 == result.size()) {
-                try {
-                    final JSONObject ret = new JSONObject();
-                    final Entity article = result.get(0);
-                    ret.put(Article.ARTICLE_TITLE,
-                            article.getProperty(Article.ARTICLE_TITLE));
-                    ret.put(Article.ARTICLE_PERMALINK,
-                            article.getProperty(Article.ARTICLE_PERMALINK));
-
-                    return ret;
-                } catch (final JSONException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
+            if (1 != array.length()) {
+                return null;
             }
 
-            return null;
+            final JSONObject ret = new JSONObject();
+            final JSONObject article = array.getJSONObject(0);
+            ret.put(Article.ARTICLE_TITLE,
+                    article.getString(Article.ARTICLE_TITLE));
+            ret.put(Article.ARTICLE_PERMALINK,
+                    article.getString(Article.ARTICLE_PERMALINK));
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
@@ -293,35 +205,31 @@ public final class ArticleGAERepository extends AbstractGAERepository
             final JSONObject current = get(articleId);
             final Date currentDate = (Date) current.get(
                     Article.ARTICLE_CREATE_DATE);
-            final Query query = new Query(getName());
+            final Query query = new Query();
             query.addFilter(Article.ARTICLE_CREATE_DATE,
-                            Query.FilterOperator.GREATER_THAN, currentDate);
+                            FilterOperator.GREATER_THAN, currentDate);
             query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                            Query.FilterOperator.EQUAL, true);
+                            FilterOperator.EQUAL, true);
             query.addSort(Article.ARTICLE_CREATE_DATE,
-                          Query.SortDirection.ASCENDING);
+                          SortDirection.ASCENDING);
+            query.setCurrentPageNum(1);
+            query.setPageSize(1);
 
-            final PreparedQuery preparedQuery =
-                    getDatastoreService().prepare(query);
-            final List<Entity> result =
-                    preparedQuery.asList(FetchOptions.Builder.withLimit(1));
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-            if (1 == result.size()) {
-                try {
-                    final JSONObject ret = new JSONObject();
-                    final Entity article = result.get(0);
-                    ret.put(Article.ARTICLE_TITLE,
-                            article.getProperty(Article.ARTICLE_TITLE));
-                    ret.put(Article.ARTICLE_PERMALINK,
-                            article.getProperty(Article.ARTICLE_PERMALINK));
-
-                    return ret;
-                } catch (final JSONException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
+            if (1 != array.length()) {
+                return null;
             }
 
-            return null;
+            final JSONObject ret = new JSONObject();
+            final JSONObject article = array.getJSONObject(0);
+            ret.put(Article.ARTICLE_TITLE,
+                    article.getString(Article.ARTICLE_TITLE));
+            ret.put(Article.ARTICLE_PERMALINK,
+                    article.getString(Article.ARTICLE_PERMALINK));
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
@@ -384,6 +292,7 @@ public final class ArticleGAERepository extends AbstractGAERepository
     public List<JSONObject> getRandomly(final int fetchSize)
             throws RepositoryException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
+
         if (0 == count()) {
             return ret;
         }
@@ -391,38 +300,45 @@ public final class ArticleGAERepository extends AbstractGAERepository
         final double mid = Math.random();
         LOGGER.log(Level.FINEST, "Random mid[{0}]", mid);
 
-        Query query = new Query(getName());
+        Query query = new Query();
         query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
-                        Query.FilterOperator.GREATER_THAN_OR_EQUAL, mid);
+                        FilterOperator.GREATER_THAN_OR_EQUAL, mid);
         query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
-                        Query.FilterOperator.LESS_THAN_OR_EQUAL, 1D);
+                        FilterOperator.LESS_THAN_OR_EQUAL, 1D);
         query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                        Query.FilterOperator.EQUAL, true);
-        PreparedQuery preparedQuery = getDatastoreService().prepare(query);
-        QueryResultList<Entity> entities = preparedQuery.asQueryResultList(
-                FetchOptions.Builder.withLimit(fetchSize));
+                        FilterOperator.EQUAL, true);
+        query.setCurrentPageNum(1);
+        query.setPageSize(fetchSize);
 
-        for (final Entity entity : entities) {
-            final JSONObject jsonObject = entity2JSONObject(entity);
-            ret.add(jsonObject);
-        }
+        final JSONObject result1 = get(query);
+        final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
 
-        final int reminingSize = fetchSize - entities.size();
-        if (0 != reminingSize) { // Query for remains
-            query = new Query(getName());
-            query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
-                            Query.FilterOperator.GREATER_THAN_OR_EQUAL, 0D);
-            query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
-                            Query.FilterOperator.LESS_THAN_OR_EQUAL, mid);
-            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                            Query.FilterOperator.EQUAL, true);
-            preparedQuery = getDatastoreService().prepare(query);
-            entities = preparedQuery.asQueryResultList(FetchOptions.Builder.
-                    withLimit(reminingSize));
-            for (final Entity entity : entities) {
-                final JSONObject jsonObject = entity2JSONObject(entity);
-                ret.add(jsonObject);
+        try {
+            final List<JSONObject> list1 =
+                    CollectionUtils.<JSONObject>jsonArrayToList(array1);
+            ret.addAll(list1);
+
+            final int reminingSize = fetchSize - array1.length();
+            if (0 != reminingSize) { // Query for remains
+                query = new Query();
+                query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
+                                FilterOperator.GREATER_THAN_OR_EQUAL, 0D);
+                query.addFilter(Article.ARTICLE_RANDOM_DOUBLE,
+                                FilterOperator.LESS_THAN_OR_EQUAL, mid);
+                query.addFilter(Article.ARTICLE_IS_PUBLISHED,
+                                FilterOperator.EQUAL, true);
+                query.setCurrentPageNum(1);
+                query.setPageSize(reminingSize);
+
+                final JSONObject result2 = get(query);
+                final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
+
+                final List<JSONObject> list2 =
+                        CollectionUtils.<JSONObject>jsonArrayToList(array2);
+                ret.addAll(list2);
             }
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return ret;

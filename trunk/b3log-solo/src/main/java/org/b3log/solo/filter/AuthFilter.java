@@ -15,9 +15,6 @@
  */
 package org.b3log.solo.filter;
 
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.io.IOException;
@@ -28,6 +25,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.user.GeneralUser;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.solo.util.Users;
 
 /**
@@ -81,7 +81,7 @@ public final class AuthFilter implements Filter {
                 (HttpServletResponse) response;
 
         try {
-            final User currentUser = userService.getCurrentUser();
+            final GeneralUser currentUser = userService.getCurrentUser();
             if (null == currentUser) {
                 LOGGER.warning("The request has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
