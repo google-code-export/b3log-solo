@@ -77,8 +77,14 @@ public final class ArticleCommentGAERepository extends AbstractGAERepository
         final Query query = new Query();
         query.addFilter(Comment.COMMENT + "_" + Keys.OBJECT_ID,
                         FilterOperator.EQUAL, commentId);
-
-        return get(query);
+        
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+        if (0 == array.length()) {
+            return null;
+        }
+        
+        return array.optJSONObject(0);
     }
 
     /**
