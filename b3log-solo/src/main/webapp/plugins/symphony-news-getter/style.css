@@ -1,0 +1,19 @@
+/* 
+    Document   : style
+    Created on : Aug 9, 2011, 5:11:13 PM
+    Author     : wb-lily
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+#symphonyNewsGetter ul {
+    list-style: none;
+}
+#symphonyNewsGetter a {
+    text-decoration: none;
+}

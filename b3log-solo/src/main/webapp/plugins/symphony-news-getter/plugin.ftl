@@ -1,9 +1,19 @@
+<link type="text/css" rel="stylesheet" href="/plugins/symphony-news-getter/style.css"/>
 <div id="symphonyNewsGetterPanel">
-    <div id="symphonyNewsGetter"></div>
+    <div class="module-panel">
+        <div class="module-header">
+            <h2><a href="http://symphony.b3log.org" target="_blank">Symphony</a> ${CommunityAnnounceLabel}</h2>
+        </div>
+        <div class="module-body padding12">
+            <div id="symphonyNewsGetter">
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
     plugins.symphonyNewsGetter = {
         init: function () {
+            $("#loadMsg").text("${loadingLabel}");
             $.ajax({
                 url: "http://symphony.b3log.org:80/get-news",
                 type: "GET",
@@ -30,6 +40,7 @@
                     listHTML += "</ul>";
                     
                     $("#symphonyNewsGetter").html(listHTML);
+                    $("#loadMsg").text("");
                 }
             });
         }

@@ -1,3 +1,9 @@
+<style type="text/css">
+    #cacheContent {
+        line-height: 28px;
+        padding: 12px;
+    }
+</style>
 <div id="cachePlugin">
     <div id="cacheContent"></div>
     <div id="cacheTable"></div>
