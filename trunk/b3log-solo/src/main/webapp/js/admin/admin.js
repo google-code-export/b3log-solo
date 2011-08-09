@@ -18,11 +18,12 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Aug 6, 2011
+ * @version 1.0.0.9, Aug 9, 2011
  */
 
 var Admin = function () {
     this.register = {};
+    // 工具栏下的工具
     this.tools = ['#page-list', '#file-list', '#link-list', '#preference', 
     '#user-list', '#plugin-list', '#others'];
     // 多用户时，一般用户不能使用的功能
@@ -63,6 +64,9 @@ $.extend(Admin.prototype, {
        
     },
     
+    /*
+     * 根据当前 hash 解析出当前页数及 hash 数组。
+     */
     analyseHash: function () {
         var hash = window.location.hash;
         var tag = hash.substr(1, hash.length - 1);
@@ -92,13 +96,14 @@ $.extend(Admin.prototype, {
         var tab = tags.hashList[1], 
         subTab = tags.hashList[2];
         
-        if (tags.hashList[0] === "main" || tags.hashList[0] === "comment-list") {
+        if (tags.hashList.length === 1) {
             tab = tags.hashList[0];
         }
         
-        
+        // 离开编辑器时进行提示
         if (tinyMCE) {
             if (tinyMCE.get('articleContent')) {
+                // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
                 if (tab !== "article" && admin.article.isConfirm &&
                     tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
                     if (!confirm(Label.editorLeaveLabel)) {
@@ -106,6 +111,7 @@ $.extend(Admin.prototype, {
                         return;
                     }
                 }
+                // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
                 if (tab === "article" && admin.article.isConfirm &&
                     tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
                     return;
@@ -113,7 +119,6 @@ $.extend(Admin.prototype, {
             }
         }
         
-        //console.log(tags.tab);
         // clear article 
         if (tab !== "article") {
             admin.article.clear();
@@ -121,39 +126,49 @@ $.extend(Admin.prototype, {
         admin.article.isConfirm = true;
         
         $("#tabs").tabs("setCurrent", tab);
-        if ($("#tabsPanel_" + tab).html().replace(/\s/g, "") === "") {
-            // 还未加载 HTML
-            $("#loadMsg").text(Label.loadingLabel);
-            $("#tabsPanel_" + tab).load("admin-" + tab + ".do", function () {
-                // 回调加载页面初始化函数
+        $("#loadMsg").text(Label.loadingLabel);
+
+        if ($("#tabsPanel_" + tab).length === 1) {
+            if ($("#tabsPanel_" + tab).html().replace(/\s/g, "") === "") {
+                // 还未加载 HTML
+                $("#tabsPanel_" + tab).load("admin-" + tab + ".do", function () {
+                    // 页面加载完后，回调初始函数
+                    if (tab === "article" && admin.article.status.id) {
+                        // 当文章页面编辑器未初始化时，调用更新文章需先初始化编辑器
+                        admin.register[tab].init.call(admin.register[tab].obj, admin.article.getAndSet);
+                    } else {
+                        admin.register[tab].init.call(admin.register[tab].obj, tags.page);
+                    }
+                
+                    // 页面包含子 tab，需根据 hash 定位到相应的 tab
+                    if (subTab) {
+                        $("#tabPreference").tabs("setCurrent", subTab);
+                    }
+                
+                    // 根据 hash 调用现有的插件函数
+                    admin.plugin.setCurByHash(tags);
+                });
+            } else {
                 if (tab === "article" && admin.article.status.id) {
-                    admin.register[tab].init.call(admin.register[tab].obj, admin.article.getAndSet);
-                } else {
-                    admin.register[tab].init.call(admin.register[tab].obj, tags.page);
+                    admin.article.getAndSet();
                 }
+            
+                // 已加载过 HTML，只需调用刷新函数
+                if (admin.register[tab] && admin.register[tab].refresh) {
+                    admin.register[tab].refresh.call(admin.register[tab].obj, tags.page);
+                }
+            
+                // 页面包含子 tab，需根据 hash 定位到相应的 tab
                 if (subTab) {
                     $("#tabPreference").tabs("setCurrent", subTab);
                 }
-        
+                
+                // 根据 hash 调用现有的插件函数
                 admin.plugin.setCurByHash(tags);
-            });
+            }  
         } else {
-            if (tab === "article" && admin.article.status.id) {
-                admin.article.getAndSet();
-                return;
-            }
-            
-            // 已加载过 HTML
-            if (admin.register[tab] && admin.register[tab].refresh) {
-                admin.register[tab].refresh.call(admin.register[tab].obj, tags.page);
-            }
-            
-            if (subTab) {
-                $("#tabPreference").tabs("setCurrent", subTab);
-            }
-            
-            admin.plugin.setCurByHash(tags);
-        }  
+            alert("Error, has no tab!");
+        }
     },
     
     /*
@@ -178,6 +193,10 @@ $.extend(Admin.prototype, {
         $("#loadMsg").text("");
     },
     
+    /*
+     * tools and article collapse
+     * @it 触发事件对象
+     */
     collapseNav: function (it) {
         var subNav = $(it).next()[0];
         if (subNav.className === "none") {
@@ -189,6 +208,9 @@ $.extend(Admin.prototype, {
         }
     },
     
+    /*
+    * 后台及当前页面所需插件初始化完后，对权限进行控制及当前页面属于 tools 时，tools 选项需展开。
+    */
     inited: function () {
         // Removes functions with the current user role
         if (Label.userRole !== "adminRole") {

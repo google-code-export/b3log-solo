@@ -18,23 +18,31 @@
  *  plugin manager for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Aug 8, 2011
+ * @version 1.0.0.5, Aug 9, 2011
  */
 var plugins = {};
 admin.plugin = {
     plugins: [],
+    
+    /*
+     * 添加插件进行管理
+     */
     add: function (data) {
         // 添加所有插件
         data.isInit = false;
+        data.hash = data.path.replace("/", "#") + "/" + data.id;
         this.plugins.push(data);
         
         var pathList = this._analysePath(data.path);
         // 添加一二级 Tab
-        if (data.hash && pathList.length === 1) {
+        if (data.index && pathList.length < 2) {
             this._addNew(data, pathList);
         }
     },
     
+    /*
+     * 根据当前 hash 初始化或刷新插件
+     */
     setCurByHash: function (tags) {
         var pluginList = this.plugins;
         for (var i = 0; i < pluginList.length; i++) {
@@ -42,35 +50,27 @@ admin.plugin = {
             var pathList = this._analysePath(data.path),
             isCurrentPlugin = false;
             
-            if (data.hash) {
-                if ("#" + data.hash === window.location.hash ||
-                (pathList[0] === "tools" && pathList.length === 2)) {
-                    isCurrentPlugin = true;
-                }
-            }else {
-                if(data.path.replace("/", "#").indexOf(window.location.hash) > -1) {
-                    isCurrentPlugin = true;
-                }
+            // 根据当前 hash 和插件 path 判别是非为当前插件
+            if (data.index && data.hash  === window.location.hash) {
+                isCurrentPlugin = true;
+            } else if(data.path.replace("/", "#") === window.location.hash ||
+                (data.path.indexOf("/main/panel") > -1 && window.location.hash === "#main")) {
+                isCurrentPlugin = true;
             }
             
             if (isCurrentPlugin) {
                 if (data.isInit) {
-                    if (data.hash) {
-                        if ("#" + data.hash === window.location.hash) {
-                            plugins[data.id].refresh(tags.page);   
-                        }
-                    } else {
-                        if (plugins[data.id].refresh) {
-                            plugins[data.id].refresh(tags.page);   
-                        }
+                    // 插件已经初始化过，只需进行刷新
+                    if (plugins[data.id].refresh) {
+                        plugins[data.id].refresh(tags.page);                           
                     }
                 } else {
-                    if (data.hash && pathList.length === 2) {
+                    // 初始化插件
+                    if (!data.index){
+                        this._addToExist(data, pathList);
+                    } else if (pathList.length === 2) {
                         this._addNew(data, pathList);
                     } 
-                    if (!data.hash){
-                        this._addToExist(data, pathList);
-                    }
                     plugins[data.id].init(tags.page);
                     data.isInit = true;
                 }
@@ -78,28 +78,37 @@ admin.plugin = {
         }  
     },
     
+    /*
+     * 解析添加路径
+     */
     _analysePath: function (path) {
         var paths = path.split("/");
         paths.splice(0, 1);
         return paths;
     },
     
+    /*
+     * 添加一二级 tab
+     */
     _addNew: function (data, pathList) {
         if (pathList.length === 2) {
             data.target = $("#tabPreference li").get(data.index - 1);
             $("#tabPreference").tabs("add", data);
             return;
-        } else if (pathList.length === 0) {
+        } else if (pathList[0] === "") {
             data.target = $("#tabs>ul>li").get(data.index - 1);
         } else if (pathList[0] === "article") {
             data.target = $("#tabArticleMgt>li").get(data.index - 1);
         } else if (pathList[0] === "tools") {
-            admin.tools.push("#" + data.hash.split("/")[1]);
+            admin.tools.push("#" + data.id);
             data.target = $("#tabTools>li").get(data.index - 1);
         }
         $("#tabs").tabs("add", data);
     },
     
+    /*
+     * 在已有页面上进行添加
+     */
     _addToExist: function (data, pathList) {
         switch (pathList[0]) {
             case "main":

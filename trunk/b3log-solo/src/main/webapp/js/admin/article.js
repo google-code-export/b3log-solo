@@ -18,9 +18,10 @@
  *  article for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Aug 6, 2011
+ * @version 1.0.0.9, Aug 9, 2011
  */
 admin.article = {
+    // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
     isConfirm: true,
     status: {
         id: undefined,
@@ -512,7 +513,7 @@ admin.article = {
      * 点击发文文章时的处理
      */
     prePost:function () {
-        if (window.location.hash === "#article" && 
+        if (window.location.hash === "#article/article" && 
             tinyMCE.get('articleContent').getContent().replace(/\s/g, '') !== "") {
             if (confirm(Label.editorPostLabel)) {
                 admin.article.clear();

@@ -18,7 +18,7 @@
  * preference for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Aug 5, 2011
+ * @version 1.0.0.6, Aug 9, 2011
  */
 
 /* preference 相关操作 */
@@ -236,5 +236,8 @@ admin.preference = {
  */
 admin.register["preference"] =  {
     "obj": admin.preference,
-    "init": admin.preference.init
+    "init": admin.preference.init,
+    "refresh": function () {
+        $("#loadMsg").text("");
+    }
 }
