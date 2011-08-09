@@ -102,4 +102,9 @@
         <property name="articleCommentCount" direction="desc"/>
     </datastore-index>
     
+    <datastore-index kind="article" ancestor="false" source="auto">
+        <property name="articleIsPublished" direction="asc"/>
+        <property name="articleRandomDouble" direction="desc"/>
+    </datastore-index>
+    
 </datastore-indexes>
