@@ -7,7 +7,7 @@
 || *任务简述* || *负责人* || *开始时间* || *预计结束时间* || *实际结束时间* || *完成情况* || *备注* ||
 ||Latke 文档||D||2011-06-11||2011-08-01|| ||<font color='blue'>10%</font>|| ||
 ||Latke 请求分发||D||2011-08-07||2011-09-01|| ||<font color='blue'>40%</font>|| ||
-||Latke <font color='brown'>GAE</font> URLFetch、User、Repository、Mail Service||D||2011-08-07||2011-10-01|| ||<font color='blue'>50%</font>|| ||
+||Latke <font color='brown'>GAE</font> URLFetch、User、Repository、Mail, Images Service||D||2011-08-07||2011-10-01|| ||<font color='blue'>50%</font>|| ||
 ||插件机制文档||D||2011-06-11||2011-08-25|| ||<font color='blue'>90%</font>|| ||
 ||皮肤开发文档||V||2011-06-11||2011-09-01|| ||<font color='red'>未开始</font>|| ||
 ||Solo 0.3.0 发布||D, V||2011-08-25||2011-08-25|| ||<font color='red'>未开始</font>|| ||
