@@ -527,5 +527,8 @@ admin.article = {
  */
 admin.register.article =  {
     "obj": admin.article,
-    "init": admin.article.init
+    "init": admin.article.init,
+    "refresh": function () {
+        $("#loadMsg").text("");
+    }
 }
