@@ -131,7 +131,6 @@
      */
     admin.plugin.add({
         "id": "cache-list",
-        "hash": "tools/cache-list",
         "text": "${cacheMgmtLabel}",
         "path": "/tools",
         "index": 7,

@@ -74,6 +74,11 @@
                         </div>
                         <ul class="none" id="tabTools">
                             <li>
+                                <div id="tabs_preference">
+                                    <a href="#tools/preference">${preferenceLabel}</a>
+                                </div>
+                            </li>
+                            <li>
                                 <div id="tabs_file-list">
                                     <a href="#tools/file-list">${fileListLabel}</a>
                                 </div>
@@ -86,11 +91,6 @@
                             <li>
                                 <div id="tabs_link-list">
                                     <a href="#tools/link-list">${linkManagementLabel}</a>
-                                </div>
-                            </li>
-                            <li>
-                                <div id="tabs_preference">
-                                    <a href="#tools/preference">${preferenceLabel}</a>
                                 </div>
                             </li>
                             <li>
