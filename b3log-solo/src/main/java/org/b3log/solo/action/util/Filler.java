@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.1, Aug 3, 2011
+ * @version 1.0.4.2, Aug 9, 2011
  */
 public final class Filler {
 
@@ -252,9 +252,9 @@ public final class Filler {
                 final String monthName = Dates.EN_MONTHS.get(month);
                 archiveDate.put(Common.MONTH_NAME, monthName);
             }
-
-            dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates);
         }
+
+        dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates);
     }
 
     /**
