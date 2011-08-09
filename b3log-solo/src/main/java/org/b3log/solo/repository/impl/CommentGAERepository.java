@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Comment Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 17, 2011
+ * @version 1.0.0.6, Aug 9, 2011
  */
 public final class CommentGAERepository extends AbstractGAERepository
         implements CommentRepository {
@@ -70,6 +70,8 @@ public final class CommentGAERepository extends AbstractGAERepository
         final Query query = new Query();
         query.addSort(Keys.OBJECT_ID,
                       SortDirection.DESCENDING);
+        query.setCurrentPageNum(1);
+        query.setPageSize(num);
 
         List<JSONObject> ret = new ArrayList<JSONObject>();
         try {
