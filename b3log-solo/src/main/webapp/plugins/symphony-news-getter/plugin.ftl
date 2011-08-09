@@ -2,7 +2,7 @@
 <div id="symphonyNewsGetterPanel">
     <div class="module-panel">
         <div class="module-header">
-            <h2><a href="http://symphony.b3log.org" target="_blank">Symphony</a> ${CommunityAnnounceLabel}</h2>
+            <h2>${b3logAnnounceLabel}</h2>
         </div>
         <div class="module-body padding12">
             <div id="symphonyNewsGetter">
