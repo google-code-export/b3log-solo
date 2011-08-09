@@ -161,7 +161,6 @@ admin.preference = {
                 "externalRelevantArticlesDisplayCount": $("#externalRelevantArticlesDisplayCount").val(),
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
                 "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
-                "enablePostToBuzz": false /*$("#syncBuzz").attr("checked")*/,
                 "enableArticleUpdateHint": $("#enableArticleUpdateHint").prop("checked"),
                 "signs": signs,
                 "tencentMicroblogAppKey": $("#tencentMicroblogAppKey").val(),
