@@ -67,7 +67,7 @@
                 if(confirm("${confirmInitLabel}")){
                     var rslt = jsonRpc.adminService.init();
                     if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
-                        window.location.href = "/admin-index.do";
+                        window.location.href = "/admin-index.do#main";
                     } else {
                         alert("init error!");
                     }
