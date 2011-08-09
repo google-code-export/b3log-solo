@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Checks whether if a user logged in.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Dec 21, 2010
+ * @version 1.0.0.2, Aug 9, 2011
  */
 public final class CheckLoggedInAction extends AbstractAction {
 
@@ -93,7 +93,7 @@ public final class CheckLoggedInAction extends AbstractAction {
                 }
 
                 ret.put(Common.LOGIN_URL,
-                        userService.createLoginURL("/admin-index.do"));
+                        userService.createLoginURL("/admin-index.do#main"));
 
                 return ret;
             }
