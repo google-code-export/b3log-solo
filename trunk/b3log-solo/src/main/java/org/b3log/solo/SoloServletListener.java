@@ -304,12 +304,6 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final EventManager eventManager = EventManager.getInstance();
 
-            /**
-             * See issue 38 (http://code.google.com/p/b3log-solo/issues/detail?id=38)
-             * for more details.
-             * 
-             * new ActivityCreator(eventManager);
-             */
             eventManager.registerListener(new TencentMicroblogSender());
             eventManager.registerListener(new ArticleCommentReplyNotifier());
             eventManager.registerListener(new PageCommentReplyNotifier());
