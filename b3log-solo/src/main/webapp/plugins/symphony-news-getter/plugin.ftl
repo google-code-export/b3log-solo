@@ -31,10 +31,11 @@
                     var listHTML = "<ul>";
                     for (var i = 0; i < articles.length; i++) {
                         var article = articles[i];
-                        var title = article.articleTitle;
+                        var d = new Date();
+                        
                         var articleLiHtml = "<li>"
                             + "<a target='_blank' href='" + article.articlePermalink + "'>"
-                            +  title + "</a></li>"
+                            +  article.articleTitle + "</a>&nbsp; <span class='date'>" + $.bowknot.getDate(article.articleCreateDate, 1); + "</span></li>"
                         listHTML += articleLiHtml
                     }
                     listHTML += "</ul>";

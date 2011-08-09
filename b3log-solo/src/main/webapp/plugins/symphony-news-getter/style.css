@@ -10,3 +10,7 @@
 #symphonyNewsGetter a {
     text-decoration: none;
 }
+#symphonyNewsGetter .date {
+    color: #686868;
+    font-size: 12px;
+}
