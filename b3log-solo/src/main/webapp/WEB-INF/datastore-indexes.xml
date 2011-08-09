@@ -44,11 +44,11 @@
         <property name="tag_oId" direction="asc"/>
         <property name="article_oId" direction="desc"/>
     </datastore-index>
-
+    
     <datastore-index kind="article" ancestor="false" source="auto">
         <property name="articleIsPublished" direction="asc"/>
-        <property name="articleCommentCount" direction="desc"/>
         <property name="articleUpdateDate" direction="desc"/>
+        <property name="articleCommentCount" direction="desc"/>
     </datastore-index>
 
     <datastore-index kind="article" ancestor="false" source="auto">
@@ -94,12 +94,6 @@
         <property name="articleIsPublished" direction="asc"/>
         <property name="articleUpdateDate" direction="desc"/>
         <property name="articleViewCount" direction="desc"/>
-    </datastore-index>
-    
-    <datastore-index kind="article" ancestor="false" source="auto">
-        <property name="articleIsPublished" direction="asc"/>
-        <property name="articleUpdateDate" direction="desc"/>
-        <property name="articleCommentCount" direction="desc"/>
     </datastore-index>
     
     <datastore-index kind="article" ancestor="false" source="auto">
