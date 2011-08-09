@@ -25,6 +25,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -70,7 +71,14 @@ public final class ArchiveDateArticleGAERepository
         final Query query = new Query();
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         FilterOperator.EQUAL, articleId);
-        return get(query);
+        
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
     }
 
     /**
