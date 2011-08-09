@@ -51,11 +51,11 @@ public interface ArticleCommentRepository extends Repository {
      * @param commentId the specified comment id
      * @return for example
      * <pre>
-     * [{
-     *         "oId": "",
-     *         "comment_oId": commentId,,
-     *         "article_oId": ""
-     * }, ....], returns {@code null} if not found
+     * {
+     *     "oId": "",
+     *     "comment_oId": commentId,
+     *     "article_oId": ""
+     * }, returns {@code null} if not found
      * </pre>
      * @throws RepositoryException repository exception
      */
