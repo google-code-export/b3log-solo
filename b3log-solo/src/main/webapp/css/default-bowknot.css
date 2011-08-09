@@ -2,7 +2,7 @@
  * jQuly plugin: bowknot style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Aug 5, 2011
+ * @version 1.0.0.5, Aug 9, 2011
 */
 .completed-panel {
     background-color: #ECECEC;
@@ -120,12 +120,19 @@
     word-wrap: break-word;
     table-layout: fixed;
 }
+
+.table-header {
+    border-radius: 5px 5px 0 0;
+    border-top: 1px solid #D0D0D0;
+}
+
 .table-header,.table-body {
     overflow: auto;
 }
 .table-header th {
     border-bottom: 1px solid #A0A0A0;
-    height: 28px;
+    height: 29px;
+    line-height: 29px;
     text-align: left;
     text-indent: 4px;
     font-size: 14px;
