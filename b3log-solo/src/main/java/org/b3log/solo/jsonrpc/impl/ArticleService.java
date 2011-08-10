@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.7, Jun 29, 2011
+ * @version 1.0.3.8, Aug 10, 2011
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -475,8 +475,8 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             final Query query = new Query().setCurrentPageNum(currentPageNum).
                     setPageSize(pageSize).
-                    addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING).
                     addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING).
+                    addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING).
                     addFilter(ARTICLE_IS_PUBLISHED,
                               FilterOperator.EQUAL,
                               articleIsPublished);
