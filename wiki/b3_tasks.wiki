@@ -14,7 +14,7 @@
 ||Latke <font color='grey'>Local</font> URLFetch Service||Y||2011-08-07||2011-10-01|| ||<font color='red'>未开始</font>|| ||
 ||Latke <font color='grey'>Local</font> User Service||Y||2011-08-07||2011-10-15|| ||<font color='red'>未开始</font>|| ||
 ||用户 FAQ||L||2011-06-11||2011-08-07|| || <font color='red'>未开始</font>|| ||
-||Index 修改与发布||L||2011-08-07||2011-08-25|| ||<font color='red'>未开始</font>|| ||
+||Index 修改与发布||L||2011-08-07||2011-08-25|| ||<font color='blue'>10%</font>|| ||
 ||Latke <font color='grey'>Local</font> (MySQL) Repository||L||2011-08-07||2011-10-01|| ||<font color='red'>未开始</font>|| ||
 ||开发 FAQ||J||2011-06-11||2011-07-15||2011-07-15||<font color='green'>已完成</font>||还需要持续补充||
 ||入伙文档||J||2011-06-11||2011-07-01||2011-07-01||<font color='green'>已完成</font>|| ||
