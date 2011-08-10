@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Aug 9, 2011
+ * @version 1.0.1.0, Aug 10, 2011
  */
 
 var Admin = function () {
@@ -127,7 +127,7 @@ $.extend(Admin.prototype, {
         
         $("#tabs").tabs("setCurrent", tab);
         $("#loadMsg").text(Label.loadingLabel);
-
+        
         if ($("#tabsPanel_" + tab).length === 1) {
             if ($("#tabsPanel_" + tab).html().replace(/\s/g, "") === "") {
                 // 还未加载 HTML
@@ -167,7 +167,7 @@ $.extend(Admin.prototype, {
                 admin.plugin.setCurByHash(tags);
             }  
         } else {
-            alert("Error, has no tab!");
+            alert("Error: No tab!\n" + Label.reportIssueLabel);
         }
     },
     
@@ -175,6 +175,8 @@ $.extend(Admin.prototype, {
      * 初始化整个后台
      */
     init: function () {
+        window.onerror = Util.error;
+        
         // 不支持 IE 6
         Util.killIE();   
         $("#loadMsg").text(Label.loadingLabel);

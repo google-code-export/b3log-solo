@@ -8,7 +8,11 @@ License:	CC Attribution-Share Alike 3.0 Unported
 Update: 	Dongxu Wang 2011-02-24 
 			@ http://lightdian.b3log.org/
 ==================================================*/
-
+/*
+ * skin owmx-3.0 style
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.0.2, Aug 10, 2011
+*/
 /* Reset */
 header, footer, article, nav, section, aside, time, hgroup {
     display : block;
@@ -77,8 +81,7 @@ SUP {
 
 /* Header */
 header {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
+   border-radius : 4px;
     background : #0098CC url(../images/hd.jpg) no-repeat top left;
     height : 200px;
     margin : 0 0 10px 0;
@@ -94,8 +97,7 @@ header a:hover {
     color : #FFF;
 }
 header p {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
+    border-radius : 4px;
     background : #FFF;
     bottom : 20px;
     color : #000;
@@ -109,8 +111,7 @@ header p {
 
 /* Article */
 article {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
+    border-radius : 4px;
     background : #FFF;
     border: 1px solid #CCC;
     float : right;
@@ -204,8 +205,7 @@ dd.summary {
 
 /* Forms */
 article form {
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
+    border-radius: 4px;
     background : #DDD;
     margin : 0 0 20px;
     padding : 10px;
@@ -218,8 +218,7 @@ article label {
     margin : 0 0 0 2px;
 }
 article input, article textarea {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
+    border-radius : 4px;
     border : 1px solid #CCC;
     font-size : 11px;
     padding : 4px 5px;
@@ -248,8 +247,7 @@ aside {
     white-space:normal;
 }
 aside ul.aside-comments img{
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
+    border-radius : 4px;
     width:32px;height:32px;
     border:1px solid #999999;
     padding:1px;
@@ -288,15 +286,13 @@ aside ul.navi-tags li{padding-left:0px;background-image:none;}
 aside ul.navi-tags li img{ margin-bottom:3px;padding-right:6px;height:16px;width:16px;}
 /* Search Box */
 .s {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
+    border-radius : 4px;
     margin : 0 0 20px 0;
     padding : 10px;
     width : 179px;
 }
 .s input {
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
+    border-radius: 4px;
     border : 1px solid #AAA;
     color : #999;
     font-size : 11px;
@@ -353,10 +349,8 @@ nav li.active, aside li.active li {
 
 /* Ad Space */
 .adspace {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
-    -moz-box-shadow : 0 2px 2px rgba(0,0,0,0.3);
-    -webkit-box-shadow : 0 2px 2px rgba(0,0,0,0.3);
+    border-radius : 4px;
+    box-shadow : 0 2px 2px rgba(0,0,0,0.3);
     background : #EEE;
     height : 100%;
     margin : 0 0 20px 0;
@@ -445,14 +439,14 @@ footer img{
 .comment-body{margin-top:15px;}
 .comment-author{float:left;text-align:center;width:81px;}
 .comment-author div{margin-top:10px;padding-right:14px;background:url("../images/commentpoint.png") no-repeat scroll 100% 33% transparent;}
-.comment-author img{-moz-border-radius : 4px;-webkit-border-radius : 4px;border:1px solid #999999;padding:1px;width:32px;height:32px;}
+.comment-author img{border-radius : 4px;border:1px solid #999999;padding:1px;width:32px;height:32px;}
 .comment-author a{margin-right:14px;font-weight:bold;}
 .comment-info{border-radius : 6px;width : 440px;padding : 5px 10px;background : #EDEFF0;border : 1px dotted #EDEFF0;}
 .comment-content{word-wrap:break-word;overflow: hidden;background:url("../images/comment.gif") no-repeat scroll 100% 100% transparent;line-height:145%;margin:0 -15px;padding:9px 15px 10px;font-size:12px;}
 .comment-form img{cursor:pointer;}
 .comment-form input, .comment-form textarea{height: 16px;outline:none;font-family:Helvetica,Arial,sans-serif;color:#555555;background:url("../images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;border:1px solid #A6A6A6;padding:2px 1px;width:200px;}
 .comment-form textarea{width:541px;font-size: 12px;overflow: auto;height: auto;}
-.comment-form button{background:none repeat scroll 0 0 #B4D666;border-color:#B4D666 #81B840 #81B840 #B4D666;border-style:solid;border-width:1px;color:#2970A6;font-size:12px;padding:0px 6px;height:22px;line-height:22px;-moz-border-radius:0px;-webkit-border-radius:0px;}
+.comment-form button{background:none repeat scroll 0 0 #B4D666;border-color:#B4D666 #81B840 #81B840 #B4D666;border-style:solid;border-width:1px;color:#2970A6;font-size:12px;padding:0px 6px;height:22px;line-height:22px;border-radius:0px;}
 .comment-form button:hover{background:none repeat scroll 0 0 #98C64C;border-color:#76B33A #98C64C #98C64C #76B33A;color:#074A7E;}
 .error-msg{color:#3366CC;}
 /* Wrappers */
@@ -461,10 +455,8 @@ footer img{
     position : relative;
 }
 #a {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
-    -moz-box-shadow : 0 2px 2px rgba(0,0,0,0.3);
-    -webkit-box-shadow : 0 2px 2px rgba(0,0,0,0.3);
+    border-radius : 4px;
+    box-shadow : 0 2px 2px rgba(0,0,0,0.3);
     background : #EEE;
     margin : 15px auto;
     padding : 10px 10px 0 10px;
@@ -476,10 +468,8 @@ footer img{
 
 /* Shadow-Boxes*/
 #c, .meta, .s, nav ul {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
-    -moz-box-shadow : 0 2px 2px rgba(0,0,0,0.4);
-    -webkit-box-shadow : 0 2px 2px rgba(0,0,0,0.4);
+    border-radius : 4px;
+    box-shadow : 0 2px 2px rgba(0,0,0,0.4);
     background : #CCC;
 }
 #c {
@@ -495,8 +485,7 @@ footer img{
     margin : 0 0 10px 0;
 }
 #c img {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
+    border-radius : 4px;
     float : left;
     margin : 4px 10px 2px 0;
 }	
@@ -512,17 +501,13 @@ nav ul {
     padding : 10px;
 }
 nav ul ul {
-    -moz-border-radius : none;
-    -webkit-border-radius : none;
-    -moz-box-shadow : none;
-    -webkit-box-shadow : none;
+    border-radius : none;
+    box-shadow : none;
 }
 
 .single_page  {
-    -moz-border-radius : 4px;
-    -webkit-border-radius : 4px;
-    -moz-box-shadow : 0 2px 2px rgba(0,0,0,0.2);
-    -webkit-box-shadow : 0 2px 2px rgba(0,0,0,0.2);
+    border-radius : 4px;
+    box-shadow : 0 2px 2px rgba(0,0,0,0.2);
     background : #F2F7F8;
     padding : 10px;
     margin-bottom : 25px;

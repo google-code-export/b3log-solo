@@ -183,7 +183,7 @@
         
         // reply comment url
         $("#commentURLReply").focus(function (event) {
-            $("#commentURLLabelReply").css("box-shadow", "0 1px 2px rgba(0, 0, 0, 0.3) inset");
+            $("#commentURLLabelReply").css("box-shadow", "3px 1px 2px rgba(0, 0, 0, 0.3) inset");
         }).blur(function () {
             $("#commentURLLabelReply").css("box-shadow", "");
         });
@@ -205,7 +205,7 @@
         page.load();
         // comment url
         $("#commentURL").focus(function (event) {
-            $("#commentURLLabel").css("box-shadow", "0 1px 2px rgba(0, 0, 0, 0.3) inset");
+            $("#commentURLLabel").css("box-shadow", "3px 1px 2px rgba(0, 0, 0, 0.3) inset");
         }).blur(function () {
             $("#commentURLLabel").css("box-shadow", "");
         });
