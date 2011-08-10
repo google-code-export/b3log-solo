@@ -16,7 +16,7 @@
                 </#if>
                 <#if comment.isReply>
                 @
-                <a href="${permalink}${comment.commentOriginalCommentId}"
+                <a href="${permalink}#${comment.commentOriginalCommentId}"
                    onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
                    onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                 </#if> </br>
