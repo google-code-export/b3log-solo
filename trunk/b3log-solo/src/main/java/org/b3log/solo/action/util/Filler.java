@@ -147,13 +147,13 @@ public final class Filler {
                 addFilter(Article.ARTICLE_IS_PUBLISHED,
                           FilterOperator.EQUAL, PUBLISHED);
 
+        query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+        
         if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
             query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
         } else {
             query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
         }
-
-        query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
 
         final JSONObject result = articleRepository.get(query);
         final int pageCount = result.getJSONObject(Pagination.PAGINATION).
