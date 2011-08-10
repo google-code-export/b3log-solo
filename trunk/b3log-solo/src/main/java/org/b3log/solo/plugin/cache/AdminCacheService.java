@@ -206,8 +206,8 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
                 @Override
                 public int compare(final JSONObject page1,
                                    final JSONObject page2) {
-                    return page1.optString(PageCaches.CACHED_HIT_COUNT).
-                            compareTo(page2.optString(
+                    return page2.optString(PageCaches.CACHED_HIT_COUNT).
+                            compareTo(page1.optString(
                             PageCaches.CACHED_HIT_COUNT));
                 }
             });
