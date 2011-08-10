@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Google Data Store Low-level API</a>.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Feb 28, 2011
+ * @version 1.0.1.0, Aug 10, 2011
  */
 public final class DataStoreFileAccessServlet extends HttpServlet {
 
@@ -159,8 +159,6 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                     PageCaches.removeAll(); // XXX: use repository cache instead
                 }
             }
-
-            response.sendRedirect("/admin-index.do");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ServletException("File upload error: " + e.getMessage());
