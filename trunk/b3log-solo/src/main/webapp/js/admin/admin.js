@@ -100,6 +100,10 @@ $.extend(Admin.prototype, {
             tab = tags.hashList[0];
         }
         
+        if (tab === "") {
+            return;
+        }
+        
         // 离开编辑器时进行提示
         if (tinyMCE) {
             if (tinyMCE.get('articleContent')) {
