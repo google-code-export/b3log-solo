@@ -18,7 +18,7 @@
  *  plugin manager for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Aug 9, 2011
+ * @version 1.0.0.6, Aug 10, 2011
  */
 var plugins = {};
 admin.plugin = {
@@ -51,10 +51,10 @@ admin.plugin = {
             isCurrentPlugin = false;
             
             // 根据当前 hash 和插件 path 判别是非为当前插件
-            if (data.index && data.hash  === window.location.hash) {
+             if (data.index && window.location.hash.indexOf(data.hash) > -1) {
                 isCurrentPlugin = true;
             } else if(data.path.replace("/", "#") === window.location.hash ||
-                (data.path.indexOf("/main/panel") > -1 && window.location.hash === "#main")) {
+                (window.location.hash === "#main" && data.path.indexOf("/main/panel") > -1)) {
                 isCurrentPlugin = true;
             }
             
