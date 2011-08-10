@@ -18,10 +18,16 @@
  *  util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Aug 8, 2011
+ * @version 1.0.0.7, Aug 10, 2011
  */
 
 var Util = {
+    error: function () {
+        alert("Error: " + arguments[0] +
+            "\nFile: " + arguments[1] + "\nLine: " + arguments[2] +
+            "\nplease report this issue on http://code.google.com/p/b3log-solo/issues/list");
+    },
+        
     killIE: function () {
         if ($.browser.msie) {
             var downloadHTML = "<br/> You can download \
@@ -129,6 +135,7 @@ $.extend(Common.prototype, {
     },
     
     init: function () {
+        window.onerror = Util.error;
         Util.killIE();
        
         var tips = this.tips;

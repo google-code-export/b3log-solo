@@ -1,3 +1,9 @@
+/*
+ * skin andrea style
+ *
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.0.2, Aug 10, 2011
+*/
 body {
     background-image: url("../images/bg-grey.jpg");
     background-color: #000000;
@@ -253,8 +259,6 @@ a:hover {
 
 /* side */
 .side-navi .item {
-    -moz-border-radius: 0 5px 5px 0;
-    -webkit-border-radius: 0 5px 5px 0;
     border-radius: 0 5px 5px 0;
     background: url("../images/bg-transparent.png") repeat scroll 0 0 transparent;
     border: 1px solid #999999;
@@ -533,8 +537,6 @@ h2.comment-label {
 }
 
 .comment-form input, .comment-form textarea, #commentURLLabel, #commentURLLabelReply {
-    -moz-border-radius: 5px;
-    -webkit-border-radius:5px;
     border-radius:5px;
     background-color: #EBE9E5;
     border: 1px solid #BABAAE;
@@ -552,8 +554,6 @@ h2.comment-label {
 }
 
 #commentURLLabel, #commentURLLabelReply {
-    -moz-border-radius: 5px 0 0 5px;
-    -webkit-border-radius: 5px 0 0 5px;
     border-radius: 5px 0 0 5px;
     border-right: 0 none;
     color: #000000;
@@ -569,8 +569,6 @@ h2.comment-label {
 }
 
 #commentURL, #commentURLReply {
-    -moz-border-radius: 0 5px 5px 0;
-    -webkit-border-radius: 0 5px 5px 0;
     border-radius: 0 5px 5px 0;
     border-left: 0 none;
     padding-left: 0;
@@ -582,8 +580,6 @@ h2.comment-label {
 }
 
 .comment-form button {
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
     border-radius: 5px;
     border: 1px solid #80B53B;
     color: #355207;
@@ -600,8 +596,6 @@ h2.comment-label {
     position: absolute;
     width: 537px;
     border: 1px solid #999999;
-    -moz-border-radius:5px;
-    -webkit-border-radius: 5px;
     border-radius: 5px;
     z-index: 10;
     left: 180px;

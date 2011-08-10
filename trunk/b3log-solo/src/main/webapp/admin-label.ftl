@@ -4,6 +4,7 @@
         "PAGE_SIZE": 18,
         "WINDOW_SIZE": 10,
         "localeString": "${localeString}",
+        "reportIssueLabel": "please report this issue on http://code.google.com/p/b3log-solo/issues/list",
         
         "commentContentLabel": "${commentContentLabel}",
         "loadingLabel": "${loadingLabel}",

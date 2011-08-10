@@ -1,3 +1,9 @@
+/*
+ * skin classic style
+ *
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.0.2, Aug 10, 2011
+*/
 a, a:link {
     color: #0000CC;
 }
@@ -125,7 +131,7 @@ h5 {
     width: 88%;
 }
 #commentURLLabel, #commentURLLabelReply {
-    border-color: #C0C0C0 -moz-use-text-color #D9D9D9 #D9D9D9;
+    border-color: #C0C0C0 transparent #D9D9D9 #D9D9D9;
     border-style: solid none solid solid;
     border-width: 1px 0 1px 1px;
     float: left;
@@ -140,6 +146,11 @@ h5 {
 #commentURL, #commentURLReply {
     border-left: 0px;
     width: 570px;
+    padding-left: 0px;
+}
+
+#commentURL:focus, #commentURLReply:focus {
+    box-shadow: -3px 1px 2px rgba(0, 0, 0, 0.3) inset;
 }
 #comment, #commentReply {
     width: 604px;
