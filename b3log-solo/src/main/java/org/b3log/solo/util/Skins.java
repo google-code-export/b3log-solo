@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 4, 2011
+ * @version 1.0.0.6, Aug 10, 2011
  */
 public final class Skins {
 
@@ -72,11 +72,18 @@ public final class Skins {
         final JSONArray skinArray = new JSONArray();
         for (final String dirName : skinDirNames) {
             final JSONObject skin = new JSONObject();
-            skinArray.put(skin);
-
             final String name = getSkinName(dirName);
+            if (null == name) {
+                LOGGER.log(Level.WARNING, "The directory[{0}] does not"
+                                          + "contain any skin, ignored it",
+                           dirName);
+                continue;
+            }
+
             skin.put(SKIN_NAME, name);
             skin.put(SKIN_DIR_NAME, dirName);
+
+            skinArray.put(skin);
         }
 
         if (!skinDirNames.contains(currentSkinDirName)) {
@@ -95,7 +102,7 @@ public final class Skins {
 
             preference.put(SKIN_DIR_NAME, "classic");
             preference.put(SKIN_NAME, "经典淡蓝");
-            
+
             PageCaches.removeAll();
         }
 
