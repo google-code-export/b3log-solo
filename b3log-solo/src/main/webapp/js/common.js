@@ -65,14 +65,20 @@ var Util = {
     },
     
     _processEm: function (str) {
-        var strList = [], resultStr = "";
-        if (str.indexOf("<br/>") > -1) {
-            strList = str.split("<br/>");
-        } else if (str.indexOf("<br>") > -1) {
-            strList = str.split("<br>");
-        } else if (str.replace(/\s/g, "") === "") {
+        if (str.replace(/\s/g, "") === "") {
             return "";
-        }else {
+        }
+        
+        var strList = [], 
+        resultStr = "",
+        brList = ["<br>", "<br/>", "<BR>", "<BR/>"];
+        for (var j = 0; j < brList.length; j++) {
+            if (str.indexOf(brList[j]) > -1) {
+                strList = str.split(brList[j]);
+            }
+        }
+        
+        if (strList.length === 0) {
             return "<span class='em-span'>" + str + "</span>";
         }
         
