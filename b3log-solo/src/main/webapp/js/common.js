@@ -70,8 +70,10 @@ var Util = {
             strList = str.split("<br/>");
         } else if (str.indexOf("<br>") > -1) {
             strList = str.split("<br>");
-        } else {
-            return str;
+        } else if (str.replace(/\s/g, "") === "") {
+            return "";
+        }else {
+            return "<span class='em-span'>" + str + "</span>";
         }
         
         for (var i = 0; i < strList.length; i++) {
