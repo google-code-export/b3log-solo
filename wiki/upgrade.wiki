@@ -17,7 +17,7 @@
 
 _注_：
 <ul>
-<li><font color='red'>不能进行跨版本升级</font></li>
+<li><font color='red'>*不能进行跨版本升级*</font></li>
 <li>调整索引引起的 404</li>
 如果访问页面出现 404，并且在 [http://appengine.google.com GAE 管理控制台]数据索引里看到有索引状态为 “Building”的话，请耐心等待再重访问试试。
 </ul>
