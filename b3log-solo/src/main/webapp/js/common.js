@@ -135,7 +135,7 @@ $.extend(Common.prototype, {
     },
     
     init: function () {
-        window.onerror = Util.error;
+        //window.onerror = Util.error;
         Util.killIE();
        
         var tips = this.tips;
