@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.4, Jul 27, 2011
+ * @version 1.0.3.5, Aug 13, 2011
  */
 public final class Common {
 
@@ -183,6 +183,10 @@ public final class Common {
      * Key of comment title (article/page).
      */
     public static final String COMMENT_TITLE = "commentTitle";
+    /**
+     * /admin-index.do#main.
+     */
+    public static final String ADMIN_INDEX_URI = "/admin-index.do#main";
 
     /**
      * Private default constructor.

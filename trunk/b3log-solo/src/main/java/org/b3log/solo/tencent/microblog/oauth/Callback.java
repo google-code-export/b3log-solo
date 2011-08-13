@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.util.Preferences;
@@ -114,6 +115,6 @@ public final class Callback extends HttpServlet {
                                               PageFlag.PageFlag_First, 20);
         LOGGER.finer(homeMsg);
 
-        response.sendRedirect("/admin-index.do");
+        response.sendRedirect(Common.ADMIN_INDEX_URI);
     }
 }

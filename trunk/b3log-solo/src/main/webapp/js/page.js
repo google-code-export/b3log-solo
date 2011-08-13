@@ -258,36 +258,40 @@ $.extend(Page.prototype, {
     
     loadExternalRelevantArticles: function (tags) {
         var tips = this.tips;
-        $.ajax({
-            url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
-            + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
-            type: "GET",
-            dataType:"jsonp",
-            jsonp: "callback",
-            error: function(){
-            // alert("Error loading articles from Rhythm");
-            },
-            success: function(data, textStatus){
-                var articles = data.articles;
-                if (0 === articles.length) {
-                    return;
-                }
-                var listHtml = "";
-                for (var i = 0; i < articles.length; i++) {
-                    var article = articles[i];
-                    var title = article.articleTitle;
-                    var articleLiHtml = "<li>"
-                    + "<a target='_blank' href='" + article.articlePermalink + "'>"
-                    +  title + "</a></li>"
-                    listHtml += articleLiHtml
-                }
+        try {
+            $.ajax({
+                url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
+                + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
+                type: "GET",
+                dataType:"jsonp",
+                jsonp: "callback",
+                error: function(){
+                // alert("Error loading articles from Rhythm");
+                },
+                success: function(data, textStatus){
+                    var articles = data.articles;
+                    if (0 === articles.length) {
+                        return;
+                    }
+                    var listHtml = "";
+                    for (var i = 0; i < articles.length; i++) {
+                        var article = articles[i];
+                        var title = article.articleTitle;
+                        var articleLiHtml = "<li>"
+                        + "<a target='_blank' href='" + article.articlePermalink + "'>"
+                        +  title + "</a></li>"
+                        listHtml += articleLiHtml
+                    }
                 
-                var randomArticleListHtml = "<h4>" + tips.externalRelevantArticles1Label + "</h4>"
-                + "<ul class='marginLeft12'>"
-                + listHtml + "</ul>";
-                $("#externalRelevantArticles").append(randomArticleListHtml);
-            }
-        });
+                    var randomArticleListHtml = "<h4>" + tips.externalRelevantArticles1Label + "</h4>"
+                    + "<ul class='marginLeft12'>"
+                    + listHtml + "</ul>";
+                    $("#externalRelevantArticles").append(randomArticleListHtml);
+                }
+            });
+        } catch (e) {
+            // 忽略相关文章加载异常：load script error
+        }
     },
     
     submitComment: function (commentId, statue) {
