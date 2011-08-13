@@ -93,7 +93,7 @@ public final class CheckLoggedInAction extends AbstractAction {
                 }
 
                 ret.put(Common.LOGIN_URL,
-                        userService.createLoginURL("/admin-index.do#main"));
+                        userService.createLoginURL(Common.ADMIN_INDEX_URI));
 
                 return ret;
             }
