@@ -1,17 +1,27 @@
 #summary 开发步骤
 
-===初始框架===
- # 在 /skins 下新建一个文件夹${myskin}，命名可任意，系统会自动识别出新增的皮肤文件夹。如无特别声明，以下新建的文件或文件夹均位于${myskin}中
- # 新建 skin.properties 文件，在 skin.properties 中对 name 和 memo 赋值，其中：
-    * name：皮肤名称（此名称将作为皮肤名列在<后台管理-偏好设定-皮肤>中）
-    * memo：备注，可记录所仿皮肤的站点或名称等信息
- # 新建 default-index.css 文件，用于写入该皮肤的外联样式
- # 新建 emotions、images、js 文件夹（必要时）
-    * emotions：存放该皮肤的评论头像图片，尺寸最佳为24×24，数量最佳为15，命名为 em00.png ~ em14.png
-    * images：存放该皮肤所需要使用到的其他图片
-    * js：存放 /js 中没有，但该皮肤需要使用到的 js 文件
- # 皮肤截图保存为 preview.png 作为皮肤预览
-----
+===文件结构===
+|| *名称* || *说明* ||
+|| /css/* || 存放皮肤样式 ||
+|| /images/* || 存放皮肤用到的图片 ||
+|| archive-articles.ftl || 某年某月所写文章的列表页面 ||
+|| article-list.ftl || 文章列表，复用于archive-articles.ftl，author-articles.ftl，tag-articles ||
+|| article.ftl || 文章页面 ||
+|| author-articles.ftl || 某用户所写文章的列表页面 ||
+|| error.ftl || 错误页面 ||
+|| footer.ftl || 页尾，复用于各个页面 ||
+|| header.ftl || 页头，复用于各个页面 ||
+|| index.ftl || 首页页面 ||
+|| macro-comments.ftl || ||
+|| macro-head.ftl || ||
+|| page.ftl || 自定义页面 ||
+|| side.ftl || 侧边栏，包括公告、最新评论、评论最多的文章访问最多的文章、分类标签、友情链接、存档。复用于各个页面。 ||
+|| tag-articles.ftl || 含有某标签文章的列表页面 ||
+|| tags.ftl || 罗列所有标签的页面 ||
+|| top-nav.ftl || 顶部导航，复用于各个页面 ||
+|| preview.png || 此皮肤首页截图（280*160） ||
+|| skin.properties || 皮肤信息。<br/>name：皮肤名称（此名称将作为皮肤名列在<后台管理-偏好设定-皮肤>中） <br/>memo：备注，可记录所仿皮肤的站点或名称等信息 ||
+
 ===具体开发===
  # 可参照 /classic 目录中的 ftl 文件进行创建及相应的修改，从文件名上基本可推断其作用
  # 建议从 index.ftl 开始修改，只要 index.ftl 的结构确定下来，除个别外，其他页面的结构与其基本类似甚至相同。当然，其中通过 <#include "xxx.ftl"> 包含了一些通用的页面
@@ -32,3 +42,4 @@
  # 皮肤修改过程中，id 最好不要进行更改（如 common-top.ftl 中的 id="admin" ）
  # 部分公用方法已被提取到 /js/util.js 和 /js/articleUtil.js 
  # 如有任何疑问请与 [http://vanessa.b3log.org Vanessa] 联系
+<g:plusone size="medium"></g:plusone>
