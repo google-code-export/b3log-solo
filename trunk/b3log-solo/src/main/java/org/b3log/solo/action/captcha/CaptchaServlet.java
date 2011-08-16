@@ -15,13 +15,12 @@
  */
 package org.b3log.solo.action.captcha;
 
+import org.b3log.latke.image.Image;
+import org.b3log.latke.image.ImageService;
+import org.b3log.latke.image.ImageServiceFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
-import com.google.appengine.api.images.Composite;
-import com.google.appengine.api.images.Image;
-import com.google.appengine.api.images.ImagesService;
-import com.google.appengine.api.images.ImagesServiceFactory;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ import static org.b3log.solo.SoloServletListener.*;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Aug 26, 2010
+ * @version 1.0.0.1, Aug 16, 2011
  */
 public final class CaptchaServlet extends HttpServlet {
 
@@ -64,8 +63,8 @@ public final class CaptchaServlet extends HttpServlet {
     /**
      * Images service.
      */
-    private static final ImagesService IMAGE_SERVICE =
-            ImagesServiceFactory.getImagesService();
+    private static final ImageService IMAGE_SERVICE =
+            ImageServiceFactory.getImageService();
     /**
      * Random.
      */
@@ -83,18 +82,18 @@ public final class CaptchaServlet extends HttpServlet {
 
         final String row = String.valueOf(RANDOM.nextInt(MAX_CAPTCHA_ROW));
         String captcha = "";
-        final List<Composite> composites = new ArrayList<Composite>();
+        final List<Image> images = new ArrayList<Image>();
         for (int i = 0; i < LENGTH; i++) {
             final String column = String.valueOf(RANDOM.nextInt(
                     MAX_CAPTCHA_COLUM));
             captcha += column;
             final String imageName = row + "/" + column + ".png";
             final Image captchaChar = CAPTCHAS.get(imageName);
-            final Composite composite = ImagesServiceFactory.makeComposite(
-                    captchaChar, i * WIDTH_CAPTCHA_CHAR, 0,
-                    1.0F, Composite.Anchor.TOP_LEFT);
-            composites.add(composite);
+
+            images.add(captchaChar);
         }
+
+        final Image captchaImage = IMAGE_SERVICE.makeImage(images);
 
         final HttpSession httpSession = request.getSession();
         LOGGER.log(Level.FINER, "Captcha[{0}] for session[id={1}]",
@@ -102,19 +101,13 @@ public final class CaptchaServlet extends HttpServlet {
                                 httpSession.getId()});
         httpSession.setAttribute(CAPTCHA, captcha);
 
-        final Image captchaImage =
-                IMAGE_SERVICE.composite(composites,
-                                        WIDTH_CAPTCHA_CHAR * LENGTH,
-                                        HEIGHT_CAPTCHA_CHAR,
-                                        0);
-
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         response.setContentType("image/png");
 
         final OutputStream outputStream = response.getOutputStream();
-        outputStream.write(captchaImage.getImageData());
+        outputStream.write(captchaImage.getData());
         outputStream.close();
     }
 }
