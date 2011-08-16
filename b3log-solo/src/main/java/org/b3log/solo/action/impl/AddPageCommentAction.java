@@ -32,9 +32,6 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.mail.MailService;
-import org.b3log.latke.mail.MailService.Message;
-import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.urlfetch.HTTPHeader;
 import org.b3log.latke.urlfetch.HTTPRequest;
@@ -48,7 +45,6 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.action.captcha.CaptchaServlet;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.impl.CommentService;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
@@ -58,6 +54,7 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
@@ -113,10 +110,6 @@ public final class AddPageCommentAction extends AbstractAction {
     private static final String DEFAULT_USER_THUMBNAIL =
             "default-user-thumbnail.png";
     /**
-     * Mail service.
-     */
-    private MailService mailService = MailServiceFactory.getMailService();
-    /**
      * URL fetch service.
      */
     private URLFetchService urlFetchService =
@@ -130,14 +123,6 @@ public final class AddPageCommentAction extends AbstractAction {
      */
     private PageCommentRepository pageCommentRepository =
             PageCommentGAERepository.getInstance();
-    /**
-     * Comment mail HTML body.
-     */
-    private static final String COMMENT_MAIL_HTML_BODY =
-            "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">"
-            + "{title}</a>]" + " received a new comment:</p>"
-            + "{commenter}: <span><a href=\"http://{commentSharpURL}\">"
-            + "{commentContent}</a></span>";
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -276,7 +261,12 @@ public final class AddPageCommentAction extends AbstractAction {
             statistics.incBlogCommentCount();
             statistics.incPublishedBlogCommentCount();
             // Step 5: Send an email to admin
-            sendNotificationMail(page, comment, originalComment);
+            try {
+                Comments.sendNotificationMail(page, comment, originalComment,
+                                              preference);
+            } catch (final Exception e) {
+                LOGGER.log(Level.WARNING, "Send mail failed", e);
+            }
             // Step 6: Fire add comment event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
@@ -299,108 +289,6 @@ public final class AddPageCommentAction extends AbstractAction {
         }
 
         return ret;
-    }
-
-    /**
-     * Sends a notification mail to administrator for notifying the specified
-     * article or page received the specified comment.
-     *
-     * @param articleOrPage the specified article or page
-     * @param comment the specified comment
-     * @param originalComment original comment, if not exists, set it as
-     * {@code null}
-     * @throws IOException io exception
-     * @throws JSONException json exception
-     */
-    private void sendNotificationMail(final JSONObject articleOrPage,
-                                      final JSONObject comment,
-                                      final JSONObject originalComment)
-            throws IOException, JSONException {
-        final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
-        final String commentId = comment.getString(Keys.OBJECT_ID);
-        final String commentContent = comment.getString(Comment.COMMENT_CONTENT).
-                replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new IOException("Not found preference");
-        }
-
-        final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
-        if (adminEmail.equalsIgnoreCase(commentEmail)) {
-            LOGGER.log(Level.FINER,
-                       "Do not send comment notification mail to admin itself[{0}]",
-                       adminEmail);
-            return;
-        }
-
-        if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
-            final String originalEmail =
-                    originalComment.getString(Comment.COMMENT_EMAIL);
-            if (originalEmail.equalsIgnoreCase(adminEmail)) {
-                LOGGER.log(Level.FINER,
-                           "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
-                           commentId);
-                return;
-            }
-        }
-
-        final String blogTitle =
-                preference.getString(Preference.BLOG_TITLE);
-        final String blogHost =
-                preference.getString(Preference.BLOG_HOST);
-        boolean isArticle = true;
-        String title =
-                articleOrPage.optString(Article.ARTICLE_TITLE);
-        if (Strings.isEmptyOrNull(title)) {
-            title = articleOrPage.getString(Page.PAGE_TITLE);
-            isArticle = false;
-        }
-
-        final String commentSharpURL =
-                comment.getString(Comment.COMMENT_SHARP_URL);
-        final Message message = new Message();
-        message.setFrom(adminEmail);
-        message.addRecipient(adminEmail);
-        String mailSubject = null;
-        String articleOrPageURL = null;
-        String mailBody = null;
-        if (isArticle) {
-            mailSubject = blogTitle + ": New comment on article ["
-                          + title + "]";
-            articleOrPageURL = "http://" + blogHost + articleOrPage.getString(
-                    Article.ARTICLE_PERMALINK);
-            mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}",
-                                                      "Article");
-        } else {
-            mailSubject = blogTitle + ": New comment on page ["
-                          + title + "]";
-            articleOrPageURL = "http://" + blogHost + "/page.do?oId="
-                               + articleOrPage.getString(Keys.OBJECT_ID);
-            mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
-        }
-
-        message.setSubject(mailSubject);
-        final String commentName = comment.getString(Comment.COMMENT_NAME);
-        final String commentURL = comment.getString(Comment.COMMENT_URL);
-        String commenter = null;
-        if (!"http://".equals(commentURL)) {
-            commenter = "<a target=\"_blank\" " + "href=\"" + commentURL
-                        + "\">" + commentName + "</a>";
-        } else {
-            commenter = commentName;
-        }
-
-        mailBody = mailBody.replace(
-                "{articleOrPageURL}", articleOrPageURL).
-                replace("{title}", title).
-                replace("{commentContent}", commentContent).
-                replace("{commentSharpURL}", blogHost + commentSharpURL).
-                replace("{commenter}", commenter);
-        message.setHtmlBody(mailBody);
-        LOGGER.log(Level.FINER,
-                   "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
-                   new Object[]{mailSubject, mailBody, adminEmail});
-        mailService.send(message);
     }
 
     /**
