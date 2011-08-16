@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Mar 7, 2011
+ * @version 1.0.0.7, Aug 16, 2011
  */
 public final class Statistics {
 
@@ -176,26 +176,6 @@ public final class Statistics {
     }
 
     /**
-     * Sets blog statistic article count with the specified count.
-     *
-     * @param count the specified blog article count
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void setBlogArticleCount(final int count)
-            throws JSONException, RepositoryException {
-        final JSONObject statistic =
-                statisticRepository.get(Statistic.STATISTIC);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-
-        statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
-                      count);
-        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
-    }
-
-    /**
      * Blog statistic view count +1.
      * 
      * <p>
@@ -273,7 +253,7 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_BLOG_ARTICLE_COUNT) + 1);
-        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
+        statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
     /**
@@ -293,7 +273,7 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT) + 1);
-        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
+        statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
     /**
@@ -352,7 +332,7 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_BLOG_COMMENT_COUNT) + 1);
-        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
+        statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
     /**
@@ -371,7 +351,7 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT,
                       statistic.getInt(
                 Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT) + 1);
-        statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
+        statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
     /**
