@@ -46,7 +46,6 @@ import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Google;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleCommentRepository;
@@ -67,7 +66,7 @@ import org.json.JSONObject;
  * Symphony</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 8, 2011
+ * @version 1.0.0.4, Aug 16, 2011
  */
 public final class AddArticleCommentFromSymphonyAction
         extends AbstractAction {
@@ -352,7 +351,7 @@ public final class AddArticleCommentFromSymphonyAction
                 comment.getString(Comment.COMMENT_SHARP_URL);
         final Message message = new Message();
         message.setFrom(adminEmail);
-        message.addRecipient(preference.getString(Preference.ADMIN_EMAIL));
+        message.addRecipient(adminEmail);
         String mailSubject = null;
         String articleOrPageURL = null;
         String mailBody = null;
@@ -391,8 +390,8 @@ public final class AddArticleCommentFromSymphonyAction
                 replace("{commenter}", commenter);
         message.setHtmlBody(mailBody);
         LOGGER.log(Level.FINER,
-                   "Sending a mail[mailSubject={0}, mailBody=[{1}] to admins",
-                   new Object[]{mailSubject, mailBody});
+                   "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
+                   new Object[]{mailSubject, mailBody, adminEmail});
         mailService.send(message);
     }
 
@@ -413,20 +412,6 @@ public final class AddArticleCommentFromSymphonyAction
     }
 
     /**
-     * Gets comment sharp URL with the specified page and comment id.
-     *
-     * @param page the specified page
-     * @param commentId the specified comment id
-     * @return comment sharp URL
-     * @throws JSONException json exception
-     */
-    private String getCommentSharpURLForPage(final JSONObject page,
-                                             final String commentId)
-            throws JSONException {
-        return page.getString(Page.PAGE_PERMALINK) + "#" + commentId;
-    }
-
-    /**
      * Sets commenter thumbnail URL for the specified comment.
      *
      * @param comment the specified comment
@@ -438,42 +423,6 @@ public final class AddArticleCommentFromSymphonyAction
         final String id = commentEmail.split("@")[0];
         final String domain = commentEmail.split("@")[1];
         String thumbnailURL = null;
-
-        // Try to set thumbnail URL using Google Buzz API
-        if ("gmail.com".equals(domain.toLowerCase())) {
-            final URL googleProfileURL =
-                    new URL(Google.GOOGLE_PROFILE_RETRIEVAL.replace("{userId}",
-                                                                    id));
-            try {
-                final HTTPRequest request = new HTTPRequest();
-                request.setURL(googleProfileURL);
-                final HTTPResponse response = urlFetchService.fetch(request);
-                final int statusCode = response.getResponseCode();
-
-                if (HttpServletResponse.SC_OK == statusCode) {
-                    final byte[] content = response.getContent();
-                    final String profileJSONString =
-                            new String(content, "UTF-8");
-                    LOGGER.log(Level.FINEST, "Google profile[jsonString={0}]",
-                               profileJSONString);
-                    final JSONObject profile = new JSONObject(profileJSONString);
-                    final JSONObject profileData = profile.getJSONObject("data");
-                    thumbnailURL = profileData.getString("thumbnailUrl");
-                    comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
-                               thumbnailURL);
-
-                    return;
-                } else {
-                    LOGGER.log(Level.WARNING,
-                               "Can not fetch google profile[userId={0}, statusCode={1}]",
-                               new Object[]{id, statusCode});
-                }
-            } catch (final Exception e) {
-                LOGGER.log(Level.WARNING,
-                           "Can not fetch google profile[userId=" + id + "", e);
-            }
-        }
 
         // Try to set thumbnail URL using Gravatar service
         final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
