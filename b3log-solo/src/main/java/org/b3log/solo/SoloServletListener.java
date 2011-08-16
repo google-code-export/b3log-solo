@@ -15,8 +15,6 @@
  */
 package org.b3log.solo;
 
-import com.google.appengine.api.images.Image;
-import com.google.appengine.api.images.ImagesServiceFactory;
 import java.io.BufferedInputStream;
 import java.net.URL;
 import java.util.HashMap;
@@ -33,6 +31,7 @@ import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.image.Image;
 import org.b3log.latke.image.ImageService;
 import org.b3log.latke.image.ImageServiceFactory;
 import org.b3log.latke.plugin.PluginManager;
@@ -238,6 +237,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
             final ImageService imageService =
                     ImageServiceFactory.getImageService();
+
             final Iterator<String> i = imageNames.iterator();
             while (i.hasNext()) {
                 final String imageName = i.next();
@@ -251,7 +251,7 @@ public final class SoloServletListener extends AbstractServletListener {
                 bufferedInputStream.close();
 
                 final Image captchaChar =
-                        ImagesServiceFactory.makeImage(captchaCharData);
+                        imageService.makeImage(captchaCharData);
 
                 CAPTCHAS.put(imageName, captchaChar);
             }
