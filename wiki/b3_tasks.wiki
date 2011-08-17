@@ -20,3 +20,4 @@
 ||13||入伙文档||J||2011-06-11||2011-07-01||2011-07-01||<font color='green'>已完成</font>|| ||
 ||14||Latke <font color='grey'>Local</font> Mail Service||J||2011-08-07||2011-10-01|| ||<font color='red'>未开始</font>|| || 
 ||15||Solo Issue 流程文档|| || || || || || ||
+||16||Latke <font color='grey'>Local</font> Image Service||D||2011-08-07||2011-10-01|| ||<font color='blue'>50%</font>|| || 
