@@ -202,7 +202,7 @@
     }
 
     var replyTo = function (id) {
-        var commentFormHTML = "<table id='replyForm' class='reply marginLeft12 marginBotton12'>";
+        var commentFormHTML = "<table id='replyForm' class='reply marginLeft12 marginBottom12'>";
         page.addReplyForm(id, commentFormHTML);
     }
 
