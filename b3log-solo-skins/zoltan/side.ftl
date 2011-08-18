@@ -1,9 +1,12 @@
+<#if "" != noticeBoard>
 <ul>
     <li>
         <h4>${noticeBoardLabel}</h4>
     </li>
     <li>${noticeBoard}</li>
 </ul>
+</#if>
+<#if 0 != recentComments?size>
 <ul>
     <li>
         <h4>${recentCommentsLabel}</h4>
@@ -24,6 +27,8 @@
         </ul>
     </li>
 </ul>
+</#if>
+<#if 0 != mostCommentArticles?size>
 <ul>
     <li>
         <h4>${mostCommentArticlesLabel}</h4>
@@ -39,6 +44,8 @@
         </ul>
     </li>
 </ul>
+</#if>
+<#if 0 != mostViewCountArticles?size>
 <ul>
     <li>
         <h4>${mostViewCountArticlesLabel}</h4>
@@ -54,6 +61,8 @@
         </ul>
     </li>
 </ul>
+</#if>
+<#if 0 != mostUsedTags?size>
 <ul>
     <li>
         <h4>${popTagsLabel}</h4>
@@ -73,6 +82,8 @@
         </ul>
     </li>
 </ul>
+</#if>
+<#if 0 != links?size>
 <ul>
     <li>
         <h4>${linkLabel}</h4>
@@ -89,6 +100,8 @@
         </ul>
     </li>
 </ul>
+</#if>
+<#if 0 != archiveDates?size>
 <ul>
     <li>
         <h4>${archiveLabel}</h4>
@@ -111,3 +124,4 @@
         </ul>
     </li>
 </ul>
+</#if>
