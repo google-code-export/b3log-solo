@@ -31,7 +31,7 @@ import org.b3log.solo.repository.impl.PageGAERepository;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jun 29, 2011
+ * @version 1.0.0.9, Aug 18, 2011
  */
 public final class Permalinks {
 
@@ -52,7 +52,7 @@ public final class Permalinks {
 
     static {
         RESERVED_LINKS.add("/");
-        RESERVED_LINKS.add("/article-detail.do");
+        RESERVED_LINKS.add("/article.do");
         RESERVED_LINKS.add("/tags.html");
         RESERVED_LINKS.add("/tags");
         RESERVED_LINKS.add("/page.do");
@@ -62,6 +62,13 @@ public final class Permalinks {
         RESERVED_LINKS.add("/error.do");
         RESERVED_LINKS.add("/file-access.do");
         RESERVED_LINKS.add("/datastore-file-access.do");
+        RESERVED_LINKS.add("/kill-browser.html");
+        RESERVED_LINKS.add("/check-login.do");
+        RESERVED_LINKS.add("/add-article-comment.do");
+        RESERVED_LINKS.add("/add-article-from-symphony-comment.do");
+        RESERVED_LINKS.add("/add-page-comment.do");
+        
+        // XXX: I think we should update to the new Latke request dispatching ASAP
 
         RESERVED_LINKS.addAll(Arrays.asList(Skips.ADMIN_ACTIONS));
     }
