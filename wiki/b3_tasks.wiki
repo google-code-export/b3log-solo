@@ -9,7 +9,7 @@
 ||2||Latke 请求分发||D||2011-08-07||2011-09-01|| ||<font color='blue'>40%</font>|| ||
 ||3||Latke <font color='brown'>GAE</font> URLFetch, User, Repository, Mail, Images Service||D||2011-08-07||2011-10-01||2011-08-16||<font color='green'>已完成</font>|| ||
 ||4||插件机制文档||D||2011-06-11||2011-08-25|| ||<font color='blue'>90%</font>|| ||
-||5||皮肤开发文档||V||2011-06-11||2011-09-01|| ||<font color='green'>已完成</font>|| ||
+||5||皮肤开发文档||V||2011-06-11||2011-09-01||2011-08-15||<font color='green'>已完成</font>|| ||
 ||6||Solo 0.3.0 发布||D, V||2011-08-25||2011-08-25|| ||<font color='red'>未开始</font>|| ||
 ||7||Latke <font color='grey'>Local</font> URLFetch Service||Y||2011-08-07||2011-10-01|| ||<font color='red'>未开始</font>|| ||
 ||8||Latke <font color='grey'>Local</font> User Service||Y||2011-08-07||2011-10-15|| ||<font color='red'>未开始</font>|| ||
