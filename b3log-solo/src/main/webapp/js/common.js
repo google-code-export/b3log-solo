@@ -30,22 +30,31 @@ var Util = {
         
     killIE: function () {
         if ($.browser.msie) {
-            var downloadHTML = "<br/> You can download \
-                <a href='http://windows.microsoft.com/zh-CN/internet-explorer/downloads/ie' target='_blank'>IE8 / IE9</a>, \
-                <a href='http://firefox.com.cn' target='_blank'>Firefox</a>, \
-                <a href='http://www.google.com/chrome' target='_blank'>Chrome</a> or \
-                <a href='http://www.maxthon.com/mx3/' target='_blank'>Maxthon</a> and so on.";
             // kill IE6 and IE7
             if ($.browser.version === "6.0" || $.browser.version === "7.0") {
-                $("body").html("Let's kill IE 6 and IE 7!" + downloadHTML);
+                window.location = "/kill-browser.html";
+                return;
             }
             
-            // kill 360
+            // 后台页面 kill 360 
             if (window.external && window.external.twGetRunPath) {
                 var path = external.twGetRunPath();
                 if(path && path.toLowerCase().indexOf("360se") > -1 && 
                     window.location.href.indexOf("admin-index") > -1) {
-                    $("body").html("Let's kill 360 or return <a href='/'>index</a>!" + downloadHTML);
+                    window.location = "/kill-browser.html";
+                    return; 
+                /* TODO: use 360 open IE
+                                     * var openByIE = function(t) {
+                        try {
+                            var sid = external.twGetSecurityID(window);
+                            alert(sid)
+                            external.twExtSendMessage2(sid,"ExtDoctor","OpenUrlByIE",t,"");
+                        }
+                        catch(e){
+                            alert(e);
+                        }
+                    }
+                    openByIE("baidu.com");*/
                 }
             }
         }
