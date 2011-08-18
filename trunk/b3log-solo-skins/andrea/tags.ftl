@@ -25,6 +25,7 @@
                             </li>
                             </#list>
                         </ul>
+                        <div class="clear"></div>
                     </div>
                     <div class="main-footer"></div>
                 </div>
