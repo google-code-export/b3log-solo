@@ -181,7 +181,6 @@ $.extend(Admin.prototype, {
     init: function () {
         window.onerror = Util.error;
         
-        // 不支持 IE 6
         Util.killIE();   
         $("#loadMsg").text(Label.loadingLabel);
         

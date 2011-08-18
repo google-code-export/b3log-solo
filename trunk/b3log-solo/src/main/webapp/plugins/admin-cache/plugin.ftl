@@ -81,7 +81,7 @@
                         + " </span>&nbsp;${hitCount1Label}<span class='f-blue'>" + result.cacheHitCount
                         + " </span>&nbsp;${hitBytes1Label}<span class='f-blue'>" + result.cacheHitBytes
                         + " </span>&nbsp;${missCount1Label}<span class='f-blue'>" + result.cacheMissCount 
-                        + " </span>&nbsp;${pageCacheStatus1Label} &nbsp; <button onclick=\"window.plugins.cacheList.changeStatus(this);\">" 
+                        + " </span>&nbsp;${pageCacheStatus1Label} &nbsp; <button onclick=\"window.plugins['cache-list'].changeStatus(this);\">" 
                         + pageCacheStatusLabel
                         + "</button><br/>"
                         + "${pageCachedCnt1Label}<span class='f-blue'>" + result.pageCachedCnt; 
