@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.1, Aug 8, 2011
+ * @version 1.0.5.2, Aug 18, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -196,7 +196,7 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) {
-                LOGGER.log(Level.SEVERE,
+                LOGGER.log(Level.WARNING,
                            "Can't not init default skin, please init B3log Solo first");
                 return;
             }

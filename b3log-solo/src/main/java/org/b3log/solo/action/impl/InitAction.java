@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractAction;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * B3log Solo initialization action. init.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jul 27, 2011
+ * @version 1.0.0.7, Aug 18, 2011
  */
 public final class InitAction extends AbstractAction {
 
@@ -57,7 +56,7 @@ public final class InitAction extends AbstractAction {
     /**
      * FreeMarker configuration.
      */
-    private Configuration configuration;
+    public static final Configuration TEMPLATE_CFG;
     /**
      * Language service.
      */
@@ -66,6 +65,18 @@ public final class InitAction extends AbstractAction {
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
+    static {
+        TEMPLATE_CFG = new Configuration();
+        TEMPLATE_CFG.setDefaultEncoding("UTF-8");
+        try {
+            final String webRootPath = SoloServletListener.getWebRoot();
+
+            TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(webRootPath));
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -107,24 +118,11 @@ public final class InitAction extends AbstractAction {
     }
 
     @Override
-    public void init() throws ServletException {
-        configuration = new Configuration();
-        configuration.setDefaultEncoding("UTF-8");
-        try {
-            final String webRootPath = SoloServletListener.getWebRoot();
-
-            configuration.setDirectoryForTemplateLoading(new File(webRootPath));
-        } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
-
-    @Override
     protected Template getTemplate(final HttpServletRequest request) {
         final String pageName = getTemplateName(request.getRequestURI());
 
         try {
-            return configuration.getTemplate(pageName);
+            return TEMPLATE_CFG.getTemplate(pageName);
         } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Can't find template by the specified request[URI="
                                      + request.getRequestURI() + "]",
