@@ -15,8 +15,8 @@
  */
 package org.b3log.solo.action.impl;
 
-import freemarker.template.Configuration;
-import java.util.Calendar;
+import freemarker.template.Template;
+import java.io.IOException;
 import org.b3log.latke.action.ActionException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,21 +24,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
-import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Common;
+import org.b3log.solo.action.util.Filler;
+import org.b3log.solo.model.PageTypes;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
 /**
- * B3log Solo initialization action. kill-browser.ftl.
+ * Kill browser action. kill-browser.ftl.
  *
  * @author <a href="mailto:LLY2190@gmail.com">Liyuan Li</a>
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Aug 18, 2011
  */
-public final class KillBrowserAction extends AbstractAction {
+public final class KillBrowserAction extends AbstractFrontPageAction {
 
     /**
      * Default serial version uid.
@@ -50,13 +50,17 @@ public final class KillBrowserAction extends AbstractAction {
     private static final Logger LOGGER =
             Logger.getLogger(KillBrowserAction.class.getName());
     /**
-     * FreeMarker configuration.
-     */
-    private Configuration configuration;
-    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Filler.
+     */
+    private Filler filler = Filler.getInstance();
+    /**
+     * Preference utilities.
+     */
+    private Preferences preferenceUtils = Preferences.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -64,41 +68,45 @@ public final class KillBrowserAction extends AbstractAction {
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
+
         try {
             final Map<String, String> langs =
                     langPropsService.getAll(Locales.getLocale(request));
             ret.putAll(langs);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
+            final JSONObject preference = preferenceUtils.getPreference();
+            filler.fillBlogFooter(ret, preference);
+            filler.fillMinified(ret);
 
-        ret.put(Common.VERSION, SoloServletListener.VERSION);
-        ret.put(Common.YEAR,
-                String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+            request.setAttribute(CACHED_OID, "No id");
+            request.setAttribute(CACHED_TITLE, "Kill Browser Page");
+            request.setAttribute(CACHED_TYPE,
+                                 langs.get(PageTypes.KILL_BROWSER_PAGE));
+            request.setAttribute(CACHED_LINK, request.getRequestURI());
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ActionException(e);
+        }
 
         return ret;
     }
 
     @Override
     protected JSONObject doAjaxAction(final JSONObject data,
-            final HttpServletRequest request,
-            final HttpServletResponse response)
+                                      final HttpServletRequest request,
+                                      final HttpServletResponse response)
             throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
-    /**
-     * Returns "kill-browser.ftl".
-     * 
-     * <p>
-     * Ignores the specified request URI
-     * </p>
-     * 
-     * @param requestURI the specified request URI
-     * @return "kill-browser.ftl"
-     */
+
     @Override
-    protected String getTemplateName(final String requestURI) {
-        return "kill-browser.ftl";
+    protected Template getTemplate(final HttpServletRequest request) {
+        try {
+            return InitAction.TEMPLATE_CFG.getTemplate("kill-browser.ftl");
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Can't find template by the specified request[URI="
+                                     + request.getRequestURI() + "]",
+                       e.getMessage());
+            return null;
+        }
     }
 }

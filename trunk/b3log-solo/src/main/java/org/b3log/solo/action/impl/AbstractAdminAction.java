@@ -15,9 +15,7 @@
  */
 package org.b3log.solo.action.impl;
 
-import freemarker.template.Configuration;
 import freemarker.template.Template;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
@@ -25,14 +23,12 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
@@ -41,7 +37,7 @@ import org.json.JSONObject;
  * Abstract admin action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jun 28, 2011
+ * @version 1.0.0.7, Aug 18, 2011
  */
 public abstract class AbstractAdminAction extends AbstractAction {
 
@@ -59,26 +55,9 @@ public abstract class AbstractAdminAction extends AbstractAction {
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
-     * FreeMarker configuration.
-     */
-    private Configuration configuration;
-    /**
      * Preference utilities.
      */
     private Preferences preferenceUtils = Preferences.getInstance();
-
-    @Override
-    public void init() throws ServletException {
-        configuration = new Configuration();
-        configuration.setDefaultEncoding("UTF-8");
-        try {
-            final String webRootPath = SoloServletListener.getWebRoot();
-
-            configuration.setDirectoryForTemplateLoading(new File(webRootPath));
-        } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -137,7 +116,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
         final String pageName = getTemplateName(request.getRequestURI());
 
         try {
-            return configuration.getTemplate(pageName);
+            return InitAction.TEMPLATE_CFG.getTemplate(pageName);
         } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Can't find template by the specified request[URI="
                                      + request.getRequestURI() + "]",
