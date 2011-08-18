@@ -81,6 +81,17 @@ body {
 .introContent p {
     margin: 12px 0;
 }
+
+.kill {
+    position: relative;
+}
+
+.kill img {
+    position: absolute;
+    right: 36px;
+    top: 86px;
+}
+
 .logoSpan span {
     margin-right: -4px;
 }

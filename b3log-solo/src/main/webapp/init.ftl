@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="robots" content="none"/>
+        <meta charset="utf-8" />
         <title>${welcomeToSoloLabel}</title>
+        <meta name="keywords" content="GAE 博客,GAE blog,b3log,init"/>
+        <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客,初始化程序"/>
+        <meta name="author" content="B3log Team"/>
+        <meta name="generator" content="B3log"/>
+        <meta name="copyright" content="B3log"/>
+        <meta name="revised" content="B3log, ${year}"/>
+        <meta name="robots" content="noindex, follow"/>
+        <meta http-equiv="Window-target" content="_top"/>
         <link type="text/css" rel="stylesheet" href="/css/default-base${miniPostfix}.css"/>
         <link type="text/css" rel="stylesheet" href="/css/default-init${miniPostfix}.css"/>
         <link rel="icon" type="image/png" href="/favicon.png"/>
