@@ -120,6 +120,9 @@
     word-wrap: break-word;
     table-layout: fixed;
 }
+.table-main .table-body table {
+    background-image: none;
+}
 
 .table-header {
     border-radius: 5px 5px 0 0;
@@ -144,6 +147,7 @@
     color: #333;
     padding: 3px 0;
 }
+
 .table-lineHover .table-hasExpend td {
     border-bottom: 0px;
 }

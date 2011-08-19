@@ -257,7 +257,7 @@ a:hover {
 .module-header a {
     text-decoration: none;
 }
-/* end common */
+/* end module */
 
 /* article sync */
 #syncBlogType {
@@ -320,4 +320,14 @@ a:hover {
     background-color: #ECECEC;
     background-image: none;
     color: #555555;
+}
+
+/* start common list */
+#commentTable .table-hasExpend {
+    line-height: 24px;
+}
+.small-head {
+    height: 24px;
+    width: 24px;
+    margin-right: 3px;
 }
