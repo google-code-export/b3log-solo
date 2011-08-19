@@ -31,8 +31,7 @@ var Util = {
     killIE: function () {
         if ($.browser.msie) {
             // kill IE6 and IE7
-            if ($.browser.version === "6.0" || 
-                ($.browser.version === "7.0" && window.location.href.indexOf("admin-index") > -1)) {
+            if ($.browser.version === "6.0" || $.browser.version === "7.0") {
                 window.location = "/kill-browser.html";
                 return;
             }
