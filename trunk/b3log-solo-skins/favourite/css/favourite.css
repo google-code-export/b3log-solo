@@ -285,8 +285,6 @@ h5 {
 .comment-form textarea {
 	font-size: 12px;
 	height: auto;
-	overflow: auto;
-	width: 601px;
 }
 .comment-form button {
 	background: none repeat scroll 0 0 #B4D666;

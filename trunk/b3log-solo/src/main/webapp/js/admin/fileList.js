@@ -62,13 +62,12 @@ admin.fileList = {
         $("#formActionHidden").load(function () {
             admin.fileList.getList(1);
             var $iframe = $("#formActionHidden").contents();
-            if ($iframe.find("pre").length === 1) {
-                $("#tipMsg").html($iframe.find("pre").html());
-            } else if ($iframe.find("#loadMsg").length === 1) {
-                $("#tipMsg").html(Label.addSuccLabel);
+            var tip = $iframe.find("pre").html();
+            if (tip === "") {
+                tip = Label.addSuccLabel; 
                 $("#uploadFile").html("<input type='file' name='myFile' size='45'>");
             }
-            $iframe.find("html").html("");
+            $("#tipMsg").html(tip);
         });
     },
 
