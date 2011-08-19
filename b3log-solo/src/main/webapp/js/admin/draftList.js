@@ -18,7 +18,7 @@
  * draft list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, July 24, 2011
+ * @version 1.0.0.7, Aug 19, 2011
  */
 
 /* draft-list 相关操作 */
@@ -91,9 +91,10 @@ admin.draftList = {
                             articleData[i].comments = articles[i].articleCommentCount;
                             articleData[i].articleViewCount = articles[i].articleViewCount;
                             articleData[i].author = articles[i].authorName;
-                            articleData[i].title = articles[i].articleTitle;
-                            articleData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', false);\">" + Label.updateLabel + "</a>  \
-                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'draft'\">" + Label.removeLabel + "</a>  \
+                            articleData[i].title = "<a class='no-underline' href='" + articles[i].articlePermalink + "' target='_blank'>" + articles[i].articleTitle + "</a>";
+                            articleData[i].expendRow = "<a target='_blank' href='" + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
+                                <a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', false);\">" + Label.updateLabel + "</a>  \
+                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'draft')\">" + Label.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + articles[i].oId + "', 'draft')\">" + Label.commentLabel + "</a>";
                         }
                     

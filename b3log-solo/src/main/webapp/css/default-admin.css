@@ -2,7 +2,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Aug 10, 2011
+ * @version 1.0.0.8, Aug 19, 2011
 */
 /* start resset */
 *, input, textarea {
@@ -108,7 +108,7 @@ a:hover {
     background-color: #ECECEC;
     border-bottom: 1px solid #DFDFDF;
     border-top: 1px solid #F9F9F9;
-    padding: 3px 0 3px 12px;
+    padding: 3px 6px 3px 12px;
 }
 #comments {
     height: 462px;

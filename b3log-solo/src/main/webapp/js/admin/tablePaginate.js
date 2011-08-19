@@ -18,7 +18,7 @@
  * table and paginate util
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, July 24, 2011
+ * @version 1.0.0.6, Aug 19, 2011
  */
 
 var TablePaginate = function (id) {
@@ -91,7 +91,7 @@ $.extend(TablePaginate.prototype, {
             alert(Label.pageLabel + ":" + currentPage + " " + Label.noDataLable);
             return;
         }
-        $("#" + this.id + "Table").table("update",{
+        $("#" + this.id + "Table").table("update", {
             data: [{
                 groupName: "all",
                 groupData: data
