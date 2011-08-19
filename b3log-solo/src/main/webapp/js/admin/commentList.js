@@ -18,7 +18,7 @@
  * comment list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, July 24, 2011
+ * @version 1.0.0.5, Aug 19, 2011
  */
 
 /* comment-list 相关操作 */
@@ -45,7 +45,7 @@ admin.commentList = {
         }, {
             text: Label.authorLabel,
             index: "userName",
-            width: 100,
+            width: 120,
             style: "padding-left: 12px;"
         }, {
             text: Label.commentEmailLabel,
@@ -83,21 +83,33 @@ admin.commentList = {
                         commentsData = [];
                         for (var i = 0; i < comments.length; i++) {
                             commentsData[i] = {};
+                            
                             commentsData[i].content = Util.replaceEmString(comments[i].commentContent);
+                            
                             commentsData[i].title = "<a href='" + comments[i].commentSharpURL + 
                             "' target='_blank'>" + comments[i].commentTitle +
                             "</a>";
+                        
+                            commentsData[i].userName  = "<img class='small-head' src='" + comments[i].commentThumbnailURL + "'/>";
                             if ("http://" === comments[i].commentURL) {
-                                commentsData[i].userName =comments[i].commentName;
+                                commentsData[i].userName += comments[i].commentName;
                             } else {
                                 commentsData[i].userName = "<a href='" + comments[i].commentURL +
-                                "' target='_blank'>" + comments[i].commentName + 
+                                "' target='_blank' class='no-underline'>" + commentsData[i].userName + comments[i].commentName + 
                                 "</a>";
                             }
+                            
                             commentsData[i].userEmail = "<a href='mailto:" + comments[i].commentEmail +
                             "'>" + comments[i].commentEmail + "</a>";
+                        
                             commentsData[i].date = $.bowknot.getDate(comments[i].commentDate.time, 1);
-                            commentsData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.commentList.del('" + comments[i].oId + "', 'article')\">" + Label.removeLabel + "</a>";
+                            
+                            var type = "Article"
+                            if (comments[i].type === "pageComment") {
+                                type = "Page"
+                            }
+                            commentsData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.commentList.del('" +
+                            comments[i].oId + "', '" + type + "')\">" + Label.removeLabel + "</a>";
                         }
                         that.tablePagination.updateTablePagination(commentsData, pageNum, result.pagination);
                         break;
@@ -114,11 +126,12 @@ admin.commentList = {
     /* 
      * 删除评论
      * @id 评论 id 
+     * @type 评论类型：文章/自定义页面
      */
-    del: function (id) {
+    del: function (id, type) {
         if (confirm(Label.confirmRemoveLabel)) {
             $("#loadMsg").text(Label.loadingLabel);
-            jsonRpc.commentService.removeCommentOfArticle(function (result, error) {
+            jsonRpc.commentService["removeCommentOf" + type](function (result, error) {
                 try {
                     switch (result.sc) {
                         case "REMOVE_COMMENT_FAIL_FORBIDDEN":
