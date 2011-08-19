@@ -25,7 +25,7 @@
    * 皮肤开发
      * [develop_steps 开发步骤]
      * [template_variables 模板变量]
-   * [https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w 插件开发]
+     * [https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w 插件开发]
  * B3log 团队
     * [join_us 加入 B3log 团队]
     * [about_us 关于我们]
