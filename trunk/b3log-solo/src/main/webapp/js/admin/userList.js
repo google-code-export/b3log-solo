@@ -89,7 +89,7 @@ admin.userList = {
                         admin.userList.pageInfo.pageCount = result.pagination.paginationPageCount;
                         if (users.length < 1) {
                             alert("No user\n " + Label.reportIssueLabel);
-                             $("#loadMsg").text("");
+                            $("#loadMsg").text("");
                             return;
                         }
                     
@@ -145,11 +145,10 @@ admin.userList = {
                                 admin.userList.pageInfo.pageCount++;
                             }
                             var hashList = window.location.hash.split("/");
-                            if (admin.userList.pageInfo.pageCount == hashList[hashList.length - 1]) {
-                                admin.userList.getList(admin.userList.pageInfo.pageCount);
-                            } else {
+                            if (admin.userList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
                                 admin.setHashByPage(admin.userList.pageInfo.pageCount);
                             }
+                            admin.userList.getList(admin.userList.pageInfo.pageCount);
                             $("#tipMsg").text(Label.addSuccLabel);
                             break;
                         case "ADD_USER_FAIL_DUPLICATED_EMAIL":
@@ -204,7 +203,7 @@ admin.userList = {
     },
     
     /*
-     * 跟新自定义页面
+     * 更新自定义页面
      */
     update: function () {
         if (this.validate("Update")) {
@@ -264,11 +263,10 @@ admin.userList = {
                                 pageNum = admin.userList.pageInfo.pageCount;
                             }
                             var hashList = window.location.hash.split("/");
-                            if (pageNum == hashList[hashList.length - 1]) {
-                                admin.userList.getList(pageNum);
-                            } else {
+                            if (pageNum !== parseInt(hashList[hashList.length - 1])) {
                                 admin.setHashByPage(pageNum);
                             }
+                            admin.userList.getList(pageNum);
                             $("#tipMsg").text(Label.removeSuccLabel);
                             break;
                         case "REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS":
@@ -316,5 +314,7 @@ admin.userList = {
 admin.register["user-list"] =  {
     "obj": admin.userList,
     "init": admin.userList.init,
-    "refresh": admin.userList.getList
+    "refresh": function () {
+        $("#loadMsg").text("");
+    }
 }

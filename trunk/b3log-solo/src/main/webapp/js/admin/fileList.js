@@ -18,7 +18,7 @@
  * file list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, July 24, 2011
+ * @version 1.0.0.6, Aug 19, 2011
  */
 
 /* file-list 相关操作 */
@@ -135,11 +135,10 @@ admin.fileList = {
                                 pageNum = admin.fileList.pageInfo.pageCount;
                             }
                             var hashList = window.location.hash.split("/");
-                            if (pageNum == hashList[hashList.length - 1]) {
-                                admin.fileList.getList(pageNum);
-                            } else {
+                            if (pageNum !== parseInt(hashList[hashList.length - 1])) {
                                 admin.setHashByPage(pageNum);
                             }
+                            admin.fileList.getList(pageNum);
                             $("#tipMsg").text(Label.removeSuccLabel);
                             break;
                         case "REMOVE_FILE_FAIL_":
@@ -163,5 +162,7 @@ admin.fileList = {
 admin.register["file-list"] =  {
     "obj": admin.fileList,
     "init": admin.fileList.init,
-    "refresh": admin.fileList.getList
+    "refresh": function () {
+        $("#loadMsg").text("");
+    }
 }

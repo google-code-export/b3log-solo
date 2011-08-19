@@ -18,7 +18,7 @@
  *  util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Aug 10, 2011
+ * @version 1.0.0.8, Aug 19, 2011
  */
 
 var Util = {
@@ -31,7 +31,8 @@ var Util = {
     killIE: function () {
         if ($.browser.msie) {
             // kill IE6 and IE7
-            if ($.browser.version === "6.0" || $.browser.version === "7.0") {
+            if ($.browser.version === "6.0" || 
+                ($.browser.version === "7.0" && window.location.href.indexOf("admin-index") > -1)) {
                 window.location = "/kill-browser.html";
                 return;
             }

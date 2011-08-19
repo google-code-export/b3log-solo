@@ -18,7 +18,7 @@
  *  common comment for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Jun 28, 2011
+ * @version 1.0.0.2, Aug 19, 2011
  */
 
 admin.comment = { 
@@ -37,7 +37,7 @@ admin.comment = {
      * @id 该评论对应的 id
      * @fromId 该评论来自文章/草稿/自定义页面
      */
-    getList: function (id, fromId) {
+    getList: function (articleId, fromId) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#" + fromId + "Comments").html("");
         
@@ -54,14 +54,7 @@ admin.comment = {
                         for (var i = 0; i < comments.length; i++) {
                             var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>",
                             content = comments[i].commentContent;
-                            var ems = content.split("[em");
-                            var contentHTML = ems[0];
-                            for (var j = 1; j < ems.length; j++) {
-                                var key = ems[j].substr(0, 2),
-                                emImgHTML = "<img src='/skins/classic/emotions/em" + key
-                                + ".png'/>";
-                                contentHTML += emImgHTML + ems[j].slice(3);
-                            }
+                            contentHTML = Util.replaceEmString(content);
                         
                             if (comments[i].commentURL === "http://") {
                                 hrefHTML = "<a target='_blank'>";
@@ -74,7 +67,7 @@ admin.comment = {
                                 commentsHTML += "@" + comments[i].commentOriginalCommentName;
                             }
                             commentsHTML += "</span><span title='" + Label.removeLabel + "' class='right deleteIcon' onclick=\"admin.comment.del('"
-                            + comments[i].oId + "', '" + fromId + "')\"></span><span class='right'><a href='mailto:"
+                            + comments[i].oId + "', '" + fromId + "', '" + articleId + "')\"></span><span class='right'><a href='mailto:"
                             + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
                             + $.bowknot.getDate(comments[i].commentDate.time, 1)
                             + "&nbsp;</span><div class='clear'></div></div><div class='margin12'>"
@@ -91,7 +84,7 @@ admin.comment = {
                 $("#loadMsg").text("");
             } catch (e) {}
         }, {
-            "oId": id
+            "oId": articleId
         });
     },
     
@@ -100,7 +93,7 @@ admin.comment = {
      * @id 评论 id
      * @fromId 该评论来自文章/草稿/自定义页面
      */
-    del: function (id, fromId) {
+    del: function (id, fromId, articleId) {
         var isDelete = confirm(Label.confirmRemoveLabel);
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
@@ -115,7 +108,7 @@ admin.comment = {
                             $("#tipMsg").text(Label.forbiddenLabel);
                             break;
                         case "REMOVE_COMMENT_SUCC":
-                            admin.comment.getList(id, fromId);
+                            admin.comment.getList(articleId, fromId);
                             $("#tipMsg").text(Label.removeSuccLabel);
                             break;
                         default:
