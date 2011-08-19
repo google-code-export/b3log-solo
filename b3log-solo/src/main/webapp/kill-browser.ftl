@@ -39,16 +39,16 @@
                         </p>
                         <ul>
                             <li>
-                                <a href="http://firefox.com.cn" target="_blank">Firefox</a>
+                                <a href="http://www.mozilla.com/" target="_blank">Firefox</a>
                             </li>
                             <li>
                                 <a href="http://www.google.com/chrome" target="_blank">Chrome</a>
                             </li>
                             <li>
-                                <a href="http://windows.microsoft.com/zh-CN/internet-explorer/downloads/ie" target="_blank">IE8 / IE9</a>
+                                <a href="http://windows.microsoft.com/en-US/internet-explorer/downloads/ie" target="_blank">IE8 / IE9</a>
                             </li>
                             <li>
-                                <a href="http://www.maxthon.com/mx3/" target="_blank">Maxthon</a> and 
+                                <a href="http://www.maxthon.com/" target="_blank">Maxthon</a> and 
                                 <a href="http://www.google.com" target="_blank">so on</a>.
                             </li>
                         </ul>
