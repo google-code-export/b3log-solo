@@ -67,7 +67,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.1, Jul 17, 2011
+ * @version 1.0.4.2, Aug 19, 2011
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -181,18 +181,19 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 final JSONObject articleCommentRel =
                         articleCommentRepository.getByCommentId(cmtId);
                 if (null != articleCommentRel) {
-
                     final JSONObject article =
                             articleRepository.get(articleCommentRel.getString(
                             Article.ARTICLE + "_" + Keys.OBJECT_ID));
                     title = article.getString(Article.ARTICLE_TITLE);
-                } else {
+                    comment.put(Common.TYPE, Common.ARTICLE_COMMENT_TYPE);
+                } else { // It's a comment of page
                     final JSONObject pageCommentRel =
                             pageCommentRepository.getByCommentId(cmtId);
 
                     final JSONObject page = pageRepository.get(pageCommentRel.
                             getString(Page.PAGE + "_" + Keys.OBJECT_ID));
                     title = page.getString(Page.PAGE_TITLE);
+                    comment.put(Common.TYPE, Common.PAGE_COMMENT_TYPE);
                 }
 
                 comment.put(Common.COMMENT_TITLE, title);
