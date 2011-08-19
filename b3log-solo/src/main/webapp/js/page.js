@@ -290,7 +290,7 @@ $.extend(Page.prototype, {
                 }
             });
         } catch (e) {
-            // 忽略相关文章加载异常：load script error
+        // 忽略相关文章加载异常：load script error
         }
     },
     
@@ -327,7 +327,6 @@ $.extend(Page.prototype, {
                     switch (result.sc) {
                         case "COMMENT_" + type.toUpperCase() + "_SUCC":
                             addComment(result, statue);
-                            window.location.hash = "#comments";
                             break;
                         case "CAPTCHA_ERROR":
                             $("#commentErrorTip" + statue).html(tips.captchaErrorLabel);
@@ -370,26 +369,29 @@ $.extend(Page.prototype, {
             
             $("#commentEmailReply").val(Cookie.readCookie("commentEmail"));
             
-            var $label = $("#commentURLLabel");
+            var $label = $("#replyForm #commentURLLabel");
             if ($label.length === 1) {
-                $label.attr("id", $label.attr("id") + "Reply");
+                $label.attr("id", "commentURLLabelReply");
             }
+            
             $("#commentURLReply").val(Cookie.readCookie("commentURL"));
             
-            $("#emotions").attr("id", $("#emotions").attr("id") + "Reply");
+            $("#replyForm #emotions").attr("id", "emotionsReply");
+            
             this.insertEmotions("Reply");
             
-            $("#commentValidateReply").keypress(function (event) {
+            $("#commentValidateReply").unbind().keypress(function (event) {
                 if (event.keyCode === 13) {
                     that.submitComment(id, 'Reply');
+                    event.preventDefault();
                 }
             });
-            $("#captcha").attr("id", $("#captcha").attr("id") + "Reply").
+            $("#replyForm #captcha").attr("id", "captchaReply").
             attr("src", "/captcha.do?" + new Date().getTime());
-            $("#commentErrorTip").attr("id", $("#commentErrorTip").attr("id") + "Reply").html("");
+        
+            $("#replyForm #commentErrorTip").attr("id", "commentErrorTipReply").html("");
             
-            $("#submitCommentButton").attr("id", $("#submitCommentButtonReply").attr("id") + "Reply").
-            removeAttr("onclick").click(function () {
+            $("#replyForm #submitCommentButton").attr("id", "submitCommentButtonReply").click(function () {
                 that.submitComment(id, 'Reply');
             });
             
@@ -421,6 +423,7 @@ $.extend(Page.prototype, {
         } else {
             $("#replyForm").remove();
         }
+        window.location.hash = "#comments";
     }
 });
 
