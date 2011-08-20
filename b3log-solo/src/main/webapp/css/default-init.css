@@ -108,3 +108,7 @@ body {
     text-align: center;
     width: 100%;
 }
+
+.footerWrapper a {
+    text-decoration: none;
+}
