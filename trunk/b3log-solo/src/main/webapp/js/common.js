@@ -29,6 +29,9 @@ var Util = {
     },
         
     killIE: function () {
+        if (window.location.href.indexOf("init.do") > -1) {
+            return;
+        }
         if ($.browser.msie) {
             // kill IE6 and IE7
             if ($.browser.version === "6.0" || $.browser.version === "7.0") {
