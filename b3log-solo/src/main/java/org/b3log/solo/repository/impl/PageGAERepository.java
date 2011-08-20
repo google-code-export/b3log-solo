@@ -20,15 +20,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeEnv;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.json.JSONArray;
@@ -39,7 +36,7 @@ import org.json.JSONObject;
  * Page Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 20, 2011
+ * @version 1.0.0.5, Aug 20, 2011
  */
 public final class PageGAERepository extends AbstractGAERepository
         implements PageRepository {
@@ -49,23 +46,6 @@ public final class PageGAERepository extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(PageGAERepository.class.getName());
-    /**
-     * Cache.
-     */
-    private static final Cache<String, Object> CACHE;
-
-    static {
-        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
-        if (!runtimeEnv.equals(RuntimeEnv.GAE)) {
-            throw new IllegalStateException(
-                    "GAE repository can only runs on Google App Engine, please "
-                    + "check your configuration and make sure "
-                    + "Latkes.setRuntimeEnv(RuntimeEnv.GAE) was invoked before "
-                    + "using GAE repository.");
-        }
-
-        CACHE = CacheFactory.getCache("PageGAERepositoryCache");
-    }
 
     @Override
     public String getName() {
@@ -134,31 +114,17 @@ public final class PageGAERepository extends AbstractGAERepository
 
     @Override
     public List<JSONObject> getPages() throws RepositoryException {
-        final String cacheKey = "[pages]";
-        @SuppressWarnings("unchecked")
-        List<JSONObject> ret = (List<JSONObject>) CACHE.get(cacheKey);
-        if (null != ret) {
-            LOGGER.log(Level.FINEST, "Got the pages from cache");
-        } else {
-            ret = new ArrayList<JSONObject>();
-            final org.b3log.latke.repository.Query query =
-                    new org.b3log.latke.repository.Query().addSort(
-                    Page.PAGE_ORDER, SortDirection.ASCENDING);
-            final JSONObject result = get(query);
+        List<JSONObject> ret = new ArrayList<JSONObject>();
+        final Query query = new Query().addSort(
+                Page.PAGE_ORDER, SortDirection.ASCENDING);
+        final JSONObject result = get(query);
 
-            try {
-                ret =
-                        org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
-                        getJSONArray(Keys.RESULTS));
-            } catch (final JSONException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                throw new RepositoryException(e);
-            }
-
-            CACHE.put(cacheKey, ret);
-
-            LOGGER.log(Level.FINEST,
-                       "Got the pages, then put it into cache");
+        try {
+            ret = CollectionUtils.jsonArrayToList(
+                    result.getJSONArray(Keys.RESULTS));
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
         }
 
         return ret;
