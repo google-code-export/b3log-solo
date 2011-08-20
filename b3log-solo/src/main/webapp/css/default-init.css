@@ -12,6 +12,11 @@ body {
     color: #4D505D;
     height: 100%;
 }
+
+a  {
+    text-decoration: none;
+}
+
 .wrapper {
     height: auto;
     min-height: 100%;
