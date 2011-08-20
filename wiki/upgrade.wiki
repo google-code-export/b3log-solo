@@ -4,6 +4,7 @@
 如果部署了新版本，除了按照新版的升级操作步骤（该步骤会在每次新版本的[http://code.google.com/p/b3log-solo/wiki/upgrade#%E5%8F%91%E5%B8%83%E8%AE%B0%E5%BD%95 发布记录]里说明）进行操作，还需要在 [http://appengine.google.com GAE 管理控制台]进行版本切换。
 
 ===发布记录===
+ # [http://88250.b3log.org/b3log-solo-release-030.html GAE 博客——B3log Solo 0.3.0 正式版发布了！]
  # [http://88250.b3log.org/b3log-solo-release-026.html GAE 博客——B3log Solo 0.2.6 正式版发布了！]
  # [http://88250.b3log.org/b3log-solo-release-025.html GAE 博客——B3log Solo 0.2.5 正式版发布了！]
  # [http://88250.b3log.org/b3log-solo-release-025-beta2.html GAE 博客——B3log Solo 0.2.5 Beta2 发布了！]
@@ -15,7 +16,7 @@
  # [http://88250.b3log.org/articles/2010/09/26/1285519372666.html B3log Solo 0.1.0-preview2 发布了！]
  # [http://88250.b3log.org/articles/2010/09/08/1283986560000.html Solo 0.1.0-Preview1 发布了]
 
-_注_：
+_注意_：
 <ul>
 <li><font color='red'>*不能进行跨版本升级*</font></li>
 <li>调整索引引起的 404</li>
