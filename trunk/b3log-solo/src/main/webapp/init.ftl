@@ -21,9 +21,6 @@
         <div class="wrapper">
             <div class="wrap">
                 <div class="content">
-                    <a href="http://b3log-solo.googlecode.com" target="_blank">
-                        <img style="width:16px;height:16px;" class="introSign" alt="B3log" title="B3log" src="/favicon.png"/>
-                    </a>
                     <div class="left introImg">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
                             <img style="width: 153px;height:56px;" alt="B3log" title="B3log" src="/images/logo.png"/>
@@ -34,6 +31,10 @@
                         <button onclick='initSys();'>${initLabel}</button>
                     </div>
                     <div class="clear"></div>
+
+                    <a href="http://b3log-solo.googlecode.com" target="_blank">
+                        <img style="width:16px;height:16px;" class="introSign" alt="B3log" title="B3log" src="/favicon.png"/>
+                    </a>
                 </div>
             </div>
 
