@@ -19,12 +19,12 @@
         <div class="wrapper">
             <div class="wrap">
                 <div class="content">
-                    <div class="left introImg">
+                    <div class="introImg">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
                             <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="/images/logo.png"/>
                         </a>
                     </div>
-                    <div class="left introContent kill">
+                    <div class="introContent">
                         <h2>
                             Let's kill outdated and insecure browser!
                         </h2>
@@ -51,7 +51,6 @@
                         </ul>
                         <img src='/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
                     </div>
-                    <div class="clear"></div>
 
                     <a href="http://b3log-solo.googlecode.com" target="_blank">
                         <img border="0" style="width:16px;height:16px;" class="introSign" alt="B3log" title="B3log" src="/favicon.png"/>

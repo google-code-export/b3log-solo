@@ -11,10 +11,7 @@ body {
     background-color: #F3F1E5;
     color: #4D505D;
     height: 100%;
-}
-
-a  {
-    text-decoration: none;
+    font-size: 12px;
 }
 
 .wrapper {
@@ -55,9 +52,15 @@ a  {
     font-size: 15px;
     margin: 24px 0;
     padding: 12px 24px;
+    position: absolute;
+    right: 0;
+    top: 0;
     width: 470px;
 }
 .introContentLogin {
+   position: absolute;
+    right: 0;
+    top: 0;
     border-left: 1px solid #E6E5D9;
     font-size: 15px;
     margin: 24px 0;
@@ -87,12 +90,7 @@ a  {
 .introContent p {
     margin: 12px 0;
 }
-
-.kill {
-    position: relative;
-}
-
-.kill img {
+.introContent img {
     position: absolute;
     right: 36px;
     top: 86px;
