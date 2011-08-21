@@ -280,8 +280,6 @@ public final class AddArticleCommentFromSymphonyAction
                     new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE,
                                           eventData));
 
-            PageCaches.removeAll();
-
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
             ret.put(Keys.OBJECT_ID, commentId);
@@ -292,6 +290,8 @@ public final class AddArticleCommentFromSymphonyAction
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
+
+        PageCaches.removeAll();
 
         return ret;
     }

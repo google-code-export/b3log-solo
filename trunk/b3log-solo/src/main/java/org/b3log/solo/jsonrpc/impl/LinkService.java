@@ -21,7 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
@@ -267,18 +266,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             final JSONObject oldLink = linkRepository.get(linkId);
             link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
 
-            final String linkAddress =
-                    link.getString(Link.LINK_ADDRESS);
-            if (!StringUtils.startsWithIgnoreCase(linkAddress, "http://")
-                && !StringUtils.startsWithIgnoreCase(linkAddress, "ftp://")
-                && !StringUtils.startsWithIgnoreCase(linkAddress, "https://")) {
-                // Default to HTTP protocol
-                link.put(Link.LINK_ADDRESS, "http://" + linkAddress);
-            }
-
             linkRepository.update(linkId, link);
-
-            PageCaches.removeAll();
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_SUCC);
@@ -298,6 +286,8 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                 throw new ActionException(ex);
             }
         }
+
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -338,8 +328,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.FINER, "Removing a link[oId={0}]", linkId);
             linkRepository.remove(linkId);
 
-            PageCaches.removeAll();
-
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_LINK_SUCC);
 
@@ -357,6 +345,8 @@ public final class LinkService extends AbstractGAEJSONRpcService {
                 throw new ActionException(ex);
             }
         }
+
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -399,16 +389,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject link =
                     requestJSONObject.getJSONObject(Link.LINK);
-            final String linkAddress =
-                    link.getString(Link.LINK_ADDRESS);
-
-            if (!StringUtils.startsWithIgnoreCase(linkAddress, "http://")
-                && !StringUtils.startsWithIgnoreCase(linkAddress, "ftp://")
-                && !StringUtils.startsWithIgnoreCase(linkAddress, "https://")) {
-                // Default to HTTP protocol
-                link.put(Link.LINK_ADDRESS, "http://" + linkAddress);
-            }
-
             final int maxOrder = linkRepository.getMaxOrder();
             link.put(Link.LINK_ORDER, maxOrder + 1);
             final String linkId = linkRepository.add(link);

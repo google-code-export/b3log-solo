@@ -435,8 +435,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             eventManager.fireEventSynchronously(
                     new Event<String>(EventTypes.REMOVE_COMMENT, articleId));
 
-            PageCaches.removeAll();
-
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_COMMENT_SUCC);
 
@@ -448,6 +446,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
+
+        PageCaches.removeAll();
 
         return ret;
     }
@@ -507,8 +507,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             eventManager.fireEventSynchronously(
                     new Event<String>(EventTypes.REMOVE_COMMENT, pageId));
 
-            PageCaches.removeAll();
-
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_COMMENT_SUCC);
 
@@ -522,6 +520,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
+
+        PageCaches.removeAll();
 
         return ret;
     }

@@ -337,8 +337,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
 
             preferenceUtils.setPreference(preference);
 
-            PageCaches.removeAll();
-
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PREFERENCE_SUCC);
 
@@ -351,6 +349,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
+
+        PageCaches.removeAll();
 
         return ret;
     }
