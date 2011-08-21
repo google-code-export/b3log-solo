@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.action.util.Filler;
@@ -40,7 +39,7 @@ import org.json.JSONObject;
  * B3log Solo initialization action. init.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 18, 2011
+ * @version 1.0.0.8, Aug 21, 2011
  */
 public final class InitAction extends AbstractAction {
 
@@ -84,13 +83,9 @@ public final class InitAction extends AbstractAction {
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
-        try {
-            final Map<String, String> langs =
-                    langPropsService.getAll(Locales.getLocale(request));
-            ret.putAll(langs);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
+        final Map<String, String> langs =
+                langPropsService.getAll(Locales.getLocale(request));
+        ret.putAll(langs);
 
         ret.put(Common.VERSION, SoloServletListener.VERSION);
         ret.put(Common.YEAR,
