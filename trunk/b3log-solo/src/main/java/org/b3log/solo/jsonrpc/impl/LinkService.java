@@ -267,7 +267,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             final JSONObject oldLink = linkRepository.get(linkId);
             link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
 
-            String linkAddress =
+            final String linkAddress =
                     link.getString(Link.LINK_ADDRESS);
             if (!StringUtils.startsWithIgnoreCase(linkAddress, "http://")
                 && !StringUtils.startsWithIgnoreCase(linkAddress, "ftp://")
@@ -399,7 +399,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject link =
                     requestJSONObject.getJSONObject(Link.LINK);
-            String linkAddress =
+            final String linkAddress =
                     link.getString(Link.LINK_ADDRESS);
 
             if (!StringUtils.startsWithIgnoreCase(linkAddress, "http://")
