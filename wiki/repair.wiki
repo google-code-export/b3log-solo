@@ -5,8 +5,8 @@
 在 B3log Solo 一些版本中存在一些严重的 Bugs，导致了数据出现问题；由于配置不当造成后台不能登录。通过运行响应的修复程序可以将这些问题修复：
 
 <ul>
-<li>标签-文章统计数不正确</li>
-运行 `/fix/tag-article-counter-repair.do`。
+<li>标签-文章计数不正确</li>
+修复标签-文章计数：`/fix/tag-article-counter-repair.do`。
 <li>签名档配置问题</li>
-运行 `/fix/restore-signs.do`。
+将签名档恢复为默认的空内容：`/fix/restore-signs.do`。
 </ul>
