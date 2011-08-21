@@ -21,6 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
@@ -43,7 +44,7 @@ import org.json.JSONObject;
  * Link service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Jan 20, 2011
+ * @version 1.0.1.0, Aug 21, 2011
  */
 public final class LinkService extends AbstractGAEJSONRpcService {
 
@@ -266,6 +267,15 @@ public final class LinkService extends AbstractGAEJSONRpcService {
             final JSONObject oldLink = linkRepository.get(linkId);
             link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
 
+            String linkAddress =
+                    link.getString(Link.LINK_ADDRESS);
+            if (!StringUtils.startsWithIgnoreCase(linkAddress, "http://")
+                && !StringUtils.startsWithIgnoreCase(linkAddress, "ftp://")
+                && !StringUtils.startsWithIgnoreCase(linkAddress, "https://")) {
+                // Default to HTTP protocol
+                link.put(Link.LINK_ADDRESS, "http://" + linkAddress);
+            }
+
             linkRepository.update(linkId, link);
 
             PageCaches.removeAll();
@@ -389,6 +399,16 @@ public final class LinkService extends AbstractGAEJSONRpcService {
         try {
             final JSONObject link =
                     requestJSONObject.getJSONObject(Link.LINK);
+            String linkAddress =
+                    link.getString(Link.LINK_ADDRESS);
+
+            if (!StringUtils.startsWithIgnoreCase(linkAddress, "http://")
+                && !StringUtils.startsWithIgnoreCase(linkAddress, "ftp://")
+                && !StringUtils.startsWithIgnoreCase(linkAddress, "https://")) {
+                // Default to HTTP protocol
+                link.put(Link.LINK_ADDRESS, "http://" + linkAddress);
+            }
+
             final int maxOrder = linkRepository.getMaxOrder();
             link.put(Link.LINK_ORDER, maxOrder + 1);
             final String linkId = linkRepository.add(link);
