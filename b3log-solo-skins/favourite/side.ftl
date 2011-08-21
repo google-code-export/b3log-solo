@@ -1,6 +1,7 @@
 <div id="sideNavi" class="side-navi">
     <div class="rings"></div>
     <div class="null"></div>
+    <#if "" != noticeBoard>
     <div class="item">
         <div class="antefatto">
             <h4>${noticeBoardLabel}</h4>
@@ -10,6 +11,8 @@
         </div>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != recentComments?size>
     <div class="item navi-comments">
         <div class="ads">
             <h4 id="recentComments">${recentCommentsLabel}</h4>
@@ -38,6 +41,8 @@
         </ul>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != mostCommentArticles?size>
     <div class="item">
         <div class="esclamativo">
             <h4>${mostCommentArticlesLabel}</h4>
@@ -53,6 +58,8 @@
         </ul>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != mostViewCountArticles?size>
     <div class="item">
         <div class="cuore">
             <h4>${mostViewCountArticlesLabel}</h4>
@@ -68,6 +75,8 @@
         </ul>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != mostUsedTags?size>
     <div class="item">
         <div class="categorie">
             <h4>${popTagsLabel}</h4>
@@ -86,13 +95,18 @@
         </ul>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != links?size>
     <div class="item">
         <div class="blog">
             <h4>${linkLabel}</h4>
         </div>
-        <ul id="sideLink">
+        <ul id="sideLink" class="navi-tags">
             <#list links as link>
             <li>
+                 <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                    <img alt="${link.linkTitle}" 
+                         src="http://www.google.com/s2/u/0/favicons?domain=${link.linkAddress?replace('[a-zA-z]+://', '', 'rif')}"/></a>
                 <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                     ${link.linkTitle}
                 </a>
@@ -101,9 +115,8 @@
         </ul>
     </div>
     <div class="line"></div>
-    <#if 1 = users?size>
-    <div class="rings"></div>
-    </#if>
+    </#if>     
+    <#if 0 != archiveDates?size>
     <div class="item">
         <div class="archivio">
             <h4>${archiveLabel}</h4>
@@ -124,9 +137,9 @@
             </#list>
         </ul>
     </div>
-    <#if 1 != users?size>
     <div class="line"></div>
-    <div class="rings"></div>
+    </#if>
+    <#if 1 != users?size>
     <div class="item">
         <div class="side-author">
             <h4>${authorLabel}</h4>
@@ -142,4 +155,5 @@
         </ul>
     </div>
     </#if>
+    <div class="rings" style="bottom: 0px;"></div>
 </div>

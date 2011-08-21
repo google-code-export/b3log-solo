@@ -1,11 +1,15 @@
+<#if "" != noticeBoard>
 <div class="item" style="margin-top: -35px;">
     <h4>${noticeBoardLabel}</h4>
     <div class="marginLeft12 marginTop12">
         ${noticeBoard}
     </div>
 </div>
+</#if>
+<#if 0 != recentComments?size || 0 != mostCommentArticles?size || 0 != mostViewCountArticles?size>
 <div class="item">
     <dl>
+        <#if 0 != mostCommentArticles?size>
         <dd>
             <h4>${mostCommentArticlesLabel}</h4>
             <ul>
@@ -21,6 +25,8 @@
                 </#list>
             </ul>
         </dd>
+        </#if>
+        <#if 0 != recentComments?size>
         <dd>
             <h4>${recentCommentsLabel}</h4>
             <ul id="naviComments">
@@ -36,6 +42,8 @@
                 </#list>
             </ul>
         </dd>
+        </#if>
+        <#if 0 != mostViewCountArticles?size>
         <dd>
             <h4>${mostViewCountArticlesLabel}</h4>
             <ul>
@@ -50,8 +58,11 @@
                 </#list>
             </ul>
         </dd>
+        </#if>
     </dl>
 </div>
+</#if>
+<#if 0 != mostUsedTags?size>
 <div class="item">
     <dl>
         <dd>
@@ -69,17 +80,19 @@
         </dd>
     </dl>
 </div>
+</#if>
 <#if 0 != links?size>
 <div class="item">
     <dl>
         <dd>
             <h4>${linkLabel}</h4>
-            <ul>
+            <ul class="navi-tags">
                 <#list links as link>
                 <li>
                     <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
-                        ${link.linkTitle}
-                    </a>
+                        ${link.linkTitle}</a>
+                     <img onclick="window.location='${link.linkAddress}'"
+                         alt="${link.linkTitle}" src="http://www.google.com/s2/u/0/favicons?domain=${link.linkAddress?replace('[a-zA-z]+://', '', 'rif')}"/>
                 </li>
                 </#list>
             </ul>
@@ -87,6 +100,7 @@
     </dl>
 </div>
 </#if>
+<#if 0 != archiveDates?size>
 <div class="item">
     <dl>
         <dd>
@@ -109,3 +123,4 @@
         </dd>
     </dl>
 </div>
+</#if>

@@ -43,18 +43,6 @@ var Util = {
                     window.location.href.indexOf("admin-index") > -1) {
                     window.location = "/kill-browser.html";
                     return; 
-                /* TODO: use 360 open IE
-                                     * var openByIE = function(t) {
-                        try {
-                            var sid = external.twGetSecurityID(window);
-                            alert(sid)
-                            external.twExtSendMessage2(sid,"ExtDoctor","OpenUrlByIE",t,"");
-                        }
-                        catch(e){
-                            alert(e);
-                        }
-                    }
-                    openByIE("baidu.com");*/
                 }
             }
         }

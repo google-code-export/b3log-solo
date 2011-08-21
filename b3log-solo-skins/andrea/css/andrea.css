@@ -258,6 +258,10 @@ a:hover {
 }
 
 /* side */
+.side-navi ul {
+    list-style: none;
+}
+
 .side-navi .item {
     border-radius: 0 5px 5px 0;
     background: url("../images/bg-transparent.png") repeat scroll 0 0 transparent;

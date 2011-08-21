@@ -19,11 +19,14 @@
             </span>
         </div>
     </div>
+    <#if "" != noticeBoard>
     <div class="block notice">
         <h3>${noticeBoardLabel}</h3>
         <div>${noticeBoard}</div>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != recentComments?size>
     <div class="block">
         <h3 id="recentCommentsLabel">${recentCommentsLabel}</h3>
         <ul id="recentComments">
@@ -38,6 +41,8 @@
         <div class='clear'></div>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != mostCommentArticles?size>
     <div class="block mostCommentArticles">
         <h3>${mostCommentArticlesLabel}</h3>
         <ul id="mostCommentArticles">
@@ -52,6 +57,8 @@
         <div class='clear'></div>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != mostViewCountArticles?size>
     <div class="block mostViewCountArticles">
         <h3>${mostViewCountArticlesLabel}</h3>
         <ul id="mostViewCountArticles">
@@ -66,6 +73,8 @@
         <div class='clear'></div>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != mostUsedTags?size>
     <div class="block popTags">
         <h3>${popTagsLabel}</h3>
         <ul>
@@ -82,7 +91,9 @@
         <div class='clear'></div>
     </div>
     <div class="line"></div>
-    <div class="block">
+    </#if>
+    <#if 0 != links?size>
+    <div class="block popTags">
         <h3>${linkLabel}</h3>
         <ul id="sideLink">
             <#list links as link>
@@ -90,12 +101,16 @@
                 <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                     ${link.linkTitle}
                 </a>
+                <img onclick="window.location='${link.linkAddress}'"
+                     alt="${link.linkTitle}" src="http://www.google.com/s2/u/0/favicons?domain=${link.linkAddress?replace('[a-zA-z]+://', '', 'rif')}"/>
             </li>
             </#list>
         </ul>
         <div class='clear'></div>
     </div>
     <div class="line"></div>
+    </#if>
+    <#if 0 != archiveDates?size>
     <div class="block">
         <h3>${archiveLabel}</h3>
         <ul>
@@ -115,8 +130,9 @@
         </ul>
         <div class='clear'></div>
     </div>
-    <#if 1 != users?size>
     <div class="line"></div>
+    </#if>
+    <#if 1 != users?size>
     <div class="block">
         <h3>${authorLabel}</h3>
         <ul>
