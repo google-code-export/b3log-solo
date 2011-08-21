@@ -54,6 +54,9 @@ h5 {
 	position: relative;
 	width: 300px;
 }
+.side-navi ul {
+    list-style: none;
+}
 .side-navi a {
 	color: #FFFFFF;
 }

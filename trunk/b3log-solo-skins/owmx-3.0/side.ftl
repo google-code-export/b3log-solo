@@ -38,12 +38,15 @@
             </li>
         </ul>
     </nav>
+    <#if "" != noticeBoard>
     <h4>${noticeBoardLabel}</h4>
     <div id="c">
         <p>
             ${noticeBoard}
         </p>
     </div>
+    </#if>
+    <#if 0 != recentComments?size>
     <h4>${recentCommentsLabel}</h4>
     <ul class="aside-comments">
         <#list recentComments as comment>
@@ -67,6 +70,8 @@
         </li>
         </#list>
     </ul>
+    </#if>
+    <#if 0 != mostCommentArticles?size>
     <h4>${mostCommentArticlesLabel}</h4>
     <ul id="mostCommentArticles">
         <#list mostCommentArticles as article>
@@ -77,6 +82,8 @@
         </li>
         </#list>
     </ul>
+    </#if>
+    <#if 0 != mostViewCountArticles?size>
     <h4>${mostViewCountArticlesLabel}</h4>
     <ul id="mostViewCountArticles">
         <#list mostViewCountArticles as article>
@@ -86,11 +93,13 @@
         </li>
         </#list>
     </ul>
+    </#if>
+    <#if 0 != mostUsedTags?size>
     <h4>${popTagsLabel}</h4>
     <ul class="navi-tags">
         <#list mostUsedTags as tag>
         <li>
-            <a href="/tag-articles-feed.do?oId=${tag.oId}" class="no-underline">
+            <a href="/tag-articles-feed.do?oId=${tag.oId}">
                 <img alt="${tag.tagTitle}" src="/images/feed.png"/>
             </a>
             <a title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="/tags/${tag.tagTitle?url('UTF-8')}">
@@ -98,16 +107,23 @@
         </li>
         </#list>
     </ul>
+    </#if>
+    <#if 0 != links?size>
     <h4>${linkLabel}</h4>
-    <ul id="sideLink">
+    <ul id="sideLink" class="navi-tags">
         <#list links as link>
         <li>
+            <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                    <img alt="${link.linkTitle}" 
+                         src="http://www.google.com/s2/u/0/favicons?domain=${link.linkAddress?replace('[a-zA-z]+://', '', 'rif')}"/></a>
             <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                 ${link.linkTitle}
             </a>
         </li>
         </#list>
     </ul>
+    </#if>
+    <#if 0 != archiveDates?size>
     <h4>${archiveLabel}</h4>
     <ul>
         <#list archiveDates as archiveDate>
@@ -124,4 +140,5 @@
         </li>
         </#list>
     </ul>
+    </#if>
 </aside>

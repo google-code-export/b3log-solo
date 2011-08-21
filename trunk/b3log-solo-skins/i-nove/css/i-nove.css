@@ -327,6 +327,10 @@ h5 {
 .error-msg {
 	color: #3366CC;
 }
+.side-navi ul {
+    list-style: none;
+    margin-top: 10px;
+}
 .side-navi .item {
 	padding: 15px;
 }
@@ -376,7 +380,7 @@ h5 {
 	width: 16px;
 }
 .side-navi li {
-	background: url("../images/icons.gif") no-repeat scroll 0 -624px transparent;
+	background: url("../images/icons.gif") no-repeat scroll 0 -622px transparent;
 	margin: 5px 0 0 0;
 	overflow: hidden;
 	padding-left: 22px;

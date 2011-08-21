@@ -1,4 +1,5 @@
 <div id="sideNavi" class="side-navi">
+    <#if "" != noticeBoard>
     <ul class="marginTop12">
         <li>
             <h4>${noticeBoardLabel}</h4>
@@ -6,6 +7,8 @@
         <li class="side-navi-notice">${noticeBoard}</li>
     </ul>
     <div class="line"></div>
+    </#if>
+    <#if 0 != recentComments?size>
     <ul>
         <li>
             <h4>${recentCommentsLabel}</h4>
@@ -27,6 +30,8 @@
         </li>
     </ul>
     <div class="line"></div>
+    </#if>
+    <#if 0 != mostCommentArticles?size>
     <ul>
         <li>
             <h4>${mostCommentArticlesLabel}</h4>
@@ -42,6 +47,8 @@
         </li>
     </ul>
     <div class="line"></div>
+    </#if>
+    <#if 0 != mostViewCountArticles?size>
     <ul>
         <li>
             <h4>${mostViewCountArticlesLabel}</h4>
@@ -57,6 +64,8 @@
         </li>
     </ul>
     <div class="line"></div>
+    </#if>
+    <#if 0 != mostUsedTags?size>
     <ul>
         <li>
             <h4>${popTagsLabel}</h4>
@@ -77,6 +86,8 @@
         </li>
     </ul>
     <div class="line"></div>
+    </#if>
+    <#if 0 != links?size>
     <ul>
         <li>
             <h4>${linkLabel}</h4>
@@ -85,8 +96,10 @@
             <ul id="sideLink">
                 <#list links as link>
                 <li>
-                    <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
-                        ${link.linkTitle}
+                     <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
+                        <img alt="${link.linkTitle}"
+                             src="http://www.google.com/s2/u/0/favicons?domain=${link.linkAddress?replace('[a-zA-z]+://', '', 'rif')}"/></a>
+                    <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">${link.linkTitle}
                     </a>
                 </li>
                 </#list>
@@ -94,6 +107,8 @@
         </li>
     </ul>
     <div class="line"></div>
+    </#if>
+    <#if 0 != archiveDates?size>
     <ul>
         <li>
             <h4>${archiveLabel}</h4>
@@ -116,4 +131,5 @@
             </ul>
         </li>
     </ul>
+    </#if>
 </div>

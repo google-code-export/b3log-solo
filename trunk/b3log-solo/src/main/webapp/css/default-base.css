@@ -36,11 +36,9 @@ h4 {
 textarea {
     overflow: auto;
 }
+
 li {
     margin-left: 12px;
-}
-#sideNavi ul {
-    list-style: none;
 }
 
 button, .button {

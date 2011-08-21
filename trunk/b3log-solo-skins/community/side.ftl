@@ -25,9 +25,11 @@
             </#list>
         </div>
         <div class="clear"></div>
-        </#if>
         <#if 0 != recentComments?size>
         <div class="hr"></div>
+        </#if>
+        </#if>
+        <#if 0 != recentComments?size>
         <h4>${recentCommentsLabel}</h4>
         <div class="arrow-right"></div>
         <div class="recent-comments">
@@ -50,6 +52,7 @@
 </div>
 <div class="footer-widgets">
     <div class="content">
+        <#if 0 != mostCommentArticles?size>
         <div class="left footer-block">
             <h4>${mostCommentArticlesLabel}</h4>
             <ul>
@@ -63,6 +66,8 @@
                 </#list>
             </ul>
         </div>
+        </#if>
+        <#if 0 != mostUsedTags?size>
         <div class="left footer-block">
             <h4><span class="left">${popTagsLabel}</span></h4>
             <span class="clear"></span>
@@ -78,19 +83,25 @@
                 </#list>
             </ul>
         </div>
+        </#if>
+        <#if 0 != links?size>
         <div class="left footer-block">
             <h4><span class="left">${linkLabel}</span></h4>
             <span class="clear"></span>
             <ul id="sideLink">
                 <#list links as link>
-                <li>
+                <li class="mostUsedTags">
                     <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         ${link.linkTitle}
                     </a>
+                    <img onclick="window.location='${link.linkAddress}'" alt="${link.linkTitle}" 
+                         src="http://www.google.com/s2/u/0/favicons?domain=${link.linkAddress?replace('[a-zA-z]+://', '', 'rif')}"/>
                 </li>
                 </#list>
             </ul>
         </div>
+        </#if>
+        <#if 0 != archiveDates?size>
         <div class="left footer-block" style="margin-right: 0px;">
             <h4><span class="left">${archiveLabel}</span></h4>
             <span class="clear"></span>
@@ -110,6 +121,7 @@
                 </#list>
             </ul>
         </div>
+        </#if>
         <div class="clear"></div>
     </div>
 </div>

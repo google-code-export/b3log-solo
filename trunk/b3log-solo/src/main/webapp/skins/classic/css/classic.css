@@ -168,6 +168,9 @@ h5 {
     color: #000000;
     text-decoration: none;
 }
+.side-navi ul {
+    list-style: none;
+}
 #sideNavi li {
     line-height: 22px;
     overflow: hidden;
