@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
@@ -248,7 +249,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                     requestJSONObject.getJSONObject(PREFERENCE);
             String blogHost = preference.getString(BLOG_HOST).
                     toLowerCase().trim();
-            if (blogHost.startsWith("http://")) {
+            if (StringUtils.startsWithIgnoreCase(blogHost, "http://")) {
                 blogHost = blogHost.substring("http://".length());
             }
             if (blogHost.endsWith("/")) {
