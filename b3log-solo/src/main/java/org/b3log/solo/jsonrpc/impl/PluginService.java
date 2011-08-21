@@ -34,7 +34,6 @@ import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.repository.PluginRepository;
@@ -98,19 +97,8 @@ public final class PluginService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        Map<String, String> langs = null;
-        try {
-            langs = langPropsService.getAll(Latkes.getLocale());
-        } catch (final ServiceException e) {
-            try {
-                ret.put(Keys.STATUS_CODE, false);
-                ret.put(Keys.MSG, langs.get("setFailLabel"));
-                return ret;
-            } catch (final JSONException ex) {
-                throw new ActionException(
-                        "Set plugin status fatal error!");
-            }
-        }
+        final Map<String, String> langs =
+                langPropsService.getAll(Latkes.getLocale());
 
         final PluginManager pluginManager = PluginManager.getInstance();
         final List<AbstractPlugin> plugins = pluginManager.getPlugins();
@@ -121,7 +109,7 @@ public final class PluginService extends AbstractGAEJSONRpcService {
                         pluginRepository.beginTransaction();
                 try {
                     plugin.setStatus(PluginStatus.valueOf(status));
-                    
+
                     pluginRepository.update(pluginId, plugin.toJSONObject());
 
                     transaction.commit();
@@ -149,6 +137,8 @@ public final class PluginService extends AbstractGAEJSONRpcService {
                 }
             }
         }
+
+
 
         try {
             ret.put(Keys.STATUS_CODE, false);
@@ -253,6 +243,8 @@ public final class PluginService extends AbstractGAEJSONRpcService {
      */
     public static PluginService getInstance() {
         return SingletonHolder.SINGLETON;
+
+
     }
 
     /**
