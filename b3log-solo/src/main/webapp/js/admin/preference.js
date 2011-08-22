@@ -18,7 +18,7 @@
  * preference for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Aug 9, 2011
+ * @version 1.0.0.7, Aug 22, 2011
  */
 
 /* preference 相关操作 */
@@ -96,7 +96,7 @@ admin.preference = {
                         for (var j = 1; j < signs.length; j++) {
                             $("#preferenceSign" + j).val(signs[j].signHTML);
                             $("#preferenceSignButton" + j).tip({
-                                content: signs[j].signHTML === "" ? Label.signIsNullLabel : signs[j].signHTML.replace(/<script.*<\/script>/ig, ""),
+                                content: signs[j].signHTML === "" ? Label.signIsNullLabel : signs[j].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
                                 position: "bottom"
                             });
                         }
@@ -184,10 +184,10 @@ admin.preference = {
                         for (var i = 1; i < signs.length; i++) {
                             if ($("#articleSign" + signs[i].oId).length === 1) {
                                 $("#articleSign" + signs[i].oId).tip("option", "content", 
-                                    signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/<script.*<\/script>/ig, ""));
+                                    signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
                             }
                             $("#preferenceSignButton" + signs[i].oId).tip("option", "content", 
-                                signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/<script.*<\/script>/ig, ""));
+                                signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
                         }
                         break;
                     case "UPDATE_PREFERENCE_FAIL_":

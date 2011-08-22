@@ -368,7 +368,7 @@ admin.article = {
                         $("#articleSign0").addClass("selected");
                     } else {
                         $("#articleSign" + result[i].oId).tip({
-                            content: result[i].signHTML === "" ? Label.signIsNullLabel : result[i].signHTML.replace(/<script.*<\/script>/ig, ""),
+                            content: result[i].signHTML === "" ? Label.signIsNullLabel : result[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
                             position: "top"
                         });
                     }
