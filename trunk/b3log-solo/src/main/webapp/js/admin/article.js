@@ -18,7 +18,7 @@
  *  article for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Aug 9, 2011
+ * @version 1.0.1.0, Aug 22, 2011
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
