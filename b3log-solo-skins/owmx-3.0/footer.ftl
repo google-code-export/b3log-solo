@@ -13,8 +13,8 @@
     Theme by <a href="http://lightdian.b3log.org/" target="_blank">Dongxu Wang</a> & <a href="http://www.jabz.info/contact/jonas-jared-jacek/" title="Profile of Jonas Jacek">Jonas Jacek</a>.
     <div onclick="common.goTop();">${goTopLabel}</div>
 </footer>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script type="text/javascript" src="/js/common${miniPostfix}.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/common${miniPostfix}.js" charset="utf-8"></script>
 <script type="text/javascript">
     var common = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
