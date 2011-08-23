@@ -25,7 +25,7 @@
                         </a>
                     </div>
                     <div class="introContent">
-                        ${killBrowserLabel}
+                       <h2>让我们放弃使用那些过时、不安全的浏览器吧！</h2><p>为了让浏览器更好的发展，人类更加的进步，拥有更好的体验，让我们放弃使用那些过时、不安全的浏览器。</p><p>您可以下载</p><ul><li><a href="http://www.mozilla.com/" target="_blank">火狐</a></li><li><a href="http://www.google.com/chrome" target="_blank">谷歌浏览器</a></li><li><a href="http://windows.microsoft.com/en-US/internet-explorer/downloads/ie" target="_blank">IE8 / IE9</a></li><li><a href="http://www.maxthon.com/" target="_blank">遨游</a>或者<a href="http://www.google.com" target="_blank">其它浏览器</a>.</li></ul>
                         <img src='/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
                     </div>
 
