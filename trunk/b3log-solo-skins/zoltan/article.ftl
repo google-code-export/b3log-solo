@@ -4,11 +4,11 @@
 <html>
     <head>
         <@head title="${article.articleTitle} - ${blogTitle}">
-        <meta name="keywords" content="<#list article.articleTags?split(',') as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>"/>
-        <meta name="description" content="${article.articleAbstract}"/>
+        <meta name="keywords" content="<#list article.articleTags?split(',') as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>" />
+        <meta name="description" content="${article.articleAbstract}" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css"/>
-        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css"/>
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css" charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css" charset="utf-8" />
     </head>
     <body>
         <#include "top-nav.ftl">
@@ -33,27 +33,31 @@
                                 ${topArticleLabel}
                             </sup>
                             </#if>
+                            <span class="article-info">
+                                by
+                                <a href="/authors/${article.authorId}">
+                                    ${article.authorName}
+                                </a>
+                            </span>
                         </h2>
-                        <div>
-                            ${tags1Label}<#list article.articleTags?split(",") as articleTag><span><a href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if></span></#list>
-                            &nbsp;&nbsp;${viewCount1Label}
-                            <a href="${article.articlePermalink}">
-                                ${article.articleViewCount}  
-                            </a>
-                        </div>
-                        <div>
-                            ${createDateLabel}:
-                            <a href="${article.articlePermalink}">
-                                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
-                            </a>
-                            by
-                            <a href="/authors/${article.authorId}">
-                                ${article.authorName}
-                            </a>
-                            -
-                            <a href="${article.articlePermalink}#comments">
-                                ${article.articleCommentCount} ${commentLabel}
-                            </a>
+                        <div class="article-info">
+                            <div class="left">
+                                ${tags1Label}<#list article.articleTags?split(",") as articleTag><span><a href="/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if></span></#list>
+                            </div>
+                            <div class="right">
+                                <a href="${article.articlePermalink}">
+                                    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+                                </a>
+                                &nbsp;&nbsp;
+                                <a href="${article.articlePermalink}">
+                                    ${article.articleViewCount}${viewLabel}
+                                </a>
+                                &nbsp;&nbsp;
+                                <a href="${article.articlePermalink}#comments">
+                                    ${article.articleCommentCount} ${commentLabel}
+                                </a>
+                            </div>
+                            <div class="clear"></div>
                         </div>
                     </div>
                     <div class="article-body">

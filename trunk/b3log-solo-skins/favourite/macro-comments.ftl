@@ -112,9 +112,9 @@
 </#macro>
 
 <#macro comment_script oId>
-<script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js"></script>
-<script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js"></script>
-<script type="text/javascript" src="/js/page${miniPostfix}.js"></script>
+<script type="text/javascript" src="/js/page${miniPostfix}.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shCore.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/lib/SyntaxHighlighter/scripts/shAutoloader.js" charset="utf-8"></script>
 <script type="text/javascript">
     var page = new Page({
         "nameTooLongLabel": "${nameTooLongLabel}",

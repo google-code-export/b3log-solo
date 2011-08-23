@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta charset="utf-8" />
         <meta name="robots" content="none"/>
         <title>${blogTitle} - ${adminConsoleLabel}</title>
-        <link type="text/css" rel="stylesheet" href="/css/default-base${miniPostfix}.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/default-admin${miniPostfix}.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/default-bowknot${miniPostfix}.css"/>
+        <link type="text/css" rel="stylesheet" href="/css/default-base${miniPostfix}.css" charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="/css/default-admin${miniPostfix}.css" charset="utf-8" />
+        <link type="text/css" rel="stylesheet" href="/css/default-bowknot${miniPostfix}.css" charset="utf-8" />
         <link rel="icon" type="image/png" href="/favicon.png"/>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-        <script type="text/javascript" src="/js/lib/jsonrpc.min.js"></script>
-        <script type="text/javascript" src="/js/lib/jquery/jquery.bowknot.min.js"></script>
-        <script type="text/javascript" src="/js/lib/tiny_mce/tiny_mce.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" charset="utf-8" ></script>
+        <script type="text/javascript" src="/js/lib/jsonrpc.min.js" charset="utf-8" ></script>
+        <script type="text/javascript" src="/js/lib/jquery/jquery.bowknot.min.js" charset="utf-8" ></script>
+        <script type="text/javascript" src="/js/lib/tiny_mce/tiny_mce.js" charset="utf-8" ></script>
     </head>
     <body onhashchange="admin.setCurByHash();">
         <div id="loadMsg">${loadingLabel}</div>
