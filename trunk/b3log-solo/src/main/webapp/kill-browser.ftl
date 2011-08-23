@@ -25,30 +25,7 @@
                         </a>
                     </div>
                     <div class="introContent">
-                        <h2>
-                            Let's kill outdated and insecure browser!
-                        </h2>
-                        <p>
-                            Let's kill outdated and insecure browser for browser evolution, human progress and better experience.
-                        </p>
-                        <p>
-                            You can download
-                        </p>
-                        <ul>
-                            <li>
-                                <a href="http://www.mozilla.com/" target="_blank">Firefox</a>
-                            </li>
-                            <li>
-                                <a href="http://www.google.com/chrome" target="_blank">Chrome</a>
-                            </li>
-                            <li>
-                                <a href="http://windows.microsoft.com/en-US/internet-explorer/downloads/ie" target="_blank">IE8 / IE9</a>
-                            </li>
-                            <li>
-                                <a href="http://www.maxthon.com/" target="_blank">Maxthon</a> and 
-                                <a href="http://www.google.com" target="_blank">so on</a>.
-                            </li>
-                        </ul>
+                        ${killBrowserLabel}
                         <img src='/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
                     </div>
 
