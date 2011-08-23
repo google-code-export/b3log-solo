@@ -7,7 +7,7 @@
 body {
     background: url("../images/bg.jpg") repeat scroll 0 0 #EAE5D3;
     color: #846D55;
-    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, '瀹嬩綋';
+    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, \u5fae\u8f6f\u96c5\u9ed1;
     font-size: 13px;
 }   
 
@@ -22,7 +22,7 @@ h2 {
 input, textarea {
     color: #846D55;
     font-size: 13px;
-    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, '瀹嬩綋';
+    font-family: Helvetica,Tahoma,Arial,Verdana,Sans-serif, \u5fae\u8f6f\u96c5\u9ed1;
 }
 
 a, a:link, a:active, a:visited {
