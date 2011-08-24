@@ -18,7 +18,7 @@
  * plugin list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Aug 19, 2011
+ * @version 1.0.0.9, Aug 24, 2011
  */
 
 /* plugin-list 相关操作 */
@@ -74,7 +74,6 @@ admin.pluginList = {
         jsonRpc.pluginService.getPlugins(function (result, error) {
             try {
                 if (!result) {
-                    alert(Label.pageLabel + ":" + pageNum + " " + Label.noDataLable);
                      $("#loadMsg").text("");
                     return;
                 }

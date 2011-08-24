@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, Aug 10, 2011
+ * @version 1.0.1.1, Aug 24, 2011
  */
 
 var Admin = function () {
@@ -179,7 +179,7 @@ $.extend(Admin.prototype, {
      * 初始化整个后台
      */
     init: function () {
-        window.onerror = Util.error;
+        //window.onerror = Util.error;
         
         Util.killIE();   
         $("#loadMsg").text(Label.loadingLabel);
