@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Admin cache service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 20, 2011
+ * @version 1.0.0.5, Aug 24, 2011
  */
 public final class AdminCacheService extends AbstractGAEJSONRpcService {
 
@@ -190,6 +190,7 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
             PageCaches.syncKeys();
 
             final Set<String> keys = PageCaches.getKeys();
+            
             for (final String key : keys) {
                 LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
 
@@ -206,8 +207,8 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
                 @Override
                 public int compare(final JSONObject page1,
                                    final JSONObject page2) {
-                    return page1.optLong(PageCaches.CACHED_HIT_COUNT)
-                           < page2.optLong(PageCaches.CACHED_HIT_COUNT) ? 1 : -1;
+                    return page1.optInt(PageCaches.CACHED_HIT_COUNT)
+                           < page2.optInt(PageCaches.CACHED_HIT_COUNT) ? 1 : -1;
                 }
             });
 
