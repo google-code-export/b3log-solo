@@ -20,9 +20,7 @@ import org.b3log.solo.model.Common;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -185,12 +183,29 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
             final int windowSize = requestJSONObject.getInt(
                     Pagination.PAGINATION_WINDOW_SIZE);
 
-            final List<JSONObject> pages = new ArrayList<JSONObject>();
-
             PageCaches.syncKeys();
 
-            final Set<String> keys = PageCaches.getKeys();
-            
+            List<String> keys =
+                    new ArrayList<String>(PageCaches.getKeys());
+            // Paginates
+            final int pageCount =
+                    (int) Math.ceil((double) keys.size() / (double) pageSize);
+            final JSONObject pagination = new JSONObject();
+            ret.put(Pagination.PAGINATION, pagination);
+            final List<Integer> pageNums =
+                    Paginator.paginate(currentPageNum, pageSize, pageCount,
+                                       windowSize);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+            final int start = pageSize * (currentPageNum - 1);
+            int end = start + pageSize;
+            end = end > keys.size() ? keys.size() : end;
+
+            keys = keys.subList(start, end);
+
+            // Retrives cached pages
+            final List<JSONObject> pages = new ArrayList<JSONObject>();
             for (final String key : keys) {
                 LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
 
@@ -202,30 +217,7 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
                 }
             }
 
-            Collections.sort(pages, new Comparator<JSONObject>() {
-
-                @Override
-                public int compare(final JSONObject page1,
-                                   final JSONObject page2) {
-                    return page1.optInt(PageCaches.CACHED_HIT_COUNT)
-                           < page2.optInt(PageCaches.CACHED_HIT_COUNT) ? 1 : -1;
-                }
-            });
-
-            final int pageCount =
-                    (int) Math.ceil((double) pages.size() / (double) pageSize);
-            final JSONObject pagination = new JSONObject();
-            ret.put(Pagination.PAGINATION, pagination);
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
-            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-            final int start = pageSize * (currentPageNum - 1);
-            int end = start + pageSize;
-            end = end > pages.size() ? pages.size() : end;
-            ret.put(Page.PAGES, pages.subList(start, end));
+            ret.put(Page.PAGES, pages);
 
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
