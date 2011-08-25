@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
@@ -29,7 +30,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Comment Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 9, 2011
+ * @version 1.0.0.7, Aug 25, 2011
  */
 public final class CommentGAERepository extends AbstractGAERepository
         implements CommentRepository {
@@ -49,11 +49,6 @@ public final class CommentGAERepository extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(CommentGAERepository.class.getName());
-    /**
-     * Article-Comment repository.
-     */
-    private ArticleCommentRepository articleCommentRepository =
-            ArticleCommentGAERepository.getInstance();
     /**
      * Article repository.
      */
@@ -66,10 +61,56 @@ public final class CommentGAERepository extends AbstractGAERepository
     }
 
     @Override
+    public int removeComments(final String onId) throws RepositoryException {
+        final List<JSONObject> comments =
+                getComments(onId, 1, Integer.MAX_VALUE);
+
+        try {
+            for (final JSONObject comment : comments) {
+                final String commentId = comment.getString(Keys.OBJECT_ID);
+                remove(commentId);
+            }
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Remove comments[onId=" + onId + "] error",
+                       e);
+
+            throw new RepositoryException(e);
+        }
+
+        LOGGER.log(Level.FINER, "Removed comments[onId={0}, removedCnt={1}]",
+                   new Object[]{onId, comments.size()});
+
+        return comments.size();
+    }
+
+    @Override
+    public List<JSONObject> getComments(final String onId,
+                                        final int currentPageNum,
+                                        final int pageSize) {
+        final Query query = new Query();
+        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        query.addFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId);
+        query.setCurrentPageNum(currentPageNum);
+        query.setPageSize(pageSize);
+
+        List<JSONObject> ret = new ArrayList<JSONObject>();
+        try {
+            final JSONObject result = get(query);
+
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            ret = CollectionUtils.jsonArrayToList(array);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+        return ret;
+    }
+
+    @Override
     public List<JSONObject> getRecentComments(final int num) {
         final Query query = new Query();
-        query.addSort(Keys.OBJECT_ID,
-                      SortDirection.DESCENDING);
+        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         query.setCurrentPageNum(1);
         query.setPageSize(num);
 
@@ -108,16 +149,15 @@ public final class CommentGAERepository extends AbstractGAERepository
         final Iterator<JSONObject> iterator = comments.iterator();
         while (iterator.hasNext()) {
             final JSONObject comment = iterator.next();
-            final String commentId = comment.getString(Keys.OBJECT_ID);
-            final JSONObject articleCommentRelation =
-                    articleCommentRepository.getByCommentId(commentId);
-            if (null == articleCommentRelation) {
-                continue; // This comment is a page comment or comment has been removed just
-            }
-            final String articleId = articleCommentRelation.getString(
-                    Article.ARTICLE + "_" + Keys.OBJECT_ID);
-            if (!articleRepository.isPublished(articleId)) {
-                iterator.remove();
+            final String commentOnType =
+                    comment.getString(Comment.COMMENT_ON_TYPE);
+            if (Article.ARTICLE.equals(commentOnType)) {
+                final String articleId =
+                        comment.getString(Comment.COMMENT_ON_ID);
+
+                if (!articleRepository.isPublished(articleId)) {
+                    iterator.remove();
+                }
             }
         }
 

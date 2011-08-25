@@ -31,7 +31,6 @@ import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
 import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
-import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.ArticleSignGAERepository;
 import org.b3log.solo.repository.impl.BlogSyncMgmtGAERepository;
@@ -39,7 +38,6 @@ import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.repository.impl.ExternalArticleSoloArticleGAERepository;
 import org.b3log.solo.repository.impl.FileGAERepository;
 import org.b3log.solo.repository.impl.LinkGAERepository;
-import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.repository.impl.SkinGAERepository;
@@ -54,7 +52,7 @@ import org.json.JSONObject;
  * Remove all data.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jan 25, 2011
+ * @version 1.0.0.1, Aug 25, 2011
  */
 public final class RemoveAllDataServlet extends HttpServlet {
 
@@ -113,8 +111,6 @@ public final class RemoveAllDataServlet extends HttpServlet {
 
             remove(ArchiveDateGAERepository.getInstance());
 
-            remove(ArticleCommentGAERepository.getInstance());
-
             remove(ArticleGAERepository.getInstance());
 
             remove(ArticleSignGAERepository.getInstance());
@@ -129,8 +125,6 @@ public final class RemoveAllDataServlet extends HttpServlet {
 
             remove(LinkGAERepository.getInstance());
 
-            remove(PageCommentGAERepository.getInstance());
-
             remove(PageGAERepository.getInstance());
 
             remove(PreferenceGAERepository.getInstance());
@@ -144,7 +138,7 @@ public final class RemoveAllDataServlet extends HttpServlet {
             remove(TagGAERepository.getInstance());
 
             remove(UserGAERepository.getInstance());
-
+            
             succeed = true;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

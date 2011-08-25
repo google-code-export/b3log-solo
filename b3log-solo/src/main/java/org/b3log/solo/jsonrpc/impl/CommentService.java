@@ -16,7 +16,6 @@
 package org.b3log.solo.jsonrpc.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,15 +39,11 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Pages;
@@ -85,16 +80,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * Event manager.
      */
     private EventManager eventManager = EventManager.getInstance();
-    /**
-     * Article-Comment repository.
-     */
-    private ArticleCommentRepository articleCommentRepository =
-            ArticleCommentGAERepository.getInstance();
-    /**
-     * Page-Comment repository.
-     */
-    private PageCommentRepository pageCommentRepository =
-            PageCommentGAERepository.getInstance();
     /**
      * Article repository.
      */
@@ -175,23 +160,18 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             // Sets comment title and content escaping
             for (int i = 0; i < comments.length(); i++) {
                 final JSONObject comment = comments.getJSONObject(i);
-                final String cmtId = comment.getString(Keys.OBJECT_ID);
                 String title = null;
 
-                final JSONObject articleCommentRel =
-                        articleCommentRepository.getByCommentId(cmtId);
-                if (null != articleCommentRel) {
-                    final JSONObject article =
-                            articleRepository.get(articleCommentRel.getString(
-                            Article.ARTICLE + "_" + Keys.OBJECT_ID));
+                final String onType =
+                        comment.getString(Comment.COMMENT_ON_TYPE);
+                final String onId =
+                        comment.getString(Comment.COMMENT_ON_ID);
+                if (Article.ARTICLE.equals(onType)) {
+                    final JSONObject article = articleRepository.get(onId);
                     title = article.getString(Article.ARTICLE_TITLE);
                     comment.put(Common.TYPE, Common.ARTICLE_COMMENT_TYPE);
                 } else { // It's a comment of page
-                    final JSONObject pageCommentRel =
-                            pageCommentRepository.getByCommentId(cmtId);
-
-                    final JSONObject page = pageRepository.get(pageCommentRel.
-                            getString(Page.PAGE + "_" + Keys.OBJECT_ID));
+                    final JSONObject page = pageRepository.get(onId);
                     title = page.getString(Page.PAGE_TITLE);
                     comment.put(Common.TYPE, Common.PAGE_COMMENT_TYPE);
                 }
@@ -269,24 +249,14 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
         try {
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
-            // Step 1: Get article-comment relations
-            final List<JSONObject> articleCommentRelations =
-                    articleCommentRepository.getByArticleId(articleId);
-            // Step 2: Get comments
-            final List<JSONObject> comments = new ArrayList<JSONObject>();
-            for (int i = 0; i < articleCommentRelations.size(); i++) {
-                final JSONObject articleCommentRelation =
-                        articleCommentRelations.get(i);
-                final String commentId =
-                        articleCommentRelation.getString(Comment.COMMENT + "_"
-                                                         + Keys.OBJECT_ID);
-
-                final JSONObject comment = commentRepository.get(commentId);
+            final List<JSONObject> comments =
+                    commentRepository.getComments(articleId,
+                                                  1, Integer.MAX_VALUE);
+            for (final JSONObject comment : comments) {
                 final String content =
                         comment.getString(Comment.COMMENT_CONTENT).
                         replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
                 comment.put(Comment.COMMENT_CONTENT, content);
-                comments.add(comment);
             }
 
             ret.put(Comment.COMMENTS, comments);
@@ -341,25 +311,14 @@ public final class CommentService extends AbstractGAEJSONRpcService {
 
         try {
             final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
-            // Step 1: Get page-comment relations
-            final List<JSONObject> pageCommentRelations =
-                    pageCommentRepository.getByPageId(pageId);
-            // Step 2: Get comments
-            final List<JSONObject> comments = new ArrayList<JSONObject>();
-            for (int i = 0; i < pageCommentRelations.size(); i++) {
-                final JSONObject pageCommentRelation =
-                        pageCommentRelations.get(i);
-                final String commentId =
-                        pageCommentRelation.getString(Comment.COMMENT + "_"
-                                                      + Keys.OBJECT_ID);
-
-                final JSONObject comment = commentRepository.get(commentId);
+            final List<JSONObject> comments =
+                    commentRepository.getComments(pageId,
+                                                  1, Integer.MAX_VALUE);
+            for (final JSONObject comment : comments) {
                 final String content =
                         comment.getString(Comment.COMMENT_CONTENT).
                         replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
                 comment.put(Comment.COMMENT_CONTENT, content);
-
-                comments.add(comment);
             }
 
             ret.put(Comment.COMMENTS, comments);
@@ -406,16 +365,8 @@ public final class CommentService extends AbstractGAEJSONRpcService {
         try {
             final String commentId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing comment[oId={0}]", commentId);
-
-            // Step 1: Remove article-comment relation
-            final JSONObject articleCommentRelation =
-                    articleCommentRepository.getByCommentId(commentId);
-            final String articleCommentRelationId =
-                    articleCommentRelation.getString(Keys.OBJECT_ID);
-            articleCommentRepository.remove(articleCommentRelationId);
-
-            final String articleId = articleCommentRelation.getString(
-                    Article.ARTICLE + "_" + Keys.OBJECT_ID);
+            final JSONObject comment = commentRepository.get(commentId);
+            final String articleId = comment.getString(Comment.COMMENT_ON_ID);
 
             if (!userUtils.canAccessArticle(articleId)) {
                 ret.put(Keys.STATUS_CODE,
@@ -424,14 +375,14 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
-            // Step 2: Remove comment
+            // Step 1: Remove comment
             commentRepository.remove(commentId);
-            // Step 3: Update article comment count
+            // Step 2: Update article comment count
             articleUtils.decArticleCommentCount(articleId);
-            // Step 4: Update blog statistic comment count
+            // Step 3: Update blog statistic comment count
             statistics.decBlogCommentCount();
             statistics.decPublishedBlogCommentCount();
-            // Step 5: Fire remove comment event
+            // Step 4: Fire remove comment event
             eventManager.fireEventSynchronously(
                     new Event<String>(EventTypes.REMOVE_COMMENT, articleId));
 
@@ -487,23 +438,16 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final String commentId = requestJSONObject.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Removing comment[oId={0}]", commentId);
 
-            // Step 1: Remove page-comment relation
-            final JSONObject pageCommentRelation =
-                    pageCommentRepository.getByCommentId(commentId);
-            final String pageCommentRelationId =
-                    pageCommentRelation.getString(Keys.OBJECT_ID);
-            pageCommentRepository.remove(pageCommentRelationId);
-
-            final String pageId = pageCommentRelation.getString(
-                    Page.PAGE + "_" + Keys.OBJECT_ID);
-            // Step 2: Remove comment
+            final JSONObject comment = commentRepository.get(commentId);
+            final String pageId = comment.getString(Comment.COMMENT_ON_ID);
+            // Step 1: Remove comment
             commentRepository.remove(commentId);
-            // Step 3: Update page comment count
+            // Step 2: Update page comment count
             pageUtils.decPageCommentCount(pageId);
-            // Step 4: Update blog statistic comment count
+            // Step 3: Update blog statistic comment count
             statistics.decBlogCommentCount();
             statistics.decPublishedBlogCommentCount();
-            // Step 5: Fire remove comment event
+            // Step 4: Fire remove comment event
             eventManager.fireEventSynchronously(
                     new Event<String>(EventTypes.REMOVE_COMMENT, pageId));
 

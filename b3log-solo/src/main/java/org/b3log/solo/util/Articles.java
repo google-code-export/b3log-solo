@@ -25,7 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
@@ -42,7 +41,6 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.ArticleSignGAERepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
@@ -56,7 +54,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Mar 7, 2011
+ * @version 1.0.2.3, Aug 25, 2011
  */
 public final class Articles {
 
@@ -70,11 +68,6 @@ public final class Articles {
      */
     private CommentRepository commentRepository =
             CommentGAERepository.getInstance();
-    /**
-     * Article-Comment repository.
-     */
-    private ArticleCommentRepository articleCommentRepository =
-            ArticleCommentGAERepository.getInstance();
     /**
      * Article-Sign repository.
      */
@@ -197,8 +190,7 @@ public final class Articles {
      * Removes article comments by the specified article id.
      *
      * <p>
-     * Removes related comments, article-comment relations, sets article/blog
-     * comment statistic count.
+     * Removes related comments, sets article/blog comment statistic count.
      * </p>
      *
      * @param articleId the specified article id
@@ -207,30 +199,16 @@ public final class Articles {
      */
     public void removeArticleComments(final String articleId)
             throws JSONException, RepositoryException {
-        final List<JSONObject> articleCommentRelations =
-                articleCommentRepository.getByArticleId(articleId);
-        for (int i = 0; i < articleCommentRelations.size(); i++) {
-            final JSONObject articleCommentRelation =
-                    articleCommentRelations.get(i);
-            final String commentId =
-                    articleCommentRelation.getString(Comment.COMMENT + "_"
-                                                     + Keys.OBJECT_ID);
-            commentRepository.remove(commentId);
-            final String relationId =
-                    articleCommentRelation.getString(Keys.OBJECT_ID);
-            articleCommentRepository.remove(relationId);
-        }
-
+        final int removedCnt = commentRepository.removeComments(articleId);
         int blogCommentCount = statistics.getBlogCommentCount();
-        final int articleCommentCount = articleCommentRelations.size();
-        blogCommentCount -= articleCommentCount;
+        blogCommentCount -= removedCnt;
         statistics.setBlogCommentCount(blogCommentCount);
 
         final JSONObject article = articleRepository.get(articleId);
         if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
             int publishedBlogCommentCount =
                     statistics.getPublishedBlogCommentCount();
-            publishedBlogCommentCount -= articleCommentCount;
+            publishedBlogCommentCount -= removedCnt;
             statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
         }
     }
@@ -270,16 +248,10 @@ public final class Articles {
     public List<JSONObject> getComments(final String articleId)
             throws JSONException, RepositoryException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
-        final List<JSONObject> articleCommentRelations =
-                articleCommentRepository.getByArticleId(articleId);
-        for (int i = 0; i < articleCommentRelations.size(); i++) {
-            final JSONObject articleCommentRelation =
-                    articleCommentRelations.get(i);
-            final String commentId =
-                    articleCommentRelation.getString(Comment.COMMENT + "_"
-                                                     + Keys.OBJECT_ID);
 
-            final JSONObject comment = commentRepository.get(commentId);
+        final List<JSONObject> comments =
+                commentRepository.getComments(articleId, 1, Integer.MAX_VALUE);
+        for (final JSONObject comment : comments) {
             final String content = comment.getString(Comment.COMMENT_CONTENT).
                     replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
             comment.put(Comment.COMMENT_CONTENT, content);

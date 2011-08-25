@@ -18,17 +18,14 @@ package org.b3log.solo.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +34,7 @@ import org.json.JSONObject;
  * Page utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 12, 2011
+ * @version 1.0.0.3, Aug 25, 2011
  */
 public final class Pages {
 
@@ -51,11 +48,6 @@ public final class Pages {
      */
     private CommentRepository commentRepository =
             CommentGAERepository.getInstance();
-    /**
-     * Page-Comment repository.
-     */
-    private PageCommentRepository pageCommentRepository =
-            PageCommentGAERepository.getInstance();
     /**
      * Page repository.
      */
@@ -77,16 +69,10 @@ public final class Pages {
     public List<JSONObject> getComments(final String pageId)
             throws JSONException, RepositoryException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
-        final List<JSONObject> pageCommentRelations =
-                pageCommentRepository.getByPageId(pageId);
-        for (int i = 0; i < pageCommentRelations.size(); i++) {
-            final JSONObject pageCommentRelation =
-                    pageCommentRelations.get(i);
-            final String commentId =
-                    pageCommentRelation.getString(Comment.COMMENT + "_"
-                                                  + Keys.OBJECT_ID);
+        final List<JSONObject> comments =
+                commentRepository.getComments(pageId, 1, Integer.MAX_VALUE);
 
-            final JSONObject comment = commentRepository.get(commentId);
+        for (final JSONObject comment : comments) {
             final String content = comment.getString(Comment.COMMENT_CONTENT).
                     replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
             comment.put(Comment.COMMENT_CONTENT, content);
@@ -146,8 +132,7 @@ public final class Pages {
      * Removes page comments by the specified page id.
      *
      * <p>
-     * Removes related comments, page-comment relations, sets page/blog
-     * comment statistic count.
+     * Removes related comments, sets page/blog comment statistic count.
      * </p>
      *
      * @param pageId the specified page id
@@ -156,23 +141,9 @@ public final class Pages {
      */
     public void removePageComments(final String pageId)
             throws JSONException, RepositoryException {
-        final List<JSONObject> pageCommentRelations =
-                pageCommentRepository.getByPageId(pageId);
-        for (int i = 0; i < pageCommentRelations.size(); i++) {
-            final JSONObject pageCommentRelation =
-                    pageCommentRelations.get(i);
-            final String commentId =
-                    pageCommentRelation.getString(Comment.COMMENT + "_"
-                                                  + Keys.OBJECT_ID);
-            commentRepository.remove(commentId);
-            final String relationId =
-                    pageCommentRelation.getString(Keys.OBJECT_ID);
-            pageCommentRepository.remove(relationId);
-        }
-
+        final int removedCnt = commentRepository.removeComments(pageId);
         int blogCommentCount = statistics.getBlogCommentCount();
-        final int pageCommentCount = pageCommentRelations.size();
-        blogCommentCount -= pageCommentCount;
+        blogCommentCount -= removedCnt;
         statistics.setBlogCommentCount(blogCommentCount);
     }
 

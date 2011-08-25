@@ -24,6 +24,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
@@ -85,6 +86,10 @@ public final class Users {
      */
     public boolean canAccessArticle(final String articleId)
             throws Exception {
+        if (Strings.isEmptyOrNull(articleId)) {
+            return false;
+        }
+
         if (isAdminLoggedIn()) {
             return true;
         }
