@@ -579,7 +579,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             articleUtils.removeArticleComments(articleId);
             final JSONObject article = articleRepository.get(articleId);
             articleRepository.remove(articleId);
+            System.out.println("3: " + statistics.getBlogCommentCount());
             statistics.decBlogArticleCount();
+            System.out.println("4: " + statistics.getBlogCommentCount());
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
                 statistics.decPublishedBlogArticleCount();
             }

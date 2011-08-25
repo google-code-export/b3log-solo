@@ -45,10 +45,8 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.ArticleCommentRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.impl.ArticleCommentGAERepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.util.Articles;
@@ -64,7 +62,7 @@ import org.json.JSONObject;
  * Symphony</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 16, 2011
+ * @version 1.0.0.5, Aug 25, 2011
  */
 public final class AddArticleCommentFromSymphonyAction
         extends AbstractAction {
@@ -123,11 +121,6 @@ public final class AddArticleCommentFromSymphonyAction
      * Event manager.
      */
     private static EventManager eventManager = EventManager.getInstance();
-    /**
-     * Article-Comment repository.
-     */
-    private static ArticleCommentRepository articleCommentRepository =
-            ArticleCommentGAERepository.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -244,6 +237,9 @@ public final class AddArticleCommentFromSymphonyAction
             setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL,
                     comment.getString(Comment.COMMENT_THUMBNAIL_URL));
+            // Sets comment on article....
+            comment.put(Comment.COMMENT_ON_ID, articleId);
+            comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
             final String commentId = commentRepository.add(comment);
             // Save comment sharp URL
             final String commentSharpURL =
@@ -253,26 +249,19 @@ public final class AddArticleCommentFromSymphonyAction
             ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.update(commentId, comment);
-            // Step 2: Add article-comment relation
-            final JSONObject articleCommentRelation = new JSONObject();
-            articleCommentRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                       articleId);
-            articleCommentRelation.put(Comment.COMMENT + "_" + Keys.OBJECT_ID,
-                                       commentId);
-            articleCommentRepository.add(articleCommentRelation);
-            // Step 3: Update article comment count
+            // Step 2: Update article comment count
             articleUtils.incArticleCommentCount(articleId);
-            // Step 4: Update blog statistic comment count
+            // Step 3: Update blog statistic comment count
             statistics.incBlogCommentCount();
             statistics.incPublishedBlogCommentCount();
-            // Step 5: Send an email to admin
+            // Step 4: Send an email to admin
             try {
                 Comments.sendNotificationMail(article, comment, originalComment,
                                               preference);
             } catch (final Exception e) {
                 LOGGER.log(Level.WARNING, "Send mail failed", e);
             }
-            // Step 6: Fire add comment event
+            // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);

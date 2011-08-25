@@ -49,10 +49,8 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.PageCommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.PageCommentGAERepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Pages;
@@ -66,7 +64,7 @@ import org.json.JSONObject;
  * Adds article comment action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 16, 2011
+ * @version 1.0.0.5, Aug 25, 2011
  */
 public final class AddPageCommentAction extends AbstractAction {
 
@@ -118,11 +116,6 @@ public final class AddPageCommentAction extends AbstractAction {
      * Event manager.
      */
     private EventManager eventManager = EventManager.getInstance();
-    /**
-     * Page-Comment repository.
-     */
-    private PageCommentRepository pageCommentRepository =
-            PageCommentGAERepository.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -240,6 +233,9 @@ public final class AddPageCommentAction extends AbstractAction {
             setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL,
                     comment.getString(Comment.COMMENT_THUMBNAIL_URL));
+            // Sets comment on page....
+            comment.put(Comment.COMMENT_ON_ID, pageId);
+            comment.put(Comment.COMMENT_ON_TYPE, Page.PAGE);
             commentId = commentRepository.add(comment);
             // Save comment sharp URL
             final String commentSharpURL = getCommentSharpURLForPage(page,
@@ -248,26 +244,19 @@ public final class AddPageCommentAction extends AbstractAction {
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.update(commentId, comment);
-            // Step 2: Add page-comment relation
-            final JSONObject pageCommentRelation = new JSONObject();
-            pageCommentRelation.put(Page.PAGE + "_" + Keys.OBJECT_ID,
-                                    pageId);
-            pageCommentRelation.put(Comment.COMMENT + "_" + Keys.OBJECT_ID,
-                                    commentId);
-            pageCommentRepository.add(pageCommentRelation);
-            // Step 3: Update page comment count
+            // Step 2: Update page comment count
             pageUtils.incPageCommentCount(pageId);
-            // Step 4: Update blog statistic comment count
+            // Step 3: Update blog statistic comment count
             statistics.incBlogCommentCount();
             statistics.incPublishedBlogCommentCount();
-            // Step 5: Send an email to admin
+            // Step 4: Send an email to admin
             try {
                 Comments.sendNotificationMail(page, comment, originalComment,
                                               preference);
             } catch (final Exception e) {
                 LOGGER.log(Level.WARNING, "Send mail failed", e);
             }
-            // Step 6: Fire add comment event
+            // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Page.PAGE, page);

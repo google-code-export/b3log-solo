@@ -19,7 +19,6 @@ import org.b3log.solo.model.Cache;
 import org.b3log.solo.model.Common;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
