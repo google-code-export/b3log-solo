@@ -42,7 +42,7 @@ $.extend(Admin.prototype, {
     
     /*
      * 根据当前页数设置 hash
-     * @currentPage 当前页
+     * @currentPage {string} 当前页
      */
     setHashByPage: function (currentPage) {
         var hash = window.location.hash,
