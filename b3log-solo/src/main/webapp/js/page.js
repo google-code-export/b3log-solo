@@ -15,10 +15,10 @@
  */
 
 /**
- *  index for admin
+ * @fileoverview Page util, load heighlight and process comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Aug 5, 2011
+ * @version 1.0.0.7, Aug 31, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -223,6 +223,11 @@ $.extend(Page.prototype, {
                 that.submitComment();
             }
         });
+        
+        // captcha
+        $("#captcha").click(function () {
+            $(this).attr("src", "/captcha.do?code=" + Math.random());
+        });
 
         // cookie
         $("#commentEmail").val(Cookie.readCookie("commentEmail"));
@@ -327,6 +332,7 @@ $.extend(Page.prototype, {
                     switch (result.sc) {
                         case "COMMENT_" + type.toUpperCase() + "_SUCC":
                             addComment(result, statue);
+                            $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
                             break;
                         case "CAPTCHA_ERROR":
                             $("#commentErrorTip" + statue).html(tips.captchaErrorLabel);
@@ -387,11 +393,14 @@ $.extend(Page.prototype, {
                 }
             });
             $("#replyForm #captcha").attr("id", "captchaReply").
-            attr("src", "/captcha.do?" + new Date().getTime());
+            attr("src", "/captcha.do?" + new Date().getTime()).click(function () {
+                $(this).attr("src", "/captcha.do?code=" + Math.random());
+            });
         
             $("#replyForm #commentErrorTip").attr("id", "commentErrorTipReply").html("");
             
-            $("#replyForm #submitCommentButton").attr("id", "submitCommentButtonReply").click(function () {
+            $("#replyForm #submitCommentButton").attr("id", "submitCommentButtonReply").
+            unbind("click").removeAttr("onclick").click(function () {
                 that.submitComment(id, 'Reply');
             });
             

@@ -2,7 +2,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Aug 10, 2011
+ * @version 1.0.0.9, Aug 31, 2011
 */
 *,html,body {
     margin: 0;
@@ -119,6 +119,8 @@ button:hover,.button:hover {
     margin-bottom: 12px;
     padding: 3px 12px;
 }
+
+/* start form */
 .form th {
     text-align: right;
     white-space: nowrap;
@@ -161,6 +163,11 @@ button:hover,.button:hover {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
 }
 
+.form textarea {
+    padding: 3px;
+}
+/* end form */
+
 #top {
     background-image: linear-gradient(top,#FFFFFF,#E5E5E5);
     background-image: -moz-linear-gradient(top,#FFFFFF,#E5E5E5);
@@ -202,6 +209,7 @@ button:hover,.button:hover {
     margin: 0 -2px;
 }
 
+/* start icon */
 .putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon, 
 .homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon, 
 .postIcon,.articlesIcon,.draftsIcon,.usersIcon,.linkIcon,
@@ -347,6 +355,8 @@ button:hover,.button:hover {
     height: 32px;
     width: 32px;
 }
+/* start icon */
+
 /* start emotions */
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
 .em10, .em11, .em12, .em13, .em14 {
@@ -456,3 +466,9 @@ button:hover,.button:hover {
     font-weight: bold;
 }
 /* end tags */
+
+/* start comment */
+#captcha, #captchaReply {
+    cursor: pointer;
+}
+/* end comment */

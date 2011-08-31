@@ -15,10 +15,10 @@
  */
 
 /**
- *  util and every page should be userd.
+ * @fileoverview util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Aug 19, 2011
+ * @version 1.0.0.9, Aug 31, 2011
  */
 
 var Util = {
