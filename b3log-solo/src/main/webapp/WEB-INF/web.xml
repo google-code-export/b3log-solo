@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.2.7, Aug 25, 2011
+    Version: 1.0.2.8, Aug 31, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -365,12 +365,12 @@
         <url-pattern>/upgrade/v026-v030.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>V030ToV031</servlet-name>
-        <servlet-class>org.b3log.solo.upgrade.V030ToV031</servlet-class>
+        <servlet-name>UpgradeChecker</servlet-name>
+        <servlet-class>org.b3log.solo.upgrade.UpgradChecker</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>V030ToV031</servlet-name>
-        <url-pattern>/upgrade/v030-v031.do</url-pattern>
+        <servlet-name>UpgradeChecker</servlet-name>
+        <url-pattern>/upgrade/checker.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>RestoreSigns</servlet-name>
