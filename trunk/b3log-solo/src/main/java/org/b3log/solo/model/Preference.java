@@ -26,7 +26,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Aug 5, 2011
+ * @version 1.0.2.4, Aug 31, 2011
  */
 public final class Preference {
 
@@ -183,6 +183,10 @@ public final class Preference {
      */
     public static final String ALLOW_VISIT_DRAFT_VIA_PERMALINK =
             "allowVisitDraftViaPermalink";
+    /**
+     * Key of version.
+     */
+    public static final String VERSION = "version";
 
     /**
      * Private default constructor.
@@ -194,7 +198,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.9, Aug 5, 2011
+     * @version 1.0.1.0, Aug 31, 2011
      */
     public static final class Default {
 
@@ -316,6 +320,10 @@ public final class Preference {
          */
         public static final boolean DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK =
                 false;
+        /**
+         * Default version.
+         */
+        public static final String DEFAULT_VERSION = "0.3.1";
 
         static {
             final JSONArray signs = new JSONArray();

@@ -16,7 +16,6 @@
 package org.b3log.solo.upgrade;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -32,34 +31,21 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Upgrader for <b>v030</b> to <b>v031</b>.
- *
- * <p>
- * Model:
- *   <ul>
- *     <li>
- *       Adds a property(named {@value Comment#COMMENT_ON_ID}) to
- *       entity {@link Comment comment}
- *     </li>
- *     <li>
- *       Adds a property(named {@value Comment#COMMENT_ON_TYPE}) to
- *       entity {@link Comment comment}
- *     </li>
- *     <li>Clears {@code article_comment} repository</li>
- *     <li>Clears {@code page_comment} repository</li>
- *   </ul>
- * </p>
+ * Upgrad checker.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 5, 2011
+ * @version 1.0.0.3, Aug 31, 2011
+ * @since 0.3.1
  */
-public final class V030ToV031 extends HttpServlet {
+public final class UpgradChecker extends HttpServlet {
 
     /**
      * Default serial version uid.
@@ -69,7 +55,7 @@ public final class V030ToV031 extends HttpServlet {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(V030ToV031.class.getName());
+            Logger.getLogger(UpgradChecker.class.getName());
     /**
      * Article-Comment repository.
      */
@@ -85,56 +71,91 @@ public final class V030ToV031 extends HttpServlet {
      */
     private CommentRepository commentRepository =
             CommentGAERepository.getInstance();
+    /**
+     * Preference utility.
+     */
+    private Preferences preferences;
 
     @Override
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
-        final PrintWriter writer = response.getWriter();
-        if ("0.3.1".equals(SoloServletListener.VERSION)) {
-            LOGGER.info("Checking for consistency....");
+        try {
+            final JSONObject preference = preferences.getPreference();
+            if (!preference.has(Preference.VERSION)) {
+                v030ToV031();
 
-            upgradeComments();
+                return;
+            }
 
-            final String upgraded =
-                    "Upgraded from v030 to v031 successfully :-)";
-            LOGGER.info(upgraded);
-            writer.print(upgraded);
+            final String version = preference.getString(Preference.VERSION);
 
-            writer.close();
+            if (SoloServletListener.VERSION.equals(version)) {
+                LOGGER.fine(
+                        "Ignored upgrade to v031, caused by the old version is NOT v030!");
 
-            LOGGER.info("Checked for consistency");
-        } else {
-            final String ignored =
-                    "Ignored upgrade to v031, caused by the old version is NOT v030!";
-            LOGGER.info(ignored);
-            writer.print(ignored);
+                return;
+            }
 
-            writer.close();
+            if ("0.3.0".equals(version)) { // 0.3.0 -> 0.3.1
+                v030ToV031();
+            } else {
+                LOGGER.warning(
+                        "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers");
+            }
+        } catch (final Exception e) {
         }
 
         PageCaches.removeAll();
     }
 
     /**
-     * Upgrades comments model.
-     *
-     * @throws ServletException upgrade fails
+     * Upgrades from v030 to v031.
+     * 
+     * <p>
+     * Model:
+     *   <ul>
+     *     <li>
+     *       Adds a property(named {@value Comment#COMMENT_ON_ID}) to
+     *       entity {@link Comment comment}
+     *     </li>
+     *     <li>
+     *       Adds a property(named {@value Comment#COMMENT_ON_TYPE}) to
+     *       entity {@link Comment comment}
+     *     </li>
+     *     <li>Clears {@code article_comment} repository</li>
+     *     <li>Clears {@code page_comment} repository</li>
+     *     <li>
+     *       Adds a property(named {@value Preference#VERSION}) to
+     *       entity {@link Preference preference}
+     *     </li>
+     *   </ul>
+     * </p>
+     * @throws Exception upgrade fails
      */
-    private void upgradeComments() throws ServletException {
+    private void v030ToV031() throws Exception {
+        LOGGER.info("Upgrading from v030 to v031....");
+
         final Transaction transaction = pageCommentRepository.beginTransaction();
         try {
             upgradeComments(Article.ARTICLE);
             upgradeComments(Page.PAGE);
+
+            final JSONObject preference = preferences.getPreference();
+            preference.put(Preference.VERSION, "0.3.1");
+            preferences.setPreference(preference);
 
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
+            
             LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
-            throw new ServletException("Upgrade fail from v030 to v031");
+            throw new Exception("Upgrade fail from v030 to v031");
         }
+
+        LOGGER.info("Upgraded from v030 to v031 successfully :-)");
     }
 
     /**
