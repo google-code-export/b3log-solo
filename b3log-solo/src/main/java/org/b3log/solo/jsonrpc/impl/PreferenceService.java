@@ -31,6 +31,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  * Preference service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, Aug 5, 2011
+ * @version 1.0.3.0, Sep 1, 2011
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -158,7 +159,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *             "signHTML": ""
      *         }, ...]",
      *         "enablePostToTencentMicroblog": boolean,
-     *         "allowVisitDraftViaPermalink": boolean
+     *         "allowVisitDraftViaPermalink": boolean,
+     *         "version": ""
      *     }
      *     "sc": "GET_PREFERENCE_SUCC"
      * }
@@ -327,6 +329,11 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             final boolean pageCacheEnabled =
                     oldPreference.getBoolean(PAGE_CACHE_ENABLED);
             preference.put(PAGE_CACHE_ENABLED, pageCacheEnabled);
+
+            final String version = oldPreference.optString(VERSION);
+            if (!Strings.isEmptyOrNull(version)) {
+                preference.put(VERSION, version);
+            }
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
