@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.b3log.latke.Keys;
+import org.b3log.solo.SoloServletListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -198,7 +199,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.1.0, Aug 31, 2011
+     * @version 1.0.1.1, Sep 1, 2011
      */
     public static final class Default {
 
@@ -323,7 +324,7 @@ public final class Preference {
         /**
          * Default version.
          */
-        public static final String DEFAULT_VERSION = "0.3.1";
+        public static final String DEFAULT_VERSION = SoloServletListener.VERSION;
 
         static {
             final JSONArray signs = new JSONArray();

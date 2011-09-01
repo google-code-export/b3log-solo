@@ -703,6 +703,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         ret.put(PAGE_CACHE_ENABLED, Default.DEFAULT_PAGE_CACHE_ENABLED);
         ret.put(ALLOW_VISIT_DRAFT_VIA_PERMALINK,
                 Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+        ret.put(VERSION, Default.DEFAULT_VERSION);
 
         final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
         ret.put(Skin.SKIN_DIR_NAME, skinDirName);
