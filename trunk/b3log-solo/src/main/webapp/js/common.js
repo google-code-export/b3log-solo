@@ -99,7 +99,7 @@ var Util = {
         if (commentSplited.length === 1) {
             return str;
         }
-        str = "<span class='em-span'>" + commentSplited[0] + "</span>";
+        str = this._processEm(commentSplited[0]);
         if ($.trim(commentSplited[0]) === "") {
             str = "";
         }
