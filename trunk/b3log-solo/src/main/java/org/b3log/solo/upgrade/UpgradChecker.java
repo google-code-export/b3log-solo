@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Upgrad checker.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 31, 2011
+ * @version 1.0.0.4, Sep 1, 2011
  * @since 0.3.1
  */
 public final class UpgradChecker extends HttpServlet {
@@ -74,7 +74,7 @@ public final class UpgradChecker extends HttpServlet {
     /**
      * Preference utility.
      */
-    private Preferences preferences;
+    private Preferences preferences = Preferences.getInstance();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -91,9 +91,6 @@ public final class UpgradChecker extends HttpServlet {
             final String version = preference.getString(Preference.VERSION);
 
             if (SoloServletListener.VERSION.equals(version)) {
-                LOGGER.fine(
-                        "Ignored upgrade to v031, caused by the old version is NOT v030!");
-
                 return;
             }
 

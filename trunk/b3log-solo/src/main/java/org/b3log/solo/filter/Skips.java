@@ -78,7 +78,7 @@ public final class Skips {
                || requestURI.equals("/add-page-comment.do")
                || requestURI.equals("/get-random-articles.do")
                || requestURI.equals("/article-random-double-gen.do")
-               || requestURI.equals("/flush-stat.do")
+               || requestURI.equals("/upgrade/checker.do")
                || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")
                || requestURI.contains("/skins/")
