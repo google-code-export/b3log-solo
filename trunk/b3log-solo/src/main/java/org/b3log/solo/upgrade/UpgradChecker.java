@@ -104,9 +104,8 @@ public final class UpgradChecker extends HttpServlet {
                         "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers");
             }
         } catch (final Exception e) {
+            throw new ServletException(e);
         }
-
-        PageCaches.removeAll();
     }
 
     /**
@@ -154,6 +153,8 @@ public final class UpgradChecker extends HttpServlet {
             LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
             throw new Exception("Upgrade fail from v030 to v031");
         }
+        
+        PageCaches.removeAll();
 
         LOGGER.info("Upgraded from v030 to v031 successfully :-)");
     }
