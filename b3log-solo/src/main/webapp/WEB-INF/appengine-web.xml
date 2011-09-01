@@ -20,13 +20,15 @@
     Description: Web deployment descriptor for GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/appconfig.html
                  for more details.
-    Version: 1.0.2.5, Aug 9, 2011
+    Version: 1.0.2.6, Sep 1, 2011
     Author: Liang Ding
 -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <application>solo-demo</application>
-    <version>030</version>
+    <version>031</version>
     <sessions-enabled>true</sessions-enabled>
+    
+    <threadsafe>true</threadsafe>
 
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/classes/logging.properties" />
