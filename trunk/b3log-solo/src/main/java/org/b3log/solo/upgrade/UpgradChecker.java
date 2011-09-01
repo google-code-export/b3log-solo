@@ -149,11 +149,11 @@ public final class UpgradChecker extends HttpServlet {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            
+
             LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
             throw new Exception("Upgrade fail from v030 to v031");
         }
-        
+
         PageCaches.removeAll();
 
         LOGGER.info("Upgraded from v030 to v031 successfully :-)");
@@ -177,8 +177,7 @@ public final class UpgradChecker extends HttpServlet {
             throw new Exception("Unspecified comment on type!");
         }
 
-        final JSONArray cmtRels =
-                cmtRelResults.getJSONArray(Keys.RESULTS);
+        final JSONArray cmtRels = cmtRelResults.getJSONArray(Keys.RESULTS);
         for (int i = 0; i < cmtRels.length(); i++) {
             final JSONObject cmtRel = cmtRels.getJSONObject(i);
             final String cmtId = cmtRel.getString("comment_oId");
