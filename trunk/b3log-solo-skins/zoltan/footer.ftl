@@ -26,7 +26,6 @@
         ver ${version}&nbsp;&nbsp;
         Theme by <a href="http://www.zoltanhosszu.com" target="_blank">zoltan</a> & 
         <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
-        <g:plusone size="small" href="http://${blogHost}"></g:plusone>
     </div>
     <div class="ico-footer right" onclick="common.goTop();">${goTopLabel}</div>
 </div>
@@ -58,10 +57,4 @@
     });
     common.init();
     common.replaceSideEm($(".side-comment"));
-    
-    (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-    })();
 </script>
