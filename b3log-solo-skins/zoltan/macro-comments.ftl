@@ -33,7 +33,7 @@
 </div>
 <div class="post-comment">
     <h3>${postCommentsLabel}</h3>
-    <table class="marginLeft12 reply">
+    <table id="commentForm" class="marginLeft12 reply">
         <tbody>
             <tr>
                 <th width="65">

@@ -39,7 +39,7 @@
     </div>
     </#list>
 </div>
-<table class="comment-form">
+<table id="commentForm" class="comment-form">
     <tbody>
         <tr>
             <td width="208px">

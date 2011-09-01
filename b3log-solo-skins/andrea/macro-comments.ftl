@@ -33,7 +33,7 @@
     </div>
     </#list>
 </div>
-<table class="comment-form" cellpadding="0" cellspacing="0">
+<table id="commentForm" class="comment-form" cellpadding="0" cellspacing="0">
     <tbody>
         <tr>
             <th width="115px">

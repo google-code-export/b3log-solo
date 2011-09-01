@@ -45,7 +45,7 @@
         <div class="comment-title">
             <a>${postCommentsLabel}</a>
         </div>
-        <table class="form">
+        <table id="commentForm" class="form">
             <tbody>
                 <tr>
                     <th>
