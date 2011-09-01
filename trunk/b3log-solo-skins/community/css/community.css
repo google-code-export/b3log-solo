@@ -379,6 +379,10 @@ a.header-title {
     font-family: \u5fae\u8f6f\u96c5\u9ed1;
 }
 
+.comment {
+    margin-bottom: 40px;
+}
+
 .comment th {
     padding: 10px 0px 10px 0;
     text-align: left;

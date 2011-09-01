@@ -43,7 +43,7 @@
     ${postCommentsLabel}
 </div>
 <div class="comment-body">
-    <table class="form">
+    <table id="commentForm" class="form">
         <tbody>
             <tr>
                 <th>

@@ -18,7 +18,7 @@
  * @fileoverview Page util, load heighlight and process comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Aug 31, 2011
+ * @version 1.0.0.8, Sep 1, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -364,7 +364,7 @@ $.extend(Page.prototype, {
         } else {
             $("#replyForm").remove();
             endHTML = endHTML ? endHTML : "";
-            $("#" + id).append(commentFormHTML  + $("table").html() + "</table>" + endHTML);
+            $("#" + id).append(commentFormHTML  + $("#commentForm").html() + "</table>" + endHTML);
             
             // change id, bind event and set value
             $("#replyForm input, #replyForm textarea").each(function () {

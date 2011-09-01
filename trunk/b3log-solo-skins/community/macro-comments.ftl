@@ -34,7 +34,7 @@
 <div class="comment-title">
     ${postCommentsLabel}
 </div>
-<table class="comment" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 40px;">
+<table id="commentForm" class="comment" cellpadding="0" cellspacing="0" width="100%">
     <tbody>
         <tr>
             <th width="200px">
