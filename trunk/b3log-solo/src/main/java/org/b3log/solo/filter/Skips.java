@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * Skips for request filtering.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.4, Jul 11, 2011
+ * @version 1.0.3.5, Sep 2, 2011
  * @see #shouldSkip(java.lang.String) 
  */
 public final class Skips {
@@ -72,6 +72,8 @@ public final class Skips {
                || requestURI.equals("/captcha.do")
                || requestURI.equals("/tag-articles-feed.do")
                || requestURI.equals("/blog-articles-feed.do")
+               || requestURI.equals("/tag-articles-rss.do")
+               || requestURI.equals("/blog-articles-rss.do")
                || requestURI.equals("/file-access.do")
                || requestURI.equals("/check-login.do")
                || requestURI.equals("/add-article-comment.do")

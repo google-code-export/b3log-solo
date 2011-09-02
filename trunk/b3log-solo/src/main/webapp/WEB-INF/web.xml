@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.2.8, Aug 31, 2011
+    Version: 1.0.2.9, Sep 2, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -222,7 +222,7 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>BlogArticlesFeedServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.feed.BlogArticlesFeedServlet</servlet-class>
+        <servlet-class>org.b3log.solo.action.feed.atom.BlogArticlesFeedServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>BlogArticlesFeedServlet</servlet-name>
@@ -230,11 +230,27 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>TagArticlesFeedServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.feed.TagArticlesFeedServlet</servlet-class>
+        <servlet-class>org.b3log.solo.action.feed.atom.TagArticlesFeedServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TagArticlesFeedServlet</servlet-name>
         <url-pattern>/tag-articles-feed.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>BlogArticlesRSSServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.feed.rss.BlogArticlesRSSServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BlogArticlesRSSServlet</servlet-name>
+        <url-pattern>/blog-articles-rss.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>TagArticlesRSSServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.feed.rss.TagArticlesRSSServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TagArticlesRSSServlet</servlet-name>
+        <url-pattern>/tag-articles-rss.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>CaptchaServlet</servlet-name>
