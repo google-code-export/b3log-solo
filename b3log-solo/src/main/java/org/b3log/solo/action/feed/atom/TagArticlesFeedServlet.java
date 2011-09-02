@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.action.feed;
+package org.b3log.solo.action.feed.atom;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -27,13 +29,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.TagArticleRepository;
+import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.TagArticleGAERepository;
+import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.TimeZones;
@@ -41,12 +45,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Blog articles feed.
+ * Tag articles feed.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Jul 10, 2011
+ * @version 1.0.1.5, Jul 11, 2011
  */
-public final class BlogArticlesFeedServlet extends HttpServlet {
+public final class TagArticlesFeedServlet extends HttpServlet {
 
     /**
      * Default serial version uid.
@@ -56,12 +60,22 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(BlogArticlesFeedServlet.class.getName());
+            Logger.getLogger(TagArticlesFeedServlet.class.getName());
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository =
             ArticleGAERepository.getInstance();
+    /**
+     * Tag repository.
+     */
+    private TagRepository tagRepository =
+            TagGAERepository.getInstance();
+    /**
+     * Tag-Article repository.
+     */
+    private TagArticleRepository tagArticleRepository =
+            TagArticleGAERepository.getInstance();
     /**
      * Preference utilities.
      */
@@ -86,8 +100,37 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
         response.setContentType("application/atom+xml");
         response.setCharacterEncoding("UTF-8");
 
+        final String queryString = request.getQueryString();
+        final String oIdMap = queryString.split("&")[0];
+        final String tagId = oIdMap.split("=")[1];
+
         final Feed feed = new Feed();
         try {
+            final JSONObject tagArticleResult =
+                    tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
+            final JSONArray tagArticleRelations =
+                    tagArticleResult.getJSONArray(Keys.RESULTS);
+            if (0 == tagArticleRelations.length()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            
+            final List<JSONObject> articles = new ArrayList<JSONObject>();
+            for (int i = 0; i < tagArticleRelations.length(); i++) {
+                final JSONObject tagArticleRelation =
+                        tagArticleRelations.getJSONObject(i);
+                final String articleId =
+                        tagArticleRelation.getString(Article.ARTICLE + "_"
+                                                     + Keys.OBJECT_ID);
+                final JSONObject article = articleRepository.get(articleId);
+                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
+                    articles.add(article);
+                }
+            }
+
+            final String tagTitle =
+                    tagRepository.get(tagId).getString(Tag.TAG_TITLE);
+
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -96,7 +139,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
-                    Preference.BLOG_SUBTITLE);
+                    Preference.BLOG_SUBTITLE) + ", " + tagTitle;
             final String blogHost = preference.getString(Preference.BLOG_HOST);
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
@@ -106,17 +149,8 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink("http://" + blogHost);
 
-            final Query query = new Query().setCurrentPageNum(1).
-                    setPageSize(ENTRY_OUTPUT_CNT).
-                    addFilter(Article.ARTICLE_IS_PUBLISHED,
-                              FilterOperator.EQUAL, true).
-                    addSort(Article.ARTICLE_CREATE_DATE,
-                            SortDirection.DESCENDING);
-
-            final JSONObject articleResult = articleRepository.get(query);
-            final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
-            for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.getJSONObject(i);
+            for (int i = 0; i < articles.size(); i++) {
+                final JSONObject article = articles.get(i);
                 final Entry entry = new Entry();
                 feed.addEntry(entry);
                 final String title = StringEscapeUtils.escapeXml(
@@ -154,7 +188,7 @@ public final class BlogArticlesFeedServlet extends HttpServlet {
             writer.write(feed.toString());
             writer.close();
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Get blog article feed error", e);
+            LOGGER.log(Level.SEVERE, "Get tag article feed error", e);
             throw new IOException(e);
         }
     }
