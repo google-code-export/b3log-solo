@@ -137,7 +137,27 @@
                     <span style="color: orangered; font-weight: bold;">Solo</span></a>, ver ${version}
             </div>
         </div>
+        <script type="text/javascript" src="js/common.js"></script>
+        <#if "" == miniPostfix>
+        <script type="text/javascript" src="js/admin/admin.js"></script>
+        <script type="text/javascript" src="js/admin/tablePaginate.js"></script>
+        <script type="text/javascript" src="js/admin/article.js"></script>
+        <script type="text/javascript" src="js/admin/comment.js"></script>
+        <script type="text/javascript" src="js/admin/articleList.js"></script>
+        <script type="text/javascript" src="js/admin/draftList.js"></script>
+        <script type="text/javascript" src="js/admin/fileList.js"></script>
+        <script type="text/javascript" src="js/admin/pageList.js"></script>
+        <script type="text/javascript" src="js/admin/others.js"></script>
+        <script type="text/javascript" src="js/admin/linkList.js"></script>
+        <script type="text/javascript" src="js/admin/preference.js"></script>
+        <script type="text/javascript" src="js/admin/pluginList.js"></script>
+        <script type="text/javascript" src="js/admin/userList.js"></script>
+        <script type="text/javascript" src="js/admin/commentList.js"></script>
+        <script type="text/javascript" src="js/admin/plugin.js"></script>
+        <script type="text/javascript" src="js/admin/main.js"></script>
+        <#else>
         <script type="text/javascript" src="js/admin/latkeAdmin${miniPostfix}.js"></script>
+        </#if>
         <#include "admin-label.ftl">
         ${plugins}
         <script type="text/javascript">
