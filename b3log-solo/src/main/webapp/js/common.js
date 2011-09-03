@@ -18,7 +18,7 @@
  * @fileoverview util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Aug 31, 2011
+ * @version 1.0.1.0, Sep 3, 2011
  */
 
 var Util = {
@@ -208,16 +208,18 @@ $.extend(Common.prototype, {
         }
     },
     
-    buildTags: function () {
+    buildTags: function (id) {
+        id = id || "tags";
+        
         // 按字母进行排序
-        $("#tags").html($("#tags li").get().sort(function(a, b) {
+        $("#" + id).html($("#" + id + " li").get().sort(function(a, b) {
             var valA = $(a).find("span").text().toLowerCase();
             var valB = $(b).find("span").text().toLowerCase();
             return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;		
         }));
         
         // 按引用次数进行排序
-        var aList = $("#tags a").get();
+        var aList = $("#" + id + " a").get();
         aList.sort(function(a, b) {
             var valA = parseInt($(a).find("b").text());
             var valB = parseInt($(b).find("b").text());
