@@ -97,10 +97,6 @@ import org.json.JSONObject;
  *       to entity {@link Preference preference}
  *     </li>
  *     <li>
- *       Adds a property(named {@value Preference#CURRENT_VERSION_NUMBER})
- *       to entity {@link Preference preference}
- *     </li>
- *     <li>
  *       Adds a property(named {@value Statistic#STATISTIC_PUBLISHED_ARTICLE_COUNT})
  *       to entity {@link Statistic statistic}
  *     </li>
@@ -479,9 +475,6 @@ public final class V021ToV025 extends HttpServlet {
                 preference.put(Preference.TIME_ZONE_ID,
                                Preference.Default.DEFAULT_TIME_ZONE);
             }
-
-            preference.put(Preference.CURRENT_VERSION_NUMBER,
-                           SoloServletListener.VERSION);
 
             preferenceUtils.setPreference(preference);
             transaction.commit();
