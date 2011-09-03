@@ -19,7 +19,6 @@ import org.b3log.latke.action.ActionException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,20 +27,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Locales;
 import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
 /**
  * Index action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Aug 2, 2011
+ * @version 1.0.1.5, Sep 3, 2011
  */
 public final class IndexAction extends AbstractFrontPageAction {
 
@@ -66,6 +64,10 @@ public final class IndexAction extends AbstractFrontPageAction {
      * Preference utilities.
      */
     private Preferences preferenceUtils = Preferences.getInstance();
+    /**
+     * Skin utilities.
+     */
+    private Skins skins = Skins.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -88,21 +90,15 @@ public final class IndexAction extends AbstractFrontPageAction {
                 return ret;
             }
 
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
+            skins.fillLanguage(preference, ret);
 
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            ret.putAll(langs);
             request.setAttribute(CACHED_OID, "No id");
             request.setAttribute(CACHED_TITLE,
-                                 langs.get(PageTypes.INDEX_ARTICLES)
-                                 + "  [" + langs.get("pageNumLabel") + "="
+                                 ret.get(PageTypes.INDEX_ARTICLES)
+                                 + "  [" + ret.get("pageNumLabel") + "="
                                  + currentPageNum + "]");
             request.setAttribute(CACHED_TYPE,
-                                 langs.get(PageTypes.INDEX_ARTICLES));
+                                 ret.get(PageTypes.INDEX_ARTICLES));
             request.setAttribute(CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(ret, currentPageNum, preference);

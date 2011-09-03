@@ -18,7 +18,6 @@ package org.b3log.solo.action.impl;
 import java.io.IOException;
 import org.b3log.latke.action.ActionException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,17 +26,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Locales;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
 /**
  * Error action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Jun 18, 2011
+ * @version 1.0.1.0, Sep 3, 2011
  */
 public final class ErrorAction extends AbstractAction {
 
@@ -58,6 +56,10 @@ public final class ErrorAction extends AbstractAction {
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+    /**
+     * Skin utilities.
+     */
+    private Skins skins = Skins.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -74,14 +76,7 @@ public final class ErrorAction extends AbstractAction {
                 return ret;
             }
 
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
-
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            ret.putAll(langs);
+            skins.fillLanguage(preference, ret);
 
             filler.fillSide(ret, preference);
             filler.fillBlogHeader(ret, preference);

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +34,6 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Locales;
 import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
@@ -45,13 +43,14 @@ import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
 import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
 /**
  * Get articles by author action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Aug 2, 2011
+ * @version 1.0.2.6, Sep 3, 2011
  */
 public final class AuthorArticlesAction extends AbstractFrontPageAction {
 
@@ -85,6 +84,10 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
      * Preference utilities.
      */
     private Preferences preferenceUtils = Preferences.getInstance();
+    /**
+     * Skin utilities.
+     */
+    private Skins skins = Skins.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -121,13 +124,7 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
                 return ret;
             }
 
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            ret.putAll(langs);
+            skins.fillLanguage(preference, ret);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -137,13 +134,13 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
             final JSONObject author = userRepository.get(authorId);
 
             request.setAttribute(CACHED_TYPE,
-                                 langs.get(PageTypes.AUTHOR_ARTICLES));
+                                 ret.get(PageTypes.AUTHOR_ARTICLES));
             request.setAttribute(CACHED_OID, "No id");
             request.setAttribute(
                     CACHED_TITLE,
-                    langs.get(PageTypes.AUTHOR_ARTICLES) + "  ["
-                    + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
-                    + langs.get("authorLabel") + "=" + author.getString(
+                    ret.get(PageTypes.AUTHOR_ARTICLES) + "  ["
+                    + ret.get("pageNumLabel") + "=" + currentPageNum + ", "
+                    + ret.get("authorLabel") + "=" + author.getString(
                     User.USER_NAME) + "]");
             request.setAttribute(CACHED_LINK, requestURI);
 

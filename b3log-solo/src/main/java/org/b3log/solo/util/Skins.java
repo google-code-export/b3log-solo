@@ -19,12 +19,16 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
@@ -37,7 +41,7 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Aug 10, 2011
+ * @version 1.0.0.7, Sep 3, 2011
  */
 public final class Skins {
 
@@ -49,6 +53,60 @@ public final class Skins {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Skins.class.getName());
+    /**
+     * Properties map.
+     */
+    private static final Map<String, Map<String, String>> LANG_MAP =
+            new HashMap<String, Map<String, String>>();
+
+    /**
+     * Fills the specified data model with the specified preference.
+     * 
+     * @param preference the specified preference
+     * @param dataModel the specified data model
+     * @throws Exception exception 
+     */
+    public void fillLanguage(final JSONObject preference,
+                             final Map<String, Object> dataModel) throws
+            Exception {
+        final String localeString = preference.getString(
+                Preference.LOCALE_STRING);
+
+        Map<String, String> langs = LANG_MAP.get(localeString);
+        if (null == langs) {
+            final String currentSkinDirName =
+                    preference.getString(SKIN_DIR_NAME);
+            LOGGER.log(Level.INFO,
+                       "Loading skin[dirName={0}] language[locale={1}]",
+                       new Object[]{currentSkinDirName, localeString});
+            langs = new HashMap<String, String>();
+
+            final String webRootPath = SoloServletListener.getWebRoot();
+
+            final String language = Locales.getLanguage(localeString);
+            final String country = Locales.getCountry(localeString);
+
+            final Properties props = new Properties();
+            props.load(new FileReader(webRootPath + "skins" + File.separator
+                                      + currentSkinDirName + File.separator
+                                      + Keys.LANGUAGE + File.separator
+                                      + Keys.LANGUAGE + '_' + language + '_'
+                                      + country + ".properties"));
+            final Set<Object> keys = props.keySet();
+            for (final Object key : keys) {
+                langs.put((String) key, props.getProperty((String) key));
+            }
+
+            LANG_MAP.put(localeString, langs);
+            LOGGER.log(Level.INFO,
+                       "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
+                       new Object[]{currentSkinDirName,
+                                    localeString,
+                                    langs.size()});
+        }
+
+        dataModel.putAll(langs);
+    }
 
     /**
      * Loads skins for the specified preference and initializes templates 
@@ -127,7 +185,7 @@ public final class Skins {
     private void setDirectoryForTemplateLoading(final String skinDirName) {
         try {
             final String webRootPath = SoloServletListener.getWebRoot();
-            final String skinPath = webRootPath + SKINS + "/"
+            final String skinPath = webRootPath + SKINS + File.separator
                                     + skinDirName;
             Templates.CONFIGURATION.setDirectoryForTemplateLoading(
                     new File(skinPath));
@@ -153,8 +211,8 @@ public final class Skins {
      */
     public Set<String> getSkinDirNames() {
         final String webRootPath = SoloServletListener.getWebRoot();
-        final File webRoot = new File(webRootPath + "skins/");
-        final File[] skinDirs = webRoot.listFiles(new FileFilter() {
+        final File skins = new File(webRootPath + "skins" + File.separator);
+        final File[] skinDirs = skins.listFiles(new FileFilter() {
 
             @Override
             public boolean accept(final File file) {
@@ -182,7 +240,7 @@ public final class Skins {
      */
     public String getSkinName(final String skinDirName) {
         final String webRootPath = SoloServletListener.getWebRoot();
-        final File skins = new File(webRootPath + "skins/");
+        final File skins = new File(webRootPath + "skins" + File.separator);
         final File[] skinDirs = skins.listFiles(new FileFilter() {
 
             @Override
@@ -207,7 +265,7 @@ public final class Skins {
 
         try {
             final Properties ret = new Properties();
-            final String skinPropsPath = skinDirs[0].getPath() + "/"
+            final String skinPropsPath = skinDirs[0].getPath() + File.separator
                                          + "skin.properties";
             ret.load(new FileReader(skinPropsPath));
 
@@ -227,6 +285,8 @@ public final class Skins {
      */
     public static Skins getInstance() {
         return SingletonHolder.SINGLETON;
+
+
     }
 
     /**

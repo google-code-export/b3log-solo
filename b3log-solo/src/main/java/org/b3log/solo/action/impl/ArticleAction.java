@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +35,6 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
@@ -48,6 +46,7 @@ import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
@@ -59,7 +58,7 @@ import org.jsoup.Jsoup;
  * Article action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.3, Aug 5, 2011
+ * @version 1.0.3.4, Sep 3, 2011
  */
 public final class ArticleAction extends AbstractFrontPageAction {
 
@@ -106,6 +105,10 @@ public final class ArticleAction extends AbstractFrontPageAction {
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
+    /**
+     * Skin utilities.
+     */
+    private Skins skins = Skins.getInstance();
 
     /**
      * {@inheritDoc}
@@ -145,15 +148,9 @@ public final class ArticleAction extends AbstractFrontPageAction {
                 return ret;
             }
 
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
-
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            ret.putAll(langs);
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ARTICLE));
+            skins.fillLanguage(preference, ret);
+            
+            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.ARTICLE));
 
             final String articleId =
                     (String) request.getAttribute(Keys.OBJECT_ID);

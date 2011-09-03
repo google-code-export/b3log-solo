@@ -36,13 +36,14 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
 /**
  * Page action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Aug 2, 2011
+ * @version 1.0.0.9, Sep 3, 2011
  */
 public final class PageAction extends AbstractFrontPageAction {
 
@@ -75,6 +76,10 @@ public final class PageAction extends AbstractFrontPageAction {
      * Preference utilities.
      */
     private Preferences preferenceUtils = Preferences.getInstance();
+    /**
+     * Skin utilities.
+     */
+    private Skins skins = Skins.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -96,9 +101,9 @@ public final class PageAction extends AbstractFrontPageAction {
                     Locales.getLanguage(localeString),
                     Locales.getCountry(localeString));
 
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            ret.putAll(langs);
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
+            skins.fillLanguage(preference, ret);
+            
+            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.PAGE));
 
             final String pageId = (String) request.getAttribute(Keys.OBJECT_ID);
 
