@@ -20,7 +20,6 @@ import org.b3log.latke.action.ActionException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,11 +32,10 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
@@ -77,6 +75,10 @@ public final class TagsAction extends AbstractFrontPageAction {
      */
     private Preferences preferenceUtils = Preferences.getInstance();
     /**
+     * Skin utilities.
+     */
+    private Skins skins = Skins.getInstance();
+    /**
      * Tag utilities.
      */
     private Tags tagUtils = Tags.getInstance();
@@ -95,17 +97,11 @@ public final class TagsAction extends AbstractFrontPageAction {
                 return ret;
             }
 
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
+            skins.fillLanguage(preference, ret);
 
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            ret.putAll(langs);
             request.setAttribute(CACHED_OID, "No id");
-            request.setAttribute(CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
+            request.setAttribute(CACHED_TITLE, ret.get(PageTypes.ALL_TAGS));
+            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_LINK, "/tags.html");
 
             final JSONObject result = tagRepository.get(new Query());

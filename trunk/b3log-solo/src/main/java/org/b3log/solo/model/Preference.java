@@ -17,9 +17,7 @@ package org.b3log.solo.model;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.b3log.latke.Keys;
-import org.b3log.solo.SoloServletListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -27,7 +25,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Aug 31, 2011
+ * @version 1.0.2.5, Sep 3, 2011
  */
 public final class Preference {
 
@@ -138,11 +136,6 @@ public final class Preference {
     public static final String ENABLE_ARTICLE_UPDATE_HINT =
             "enableArticleUpdateHint";
     /**
-     * Key of current version number.
-     */
-    public static final String CURRENT_VERSION_NUMBER =
-            "currentVersionNumber";
-    /**
      * Key of signs.
      */
     public static final String SIGNS = "signs";
@@ -199,7 +192,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.1.1, Sep 1, 2011
+     * @version 1.0.1.2, Sep 3, 2011
      */
     public static final class Default {
 
@@ -321,10 +314,6 @@ public final class Preference {
          */
         public static final boolean DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK =
                 false;
-        /**
-         * Default version.
-         */
-        public static final String DEFAULT_VERSION = SoloServletListener.VERSION;
 
         static {
             final JSONArray signs = new JSONArray();

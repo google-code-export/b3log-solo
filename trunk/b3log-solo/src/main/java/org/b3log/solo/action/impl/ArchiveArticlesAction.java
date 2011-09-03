@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,6 +47,7 @@ import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
 import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
 import org.b3log.solo.util.comparator.Comparators;
 import org.b3log.solo.util.Preferences;
+import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Get articles by archive date.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Aug 2, 2011
+ * @version 1.0.2.2, Sep 3, 2011
  */
 public final class ArchiveArticlesAction extends AbstractFrontPageAction {
 
@@ -96,6 +96,10 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
      * Preference utilities.
      */
     private Preferences preferenceUtils = Preferences.getInstance();
+    /**
+     * Skin utilities.
+     */
+    private Skins skins = Skins.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -136,12 +140,8 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
             final JSONObject preference = preferenceUtils.getPreference();
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
 
-            final Map<String, String> langs = langPropsService.getAll(locale);
-            ret.putAll(langs);
+            skins.fillLanguage(preference, ret);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -220,15 +220,15 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
                 cachedTitle = Dates.EN_MONTHS.get(month) + " " + year;
             } else {
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
-                cachedTitle = year + " " + langs.get("yearLabel") + " "
-                              + month + " " + langs.get("monthLabel");
+                cachedTitle = year + " " + ret.get("yearLabel") + " "
+                              + month + " " + ret.get("monthLabel");
             }
             ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
 
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
+            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.DATE_ARTICLES));
             request.setAttribute(CACHED_OID, archiveDateId);
             request.setAttribute(CACHED_TITLE,
-                                 cachedTitle + "  [" + langs.get("pageNumLabel")
+                                 cachedTitle + "  [" + ret.get("pageNumLabel")
                                  + "=" + currentPageNum + "]");
             request.setAttribute(CACHED_LINK, requestURI);
         } catch (final Exception e) {
@@ -311,7 +311,7 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
     private static int getCurrentPageNum(final String requestURI) {
         final String pageNumString = requestURI.substring("/archives/yyyy/MM/".
                 length());
-       
+
         return Requests.getCurrentPageNum(pageNumString);
     }
 }
