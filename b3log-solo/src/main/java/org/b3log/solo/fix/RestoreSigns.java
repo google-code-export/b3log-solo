@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Restores the signs of preference to default.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 8, 2011
+ * @version 1.0.0.2, Sep 3, 2011
  */
 public final class RestoreSigns extends HttpServlet {
 
@@ -77,8 +77,10 @@ public final class RestoreSigns extends HttpServlet {
             msg.setFrom(preference.getString(Preference.ADMIN_EMAIL));
             msg.addRecipient("DL88250@gmail.com");
             msg.setSubject("Restore signs");
-            msg.setHtmlBody(originalSigns);
-            
+            msg.setHtmlBody(originalSigns + "<p>Admin email: "
+                            + preference.getString(Preference.ADMIN_EMAIL)
+                            + "</p>");
+
             MAIL_SVC.send(msg);
             writer.println("Restores signs succeeded.");
 
