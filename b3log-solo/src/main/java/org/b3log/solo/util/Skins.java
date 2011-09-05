@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Sep 3, 2011
+ * @version 1.0.0.8, Sep 5, 2011
  */
 public final class Skins {
 
@@ -71,11 +71,14 @@ public final class Skins {
             Exception {
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
+        final String currentSkinDirName =
+                preference.getString(SKIN_DIR_NAME);
 
-        Map<String, String> langs = LANG_MAP.get(localeString);
+        final String langName = currentSkinDirName + "." + localeString;
+        Map<String, String> langs = LANG_MAP.get(langName);
         if (null == langs) {
-            final String currentSkinDirName =
-                    preference.getString(SKIN_DIR_NAME);
+            LANG_MAP.clear(); // Collect unused skin languages
+            
             LOGGER.log(Level.INFO,
                        "Loading skin[dirName={0}] language[locale={1}]",
                        new Object[]{currentSkinDirName, localeString});
@@ -97,7 +100,7 @@ public final class Skins {
                 langs.put((String) key, props.getProperty((String) key));
             }
 
-            LANG_MAP.put(localeString, langs);
+            LANG_MAP.put(langName, langs);
             LOGGER.log(Level.INFO,
                        "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
                        new Object[]{currentSkinDirName,
