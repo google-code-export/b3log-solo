@@ -183,7 +183,6 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                 }
             }
 
-
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation =
