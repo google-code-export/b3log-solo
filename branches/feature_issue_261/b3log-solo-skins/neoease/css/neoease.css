@@ -1,0 +1,457 @@
+/*
+ * skin neoease style
+ *
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.0.1, Sep 3, 2011
+*/
+/* start base */
+html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Lucida Grande",Verdana,'微软雅黑';
+    font-size: 12px;
+    background-color: #F9F9F9;
+    color: #555555;
+}
+
+a {
+    outline: none;
+    color: #21759B;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #D54E21;    
+}
+
+textarea, input {
+    outline: none;
+}
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clear {
+    background-color: transparent;
+    border: 0px;
+    clear: both;
+    display: block;
+    font-size: 0px;
+    height: 0px;
+    line-height: 0px;
+    overflow: hidden;
+}
+
+.none {
+    display: none;
+}
+
+#top {
+    background-image: linear-gradient(top,#FFFFFF,#E5E5E5);
+    background-image: -moz-linear-gradient(top,#FFFFFF,#E5E5E5);
+    background-image: -ms-linear-gradient(top,#FFFFFF,#E5E5E5);
+    background-image: -o-linear-gradient(top,#FFFFFF,#E5E5E5);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#FFFFFF),to(#E5E5E5));
+    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E5E5E5');
+    border-bottom: 1px solid #E5E5E5;
+    height: 26px;
+    line-height: 26px;
+}
+
+#top a, #top span span {
+    border-right: 1px solid #D9D9D9;
+    color: #4C4C4C;
+    float: left;
+    line-height: 14px;
+    margin: 6px 0;
+    padding: 0 6px;
+    text-shadow: 0 -1px 0 #FFFFFF;
+    font-weight: normal;
+}
+
+#top a:hover, #top a.hover {
+    background-color: #EEF2FA;
+    border-left-color: #707070;
+    border-radius: 0 13px 13px 0;
+    margin: 0px;
+    line-height: 26px;
+}
+
+.logo {
+    padding: 0 5px;
+    text-shadow: 0 0 1px #EEEEEE;
+}
+.logo span {
+    margin: 0 -2px;
+}
+
+.tip {
+    color: #D54E21;
+}
+/* end base */
+
+/* start ico */
+.expand-ico, .collapse-ico {
+    background: url("http://www.neoease.com/wp-content/themes/paled/img/icons.png") no-repeat scroll 35px -449px transparent;
+    cursor: pointer;
+    height: 16px;
+}
+
+.collapse-ico {
+    background-position: 35px -433px;
+}
+
+.date-ico, .tag-ico, .user-ico {
+    background-image: url("/skins/neoease/images/icons.png");
+    background-repeat: no-repeat;
+    height: 16px;
+    display: block;
+    padding-left: 20px;
+}
+
+.tag-ico {
+    margin: 6px 6px 0 0;
+}
+
+.date-ico {
+    float: left;
+    background-position: 0 -16px;
+}
+
+.user-ico {
+    background-position: 0 -32px;
+    float: left;
+    margin-left: 12px;
+}
+/* end ico */
+
+/* start frame */
+.wrapper {
+    margin: 0 auto;
+    width: 960px;
+}
+
+.body {
+    border-top: 2px solid #DDDDDD;
+}
+
+.main {
+    float: left;
+    margin: 16px 0 50px;
+    overflow: hidden;
+    width: 667px;
+}
+/* end frame */
+
+/* start header */
+.header {
+    background: url(http://www.neoease.com/wp-content/themes/paled/img/sprite.png) repeat-x scroll 50% -60px #F2F2F2;
+    padding: 20px 0;
+}
+
+.header .title {
+    border-bottom: 1px solid #242424;
+    color: #000000;
+    font-size: 26px;
+    font-weight: normal;
+}
+
+.header .sub-title {
+    color: #242424;
+    font-size: 11px;
+}
+
+#search {
+    background: url("images/search.png") no-repeat scroll 5px 6px #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 2px 2px 2px 2px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset;
+    color: #888888;
+    float: right;
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    padding: 3px 10px 3px 28px;
+    width: 24px;
+    -moz-transition-duration: 400ms;
+    -moz-transition-property: width, background;
+    -moz-transition-timing-function: ease;
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-property: width, background;
+    -webkit-transition-timing-function: ease;
+}
+
+#search:focus {
+    background-color: #F9F9F9;
+    width: 196px;
+}
+
+.nav {
+    background-color: #E9E9E9;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.nav ul {
+    list-style: none;
+    float: left;
+}
+
+.nav li {
+    float: left;
+}
+
+.nav a {
+    color: #666666;
+    display: block;
+    float: left;
+    font-size: 14px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 15px;
+    text-shadow: 0 1px 0 #EEEEEE;
+}
+
+.nav a:hover {
+    color: #D54E21;
+    background-color: #DDDDDD;
+}
+
+.nav .current {
+    background-color: #DDDDDD;
+    margin: -1px 0;
+    padding-right: 2px;
+}
+
+.nav .current a  {    
+    background-color: #F9F9F9;
+    border-color: #CCCCCC #CCCCCC #F9F9F9;
+    border-style: solid;
+    border-width: 1px 1px 3px;
+    font-weight: 700;
+    height: 33px;
+    line-height: 33px;
+    margin: -2px 0 -3px;
+    color: #555555;
+    text-shadow : 1px 1px 1px #C6D9E9;
+}
+
+.nav img {
+    margin-left: 3px;
+    vertical-align: middle;
+}
+
+.nav .right {
+    margin-top: 8px;
+}
+/* end header */
+
+/* start footer */
+.footer {
+    background-color: #E9E9E9;
+    border-top: 3px solid #DDDDDD;
+    color: #999999;
+    font-size: 11px;
+    padding: 12px 0;
+}
+
+.footer a {
+    color: #787878;
+}
+
+#goTop {
+    background: url("http://www.neoease.com/wp-content/themes/paled/img/icons.png") no-repeat scroll 5px -414px #DDDDDD;
+    border-radius: 2px 2px 0 0;
+    cursor: pointer;
+    font-size: 11px;
+    height: 21px;
+    line-height: 21px;
+    padding: 0 10px 0 23px;
+    position: absolute;
+    right: 56px;
+    display: none;
+}
+/* end footer*/
+
+/* start side */
+.side {
+    float: right;
+    overflow: hidden;
+    width: 278px;
+    margin-bottom: 50px;
+}
+
+.side>div {
+    border-bottom: 1px solid #DEDEDE;
+    padding: 10px 5px 15px;
+}
+
+.side h4 {
+    font-size: 14px;
+    line-height: 32px;
+}
+
+#archiveSide {
+    list-style: square outside none;
+    margin-left: 16px;
+}
+
+.side a {
+    line-height: 16px;
+}
+
+.side img {
+    vertical-align: middle;
+}
+
+.recent-comments img {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #999999;
+    padding: 1px;
+    width: 32px;
+    height: 32px;
+}
+
+.recent-comments-main {
+    float: left;
+    margin-left: 3px;
+    width: 229px;
+}
+
+.recent-comments-main .expand-ico, .recent-comments-main .collapse-ico {
+    background-position: 0 -449px;
+    float: right;
+    width: 16px;
+    display: none;
+}
+
+.recent-comments-main .collapse-ico {
+    background-position: 0 -433px;
+}
+
+.recent-comments-content {
+    height: 16px;
+    overflow: hidden;
+    padding-top: 4px;
+}
+/* end side */
+
+/* start article list */
+.article {
+    border-bottom: 1px solid #CCCCCC;
+    padding: 0 5px 10px;
+}
+
+.article-element {
+    font-size: 11px;
+    line-height: 16px;
+    margin: 12px 0;
+}
+
+.article-element a {
+    border-bottom: 1px solid #DFDFDF;
+    color: #777777;    
+    text-decoration: none;
+}
+
+.article-element a:hover { 
+    color: #D54E21;
+    border-bottom-color: #D54E21;
+}
+
+.article-title {
+    color: #21759B;
+    display: block;
+    font-size: 20px;
+    font-weight: normal;
+    padding: 10px 0 5px;
+}
+
+.article-title:hover {
+    color: #D54E21;
+}
+
+.article-body h1 {
+    font-size: 2em;
+    margin: .67em 0;
+}
+
+.article-body h2 {
+    font-size: 1.5em;
+    margin: .75em 0;
+}
+
+.article-body h3 {
+    font-size: 1.17em;
+    margin: .83em 0;
+}
+
+.article-body h4 {
+    margin: 1.12em 0;
+}
+
+.article-body h5 {
+    font-size: .83em;
+    margin: 1.5em 0;
+}
+
+.article-body h6 {
+    font-size: .75em;
+    margin: 1.67em 0;
+}
+
+.article-body ol, .article-body ul {
+    margin-left: 40px;
+}
+
+.article-body a {
+    border-bottom: 1px solid #DFDFDF;
+}
+
+.article-body a:hover {
+    color: #D54E21;
+    border-bottom: 1px solid #D54E21;
+}
+/* end article list */
+
+/* start tags */
+.tags li {
+    margin-right: 5px;
+    float: left;
+    list-style: none;
+}
+
+.tags li:hover {
+    text-shadow: 0 0 2px;
+}
+
+.tags1 {
+    font-size: 12px;
+    color: #A1A1A1;
+}
+
+.tags2 {
+    font-size: 16px;
+    color: #687F95;
+}
+
+.tags3 {
+    font-size: 20px;
+    color: #4C6E90;
+}
+
+.tags4 {
+    font-size: 24px;
+    color: #225588;
+}
+
+.tags5 {
+    font-size: 28px;
+}
+/* end tags */

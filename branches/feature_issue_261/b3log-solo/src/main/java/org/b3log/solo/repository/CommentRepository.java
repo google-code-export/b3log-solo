@@ -1,0 +1,60 @@
+/*
+ * Copyright (c) 2009, 2010, 2011, B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.b3log.solo.repository;
+
+import java.util.List;
+
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.gae.GAERepository;
+import org.json.JSONObject;
+
+/**
+ * Comment repository.
+ *
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.3, Aug 25, 2011
+ */
+public interface CommentRepository extends GAERepository {
+
+    /**
+     * Gets post comments recently with the specified fetch.
+     *
+     * @param fetchSize the specified fetch size
+     * @return a list of comments recently, returns an empty list if not found
+     */
+    List<JSONObject> getRecentComments(final int fetchSize);
+
+    /**
+     * Gets comments with the specified on id, current page number and page size.
+     * 
+     * @param onId the specified on id
+     * @param currentPageNum the specified current page number
+     * @param pageSize the specified page size
+     * @return a list of comments, returns an empty list if not found
+     */
+    List<JSONObject> getComments(final String onId,
+                                 final int currentPageNum,
+                                 final int pageSize);
+
+    /**
+     * Removes comments with the specified on id.
+     * 
+     * @param onId the specified on id
+     * @return removed count
+     * @throws RepositoryException repository exception 
+     */
+    int removeComments(final String onId) throws RepositoryException;
+}
