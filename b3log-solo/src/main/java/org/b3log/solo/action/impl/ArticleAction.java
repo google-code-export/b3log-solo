@@ -23,10 +23,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.model.User;
 import org.b3log.solo.action.util.Filler;
@@ -149,8 +151,10 @@ public final class ArticleAction extends AbstractFrontPageAction {
             }
 
             skins.fillLanguage(preference, ret);
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
             
-            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.ARTICLE));
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ARTICLE));
 
             final String articleId =
                     (String) request.getAttribute(Keys.OBJECT_ID);

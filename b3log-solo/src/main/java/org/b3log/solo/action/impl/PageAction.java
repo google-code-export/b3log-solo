@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
@@ -102,8 +103,9 @@ public final class PageAction extends AbstractFrontPageAction {
                     Locales.getCountry(localeString));
 
             skins.fillLanguage(preference, ret);
-            
-            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.PAGE));
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
 
             final String pageId = (String) request.getAttribute(Keys.OBJECT_ID);
 
