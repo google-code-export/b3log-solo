@@ -50,7 +50,7 @@
 <#if 0 != paginationPageCount>
 <div class="pagination right">
     <#if 1 != paginationPageNums?first>
-    <a href="${path}/1"><<}</a>
+    <a href="${path}/1" title="${firstPageLabel}"><<</a>
     <a id="previousPage" href="${path}/${paginationPreviousPageNum}">${previousPageLabel}</a>
     </#if>
     <#list paginationPageNums as paginationPageNum>
@@ -62,7 +62,7 @@
     </#list>
     <#if paginationPageNums?last != paginationPageCount>
     <a id="nextPage" href="${path}/${paginationNextPageNum}">${nextPagePabel}</a>
-    <a href="${path}/${paginationPageCount}">>></a>
+    <a title="${lastPageLabel}" href="${path}/${paginationPageCount}">>></a>
     </#if>
     &nbsp;&nbsp;${sumLabel} ${paginationPageCount} ${pageLabel}
 </div>
