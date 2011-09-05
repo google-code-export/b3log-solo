@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
@@ -133,14 +134,16 @@ public final class AuthorArticlesAction extends AbstractFrontPageAction {
 
             final JSONObject author = userRepository.get(authorId);
 
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_TYPE,
-                                 ret.get(PageTypes.AUTHOR_ARTICLES));
+                                 langs.get(PageTypes.AUTHOR_ARTICLES));
             request.setAttribute(CACHED_OID, "No id");
             request.setAttribute(
                     CACHED_TITLE,
-                    ret.get(PageTypes.AUTHOR_ARTICLES) + "  ["
-                    + ret.get("pageNumLabel") + "=" + currentPageNum + ", "
-                    + ret.get("authorLabel") + "=" + author.getString(
+                    langs.get(PageTypes.AUTHOR_ARTICLES) + "  ["
+                    + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
+                    + langs.get("authorLabel") + "=" + author.getString(
                     User.USER_NAME) + "]");
             request.setAttribute(CACHED_LINK, requestURI);
 

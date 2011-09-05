@@ -29,6 +29,7 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
@@ -100,8 +101,10 @@ public final class TagsAction extends AbstractFrontPageAction {
             skins.fillLanguage(preference, ret);
 
             request.setAttribute(CACHED_OID, "No id");
-            request.setAttribute(CACHED_TITLE, ret.get(PageTypes.ALL_TAGS));
-            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.ALL_TAGS));
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
+            request.setAttribute(CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_LINK, "/tags.html");
 
             final JSONObject result = tagRepository.get(new Query());

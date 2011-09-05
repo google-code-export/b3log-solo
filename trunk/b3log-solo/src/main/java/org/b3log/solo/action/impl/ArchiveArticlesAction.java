@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
@@ -225,10 +226,12 @@ public final class ArchiveArticlesAction extends AbstractFrontPageAction {
             }
             ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
 
-            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.DATE_ARTICLES));
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
             request.setAttribute(CACHED_OID, archiveDateId);
             request.setAttribute(CACHED_TITLE,
-                                 cachedTitle + "  [" + ret.get("pageNumLabel")
+                                 cachedTitle + "  [" + langs.get("pageNumLabel")
                                  + "=" + currentPageNum + "]");
             request.setAttribute(CACHED_LINK, requestURI);
         } catch (final Exception e) {

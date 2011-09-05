@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
@@ -93,12 +94,14 @@ public final class IndexAction extends AbstractFrontPageAction {
             skins.fillLanguage(preference, ret);
 
             request.setAttribute(CACHED_OID, "No id");
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_TITLE,
-                                 ret.get(PageTypes.INDEX_ARTICLES)
-                                 + "  [" + ret.get("pageNumLabel") + "="
+                                 langs.get(PageTypes.INDEX_ARTICLES)
+                                 + "  [" + langs.get("pageNumLabel") + "="
                                  + currentPageNum + "]");
             request.setAttribute(CACHED_TYPE,
-                                 ret.get(PageTypes.INDEX_ARTICLES));
+                                 langs.get(PageTypes.INDEX_ARTICLES));
             request.setAttribute(CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(ret, currentPageNum, preference);
