@@ -17,26 +17,36 @@
             </#if>
         </h2>
         <div class="left article-element">
-            <#if article.hasUpdated>
-            ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
-            <#else>
-            ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
-            </#if>
-            <a href="/authors/${article.authorId}">${article.authorName}</a>
+            <span class="date-ico" title="${dateLabel}">  
+                <#if article.hasUpdated>
+                ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
+                <#else>
+                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
+                </#if>
+            </span>
+            <span class="user-ico" title="${authorLabel}">
+                <a href="/authors/${article.authorId}">${article.authorName}</a>
+            </span>
         </div>
         <div class="right article-element">
-            ${article.articleCommentCount}
-            ${article.articleViewCount}
+            <a href="${article.articlePermalink}#comments">
+                ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
+            </a>&nbsp;&nbsp;
+            <a href="${article.articlePermalink}">
+                ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
+            </a>
         </div>
         <div class="clear"></div>
         <div class="article-body">
             ${article.articleAbstract}
         </div>
         <div class="article-element">
-            <#list article.articleTags?split(",") as articleTag>
-            <a href="/tags/${articleTag?url('UTF-8')}">
-                ${articleTag}</a><#if articleTag_has_next>,</#if>
-            </#list>
+            <span class="tag-ico" title="${tagLabel}">
+                <#list article.articleTags?split(",") as articleTag>
+                <a href="/tags/${articleTag?url('UTF-8')}">
+                    ${articleTag}</a><#if articleTag_has_next>,</#if>
+                </#list>
+            </span>
         </div>
     </div>
     </#list>

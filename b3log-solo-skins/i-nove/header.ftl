@@ -24,7 +24,7 @@
             </li>
             <li>
                 <a href="/blog-articles-feed.do">
-                    ${atomLabel}
+                    Atom
                     <img src="/images/feed.png" alt="Atom"/>
                 </a>
             </li>

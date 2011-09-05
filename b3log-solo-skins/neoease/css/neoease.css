@@ -107,6 +107,29 @@ textarea, input {
 .collapse-ico {
     background-position: 35px -433px;
 }
+
+.date-ico, .tag-ico, .user-ico {
+    background-image: url("/skins/neoease/images/icons.png");
+    background-repeat: no-repeat;
+    height: 16px;
+    display: block;
+    padding-left: 20px;
+}
+
+.tag-ico {
+    margin: 6px 6px 0 0;
+}
+
+.date-ico {
+    float: left;
+    background-position: 0 -16px;
+}
+
+.user-ico {
+    background-position: 0 -32px;
+    float: left;
+    margin-left: 12px;
+}
 /* end ico */
 
 /* start frame */
@@ -287,33 +310,35 @@ textarea, input {
     vertical-align: middle;
 }
 
-#tagsSide li {
-    margin-right: 5px;
+.recent-comments img {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #999999;
+    padding: 1px;
+    width: 32px;
+    height: 32px;
+}
+
+.recent-comments-main {
     float: left;
-    list-style: none;
-}
-#tagsSide li:hover {
-    text-shadow: 0 0 2px;
+    margin-left: 3px;
+    width: 229px;
 }
 
-#tagsSide .tags1 {
-    font-size: 12px;
+.recent-comments-main .expand-ico, .recent-comments-main .collapse-ico {
+    background-position: 0 -449px;
+    float: right;
+    width: 16px;
+    display: none;
 }
 
-#tagsSide .tags2 {
-    font-size: 16px;
+.recent-comments-main .collapse-ico {
+    background-position: 0 -433px;
 }
 
-#tagsSide .tags3 {
-    font-size: 20px;
-}
-
-#tagsSide .tags4 {
-    font-size: 24px;
-}
-
-#tagsSide .tags5 {
-    font-size: 28px;
+.recent-comments-content {
+    height: 16px;
+    overflow: hidden;
+    padding-top: 4px;
 }
 /* end side */
 
@@ -323,12 +348,16 @@ textarea, input {
     padding: 0 5px 10px;
 }
 
+.article-element {
+    font-size: 11px;
+    line-height: 16px;
+    margin: 12px 0;
+}
+
 .article-element a {
     border-bottom: 1px solid #DFDFDF;
     color: #777777;    
     text-decoration: none;
-    font-size: 11px;
-    line-height: 24px;
 }
 
 .article-element a:hover { 
@@ -389,5 +418,40 @@ textarea, input {
     color: #D54E21;
     border-bottom: 1px solid #D54E21;
 }
-
 /* end article list */
+
+/* start tags */
+.tags li {
+    margin-right: 5px;
+    float: left;
+    list-style: none;
+}
+
+.tags li:hover {
+    text-shadow: 0 0 2px;
+}
+
+.tags1 {
+    font-size: 12px;
+    color: #A1A1A1;
+}
+
+.tags2 {
+    font-size: 16px;
+    color: #687F95;
+}
+
+.tags3 {
+    font-size: 20px;
+    color: #4C6E90;
+}
+
+.tags4 {
+    font-size: 24px;
+    color: #225588;
+}
+
+.tags5 {
+    font-size: 28px;
+}
+/* end tags */

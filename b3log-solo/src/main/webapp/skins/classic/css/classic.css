@@ -17,8 +17,7 @@ h5 {
     font-size: 12px;
 }
 .content {
-    margin: 0 auto;
-    max-width: 1160px;
+    margin: 0 12px;
 }
 .header {
     height: 108px;
@@ -37,7 +36,7 @@ h5 {
     width: 100%;
 }
 .main>div {
-    min-width: 694px;
+    min-width: 280px;
     padding-right: 318px;
 }
 #logoTitle {

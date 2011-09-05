@@ -8,16 +8,28 @@
     <#if 0 != recentComments?size>
     <div>
         <h4>${recentCommentsLabel}</h4>
-        <ul>
+        <ul class="recent-comments">
             <#list recentComments as comment>
             <li>
-                <#if "http://" == comment.commentURL>
-                ${comment.commentName}<#else>
-                <a target="_blank" href="${comment.commentURL}">
-                    ${comment.commentName}</a></#if>:
-                <a title="${comment.commentContent}" href="${comment.commentSharpURL}">
-                    ${comment.commentContent}
-                </a>
+                <img class='left' title='${comment.commentName}'
+                     alt='${comment.commentName}'
+                     src='${comment.commentThumbnailURL}'/>
+                <div class='recent-comments-main'>
+                    <div>
+                        <#if "http://" == comment.commentURL>
+                        ${comment.commentName}
+                        <#else>
+                        <a target="_blank" href="${comment.commentURL}">${comment.commentName}</a>
+                        </#if>
+                        <span class="expand-ico"></span>
+                    </div>
+                    <div class="recent-comments-content">
+                        <a href="${comment.commentSharpURL}">
+                            ${comment.commentContent}
+                        </a>
+                    </div>
+                </div>
+                <div class='clear'></div>
             </li>
             </#list>
         </ul>
@@ -50,7 +62,7 @@
     <#if 0 != mostUsedTags?size>
     <div>
         <h4>${popTagsLabel}</h4>
-        <ul id="tagsSide">
+        <ul id="tagsSide" class="tags">
             <#list mostUsedTags as tag>
             <li>
                 <a target="_blank" href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}(${tag.tagPublishedRefCount})">

@@ -18,7 +18,7 @@
  * @fileoverview neoease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Sep 3, 2011
+ * @version 1.0.0.2, Sep 5, 2011
  */
 var goTop = function (acceleration) {
     acceleration = acceleration || 0.1;
@@ -89,4 +89,42 @@ var collapseArchive = function (it, year) {
             $this.before("<li><div onclick='collapseArchive(this, " + year + ")' class='expand-ico'>" + year + "</div></li>");
         }
     });
+    
+    // recent comment mouse event
+    $(".recent-comments li").mouseenter(function () {
+        var $ico = $(this).find("div>span");
+        if ($ico[0].style.display === "none" ||$ico[0].style.display === "") {
+            if ($(".recent-comments-content>a").height() > 30) {
+                $ico.show();
+            }
+        }
+    }).mouseleave(function () {
+        var $ico = $(this).find("div>span");
+        if ($ico[0].style.display === "inline") {
+            $ico.hide();
+        }
+    });
+    
+    // recent comment mouse click
+    $(".recent-comments .expand-ico").click(function () {
+        if (this.className === "expand-ico") {
+            $(this).parent().next().css("height", "auto");
+            this.className = "collapse-ico";
+        } else {
+            $(this).parent().next().animate({
+                "height": "16px"
+            });
+            this.className = "expand-ico";
+        }
+    });
+    
+    // nav current
+    $(".nav ul a").each(function () {
+        var $this = $(this);
+        if ($this.attr("href") === location.pathname) {
+            $this.parent().addClass("current");
+        } else if (/\/[0-9]+$/.test(location.pathname)) {
+            $(".nav ul li")[0].className = "current";
+        }
+    })
 })();

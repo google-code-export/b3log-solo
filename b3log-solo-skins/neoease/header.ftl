@@ -22,7 +22,7 @@
 <div class="nav">
     <div class="wrapper">
         <ul>
-            <li class="current">
+            <li>
                 <a href="/">${indexLabel}</a>
             </li>
             <#list pageNavigations as page>
