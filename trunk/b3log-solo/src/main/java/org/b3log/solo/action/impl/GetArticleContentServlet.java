@@ -56,7 +56,7 @@ public final class GetArticleContentServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
-        // XXX: Determins request coming from outer
+        // XXX: Determines request coming from outer
         final String articleId = request.getParameter("id");
 
         if (Strings.isEmptyOrNull(articleId)) {
