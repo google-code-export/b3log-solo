@@ -429,12 +429,13 @@ button:hover,.button:hover {
 #tags li {
     margin: 3px 6px;
     border-radius: 3px 3px 3px 3px;
-    box-shadow: 1px 1px 3px;
+    box-shadow: 1px 1px 3px #555555;
     float: left;
     padding: 2px 12px;
+    background-image: none;
 }
 #tags li:hover {
-    text-shadow: 0 0 2px;
+    text-shadow: 0 0 2px #555555;
 }
 
 #tags a {

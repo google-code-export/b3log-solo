@@ -148,6 +148,7 @@ h5 {
 	margin: 5px 17px 0 0;
 	padding-left: 16px;
 	width: 22px;
+        white-space: nowrap;
 }
 .article {
 	padding-bottom: 15px;
@@ -380,7 +381,7 @@ h5 {
 	width: 16px;
 }
 .side-navi li {
-	background: url("../images/icons.gif") no-repeat scroll 0 -622px transparent;
+	background: url("../images/icons.gif") no-repeat scroll 0 -623px transparent;
 	margin: 5px 0 0 0;
 	overflow: hidden;
 	padding-left: 22px;
