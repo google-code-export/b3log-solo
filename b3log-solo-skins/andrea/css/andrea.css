@@ -567,6 +567,13 @@ h2.comment-label {
     *margin-top:11px;
 }
 
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+    #commentURLLabel, #commentURLLabelReply {
+     letter-spacing: -1px;
+ } 
+}
+
 #commentURLLabel.selected, #commentURLLabelReply.selected {
     background-color: #E3EBCF;
     border-color: #73B722;
