@@ -12,7 +12,7 @@
     <artifactId>solo</artifactId>
     <packaging>war</packaging>
     <version>0.3.1</version>
-    <name>B3log Solo</name>
+    <name>B3log Solo(261)</name>
     <url>http://b3log-solo.googlecode.com</url>
     <description>
         B3log Solo is a single-user blogging program based on Google App Engine
