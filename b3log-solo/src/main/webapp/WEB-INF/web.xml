@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.2.9, Sep 2, 2011
+    Version: 1.0.3.0, Sep 5, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -120,6 +120,15 @@
             30
         </session-timeout>
     </session-config>
+    
+    <servlet>
+        <servlet-name>GetArticleContnetServlet</servlet-name>
+        <servlet-class>org.b3log.solo.action.impl.GetArticleContentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetArticleContnetServlet</servlet-name>
+        <url-pattern>/get-article-content</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>AdminIndexAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.AdminIndexAction</servlet-class>
