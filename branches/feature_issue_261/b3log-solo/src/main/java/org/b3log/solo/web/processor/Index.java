@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.action.impl;
+package org.b3log.solo.web.processor;
 
-import org.b3log.latke.action.ActionException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.annotation.RequestProcessing;
+import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.servlet.FreeMarkerResponseRenderer;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -34,14 +37,17 @@ import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
+import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 
 /**
- * Index action.
+ * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Sep 3, 2011
+ * @version 1.1.1.5, Sep 3, 2011
+ * @since 0.3.1
  */
-public final class IndexAction extends AbstractFrontPageAction {
+@RequestProcessor
+public final class Index {
 
     /**
      * Default serial version uid.
@@ -51,7 +57,7 @@ public final class IndexAction extends AbstractFrontPageAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(IndexAction.class.getName());
+            Logger.getLogger(Index.class.getName());
     /**
      * Language service.
      */
@@ -69,99 +75,87 @@ public final class IndexAction extends AbstractFrontPageAction {
      */
     private Skins skins = Skins.getInstance();
 
-    @Override
-    protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ActionException {
-        final Map<String, Object> ret = new HashMap<String, Object>();
+    /**
+     * Shows index with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/"}, method = HTTPRequestMethod.GET)
+    public void showIndex(final HTTPRequestContext context) {
+        final FreeMarkerResponseRenderer render =
+                new FreeMarkerResponseRenderer();
+        context.setRenderer(render);
 
+        render.setTemplateName("index.ftl");
+        final Map<String, Object> dataModel = render.getDataModel();
+
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final String requestURI = request.getRequestURI();
         try {
             final int currentPageNum = getCurrentPageNum(requestURI);
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return ret;
             }
 
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return ret;
             }
 
-            skins.fillLanguage(preference, ret);
+            skins.fillLanguage(preference, dataModel);
 
             request.setAttribute(CACHED_OID, "No id");
             request.setAttribute(CACHED_TITLE,
-                                 ret.get(PageTypes.INDEX_ARTICLES)
-                                 + "  [" + ret.get("pageNumLabel") + "="
+                                 dataModel.get(PageTypes.INDEX_ARTICLES)
+                                 + "  [" + dataModel.get("pageNumLabel") + "="
                                  + currentPageNum + "]");
             request.setAttribute(CACHED_TYPE,
-                                 ret.get(PageTypes.INDEX_ARTICLES));
+                                 dataModel.get(PageTypes.INDEX_ARTICLES));
             request.setAttribute(CACHED_LINK, requestURI);
 
-            filler.fillIndexArticles(ret, currentPageNum, preference);
+            filler.fillIndexArticles(dataModel, currentPageNum, preference);
 
             @SuppressWarnings("unchecked")
             final List<JSONObject> articles =
-                    (List<JSONObject>) ret.get(Article.ARTICLES);
+                    (List<JSONObject>) dataModel.get(Article.ARTICLES);
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                    return ret;
                 } catch (final IOException ex) {
                     LOGGER.severe(ex.getMessage());
                 }
             }
 
-            filler.fillSide(ret, preference);
-            filler.fillBlogHeader(ret, preference);
-            filler.fillBlogFooter(ret, preference);
+            filler.fillSide(dataModel, preference);
+            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogFooter(dataModel, preference);
 
-            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+            dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final String previousPageNum =
                     Integer.toString(currentPageNum > 1 ? currentPageNum - 1
                                      : 0);
-            ret.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
-                    "0".equals(previousPageNum) ? "" : previousPageNum);
+            dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
+                          "0".equals(previousPageNum) ? "" : previousPageNum);
             final Integer pageCount =
-                    (Integer) ret.get(Pagination.PAGINATION_PAGE_COUNT);
+                    (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
             if (pageCount == currentPageNum + 1) { // The next page is the last page
-                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
             } else {
-                ret.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
-                                                             + 1);
+                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
+                                                                   + 1);
             }
 
-            ret.put(Common.PATH, "");
+            dataModel.put(Common.PATH, "");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
         }
-
-        return ret;
-    }
-
-    @Override
-    protected String getTemplateName(final String requestURI) {
-        return "index.ftl";
-    }
-
-    @Override
-    protected JSONObject doAjaxAction(final JSONObject data,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
-            throws ActionException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**

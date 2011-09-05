@@ -121,6 +121,16 @@
         </session-timeout>
     </session-config>
     <servlet>
+        <servlet-name>HTTPRequestDispatcher</servlet-name>
+        <servlet-class>org.b3log.latke.servlet.HTTPRequestDispatcher</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>HTTPRequestDispatcher</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet>
         <servlet-name>AdminIndexAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.AdminIndexAction</servlet-class>
     </servlet>
@@ -171,14 +181,6 @@
     <servlet-mapping>
         <servlet-name>RemoveAllDataServlet</servlet-name>
         <url-pattern>/rm-all-data.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>IndexAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.IndexAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>IndexAction</servlet-name>
-        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>ArticleAction</servlet-name>
