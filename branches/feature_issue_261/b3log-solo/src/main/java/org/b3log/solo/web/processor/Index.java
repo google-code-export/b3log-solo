@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.util.Statistics;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +75,10 @@ public final class Index {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
+    /**
+     * Statistic utilities.
+     */
+    private Statistics statistics = Statistics.getInstance();
 
     /**
      * Shows index with the specified context.
@@ -156,6 +161,8 @@ public final class Index {
                 LOGGER.severe(ex.getMessage());
             }
         }
+        
+        statistics.incBlogViewCount();
     }
 
     /**
