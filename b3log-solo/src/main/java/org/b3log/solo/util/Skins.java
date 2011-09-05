@@ -80,7 +80,7 @@ public final class Skins {
             LANG_MAP.clear(); // Collect unused skin languages
             
             LOGGER.log(Level.INFO,
-                       "Loading skin[dirName={0}] language[locale={1}]",
+                       "Loading skin[dirName={0}, locale={1}]",
                        new Object[]{currentSkinDirName, localeString});
             langs = new HashMap<String, String>();
 
