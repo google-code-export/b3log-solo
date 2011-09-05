@@ -94,22 +94,26 @@ textarea, input {
 
 .tip {
     color: #D54E21;
+    font-size: 11px;
 }
 /* end base */
 
 /* start ico */
+.date-ico, .tag-ico, .user-ico, .expand-ico, .collapse-ico, #search {
+    background-image: url("/skins/neoease/images/icons.png");
+}
+
 .expand-ico, .collapse-ico {
-    background: url("http://www.neoease.com/wp-content/themes/paled/img/icons.png") no-repeat scroll 35px -449px transparent;
+    background-position: 35px -86px;
     cursor: pointer;
     height: 16px;
 }
 
 .collapse-ico {
-    background-position: 35px -433px;
+    background-position: 35px -70px;
 }
 
 .date-ico, .tag-ico, .user-ico {
-    background-image: url("/skins/neoease/images/icons.png");
     background-repeat: no-repeat;
     height: 16px;
     display: block;
@@ -152,7 +156,7 @@ textarea, input {
 
 /* start header */
 .header {
-    background: url(http://www.neoease.com/wp-content/themes/paled/img/sprite.png) repeat-x scroll 50% -60px #F2F2F2;
+    background: url("/skins/neoease/images/icons.png") repeat-x scroll 0 -220px #F2F2F2;
     padding: 20px 0;
 }
 
@@ -169,7 +173,9 @@ textarea, input {
 }
 
 #search {
-    background: url("images/search.png") no-repeat scroll 5px 6px #FFFFFF;
+    background-position: 9px -99px;
+    background-repeat: no-repeat;
+    background-color: #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 2px 2px 2px 2px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset;
@@ -266,7 +272,7 @@ textarea, input {
 }
 
 #goTop {
-    background: url("http://www.neoease.com/wp-content/themes/paled/img/icons.png") no-repeat scroll 5px -414px #DDDDDD;
+    background: url("/skins/neoease/images/icons.png") no-repeat scroll 5px -51px #DDDDDD;
     border-radius: 2px 2px 0 0;
     cursor: pointer;
     font-size: 11px;
@@ -325,14 +331,14 @@ textarea, input {
 }
 
 .recent-comments-main .expand-ico, .recent-comments-main .collapse-ico {
-    background-position: 0 -449px;
+    background-position: 0 -86px;
     float: right;
     width: 16px;
     display: none;
 }
 
 .recent-comments-main .collapse-ico {
-    background-position: 0 -433px;
+    background-position: 0 -70px;
 }
 
 .recent-comments-content {
@@ -346,6 +352,7 @@ textarea, input {
 .article {
     border-bottom: 1px solid #CCCCCC;
     padding: 0 5px 10px;
+    margin-top: 20px;
 }
 
 .article-element {
@@ -367,14 +374,19 @@ textarea, input {
 
 .article-title {
     color: #21759B;
-    display: block;
     font-size: 20px;
     font-weight: normal;
-    padding: 10px 0 5px;
 }
 
 .article-title:hover {
     color: #D54E21;
+}
+
+.article .expand-ico, .article .collapse-ico {
+    float: right;
+    margin-top: 9px;
+    padding-right: 6px;
+    width: 15px;
 }
 
 .article-body h1 {
@@ -417,6 +429,33 @@ textarea, input {
 .article-body a:hover {
     color: #D54E21;
     border-bottom: 1px solid #D54E21;
+}
+
+.pagination {
+    margin-top: 30px;
+    line-height: 21px;
+}
+
+.pagination a {
+    border: 1px solid #C5C3C2;
+    font-size: 10px;
+    margin: 2px;
+    padding: 1px 5px ;
+    text-decoration: none;
+    background-color: #F2F2F2;
+}
+
+.pagination a.current {
+    background-color: #FFFFFF;
+    font-weight: bold;
+    padding: 2px 6px;
+    color: #000000;
+}
+
+.pagination a:hover {
+    background-color: #F3DEDD;
+    color: #D54E21;
+    border: 1px solid #D54E21;
 }
 /* end article list */
 

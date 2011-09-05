@@ -18,7 +18,8 @@
                         <ul id="tags">
                             <#list tags as tag>
                             <li>
-                                <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
+                                <a data-count="${tag.tagPublishedRefCount}"
+                                   href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
                                     <span>${tag.tagTitle}</span>
                                     (<b>${tag.tagPublishedRefCount}</b>)
                                 </a>
