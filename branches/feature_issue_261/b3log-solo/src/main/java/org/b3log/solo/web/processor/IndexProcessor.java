@@ -44,11 +44,11 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.5, Sep 3, 2011
+ * @version 1.1.0.0, Sep 3, 2011
  * @since 0.3.1
  */
 @RequestProcessor
-public final class Index {
+public final class IndexProcessor {
 
     /**
      * Default serial version uid.
@@ -58,7 +58,7 @@ public final class Index {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(Index.class.getName());
+            Logger.getLogger(IndexProcessor.class.getName());
     /**
      * Language service.
      */

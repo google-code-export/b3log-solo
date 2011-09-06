@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.2.9, Sep 2, 2011
+    Version: 1.0.3.0, Sep 6, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -181,14 +181,6 @@
     <servlet-mapping>
         <servlet-name>RemoveAllDataServlet</servlet-name>
         <url-pattern>/rm-all-data.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ArticleAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.ArticleAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ArticleAction</servlet-name>
-        <url-pattern>/article.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>TagArticlesAction</servlet-name>
