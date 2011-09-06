@@ -96,6 +96,67 @@ textarea, input {
     color: #D54E21;
     font-size: 11px;
 }
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
+.em10, .em11, .em12, .em13, .em14 {
+    background-image: url("/images/emotions-black.png");
+    float: left;
+    height: 24px;
+    margin-right: 5px;
+    width: 24px;
+}
+#emotions span {
+    cursor: pointer;
+}
+.em01 {
+    background-position: -24px 0;
+}
+.em02 {
+    background-position: -48px 0;
+}
+.em03 {
+    background-position: -72px 0;
+}
+.em04 {
+    background-position: -96px 0;
+}
+.em05 {
+    background-position: 0px -24px;
+}
+.em06 {
+    background-position: -24px -24px;
+}
+.em07 {
+    background-position: -48px -24px;
+}
+.em08 {
+    background-position: -72px -24px;
+}
+.em09 {
+    background-position: -96px -24px;
+}
+.em10 {
+    background-position: 0 -48px;
+}
+.em11 {
+    background-position: -24px -48px ;
+}
+.em12 {
+    background-position: -48px -48px;
+}
+.em13 {
+    background-position: -72px -48px;
+}
+.em14 {
+    background-position: -96px -48px;
+}
+.em-span {
+    line-height: 24px;
+    float: left;
+}
+
+.em-br {
+    line-height: 24px;
+}
 /* end base */
 
 /* start ico */
@@ -298,6 +359,10 @@ textarea, input {
     color: #787878;
 }
 
+.footer a:hover {
+    color: #D54E21;
+}
+
 #goTop {
     background: url("/skins/neoease/images/icons.png") no-repeat scroll 5px -51px #DDDDDD;
     border-radius: 2px 2px 0 0;
@@ -309,6 +374,10 @@ textarea, input {
     position: absolute;
     right: 56px;
     display: none;
+}
+
+#goTop:hover {
+    background-color: #EAEAEA;
 }
 /* end footer*/
 
@@ -416,6 +485,11 @@ textarea, input {
     width: 15px;
 }
 
+.article-body {
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
 .article-body h1 {
     font-size: 2em;
     margin: .67em 0;
@@ -502,6 +576,83 @@ textarea, input {
     line-height: 18px;
     list-style: square outside none;
     margin-left: 18px;
+}
+
+.share {
+    border-bottom: 1px solid #DEDEDE;
+}
+
+.share-comment {
+    background-color: #DDDDDD;
+    border-radius: 2px 2px 0 0;
+    float: right;
+    font-size: 11px;
+    height: 21px;
+    line-height: 21px;
+    margin-right: 16px;
+    padding: 0 10px;
+}
+
+.share-comment:hover {
+    background-color: #EAEAEA;
+}
+
+#comments {
+    position: relative;
+}
+
+#comments>div {
+    border-bottom: 1px solid #DEDEDE;
+    padding: 10px;
+}
+
+.comment-even {
+    background-color: #F8F8F8;
+}
+
+.comment-odd {
+    background-color: #F5F5F5;
+}
+
+.comment-header {
+    height: 50px;
+    width: 50px;
+    float: left;
+    background-color: #FFFFFF;
+    border: 1px solid #DEDEDE;
+    padding: 1px;
+}
+
+.comment-panel {
+    float: left;
+    margin: 0 10px;
+    width: 573px;
+    line-height: 16px;
+}
+
+.comment-panel .article-body {
+    margin-top: 5px;
+}
+
+.comment-body-ref {
+    background-color: #FFFFFF;
+    border-radius: 5px 5px 5px 5px;
+    left: 73px;
+    position: absolute;
+}
+
+.comment-body-ref .comment-panel {
+    width: 486px;
+}
+
+.comment-body-ref .arrow {
+    border-color: #F5F5F5 #FFFFFF #F5F5F5 #F5F5F5;
+    border-style: solid;
+    border-width: 6px 8px 10px 0;
+    display: block;
+    left: -8px;
+    position: absolute;
+    top: 5px;
 }
 /* end article*/
 
