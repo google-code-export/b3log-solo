@@ -1,9 +1,6 @@
 <#macro comments commentList permalink>
 <h2 class="marginLeft12 marginBottom12">${commentLabel}</h2>  
 <div class="comments" id="comments">
-    <#if 0 == commentList?size>
-    ${noCommentLabel}
-    </#if>
     <#list commentList as comment>
     <div id="${comment.oId}">
         <div class="comment-panel">
@@ -47,7 +44,7 @@
         <tbody>
             <tr>
                 <th>
-                    ${commentName1Label}
+                    ${commentNameLabel}
                 </th>
                 <td colspan="2">
                     <input type="text" class="normalInput" id="commentName"/>
@@ -55,7 +52,7 @@
             </tr>
             <tr>
                 <th>
-                    ${commentEmail1Label}
+                    ${commentEmailLabel}
                 </th>
                 <td colspan="2">
                     <input type="text" class="normalInput" id="commentEmail"/>
@@ -63,7 +60,7 @@
             </tr>
             <tr>
                 <th>
-                    ${commentURL1Label}
+                    ${commentURLLabel}
                 </th>
                 <td colspan="2">
                     <div id="commentURLLabel">
@@ -74,7 +71,7 @@
             </tr>
             <tr>
                 <th>
-                    ${commentEmotions1Label}
+                    ${commentEmotionsLabel}
                 </th>
                 <td id="emotions">
                     <span class="em00" title="${em00Label}"></span>
@@ -96,7 +93,7 @@
             </tr>
             <tr>
                 <th valign="top">
-                    ${commentContent1Label}
+                    ${commentContentLabel}
                 </th>
                 <td colspan="2">
                     <textarea rows="10" cols="96" id="comment"></textarea>
@@ -104,7 +101,7 @@
             </tr>
             <tr>
                 <th>
-                    ${captcha1Label}
+                    ${captchaLabel}
                 </th>
                 <td>
                     <input type="text" class="normalInput" id="commentValidate"/>
@@ -140,8 +137,8 @@
         "oId": "${oId}",
         "skinDirName": "${skinDirName}",
         "blogHost": "${blogHost}",
-        "randomArticles1Label": "${randomArticles1Label}",
-        "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
+        "randomArticles1Label": "${randomArticlesLabel}",
+        "externalRelevantArticles1Label": "${externalRelevantArticlesLabel}"
     });
 
     var addComment = function (result, state) {

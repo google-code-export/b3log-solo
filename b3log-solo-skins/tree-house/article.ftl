@@ -87,7 +87,7 @@
                                 </div>
                                 <#if 0 != relevantArticles?size>
                                 <div class="article-relative">
-                                    <h5>${relevantArticles1Label}</h5>
+                                    <h4>${relevantArticles1Label}</h4>
                                     <ul class="marginLeft12">
                                         <#list relevantArticles as relevantArticle>
                                         <li>

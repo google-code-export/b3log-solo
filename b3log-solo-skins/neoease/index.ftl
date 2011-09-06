@@ -12,7 +12,9 @@
         <#include "header.ftl">
         <div class="body">
             <div class="wrapper">
-                <#include "article-list.ftl">
+                <div class="main">
+                    <#include "article-list.ftl">
+                </div>
                 <#include "side.ftl">
                 <div class="clear"></div>
             </div>

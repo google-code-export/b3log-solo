@@ -52,6 +52,7 @@
             <span class="tip">
                 ${statistic.statisticPublishedBlogCommentCount}
             </span>
+            <span class="translate-ico" onclick="goTranslate()"></span>
         </div>
         <div class="clear"></div>
     </div>
