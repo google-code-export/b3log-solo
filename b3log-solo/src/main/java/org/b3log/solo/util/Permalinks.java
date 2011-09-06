@@ -52,7 +52,7 @@ public final class Permalinks {
 
     static {
         RESERVED_LINKS.add("/");
-        RESERVED_LINKS.add("/article.do");
+        RESERVED_LINKS.add("/article");
         RESERVED_LINKS.add("/tags.html");
         RESERVED_LINKS.add("/tags");
         RESERVED_LINKS.add("/page.do");

@@ -13,54 +13,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.action.impl;
+package org.b3log.solo.web.processor;
 
-import java.util.logging.Level;
-import org.b3log.latke.Keys;
-import org.b3log.latke.action.ActionException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.AbstractCacheablePageAction;
-import org.b3log.latke.model.User;
-import org.b3log.solo.action.util.Filler;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.Strings;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.PageTypes;
+import org.b3log.solo.util.comparator.Comparators;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.model.User;
 import org.b3log.solo.model.Preference;
+import org.jsoup.Jsoup;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Articles;
+import org.b3log.solo.util.Statistics;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.annotation.RequestProcessing;
+import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.solo.action.util.Filler;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.servlet.FreeMarkerResponseRenderer;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Common;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.comparator.Comparators;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
+import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 
 /**
- * Article action.
+ * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.4, Sep 3, 2011
+ * @version 1.1.0.0, Sep 6, 2011
+ * @since 0.3.1
  */
-public final class ArticleAction extends AbstractFrontPageAction {
+@RequestProcessor
+public final class ArticleProcessor {
 
     /**
      * Default serial version uid.
@@ -70,7 +75,7 @@ public final class ArticleAction extends AbstractFrontPageAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleAction.class.getName());
+            Logger.getLogger(ArticleProcessor.class.getName());
     /**
      * Article repository.
      */
@@ -111,71 +116,48 @@ public final class ArticleAction extends AbstractFrontPageAction {
     private Skins skins = Skins.getInstance();
 
     /**
-     * {@inheritDoc}
+     * Shows an article with the specified context.
      * 
-     * <p>
-     * Article statistic view count +1 and article view count +1.
-     * </p>
+     * @param context the specified context
      */
-    @Override
-    protected void processPageCacheHit(final JSONObject cachedPageContentObject) {
-        super.processPageCacheHit(cachedPageContentObject);
+    @RequestProcessing(value = {"/article"}, method = HTTPRequestMethod.GET)
+    public void showArticle(final HTTPRequestContext context) {
+        final FreeMarkerResponseRenderer render =
+                new FreeMarkerResponseRenderer();
+        context.setRenderer(render);
 
-        try {
-            final String oId = cachedPageContentObject.getString(
-                    AbstractCacheablePageAction.CACHED_OID);
-            LOGGER.log(Level.FINEST, "Page cached object[id={0}, type={1}]",
-                       new Object[]{oId, cachedPageContentObject.optString(
-                        AbstractCacheablePageAction.CACHED_TYPE)});
+        render.setTemplateName("article.ftl");
+        final Map<String, Object> dataModel = render.getDataModel();
 
-            statistics.incArticleViewCount(oId);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Process page cache hit error", e);
-        }
-    }
-
-    @Override
-    protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ActionException {
-        final Map<String, Object> ret = new HashMap<String, Object>();
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
 
         try {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return ret;
             }
 
-            skins.fillLanguage(preference, ret);
-            
-            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.ARTICLE));
+            skins.fillLanguage(preference, dataModel);
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
 
-            final String articleId =
-                    (String) request.getAttribute(Keys.OBJECT_ID);
-            LOGGER.log(Level.FINER, "Article[id={0}]", articleId);
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ARTICLE));
 
-            if (Strings.isEmptyOrNull(articleId)) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
-            }
-
-            final JSONObject article = articleRepository.get(articleId);
+            final JSONObject article =
+                    (JSONObject) request.getAttribute(Article.ARTICLE);
             if (null == article) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
             }
+
+            final String articleId = article.getString(Keys.OBJECT_ID);
+            LOGGER.log(Level.FINER, "Article[id={0}]", articleId);
 
             final boolean allowVisitDraftViaPermalink = preference.getBoolean(
                     Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK);
             if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)
                 && !allowVisitDraftViaPermalink) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
             }
 
             request.setAttribute(CACHED_OID, articleId);
@@ -187,7 +169,7 @@ public final class ArticleAction extends AbstractFrontPageAction {
 
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
-            ret.put(Article.ARTICLE, article);
+            dataModel.put(Article.ARTICLE, article);
 
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.getString(
@@ -216,10 +198,11 @@ public final class ArticleAction extends AbstractFrontPageAction {
             final JSONObject previousArticle =
                     articleRepository.getPreviousArticle(articleId);
             if (null != previousArticle) {
-                ret.put(Common.PREVIOUS_ARTICLE_PERMALINK,
-                        previousArticle.getString(Article.ARTICLE_PERMALINK));
-                ret.put(Common.PREVIOUS_ARTICLE_TITLE,
-                        previousArticle.getString(Article.ARTICLE_TITLE));
+                dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK,
+                              previousArticle.getString(
+                        Article.ARTICLE_PERMALINK));
+                dataModel.put(Common.PREVIOUS_ARTICLE_TITLE,
+                              previousArticle.getString(Article.ARTICLE_TITLE));
                 LOGGER.finer("Got the previous article");
             }
 
@@ -227,17 +210,17 @@ public final class ArticleAction extends AbstractFrontPageAction {
             final JSONObject nextArticle =
                     articleRepository.getNextArticle(articleId);
             if (null != nextArticle) {
-                ret.put(Common.NEXT_ARTICLE_PERMALINK,
-                        nextArticle.getString(Article.ARTICLE_PERMALINK));
-                ret.put(Common.NEXT_ARTICLE_TITLE,
-                        nextArticle.getString(Article.ARTICLE_TITLE));
+                dataModel.put(Common.NEXT_ARTICLE_PERMALINK,
+                              nextArticle.getString(Article.ARTICLE_PERMALINK));
+                dataModel.put(Common.NEXT_ARTICLE_TITLE,
+                              nextArticle.getString(Article.ARTICLE_TITLE));
                 LOGGER.finer("Got the next article");
             }
 
             LOGGER.finer("Getting article's comments....");
             final List<JSONObject> articleComments =
                     articleUtils.getComments(articleId);
-            ret.put(Article.ARTICLE_COMMENTS_REF, articleComments);
+            dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
             LOGGER.finer("Got article's comments");
 
             LOGGER.finer("Getting relevant articles....");
@@ -245,29 +228,25 @@ public final class ArticleAction extends AbstractFrontPageAction {
                     articleId,
                     article.getString(Article.ARTICLE_TAGS_REF),
                     preference);
-            ret.put(Common.RELEVANT_ARTICLES, relevantArticles);
+            dataModel.put(Common.RELEVANT_ARTICLES, relevantArticles);
             LOGGER.finer("Got relevant articles....");
 
-            ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-                    preference.getInt(
+            dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
+                          preference.getInt(
                     Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
 
-            filler.fillSide(ret, preference);
-            filler.fillBlogHeader(ret, preference);
-            filler.fillBlogFooter(ret, preference);
+            filler.fillSide(dataModel, preference);
+            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogFooter(dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
         }
-
-        return ret;
     }
 
     /**
@@ -351,13 +330,5 @@ public final class ArticleAction extends AbstractFrontPageAction {
         }
 
         return ret;
-    }
-
-    @Override
-    protected JSONObject doAjaxAction(final JSONObject data,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
-            throws ActionException {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
