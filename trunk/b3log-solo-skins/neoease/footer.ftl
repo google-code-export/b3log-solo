@@ -19,7 +19,6 @@
 <div id="goTop" onclick="goTop()">TOP</div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="/skins/${skinDirName}/js/${skinDirName}.js" charset="utf-8"></script>
-<script type="text/javascript" src="/js/common${miniPostfix}.js" charset="utf-8"></script>
 <script type="text/javascript">
     var common = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",

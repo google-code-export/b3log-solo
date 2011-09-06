@@ -1,46 +1,40 @@
 <#macro comments commentList permalink>
-<h2 class="marginLeft12 marginBottom12">${commentLabel}</h2>  
-<div class="comments" id="comments">
+<div class="share">
+    <a class="share-comment" href="#commentForm">
+        ${commentList?size}&nbsp;&nbsp;${commentLabel}
+    </a>
+    <span class="clear"></span>
+</div>
+<div id="comments">
     <#list commentList as comment>
-    <div id="${comment.oId}">
+    <div id="${comment.oId}" class="<#if comment_index % 2 == 0>comment-even<#else>comment-odd</#if>">
+        <img class="comment-header" title="${comment.commentName}"
+             alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
         <div class="comment-panel">
-            <div class="comment-title">
-                <#if "http://" == comment.commentURL>
-                <a>${comment.commentName}</a>
-                <#else>
-                <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
-                </#if>
-                <#if comment.isReply>
-                @
-                <a href="${permalink}#${comment.commentOriginalCommentId}"
-                   onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-                   onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
-                </#if>
-                <div class="right">
-                    ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                    <a class="no-underline"
-                       href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
-                </div>
-                <div class="clear"></div>
+            <#if "http://" == comment.commentURL>
+            ${comment.commentName}
+            <#else>
+            <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
+            </#if>
+            <#if comment.isReply>&nbsp;@
+            <a href="${permalink}#${comment.commentOriginalCommentId}"
+               onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
+               onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+            </#if>
+            <div class="right none">
+                <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
+                &nbsp;|&nbsp;
+                ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
             </div>
-            <div class="comment-body">
-                <div class="left comment-picture">
-                    <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
-                </div>
-                <div class="comment-content">
-                    ${comment.commentContent}
-                </div>
-                <div class="clear"></div>
-            </div>
+            <span class="clear"></span>
+            <div class="article-body">${comment.commentContent}</div>
         </div>
+        <span class="clear"></span>
     </div>
     </#list>
 </div>
-<div class="comment-title">
-    ${postCommentsLabel}
-</div>
-<div class="comment-body">
-    <table id="commentForm" class="form">
+<div>
+    <table id="commentForm">
         <tbody>
             <tr>
                 <th>
@@ -174,26 +168,33 @@
         var commentFormHTML = "<table class='form comment-reply' id='replyForm'>";
                 
         page.addReplyForm(id, commentFormHTML);
-        $("#commentURLReply").focus(function (event) {
-            $("#commentURLLabelReply").css("box-shadow", "3px 1px 2px rgba(0, 0, 0, 0.3) inset");
-        }).blur(function () {
-            $("#commentURLLabelReply").css("box-shadow", "");
-        });
     }
             
     var showComment = function (it, id) {
         if ( $("#commentRef" + id).length > 0) {
             $("#commentRef" + id).show();
         } else {
-            var $refComment = $("#" + id + " .comment-panel").clone();
-            $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentRef" + id);
-            $refComment.find(".comment-title .right a").remove();
+            var $refComment = $("#" + id).clone();
+            $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentRef" + id).append("<span class='arrow'></span>");
+            $refComment.find(".comment-panel .none").remove();
             $("#comments").append($refComment);
         }
-        $("#commentRef" + id).css("top", ($(it).position().top + 23) + "px");
+        $("#commentRef" + id).css("top", ($(it).position().top + 20) + "px");
     };
 
     (function () {
+        $("#comments>div").mouseenter(function () {
+            var $ico = $(this).find(".none");
+            if ($ico[0].style.display === "none" || $ico[0].style.display === "") {
+                $ico.show();
+            }
+        }).mouseleave(function () {
+            var $ico = $(this).find(".none");
+            if ($ico[0].style.display === "block") {
+                $ico.hide();
+            }
+        });
+        
         page.load();
         // comment url
         $("#commentURL").focus(function (event) {
