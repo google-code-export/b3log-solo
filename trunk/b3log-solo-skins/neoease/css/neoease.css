@@ -2,7 +2,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Sep 3, 2011
+ * @version 1.0.0.3, Sep 6, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -99,8 +99,35 @@ textarea, input {
 /* end base */
 
 /* start ico */
-.date-ico, .tag-ico, .user-ico, .expand-ico, .collapse-ico, #search {
+.date-ico, .tag-ico, .user-ico, .expand-ico, .collapse-ico, #search,
+.translate-ico, .feed-ico {
     background-image: url("/skins/neoease/images/icons.png");
+}
+
+.feed-ico {
+    background-position: right -146px;
+    background-repeat: no-repeat;
+    color: #555555;
+    padding-right: 24px;
+}
+
+.translate-ico {
+    background-position: 1px -125px;
+    background-repeat: no-repeat;
+    border: 1px solid #999999;
+    border-radius: 3px 3px 3px 3px;
+    cursor: pointer;
+    float: right;
+    height: 16px;
+    margin: 6px 0 0 18px;
+    padding: 1px;
+    width: 16px;
+}
+
+.translate-ico:hover {
+    border-color: #D54E21;
+    box-shadow: 0 0 1px #999999;
+    background-color: #F2F2F2;
 }
 
 .expand-ico, .collapse-ico {
@@ -173,7 +200,7 @@ textarea, input {
 }
 
 #search {
-    background-position: 9px -99px;
+    background-position: 7px -99px;
     background-repeat: no-repeat;
     background-color: #FFFFFF;
     border: 1px solid #DDDDDD;
@@ -254,7 +281,7 @@ textarea, input {
 }
 
 .nav .right {
-    margin-top: 8px;
+    line-height: 29px;
 }
 /* end header */
 
@@ -305,7 +332,7 @@ textarea, input {
 
 #archiveSide {
     list-style: square outside none;
-    margin-left: 16px;
+    margin-left: 18px;
 }
 
 .side a {
@@ -317,7 +344,7 @@ textarea, input {
 }
 
 .recent-comments img {
-    background: none repeat scroll 0 0 #FFFFFF;
+    background-color: #FFFFFF;
     border: 1px solid #999999;
     padding: 1px;
     width: 32px;
@@ -326,7 +353,7 @@ textarea, input {
 
 .recent-comments-main {
     float: left;
-    margin-left: 3px;
+    margin: 0 0 9px 3px;
     width: 229px;
 }
 
@@ -408,7 +435,7 @@ textarea, input {
     margin: 1.12em 0;
 }
 
-.article-body h5 {
+.article-body h4 {
     font-size: .83em;
     margin: 1.5em 0;
 }
@@ -459,6 +486,25 @@ textarea, input {
 }
 /* end article list */
 
+/* start article */
+.article-panel1 {
+    background-color: #F2F2F2;
+    padding: 5px 10px;
+}
+
+.article-panel2 {
+    background-color: #FFFFFF;
+    margin: 12px 0;
+    padding: 12px;   
+}
+
+.article-panel2 ul {
+    line-height: 18px;
+    list-style: square outside none;
+    margin-left: 18px;
+}
+/* end article*/
+
 /* start tags */
 .tags li {
     margin-right: 5px;
@@ -468,6 +514,13 @@ textarea, input {
 
 .tags li:hover {
     text-shadow: 0 0 2px;
+}
+
+#tags li {
+    margin: 3px 12px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px #555555;
+    padding: 2px 12px;
 }
 
 .tags1 {
@@ -494,3 +547,29 @@ textarea, input {
     font-size: 28px;
 }
 /* end tags */
+
+/* start others */
+.main>h2 {
+    margin-top: 16px;
+}
+
+.error {
+    float: left;
+    margin: 100px 0 0 100px;
+}
+
+.error a {
+    background-color: #9CD941;
+    border-color: #D0F29D #398A38 #398A38 #D0F29D;
+    border-style: solid;
+    border-width: 1px;
+    color: #555555;
+    float: left;
+    margin: 20px 0 0 40px;
+    padding: 10px 15px;
+}
+
+.error a:hover {
+    background-color: #ADEb51;
+}
+/* end others */

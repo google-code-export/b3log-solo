@@ -18,7 +18,7 @@
  * @fileoverview neoease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Sep 5, 2011
+ * @version 1.0.0.3, Sep 6, 2011
  */
 var goTop = function (acceleration) {
     acceleration = acceleration || 0.1;
@@ -89,6 +89,10 @@ var getArticle = function (it, id) {
     
     return false;
 };
+
+var goTranslate = function () {
+  window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
+};
     
 (function () {
     // go top icon show or hide
@@ -128,8 +132,8 @@ var getArticle = function (it, id) {
     // recent comment mouse event
     $(".recent-comments li").mouseenter(function () {
         var $ico = $(this).find("div>span");
-        if ($ico[0].style.display === "none" ||$ico[0].style.display === "") {
-            if ($(".recent-comments-content>a").height() > 30) {
+        if ($ico[0].style.display === "none" || $ico[0].style.display === "") {
+            if ($(this).find(".recent-comments-content>a").height() > 30) {
                 $ico.show();
             }
         }

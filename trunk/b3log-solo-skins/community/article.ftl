@@ -92,7 +92,7 @@
                     <div id="randomArticles" class="left article-relative"></div>
                     <#if 0 != relevantArticles?size>
                     <div class="article-relative right" style="width: 48%;">
-                        <h5>${relevantArticles1Label}</h5>
+                        <h4>${relevantArticles1Label}</h4>
                         <ul class="marginLeft12">
                             <#list relevantArticles as relevantArticle>
                             <li>
