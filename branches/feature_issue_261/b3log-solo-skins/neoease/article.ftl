@@ -12,85 +12,77 @@
     </head>
     <body>
         <#include "top-nav.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "header.ftl">
-            </div>
-            <div class="body">
-                <div class="left main">
-                    <div>
-                        <div class="article">
-                            <div class="article-header">
-                                <div class="article-date">
-                                    <#if article.hasUpdated>
-                                    ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
-                                    <#else>
-                                    ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
-                                    </#if>
-                                </div>
-                                <div class="article-title">
-                                    <h2>
-                                        <a class="no-underline" href="${article.articlePermalink}">${article.articleTitle}</a>
-                                        <#if article.hasUpdated>
-                                        <sup class="red">
-                                            ${updatedLabel}
-                                        </sup>
-                                        </#if>
-                                        <#if article.articlePutTop>
-                                        <sup class="red">
-                                            ${topArticleLabel}
-                                        </sup>
-                                        </#if>
-                                    </h2>
-                                    <div class="article-tags">
-                                        ${tags1Label}
-                                        <#list article.articleTags?split(",") as articleTag>
-                                        <span>
-                                            <a href="/tags/${articleTag?url('UTF-8')}">
-                                                ${articleTag}</a><#if articleTag_has_next>,</#if>
-                                        </span>
-                                        </#list>&nbsp;&nbsp;&nbsp;
-                                        ${author1Label}<a href="/authors/${article.authorId}">${article.authorName}</a>
-                                    </div>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                            <div class="article-body">
-                                ${article.articleContent}
-                                <#if "" != article.articleSign.signHTML?trim>
-                                <div class="marginTop12">
-                                    ${article.articleSign.signHTML}
-                                </div>
+        <#include "header.ftl">
+        <div class="body">
+            <div class="wrapper">
+                <div class="main">
+                    <div class="article" style="border-bottom: 0px;">
+                        <h2>
+                            <a class="article-title" href="${article.articlePermalink}">
+                                ${article.articleTitle}
+                            </a>
+                            <#if article.hasUpdated>
+                            <sup class="tip">
+                                ${updatedLabel}
+                            </sup>
+                            </#if>
+                            <#if article.articlePutTop>
+                            <sup class="tip">
+                                ${topArticleLabel}
+                            </sup>
+                            </#if>
+                        </h2>
+                        <div class="left article-element">
+                            <span class="date-ico" title="${dateLabel}">  
+                                <#if article.hasUpdated>
+                                ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
+                                <#else>
+                                ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}
                                 </#if>
+                            </span>
+                            <span class="user-ico" title="${authorLabel}">
+                                <a href="/authors/${article.authorId}">${article.authorName}</a>
+                            </span>
+                        </div>
+                        <div class="right article-element">
+                            <a href="${article.articlePermalink}#comments">
+                                ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
+                            </a>&nbsp;&nbsp;
+                            <a href="${article.articlePermalink}">
+                                ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
+                            </a>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="article-body">
+                            ${article.articleContent}
+                            <#if "" != article.articleSign.signHTML?trim>
+                            <div>
+                                ${article.articleSign.signHTML}
                             </div>
-                            <div class="article-details-footer">
-                                <div class="left">
-                                    <#if nextArticlePermalink??>
-                                    <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a><br/>
-                                    </#if>
-                                    <#if previousArticlePermalink??>
-                                    <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
-                                    </#if>
-                                </div>
-                                <div class="right">
-                                    <span class="article-create-date left">
-                                        ${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
-                                    </span>
-                                    <a href="${article.articlePermalink}#comments" class="left">
-                                        <span class="left commentIcon" title="${commentLabel}"></span>
-                                        <span class="left">${article.articleCommentCount}</span>&nbsp;&nbsp;
-                                    </a>
-                                    <a href="${article.articlePermalink}" class="left">
-                                        <span class="left browserIcon" title="${viewLabel}"></span>
-                                        <span id="articleViewCount">${article.articleViewCount}</span>
-                                    </a>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
+                            </#if>
+                        </div>
+                        <div class="article-element">
+                            <span class="tag-ico" title="${tagsLabel}">
+                                <#list article.articleTags?split(",") as articleTag>
+                                <a href="/tags/${articleTag?url('UTF-8')}">
+                                    ${articleTag}</a><#if articleTag_has_next>,</#if>
+                                </#list>
+                            </span>
+                        </div>
+                        <div class="article-panel1">
+                            <#if nextArticlePermalink??>
+                            <a class="left" href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                            </#if>
+                            <#if previousArticlePermalink??>
+                            <a class="right" href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                            </#if>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="article-panel2">
                             <#if 0 != relevantArticles?size>
-                            <div class="article-relative left" style="width: 50%;">
-                                <h5>${relevantArticles1Label}</h5>
-                                <ul class="marginLeft12">
+                            <div class="left" style="width: 50%;">
+                                <h4>${relevantArticlesLabel}</h4>
+                                <ul>
                                     <#list relevantArticles as relevantArticle>
                                     <li>
                                         <a href="${relevantArticle.articlePermalink}">
@@ -101,23 +93,18 @@
                                 </ul>
                             </div>
                             </#if>
-                            <div id="randomArticles" class="left article-relative"></div>
-                            <div class="clear"></div>
-                            <div id="externalRelevantArticles" class="article-relative"></div>
+                            <div id="randomArticles" class="left"></div>
+                            <div class="clear" style="height: 15px;"></div>
+                            <div id="externalRelevantArticles"></div>
                         </div>
-                        <div class="clear"></div>
-                        <@comments commentList=articleComments permalink=article.articlePermalink></@comments>
                     </div>
+                    <@comments commentList=articleComments permalink=article.articlePermalink></@comments>
                 </div>
-                <div class="right side">
-                    <#include "side.ftl">
-                </div>
+                <#include "side.ftl">
                 <div class="clear"></div>
             </div>
-            <div class="footer">
-                <#include "footer.ftl">
-            </div>
         </div>
+        <#include "footer.ftl">
         <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         page.loadRandomArticles();

@@ -9,34 +9,27 @@
     </head>
     <body>
         <#include "top-nav.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "header.ftl">
-            </div>
-            <div class="body">
-                <div class="left main">
-                    <div>
-                        <ul id="tags">
-                            <#list tags as tag>
-                            <li>
-                                <a href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
-                                    <span>${tag.tagTitle}</span>
-                                    (<b>${tag.tagPublishedRefCount}</b>)
-                                </a>
-                            </li>
-                            </#list>
-                        </ul>
-                    </div>
+        <#include "header.ftl">
+        <div class="body">
+            <div class="wrapper">
+                <div class="main">
+                    <ul id="tags" class="tags">
+                        <#list tags as tag>
+                        <li>
+                            <a data-count="${tag.tagPublishedRefCount}"
+                               href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
+                                <span>${tag.tagTitle}</span>
+                                (<b>${tag.tagPublishedRefCount}</b>)
+                            </a>
+                        </li>
+                        </#list>
+                    </ul>
                 </div>
-                <div class="right side">
-                    <#include "side.ftl">
-                </div>
+                <#include "side.ftl">
                 <div class="clear"></div>
             </div>
-            <div class="footer">
-                <#include "footer.ftl">
-            </div>
         </div>
+        <#include "footer.ftl">
         <script type="text/javascript">
             common.buildTags();
         </script>

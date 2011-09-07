@@ -2,7 +2,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Sep 3, 2011
+ * @version 1.0.0.3, Sep 6, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -94,22 +94,114 @@ textarea, input {
 
 .tip {
     color: #D54E21;
+    font-size: 11px;
+}
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
+.em10, .em11, .em12, .em13, .em14 {
+    background-image: url("/images/emotions-black.png");
+    float: left;
+    height: 24px;
+    margin-right: 5px;
+    width: 24px;
+}
+#emotions span {
+    cursor: pointer;
+}
+.em01 {
+    background-position: -24px 0;
+}
+.em02 {
+    background-position: -48px 0;
+}
+.em03 {
+    background-position: -72px 0;
+}
+.em04 {
+    background-position: -96px 0;
+}
+.em05 {
+    background-position: 0px -24px;
+}
+.em06 {
+    background-position: -24px -24px;
+}
+.em07 {
+    background-position: -48px -24px;
+}
+.em08 {
+    background-position: -72px -24px;
+}
+.em09 {
+    background-position: -96px -24px;
+}
+.em10 {
+    background-position: 0 -48px;
+}
+.em11 {
+    background-position: -24px -48px ;
+}
+.em12 {
+    background-position: -48px -48px;
+}
+.em13 {
+    background-position: -72px -48px;
+}
+.em14 {
+    background-position: -96px -48px;
+}
+.em-span {
+    line-height: 24px;
+    float: left;
+}
+
+.em-br {
+    line-height: 24px;
 }
 /* end base */
 
 /* start ico */
+.date-ico, .tag-ico, .user-ico, .expand-ico, .collapse-ico, #search,
+.translate-ico, .feed-ico {
+    background-image: url("/skins/neoease/images/icons.png");
+}
+
+.feed-ico {
+    background-position: right -146px;
+    background-repeat: no-repeat;
+    color: #555555;
+    padding-right: 24px;
+}
+
+.translate-ico {
+    background-position: 1px -125px;
+    background-repeat: no-repeat;
+    border: 1px solid #999999;
+    border-radius: 3px 3px 3px 3px;
+    cursor: pointer;
+    float: right;
+    height: 16px;
+    margin: 6px 0 0 18px;
+    padding: 1px;
+    width: 16px;
+}
+
+.translate-ico:hover {
+    border-color: #D54E21;
+    box-shadow: 0 0 1px #999999;
+    background-color: #F2F2F2;
+}
+
 .expand-ico, .collapse-ico {
-    background: url("http://www.neoease.com/wp-content/themes/paled/img/icons.png") no-repeat scroll 35px -449px transparent;
+    background-position: 35px -86px;
     cursor: pointer;
     height: 16px;
 }
 
 .collapse-ico {
-    background-position: 35px -433px;
+    background-position: 35px -70px;
 }
 
 .date-ico, .tag-ico, .user-ico {
-    background-image: url("/skins/neoease/images/icons.png");
     background-repeat: no-repeat;
     height: 16px;
     display: block;
@@ -152,7 +244,7 @@ textarea, input {
 
 /* start header */
 .header {
-    background: url(http://www.neoease.com/wp-content/themes/paled/img/sprite.png) repeat-x scroll 50% -60px #F2F2F2;
+    background: url("/skins/neoease/images/icons.png") repeat-x scroll 0 -220px #F2F2F2;
     padding: 20px 0;
 }
 
@@ -169,7 +261,9 @@ textarea, input {
 }
 
 #search {
-    background: url("images/search.png") no-repeat scroll 5px 6px #FFFFFF;
+    background-position: 7px -99px;
+    background-repeat: no-repeat;
+    background-color: #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 2px 2px 2px 2px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset;
@@ -248,7 +342,7 @@ textarea, input {
 }
 
 .nav .right {
-    margin-top: 8px;
+    line-height: 29px;
 }
 /* end header */
 
@@ -265,8 +359,12 @@ textarea, input {
     color: #787878;
 }
 
+.footer a:hover {
+    color: #D54E21;
+}
+
 #goTop {
-    background: url("http://www.neoease.com/wp-content/themes/paled/img/icons.png") no-repeat scroll 5px -414px #DDDDDD;
+    background: url("/skins/neoease/images/icons.png") no-repeat scroll 5px -51px #DDDDDD;
     border-radius: 2px 2px 0 0;
     cursor: pointer;
     font-size: 11px;
@@ -276,6 +374,10 @@ textarea, input {
     position: absolute;
     right: 56px;
     display: none;
+}
+
+#goTop:hover {
+    background-color: #EAEAEA;
 }
 /* end footer*/
 
@@ -299,7 +401,7 @@ textarea, input {
 
 #archiveSide {
     list-style: square outside none;
-    margin-left: 16px;
+    margin-left: 18px;
 }
 
 .side a {
@@ -311,7 +413,7 @@ textarea, input {
 }
 
 .recent-comments img {
-    background: none repeat scroll 0 0 #FFFFFF;
+    background-color: #FFFFFF;
     border: 1px solid #999999;
     padding: 1px;
     width: 32px;
@@ -320,19 +422,19 @@ textarea, input {
 
 .recent-comments-main {
     float: left;
-    margin-left: 3px;
+    margin: 0 0 9px 3px;
     width: 229px;
 }
 
 .recent-comments-main .expand-ico, .recent-comments-main .collapse-ico {
-    background-position: 0 -449px;
+    background-position: 0 -86px;
     float: right;
     width: 16px;
     display: none;
 }
 
 .recent-comments-main .collapse-ico {
-    background-position: 0 -433px;
+    background-position: 0 -70px;
 }
 
 .recent-comments-content {
@@ -346,6 +448,7 @@ textarea, input {
 .article {
     border-bottom: 1px solid #CCCCCC;
     padding: 0 5px 10px;
+    margin-top: 20px;
 }
 
 .article-element {
@@ -367,14 +470,24 @@ textarea, input {
 
 .article-title {
     color: #21759B;
-    display: block;
     font-size: 20px;
     font-weight: normal;
-    padding: 10px 0 5px;
 }
 
 .article-title:hover {
     color: #D54E21;
+}
+
+.article .expand-ico, .article .collapse-ico {
+    float: right;
+    margin-top: 9px;
+    padding-right: 6px;
+    width: 15px;
+}
+
+.article-body {
+    overflow: hidden;
+    word-wrap: break-word;
 }
 
 .article-body h1 {
@@ -396,7 +509,7 @@ textarea, input {
     margin: 1.12em 0;
 }
 
-.article-body h5 {
+.article-body h4 {
     font-size: .83em;
     margin: 1.5em 0;
 }
@@ -418,7 +531,130 @@ textarea, input {
     color: #D54E21;
     border-bottom: 1px solid #D54E21;
 }
+
+.pagination {
+    margin-top: 30px;
+    line-height: 21px;
+}
+
+.pagination a {
+    border: 1px solid #C5C3C2;
+    font-size: 10px;
+    margin: 2px;
+    padding: 1px 5px ;
+    text-decoration: none;
+    background-color: #F2F2F2;
+}
+
+.pagination a.current {
+    background-color: #FFFFFF;
+    font-weight: bold;
+    padding: 2px 6px;
+    color: #000000;
+}
+
+.pagination a:hover {
+    background-color: #F3DEDD;
+    color: #D54E21;
+    border: 1px solid #D54E21;
+}
 /* end article list */
+
+/* start article */
+.article-panel1 {
+    background-color: #F2F2F2;
+    padding: 5px 10px;
+}
+
+.article-panel2 {
+    background-color: #FFFFFF;
+    margin: 12px 0;
+    padding: 12px;   
+}
+
+.article-panel2 ul {
+    line-height: 18px;
+    list-style: square outside none;
+    margin-left: 18px;
+}
+
+.share {
+    border-bottom: 1px solid #DEDEDE;
+}
+
+.share-comment {
+    background-color: #DDDDDD;
+    border-radius: 2px 2px 0 0;
+    float: right;
+    font-size: 11px;
+    height: 21px;
+    line-height: 21px;
+    margin-right: 16px;
+    padding: 0 10px;
+}
+
+.share-comment:hover {
+    background-color: #EAEAEA;
+}
+
+#comments {
+    position: relative;
+}
+
+#comments>div {
+    border-bottom: 1px solid #DEDEDE;
+    padding: 10px;
+}
+
+.comment-even {
+    background-color: #F8F8F8;
+}
+
+.comment-odd {
+    background-color: #F5F5F5;
+}
+
+.comment-header {
+    height: 50px;
+    width: 50px;
+    float: left;
+    background-color: #FFFFFF;
+    border: 1px solid #DEDEDE;
+    padding: 1px;
+}
+
+.comment-panel {
+    float: left;
+    margin: 0 10px;
+    width: 573px;
+    line-height: 16px;
+}
+
+.comment-panel .article-body {
+    margin-top: 5px;
+}
+
+.comment-body-ref {
+    background-color: #FFFFFF;
+    border-radius: 5px 5px 5px 5px;
+    left: 73px;
+    position: absolute;
+}
+
+.comment-body-ref .comment-panel {
+    width: 486px;
+}
+
+.comment-body-ref .arrow {
+    border-color: #F5F5F5 #FFFFFF #F5F5F5 #F5F5F5;
+    border-style: solid;
+    border-width: 6px 8px 10px 0;
+    display: block;
+    left: -8px;
+    position: absolute;
+    top: 5px;
+}
+/* end article*/
 
 /* start tags */
 .tags li {
@@ -429,6 +665,13 @@ textarea, input {
 
 .tags li:hover {
     text-shadow: 0 0 2px;
+}
+
+#tags li {
+    margin: 3px 12px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px #555555;
+    padding: 2px 12px;
 }
 
 .tags1 {
@@ -455,3 +698,29 @@ textarea, input {
     font-size: 28px;
 }
 /* end tags */
+
+/* start others */
+.main>h2 {
+    margin-top: 16px;
+}
+
+.error {
+    float: left;
+    margin: 100px 0 0 100px;
+}
+
+.error a {
+    background-color: #9CD941;
+    border-color: #D0F29D #398A38 #398A38 #D0F29D;
+    border-style: solid;
+    border-width: 1px;
+    color: #555555;
+    float: left;
+    margin: 20px 0 0 40px;
+    padding: 10px 15px;
+}
+
+.error a:hover {
+    background-color: #ADEb51;
+}
+/* end others */

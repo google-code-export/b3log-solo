@@ -9,29 +9,23 @@
     </head>
     <body>
         <#include "top-nav.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "header.ftl">
-            </div>
-            <div class="body">
-                <div class="left main">
-                    <div>
-                        <h2 class="marginLeft12 marginBottom12">${tag1Label}
-                            <span id="tagArticlesTag">
-                                ${tag.tagTitle}
-                            </span>(${tag.tagPublishedRefCount})
-                        </h2>
-                    </div>
+        <#include "header.ftl">
+        <div class="body">
+            <div class="wrapper">
+                <div class="main">
+                    <h2>
+                        <a href="/tag-articles-feed.do?oId=${tag.oId}" class="feed-ico">
+                            ${tag1Label}
+                            ${tag.tagTitle}
+                            (${tag.tagPublishedRefCount})
+                        </a>
+                    </h2>
                     <#include "article-list.ftl">
                 </div>
-                <div class="right side">
-                    <#include "side.ftl">
-                </div>
+                <#include "side.ftl">
                 <div class="clear"></div>
             </div>
-            <div class="footer">
-                <#include "footer.ftl">
-            </div>
         </div>
+        <#include "footer.ftl">
     </body>
 </html>

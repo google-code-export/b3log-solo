@@ -9,27 +9,17 @@
     </head>
     <body>
         <#include "top-nav.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "header.ftl">
-            </div>
-            <div class="body">
-                <div class="left main">
-                    <div>
-                        <h2 class="marginLeft12 marginBottom12">
-                            ${author1Label}${authorName}
-                        </h2>
-                    </div>
+        <#include "header.ftl">
+        <div class="body">
+            <div class="wrapper">
+                <div class="main">
+                    <h2>${author1Label}${authorName}</h2>
                     <#include "article-list.ftl">
                 </div>
-                <div class="right side">
-                    <#include "side.ftl">
-                </div>
+                <#include "side.ftl">
                 <div class="clear"></div>
             </div>
-            <div class="footer">
-                <#include "footer.ftl">
-            </div>
         </div>
+        <#include "footer.ftl">
     </body>
 </html>
