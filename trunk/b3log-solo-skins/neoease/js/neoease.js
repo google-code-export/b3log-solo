@@ -13,6 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/**
+ * @fileoverview util and every page should be userd.
+ *
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @version 1.0.1.2, Sep 7, 2011
+ */
 var Util = {
     error: function () {
         alert("Error: " + arguments[0] +
@@ -105,7 +111,7 @@ var Util = {
 
 var Common = function (tips) {
     this.tips = tips;
-}
+};
 
 $.extend(Common.prototype, {
     goTop: function () {
@@ -240,7 +246,7 @@ $.extend(Common.prototype, {
  * @fileoverview neoease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Sep 6, 2011
+ * @version 1.0.0.4, Sep 7, 2011
  */
 var goTop = function (acceleration) {
     acceleration = acceleration || 0.1;
@@ -313,7 +319,7 @@ var getArticle = function (it, id) {
 };
 
 var goTranslate = function () {
-  window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
+    window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
 };
     
 (function () {
@@ -347,22 +353,7 @@ var goTranslate = function () {
         // append year archive
         if (year !== $this.data("year")) {
             year = $this.data("year");
-            $this.before("<li><div onclick='collapseArchive(this, " + year + ")' class='expand-ico'>" + year + "</div></li>");
-        }
-    });
-    
-    // recent comment mouse event
-    $(".recent-comments li").mouseenter(function () {
-        var $ico = $(this).find("div>span");
-        if ($ico[0].style.display === "none" || $ico[0].style.display === "") {
-            if ($(this).find(".recent-comments-content>a").height() > 30) {
-                $ico.show();
-            }
-        }
-    }).mouseleave(function () {
-        var $ico = $(this).find("div>span");
-        if ($ico[0].style.display === "inline") {
-            $ico.hide();
+            $this.before("<li class='archive-year'><div onclick='collapseArchive(this, " + year + ")' class='expand-ico'>" + year + "&nbsp;年</div></li>");
         }
     });
     

@@ -2,7 +2,7 @@
  * zoltan skin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Aug 10, 2011
+ * @version 1.0.0.3, Set 7, 2011
 */
 body {
     background: url("../images/bg.jpg") repeat scroll 0 0 #EAE5D3;
@@ -219,6 +219,10 @@ a:hover {
 .side li {
     line-height: 24px;
     margin-left: 0;
+}
+
+.side img {
+    margin-top: -3px;
 }
 
 .side h4 {

@@ -67,7 +67,7 @@
             <li>
                 <a data-count="${tag.tagPublishedRefCount}"
                    href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
-                    ${tag.tagTitle}
+                    <span>${tag.tagTitle}</span>
                 </a>
             </li>
             </#list>
