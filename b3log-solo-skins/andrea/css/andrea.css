@@ -460,7 +460,7 @@ a:hover {
     margin: 15px 0;
 }
 
-.article-relative h5 {
+.article-relative h4 {
     font-family: 'Neucha','\u5fae\u8f6f\u96c5\u9ed1',Arial,Verdana;
     font-size: 16px;
 }
@@ -565,6 +565,13 @@ h2.comment-label {
     padding-right: 0;
     width: 36px;
     *margin-top:11px;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+    #commentURLLabel, #commentURLLabelReply {
+     letter-spacing: -1px;
+ } 
 }
 
 #commentURLLabel.selected, #commentURLLabelReply.selected {

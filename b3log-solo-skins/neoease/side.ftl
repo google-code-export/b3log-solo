@@ -65,7 +65,8 @@
         <ul id="tagsSide" class="tags">
             <#list mostUsedTags as tag>
             <li>
-                <a target="_blank" href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
+                <a data-count="${tag.tagPublishedRefCount}"
+                   href="/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
                     ${tag.tagTitle}
                 </a>
             </li>
