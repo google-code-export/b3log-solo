@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
@@ -155,12 +156,15 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             request.setAttribute(CACHED_OID, tagId);
+
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(
                     CACHED_TITLE,
-                    ret.get(PageTypes.TAG_ARTICLES) + "  ["
-                    + ret.get("pageNumLabel") + "=" + currentPageNum + ", "
-                    + ret.get("tagLabel") + "=" + tagTitle + "]");
-            request.setAttribute(CACHED_TYPE, ret.get(PageTypes.TAG_ARTICLES));
+                    langs.get(PageTypes.TAG_ARTICLES) + "  ["
+                    + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
+                    + langs.get("tagLabel") + "=" + tagTitle + "]");
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
             request.setAttribute(CACHED_LINK, requestURI);
 
             final JSONObject result =
@@ -178,7 +182,6 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                     LOGGER.severe(ex.getMessage());
                 }
             }
-
 
             final List<JSONObject> articles = new ArrayList<JSONObject>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
