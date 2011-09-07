@@ -2,7 +2,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Sep 6, 2011
+ * @version 1.0.0.4, Sep 7, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -11,7 +11,7 @@ html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
 }
 
 body {
-    font-family: "Lucida Grande",Verdana,'微软雅黑';
+    font-family: "Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1';
     font-size: 12px;
     background-color: #F9F9F9;
     color: #555555;
@@ -25,6 +25,10 @@ a {
 
 a:hover {
     color: #D54E21;    
+}
+
+img {
+    vertical-align: middle;
 }
 
 textarea, input {
@@ -104,9 +108,7 @@ textarea, input {
     margin-right: 5px;
     width: 24px;
 }
-#emotions span {
-    cursor: pointer;
-}
+
 .em01 {
     background-position: -24px 0;
 }
@@ -192,13 +194,14 @@ textarea, input {
 }
 
 .expand-ico, .collapse-ico {
-    background-position: 35px -86px;
+    background-position: 54px -84px;
     cursor: pointer;
     height: 16px;
+    background-repeat: no-repeat;
 }
 
 .collapse-ico {
-    background-position: 35px -70px;
+    background-position: 54px -69px;
 }
 
 .date-ico, .tag-ico, .user-ico {
@@ -338,7 +341,6 @@ textarea, input {
 
 .nav img {
     margin-left: 3px;
-    vertical-align: middle;
 }
 
 .nav .right {
@@ -404,12 +406,16 @@ textarea, input {
     margin-left: 18px;
 }
 
-.side a {
-    line-height: 16px;
+#archiveSide .archive-year {
+    color: #D54E21;
+    font-weight: bold;
+    height: 18px;
+    line-height: 18px;
+    list-style: none;
 }
 
-.side img {
-    vertical-align: middle;
+.side a {
+    line-height: 18px;
 }
 
 .recent-comments img {
@@ -418,6 +424,7 @@ textarea, input {
     padding: 1px;
     width: 32px;
     height: 32px;
+    margin-top: 1px;
 }
 
 .recent-comments-main {
@@ -430,7 +437,17 @@ textarea, input {
     background-position: 0 -86px;
     float: right;
     width: 16px;
-    display: none;
+    -moz-transition-duration: 400ms;
+    -moz-transition-property: opacity;
+    -moz-transition-timing-function: ease;
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-property: opacity;
+    -webkit-transition-timing-function: ease;
+    opacity:0;
+}
+
+.recent-comments li:hover .expand-ico, .recent-comments li:hover .collapse-ico {
+    opacity:1;
 }
 
 .recent-comments-main .collapse-ico {
@@ -438,9 +455,8 @@ textarea, input {
 }
 
 .recent-comments-content {
-    height: 16px;
+    height: 18px;
     overflow: hidden;
-    padding-top: 4px;
 }
 /* end side */
 
@@ -483,6 +499,11 @@ textarea, input {
     margin-top: 9px;
     padding-right: 6px;
     width: 15px;
+    background-position: 0 -86px;
+}
+
+.article .collapse-ico {
+    background-position: 0 -70px;
 }
 
 .article-body {
@@ -558,6 +579,11 @@ textarea, input {
     color: #D54E21;
     border: 1px solid #D54E21;
 }
+
+.page {
+    margin-top: 20px;
+    padding: 0 5px 5px;
+}
 /* end article list */
 
 /* start article */
@@ -568,8 +594,8 @@ textarea, input {
 
 .article-panel2 {
     background-color: #FFFFFF;
-    margin: 12px 0;
-    padding: 12px;   
+    margin-top: 12px;
+    padding: 5px 10px;   
 }
 
 .article-panel2 ul {
@@ -580,6 +606,7 @@ textarea, input {
 
 .share {
     border-bottom: 1px solid #DEDEDE;
+    margin-top: 15px;
 }
 
 .share-comment {
@@ -604,6 +631,20 @@ textarea, input {
 #comments>div {
     border-bottom: 1px solid #DEDEDE;
     padding: 10px;
+}
+
+#comments .comment-panel>.right {
+    -moz-transition-duration: 400ms;
+    -moz-transition-property: opacity;
+    -moz-transition-timing-function: ease;
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-property: opacity;
+    -webkit-transition-timing-function: ease;
+    opacity: 0;
+}
+
+#comments>div:hover .comment-panel>.right {
+    opacity: 1;
 }
 
 .comment-even {
@@ -654,11 +695,73 @@ textarea, input {
     position: absolute;
     top: 5px;
 }
+
+.form {
+    margin: 10px;
+}
+
+.form img {
+    cursor: pointer;
+}
+
+.form h4 {
+    margin: 10px 0 5px 5px;
+}
+
+.form th {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.form input[type="text"], .form input[type="password"], .form textarea {
+    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Lucida Grande",Verdana,'微软雅黑';
+    font-size: 12px;
+    outline: medium none;
+    padding: 0 3px;
+}
+
+.form input:focus, .form textarea:focus {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+}
+
+.form textarea {
+    padding: 3px;
+}
+
+.form textarea {
+    overflow: auto;
+    resize: vertical;
+}
+
+.form input {
+    height: 24px;
+    line-height: 24px;
+    width: 260px;
+}
+
+.form button {
+    background-color: #B4D666;
+    border-color: #B4D666 #81B840 #81B840 #B4D666;
+    border-style: solid;
+    border-width: 1px;
+    color: #2970A6;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 12px;
+}
+
+.form button:hover {
+    background-color: #98C64C;
+    border-color: #76B33A #98C64C #98C64C #76B33A;
+    color: #074A7E;
+}
 /* end article*/
 
 /* start tags */
 .tags li {
-    margin-right: 5px;
     float: left;
     list-style: none;
 }
@@ -668,10 +771,17 @@ textarea, input {
 }
 
 #tags li {
-    margin: 3px 12px;
+    margin: 5px;
     border-radius: 3px;
     box-shadow: 1px 1px 3px #555555;
     padding: 2px 12px;
+}
+
+#tagsSide li a {
+    float: left;
+    line-height: 20px;
+    margin-right: 7px;
+    white-space: nowrap;
 }
 
 .tags1 {
@@ -696,6 +806,22 @@ textarea, input {
 
 .tags5 {
     font-size: 28px;
+}
+
+#tagsSide .tags2 {
+    font-size: 14px;
+}
+
+#tagsSide .tags3 {
+    font-size: 16px;
+}
+
+#tagsSide .tags4 {
+    font-size: 18px;
+}
+
+#tagsSide .tags5 {
+    font-size: 20px;
 }
 /* end tags */
 
