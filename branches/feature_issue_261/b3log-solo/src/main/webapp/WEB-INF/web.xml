@@ -120,6 +120,7 @@
             30
         </session-timeout>
     </session-config>
+    
     <servlet>
         <servlet-name>HTTPRequestDispatcher</servlet-name>
         <servlet-class>org.b3log.latke.servlet.HTTPRequestDispatcher</servlet-class>
