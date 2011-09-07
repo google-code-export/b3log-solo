@@ -59,7 +59,7 @@ public final class GetArticleContentServlet extends HttpServlet {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8");
-        
+
         // XXX: Determines request coming from outer
         final String articleId = request.getParameter("id");
 
@@ -74,7 +74,7 @@ public final class GetArticleContentServlet extends HttpServlet {
             }
 
             final String content = article.getString(Article.ARTICLE_CONTENT);
-            
+
             final PrintWriter writer = response.getWriter();
             writer.write(content);
             writer.close();
