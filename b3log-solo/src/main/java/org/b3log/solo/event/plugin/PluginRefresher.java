@@ -23,6 +23,9 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
+import org.b3log.latke.repository.Transaction;
+import org.b3log.solo.repository.PluginRepository;
+import org.b3log.solo.repository.impl.PluginGAERepository;
 import org.b3log.solo.util.Plugins;
 
 /**
@@ -38,20 +41,31 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
      */
     private static final Logger LOGGER =
             Logger.getLogger(PluginRefresher.class.getName());
- 
-  
+    /**
+     * Plugin repository.
+     */
+    private PluginRepository pluginRepository =
+            PluginGAERepository.getInstance();
 
     @Override
-    public void action(final Event<List<AbstractPlugin>> event) throws EventException {
+    public void action(final Event<List<AbstractPlugin>> event) throws
+            EventException {
         final List<AbstractPlugin> plugins = event.getData();
-        
+
         LOGGER.log(Level.FINER,
                    "Processing an event[type={0}, data={1}] in listener[className={2}]",
                    new Object[]{event.getType(), plugins,
                                 PluginRefresher.class.getName()});
+
+        final Transaction transaction = pluginRepository.beginTransaction();
         try {
             Plugins.refresh(plugins);
+            transaction.commit();
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
             LOGGER.log(Level.SEVERE, "Processing plugin loaded event error", e);
             throw new EventException(e);
         }

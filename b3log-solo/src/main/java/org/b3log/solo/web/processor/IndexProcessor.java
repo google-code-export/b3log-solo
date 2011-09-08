@@ -155,6 +155,46 @@ public final class IndexProcessor {
     }
 
     /**
+     * Handles errors with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/error.do"}, method = HTTPRequestMethod.GET)
+    public void handleErrors(final HTTPRequestContext context) {
+        final AbstractFreeMarkerRenderer render =
+                new FrontFreeMarkerRenderer();
+        context.setRenderer(render);
+
+        render.setTemplateName("error.ftl");
+        final Map<String, Object> dataModel = render.getDataModel();
+
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+        final String requestURI = request.getRequestURI();
+        try {
+            final JSONObject preference =
+                    Preferences.getInstance().getPreference();
+            if (null == preference) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+
+            skins.fillLanguage(preference, dataModel);
+
+            filler.fillSide(dataModel, preference);
+            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogFooter(dataModel, preference);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
+        }
+    }
+
+    /**
      * Gets the request page number from the specified request URI.
      * 
      * @param requestURI the specified request URI
