@@ -57,7 +57,6 @@ import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
@@ -108,10 +107,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
-    /**
-     * Preference utilities.
-     */
-    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Article service.
      */
@@ -615,11 +610,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         final GeneralUser user = userService.getCurrentUser();
         final String name = user.getNickname();
         admin.put(User.USER_NAME, name);
-        final String email = user.getEmail();
+        final String email = user.getEmail().toLowerCase().trim();
         admin.put(User.USER_EMAIL, email);
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
 
-        addUser(admin, request, response);
+        userRepository.add(admin);
 
         LOGGER.info("Initialized admin");
     }

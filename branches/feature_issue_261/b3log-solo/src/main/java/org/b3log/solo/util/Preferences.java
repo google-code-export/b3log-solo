@@ -30,7 +30,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jul 12, 2011
+ * @version 1.0.0.7, Sep 8, 2011
  */
 public final class Preferences {
 
@@ -81,7 +81,7 @@ public final class Preferences {
 
                 skins.loadSkins(ret);
 
-                setPreference(ret);
+                userPreferenceCache.put(PREFERENCE, ret.toString());
             } else {
                 ret = new JSONObject(preferenceString.toString());
             }

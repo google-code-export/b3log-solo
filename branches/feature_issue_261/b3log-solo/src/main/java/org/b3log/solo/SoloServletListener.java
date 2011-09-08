@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.3, Aug 25, 2011
+ * @version 1.0.5.4, Sep 8, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -123,15 +123,11 @@ public final class SoloServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         super.contextInitialized(servletContextEvent);
 
-        registerRemoteJSServices();
-        registerEventProcessor();
-
         final PreferenceRepository preferenceRepository =
                 PreferenceGAERepository.getInstance();
+
         final Transaction transaction = preferenceRepository.beginTransaction();
         try {
-            PluginManager.getInstance().load();
-
             loadPreference();
 
             transaction.commit();
@@ -142,8 +138,12 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
+        PluginManager.getInstance().load();
+
         loadCaptchas();
 
+        registerRemoteJSServices();
+        registerEventProcessor();
         registerRemoteJSServiceSerializers();
 
         LOGGER.info("Initialized the context");

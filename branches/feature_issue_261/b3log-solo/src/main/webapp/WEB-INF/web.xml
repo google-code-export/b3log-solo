@@ -384,14 +384,6 @@
         <url-pattern>/json-rpc.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>Error</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.ErrorAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Error</servlet-name>
-        <url-pattern>/error.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>AdminError</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.AdminErrorAction</servlet-class>
     </servlet>
