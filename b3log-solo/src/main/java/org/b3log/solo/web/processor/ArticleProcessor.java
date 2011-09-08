@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.util.Statistics;
+import org.b3log.solo.web.FrontFreeMarkerRenderer;
 import java.util.ArrayList;
 import java.util.Collections;
 import org.b3log.latke.repository.RepositoryException;
@@ -34,7 +36,6 @@ import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.Articles;
-import org.b3log.solo.util.Statistics;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,7 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.FreeMarkerResponseRenderer;
+import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.model.Article;
@@ -122,8 +123,8 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = {"/article"}, method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context) {
-        final FreeMarkerResponseRenderer render =
-                new FreeMarkerResponseRenderer();
+        final AbstractFreeMarkerRenderer render =
+                new FrontFreeMarkerRenderer();
         context.setRenderer(render);
 
         render.setTemplateName("article.ftl");
