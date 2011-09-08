@@ -13,40 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.action.impl;
+package org.b3log.solo.web.processor;
 
-import java.util.List;
-import org.b3log.latke.action.ActionException;
+import org.b3log.solo.util.Statistics;
+import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.util.Pages;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
+import org.b3log.latke.annotation.RequestProcessing;
+import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.solo.action.util.Filler;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Locales;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.model.Page;
+import org.b3log.latke.servlet.FreeMarkerResponseRenderer;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
-import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
+import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 
 /**
- * Page action.
+ * Page processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Sep 3, 2011
+ * @version 1.1.0.0, Sep 8, 2011
+ * @since 0.3.1
  */
-public final class PageAction extends AbstractFrontPageAction {
+@RequestProcessor
+public final class PageProcessor {
 
     /**
      * Default serial version uid.
@@ -56,7 +61,7 @@ public final class PageAction extends AbstractFrontPageAction {
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PageAction.class.getName());
+            Logger.getLogger(PageProcessor.class.getName());
     /**
      * Language service.
      */
@@ -65,10 +70,6 @@ public final class PageAction extends AbstractFrontPageAction {
      * Filler.
      */
     private Filler filler = Filler.getInstance();
-    /**
-     * Page repository.
-     */
-    private PageRepository pageRepository = PageGAERepository.getInstance();
     /**
      * Page utilities.
      */
@@ -81,73 +82,82 @@ public final class PageAction extends AbstractFrontPageAction {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
+    /**
+     * Statistic utilities.
+     */
+    private Statistics statistics = Statistics.getInstance();
 
-    @Override
-    protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ActionException {
-        final Map<String, Object> ret = new HashMap<String, Object>();
+    /**
+     * Shows page with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/page"}, method = HTTPRequestMethod.GET)
+    public void showPage(final HTTPRequestContext context) {
+        final FreeMarkerResponseRenderer render =
+                new FreeMarkerResponseRenderer();
+        context.setRenderer(render);
+
+        render.setTemplateName("page.ftl");
+        final Map<String, Object> dataModel = render.getDataModel();
+
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
 
         try {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return ret;
             }
 
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
-
-            skins.fillLanguage(preference, ret);
+            skins.fillLanguage(preference, dataModel);
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
 
-            final String pageId = (String) request.getAttribute(Keys.OBJECT_ID);
-
-            final JSONObject page = pageRepository.get(pageId);
+            final JSONObject page =
+                    (JSONObject) request.getAttribute(Page.PAGE);
             if (null == page) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
             }
+
+            final String pageId = page.getString(Keys.OBJECT_ID);
             request.setAttribute(CACHED_OID, pageId);
             request.setAttribute(CACHED_TITLE,
                                  page.getString(Page.PAGE_TITLE));
             request.setAttribute(CACHED_LINK,
                                  page.getString(Page.PAGE_PERMALINK));
 
-            ret.put(Page.PAGE, page);
+            dataModel.put(Page.PAGE, page);
             final List<JSONObject> comments = pageUtils.getComments(pageId);
-            ret.put(Page.PAGE_COMMENTS_REF, comments);
+            dataModel.put(Page.PAGE_COMMENTS_REF, comments);
 
-            filler.fillSide(ret, preference);
-            filler.fillBlogHeader(ret, preference);
-            filler.fillBlogFooter(ret, preference);
+            filler.fillSide(dataModel, preference);
+            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogFooter(dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
         }
 
-        return ret;
+        statistics.incBlogViewCount();
     }
 
-    @Override
-    protected JSONObject doAjaxAction(final JSONObject data,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
-            throws ActionException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    /**
+     * Gets the request page number from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return page number, returns {@code -1} if the specified request URI
+     * can not convert to an number
+     */
+    private static int getCurrentPageNum(final String requestURI) {
+        final String pageNumString = requestURI.substring("/".length());
+
+        return Requests.getCurrentPageNum(pageNumString);
     }
 }

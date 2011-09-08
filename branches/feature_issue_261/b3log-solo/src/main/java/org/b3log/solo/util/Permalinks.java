@@ -31,7 +31,7 @@ import org.b3log.solo.repository.impl.PageGAERepository;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Aug 18, 2011
+ * @version 1.0.1.0, Sep 8, 2011
  */
 public final class Permalinks {
 
@@ -55,7 +55,7 @@ public final class Permalinks {
         RESERVED_LINKS.add("/article");
         RESERVED_LINKS.add("/tags.html");
         RESERVED_LINKS.add("/tags");
-        RESERVED_LINKS.add("/page.do");
+        RESERVED_LINKS.add("/page");
         RESERVED_LINKS.add("/blog-articles-feed.do");
         RESERVED_LINKS.add("/tag-articles-feed.do");
         RESERVED_LINKS.add("/captcha.do");
@@ -67,7 +67,7 @@ public final class Permalinks {
         RESERVED_LINKS.add("/add-article-comment.do");
         RESERVED_LINKS.add("/add-article-from-symphony-comment.do");
         RESERVED_LINKS.add("/add-page-comment.do");
-        
+
         // XXX: I think we should update to the new Latke request dispatching ASAP
 
         RESERVED_LINKS.addAll(Arrays.asList(Skips.ADMIN_ACTIONS));
@@ -151,7 +151,7 @@ public final class Permalinks {
         if (Strings.isEmptyOrNull(permalink)) {
             return true;
         }
-        
+
         if (Strings.isNumeric(permalink)) {
             // See issue 120 (http://code.google.com/p/b3log-solo/issues/detail?id=120#c4)
             // for more details
@@ -170,7 +170,7 @@ public final class Permalinks {
         }
 
         // FIXME: URL format check
-        
+
         return false;
     }
 
@@ -194,16 +194,8 @@ public final class Permalinks {
      * @return {@code true} if reserved, returns {@code false} otherwise
      */
     private boolean isReserved(final String permalink) {
-        if ("/".equals(permalink)) {
-            return true;
-        }
-
         for (final String reservedLink : RESERVED_LINKS) {
-            if ("/".equals(reservedLink)) {
-                continue;
-            }
-
-            if (permalink.startsWith(reservedLink)) {
+            if (permalink.equals(reservedLink)) {
                 return true;
             }
         }
