@@ -38,6 +38,8 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Jan 12, 2011
+ * @deprecated As of Solo 0.3.1, removes servlet URL mapping in web.xml, with 
+ * no replacement.
  */
 public final class V020ToV021 extends HttpServlet {
 
