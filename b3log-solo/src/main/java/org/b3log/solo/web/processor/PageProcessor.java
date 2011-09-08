@@ -20,8 +20,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Pages;
 import java.io.IOException;
 import java.util.List;
