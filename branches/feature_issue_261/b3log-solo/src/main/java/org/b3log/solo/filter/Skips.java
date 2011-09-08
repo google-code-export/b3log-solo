@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * Skips for request filtering.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.5, Sep 2, 2011
+ * @version 1.0.3.6, Sep 8, 2011
  * @see #shouldSkip(java.lang.String) 
  */
 public final class Skips {
@@ -86,8 +86,6 @@ public final class Skips {
                || requestURI.contains("/skins/")
                || requestURI.contains("/images/")
                || requestURI.contains("/styles/")
-               || requestURI.contains("/tags/")
-               || requestURI.contains("/archives/")
                || equalAdminActions(requestURI);
     }
 

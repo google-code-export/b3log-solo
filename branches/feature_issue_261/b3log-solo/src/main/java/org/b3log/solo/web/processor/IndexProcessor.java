@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
-import org.b3log.solo.util.Statistics;
+import org.b3log.solo.web.FrontFreeMarkerRenderer;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +27,7 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.servlet.FreeMarkerResponseRenderer;
+import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.action.util.Requests;
@@ -70,10 +70,6 @@ public final class IndexProcessor {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
-    /**
-     * Statistic utilities.
-     */
-    private Statistics statistics = Statistics.getInstance();
 
     /**
      * Shows index with the specified context.
@@ -82,8 +78,8 @@ public final class IndexProcessor {
      */
     @RequestProcessing(value = {"/"}, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context) {
-        final FreeMarkerResponseRenderer render =
-                new FreeMarkerResponseRenderer();
+        final AbstractFreeMarkerRenderer render =
+                new FrontFreeMarkerRenderer();
         context.setRenderer(render);
 
         render.setTemplateName("index.ftl");
@@ -156,8 +152,6 @@ public final class IndexProcessor {
                 LOGGER.severe(ex.getMessage());
             }
         }
-        
-        statistics.incBlogViewCount();
     }
 
     /**

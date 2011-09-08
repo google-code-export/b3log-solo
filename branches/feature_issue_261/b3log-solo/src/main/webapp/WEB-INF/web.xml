@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.3.0, Sep 6, 2011
+    Version: 1.0.3.1, Sep 8, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -184,28 +184,12 @@
         <url-pattern>/rm-all-data.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>TagArticlesAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.TagArticlesAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TagArticlesAction</servlet-name>
-        <url-pattern>/tags/*</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>ArchiveDateArticlesAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.ArchiveArticlesAction</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ArchiveDateArticlesAction</servlet-name>
         <url-pattern>/archives/*</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>TagsAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.TagsAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TagsAction</servlet-name>
-        <url-pattern>/tags.html</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>BlogArticlesFeedServlet</servlet-name>

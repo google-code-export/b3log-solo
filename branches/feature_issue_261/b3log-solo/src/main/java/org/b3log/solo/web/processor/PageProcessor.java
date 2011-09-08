@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
-import org.b3log.solo.util.Statistics;
+import org.b3log.solo.web.FrontFreeMarkerRenderer;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.LangPropsService;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.solo.action.util.Filler;
-import org.b3log.latke.servlet.FreeMarkerResponseRenderer;
+import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.action.util.Requests;
@@ -80,10 +80,6 @@ public final class PageProcessor {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
-    /**
-     * Statistic utilities.
-     */
-    private Statistics statistics = Statistics.getInstance();
 
     /**
      * Shows page with the specified context.
@@ -92,8 +88,8 @@ public final class PageProcessor {
      */
     @RequestProcessing(value = {"/page"}, method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context) {
-        final FreeMarkerResponseRenderer render =
-                new FreeMarkerResponseRenderer();
+        final AbstractFreeMarkerRenderer render =
+                new FrontFreeMarkerRenderer();
         context.setRenderer(render);
 
         render.setTemplateName("page.ftl");
@@ -142,8 +138,6 @@ public final class PageProcessor {
                 LOGGER.severe(ex.getMessage());
             }
         }
-
-        statistics.incBlogViewCount();
     }
 
     /**
