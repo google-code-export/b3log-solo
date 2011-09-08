@@ -27,7 +27,6 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.FreeMarkerResponseRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -59,10 +58,6 @@ public final class IndexProcessor {
      */
     private static final Logger LOGGER =
             Logger.getLogger(IndexProcessor.class.getName());
-    /**
-     * Language service.
-     */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
      * Filler.
      */
