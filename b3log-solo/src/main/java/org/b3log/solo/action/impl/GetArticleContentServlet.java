@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Gets the content of an article.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 5, 2011
+ * @version 1.0.0.1, Sep 7, 2011
  */
 public final class GetArticleContentServlet extends HttpServlet {
 
@@ -56,6 +56,10 @@ public final class GetArticleContentServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+
         // XXX: Determines request coming from outer
         final String articleId = request.getParameter("id");
 
@@ -70,7 +74,7 @@ public final class GetArticleContentServlet extends HttpServlet {
             }
 
             final String content = article.getString(Article.ARTICLE_CONTENT);
-            
+
             final PrintWriter writer = response.getWriter();
             writer.write(content);
             writer.close();
