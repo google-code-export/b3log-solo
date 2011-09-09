@@ -312,38 +312,6 @@
         <url-pattern>/article-random-double-gen.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>V010ToV011</servlet-name>
-        <servlet-class>org.b3log.solo.upgrade.V010ToV011</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>V010ToV011</servlet-name>
-        <url-pattern>/upgrade/v010-v011.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>V011ToV020</servlet-name>
-        <servlet-class>org.b3log.solo.upgrade.V011ToV020</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>V011ToV020</servlet-name>
-        <url-pattern>/upgrade/v011-v020.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>V020ToV021</servlet-name>
-        <servlet-class>org.b3log.solo.upgrade.V020ToV021</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>V020ToV021</servlet-name>
-        <url-pattern>/upgrade/v020-v021.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>V021ToV025</servlet-name>
-        <servlet-class>org.b3log.solo.upgrade.V021ToV025</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>V021ToV025</servlet-name>
-        <url-pattern>/upgrade/v021-v025.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>V026ToV030</servlet-name>
         <servlet-class>org.b3log.solo.upgrade.V026ToV030</servlet-class>
     </servlet>
