@@ -1,3 +1,4 @@
+@charset "utf-8";
 html,body,div,ul,li,h1,h2,h3,h4,h5,h6{margin:0;padding:0;}
 body{font-family:"Lucida Grande",Verdana,\u5fae\u8f6f\u96c5\u9ed1;font-size:12px;background-color:#F9F9F9;color:#555;}
 a{outline:none;color:#21759B;text-decoration:none;}
