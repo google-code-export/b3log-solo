@@ -16,7 +16,7 @@
         <div class="body">
             <div class="wrapper">
                 <div class="main">
-                    <div class="article" style="border-bottom: 0px;">
+                    <div class="page">
                         <h2>
                             <a class="article-title" href="${article.articlePermalink}">
                                 ${article.articleTitle}

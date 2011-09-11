@@ -2,7 +2,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Sep 6, 2011
+ * @version 1.0.0.4, Sep 7, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -11,10 +11,10 @@ html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
 }
 
 body {
-    font-family: "Lucida Grande",Verdana,'微软雅黑';
+    font-family: "Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1';
     font-size: 12px;
     background-color: #F9F9F9;
-    color: #555555;
+    color: #555;
 }
 
 a {
@@ -25,6 +25,11 @@ a {
 
 a:hover {
     color: #D54E21;    
+}
+
+img {
+    vertical-align: middle;
+    border: 0;
 }
 
 textarea, input {
@@ -40,12 +45,12 @@ textarea, input {
 
 .clear {
     background-color: transparent;
-    border: 0px;
+    border: 0;
     clear: both;
     display: block;
-    font-size: 0px;
-    height: 0px;
-    line-height: 0px;
+    font-size: 0;
+    height: 0;
+    line-height: 0;
     overflow: hidden;
 }
 
@@ -54,11 +59,11 @@ textarea, input {
 }
 
 #top {
-    background-image: linear-gradient(top,#FFFFFF,#E5E5E5);
-    background-image: -moz-linear-gradient(top,#FFFFFF,#E5E5E5);
-    background-image: -ms-linear-gradient(top,#FFFFFF,#E5E5E5);
-    background-image: -o-linear-gradient(top,#FFFFFF,#E5E5E5);
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#FFFFFF),to(#E5E5E5));
+    background-image: linear-gradient(top,#FFF,#E5E5E5);
+    background-image: -moz-linear-gradient(top,#FFF,#E5E5E5);
+    background-image: -ms-linear-gradient(top,#FFF,#E5E5E5);
+    background-image: -o-linear-gradient(top,#FFF,#E5E5E5);
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#FFF),to(#E5E5E5));
     filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E5E5E5');
     border-bottom: 1px solid #E5E5E5;
     height: 26px;
@@ -72,7 +77,7 @@ textarea, input {
     line-height: 14px;
     margin: 6px 0;
     padding: 0 6px;
-    text-shadow: 0 -1px 0 #FFFFFF;
+    text-shadow: 0 -1px 0 #FFF;
     font-weight: normal;
 }
 
@@ -80,13 +85,13 @@ textarea, input {
     background-color: #EEF2FA;
     border-left-color: #707070;
     border-radius: 0 13px 13px 0;
-    margin: 0px;
+    margin: 0;
     line-height: 26px;
 }
 
 .logo {
     padding: 0 5px;
-    text-shadow: 0 0 1px #EEEEEE;
+    text-shadow: 0 0 1px #EEE;
 }
 .logo span {
     margin: 0 -2px;
@@ -104,9 +109,7 @@ textarea, input {
     margin-right: 5px;
     width: 24px;
 }
-#emotions span {
-    cursor: pointer;
-}
+
 .em01 {
     background-position: -24px 0;
 }
@@ -120,7 +123,7 @@ textarea, input {
     background-position: -96px 0;
 }
 .em05 {
-    background-position: 0px -24px;
+    background-position: 0 -24px;
 }
 .em06 {
     background-position: -24px -24px;
@@ -168,14 +171,14 @@ textarea, input {
 .feed-ico {
     background-position: right -146px;
     background-repeat: no-repeat;
-    color: #555555;
+    color: #555;
     padding-right: 24px;
 }
 
 .translate-ico {
     background-position: 1px -125px;
     background-repeat: no-repeat;
-    border: 1px solid #999999;
+    border: 1px solid #999;
     border-radius: 3px 3px 3px 3px;
     cursor: pointer;
     float: right;
@@ -187,18 +190,19 @@ textarea, input {
 
 .translate-ico:hover {
     border-color: #D54E21;
-    box-shadow: 0 0 1px #999999;
+    box-shadow: 0 0 1px #999;
     background-color: #F2F2F2;
 }
 
 .expand-ico, .collapse-ico {
-    background-position: 35px -86px;
+    background-position: 54px -84px;
     cursor: pointer;
     height: 16px;
+    background-repeat: no-repeat;
 }
 
 .collapse-ico {
-    background-position: 35px -70px;
+    background-position: 54px -69px;
 }
 
 .date-ico, .tag-ico, .user-ico {
@@ -231,7 +235,7 @@ textarea, input {
 }
 
 .body {
-    border-top: 2px solid #DDDDDD;
+    border-top: 2px solid #DDD;
 }
 
 .main {
@@ -250,7 +254,7 @@ textarea, input {
 
 .header .title {
     border-bottom: 1px solid #242424;
-    color: #000000;
+    color: #000;
     font-size: 26px;
     font-weight: normal;
 }
@@ -263,11 +267,11 @@ textarea, input {
 #search {
     background-position: 7px -99px;
     background-repeat: no-repeat;
-    background-color: #FFFFFF;
-    border: 1px solid #DDDDDD;
+    background-color: #FFF;
+    border: 1px solid #DDD;
     border-radius: 2px 2px 2px 2px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) inset;
-    color: #888888;
+    color: #888;
     float: right;
     font-size: 14px;
     height: 20px;
@@ -309,16 +313,16 @@ textarea, input {
     height: 30px;
     line-height: 30px;
     padding: 0 15px;
-    text-shadow: 0 1px 0 #EEEEEE;
+    text-shadow: 0 1px 0 #EEE;
 }
 
 .nav a:hover {
     color: #D54E21;
-    background-color: #DDDDDD;
+    background-color: #DDD;
 }
 
 .nav .current {
-    background-color: #DDDDDD;
+    background-color: #DDD;
     margin: -1px 0;
     padding-right: 2px;
 }
@@ -332,13 +336,12 @@ textarea, input {
     height: 33px;
     line-height: 33px;
     margin: -2px 0 -3px;
-    color: #555555;
+    color: #555;
     text-shadow : 1px 1px 1px #C6D9E9;
 }
 
 .nav img {
     margin-left: 3px;
-    vertical-align: middle;
 }
 
 .nav .right {
@@ -349,8 +352,8 @@ textarea, input {
 /* start footer */
 .footer {
     background-color: #E9E9E9;
-    border-top: 3px solid #DDDDDD;
-    color: #999999;
+    border-top: 3px solid #DDD;
+    color: #999;
     font-size: 11px;
     padding: 12px 0;
 }
@@ -364,7 +367,7 @@ textarea, input {
 }
 
 #goTop {
-    background: url("/skins/neoease/images/icons.png") no-repeat scroll 5px -51px #DDDDDD;
+    background: url("/skins/neoease/images/icons.png") no-repeat scroll 5px -51px #DDD;
     border-radius: 2px 2px 0 0;
     cursor: pointer;
     font-size: 11px;
@@ -399,25 +402,34 @@ textarea, input {
     line-height: 32px;
 }
 
+.side ul {
+    list-style: none;
+}
+
 #archiveSide {
     list-style: square outside none;
     margin-left: 18px;
 }
 
-.side a {
-    line-height: 16px;
+#archiveSide .archive-year {
+    color: #D54E21;
+    font-weight: bold;
+    height: 18px;
+    line-height: 18px;
+    list-style: none;
 }
 
-.side img {
-    vertical-align: middle;
+.side a {
+    line-height: 18px;
 }
 
 .recent-comments img {
-    background-color: #FFFFFF;
-    border: 1px solid #999999;
+    background-color: #FFF;
+    border: 1px solid #999;
     padding: 1px;
     width: 32px;
     height: 32px;
+    margin-top: 1px;
 }
 
 .recent-comments-main {
@@ -430,7 +442,19 @@ textarea, input {
     background-position: 0 -86px;
     float: right;
     width: 16px;
-    display: none;
+    -moz-transition-duration: 400ms;
+    -moz-transition-property: opacity;
+    -moz-transition-timing-function: ease;
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-property: opacity;
+    -webkit-transition-timing-function: ease;
+    opacity:0;
+    filter: alpha(opacity=0);
+}
+
+.recent-comments li:hover .expand-ico, .recent-comments li:hover .collapse-ico {
+    opacity:1;
+    filter: alpha(opacity=100);
 }
 
 .recent-comments-main .collapse-ico {
@@ -438,9 +462,8 @@ textarea, input {
 }
 
 .recent-comments-content {
-    height: 16px;
+    height: 18px;
     overflow: hidden;
-    padding-top: 4px;
 }
 /* end side */
 
@@ -483,6 +506,11 @@ textarea, input {
     margin-top: 9px;
     padding-right: 6px;
     width: 15px;
+    background-position: 0 -86px;
+}
+
+.article .collapse-ico {
+    background-position: 0 -70px;
 }
 
 .article-body {
@@ -547,16 +575,21 @@ textarea, input {
 }
 
 .pagination a.current {
-    background-color: #FFFFFF;
+    background-color: #FFF;
     font-weight: bold;
     padding: 2px 6px;
-    color: #000000;
+    color: #000;
 }
 
 .pagination a:hover {
     background-color: #F3DEDD;
     color: #D54E21;
     border: 1px solid #D54E21;
+}
+
+.page {
+    margin-top: 20px;
+    padding: 0 5px 5px;
 }
 /* end article list */
 
@@ -567,9 +600,9 @@ textarea, input {
 }
 
 .article-panel2 {
-    background-color: #FFFFFF;
-    margin: 12px 0;
-    padding: 12px;   
+    background-color: #FFF;
+    margin-top: 12px;
+    padding: 5px 10px;   
 }
 
 .article-panel2 ul {
@@ -580,10 +613,11 @@ textarea, input {
 
 .share {
     border-bottom: 1px solid #DEDEDE;
+    margin-top: 15px;
 }
 
 .share-comment {
-    background-color: #DDDDDD;
+    background-color: #DDD;
     border-radius: 2px 2px 0 0;
     float: right;
     font-size: 11px;
@@ -606,6 +640,22 @@ textarea, input {
     padding: 10px;
 }
 
+#comments .comment-panel>.right {
+    -moz-transition-duration: 400ms;
+    -moz-transition-property: opacity;
+    -moz-transition-timing-function: ease;
+    -webkit-transition-duration: 400ms;
+    -webkit-transition-property: opacity;
+    -webkit-transition-timing-function: ease;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+#comments>div:hover .comment-panel>.right {
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
 .comment-even {
     background-color: #F8F8F8;
 }
@@ -618,7 +668,7 @@ textarea, input {
     height: 50px;
     width: 50px;
     float: left;
-    background-color: #FFFFFF;
+    background-color: #FFF;
     border: 1px solid #DEDEDE;
     padding: 1px;
 }
@@ -635,7 +685,7 @@ textarea, input {
 }
 
 .comment-body-ref {
-    background-color: #FFFFFF;
+    background-color: #FFF;
     border-radius: 5px 5px 5px 5px;
     left: 73px;
     position: absolute;
@@ -646,7 +696,7 @@ textarea, input {
 }
 
 .comment-body-ref .arrow {
-    border-color: #F5F5F5 #FFFFFF #F5F5F5 #F5F5F5;
+    border-color: #F5F5F5 #FFF #F5F5F5 #F5F5F5;
     border-style: solid;
     border-width: 6px 8px 10px 0;
     display: block;
@@ -654,11 +704,73 @@ textarea, input {
     position: absolute;
     top: 5px;
 }
+
+.form {
+    margin: 10px;
+}
+
+.form img {
+    cursor: pointer;
+}
+
+.form h4 {
+    margin: 10px 0 5px 5px;
+}
+
+.form th {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.form input[type="text"], .form input[type="password"], .form textarea {
+    border-color: silver #D9D9D9 #D9D9D9;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Lucida Grande",Verdana,'微软雅黑';
+    font-size: 12px;
+    outline: medium none;
+    padding: 0 3px;
+}
+
+.form input:focus, .form textarea:focus {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) inset;
+}
+
+.form textarea {
+    padding: 3px;
+}
+
+.form textarea {
+    overflow: auto;
+    resize: vertical;
+}
+
+.form input {
+    height: 24px;
+    line-height: 24px;
+    width: 260px;
+}
+
+.form button {
+    background-color: #B4D666;
+    border-color: #B4D666 #81B840 #81B840 #B4D666;
+    border-style: solid;
+    border-width: 1px;
+    color: #2970A6;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 12px;
+}
+
+.form button:hover {
+    background-color: #98C64C;
+    border-color: #76B33A #98C64C #98C64C #76B33A;
+    color: #074A7E;
+}
 /* end article*/
 
 /* start tags */
 .tags li {
-    margin-right: 5px;
     float: left;
     list-style: none;
 }
@@ -668,10 +780,17 @@ textarea, input {
 }
 
 #tags li {
-    margin: 3px 12px;
+    margin: 5px;
     border-radius: 3px;
-    box-shadow: 1px 1px 3px #555555;
+    box-shadow: 1px 1px 3px #555;
     padding: 2px 12px;
+}
+
+#tagsSide li a {
+    float: left;
+    line-height: 20px;
+    margin-right: 7px;
+    white-space: nowrap;
 }
 
 .tags1 {
@@ -691,11 +810,27 @@ textarea, input {
 
 .tags4 {
     font-size: 24px;
-    color: #225588;
+    color: #258;
 }
 
 .tags5 {
     font-size: 28px;
+}
+
+#tagsSide .tags2 {
+    font-size: 14px;
+}
+
+#tagsSide .tags3 {
+    font-size: 16px;
+}
+
+#tagsSide .tags4 {
+    font-size: 18px;
+}
+
+#tagsSide .tags5 {
+    font-size: 20px;
 }
 /* end tags */
 
@@ -714,7 +849,7 @@ textarea, input {
     border-color: #D0F29D #398A38 #398A38 #D0F29D;
     border-style: solid;
     border-width: 1px;
-    color: #555555;
+    color: #555;
     float: left;
     margin: 20px 0 0 40px;
     padding: 10px 15px;

@@ -12,30 +12,20 @@
     </head>
     <body>
         <#include "top-nav.ftl">
-        <div class="content">
-            <div class="header">
-                <#include "header.ftl">
-            </div>
-            <div class="body">
-                <div class="left main">
-                    <div>
-                        <div class="article">
-                            <div class="article-body">
-                                ${page.pageContent}
-                            </div>
-                        </div>
-                        <@comments commentList=pageComments permalink=page.pagePermalink></@comments>
+        <#include "header.ftl">
+        <div class="body">
+            <div class="wrapper">
+                <div class="main">
+                    <div class="page article-body" style="border-bottom: 0px;">
+                        ${page.pageContent}
                     </div>
+                    <@comments commentList=pageComments permalink=page.pagePermalink></@comments>
                 </div>
-                <div class="right side">
-                    <#include "side.ftl">
-                </div>
+                <#include "side.ftl">
                 <div class="clear"></div>
             </div>
-            <div class="footer">
-                <#include "footer.ftl">
-            </div>
         </div>
-         <@comment_script oId=page.oId></@comment_script>
+        <#include "footer.ftl">
+        <@comment_script oId=page.oId></@comment_script>
     </body>
 </html>
