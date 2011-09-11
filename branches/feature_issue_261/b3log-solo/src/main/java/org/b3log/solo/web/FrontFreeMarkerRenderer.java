@@ -15,7 +15,12 @@
  */
 package org.b3log.solo.web;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.util.Statistics;
 
 /**
@@ -23,14 +28,24 @@ import org.b3log.solo.util.Statistics;
  * renderer.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 8, 2011
+ * @version 1.0.0.2, Sep 11, 2011
  */
 public final class FrontFreeMarkerRenderer extends AbstractFreeMarkerRenderer {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(FrontFreeMarkerRenderer.class.getName());
+    /**
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
+    /**
+     * Statistic repository.
+     */
+    private Repository statisticRepository =
+            StatisticGAERepository.getInstance();
 
     /**
      * {@inheritDoc}
@@ -41,6 +56,17 @@ public final class FrontFreeMarkerRenderer extends AbstractFreeMarkerRenderer {
      */
     @Override
     protected void afterRender() {
-        statistics.incBlogViewCount();
+        final Transaction transaction = statisticRepository.beginTransaction();
+        transaction.clearQueryCache(false);
+        try {
+            statistics.incBlogViewCount();
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.WARNING, "After render failed", e);
+        }
     }
 }

@@ -15,6 +15,21 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.latke.repository.Repository;
+import java.util.Iterator;
+import org.b3log.latke.repository.Transaction;
+import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.impl.UserGAERepository;
+import org.b3log.solo.repository.ArchiveDateRepository;
+import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
+import org.b3log.latke.action.util.Paginator;
+import org.b3log.latke.model.Pagination;
+import org.b3log.latke.util.Dates;
+import org.b3log.latke.util.Locales;
+import org.b3log.solo.action.util.Requests;
+import org.b3log.solo.model.ArchiveDate;
+import org.b3log.solo.repository.ArchiveDateArticleRepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.web.FrontFreeMarkerRenderer;
 import java.util.ArrayList;
@@ -50,9 +65,11 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
@@ -62,16 +79,12 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 6, 2011
+ * @version 1.1.0.1, Sep 11, 2011
  * @since 0.3.1
  */
 @RequestProcessor
 public final class ArticleProcessor {
 
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
     /**
      * Logger.
      */
@@ -115,6 +128,317 @@ public final class ArticleProcessor {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
+    /**
+     * Archive date-Article repository.
+     */
+    private ArchiveDateArticleRepository archiveDateArticleRepository =
+            ArchiveDateArticleGAERepository.getInstance();
+    /**
+     * Archive date repository.
+     */
+    private ArchiveDateRepository archiveDateRepository =
+            ArchiveDateGAERepository.getInstance();
+    /**
+     * User repository.
+     */
+    private UserRepository userRepository = UserGAERepository.getInstance();
+
+    /**
+     * Shows author articles with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/authors/*"}, method = HTTPRequestMethod.GET)
+    public void showAuthorArticles(final HTTPRequestContext context) {
+        final AbstractFreeMarkerRenderer render =
+                new FrontFreeMarkerRenderer();
+        context.setRenderer(render);
+
+        render.setTemplateName("author-articles.ftl");
+        final Map<String, Object> dataModel = render.getDataModel();
+
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
+        try {
+            String requestURI = request.getRequestURI();
+            if (!requestURI.endsWith("/")) {
+                requestURI += "/";
+            }
+            final String authorId = getAuthorId(requestURI);
+
+            LOGGER.log(Level.FINER,
+                       "Request author articles[requestURI={0}, authorId={1}]",
+                       new Object[]{requestURI, authorId});
+
+            final int currentPageNum = getAuthorCurrentPageNum(requestURI,
+                                                               authorId);
+            if (-1 == currentPageNum) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+
+            LOGGER.log(Level.FINER,
+                       "Request author articles[authorId={0}, currentPageNum={1}]",
+                       new Object[]{authorId, currentPageNum});
+
+            final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+
+            skins.fillLanguage(preference, dataModel);
+
+            final int pageSize = preference.getInt(
+                    Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(
+                    Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+
+            final JSONObject author = userRepository.get(authorId);
+
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
+            request.setAttribute(CACHED_TYPE,
+                                 langs.get(PageTypes.AUTHOR_ARTICLES));
+            request.setAttribute(CACHED_OID, "No id");
+            request.setAttribute(
+                    CACHED_TITLE,
+                    langs.get(PageTypes.AUTHOR_ARTICLES) + "  ["
+                    + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
+                    + langs.get("authorLabel") + "=" + author.getString(
+                    User.USER_NAME) + "]");
+            request.setAttribute(CACHED_LINK, requestURI);
+
+            final String authorEmail = author.getString(User.USER_EMAIL);
+            final JSONObject result =
+                    articleRepository.getByAuthorEmail(authorEmail,
+                                                       currentPageNum,
+                                                       pageSize);
+            final List<JSONObject> articles =
+                    org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
+                    getJSONArray(Keys.RESULTS));
+            final Iterator<JSONObject> iterator = articles.iterator();
+            while (iterator.hasNext()) {
+                final JSONObject article = iterator.next();
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
+                    iterator.remove();
+                }
+            }
+
+            if (articles.isEmpty()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                } catch (final IOException ex) {
+                    LOGGER.severe(ex.getMessage());
+                }
+            }
+
+            final int pageCount = result.getJSONObject(
+                    Pagination.PAGINATION).getInt(
+                    Pagination.PAGINATION_PAGE_COUNT);
+            final List<Integer> pageNums =
+                    Paginator.paginate(currentPageNum, pageSize, pageCount,
+                                       windowSize);
+
+            if (0 != pageNums.size()) {
+                dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
+                              pageNums.get(0));
+                dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                              pageNums.get(pageNums.size() - 1));
+            }
+            dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+            dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+            final String previousPageNum =
+                    Integer.toString(currentPageNum > 1 ? currentPageNum - 1
+                                     : 0);
+            dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
+                          "0".equals(previousPageNum) ? "" : previousPageNum);
+            if (pageCount == currentPageNum + 1) { // The next page is the last page
+                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+            } else {
+                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
+                                                                   + 1);
+            }
+
+            filler.setArticlesExProperties(articles, preference);
+
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                Collections.sort(articles,
+                                 Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+            } else {
+                Collections.sort(articles,
+                                 Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
+            }
+            dataModel.put(Article.ARTICLES, articles);
+            dataModel.put(Common.PATH, "/authors/" + authorId);
+            dataModel.put(Keys.OBJECT_ID, authorId);
+
+            final String authorName = author.getString(User.USER_NAME);
+            dataModel.put(Common.AUTHOR_NAME, authorName);
+            dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+            filler.fillSide(dataModel, preference);
+            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogFooter(dataModel, preference);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Shows archive articles with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/archives/*"}, method = HTTPRequestMethod.GET)
+    public void showArchiveArticles(final HTTPRequestContext context) {
+        final AbstractFreeMarkerRenderer render =
+                new FrontFreeMarkerRenderer();
+        context.setRenderer(render);
+
+        render.setTemplateName("archive-articles.ftl");
+        final Map<String, Object> dataModel = render.getDataModel();
+
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
+        try {
+            String requestURI = request.getRequestURI();
+            if (!requestURI.endsWith("/")) {
+                requestURI += "/";
+            }
+
+            final String archiveDateString = getArchiveDate(requestURI);
+            final int currentPageNum = getArchiveCurrentPageNum(requestURI);
+            if (-1 == currentPageNum) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+
+            LOGGER.log(Level.FINER,
+                       "Request archive date[string={0}, currentPageNum={1}]",
+                       new Object[]{archiveDateString, currentPageNum});
+
+            final JSONObject archiveDate =
+                    archiveDateRepository.getByArchiveDate(archiveDateString);
+            if (null == archiveDate) {
+                LOGGER.log(Level.WARNING, "Can not find articles for the specified "
+                                          + "archive date[string={0}]",
+                           archiveDate);
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+
+            final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
+
+            final JSONObject preference = preferenceUtils.getPreference();
+            final String localeString = preference.getString(
+                    Preference.LOCALE_STRING);
+
+            skins.fillLanguage(preference, dataModel);
+
+            final int pageSize = preference.getInt(
+                    Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(
+                    Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+
+            final JSONObject result =
+                    archiveDateArticleRepository.getByArchiveDateId(
+                    archiveDateId, currentPageNum, pageSize);
+
+            @SuppressWarnings("unchecked")
+            final JSONArray archiveDateArticleRelations = result.getJSONArray(
+                    Keys.RESULTS);
+            if (0 == archiveDateArticleRelations.length()) {
+                try {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                } catch (final IOException ex) {
+                    LOGGER.severe(ex.getMessage());
+                }
+            }
+
+            final List<JSONObject> articles = new ArrayList<JSONObject>();
+            for (int i = 0; i < archiveDateArticleRelations.length(); i++) {
+                final JSONObject archiveDateArticleRelation =
+                        archiveDateArticleRelations.getJSONObject(i);
+                final String articleId =
+                        archiveDateArticleRelation.getString(Article.ARTICLE
+                                                             + "_"
+                                                             + Keys.OBJECT_ID);
+                final JSONObject article = articleRepository.get(articleId);
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) { // Skips the unpublished article
+                    continue;
+                }
+
+                filler.setArticleExProperties(article, preference);
+
+                articles.add(article);
+            }
+
+            final int pageCount = result.getJSONObject(
+                    Pagination.PAGINATION).getInt(
+                    Pagination.PAGINATION_PAGE_COUNT);
+            final List<Integer> pageNums =
+                    Paginator.paginate(currentPageNum, pageSize, pageCount,
+                                       windowSize);
+
+            sort(preference, articles);
+
+            dataModel.put(Article.ARTICLES, articles);
+            dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                          pageNums.get(pageNums.size() - 1));
+            dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+            dataModel.put(Common.PATH, "/archives/" + archiveDateString);
+            dataModel.put(Keys.OBJECT_ID, archiveDateId);
+
+            filler.fillSide(dataModel, preference);
+            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogFooter(dataModel, preference);
+
+            final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+            final String dateString = ArchiveDate.DATE_FORMAT.format(time);
+            final String[] dateStrings = dateString.split("/");
+            final String year = dateStrings[0];
+            final String month = dateStrings[1];
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
+            final String language = Locales.getLanguage(localeString);
+            String cachedTitle = null;
+            if ("en".equals(language)) {
+                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
+                                Dates.EN_MONTHS.get(month));
+                cachedTitle = Dates.EN_MONTHS.get(month) + " " + year;
+            } else {
+                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
+                cachedTitle = year + " " + dataModel.get("yearLabel") + " "
+                              + month + " " + dataModel.get("monthLabel");
+            }
+            dataModel.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
+
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
+            request.setAttribute(CACHED_OID, archiveDateId);
+            request.setAttribute(CACHED_TITLE,
+                                 cachedTitle + "  [" + langs.get("pageNumLabel")
+                                 + "=" + currentPageNum + "]");
+            request.setAttribute(CACHED_LINK, requestURI);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
+        }
+    }
 
     /**
      * Shows an article with the specified context.
@@ -133,6 +457,7 @@ public final class ArticleProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
+        String articleId = null;
         try {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
@@ -151,7 +476,7 @@ public final class ArticleProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
-            final String articleId = article.getString(Keys.OBJECT_ID);
+            articleId = article.getString(Keys.OBJECT_ID);
             LOGGER.log(Level.FINER, "Article[id={0}]", articleId);
 
             final boolean allowVisitDraftViaPermalink = preference.getBoolean(
@@ -166,7 +491,6 @@ public final class ArticleProcessor {
                                  article.getString(Article.ARTICLE_TITLE));
             request.setAttribute(CACHED_LINK,
                                  article.getString(Article.ARTICLE_PERMALINK));
-            statistics.incArticleViewCount(articleId);
 
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
@@ -246,6 +570,24 @@ public final class ArticleProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
+            }
+        }
+
+        if (!Strings.isEmptyOrNull(articleId)) {
+            final Repository statisticRepository =
+                    StatisticGAERepository.getInstance();
+            final Transaction transaction =
+                    statisticRepository.beginTransaction();
+            transaction.clearQueryCache(false);
+            try {
+                statistics.incArticleViewCount(articleId);
+                transaction.commit();
+            } catch (final Exception e) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
+                LOGGER.log(Level.WARNING, "Inc article view count failed", e);
             }
         }
     }
@@ -331,5 +673,83 @@ public final class ArticleProcessor {
         }
 
         return ret;
+    }
+
+    /**
+     * Sorts the specified articles by the specified preference.
+     * 
+     * @param preference the specified preference
+     * @param articles the specified articles
+     * @throws JSONException json exception
+     * @see Comparators#ARTICLE_UPDATE_DATE_COMPARATOR
+     * @see Comparators#ARTICLE_CREATE_DATE_COMPARATOR
+     */
+    private void sort(final JSONObject preference,
+                      final List<JSONObject> articles) throws JSONException {
+        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            Collections.sort(articles,
+                             Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+        } else {
+            Collections.sort(articles,
+                             Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
+        }
+    }
+
+    /**
+     * Gets archive date from the specified URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return archive date
+     */
+    private static String getArchiveDate(final String requestURI) {
+        final String path = requestURI.substring("/archives/".length());
+
+        return path.substring(0, "yyyy/MM".length());
+    }
+
+    /**
+     * Gets the request page number from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return page number, returns {@code -1} if the specified request URI
+     * can not convert to an number
+     */
+    private static int getArchiveCurrentPageNum(final String requestURI) {
+        final String pageNumString = requestURI.substring("/archives/yyyy/MM/".
+                length());
+
+        return Requests.getCurrentPageNum(pageNumString);
+    }
+
+    /**
+     * Gets author id from the specified URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return author id
+     */
+    private static String getAuthorId(final String requestURI) {
+        final String path = requestURI.substring("/authors/".length());
+
+        final int idx = path.indexOf("/");
+        if (-1 == idx) {
+            return path.substring(0);
+        } else {
+            return path.substring(0, idx);
+        }
+    }
+
+    /**
+     * Gets the request page number from the specified request URI and author id.
+     * 
+     * @param requestURI the specified request URI
+     * @param authorId the specified author id
+     * @return page number
+     */
+    private static int getAuthorCurrentPageNum(final String requestURI,
+                                               final String authorId) {
+        final String pageNumString =
+                requestURI.substring(("/authors/" + authorId + "/").length());
+
+        return Requests.getCurrentPageNum(pageNumString);
     }
 }

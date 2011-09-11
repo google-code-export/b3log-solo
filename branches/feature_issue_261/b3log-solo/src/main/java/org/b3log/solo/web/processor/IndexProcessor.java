@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.util.Locales;
 import org.b3log.solo.web.FrontFreeMarkerRenderer;
 import java.io.IOException;
 import java.util.List;
@@ -43,16 +45,12 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 3, 2011
+ * @version 1.1.0.1, Sep 11, 2011
  * @since 0.3.1
  */
 @RequestProcessor
 public final class IndexProcessor {
 
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
     /**
      * Logger.
      */
@@ -70,6 +68,10 @@ public final class IndexProcessor {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Shows index with the specified context.
@@ -183,6 +185,47 @@ public final class IndexProcessor {
             filler.fillSide(dataModel, preference);
             filler.fillBlogHeader(dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Shows kill browser page with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/kill-browser.html"},
+                       method = HTTPRequestMethod.GET)
+    public void showKillBrowser(final HTTPRequestContext context) {
+        final AbstractFreeMarkerRenderer render =
+                new FrontFreeMarkerRenderer();
+        context.setRenderer(render);
+
+        render.setTemplateName("kill-browser.ftl");
+        final Map<String, Object> dataModel = render.getDataModel();
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
+        try {
+            final Map<String, String> langs =
+                    langPropsService.getAll(Locales.getLocale(request));
+            dataModel.putAll(langs);
+            final JSONObject preference = preferenceUtils.getPreference();
+            filler.fillBlogFooter(dataModel, preference);
+            filler.fillMinified(dataModel);
+
+            request.setAttribute(CACHED_OID, "No id");
+            request.setAttribute(CACHED_TITLE, "Kill Browser Page");
+            request.setAttribute(CACHED_TYPE,
+                                 langs.get(PageTypes.KILL_BROWSER_PAGE));
+            request.setAttribute(CACHED_LINK, request.getRequestURI());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
