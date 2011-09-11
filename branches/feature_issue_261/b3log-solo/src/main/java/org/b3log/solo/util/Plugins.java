@@ -23,7 +23,6 @@ import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.gae.GAETransaction;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.repository.impl.PluginGAERepository;
 import org.json.JSONArray;
@@ -64,7 +63,6 @@ public final class Plugins {
         // Disables plugin repository cache to avoid remove all cache
         PLUGIN_REPOS.setCacheEnabled(false);
 
-        final GAETransaction transaction = PLUGIN_REPOS.beginTransaction();
         try {
             // Reads plugin status from datastore and clear plugin datastore
             for (final JSONObject oldPluginDesc : persistedPlugins) {
@@ -88,12 +86,7 @@ public final class Plugins {
                 LOGGER.log(Level.FINEST, "Refreshed plugin[{0}]", pluginDesc);
             }
 
-            transaction.commit();
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
             LOGGER.log(Level.SEVERE, "Refresh plugins failed", e);
         }
 
