@@ -287,11 +287,23 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     // XXX: to find a better way (isInited)?
     public static boolean isInited() {
+        final PreferenceRepository preferenceRepository =
+                PreferenceGAERepository.getInstance();
+        
+        final Transaction transaction = preferenceRepository.beginTransaction();
         try {
+
             final JSONObject preference =
                     Preferences.getInstance().getPreference();
+            
+            // Ignores transaction commit
+            
             return null != preference;
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            
             LOGGER.log(Level.WARNING, "B3log Solo has not been initialized");
             return false;
         }
