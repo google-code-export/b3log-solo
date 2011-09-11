@@ -256,14 +256,6 @@
         <url-pattern>/add-page-comment.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>GetRandomArticlesAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.GetRandomArticlesAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>GetRandomArticlesAction</servlet-name>
-        <url-pattern>/get-random-articles.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>ArticleRandomDoubleUpdateServlet</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.ArticleRandomDoubleUpdateServlet</servlet-class>
     </servlet>

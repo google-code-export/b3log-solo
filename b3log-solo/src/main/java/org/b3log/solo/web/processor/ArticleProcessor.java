@@ -65,6 +65,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
@@ -75,6 +76,7 @@ import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import static org.b3log.solo.model.Article.*;
 
 /**
  * Article processor.
@@ -143,6 +145,30 @@ public final class ArticleProcessor {
      * User repository.
      */
     private UserRepository userRepository = UserGAERepository.getInstance();
+
+    /**
+     * Gets random articles with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/get-random-articles.do"},
+                       method = HTTPRequestMethod.POST)
+    public void getRandomArticles(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
+        final List<JSONObject> randomArticles = getRandomArticles();
+        final JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put(Common.RANDOM_ARTICLES, randomArticles);
+
+            final JSONRenderer renderer = new JSONRenderer();
+            context.setRenderer(renderer);
+            renderer.setJSONObject(jsonObject);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
 
     /**
      * Gets article content with the specified context.
@@ -784,5 +810,40 @@ public final class ArticleProcessor {
                 requestURI.substring(("/authors/" + authorId + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
+    }
+
+    /**
+     * Gets the random articles.
+     *
+     * @return a list of articles, returns an empty list if not found
+     */
+    private List<JSONObject> getRandomArticles() {
+        try {
+            final JSONObject preference = preferenceUtils.getPreference();
+            final int displayCnt =
+                    preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
+            final List<JSONObject> ret =
+                    articleRepository.getRandomly(displayCnt);
+
+            // Remove unused properties
+            for (final JSONObject article : ret) {
+                article.remove(Keys.OBJECT_ID);
+                article.remove(ARTICLE_AUTHOR_EMAIL);
+                article.remove(ARTICLE_ABSTRACT);
+                article.remove(ARTICLE_COMMENT_COUNT);
+                article.remove(ARTICLE_CONTENT);
+                article.remove(ARTICLE_CREATE_DATE);
+                article.remove(ARTICLE_TAGS_REF);
+                article.remove(ARTICLE_UPDATE_DATE);
+                article.remove(ARTICLE_VIEW_COUNT);
+                article.remove(ARTICLE_RANDOM_DOUBLE);
+            }
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            return Collections.emptyList();
+        }
     }
 }
