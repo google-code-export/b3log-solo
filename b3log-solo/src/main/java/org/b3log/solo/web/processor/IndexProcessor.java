@@ -95,8 +95,8 @@ public final class IndexProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/check-login.do"}, method =
-    HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/check-login.do"},
+                       method = HTTPRequestMethod.POST)
     public void checkLoggedIn(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
@@ -104,7 +104,7 @@ public final class IndexProcessor {
         final JSONObject currentUser = userUtils.getCurrentUser();
         final JSONObject jsonObjectToRender = new JSONObject();
         renderer.setJSONObject(jsonObjectToRender);
-        
+
         try {
             jsonObjectToRender.put(Common.IS_LOGGED_IN, false);
 
