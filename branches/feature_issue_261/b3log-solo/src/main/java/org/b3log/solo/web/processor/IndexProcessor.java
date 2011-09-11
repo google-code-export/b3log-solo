@@ -109,8 +109,7 @@ public final class IndexProcessor {
             jsonObjectToRender.put(Common.IS_LOGGED_IN, false);
 
             if (null == currentUser) {
-                if (userService.isUserLoggedIn()
-                    && userService.isUserAdmin()) {
+                if (userService.isUserLoggedIn() && userService.isUserAdmin()) {
                     // Only should happen with the following cases:
                     // 1. Init Solo
                     //    Because of there is no any user in datastore before init Solo
@@ -120,11 +119,14 @@ public final class IndexProcessor {
                     jsonObjectToRender.put(Common.IS_ADMIN, true);
                     final GeneralUser admin = userService.getCurrentUser();
                     jsonObjectToRender.put(User.USER_NAME, admin.getNickname());
+
+                    return;
                 }
 
                 jsonObjectToRender.put(Common.LOGIN_URL,
                                        userService.createLoginURL(
                         Common.ADMIN_INDEX_URI));
+                return;
             }
 
             jsonObjectToRender.put(Common.IS_LOGGED_IN, true);
