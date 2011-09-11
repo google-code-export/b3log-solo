@@ -33,9 +33,12 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.PageTypes;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -60,6 +63,11 @@ public final class PageCacheFilter implements Filter {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Statistic repository.
+     */
+    private Repository statisticRepository =
+            StatisticGAERepository.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -146,8 +154,6 @@ public final class PageCacheFilter implements Filter {
             LOGGER.log(Level.FINEST,
                        "Cached value[key={0}, type={1}, title={2}]",
                        new Object[]{pageCacheKey, cachedType, cachedTitle});
-
-            statistics.incBlogViewCount();
             final Locale locale = Latkes.getLocale();
             final Map<String, String> langs = langPropsService.getAll(locale);
             if (langs.get(PageTypes.ARTICLE).equals(cachedType)) {
@@ -172,6 +178,19 @@ public final class PageCacheFilter implements Filter {
             chain.doFilter(request, response);
 
             return;
+        }
+
+        final Transaction transaction = statisticRepository.beginTransaction();
+        transaction.clearQueryCache(false);
+        try {
+            statistics.incBlogViewCount();
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.WARNING, "After render failed", e);
         }
     }
 

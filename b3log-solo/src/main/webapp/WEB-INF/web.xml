@@ -168,28 +168,12 @@
         <url-pattern>/init.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>KillBrowserAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.KillBrowserAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>KillBrowserAction</servlet-name>
-        <url-pattern>/kill-browser.html</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>RemoveAllDataServlet</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.RemoveAllDataServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RemoveAllDataServlet</servlet-name>
         <url-pattern>/rm-all-data.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ArchiveDateArticlesAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.ArchiveArticlesAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ArchiveDateArticlesAction</servlet-name>
-        <url-pattern>/archives/*</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>BlogArticlesFeedServlet</servlet-name>
@@ -248,14 +232,6 @@
         <url-pattern>/datastore-file-access.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>AuthorArticlesAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.AuthorArticlesAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AuthorArticlesAction</servlet-name>
-        <url-pattern>/authors/*</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>CheckLoggedInAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.CheckLoggedInAction</servlet-class>
     </servlet>
@@ -286,14 +262,6 @@
     <servlet-mapping>
         <servlet-name>AddPageCommentAction</servlet-name>
         <url-pattern>/add-page-comment.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ClearCacheAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.ClearCacheAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ClearCacheAction</servlet-name>
-        <url-pattern>/clear-cache.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>GetRandomArticlesAction</servlet-name>

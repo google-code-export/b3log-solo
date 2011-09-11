@@ -52,10 +52,6 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 public final class PageProcessor {
 
     /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
-    /**
      * Logger.
      */
     private static final Logger LOGGER =
