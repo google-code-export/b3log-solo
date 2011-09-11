@@ -60,7 +60,7 @@ public final class CacheProcessor {
     public void clearCache(final HTTPRequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
-
+        
         final String all = httpServletRequest.getParameter("all");
         try {
             if (Strings.isEmptyOrNull(all)) { // Just clears single page cache
