@@ -15,6 +15,14 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.solo.util.Users;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
+import org.b3log.latke.user.GeneralUser;
+import org.b3log.latke.util.Strings;
+import org.json.JSONException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.web.FrontFreeMarkerRenderer;
@@ -32,6 +40,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -72,6 +81,70 @@ public final class IndexProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * User utilities.
+     */
+    private Users userUtils = Users.getInstance();
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
+
+    /**
+     * Checks logged in with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/check-login.do"}, method =
+    HTTPRequestMethod.GET)
+    public void checkLoggedIn(final HTTPRequestContext context) {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject currentUser = userUtils.getCurrentUser();
+        final JSONObject jsonObjectToRender = new JSONObject();
+        renderer.setJSONObject(jsonObjectToRender);
+        
+        try {
+            jsonObjectToRender.put(Common.IS_LOGGED_IN, false);
+
+            if (null == currentUser) {
+                if (userService.isUserLoggedIn()
+                    && userService.isUserAdmin()) {
+                    // Only should happen with the following cases:
+                    // 1. Init Solo
+                    //    Because of there is no any user in datastore before init Solo
+                    //    although the administrator has been logged in for init
+                    // 2. The collaborate administrator
+                    jsonObjectToRender.put(Common.IS_LOGGED_IN, true);
+                    jsonObjectToRender.put(Common.IS_ADMIN, true);
+                    final GeneralUser admin = userService.getCurrentUser();
+                    jsonObjectToRender.put(User.USER_NAME, admin.getNickname());
+                }
+
+                jsonObjectToRender.put(Common.LOGIN_URL,
+                                       userService.createLoginURL(
+                        Common.ADMIN_INDEX_URI));
+            }
+
+            jsonObjectToRender.put(Common.IS_LOGGED_IN, true);
+            jsonObjectToRender.put(Common.LOGOUT_URL, userService.
+                    createLogoutURL("/"));
+            jsonObjectToRender.put(Common.IS_ADMIN,
+                                   Role.ADMIN_ROLE.equals(currentUser.getString(
+                    User.USER_ROLE)));
+
+            String userName = currentUser.getString(User.USER_NAME);
+            if (Strings.isEmptyOrNull(userName)) {
+                // The administrators may be added via GAE Admin Console Permissions
+                userName = userService.getCurrentUser().getNickname();
+                jsonObjectToRender.put(Common.IS_ADMIN, true);
+            }
+            jsonObjectToRender.put(User.USER_NAME, userName);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
 
     /**
      * Shows index with the specified context.

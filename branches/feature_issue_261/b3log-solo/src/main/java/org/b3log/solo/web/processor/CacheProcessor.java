@@ -66,7 +66,7 @@ public final class CacheProcessor {
         try {
             final JSONObject requestJSONObject =
                     AbstractAction.parseRequestJSONObject(httpServletRequest,
-                                                      httpServletResponse);
+                                                          httpServletResponse);
             final String all = requestJSONObject.optString("all");
 
             if (Strings.isEmptyOrNull(all)) { // Just clears single page cache

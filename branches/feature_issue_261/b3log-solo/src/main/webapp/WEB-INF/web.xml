@@ -232,14 +232,6 @@
         <url-pattern>/datastore-file-access.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>CheckLoggedInAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.CheckLoggedInAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CheckLoggedInAction</servlet-name>
-        <url-pattern>/check-login.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>AddArticleCommentAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.AddArticleCommentAction</servlet-class>
     </servlet>
