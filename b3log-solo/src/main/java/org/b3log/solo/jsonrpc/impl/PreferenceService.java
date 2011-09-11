@@ -28,7 +28,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
@@ -356,8 +355,6 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
-
-        PageCaches.removeAll();
 
         return ret;
     }

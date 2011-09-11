@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.action.StatusCodes;
@@ -337,7 +336,6 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                 }
             }
 
-            PageCaches.removeAll();
             ret.put(Keys.OBJECT_IDS, importedIds);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
@@ -121,6 +120,8 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.2.2, Jan 25, 2011
+ * @deprecated As of Solo 0.3.1, removes servlet URL mapping in web.xml, with 
+ * no replacement.
  */
 public final class V021ToV025 extends HttpServlet {
 
@@ -279,8 +280,6 @@ public final class V021ToV025 extends HttpServlet {
 
             LOGGER.info("Checked for consistency");
         }
-
-        PageCaches.removeAll();
     }
 
     /**

@@ -18,9 +18,8 @@
  * @fileoverview util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1, Sep 5, 2011
+ * @version 1.0.1.2, Sep 7, 2011
  */
-
 var Util = {
     error: function () {
         alert("Error: " + arguments[0] +
@@ -113,7 +112,7 @@ var Util = {
 
 var Common = function (tips) {
     this.tips = tips;
-}
+};
 
 $.extend(Common.prototype, {
     goTop: function () {

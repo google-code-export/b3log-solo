@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
@@ -165,8 +164,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        PageCaches.removeAll();
-
         return ret;
     }
 
@@ -235,8 +232,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
-
-        PageCaches.removeAll();
 
         return ret;
     }
@@ -449,8 +444,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        PageCaches.removeAll();
-
         return ret;
     }
 
@@ -503,7 +496,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 if (null == statistic) {
                     initStatistic();
                     initPreference();
-                    initAdmin(request, response);
+                    initAdmin();
                 }
 
                 ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
@@ -528,6 +521,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         }
 
         try {
+            final JSONObject get =
+                    userRepository.get(new Query());
+
             helloWorld(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Hello World error?!", e);
@@ -597,13 +593,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Initializes administrator.
      *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
      * @throws Exception exception
      */
-    private void initAdmin(final HttpServletRequest request,
-                           final HttpServletResponse response)
-            throws Exception {
+    private void initAdmin() throws Exception {
         LOGGER.info("Initializing admin....");
         final JSONObject admin = new JSONObject();
 

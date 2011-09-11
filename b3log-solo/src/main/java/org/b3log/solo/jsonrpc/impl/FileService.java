@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
@@ -180,8 +179,6 @@ public final class FileService extends AbstractGAEJSONRpcService {
             fileRepository.remove(fileId);
             transaction.commit();
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_FILE_SUCC);
-
-            PageCaches.removeAll();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

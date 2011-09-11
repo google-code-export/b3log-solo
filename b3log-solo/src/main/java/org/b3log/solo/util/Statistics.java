@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 16, 2011
+ * @version 1.0.0.8, Sep 11, 2011
  */
 public final class Statistics {
 
@@ -195,7 +195,7 @@ public final class Statistics {
                     statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
             ++blogViewCnt;
             statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
-            statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
+            statisticRepository.update(Statistic.STATISTIC, statistic);
             LOGGER.log(Level.FINER, "Current blog view count[{0}]", blogViewCnt);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -229,7 +229,7 @@ public final class Statistics {
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
             LOGGER.finer("Incing article view count async....");
-            articleRepository.updateAsync(articleId, article);
+            articleRepository.update(articleId, article);
             LOGGER.finer("Inced article view count");
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

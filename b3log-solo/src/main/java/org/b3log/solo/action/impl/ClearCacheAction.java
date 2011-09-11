@@ -129,7 +129,6 @@ public final class ClearCacheAction extends AbstractAction {
     public void clearAllPageCache(final HttpServletRequest request,
                                   final HttpServletResponse response)
             throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;

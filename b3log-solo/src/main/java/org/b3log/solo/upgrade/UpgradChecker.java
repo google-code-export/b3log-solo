@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
@@ -150,8 +149,6 @@ public final class UpgradChecker extends HttpServlet {
             LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
             throw new Exception("Upgrade fail from v030 to v031");
         }
-
-        PageCaches.removeAll();
 
         LOGGER.info("Upgraded from v030 to v031 successfully :-)");
     }

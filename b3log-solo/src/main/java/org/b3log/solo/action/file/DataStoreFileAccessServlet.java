@@ -32,8 +32,8 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Blob;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Locales;
@@ -154,9 +154,19 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                                                + id;
                     file.put(File.FILE_DOWNLOAD_URL, downloadURL);
 
-                    fileRepository.add(file);
+                    final Transaction transaction =
+                            fileRepository.beginTransaction();
 
-                    PageCaches.removeAll(); // XXX: use repository cache instead
+                    try {
+                        fileRepository.add(file);
+                        transaction.commit();
+                    } catch (final RepositoryException e) {
+                        if (transaction.isActive()) {
+                            transaction.rollback();
+                        }
+
+                        throw new Exception(e);
+                    }
                 }
             }
         } catch (final Exception e) {
@@ -171,7 +181,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        
+
         final String id = request.getParameter(Keys.OBJECT_ID);
         final Transaction transaction = fileRepository.beginTransaction();
         try {

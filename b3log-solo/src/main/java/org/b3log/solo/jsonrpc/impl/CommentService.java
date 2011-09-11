@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
@@ -398,8 +397,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        PageCaches.removeAll();
-
         return ret;
     }
 
@@ -464,8 +461,6 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
-
-        PageCaches.removeAll();
 
         return ret;
     }
