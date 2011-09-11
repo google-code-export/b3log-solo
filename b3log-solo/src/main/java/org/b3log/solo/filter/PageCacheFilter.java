@@ -137,6 +137,9 @@ public final class PageCacheFilter implements Filter {
         }
 
         // Process page cache hit
+        final Transaction transaction = statisticRepository.beginTransaction();
+        transaction.clearQueryCache(false);
+
         try {
             LOGGER.log(Level.FINEST,
                        "Writes resposne for page[pageCacheKey={0}] from cache",
@@ -161,6 +164,8 @@ public final class PageCacheFilter implements Filter {
                         AbstractCacheablePageAction.CACHED_OID);
                 statistics.incArticleViewCount(articleId);
             }
+            statistics.incBlogViewCount();
+            transaction.commit();
 
             final long endimeMillis = System.currentTimeMillis();
             final String dateString = DateFormatUtils.format(
@@ -174,24 +179,17 @@ public final class PageCacheFilter implements Filter {
             writer.flush();
             writer.close();
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             chain.doFilter(request, response);
 
             return;
         }
 
-        final Transaction transaction = statisticRepository.beginTransaction();
-        transaction.clearQueryCache(false);
-        try {
-            statistics.incBlogViewCount();
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
 
-            LOGGER.log(Level.WARNING, "After render failed", e);
-        }
     }
 
     @Override
