@@ -296,7 +296,7 @@ public final class ArticleProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/archives/*"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/archives/**"}, method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer render =
                 new FrontFreeMarkerRenderer();
