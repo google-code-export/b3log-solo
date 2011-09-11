@@ -21,7 +21,7 @@
                onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
                onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
             </#if>
-            <div class="right none">
+            <div class="right">
                 <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                 &nbsp;|&nbsp;
                 ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
@@ -33,41 +33,30 @@
     </div>
     </#list>
 </div>
-<div>
+<div class="form">
+    <h4>${postCommentsLabel}</h4>
     <table id="commentForm">
         <tbody>
             <tr>
-                <th>
-                    ${commentNameLabel}
-                </th>
                 <td colspan="2">
                     <input type="text" class="normalInput" id="commentName"/>
+                    <label for="commentName">${commentNameLabel}</label>
                 </td>
             </tr>
             <tr>
-                <th>
-                    ${commentEmailLabel}
-                </th>
                 <td colspan="2">
                     <input type="text" class="normalInput" id="commentEmail"/>
+                    <label for="commentEmail">${commentEmailLabel}</label>
                 </td>
             </tr>
             <tr>
-                <th>
-                    ${commentURLLabel}
-                </th>
                 <td colspan="2">
-                    <div id="commentURLLabel">
-                        http://
-                    </div>
                     <input type="text" id="commentURL"/>
+                    <label for="commentURL">${commentURLLabel}</label>
                 </td>
             </tr>
             <tr>
-                <th>
-                    ${commentEmotionsLabel}
-                </th>
-                <td id="emotions">
+                <td id="emotions" colspan="2">
                     <span class="em00" title="${em00Label}"></span>
                     <span class="em01" title="${em01Label}"></span>
                     <span class="em02" title="${em02Label}"></span>
@@ -86,27 +75,21 @@
                 </td>
             </tr>
             <tr>
-                <th valign="top">
-                    ${commentContentLabel}
-                </th>
                 <td colspan="2">
                     <textarea rows="10" cols="96" id="comment"></textarea>
                 </td>
             </tr>
             <tr>
-                <th>
-                    ${captchaLabel}
-                </th>
                 <td>
                     <input type="text" class="normalInput" id="commentValidate"/>
                     <img id="captcha" alt="validate" src="/captcha.do"></img>
                 </td>
                 <th>
-                    <span class="error-msg" id="commentErrorTip"/>
+                    <span class="tip" id="commentErrorTip"/>
                 </th>
             </tr>
             <tr>
-                <td colspan="3" align="right">
+                <td colspan="2" align="right">
                     <button id="submitCommentButton" onclick="page.submitComment();">${submmitCommentLabel}</button>
                 </td>
             </tr>
@@ -136,38 +119,46 @@
     });
 
     var addComment = function (result, state) {
-        var commentHTML = '<div id="' + result.oId + '"><div class="comment-panel"><div class="comment-title">';
+        var oddEven = "";
+        if ($("#comments>div").first().hasClass("comment-even")) {
+            oddEven = "comment-odd";
+        } else {
+            oddEven = "comment-even";
+        }
+        var commentHTML = '<div id="' + result.oId + '" class="oddEven"><img class="comment-header" \
+            title="' + $("#commentName" + state).val() + '" alt="' + $("#commentName" + state).val() + 
+            '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel">';
 
         if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-            commentHTML += '<a>' + $("#commentName" + state).val() + '</a>';
+            commentHTML += $("#commentName" + state).val();
         } else {
             commentHTML += '<a href="http://' + $("#commentURL" + state).val() + 
                 '" target="_blank">' + $("#commentName" + state).val() + '</a>';
         }
 
         if (state !== "") {
-            var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-title a").first().text();
+            var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-panel>a").text();
             commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
-
-        commentHTML += '<div class="right">' + result.commentDate
-            + '&nbsp;<a class="no-underline" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>'
-            + '</div><div class="clear"></div></div><div class="comment-body">'
-            + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
-            + '" src="' + result.commentThumbnailURL + '"/>'
-            + '</div><div class="comment-content">' + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
-            + '</div><div class="clear"></div>'
-            + '</div></div></div>';
+            
+        commentHTML += '<div class="right"><a href="javascript:replyTo(\'' + result.oId 
+            + '\');">${replyLabel}</a>' + ' &nbsp;|&nbsp;' +  result.commentDate
+            + '</div><span class="clear"></span><div class="article-body">' + 
+            Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
+            + '</div></div><span class="clear"></span></div>';
 
         page.addCommentAjax(commentHTML, state);
     }
 
     var replyTo = function (id) {
         var commentFormHTML = "<table class='form comment-reply' id='replyForm'>";
-                
         page.addReplyForm(id, commentFormHTML);
+        $("#replyForm label").each(function () {
+            $this = $(this);
+            $this.attr("for", $this.attr("for") + "Reply");
+        });
     }
             
     var showComment = function (it, id) {
@@ -183,27 +174,9 @@
     };
 
     (function () {
-        $("#comments>div").mouseenter(function () {
-            var $ico = $(this).find(".none");
-            if ($ico[0].style.display === "none" || $ico[0].style.display === "") {
-                $ico.show();
-            }
-        }).mouseleave(function () {
-            var $ico = $(this).find(".none");
-            if ($ico[0].style.display === "block") {
-                $ico.hide();
-            }
-        });
-        
         page.load();
-        // comment url
-        $("#commentURL").focus(function (event) {
-            $("#commentURLLabel").css("box-shadow", "3px 1px 2px rgba(0, 0, 0, 0.3) inset");
-        }).blur(function () {
-            $("#commentURLLabel").css("box-shadow", "");
-        });
         // emotions
-        page.replaceCommentsEm("#comments .comment-content");
+        page.replaceCommentsEm("#comments .article-body");
             <#nested>
         })();
 </script>

@@ -18,7 +18,7 @@
 </div>
 <div id="goTop" onclick="goTop()">TOP</div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="/skins/${skinDirName}/js/${skinDirName}.js" charset="utf-8"></script>
+<script type="text/javascript" src="/skins/${skinDirName}/js/${skinDirName}${miniPostfix}.js" charset="utf-8"></script>
 <script type="text/javascript">
     var common = new Common({
         "clearAllCacheLabel": "${clearAllCacheLabel}",
@@ -44,6 +44,13 @@
         "em14Label": "${em14Label}"
     });
     common.init();
-    common.replaceSideEm($("#recentComments li"));
+    common.replaceSideEm($(".recent-comments-content"));
     common.buildTags("tagsSide");
+    
+    // recent comments
+    $(".recent-comments .recent-comments-main").each(function () {
+        if ($(this).find(".recent-comments-content>a").height() < 30) {
+            $(this).find(".expand-ico").remove();
+        }
+    });
 </script>
