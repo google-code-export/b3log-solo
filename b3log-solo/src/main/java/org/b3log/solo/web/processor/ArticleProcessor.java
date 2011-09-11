@@ -65,6 +65,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -142,6 +143,38 @@ public final class ArticleProcessor {
      * User repository.
      */
     private UserRepository userRepository = UserGAERepository.getInstance();
+
+    /**
+     * Gets article content with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/get-article-content"},
+                       method = HTTPRequestMethod.POST)
+    public void getArticleContent(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        // XXX: Determines request coming from outer
+        final String articleId = request.getParameter("id");
+
+        if (Strings.isEmptyOrNull(articleId)) {
+            return;
+        }
+
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
+            }
+
+            final TextHTMLRenderer render = new TextHTMLRenderer();
+            context.setRenderer(render);
+
+            final String content = article.getString(Article.ARTICLE_CONTENT);
+            render.setContnet(content);
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARNING, "Updates article random value failed.");
+        }
+    }
 
     /**
      * Shows author articles with the specified context.
