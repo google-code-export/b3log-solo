@@ -196,7 +196,6 @@ public final class Statistics {
         ++blogViewCnt;
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
         statisticRepository.update(Statistic.STATISTIC, statistic);
-        LOGGER.log(Level.FINER, "Current blog view count[{0}]", blogViewCnt);
     }
 
     /**
@@ -223,9 +222,7 @@ public final class Statistics {
         article.put(Article.ARTICLE_VIEW_COUNT, viewCnt);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
-        LOGGER.finer("Incing article view count async....");
         articleRepository.update(articleId, article);
-        LOGGER.finer("Inced article view count");
     }
 
     /**
