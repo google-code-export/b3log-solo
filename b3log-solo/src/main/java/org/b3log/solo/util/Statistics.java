@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.util;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
