@@ -154,7 +154,7 @@ public final class IndexProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/*"}, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
