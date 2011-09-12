@@ -192,11 +192,11 @@ public final class ArticleProcessor {
                 return;
             }
 
-            final TextHTMLRenderer render = new TextHTMLRenderer();
-            context.setRenderer(render);
+            final TextHTMLRenderer renderer = new TextHTMLRenderer();
+            context.setRenderer(renderer);
 
             final String content = article.getString(Article.ARTICLE_CONTENT);
-            render.setContnet(content);
+            renderer.setContnet(content);
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "Updates article random value failed.");
         }
@@ -209,12 +209,12 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = {"/authors/*"}, method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer render =
+        final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
-        context.setRenderer(render);
+        context.setRenderer(renderer);
 
-        render.setTemplateName("author-articles.ftl");
-        final Map<String, Object> dataModel = render.getDataModel();
+        renderer.setTemplateName("author-articles.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -357,12 +357,12 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = {"/archives/**"}, method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer render =
+        final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
-        context.setRenderer(render);
+        context.setRenderer(renderer);
 
-        render.setTemplateName("archive-articles.ftl");
-        final Map<String, Object> dataModel = render.getDataModel();
+        renderer.setTemplateName("archive-articles.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -506,12 +506,12 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = {"/article"}, method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer render =
+        final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
-        context.setRenderer(render);
+        context.setRenderer(renderer);
 
-        render.setTemplateName("article.ftl");
-        final Map<String, Object> dataModel = render.getDataModel();
+        renderer.setTemplateName("article.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();

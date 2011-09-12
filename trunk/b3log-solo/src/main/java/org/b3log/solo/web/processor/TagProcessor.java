@@ -122,12 +122,12 @@ public final class TagProcessor {
      */
     @RequestProcessing(value = {"/tags/*"}, method = HTTPRequestMethod.GET)
     public void showTagArticles(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer render =
+        final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
-        context.setRenderer(render);
+        context.setRenderer(renderer);
 
-        render.setTemplateName("tag-articles.ftl");
-        final Map<String, Object> dataModel = render.getDataModel();
+        renderer.setTemplateName("tag-articles.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -272,12 +272,12 @@ public final class TagProcessor {
      */
     @RequestProcessing(value = {"/tags.html"}, method = HTTPRequestMethod.GET)
     public void showTags(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer render =
+        final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
-        context.setRenderer(render);
+        context.setRenderer(renderer);
 
-        render.setTemplateName("tags.ftl");
-        final Map<String, Object> dataModel = render.getDataModel();
+        renderer.setTemplateName("tags.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
