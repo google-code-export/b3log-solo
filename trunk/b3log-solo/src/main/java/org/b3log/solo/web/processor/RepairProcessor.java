@@ -332,8 +332,6 @@ public final class RepairProcessor {
             }
         }
 
-        PageCaches.removeAll();
-
         LOGGER.info("Removed all data....");
     }
 
