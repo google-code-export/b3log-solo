@@ -216,14 +216,6 @@
         <url-pattern>/add-page-comment.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>ArticleRandomDoubleUpdateServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.ArticleRandomDoubleUpdateServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ArticleRandomDoubleUpdateServlet</servlet-name>
-        <url-pattern>/article-random-double-gen.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>V026ToV030</servlet-name>
         <servlet-class>org.b3log.solo.upgrade.V026ToV030</servlet-class>
     </servlet>

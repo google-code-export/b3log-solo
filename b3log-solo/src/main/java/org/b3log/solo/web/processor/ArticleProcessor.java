@@ -145,6 +145,10 @@ public final class ArticleProcessor {
      * User repository.
      */
     private UserRepository userRepository = UserGAERepository.getInstance();
+    /**
+     * Default update count for article random value.
+     */
+    private static final int DEFAULT_UPDATE_CNT = 10;
 
     /**
      * Gets random articles with the specified context.
@@ -496,6 +500,44 @@ public final class ArticleProcessor {
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
+        }
+    }
+
+    /**
+     * Updates article random double value.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/article-random-double-gen.do*"},
+                       method = HTTPRequestMethod.GET)
+    public void updateArticlesRandomValue(final HTTPRequestContext context) {
+        int updateCnt = DEFAULT_UPDATE_CNT;
+        try {
+            updateCnt =
+                    Integer.valueOf(context.getRequest().getParameter("cnt"));
+        } catch (final NumberFormatException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+        }
+
+        final Transaction transaction = articleRepository.beginTransaction();
+        transaction.clearQueryCache(false);
+        try {
+            final List<JSONObject> randomArticles =
+                    articleRepository.getRandomly(updateCnt);
+
+            for (final JSONObject article : randomArticles) {
+                article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+                articleRepository.update(article.getString(Keys.OBJECT_ID),
+                                         article);
+            }
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.WARNING, "Updates article random value failed.");
         }
     }
 
