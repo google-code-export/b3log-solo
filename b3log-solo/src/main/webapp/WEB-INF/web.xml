@@ -280,22 +280,6 @@
         <url-pattern>/upgrade/checker.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>RestoreSigns</servlet-name>
-        <servlet-class>org.b3log.solo.fix.RestoreSigns</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RestoreSigns</servlet-name>
-        <url-pattern>/fix/restore-signs.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>TagArticleCounterRepair</servlet-name>
-        <servlet-class>org.b3log.solo.fix.TagArticleCounterRepair</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TagArticleCounterRepair</servlet-name>
-        <url-pattern>/fix/tag-article-counter-repair.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>JSONRPCServlet</servlet-name>
         <servlet-class>org.jabsorb.JSONRPCServlet</servlet-class>
     </servlet>

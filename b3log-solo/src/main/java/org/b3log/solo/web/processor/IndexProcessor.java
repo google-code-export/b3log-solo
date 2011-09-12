@@ -155,12 +155,12 @@ public final class IndexProcessor {
      */
     @RequestProcessing(value = {"/"}, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer render =
+        final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
-        context.setRenderer(render);
+        context.setRenderer(renderer);
 
-        render.setTemplateName("index.ftl");
-        final Map<String, Object> dataModel = render.getDataModel();
+        renderer.setTemplateName("index.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -238,12 +238,12 @@ public final class IndexProcessor {
      */
     @RequestProcessing(value = {"/error.do"}, method = HTTPRequestMethod.GET)
     public void handleErrors(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer render =
+        final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
-        context.setRenderer(render);
+        context.setRenderer(renderer);
 
-        render.setTemplateName("error.ftl");
-        final Map<String, Object> dataModel = render.getDataModel();
+        renderer.setTemplateName("error.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -279,12 +279,12 @@ public final class IndexProcessor {
     @RequestProcessing(value = {"/kill-browser.html"},
                        method = HTTPRequestMethod.GET)
     public void showKillBrowser(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer render =
+        final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
-        context.setRenderer(render);
+        context.setRenderer(renderer);
 
-        render.setTemplateName("kill-browser.ftl");
-        final Map<String, Object> dataModel = render.getDataModel();
+        renderer.setTemplateName("kill-browser.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
