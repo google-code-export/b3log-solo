@@ -120,7 +120,7 @@ public final class TagProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/tags/*"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/tags/**"}, method = HTTPRequestMethod.GET)
     public void showTagArticles(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
