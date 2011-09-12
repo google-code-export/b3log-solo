@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.web;
+package org.b3log.solo.web.processor.renderer;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

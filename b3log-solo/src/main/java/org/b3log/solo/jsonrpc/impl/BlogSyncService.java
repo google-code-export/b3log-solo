@@ -27,7 +27,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.solo.action.StatusCodes;
+import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Tags;
