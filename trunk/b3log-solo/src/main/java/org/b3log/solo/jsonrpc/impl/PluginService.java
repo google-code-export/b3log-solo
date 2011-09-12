@@ -34,7 +34,7 @@ import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.solo.action.StatusCodes;
+import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginGAERepository;

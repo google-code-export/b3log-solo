@@ -32,7 +32,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.action.StatusCodes;
+import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Skin;

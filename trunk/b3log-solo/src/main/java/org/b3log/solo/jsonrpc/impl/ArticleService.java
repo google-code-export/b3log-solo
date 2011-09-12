@@ -24,7 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.solo.action.StatusCodes;
+import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
 import static org.b3log.solo.model.Article.*;
 import org.b3log.solo.model.Tag;
