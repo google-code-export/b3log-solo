@@ -168,46 +168,6 @@
         <url-pattern>/init.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>RemoveAllDataServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.RemoveAllDataServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RemoveAllDataServlet</servlet-name>
-        <url-pattern>/rm-all-data.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>BlogArticlesFeedServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.feed.atom.BlogArticlesFeedServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>BlogArticlesFeedServlet</servlet-name>
-        <url-pattern>/blog-articles-feed.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>TagArticlesFeedServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.feed.atom.TagArticlesFeedServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TagArticlesFeedServlet</servlet-name>
-        <url-pattern>/tag-articles-feed.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>BlogArticlesRSSServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.feed.rss.BlogArticlesRSSServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>BlogArticlesRSSServlet</servlet-name>
-        <url-pattern>/blog-articles-rss.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>TagArticlesRSSServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.feed.rss.TagArticlesRSSServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TagArticlesRSSServlet</servlet-name>
-        <url-pattern>/tag-articles-rss.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>CaptchaServlet</servlet-name>
         <servlet-class>org.b3log.solo.action.captcha.CaptchaServlet</servlet-class>
     </servlet>

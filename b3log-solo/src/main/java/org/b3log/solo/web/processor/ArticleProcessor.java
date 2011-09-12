@@ -196,7 +196,7 @@ public final class ArticleProcessor {
             context.setRenderer(renderer);
 
             final String content = article.getString(Article.ARTICLE_CONTENT);
-            renderer.setContnet(content);
+            renderer.setContent(content);
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "Updates article random value failed.");
         }
