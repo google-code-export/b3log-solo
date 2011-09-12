@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
-import org.b3log.solo.web.action.util.Filler;
+import org.b3log.solo.web.util.Filler;
 import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
