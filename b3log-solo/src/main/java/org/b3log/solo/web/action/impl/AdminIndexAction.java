@@ -25,7 +25,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.model.User;
-import org.b3log.solo.web.action.util.Filler;
+import org.b3log.solo.web.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;

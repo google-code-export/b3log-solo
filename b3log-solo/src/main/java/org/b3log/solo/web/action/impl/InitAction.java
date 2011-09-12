@@ -31,7 +31,7 @@ import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.web.action.util.Filler;
+import org.b3log.solo.web.util.Filler;
 import org.b3log.solo.model.Common;
 import org.json.JSONObject;
 
