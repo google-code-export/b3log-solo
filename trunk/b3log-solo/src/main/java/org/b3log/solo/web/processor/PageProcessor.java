@@ -34,7 +34,6 @@ import org.b3log.solo.action.util.Filler;
 import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.solo.action.util.Requests;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
@@ -134,18 +133,5 @@ public final class PageProcessor {
                 LOGGER.severe(ex.getMessage());
             }
         }
-    }
-
-    /**
-     * Gets the request page number from the specified request URI.
-     * 
-     * @param requestURI the specified request URI
-     * @return page number, returns {@code -1} if the specified request URI
-     * can not convert to an number
-     */
-    private static int getCurrentPageNum(final String requestURI) {
-        final String pageNumString = requestURI.substring("/".length());
-
-        return Requests.getCurrentPageNum(pageNumString);
     }
 }
