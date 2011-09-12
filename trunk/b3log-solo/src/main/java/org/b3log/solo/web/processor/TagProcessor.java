@@ -13,87 +13,77 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.action.impl;
+package org.b3log.solo.web.processor;
 
-import java.util.logging.Level;
-import org.b3log.latke.Keys;
-import org.b3log.latke.action.ActionException;
-import java.io.IOException;
+import org.b3log.solo.util.Tags;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.web.FrontFreeMarkerRenderer;
+import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.util.Articles;
+import org.b3log.solo.repository.TagArticleRepository;
+import org.b3log.solo.repository.impl.TagArticleGAERepository;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Latkes;
-import org.b3log.solo.action.util.Filler;
-import org.b3log.solo.util.Articles;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.repository.TagArticleRepository;
-import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Locales;
-import org.b3log.solo.action.util.Requests;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.TagArticleGAERepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
 import org.b3log.solo.util.comparator.Comparators;
+import org.json.JSONArray;
+import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.service.LangPropsService;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.annotation.RequestProcessing;
+import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.solo.action.util.Filler;
+import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.solo.action.util.Requests;
+import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
-import org.json.JSONArray;
 import org.json.JSONObject;
+import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 
 /**
- * Get articles by tag action.
+ * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Sep 3, 2011
+ * @version 1.1.0.0, Sep 8, 2011
+ * @since 0.3.1
  */
-public final class TagArticlesAction extends AbstractFrontPageAction {
+@RequestProcessor
+public final class TagProcessor {
 
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(TagArticlesAction.class.getName());
-    /**
-     * Article repository.
-     */
-    private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            Logger.getLogger(TagProcessor.class.getName());
     /**
      * Tag repository.
      */
     private TagRepository tagRepository = TagGAERepository.getInstance();
     /**
-     * Tag-Article repository.
-     */
-    private TagArticleRepository tagArticleRepository =
-            TagArticleGAERepository.getInstance();
-    /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
-    /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
     /**
      * Language service.
      */
@@ -106,13 +96,41 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
+    /**
+     * Tag-Article repository.
+     */
+    private TagArticleRepository tagArticleRepository =
+            TagArticleGAERepository.getInstance();
+    /**
+     * Article utilities.
+     */
+    private Articles articleUtils = Articles.getInstance();
+    /**
+     * Article repository.
+     */
+    private ArticleRepository articleRepository =
+            ArticleGAERepository.getInstance();
+    /**
+     * Tag utilities.
+     */
+    private Tags tagUtils = Tags.getInstance();
 
-    @Override
-    protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ActionException {
-        final Map<String, Object> ret = new HashMap<String, Object>();
+    /**
+     * Shows articles related with a tag with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/tags/*"}, method = HTTPRequestMethod.GET)
+    public void showTagArticles(final HTTPRequestContext context) {
+        final AbstractFreeMarkerRenderer render =
+                new FrontFreeMarkerRenderer();
+        context.setRenderer(render);
+
+        render.setTemplateName("tag-articles.ftl");
+        final Map<String, Object> dataModel = render.getDataModel();
+
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
 
         try {
             String requestURI = request.getRequestURI();
@@ -123,8 +141,6 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
             final int currentPageNum = getCurrentPageNum(requestURI, tagTitle);
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
             }
 
             LOGGER.log(Level.FINER, "Tag[title={0}, currentPageNum={1}]",
@@ -135,20 +151,13 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
 
             if (null == tag) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
             }
 
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceUtils.getPreference();
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-            final Locale locale = new Locale(
-                    Locales.getLanguage(localeString),
-                    Locales.getCountry(localeString));
 
-            skins.fillLanguage(preference, ret);
+            skins.fillLanguage(preference, dataModel);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -176,8 +185,6 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
             if (0 == tagArticleRelations.length()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                    return ret;
                 } catch (final IOException ex) {
                     LOGGER.severe(ex.getMessage());
                 }
@@ -233,61 +240,85 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                 Collections.sort(articles,
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
-            ret.put(Article.ARTICLES, articles);
-            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-            ret.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
-            ret.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                    pageNums.get(pageNums.size() - 1));
-            ret.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            ret.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-            ret.put(Common.PATH, "/tags/" + tagTitle);
-            ret.put(Keys.OBJECT_ID, tagId);
-            ret.put(Tag.TAG, tag);
+            dataModel.put(Article.ARTICLES, articles);
+            dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                          pageNums.get(pageNums.size() - 1));
+            dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+            dataModel.put(Common.PATH, "/tags/" + tagTitle);
+            dataModel.put(Keys.OBJECT_ID, tagId);
+            dataModel.put(Tag.TAG, tag);
 
-            filler.fillSide(ret, preference);
-            filler.fillBlogHeader(ret, preference);
-            filler.fillBlogFooter(ret, preference);
+            filler.fillSide(dataModel, preference);
+            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogFooter(dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return ret;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
         }
-
-        return ret;
-    }
-
-    @Override
-    protected JSONObject doAjaxAction(final JSONObject data,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
-            throws ActionException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected String getTemplateName(final String requestURI) {
-        return "tag-articles.ftl";
     }
 
     /**
-     * Gets tag title from the specified URI.
+     * Shows tags with the specified context.
      * 
-     * @param requestURI the specified request URI
-     * @return tag title
+     * @param context the specified context
      */
-    private static String getTagTitle(final String requestURI) {
-        final String path = requestURI.substring("/tags/".length());
+    @RequestProcessing(value = {"/tags.html"}, method = HTTPRequestMethod.GET)
+    public void showTags(final HTTPRequestContext context) {
+        final AbstractFreeMarkerRenderer render =
+                new FrontFreeMarkerRenderer();
+        context.setRenderer(render);
 
-        if (path.contains("/")) {
-            return path.substring(0, path.indexOf("/"));
-        } else {
-            return path.substring(0);
+        render.setTemplateName("tags.ftl");
+        final Map<String, Object> dataModel = render.getDataModel();
+
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
+
+        try {
+            final JSONObject preference = preferenceUtils.getPreference();
+            if (null == preference) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+
+            skins.fillLanguage(preference, dataModel);
+
+            request.setAttribute(CACHED_OID, "No id");
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
+            request.setAttribute(CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
+            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
+            request.setAttribute(CACHED_LINK, "/tags.html");
+
+            final JSONObject result = tagRepository.get(new Query());
+            final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
+
+            final List<JSONObject> tags =
+                    CollectionUtils.jsonArrayToList(tagArray);
+            tagUtils.removeForUnpublishedArticles(tags);
+            Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
+
+            dataModel.put(Tag.TAGS, tags);
+
+            filler.fillSide(dataModel, preference);
+            filler.fillBlogHeader(dataModel, preference);
+            filler.fillBlogFooter(dataModel, preference);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
         }
     }
 
@@ -305,5 +336,21 @@ public final class TagArticlesAction extends AbstractFrontPageAction {
                 requestURI.substring(("/tags/" + tagTitle + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
+    }
+
+    /**
+     * Gets tag title from the specified URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return tag title
+     */
+    private static String getTagTitle(final String requestURI) {
+        final String path = requestURI.substring("/tags/".length());
+
+        if (path.contains("/")) {
+            return path.substring(0, path.indexOf("/"));
+        } else {
+            return path.substring(0);
+        }
     }
 }

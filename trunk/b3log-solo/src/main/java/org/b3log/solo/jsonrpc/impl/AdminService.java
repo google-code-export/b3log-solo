@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
@@ -57,7 +56,6 @@ import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.repository.impl.UserGAERepository;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
@@ -108,10 +106,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
-    /**
-     * Preference utilities.
-     */
-    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Article service.
      */
@@ -169,8 +163,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
-
-        PageCaches.removeAll();
 
         return ret;
     }
@@ -240,8 +232,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
-
-        PageCaches.removeAll();
 
         return ret;
     }
@@ -454,8 +444,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             throw new ActionException(e);
         }
 
-        PageCaches.removeAll();
-
         return ret;
     }
 
@@ -508,7 +496,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 if (null == statistic) {
                     initStatistic();
                     initPreference();
-                    initAdmin(request, response);
+                    initAdmin();
                 }
 
                 ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
@@ -533,6 +521,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         }
 
         try {
+            final JSONObject get =
+                    userRepository.get(new Query());
+
             helloWorld(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Hello World error?!", e);
@@ -602,24 +593,20 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Initializes administrator.
      *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
      * @throws Exception exception
      */
-    private void initAdmin(final HttpServletRequest request,
-                           final HttpServletResponse response)
-            throws Exception {
+    private void initAdmin() throws Exception {
         LOGGER.info("Initializing admin....");
         final JSONObject admin = new JSONObject();
 
         final GeneralUser user = userService.getCurrentUser();
         final String name = user.getNickname();
         admin.put(User.USER_NAME, name);
-        final String email = user.getEmail();
+        final String email = user.getEmail().toLowerCase().trim();
         admin.put(User.USER_EMAIL, email);
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
 
-        addUser(admin, request, response);
+        userRepository.add(admin);
 
         LOGGER.info("Initialized admin");
     }

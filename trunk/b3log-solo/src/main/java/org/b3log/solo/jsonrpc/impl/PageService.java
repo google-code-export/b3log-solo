@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
@@ -290,8 +289,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        PageCaches.removeAll();
-
         return ret;
     }
 
@@ -344,8 +341,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
 
             throw new ActionException(e);
         }
-
-        PageCaches.removeAll();
 
         return ret;
     }
@@ -440,8 +435,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
             return ret;
         }
 
-        PageCaches.removeAll();
-
         return ret;
     }
 
@@ -485,7 +478,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
 
             transaction.commit();
 
-            PageCaches.removeAll();
             return true;
         } catch (final Exception e) {
             if (transaction.isActive()) {
