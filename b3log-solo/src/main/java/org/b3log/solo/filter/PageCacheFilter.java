@@ -29,11 +29,16 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.PageTypes;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -58,6 +63,11 @@ public final class PageCacheFilter implements Filter {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Statistic repository.
+     */
+    private Repository statisticRepository =
+            StatisticGAERepository.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -77,10 +87,25 @@ public final class PageCacheFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        final long startTimeMillis = System.currentTimeMillis();
-
         final HttpServletRequest httpServletRequest =
                 (HttpServletRequest) request;
+
+        final long startTimeMillis = System.currentTimeMillis();
+        request.setAttribute(AbstractCacheablePageAction.START_TIME_MILLIS,
+                             startTimeMillis);
+
+        if (Latkes.isPageCacheEnabled()) {
+            final String requestURI = httpServletRequest.getRequestURI();
+            final String queryString = httpServletRequest.getQueryString();
+            String pageCacheKey =
+                    (String) request.getAttribute(Keys.PAGE_CACHE_KEY);
+            if (Strings.isEmptyOrNull(pageCacheKey)) {
+                pageCacheKey = PageCaches.getPageCacheKey(requestURI,
+                                                          queryString);
+                request.setAttribute(Keys.PAGE_CACHE_KEY, pageCacheKey);
+            }
+        }
+
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
@@ -112,6 +137,9 @@ public final class PageCacheFilter implements Filter {
         }
 
         // Process page cache hit
+        final Transaction transaction = statisticRepository.beginTransaction();
+        transaction.clearQueryCache(false);
+
         try {
             LOGGER.log(Level.FINEST,
                        "Writes resposne for page[pageCacheKey={0}] from cache",
@@ -129,8 +157,6 @@ public final class PageCacheFilter implements Filter {
             LOGGER.log(Level.FINEST,
                        "Cached value[key={0}, type={1}, title={2}]",
                        new Object[]{pageCacheKey, cachedType, cachedTitle});
-
-            statistics.incBlogViewCount();
             final Locale locale = Latkes.getLocale();
             final Map<String, String> langs = langPropsService.getAll(locale);
             if (langs.get(PageTypes.ARTICLE).equals(cachedType)) {
@@ -138,6 +164,8 @@ public final class PageCacheFilter implements Filter {
                         AbstractCacheablePageAction.CACHED_OID);
                 statistics.incArticleViewCount(articleId);
             }
+            statistics.incBlogViewCount();
+            transaction.commit();
 
             final long endimeMillis = System.currentTimeMillis();
             final String dateString = DateFormatUtils.format(
@@ -151,11 +179,17 @@ public final class PageCacheFilter implements Filter {
             writer.flush();
             writer.close();
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             chain.doFilter(request, response);
 
             return;
         }
+
+
     }
 
     @Override

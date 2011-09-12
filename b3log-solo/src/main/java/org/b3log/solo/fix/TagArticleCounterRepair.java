@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.CollectionUtils;
@@ -122,7 +121,6 @@ public final class TagArticleCounterRepair extends HttpServlet {
             }
 
             transaction.commit();
-            PageCaches.removeAll();
 
             writer.println("Repair sucessfully!");
         } catch (final Exception e) {

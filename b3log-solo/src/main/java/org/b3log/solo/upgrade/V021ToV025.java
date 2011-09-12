@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
@@ -281,8 +280,6 @@ public final class V021ToV025 extends HttpServlet {
 
             LOGGER.info("Checked for consistency");
         }
-
-        PageCaches.removeAll();
     }
 
     /**

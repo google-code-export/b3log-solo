@@ -21,14 +21,14 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Keys;
-import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestDispatcher;
+import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageGAERepository;
 import org.json.JSONObject;
@@ -88,19 +88,16 @@ public final class PagePermalinkFilter implements Filter {
         }
 
         try {
-            final String pageId = page.getString(Keys.OBJECT_ID);
+            final HTTPRequestContext context = new HTTPRequestContext();
+            context.setRequest(httpServletRequest);
+            context.setResponse((HttpServletResponse) response);
 
-            final RequestDispatcher requestDispatcher =
-                    httpServletRequest.getRequestDispatcher("/page.do?"
-                                                            + requestURI);
-            final String queryString =
-                    httpServletRequest.getQueryString();
-            final String pageCacheKey =
-                    PageCaches.getPageCacheKey(requestURI, queryString);
+            httpServletRequest.setAttribute(Page.PAGE, page);
 
-            request.setAttribute(Keys.PAGE_CACHE_KEY, pageCacheKey);
-            request.setAttribute(Keys.OBJECT_ID, pageId);
-            requestDispatcher.forward(request, response);
+            httpServletRequest.setAttribute("requestURI", "/page");
+            httpServletRequest.setAttribute("method", "GET");
+
+            HTTPRequestDispatcher.dispatch(context);
         } catch (final Exception e) {
             ((HttpServletResponse) response).sendError(
                     HttpServletResponse.SC_NOT_FOUND);

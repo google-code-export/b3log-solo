@@ -269,8 +269,6 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
                        e.getMessage());
             throw new ActionException(e);
         }
-
-        PageCaches.removeAll();
     }
 
     /**

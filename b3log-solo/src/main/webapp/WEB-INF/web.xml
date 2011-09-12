@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.3.0, Sep 5, 2011
+    Version: 1.0.3.1, Sep 8, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -122,13 +122,15 @@
     </session-config>
     
     <servlet>
-        <servlet-name>GetArticleContnetServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.GetArticleContentServlet</servlet-class>
+        <servlet-name>HTTPRequestDispatcher</servlet-name>
+        <servlet-class>org.b3log.latke.servlet.HTTPRequestDispatcher</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetArticleContnetServlet</servlet-name>
-        <url-pattern>/get-article-content</url-pattern>
+        <servlet-name>HTTPRequestDispatcher</servlet-name>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
+    
+    
     <servlet>
         <servlet-name>AdminIndexAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.AdminIndexAction</servlet-class>
@@ -166,68 +168,12 @@
         <url-pattern>/init.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>KillBrowserAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.KillBrowserAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>KillBrowserAction</servlet-name>
-        <url-pattern>/kill-browser.html</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>RemoveAllDataServlet</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.RemoveAllDataServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RemoveAllDataServlet</servlet-name>
         <url-pattern>/rm-all-data.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>IndexAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.IndexAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>IndexAction</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ArticleAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.ArticleAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ArticleAction</servlet-name>
-        <url-pattern>/article.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>TagArticlesAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.TagArticlesAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TagArticlesAction</servlet-name>
-        <url-pattern>/tags/*</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ArchiveDateArticlesAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.ArchiveArticlesAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ArchiveDateArticlesAction</servlet-name>
-        <url-pattern>/archives/*</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>TagsAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.TagsAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TagsAction</servlet-name>
-        <url-pattern>/tags.html</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>PageAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.PageAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PageAction</servlet-name>
-        <url-pattern>/page.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>BlogArticlesFeedServlet</servlet-name>
@@ -286,22 +232,6 @@
         <url-pattern>/datastore-file-access.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>AuthorArticlesAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.AuthorArticlesAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AuthorArticlesAction</servlet-name>
-        <url-pattern>/authors/*</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>CheckLoggedInAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.CheckLoggedInAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CheckLoggedInAction</servlet-name>
-        <url-pattern>/check-login.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>AddArticleCommentAction</servlet-name>
         <servlet-class>org.b3log.solo.action.impl.AddArticleCommentAction</servlet-class>
     </servlet>
@@ -324,22 +254,6 @@
     <servlet-mapping>
         <servlet-name>AddPageCommentAction</servlet-name>
         <url-pattern>/add-page-comment.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>ClearCacheAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.ClearCacheAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ClearCacheAction</servlet-name>
-        <url-pattern>/clear-cache.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>GetRandomArticlesAction</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.GetRandomArticlesAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>GetRandomArticlesAction</servlet-name>
-        <url-pattern>/get-random-articles.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>ArticleRandomDoubleUpdateServlet</servlet-name>
@@ -388,14 +302,6 @@
     <servlet-mapping>
         <servlet-name>JSONRPCServlet</servlet-name>
         <url-pattern>/json-rpc.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>Error</servlet-name>
-        <servlet-class>org.b3log.solo.action.impl.ErrorAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Error</servlet-name>
-        <url-pattern>/error.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>AdminError</servlet-name>

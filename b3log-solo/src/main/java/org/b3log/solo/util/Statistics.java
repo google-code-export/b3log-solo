@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 16, 2011
+ * @version 1.0.0.8, Sep 11, 2011
  */
 public final class Statistics {
 
@@ -182,24 +182,21 @@ public final class Statistics {
      * There is a cron job to flush the blog view count from memcache to 
      * datastore.
      * </p>
+     * @throws Exception exception
      */
-    public void incBlogViewCount() {
-        try {
-            final JSONObject statistic =
-                    statisticRepository.get(Statistic.STATISTIC);
-            if (null == statistic) {
-                return;
-            }
-            
-            long blogViewCnt =
-                    statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
-            ++blogViewCnt;
-            statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
-            statisticRepository.updateAsync(Statistic.STATISTIC, statistic);
-            LOGGER.log(Level.FINER, "Current blog view count[{0}]", blogViewCnt);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+    public void incBlogViewCount() throws Exception {
+        final JSONObject statistic =
+                statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            return;
         }
+
+        long blogViewCnt =
+                statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
+        ++blogViewCnt;
+        statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
+        statisticRepository.update(Statistic.STATISTIC, statistic);
+        LOGGER.log(Level.FINER, "Current blog view count[{0}]", blogViewCnt);
     }
 
     /**
@@ -212,28 +209,23 @@ public final class Statistics {
      * </p>
      *
      * @param articleId the given article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws Exception exception
      */
     public void incArticleViewCount(final String articleId)
-            throws JSONException, RepositoryException {
-        try {
-            final JSONObject article = articleRepository.get(articleId);
-            if (null == article) {
-                return;
-            }
-
-            final int viewCnt =
-                    article.getInt(Article.ARTICLE_VIEW_COUNT) + 1;
-            article.put(Article.ARTICLE_VIEW_COUNT, viewCnt);
-            article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-
-            LOGGER.finer("Incing article view count async....");
-            articleRepository.updateAsync(articleId, article);
-            LOGGER.finer("Inced article view count");
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throws Exception {
+        final JSONObject article = articleRepository.get(articleId);
+        if (null == article) {
+            return;
         }
+
+        final int viewCnt =
+                article.getInt(Article.ARTICLE_VIEW_COUNT) + 1;
+        article.put(Article.ARTICLE_VIEW_COUNT, viewCnt);
+        article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+
+        LOGGER.finer("Incing article view count async....");
+        articleRepository.update(articleId, article);
+        LOGGER.finer("Inced article view count");
     }
 
     /**

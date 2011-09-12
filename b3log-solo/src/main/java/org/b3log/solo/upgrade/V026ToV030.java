@@ -29,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
@@ -118,8 +117,6 @@ public final class V026ToV030 extends HttpServlet {
 
             writer.close();
         }
-
-        PageCaches.removeAll();
     }
 
     /**
@@ -142,7 +139,7 @@ public final class V026ToV030 extends HttpServlet {
                 archiveDate.put(ArchiveDate.ARCHIVE_TIME, round.getTime());
                 archiveDate.remove(ArchiveDate.ARCHIVE_DATE); // Removes the old version property
 
-                archiveDateRepository.updateAsync(archiveDate.getString(
+                archiveDateRepository.update(archiveDate.getString(
                         Keys.OBJECT_ID), archiveDate);
             }
 

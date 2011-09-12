@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Plugin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jul 24, 2011
+ * @version 1.0.0.3, Sep 11, 2011
  */
 public final class Plugins {
 
@@ -59,32 +59,37 @@ public final class Plugins {
         final JSONArray pluginArray = result.getJSONArray(Keys.RESULTS);
         final List<JSONObject> persistedPlugins =
                 CollectionUtils.jsonArrayToList(pluginArray);
-        
+
         // Disables plugin repository cache to avoid remove all cache
         PLUGIN_REPOS.setCacheEnabled(false);
 
-        // Reads plugin status from datastore and clear plugin datastore
-        for (final JSONObject oldPluginDesc : persistedPlugins) {
-            final String descId = oldPluginDesc.getString(Keys.OBJECT_ID);
-            final AbstractPlugin plugin = get(plugins, descId);
+        try {
+            // Reads plugin status from datastore and clear plugin datastore
+            for (final JSONObject oldPluginDesc : persistedPlugins) {
+                final String descId = oldPluginDesc.getString(Keys.OBJECT_ID);
+                final AbstractPlugin plugin = get(plugins, descId);
 
-            PLUGIN_REPOS.remove(descId);
+                PLUGIN_REPOS.remove(descId);
 
-            if (null != plugin) {
-                final String status =
-                        oldPluginDesc.getString(Plugin.PLUGIN_STATUS);
-                plugin.setStatus(PluginStatus.valueOf(status));
+                if (null != plugin) {
+                    final String status =
+                            oldPluginDesc.getString(Plugin.PLUGIN_STATUS);
+                    plugin.setStatus(PluginStatus.valueOf(status));
+                }
             }
+
+            // Adds these plugins into datastore
+            for (final AbstractPlugin plugin : plugins) {
+                final JSONObject pluginDesc = plugin.toJSONObject();
+                PLUGIN_REPOS.add(pluginDesc);
+
+                LOGGER.log(Level.FINEST, "Refreshed plugin[{0}]", pluginDesc);
+            }
+
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Refresh plugins failed", e);
         }
 
-        // Adds these plugins into datastore
-        for (final AbstractPlugin plugin : plugins) {
-            final JSONObject pluginDesc = plugin.toJSONObject();
-            PLUGIN_REPOS.addAsync(pluginDesc);
-            
-            LOGGER.log(Level.FINEST, "Refreshed plugin[{0}]", pluginDesc);
-        }
-        
         PLUGIN_REPOS.setCacheEnabled(true);
     }
 

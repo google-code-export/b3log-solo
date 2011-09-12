@@ -13,98 +13,83 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.action.impl;
+package org.b3log.solo.web.processor;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.logging.Level;
+import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.annotation.RequestProcessing;
+import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.util.Users;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Cache clear action.
+ * Cache processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jul 3, 2011
+ * @version 1.1.0.0, Sep 11, 2011
+ * @since 0.3.1
  */
-public final class ClearCacheAction extends AbstractAction {
+@RequestProcessor
+public final class CacheProcessor {
 
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ClearCacheAction.class.getName());
+            Logger.getLogger(CacheProcessor.class.getName());
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
 
-    @Override
-    protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ActionException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    /**
+     * Clears cache with the specified context.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/clear-cache.do"},
+                       method = HTTPRequestMethod.POST)
+    public void clearCache(final HTTPRequestContext context) {
+        final HttpServletRequest httpServletRequest = context.getRequest();
+        final HttpServletResponse httpServletResponse = context.getResponse();
 
-    @Override
-    protected JSONObject doAjaxAction(final JSONObject data,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
-            throws ActionException {
-        final JSONObject ret = new JSONObject();
-
-        final String all = data.optString("all");
         try {
-            if (Strings.isEmptyOrNull(all)) { // Just clears single page cache
-                final String uri = data.getString(Common.URI);
-                clearPageCache(uri, request, response);
-            } else { // Clears all page caches
-                clearAllPageCache(request, response);
-            }
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(httpServletRequest,
+                                                          httpServletResponse);
+            final String all = requestJSONObject.optString("all");
 
-            ret.put(Keys.STATUS_CODE, true);
+            if (Strings.isEmptyOrNull(all)) { // Just clears single page cache
+                final String uri = requestJSONObject.getString(Common.URI);
+                clearPageCache(uri, httpServletResponse);
+            } else { // Clears all page caches
+                clearAllPageCache(httpServletResponse);
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            try {
-                ret.put(Keys.STATUS_CODE, false);
-            } catch (final JSONException ex) {
-                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
-
-                throw new ActionException(ex);
-            }
         }
-
-        return ret;
     }
 
     /**
      * Clears a page cache specified by the given URI.
      *
      * @param uri the specified URI
-     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public void clearPageCache(final String uri,
-                               final HttpServletRequest request,
-                               final HttpServletResponse response)
+    private void clearPageCache(final String uri,
+                                final HttpServletResponse response)
             throws ActionException, IOException {
         if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -121,15 +106,12 @@ public final class ClearCacheAction extends AbstractAction {
     /**
      * Clears all page cache.
      *
-     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public void clearAllPageCache(final HttpServletRequest request,
-                                  final HttpServletResponse response)
+    private void clearAllPageCache(final HttpServletResponse response)
             throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;

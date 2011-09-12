@@ -53,7 +53,7 @@ public final class UserGAERepository extends AbstractGAERepository
     public JSONObject getByEmail(final String email) {
         final Query query = new Query();
         query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL,
-                        email.toLowerCase());
+                        email.toLowerCase().trim());
 
         try {
             final JSONObject result = get(query);

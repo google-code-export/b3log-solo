@@ -23,11 +23,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
+import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
@@ -64,6 +66,8 @@ public final class RestoreSigns extends HttpServlet {
             throws ServletException, IOException {
         final PrintWriter writer = response.getWriter();
 
+        final Repository repository = PreferenceGAERepository.getInstance();
+        final Transaction transaction = repository.beginTransaction();
         try {
             final JSONObject preference = preferenceUtils.getPreference();
             final String originalSigns =
@@ -71,6 +75,8 @@ public final class RestoreSigns extends HttpServlet {
             preference.put(Preference.SIGNS, Preference.Default.DEFAULT_SIGNS);
 
             preferenceUtils.setPreference(preference);
+            
+            transaction.commit();
 
             // Sends the sample signs to developer
             final Message msg = new MailService.Message();
@@ -83,9 +89,11 @@ public final class RestoreSigns extends HttpServlet {
 
             MAIL_SVC.send(msg);
             writer.println("Restores signs succeeded.");
-
-            PageCaches.removeAll();
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             writer.println("Restores signs failed, error msg["
                            + e.getMessage() + "]");
