@@ -179,7 +179,7 @@ public final class ArticleProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/get-article-content*"},
+    @RequestProcessing(value = {"/get-article-content"},
                        method = HTTPRequestMethod.POST)
     public void getArticleContent(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
