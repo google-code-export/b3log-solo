@@ -211,7 +211,7 @@ public final class ArticleProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/authors/*"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/authors/**"}, method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
