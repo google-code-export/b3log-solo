@@ -194,7 +194,7 @@ public final class FeedProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/tag-articles-feed.do*"},
+    @RequestProcessing(value = {"/tag-articles-feed.do"},
                        method = HTTPRequestMethod.GET)
     public void tagArticlesAtom(final HTTPRequestContext context) {
         final AtomRenderer renderer = new AtomRenderer();
@@ -408,7 +408,7 @@ public final class FeedProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/tag-articles-rss.do*"},
+    @RequestProcessing(value = {"/tag-articles-rss.do"},
                        method = HTTPRequestMethod.GET)
     public void tagArticlesRSS(final HTTPRequestContext context) {
         final HttpServletResponse response = context.getResponse();
