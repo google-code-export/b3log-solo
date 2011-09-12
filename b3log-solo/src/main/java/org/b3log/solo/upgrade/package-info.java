@@ -8,6 +8,7 @@
  * </p>
  * 
  * @deprecated As of Solo 0.3.1, upgrade will check automatically, so removes 
- * all upgrader URL mappings in web.xml, with no replacement.
+ * all upgrader URL mappings in web.xml, with no replacement. See 
+ * {@link org.b3log.solo.web.processor.UpgradeProcessor} for mor details.
  */
 package org.b3log.solo.upgrade;
