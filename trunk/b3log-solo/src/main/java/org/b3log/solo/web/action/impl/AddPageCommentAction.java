@@ -41,7 +41,6 @@ import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.web.action.StatusCodes;
-import org.b3log.solo.web.action.captcha.CaptchaServlet;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
@@ -56,6 +55,7 @@ import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
+import org.b3log.solo.web.processor.CaptchaProcessor;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -168,10 +168,10 @@ public final class AddPageCommentAction extends AbstractAction {
         String pageId, commentId;
         try {
             final String captcha = requestJSONObject.getString(
-                    CaptchaServlet.CAPTCHA);
+                    CaptchaProcessor.CAPTCHA);
             final HttpSession session = request.getSession();
             final String storedCaptcha = (String) session.getAttribute(
-                    CaptchaServlet.CAPTCHA);
+                    CaptchaProcessor.CAPTCHA);
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
                 ret.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
 
@@ -179,7 +179,7 @@ public final class AddPageCommentAction extends AbstractAction {
             }
 
             synchronized (CommentService.class) {
-                session.removeAttribute(CaptchaServlet.CAPTCHA);
+                session.removeAttribute(CaptchaProcessor.CAPTCHA);
             }
 
             pageId = requestJSONObject.getString(Keys.OBJECT_ID);
