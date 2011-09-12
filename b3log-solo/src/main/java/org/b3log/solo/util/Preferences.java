@@ -30,7 +30,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Sep 8, 2011
+ * @version 1.0.0.8, Sep 12, 2011
  */
 public final class Preferences {
 
@@ -64,12 +64,12 @@ public final class Preferences {
      */
     public JSONObject getPreference() {
         LOGGER.log(Level.FINER, "Getting preference....");
-        LOGGER.log(Level.FINER, "Try to get preference from cache");
+        LOGGER.log(Level.FINEST, "Try to get preference from cache");
         final Object preferenceString = userPreferenceCache.get(PREFERENCE);
         JSONObject ret = null;
         try {
             if (null == preferenceString) {
-                LOGGER.finer("Can't get preference from cache, "
+                LOGGER.finest("Can't get preference from cache, "
                              + "so loads it from datastore");
                 ret = preferenceRepository.get(PREFERENCE);
 
