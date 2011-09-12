@@ -40,7 +40,6 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.web.action.StatusCodes;
-import org.b3log.solo.web.action.captcha.CaptchaServlet;
 import org.b3log.solo.web.action.impl.AddArticleCommentAction;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -59,6 +58,7 @@ import org.b3log.solo.repository.impl.UserGAERepository;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
+import org.b3log.solo.web.processor.CaptchaProcessor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -574,9 +574,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
         requestJSONObject = new JSONObject();
         final String captchaForInit = "captchaForInit";
-        request.getSession().setAttribute(CaptchaServlet.CAPTCHA,
+        request.getSession().setAttribute(CaptchaProcessor.CAPTCHA,
                                           captchaForInit);
-        requestJSONObject.put(CaptchaServlet.CAPTCHA, captchaForInit);
+        requestJSONObject.put(CaptchaProcessor.CAPTCHA, captchaForInit);
         requestJSONObject.put(Keys.OBJECT_ID, articleId);
         requestJSONObject.put(Comment.COMMENT_NAME, "88250");
         requestJSONObject.put(Comment.COMMENT_EMAIL, "DL88250@gmail.com");

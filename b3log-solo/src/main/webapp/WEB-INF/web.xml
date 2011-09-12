@@ -167,22 +167,6 @@
         <url-pattern>/init.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>CaptchaServlet</servlet-name>
-        <servlet-class>org.b3log.solo.web.action.captcha.CaptchaServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CaptchaServlet</servlet-name>
-        <url-pattern>/captcha.do</url-pattern>
-    </servlet-mapping>
-    <!--    <servlet>
-        <servlet-name>BlobStoreFileAccessServlet</servlet-name>
-        <servlet-class>org.b3log.solo.action.file.BlobStoreFileAccessServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>BlobStoreFileAccessServlet</servlet-name>
-        <url-pattern>/file-access.do</url-pattern>
-    </servlet-mapping>-->
-    <servlet>
         <servlet-name>DataStoreFileAccessServlet</servlet-name>
         <servlet-class>org.b3log.solo.web.action.file.DataStoreFileAccessServlet</servlet-class>
     </servlet>
