@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.latke.Latkes;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.solo.util.Users;
@@ -178,13 +179,15 @@ public final class IndexProcessor {
 
             skins.fillLanguage(preference, dataModel);
 
+            final Map<String, String> langs =
+                    langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_OID, "No id");
             request.setAttribute(CACHED_TITLE,
-                                 dataModel.get(PageTypes.INDEX_ARTICLES)
+                                 langs.get(PageTypes.INDEX_ARTICLES)
                                  + "  [" + dataModel.get("pageNumLabel") + "="
                                  + currentPageNum + "]");
             request.setAttribute(CACHED_TYPE,
-                                 dataModel.get(PageTypes.INDEX_ARTICLES));
+                                 langs.get(PageTypes.INDEX_ARTICLES));
             request.setAttribute(CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(dataModel, currentPageNum, preference);
