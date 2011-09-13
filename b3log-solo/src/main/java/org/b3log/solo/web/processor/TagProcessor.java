@@ -42,6 +42,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.LangPropsService;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -65,7 +66,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 8, 2011
+ * @version 1.1.0.1, Sep 13, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -247,7 +248,8 @@ public final class TagProcessor {
                           pageNums.get(pageNums.size() - 1));
             dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-            dataModel.put(Common.PATH, "/tags/" + tagTitle);
+            dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle,
+                                                                    "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
             dataModel.put(Tag.TAG, tag);
 
