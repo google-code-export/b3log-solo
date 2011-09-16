@@ -40,7 +40,6 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.web.action.StatusCodes;
-import org.b3log.solo.web.action.impl.AddArticleCommentAction;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Article;
@@ -59,6 +58,7 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.web.processor.CaptchaProcessor;
+import org.b3log.solo.web.processor.CommentProcessor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -586,8 +586,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 "Hi, this is a comment. To delete a comment, just log in and "
                 + "view the post's comments. There you will have the option "
                 + "to delete them.");
-        AddArticleCommentAction.addArticleComment(requestJSONObject,
-                                                  request, response);
+
+        CommentProcessor.addArticleCommentInteral(requestJSONObject, request);
     }
 
     /**
