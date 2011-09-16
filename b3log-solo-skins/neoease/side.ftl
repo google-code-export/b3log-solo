@@ -16,12 +16,15 @@
                      src='${comment.commentThumbnailURL}'/>
                 <div class='recent-comments-main'>
                     <div>
-                        <#if "http://" == comment.commentURL>
-                        ${comment.commentName}
-                        <#else>
-                        <a target="_blank" href="${comment.commentURL}">${comment.commentName}</a>
-                        </#if>
+                        <span class="left">
+                            <#if "http://" == comment.commentURL>
+                            ${comment.commentName}
+                            <#else>
+                            <a target="_blank" href="${comment.commentURL}">${comment.commentName}</a>
+                            </#if>
+                        </span>
                         <span class="expand-ico"></span>
+                        <span class="clear"></span>
                     </div>
                     <div class="recent-comments-content">
                         <a href="${comment.commentSharpURL}">

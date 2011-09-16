@@ -38,21 +38,23 @@
             </li>
         </ul>
         <div class="right">
-            ${viewCount1Label}
-            <span class="tip">
-                ${statistic.statisticBlogViewCount}
-            </span>
-            &nbsp;&nbsp;
-            ${articleCount1Label}
-            <span class="tip">
-                ${statistic.statisticPublishedBlogArticleCount}
-            </span>
-            &nbsp;&nbsp;
-            ${commentCount1Label}
-            <span class="tip">
-                ${statistic.statisticPublishedBlogCommentCount}
-            </span>
             <span class="translate-ico" onclick="goTranslate()"></span>
+            <div class="right">
+                ${viewCount1Label}
+                <span class="tip">
+                    ${statistic.statisticBlogViewCount}
+                </span>
+                &nbsp;&nbsp;
+                ${articleCount1Label}
+                <span class="tip">
+                    ${statistic.statisticPublishedBlogArticleCount}
+                </span>
+                &nbsp;&nbsp;
+                ${commentCount1Label}
+                <span class="tip">
+                    ${statistic.statisticPublishedBlogCommentCount}
+                </span>
+            </div>
         </div>
         <div class="clear"></div>
     </div>

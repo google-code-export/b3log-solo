@@ -3,13 +3,13 @@
  * skin andrea style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Aug 10, 2011
+ * @version 1.0.0.3, Sep 16, 2011
 */
 body {
     background-image: url("../images/bg-grey.jpg");
     background-color: #000000;
     color: #363636;
-    font-family: \u5fae\u8f6f\u96c5\u9ed1, Arial,Verdana,sans-serif;
+    font-family: \u5fae\u8f6f\u96c5\u9ed1, 'Microsoft YaHei', Arial,Verdana,sans-serif;
     font-size: 12px;
     margin: 0;
     padding: 0;
@@ -70,7 +70,7 @@ a:hover {
 
 .header .left a, .sub-title {
     color: #FFFFFF;
-    font-family: 'Neucha',\u5fae\u8f6f\u96c5\u9ed1,Arial,Verdana,sans-serif;
+    font-family: 'Neucha',\u5fae\u8f6f\u96c5\u9ed1,Arial,'Microsoft YaHei',Verdana,sans-serif;
     font-size: 46px;
     text-decoration: none;
 }
@@ -126,7 +126,7 @@ a:hover {
     font-size: 20px;
     line-height: 20px;
     margin-bottom: 18px;
-    font-family: 'Neucha', '\u5fae\u8f6f\u96c5\u9ed1';
+    font-family: 'Neucha', '\u5fae\u8f6f\u96c5\u9ed1', 'Microsoft YaHei';
 }
 
 .main-footer {
@@ -462,7 +462,7 @@ a:hover {
 }
 
 .article-relative h4 {
-    font-family: 'Neucha','\u5fae\u8f6f\u96c5\u9ed1',Arial,Verdana;
+    font-family: 'Neucha','\u5fae\u8f6f\u96c5\u9ed1','Microsoft YaHei',Arial,Verdana;
     font-size: 16px;
 }
 
@@ -545,7 +545,7 @@ h2.comment-label {
     border-radius:5px;
     background-color: #EBE9E5;
     border: 1px solid #BABAAE;
-    font-family: \u5fae\u8f6f\u96c5\u9ed1;
+    font-family: \u5fae\u8f6f\u96c5\u9ed1,'Microsoft YaHei';
     font-size: 12px;
     margin: 10px 0;
     padding: 10px;
