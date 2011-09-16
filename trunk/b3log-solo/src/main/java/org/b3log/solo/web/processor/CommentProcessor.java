@@ -13,14 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.web.action.impl;
+package org.b3log.solo.web.processor;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.util.Pages;
+import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.TimeZones;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,54 +36,46 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
-import org.b3log.latke.action.ActionException;
+import org.b3log.latke.annotation.RequestProcessing;
+import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.urlfetch.HTTPHeader;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.HTTPResponse;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Preferences;
-import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.TimeZones;
-import org.b3log.solo.web.processor.CaptchaProcessor;
+import org.b3log.solo.web.action.StatusCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Adds article comment action.
+ * Comment processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 25, 2011
+ * @version 1.1.0.0, Sep 15, 2011
+ * @since 0.3.1
  */
-public final class AddPageCommentAction extends AbstractAction {
+@RequestProcessor
+public final class CommentProcessor {
 
-    /**
-     * Default serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(AddPageCommentAction.class.getName());
+            Logger.getLogger(CommentProcessor.class.getName());
     /**
      * Page repository.
      */
@@ -116,18 +116,25 @@ public final class AddPageCommentAction extends AbstractAction {
      */
     private EventManager eventManager = EventManager.getInstance();
 
-    @Override
-    protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ActionException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     /**
      * Adds a comment to a page.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "oId": generatedCommentId,
+     *     "sc": "COMMENT_PAGE_SUCC"
+     *     "commentDate": "", // yyyy/MM/dd hh:mm:ss
+     *     "commentSharpURL": "",
+     *     "commentThumbnailURL": "",
+     *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
+     * }
+     * </pre>
+     * </p>
      *
-     * @param requestJSONObject the specified request json object, for example,
+     * @param context the specified context, 
+     * including a request json object, for example,
      * <pre>
      * {
      *     "captcha": "",
@@ -140,42 +147,38 @@ public final class AddPageCommentAction extends AbstractAction {
      *                                    // is an reply
      * }
      * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
-     *     "oId": generatedCommentId,
-     *     "sc": "COMMENT_PAGE_SUCC"
-     *     "commentDate": "", // yyyy/MM/dd hh:mm:ss
-     *     "commentSharpURL": "",
-     *     "commentThumbnailURL": "",
-     *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
-     * }
-     * </pre>
-     * @throws ActionException action exception
      */
-    @Override
-    protected JSONObject doAjaxAction(final JSONObject requestJSONObject,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
-            throws ActionException {
-        final JSONObject ret = new JSONObject();
+    @RequestProcessing(value = {"/add-page-comment.do"},
+                       method = HTTPRequestMethod.POST)
+    public void addPageComment(final HTTPRequestContext context) {
+        final HttpServletRequest httpServletRequest = context.getRequest();
+        final HttpServletResponse httpServletResponse = context.getResponse();
+
         // TODO: add article comment args check
+
+        final JSONObject jsonObject = new JSONObject();
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        renderer.setJSONObject(jsonObject);
 
         final Transaction transaction = commentRepository.beginTransaction();
 
         String pageId, commentId;
         try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(httpServletRequest,
+                                                          httpServletResponse);
+
             final String captcha = requestJSONObject.getString(
                     CaptchaProcessor.CAPTCHA);
-            final HttpSession session = request.getSession();
+            final HttpSession session = httpServletRequest.getSession();
             final String storedCaptcha = (String) session.getAttribute(
                     CaptchaProcessor.CAPTCHA);
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-                ret.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
+                jsonObject.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
 
-                return ret;
+                return;
             }
 
             synchronized (CommentService.class) {
@@ -209,7 +212,8 @@ public final class AddPageCommentAction extends AbstractAction {
                     preference.getString(Preference.TIME_ZONE_ID);
             final Date date = timeZoneUtils.getTime(timeZoneId);
             comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, Comment.DATE_FORMAT.format(date));
+            jsonObject.put(Comment.COMMENT_DATE,
+                           Comment.DATE_FORMAT.format(date));
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment =
                         commentRepository.get(originalCommentId);
@@ -220,8 +224,8 @@ public final class AddPageCommentAction extends AbstractAction {
                             originalComment.getString(Comment.COMMENT_NAME);
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
                                 originalCommentName);
-                    ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
-                            originalCommentName);
+                    jsonObject.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
+                                   originalCommentName);
                 } else {
                     LOGGER.log(Level.WARNING,
                                "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
@@ -230,8 +234,8 @@ public final class AddPageCommentAction extends AbstractAction {
                 }
             }
             setCommentThumbnailURL(comment);
-            ret.put(Comment.COMMENT_THUMBNAIL_URL,
-                    comment.getString(Comment.COMMENT_THUMBNAIL_URL));
+            jsonObject.put(Comment.COMMENT_THUMBNAIL_URL,
+                           comment.getString(Comment.COMMENT_THUMBNAIL_URL));
             // Sets comment on page....
             comment.put(Comment.COMMENT_ON_ID, pageId);
             comment.put(Comment.COMMENT_ON_TYPE, Page.PAGE);
@@ -239,7 +243,7 @@ public final class AddPageCommentAction extends AbstractAction {
             // Save comment sharp URL
             final String commentSharpURL = getCommentSharpURLForPage(page,
                                                                      commentId);
-            ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
+            jsonObject.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.update(commentId, comment);
@@ -264,17 +268,22 @@ public final class AddPageCommentAction extends AbstractAction {
                                           eventData));
 
             transaction.commit();
-            ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_PAGE_SUCC);
-            ret.put(Keys.OBJECT_ID, commentId);
+            jsonObject.put(Keys.STATUS_CODE, StatusCodes.COMMENT_PAGE_SUCC);
+            jsonObject.put(Keys.OBJECT_ID, commentId);
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
 
-        return ret;
+            LOGGER.log(Level.SEVERE, "Can not add comment on page", e);
+
+            try {
+                context.getResponse().sendError(
+                        HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            } catch (final IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
     }
 
     /**
