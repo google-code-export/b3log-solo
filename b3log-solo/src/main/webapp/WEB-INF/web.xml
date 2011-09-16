@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.3.1, Sep 8, 2011
+    Version: 1.0.3.2, Sep 15, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -189,14 +189,6 @@
     <servlet-mapping>
         <servlet-name>AddArticleCommentFromSymphonyAction</servlet-name>
         <url-pattern>/add-article-from-symphony-comment.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>AddPageCommentAction</servlet-name>
-        <servlet-class>org.b3log.solo.web.action.impl.AddPageCommentAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddPageCommentAction</servlet-name>
-        <url-pattern>/add-page-comment.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>JSONRPCServlet</servlet-name>
