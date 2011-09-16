@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.3.2, Sep 15, 2011
+    Version: 1.0.3.3, Sep 16, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -173,14 +173,6 @@
     <servlet-mapping>
         <servlet-name>DataStoreFileAccessServlet</servlet-name>
         <url-pattern>/datastore-file-access.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>AddArticleCommentAction</servlet-name>
-        <servlet-class>org.b3log.solo.web.action.impl.AddArticleCommentAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AddArticleCommentAction</servlet-name>
-        <url-pattern>/add-article-comment.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>AddArticleCommentFromSymphonyAction</servlet-name>
