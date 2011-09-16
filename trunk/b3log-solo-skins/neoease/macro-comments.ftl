@@ -11,16 +11,18 @@
         <img class="comment-header" title="${comment.commentName}"
              alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
         <div class="comment-panel">
-            <#if "http://" == comment.commentURL>
-            ${comment.commentName}
-            <#else>
-            <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
-            </#if>
-            <#if comment.isReply>&nbsp;@
-            <a href="${permalink}#${comment.commentOriginalCommentId}"
-               onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
-               onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
-            </#if>
+            <div class="left">
+                <#if "http://" == comment.commentURL>
+                ${comment.commentName}
+                <#else>
+                <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
+                </#if>
+                <#if comment.isReply>&nbsp;@
+                <a href="${permalink}#${comment.commentOriginalCommentId}"
+                   onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
+                   onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
+                </#if>
+            </div>
             <div class="right">
                 <a href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
                 &nbsp;|&nbsp;
@@ -127,7 +129,7 @@
         }
         var commentHTML = '<div id="' + result.oId + '" class="oddEven"><img class="comment-header" \
             title="' + $("#commentName" + state).val() + '" alt="' + $("#commentName" + state).val() + 
-            '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel">';
+            '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel"><div class="left">';
 
         if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
             commentHTML += $("#commentName" + state).val();
@@ -143,7 +145,7 @@
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
             
-        commentHTML += '<div class="right"><a href="javascript:replyTo(\'' + result.oId 
+        commentHTML += '</div><div class="right"><a href="javascript:replyTo(\'' + result.oId 
             + '\');">${replyLabel}</a>' + ' &nbsp;|&nbsp;' +  result.commentDate
             + '</div><span class="clear"></span><div class="article-body">' + 
             Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))

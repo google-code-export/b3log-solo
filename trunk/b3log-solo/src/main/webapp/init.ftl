@@ -61,7 +61,7 @@
                     success: function(result){
                         if (!result.isLoggedIn) {
                             $(".introContent").html("<h1>" + $(".introContent h2").html() + "</h1>"
-                                + "<img src='/images/arrow.png' title='B3log' alt='B3log'/><button onclick='login();'>${loginLabel}</button>")
+                                + "<img class='left' src='/images/arrow.png' title='B3log' alt='B3log'/><button onclick='login();'>${loginLabel}</button>")
                             .removeClass("introContent").addClass("introContentLogin");
                             $($(".introContentLogin h1 span")[0]).css("font-size", "36px");
                         }

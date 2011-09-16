@@ -3,7 +3,7 @@
  * skin community style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Aug 10, 2011
+ * @version 1.0.0.3, Sep 16, 2011
 */
 body {
     background-color: #EFEFEF;
@@ -377,7 +377,7 @@ a.header-title {
     color: #333333;
     font-size: 30px;
     margin: 20px 0 15px 0;
-    font-family: \u5fae\u8f6f\u96c5\u9ed1;
+    font-family: \u5fae\u8f6f\u96c5\u9ed1,'Microsoft YaHei';
 }
 
 .comment {

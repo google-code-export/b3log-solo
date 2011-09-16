@@ -246,7 +246,7 @@ $.extend(Common.prototype, {
  * @fileoverview neoease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Sep 7, 2011
+ * @version 1.0.0.5, Sep 16, 2011
  */
 var goTop = function (acceleration) {
     acceleration = acceleration || 0.1;
@@ -328,8 +328,9 @@ var goTranslate = function () {
         var y = $(window).scrollTop();
 
         if (y > 182) {
-            var top =  y + window.innerHeight - 21;
-            if ($("body").height() - 58 <= y + window.innerHeight) {
+            var bodyH = $(window).height();
+            var top =  y + bodyH - 21;
+            if ($("body").height() - 58 <= y + bodyH) {
                 top = $(".footer").offset().top - 21; 
             }
             $("#goTop").fadeIn("slow").css("top", top);

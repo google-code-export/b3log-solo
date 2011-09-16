@@ -3,7 +3,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Sep 7, 2011
+ * @version 1.0.0.5, Sep 16, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -12,20 +12,28 @@ html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
 }
 
 body {
-    font-family: "Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1';
+    font-family: "Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1','Microsoft YaHei';
     font-size: 12px;
     background-color: #F9F9F9;
     color: #555;
 }
 
-a {
+a:link {
     outline: none;
     color: #21759B;
     text-decoration: none;
 }
 
+a:visited {
+    color: #777777;
+}
+
 a:hover {
     color: #D54E21;    
+}
+
+a:active {
+    color: #555555;
 }
 
 img {
@@ -279,12 +287,9 @@ textarea, input {
     line-height: 20px;
     padding: 3px 10px 3px 28px;
     width: 24px;
-    -moz-transition-duration: 400ms;
-    -moz-transition-property: width, background;
-    -moz-transition-timing-function: ease;
-    -webkit-transition-duration: 400ms;
-    -webkit-transition-property: width, background;
-    -webkit-transition-timing-function: ease;
+    -moz-transition: width 0.4s ease, background 0.4s ease;
+    -webkit-transition: width 0.4s ease, background 0.4s ease;
+    transition: width 0.4s ease, background 0.4s ease;
 }
 
 #search:focus {
@@ -443,12 +448,9 @@ textarea, input {
     background-position: 0 -86px;
     float: right;
     width: 16px;
-    -moz-transition-duration: 400ms;
-    -moz-transition-property: opacity;
-    -moz-transition-timing-function: ease;
-    -webkit-transition-duration: 400ms;
-    -webkit-transition-property: opacity;
-    -webkit-transition-timing-function: ease;
+    -moz-transition: opacity 400ms ease;
+    -webkit-transition: opacity 400ms ease;
+    transition: opacity 400ms ease;
     opacity:0;
     filter: alpha(opacity=0);
 }
@@ -485,6 +487,7 @@ textarea, input {
     border-bottom: 1px solid #DFDFDF;
     color: #777777;    
     text-decoration: none;
+    padding-bottom: 1px;
 }
 
 .article-element a:hover { 
@@ -639,15 +642,13 @@ textarea, input {
 #comments>div {
     border-bottom: 1px solid #DEDEDE;
     padding: 10px;
+    width: 647px;
 }
 
 #comments .comment-panel>.right {
-    -moz-transition-duration: 400ms;
-    -moz-transition-property: opacity;
-    -moz-transition-timing-function: ease;
-    -webkit-transition-duration: 400ms;
-    -webkit-transition-property: opacity;
-    -webkit-transition-timing-function: ease;
+    -moz-transition: opacity 400ms ease;
+    -webkit-transition: opacity 400ms ease;
+    transition: opacity 400ms ease;
     opacity: 0;
     filter: alpha(opacity=0);
 }
@@ -685,11 +686,14 @@ textarea, input {
     margin-top: 5px;
 }
 
-.comment-body-ref {
+#comments .comment-body-ref {
+    border-bottom: 0;
     background-color: #FFF;
     border-radius: 5px 5px 5px 5px;
     left: 73px;
     position: absolute;
+    box-shadow: 1px 0 3px #DEDEDE;
+    width: 560px;
 }
 
 .comment-body-ref .comment-panel {
@@ -738,17 +742,15 @@ textarea, input {
 }
 
 .form textarea {
-    padding: 3px;
-}
-
-.form textarea {
     overflow: auto;
     resize: vertical;
+    padding: 3px;
+    width: 634px;
 }
 
 .form input {
     height: 24px;
-    line-height: 24px;
+    line-height: 16px;
     width: 260px;
 }
 

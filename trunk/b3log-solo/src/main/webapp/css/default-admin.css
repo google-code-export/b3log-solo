@@ -3,11 +3,11 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Aug 19, 2011
+ * @version 1.0.0.9, Sep 16, 2011
 */
 /* start resset */
 *, input, textarea {
-    font-family: \u5fae\u8f6f\u96c5\u9ed1;
+    font-family: \u5fae\u8f6f\u96c5\u9ed1,'Microsoft YaHei';
 }
 html, body {
     height: 100%;

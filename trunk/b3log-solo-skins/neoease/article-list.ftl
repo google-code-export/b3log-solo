@@ -1,6 +1,7 @@
 <#list articles as article>
 <div class="article">
     <h2>
+        <span class="left">
         <a class="article-title" href="${article.articlePermalink}">
             ${article.articleTitle}
         </a>
@@ -14,7 +15,9 @@
             ${topArticleLabel}
         </sup>
         </#if>
+        </span>
         <span class="expand-ico" onclick="getArticle(this, '${article.oId}');"></span>
+        <span class="clear"></span>
     </h2>
     <div class="left article-element">
         <span class="date-ico" title="${dateLabel}">  
