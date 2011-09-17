@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Symphony</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 25, 2011
+ * @version 1.0.0.6, Sep 17, 2011
  */
 public final class AddArticleCommentFromSymphonyAction
         extends AbstractAction {
@@ -141,6 +141,7 @@ public final class AddArticleCommentFromSymphonyAction
      *     "commenterEmail": "",
      *     "commenterURL": "",
      *     "commentContent": "",
+     *     "commentSharpURL": "",
      *     "commentOriginalCommentId": "" // optional, if exists this key, the comment
      *                                    // is an reply
      * }
@@ -198,7 +199,9 @@ public final class AddArticleCommentFromSymphonyAction
             String commentContent =
                     requestJSONObject.getString(Comment.COMMENT_CONTENT);
             commentContent += "<br/><div style='font: italic normal normal 11px Verdana'>"
-                              + "该评论来自 <a href='http://symphony.b3log.org'>"
+                              + "该评论来自 <a href='"
+                              + requestJSONObject.getString(
+                    Comment.COMMENT_SHARP_URL) + "'>"
                               + "B3log 社区</a></div>"; // XXX: no i18n
             final String originalCommentId = requestJSONObject.optString(
                     Comment.COMMENT_ORIGINAL_COMMENT_ID);
