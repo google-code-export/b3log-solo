@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.latke.servlet.renderer.FreeMarkerRenderer;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -241,8 +242,7 @@ public final class IndexProcessor {
      */
     @RequestProcessing(value = {"/error.do"}, method = HTTPRequestMethod.GET)
     public void handleErrors(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer =
-                new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("error.ftl");
