@@ -82,7 +82,7 @@ import static org.b3log.solo.model.Article.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Sep 11, 2011
+ * @version 1.1.0.2, Sep 17, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -203,6 +203,22 @@ public final class ArticleProcessor {
             renderer.setContent(content);
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "Updates article random value failed.");
+        }
+
+        final Repository statisticRepository =
+                StatisticGAERepository.getInstance();
+        final Transaction transaction =
+                statisticRepository.beginTransaction();
+        transaction.clearQueryCache(false);
+        try {
+            statistics.incArticleViewCount(articleId);
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.WARNING, "Inc article view count failed", e);
         }
     }
 
