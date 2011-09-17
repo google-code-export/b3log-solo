@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
-import org.b3log.latke.servlet.renderer.FreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
