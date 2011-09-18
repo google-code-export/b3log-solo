@@ -15,7 +15,12 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.latke.util.Locales;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
+import freemarker.template.Template;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import org.b3log.solo.web.action.impl.InitAction;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -26,7 +31,6 @@ import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.util.Strings;
 import org.json.JSONException;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.util.Locales;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import java.io.IOException;
 import java.util.List;
@@ -282,11 +286,9 @@ public final class IndexProcessor {
     @RequestProcessing(value = {"/kill-browser.html"},
                        method = HTTPRequestMethod.GET)
     public void showKillBrowser(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer =
-                new FrontFreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new KillBrowserRenderer();
         context.setRenderer(renderer);
 
-        renderer.setTemplateName("kill-browser.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -326,5 +328,57 @@ public final class IndexProcessor {
         final String pageNumString = requestURI.substring("/".length());
 
         return Requests.getCurrentPageNum(pageNumString);
+    }
+
+    /**
+     * Kill browser (kill-browser.ftl) HTTP response renderer.
+     * 
+     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @version 1.0.0.0, Sep 18, 2011
+     * @see 0.3.1
+     */
+    private static final class KillBrowserRenderer extends AbstractFreeMarkerRenderer {
+
+        /**
+         * Logger.
+         */
+        private static final Logger LOGGER =
+                Logger.getLogger(KillBrowserRenderer.class.getName());
+
+        @Override
+        public void render(final HTTPRequestContext context) {
+            final HttpServletResponse response = context.getResponse();
+            try {
+                final Template template =
+                        InitAction.TEMPLATE_CFG.getTemplate("kill-browser.ftl");
+
+                final PrintWriter writer = response.getWriter();
+
+                final StringWriter stringWriter = new StringWriter();
+                template.setOutputEncoding("UTF-8");
+                template.process(getDataModel(), stringWriter);
+
+                final String pageContent = stringWriter.toString();
+                context.getRequest().setAttribute(CACHED_CONTENT, pageContent);
+
+                writer.write(pageContent);
+                writer.flush();
+                writer.close();
+            } catch (final Exception e) {
+                try {
+                    response.sendError(
+                            HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    return;
+                } catch (final IOException ex) {
+                    LOGGER.log(Level.SEVERE, "Can not sned error 500!", ex);
+                }
+            }
+        }
+
+        @Override
+        protected void afterRender(final HTTPRequestContext context)
+                throws Exception {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
     }
 }
