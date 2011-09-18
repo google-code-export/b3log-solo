@@ -19,7 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
 import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.util.Statistics;
 
@@ -28,9 +29,9 @@ import org.b3log.solo.util.Statistics;
  * renderer.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 11, 2011
+ * @version 1.0.0.3, Sep 18, 2011
  */
-public final class FrontFreeMarkerRenderer extends AbstractFreeMarkerRenderer {
+public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
 
     /**
      * Logger.
@@ -55,7 +56,10 @@ public final class FrontFreeMarkerRenderer extends AbstractFreeMarkerRenderer {
      * </p>
      */
     @Override
-    protected void afterRender() {
+    protected void afterRender(final HTTPRequestContext context)
+            throws Exception {
+        super.afterRender(context);
+
         final Transaction transaction = statisticRepository.beginTransaction();
         transaction.clearQueryCache(false);
         try {

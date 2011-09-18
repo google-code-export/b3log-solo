@@ -188,8 +188,6 @@ public final class PageCacheFilter implements Filter {
 
             return;
         }
-
-
     }
 
     @Override
