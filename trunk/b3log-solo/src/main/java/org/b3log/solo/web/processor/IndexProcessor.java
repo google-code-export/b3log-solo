@@ -56,7 +56,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Sep 11, 2011
+ * @version 1.1.0.2, Sep 18, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -185,7 +185,7 @@ public final class IndexProcessor {
             request.setAttribute(CACHED_OID, "No id");
             request.setAttribute(CACHED_TITLE,
                                  langs.get(PageTypes.INDEX_ARTICLES)
-                                 + "  [" + dataModel.get("pageNumLabel") + "="
+                                 + "  [" + langs.get("pageNumLabel") + "="
                                  + currentPageNum + "]");
             request.setAttribute(CACHED_TYPE,
                                  langs.get(PageTypes.INDEX_ARTICLES));
