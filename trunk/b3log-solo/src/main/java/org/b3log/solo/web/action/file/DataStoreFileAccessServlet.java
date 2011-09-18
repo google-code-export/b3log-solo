@@ -184,6 +184,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
 
         final String id = request.getParameter(Keys.OBJECT_ID);
         final Transaction transaction = fileRepository.beginTransaction();
+        transaction.clearQueryCache(false);
         try {
             final JSONObject file = fileRepository.get(id);
             if (null == file) {
