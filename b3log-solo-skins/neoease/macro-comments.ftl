@@ -139,7 +139,7 @@
         }
 
         if (state !== "") {
-            var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-panel>a").text();
+            var commentOriginalCommentName = $("#" + page.currentCommentId + " .comment-panel>.left a").first().text();
             commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
