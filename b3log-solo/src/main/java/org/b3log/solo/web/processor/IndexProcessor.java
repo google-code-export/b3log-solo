@@ -60,7 +60,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Sep 18, 2011
+ * @version 1.1.0.3, Sep 19, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -348,6 +348,9 @@ public final class IndexProcessor {
         @Override
         public void render(final HTTPRequestContext context) {
             final HttpServletResponse response = context.getResponse();
+            response.setContentType("text/html");
+            response.setCharacterEncoding("UTF-8");
+
             try {
                 final Template template =
                         InitAction.TEMPLATE_CFG.getTemplate("kill-browser.ftl");
