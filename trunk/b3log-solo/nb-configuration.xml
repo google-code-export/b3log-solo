@@ -20,6 +20,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>http</word>
         <word>Jabsorb</word>
         <word>json</word>
+        <word>loc</word>
         <word>memcache</word>
         <word>permalink</word>
         <word>permalinks</word>
@@ -31,6 +32,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>plugins</word>
         <word>servlet</word>
         <word>servlets</word>
+        <word>sitemap</word>
         <word>tencent</word>
         <word>Upgrader</word>
         <word>Upgraders</word>

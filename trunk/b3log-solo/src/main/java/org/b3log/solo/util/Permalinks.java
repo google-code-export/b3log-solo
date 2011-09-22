@@ -31,7 +31,8 @@ import org.b3log.solo.repository.impl.PageGAERepository;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Sep 12, 2011
+ * @version 1.1.0.1, Sep 22, 2011
+ * @since 0.3.1
  */
 public final class Permalinks {
 
@@ -68,8 +69,7 @@ public final class Permalinks {
         RESERVED_LINKS.add("/add-article-from-symphony-comment.do");
         RESERVED_LINKS.add("/add-page-comment.do");
         RESERVED_LINKS.add("/get-article-content");
-
-        // XXX: I think we should update to the new Latke request dispatching ASAP
+        RESERVED_LINKS.add("/sitemap");
 
         RESERVED_LINKS.addAll(Arrays.asList(Skips.ADMIN_ACTIONS));
     }
@@ -153,7 +153,7 @@ public final class Permalinks {
             return true;
         }
 
-        if (Strings.isNumeric(permalink)) {
+        if (Strings.isNumeric(permalink.substring(1))) {
             // See issue 120 (http://code.google.com/p/b3log-solo/issues/detail?id=120#c4)
             // for more details
             return true;
