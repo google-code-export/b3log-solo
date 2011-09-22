@@ -39,7 +39,6 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.model.sitemap.Sitemap;
 import org.b3log.solo.model.sitemap.URL;
 import org.b3log.solo.repository.ArchiveDateRepository;
-import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
@@ -72,7 +71,7 @@ public final class SitemapProcessor {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
+    private ArticleGAERepository articleRepository =
             ArticleGAERepository.getInstance();
     /**
      * Page repository.
@@ -142,7 +141,14 @@ public final class SitemapProcessor {
                           FilterOperator.EQUAL, true).
                 addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
 
+        // Closes cache avoid Java heap space out of memory while caching 
+        // query results
+        articleRepository.setCacheEnabled(false); 
+        
         final JSONObject articleResult = articleRepository.get(query);
+        
+        articleRepository.setCacheEnabled(true); // Restores cache
+        
         final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
         for (int i = 0; i < articles.length(); i++) {
             final JSONObject article = articles.getJSONObject(i);
