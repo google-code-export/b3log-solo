@@ -109,7 +109,10 @@ public final class SitemapProcessor {
             addTags(sitemap, preference);
             addArchives(sitemap, preference);
 
-            renderer.setContent(sitemap.toString());
+            LOGGER.log(Level.INFO, "Generating sitemap....");
+            final String content = sitemap.toString();
+            LOGGER.log(Level.INFO, "Generated sitemap");
+            renderer.setContent(content);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Get blog article feed error", e);
 
@@ -208,7 +211,7 @@ public final class SitemapProcessor {
 
             sitemap.addURL(url);
         }
-        
+
         // Tags wall
         final URL url = new URL();
         url.setLoc("http://" + host + "/tags.html");
