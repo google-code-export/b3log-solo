@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.5, Jun 30, 2011
  */
-public final class ArchiveDateRepositoryImpl extends AbstractGAERepository
+public final class ArchiveDateRepositoryImpl extends AbstractRepository
         implements ArchiveDateRepository {
 
     /**
@@ -49,11 +49,6 @@ public final class ArchiveDateRepositoryImpl extends AbstractGAERepository
             Logger.getLogger(ArchiveDateRepositoryImpl.class.getName());
 
     @Override
-    public String getName() {
-        return ArchiveDate.ARCHIVE_DATE;
-    }
-
-    @Override
     public JSONObject getByArchiveDate(final String archiveDate)
             throws RepositoryException {
         try {
@@ -61,14 +56,14 @@ public final class ArchiveDateRepositoryImpl extends AbstractGAERepository
             query.addFilter(ArchiveDate.ARCHIVE_TIME,
                             FilterOperator.EQUAL,
                             ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime());
-            
+
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
-            
+
             if (0 == array.length()) {
                 return null;
             }
-             
+
             return array.getJSONObject(0);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -133,9 +128,12 @@ public final class ArchiveDateRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private ArchiveDateRepositoryImpl() {
+    private ArchiveDateRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -150,7 +148,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final ArchiveDateRepositoryImpl SINGLETON =
-                new ArchiveDateRepositoryImpl();
+                new ArchiveDateRepositoryImpl(ArchiveDate.ARCHIVE_DATE);
 
         /**
          * Private default constructor.

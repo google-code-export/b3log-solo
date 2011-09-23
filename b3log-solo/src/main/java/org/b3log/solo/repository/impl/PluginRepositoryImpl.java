@@ -17,7 +17,7 @@ package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
 import org.b3log.latke.model.Plugin;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.solo.repository.PluginRepository;
 
 /**
@@ -26,7 +26,7 @@ import org.b3log.solo.repository.PluginRepository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Jul 21, 2011
  */
-public final class PluginRepositoryImpl extends AbstractGAERepository
+public final class PluginRepositoryImpl extends AbstractRepository
         implements PluginRepository {
 
     /**
@@ -34,11 +34,6 @@ public final class PluginRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(PluginRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return Plugin.PLUGIN;
-    }
 
     /**
      * Gets the {@link PluginGAERepository} singleton.
@@ -50,9 +45,12 @@ public final class PluginRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private PluginRepositoryImpl() {
+    private PluginRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -67,7 +65,7 @@ public final class PluginRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final PluginRepositoryImpl SINGLETON =
-                new PluginRepositoryImpl();
+                new PluginRepositoryImpl(Plugin.PLUGIN);
 
         /**
          * Private default constructor.

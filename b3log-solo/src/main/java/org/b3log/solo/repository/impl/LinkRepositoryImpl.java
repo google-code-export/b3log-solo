@@ -18,11 +18,11 @@ package org.b3log.solo.repository.impl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.json.JSONArray;
@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.3, Jan 12, 2011
  */
-public final class LinkRepositoryImpl extends AbstractGAERepository
+public final class LinkRepositoryImpl extends AbstractRepository
         implements LinkRepository {
 
     /**
@@ -43,11 +43,6 @@ public final class LinkRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(LinkRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return Link.LINK;
-    }
 
     @Override
     public JSONObject getByAddress(final String address) {
@@ -121,9 +116,12 @@ public final class LinkRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private LinkRepositoryImpl() {
+    private LinkRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -138,7 +136,7 @@ public final class LinkRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final LinkRepositoryImpl SINGLETON =
-                new LinkRepositoryImpl();
+                new LinkRepositoryImpl(Link.LINK);
 
         /**
          * Private default constructor.

@@ -21,11 +21,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleSignRepository;
@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 12, 2011
  */
-public final class ArticleSignRepositoryImpl extends AbstractGAERepository
+public final class ArticleSignRepositoryImpl extends AbstractRepository
         implements ArticleSignRepository {
 
     /**
@@ -47,11 +47,6 @@ public final class ArticleSignRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArticleSignRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return Article.ARTICLE + "_" + Sign.SIGN;
-    }
 
     @Override
     public List<JSONObject> getBySignId(final String signId)
@@ -104,9 +99,12 @@ public final class ArticleSignRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private ArticleSignRepositoryImpl() {
+    private ArticleSignRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -121,7 +119,7 @@ public final class ArticleSignRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final ArticleSignRepositoryImpl SINGLETON =
-                new ArticleSignRepositoryImpl();
+                new ArticleSignRepositoryImpl(Article.ARTICLE + "_" + Sign.SIGN);
 
         /**
          * Private default constructor.

@@ -16,7 +16,7 @@
 package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 
@@ -26,7 +26,7 @@ import org.b3log.solo.repository.StatisticRepository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 12, 2011
  */
-public final class StatisticRepositoryImpl extends AbstractGAERepository
+public final class StatisticRepositoryImpl extends AbstractRepository
         implements StatisticRepository {
 
     /**
@@ -34,11 +34,6 @@ public final class StatisticRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(StatisticRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return Statistic.STATISTIC;
-    }
 
     /**
      * Gets the {@link StatisticGAERepository} singleton.
@@ -50,9 +45,12 @@ public final class StatisticRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private StatisticRepositoryImpl() {
+    private StatisticRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -67,7 +65,7 @@ public final class StatisticRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final StatisticRepositoryImpl SINGLETON =
-                new StatisticRepositoryImpl();
+                new StatisticRepositoryImpl(Statistic.STATISTIC);
 
         /**
          * Private default constructor.

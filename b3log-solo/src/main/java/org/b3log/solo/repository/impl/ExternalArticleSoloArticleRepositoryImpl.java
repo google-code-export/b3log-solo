@@ -18,10 +18,10 @@ package org.b3log.solo.repository.impl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * @version 1.0.0.4, Jan 12, 2011
  */
 public final class ExternalArticleSoloArticleRepositoryImpl
-        extends AbstractGAERepository
+        extends AbstractRepository
         implements ExternalArticleSoloArticleRepository {
 
     /**
@@ -45,11 +45,6 @@ public final class ExternalArticleSoloArticleRepositoryImpl
     private static final Logger LOGGER =
             Logger.getLogger(ExternalArticleSoloArticleRepositoryImpl.class.
             getName());
-
-    @Override
-    public String getName() {
-        return BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE + "_" + Article.ARTICLE;
-    }
 
     @Override
     public String getSoloArticleId(final String externalArticleId,
@@ -162,9 +157,12 @@ public final class ExternalArticleSoloArticleRepositoryImpl
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private ExternalArticleSoloArticleRepositoryImpl() {
+    private ExternalArticleSoloArticleRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -179,7 +177,9 @@ public final class ExternalArticleSoloArticleRepositoryImpl
          * Singleton.
          */
         private static final ExternalArticleSoloArticleRepositoryImpl SINGLETON =
-                new ExternalArticleSoloArticleRepositoryImpl();
+                new ExternalArticleSoloArticleRepositoryImpl(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE
+                                                             + "_"
+                                                             + Article.ARTICLE);
 
         /**
          * Private default constructor.
