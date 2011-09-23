@@ -16,7 +16,7 @@
 package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.SkinRepository;
 
@@ -26,7 +26,7 @@ import org.b3log.solo.repository.SkinRepository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 12, 2011
  */
-public final class SkinRepositoryImpl extends AbstractGAERepository
+public final class SkinRepositoryImpl extends AbstractRepository
         implements SkinRepository {
 
     /**
@@ -34,11 +34,6 @@ public final class SkinRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(SkinRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return Skin.SKIN;
-    }
 
     /**
      * Gets the {@link SkinGAERepository} singleton.
@@ -50,9 +45,12 @@ public final class SkinRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private SkinRepositoryImpl() {
+    private SkinRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -67,7 +65,7 @@ public final class SkinRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final SkinRepositoryImpl SINGLETON =
-                new SkinRepositoryImpl();
+                new SkinRepositoryImpl(Skin.SKIN);
 
         /**
          * Private default constructor.

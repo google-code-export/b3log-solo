@@ -18,9 +18,9 @@ package org.b3log.solo.repository.impl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.BlogSync;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.json.JSONArray;
@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Jan 12, 2011
  */
-public final class BlogSyncMgmtRepositoryImpl extends AbstractGAERepository
+public final class BlogSyncMgmtRepositoryImpl extends AbstractRepository
         implements BlogSyncManagementRepository {
 
     /**
@@ -40,11 +40,6 @@ public final class BlogSyncMgmtRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(BlogSyncMgmtRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return BlogSync.BLOG_SYNC_MANAGEMENT;
-    }
 
     @Override
     public JSONObject getByExternalBloggingSystem(
@@ -79,9 +74,12 @@ public final class BlogSyncMgmtRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private BlogSyncMgmtRepositoryImpl() {
+    private BlogSyncMgmtRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -96,7 +94,7 @@ public final class BlogSyncMgmtRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final BlogSyncMgmtRepositoryImpl SINGLETON =
-                new BlogSyncMgmtRepositoryImpl();
+                new BlogSyncMgmtRepositoryImpl(BlogSync.BLOG_SYNC_MANAGEMENT);
 
         /**
          * Private default constructor.

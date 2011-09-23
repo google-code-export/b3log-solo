@@ -36,7 +36,6 @@ import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-
 /**
  * Upgrader.
  *
@@ -195,6 +194,7 @@ public final class UpgradeProcessor {
         }
     }
 }
+
 /**
  * Page-Comment relation Google App Engine repository.
  * 
@@ -213,11 +213,6 @@ final class PageCommentGAERepository extends AbstractRepository {
     private static final Logger LOGGER =
             Logger.getLogger(PageCommentGAERepository.class.getName());
 
-    @Override
-    public String getName() {
-        return Page.PAGE + "_" + Comment.COMMENT;
-    }
-
     /**
      * Gets the {@link PageCommentGAERepository} singleton.
      *
@@ -228,9 +223,12 @@ final class PageCommentGAERepository extends AbstractRepository {
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private PageCommentGAERepository() {
+    private PageCommentGAERepository(final String name) {
+        super(name);
     }
 
     /**
@@ -245,7 +243,7 @@ final class PageCommentGAERepository extends AbstractRepository {
          * Singleton.
          */
         private static final PageCommentGAERepository SINGLETON =
-                new PageCommentGAERepository();
+                new PageCommentGAERepository(Page.PAGE + "_" + Comment.COMMENT);
 
         /**
          * Private default constructor.
@@ -273,11 +271,6 @@ final class ArticleCommentGAERepository extends AbstractRepository {
     private static final Logger LOGGER =
             Logger.getLogger(ArticleCommentGAERepository.class.getName());
 
-    @Override
-    public String getName() {
-        return Article.ARTICLE + "_" + Comment.COMMENT;
-    }
-
     /**
      * Gets the {@link ArticleCommentGAERepository} singleton.
      *
@@ -288,9 +281,12 @@ final class ArticleCommentGAERepository extends AbstractRepository {
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private ArticleCommentGAERepository() {
+    private ArticleCommentGAERepository(final String name) {
+        super(name);
     }
 
     /**
@@ -305,7 +301,8 @@ final class ArticleCommentGAERepository extends AbstractRepository {
          * Singleton.
          */
         private static final ArticleCommentGAERepository SINGLETON =
-                new ArticleCommentGAERepository();
+                new ArticleCommentGAERepository(Article.ARTICLE + "_"
+                                                + Comment.COMMENT);
 
         /**
          * Private default constructor.

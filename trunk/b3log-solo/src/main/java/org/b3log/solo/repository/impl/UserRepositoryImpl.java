@@ -20,10 +20,10 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.6, Feb 22, 2011
  */
-public final class UserRepositoryImpl extends AbstractGAERepository
+public final class UserRepositoryImpl extends AbstractRepository
         implements UserRepository {
 
     /**
@@ -43,11 +43,6 @@ public final class UserRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(UserRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return User.USER;
-    }
 
     @Override
     public JSONObject getByEmail(final String email) {
@@ -120,9 +115,12 @@ public final class UserRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private UserRepositoryImpl() {
+    private UserRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -137,7 +135,7 @@ public final class UserRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final UserRepositoryImpl SINGLETON =
-                new UserRepositoryImpl();
+                new UserRepositoryImpl(User.USER);
 
         /**
          * Private default constructor.

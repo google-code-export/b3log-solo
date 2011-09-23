@@ -23,11 +23,11 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.8, Jan 12, 2011
  */
-public final class TagArticleRepositoryImpl extends AbstractGAERepository
+public final class TagArticleRepositoryImpl extends AbstractRepository
         implements TagArticleRepository {
 
     /**
@@ -46,11 +46,6 @@ public final class TagArticleRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(TagArticleRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return Tag.TAG + "_" + Article.ARTICLE;
-    }
 
     @Override
     public List<JSONObject> getByArticleId(final String articleId)
@@ -96,9 +91,12 @@ public final class TagArticleRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private TagArticleRepositoryImpl() {
+    private TagArticleRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -113,7 +111,7 @@ public final class TagArticleRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final TagArticleRepositoryImpl SINGLETON =
-                new TagArticleRepositoryImpl();
+                new TagArticleRepositoryImpl(Tag.TAG + "_" + Article.ARTICLE);
 
         /**
          * Private default constructor.

@@ -24,11 +24,11 @@ import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.BlogSync;
 import org.json.JSONArray;
@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.3.1, Jul 10, 2011
  */
-public final class ArticleRepositoryImpl extends AbstractGAERepository
+public final class ArticleRepositoryImpl extends AbstractRepository
         implements ArticleRepository {
 
     /**
@@ -49,11 +49,6 @@ public final class ArticleRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArticleRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return Article.ARTICLE;
-    }
 
     @Override
     public JSONObject getByAuthorEmail(final String authorEmail,
@@ -354,9 +349,12 @@ public final class ArticleRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private ArticleRepositoryImpl() {
+    private ArticleRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -371,7 +369,7 @@ public final class ArticleRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final ArticleRepositoryImpl SINGLETON =
-                new ArticleRepositoryImpl();
+                new ArticleRepositoryImpl(Article.ARTICLE);
 
         /**
          * Private default constructor.

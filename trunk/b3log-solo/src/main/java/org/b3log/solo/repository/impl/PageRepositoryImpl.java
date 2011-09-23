@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.5, Aug 20, 2011
  */
-public final class PageRepositoryImpl extends AbstractGAERepository
+public final class PageRepositoryImpl extends AbstractRepository
         implements PageRepository {
 
     /**
@@ -46,11 +46,6 @@ public final class PageRepositoryImpl extends AbstractGAERepository
      */
     private static final Logger LOGGER =
             Logger.getLogger(PageRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return Page.PAGE;
-    }
 
     @Override
     public JSONObject getByPermalink(final String permalink) {
@@ -140,9 +135,12 @@ public final class PageRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private PageRepositoryImpl() {
+    private PageRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -157,7 +155,7 @@ public final class PageRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final PageRepositoryImpl SINGLETON =
-                new PageRepositoryImpl();
+                new PageRepositoryImpl(Page.PAGE);
 
         /**
          * Private default constructor.

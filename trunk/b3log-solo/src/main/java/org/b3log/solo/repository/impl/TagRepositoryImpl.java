@@ -23,11 +23,11 @@ import java.util.logging.Logger;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.9, Mar 7, 2011
  */
-public final class TagRepositoryImpl extends AbstractGAERepository
+public final class TagRepositoryImpl extends AbstractRepository
         implements TagRepository {
 
     /**
@@ -52,11 +52,6 @@ public final class TagRepositoryImpl extends AbstractGAERepository
      */
     private TagArticleRepositoryImpl tagArticleRepository =
             TagArticleRepositoryImpl.getInstance();
-
-    @Override
-    public String getName() {
-        return Tag.TAG;
-    }
 
     @Override
     public JSONObject getByTitle(final String tagTitle)
@@ -90,7 +85,7 @@ public final class TagRepositoryImpl extends AbstractGAERepository
         try {
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
-            
+
             return CollectionUtils.jsonArrayToList(array);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -132,9 +127,12 @@ public final class TagRepositoryImpl extends AbstractGAERepository
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private TagRepositoryImpl() {
+    private TagRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -149,7 +147,7 @@ public final class TagRepositoryImpl extends AbstractGAERepository
          * Singleton.
          */
         private static final TagRepositoryImpl SINGLETON =
-                new TagRepositoryImpl();
+                new TagRepositoryImpl(Tag.TAG);
 
         /**
          * Private default constructor.

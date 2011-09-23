@@ -17,12 +17,12 @@ package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.solo.model.Article;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.json.JSONArray;
@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * @version 1.0.0.5, Jan 12, 2011
  */
 public final class ArchiveDateArticleRepositoryImpl
-        extends AbstractGAERepository
+        extends AbstractRepository
         implements ArchiveDateArticleRepository {
 
     /**
@@ -43,11 +43,6 @@ public final class ArchiveDateArticleRepositoryImpl
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArchiveDateArticleRepositoryImpl.class.getName());
-
-    @Override
-    public String getName() {
-        return ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE;
-    }
 
     @Override
     public JSONObject getByArchiveDateId(final String archiveDateId,
@@ -71,7 +66,7 @@ public final class ArchiveDateArticleRepositoryImpl
         final Query query = new Query();
         query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         FilterOperator.EQUAL, articleId);
-        
+
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
         if (0 == array.length()) {
@@ -91,9 +86,12 @@ public final class ArchiveDateArticleRepositoryImpl
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
+     * 
+     * @param name the specified name
      */
-    private ArchiveDateArticleRepositoryImpl() {
+    private ArchiveDateArticleRepositoryImpl(final String name) {
+        super(name);
     }
 
     /**
@@ -108,7 +106,8 @@ public final class ArchiveDateArticleRepositoryImpl
          * Singleton.
          */
         private static final ArchiveDateArticleRepositoryImpl SINGLETON =
-                new ArchiveDateArticleRepositoryImpl();
+                new ArchiveDateArticleRepositoryImpl(ArchiveDate.ARCHIVE_DATE
+                                                     + "_" + Article.ARTICLE);
 
         /**
          * Private default constructor.
