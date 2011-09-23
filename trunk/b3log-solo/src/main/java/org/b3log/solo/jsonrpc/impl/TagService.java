@@ -30,7 +30,7 @@ import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,7 +52,7 @@ public final class TagService extends AbstractGAEJSONRpcService {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagGAERepository.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * User utilities.
      */

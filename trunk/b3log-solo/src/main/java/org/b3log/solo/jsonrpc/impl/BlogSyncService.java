@@ -37,9 +37,9 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.BlogSyncMgmtGAERepository;
-import org.b3log.solo.repository.impl.ExternalArticleSoloArticleGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.BlogSyncMgmtRepositoryImpl;
+import org.b3log.solo.repository.impl.ExternalArticleSoloArticleRepositoryImpl;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.Post;
@@ -67,7 +67,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Tag utilities.
      */
@@ -88,12 +88,12 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * External blog article-Solo article repository.
      */
     private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository =
-            ExternalArticleSoloArticleGAERepository.getInstance();
+            ExternalArticleSoloArticleRepositoryImpl.getInstance();
     /**
      * Blog sync management repository.
      */
     private BlogSyncManagementRepository blogSyncManagementRepository =
-            BlogSyncMgmtGAERepository.getInstance();
+            BlogSyncMgmtRepositoryImpl.getInstance();
     /**
      * User utilities.
      */

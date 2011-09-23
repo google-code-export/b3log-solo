@@ -26,8 +26,8 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,12 +49,12 @@ public final class Tags {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Tag repository.
      */
     private TagRepository tagRepository =
-            TagGAERepository.getInstance();
+            TagRepositoryImpl.getInstance();
     /**
      * Article utilities.
      */

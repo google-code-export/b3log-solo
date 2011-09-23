@@ -28,8 +28,8 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.UserGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,7 +50,7 @@ public final class Users {
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserGAERepository.getInstance();
+    private UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
      * User service.
      */
@@ -59,7 +59,7 @@ public final class Users {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
 
     /**
      * Determines whether if exists multiple users in current Solo.

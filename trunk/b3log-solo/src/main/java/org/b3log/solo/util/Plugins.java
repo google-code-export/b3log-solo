@@ -24,7 +24,7 @@ import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.repository.impl.PluginGAERepository;
+import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,8 +44,8 @@ public final class Plugins {
     /**
      * Plugin repository.
      */
-    private static final PluginGAERepository PLUGIN_REPOS =
-            PluginGAERepository.getInstance();
+    private static final PluginRepositoryImpl PLUGIN_REPOS =
+            PluginRepositoryImpl.getInstance();
 
     /**
      * Updates datastore plugin descriptions with the specified plugins.

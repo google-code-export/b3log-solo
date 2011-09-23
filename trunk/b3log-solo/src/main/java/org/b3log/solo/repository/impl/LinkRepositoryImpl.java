@@ -15,98 +15,115 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.model.Sign;
-import org.b3log.solo.repository.ArticleSignRepository;
+import org.b3log.solo.model.Link;
+import org.b3log.solo.repository.LinkRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Article-Sign relation Google App Engine repository.
+ * Link Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.3, Jan 12, 2011
  */
-public final class ArticleSignGAERepository extends AbstractGAERepository
-        implements ArticleSignRepository {
+public final class LinkRepositoryImpl extends AbstractGAERepository
+        implements LinkRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleSignGAERepository.class.getName());
+            Logger.getLogger(LinkRepositoryImpl.class.getName());
 
     @Override
     public String getName() {
-        return Article.ARTICLE + "_" + Sign.SIGN;
+        return Link.LINK;
     }
 
     @Override
-    public List<JSONObject> getBySignId(final String signId)
-            throws RepositoryException {
+    public JSONObject getByAddress(final String address) {
         final Query query = new Query();
-        query.addFilter(Sign.SIGN + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, signId);
-        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        query.addFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address);
 
-        final JSONObject result = get(query);
         try {
+            final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final JSONException e) {
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return Collections.emptyList();
+            return null;
         }
+
     }
 
     @Override
-    public JSONObject getByArticleId(final String articleId)
-            throws RepositoryException {
+    public int getMaxOrder() throws RepositoryException {
         final Query query = new Query();
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, articleId);
+        query.addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
         if (0 == array.length()) {
-            return null;
+            return -1;
         }
 
         try {
-            return array.getJSONObject(0);
+            return array.getJSONObject(0).getInt(Link.LINK_ORDER);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
     }
 
+    @Override
+    public JSONObject getByOrder(final int order) {
+        final Query query = new Query();
+        query.addFilter(Link.LINK_ORDER, FilterOperator.EQUAL, order);
+
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            return null;
+        }
+    }
+
     /**
-     * Gets the {@link ArticleSignGAERepository} singleton.
+     * Gets the {@link LinkGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static ArticleSignGAERepository getInstance() {
+    public static LinkRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private ArticleSignGAERepository() {
+    private LinkRepositoryImpl() {
     }
 
     /**
@@ -120,8 +137,8 @@ public final class ArticleSignGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final ArticleSignGAERepository SINGLETON =
-                new ArticleSignGAERepository();
+        private static final LinkRepositoryImpl SINGLETON =
+                new LinkRepositoryImpl();
 
         /**
          * Private default constructor.

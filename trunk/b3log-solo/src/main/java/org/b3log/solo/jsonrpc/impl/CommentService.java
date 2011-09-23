@@ -41,9 +41,9 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Statistics;
@@ -83,11 +83,11 @@ public final class CommentService extends AbstractGAEJSONRpcService {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageGAERepository.getInstance();
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
     /**
      * Article utilities.
      */

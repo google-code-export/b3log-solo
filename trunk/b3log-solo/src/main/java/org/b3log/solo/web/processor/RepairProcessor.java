@@ -41,22 +41,22 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
-import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.ArticleSignGAERepository;
-import org.b3log.solo.repository.impl.BlogSyncMgmtGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
+import org.b3log.solo.repository.impl.BlogSyncMgmtRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.ExternalArticleSoloArticleGAERepository;
-import org.b3log.solo.repository.impl.FileGAERepository;
-import org.b3log.solo.repository.impl.LinkGAERepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
-import org.b3log.solo.repository.impl.PreferenceGAERepository;
-import org.b3log.solo.repository.impl.SkinGAERepository;
-import org.b3log.solo.repository.impl.StatisticGAERepository;
-import org.b3log.solo.repository.impl.TagArticleGAERepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
-import org.b3log.solo.repository.impl.UserGAERepository;
+import org.b3log.solo.repository.impl.ExternalArticleSoloArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.FileRepositoryImpl;
+import org.b3log.solo.repository.impl.LinkRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
+import org.b3log.solo.repository.impl.SkinRepositoryImpl;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
@@ -93,17 +93,17 @@ public final class RepairProcessor {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagGAERepository.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository =
-            TagArticleGAERepository.getInstance();
+            TagArticleRepositoryImpl.getInstance();
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
 
     /**
      * Restores the signs of preference to default.
@@ -117,7 +117,7 @@ public final class RepairProcessor {
                 new TextHTMLRenderer();
         context.setRenderer(renderer);
 
-        final Repository repository = PreferenceGAERepository.getInstance();
+        final Repository repository = PreferenceRepositoryImpl.getInstance();
         final Transaction transaction = repository.beginTransaction();
 
         try {
@@ -269,37 +269,37 @@ public final class RepairProcessor {
 
         boolean succeed = false;
         try {
-            remove(ArchiveDateArticleGAERepository.getInstance());
+            remove(ArchiveDateArticleRepositoryImpl.getInstance());
 
-            remove(ArchiveDateGAERepository.getInstance());
+            remove(ArchiveDateRepositoryImpl.getInstance());
 
-            remove(ArticleGAERepository.getInstance());
+            remove(ArticleRepositoryImpl.getInstance());
 
-            remove(ArticleSignGAERepository.getInstance());
+            remove(ArticleSignRepositoryImpl.getInstance());
 
-            remove(BlogSyncMgmtGAERepository.getInstance());
+            remove(BlogSyncMgmtRepositoryImpl.getInstance());
 
             remove(CommentGAERepository.getInstance());
 
-            remove(ExternalArticleSoloArticleGAERepository.getInstance());
+            remove(ExternalArticleSoloArticleRepositoryImpl.getInstance());
 
-            remove(FileGAERepository.getInstance());
+            remove(FileRepositoryImpl.getInstance());
 
-            remove(LinkGAERepository.getInstance());
+            remove(LinkRepositoryImpl.getInstance());
 
-            remove(PageGAERepository.getInstance());
+            remove(PageRepositoryImpl.getInstance());
 
-            remove(PreferenceGAERepository.getInstance());
+            remove(PreferenceRepositoryImpl.getInstance());
 
-            remove(SkinGAERepository.getInstance());
+            remove(SkinRepositoryImpl.getInstance());
 
-            remove(StatisticGAERepository.getInstance());
+            remove(StatisticRepositoryImpl.getInstance());
 
-            remove(TagArticleGAERepository.getInstance());
+            remove(TagArticleRepositoryImpl.getInstance());
 
-            remove(TagGAERepository.getInstance());
+            remove(TagRepositoryImpl.getInstance());
 
-            remove(UserGAERepository.getInstance());
+            remove(UserRepositoryImpl.getInstance());
 
             succeed = true;
         } catch (final Exception e) {

@@ -34,7 +34,7 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.jsonrpc.PermalinkException;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Users;
@@ -57,7 +57,7 @@ public final class PageService extends AbstractGAEJSONRpcService {
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageGAERepository.getInstance();
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
     /**
      * Page utilities.
      */

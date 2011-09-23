@@ -36,7 +36,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.UserGAERepository;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +65,7 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserGAERepository.getInstance();
+    private UserRepository userRepository = UserRepositoryImpl.getInstance();
 
     /**
      * Test method.

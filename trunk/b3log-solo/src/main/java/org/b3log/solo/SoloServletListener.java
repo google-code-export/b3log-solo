@@ -60,7 +60,7 @@ import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
@@ -124,7 +124,7 @@ public final class SoloServletListener extends AbstractServletListener {
         super.contextInitialized(servletContextEvent);
 
         final PreferenceRepository preferenceRepository =
-                PreferenceGAERepository.getInstance();
+                PreferenceRepositoryImpl.getInstance();
 
         final Transaction transaction = preferenceRepository.beginTransaction();
         try {
@@ -190,7 +190,7 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.info("Loading preference....");
 
         final PreferenceRepository preferenceRepository =
-                PreferenceGAERepository.getInstance();
+                PreferenceRepositoryImpl.getInstance();
         JSONObject preference = null;
 
         try {

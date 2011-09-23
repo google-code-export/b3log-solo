@@ -32,7 +32,7 @@ import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
-import org.b3log.solo.repository.impl.LinkGAERepository;
+import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +54,7 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     /**
      * Link repository.
      */
-    private LinkRepository linkRepository = LinkGAERepository.getInstance();
+    private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
     /**
      * User utilities.
      */

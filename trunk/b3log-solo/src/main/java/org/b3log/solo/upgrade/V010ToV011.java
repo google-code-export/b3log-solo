@@ -29,7 +29,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -56,7 +56,7 @@ public final class V010ToV011 extends HttpServlet {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Update size in an request.
      */

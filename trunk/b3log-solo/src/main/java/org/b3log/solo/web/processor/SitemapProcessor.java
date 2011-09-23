@@ -41,10 +41,10 @@ import org.b3log.solo.model.sitemap.URL;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -71,22 +71,22 @@ public final class SitemapProcessor {
     /**
      * Article repository.
      */
-    private ArticleGAERepository articleRepository =
-            ArticleGAERepository.getInstance();
+    private ArticleRepositoryImpl articleRepository =
+            ArticleRepositoryImpl.getInstance();
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageGAERepository.getInstance();
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
     /**
      * Tag repository.
      */
     private TagRepository tagRepository =
-            TagGAERepository.getInstance();
+            TagRepositoryImpl.getInstance();
     /**
      * Archive date repository.
      */
     private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateGAERepository.getInstance();
+            ArchiveDateRepositoryImpl.getInstance();
 
     /**
      * Returns the sitemap.

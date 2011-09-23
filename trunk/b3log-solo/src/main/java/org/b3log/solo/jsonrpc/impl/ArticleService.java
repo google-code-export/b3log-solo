@@ -50,10 +50,10 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleSignRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.ArticleSignGAERepository;
-import org.b3log.solo.repository.impl.TagArticleGAERepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
+import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Permalinks;
@@ -83,21 +83,21 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagGAERepository.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository =
-            TagArticleGAERepository.getInstance();
+            TagArticleRepositoryImpl.getInstance();
     /**
      * Article-Sign repository.
      */
     private ArticleSignRepository articleSignRepository =
-            ArticleSignGAERepository.getInstance();
+            ArticleSignRepositoryImpl.getInstance();
     /**
      * Event manager.
      */

@@ -24,7 +24,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
@@ -45,7 +45,7 @@ public final class StatisticService extends AbstractGAEJSONRpcService {
      * Statistic repository.
      */
     private StatisticRepository statisticRepository =
-            StatisticGAERepository.getInstance();
+            StatisticRepositoryImpl.getInstance();
     /**
      * User utilities.
      */

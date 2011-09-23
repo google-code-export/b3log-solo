@@ -28,8 +28,8 @@ import static org.b3log.solo.model.BlogSync.*;
 import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.b3log.solo.repository.ExternalArticleSoloArticleRepository;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.repository.impl.BlogSyncMgmtGAERepository;
-import org.b3log.solo.repository.impl.ExternalArticleSoloArticleGAERepository;
+import org.b3log.solo.repository.impl.BlogSyncMgmtRepositoryImpl;
+import org.b3log.solo.repository.impl.ExternalArticleSoloArticleRepositoryImpl;
 import org.b3log.solo.sync.BlogFactory;
 import org.b3log.solo.sync.MetaWeblog;
 import org.b3log.solo.sync.MetaWeblogPost;
@@ -58,12 +58,12 @@ public abstract class AbstractAddArticleProcessor
      * Blog sync management repository.
      */
     private BlogSyncManagementRepository blogSyncManagementRepository =
-            BlogSyncMgmtGAERepository.getInstance();
+            BlogSyncMgmtRepositoryImpl.getInstance();
     /**
      * External blog article-Solo article repository.
      */
     private ExternalArticleSoloArticleRepository externalArticleSoloArticleRepository =
-            ExternalArticleSoloArticleGAERepository.getInstance();
+            ExternalArticleSoloArticleRepositoryImpl.getInstance();
     /**
      * User utilities.
      */

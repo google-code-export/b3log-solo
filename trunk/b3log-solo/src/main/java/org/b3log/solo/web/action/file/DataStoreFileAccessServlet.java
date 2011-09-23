@@ -41,7 +41,7 @@ import org.b3log.solo.model.ErrorPage;
 import org.b3log.solo.model.File;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
-import org.b3log.solo.repository.impl.FileGAERepository;
+import org.b3log.solo.repository.impl.FileRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONObject;
@@ -69,7 +69,7 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
      * File repository.
      */
     private FileRepository fileRepository =
-            FileGAERepository.getInstance();
+            FileRepositoryImpl.getInstance();
     /**
      * Maximum entity size limited by data store.
      */

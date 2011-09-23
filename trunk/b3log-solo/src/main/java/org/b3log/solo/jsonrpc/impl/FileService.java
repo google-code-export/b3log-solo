@@ -32,7 +32,7 @@ import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.File;
 import org.b3log.solo.repository.FileRepository;
-import org.b3log.solo.repository.impl.FileGAERepository;
+import org.b3log.solo.repository.impl.FileRepositoryImpl;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,7 +53,7 @@ public final class FileService extends AbstractGAEJSONRpcService {
     /**
      * File repository.
      */
-    private FileRepository fileRepository = FileGAERepository.getInstance();
+    private FileRepository fileRepository = FileRepositoryImpl.getInstance();
     /**
      * User utilities.
      */
