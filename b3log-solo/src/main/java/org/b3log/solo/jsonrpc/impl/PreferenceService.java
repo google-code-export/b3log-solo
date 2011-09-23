@@ -39,7 +39,7 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.repository.gae.PreferenceGAERepository;
+import org.b3log.solo.repository.impl.PreferenceGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;

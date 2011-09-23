@@ -29,7 +29,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.gae.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

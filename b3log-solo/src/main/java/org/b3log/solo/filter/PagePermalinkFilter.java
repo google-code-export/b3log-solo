@@ -30,7 +30,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.gae.PageGAERepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
 import org.json.JSONObject;
 
 /**

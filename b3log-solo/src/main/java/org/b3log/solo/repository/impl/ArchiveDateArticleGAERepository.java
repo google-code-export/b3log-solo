@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.repository.gae;
+package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;

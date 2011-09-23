@@ -34,7 +34,7 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.jsonrpc.PermalinkException;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.gae.PageGAERepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Users;
