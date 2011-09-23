@@ -24,7 +24,7 @@ import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Statistics;
@@ -93,7 +93,7 @@ public final class CommentProcessor {
      * Comment repository.
      */
     private static CommentRepository commentRepository =
-            CommentGAERepository.getInstance();
+            CommentRepositoryImpl.getInstance();
     /**
      * Preference utilities.
      */

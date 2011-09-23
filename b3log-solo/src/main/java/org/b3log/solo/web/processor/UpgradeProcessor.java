@@ -31,7 +31,7 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -66,7 +66,7 @@ public final class UpgradeProcessor {
      * Comment repository.
      */
     private CommentRepository commentRepository =
-            CommentGAERepository.getInstance();
+            CommentRepositoryImpl.getInstance();
     /**
      * Preference utility.
      */

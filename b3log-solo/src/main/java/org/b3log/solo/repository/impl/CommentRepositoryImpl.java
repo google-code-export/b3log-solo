@@ -41,14 +41,14 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.7, Aug 25, 2011
  */
-public final class CommentGAERepository extends AbstractGAERepository
+public final class CommentRepositoryImpl extends AbstractGAERepository
         implements CommentRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(CommentGAERepository.class.getName());
+            Logger.getLogger(CommentRepositoryImpl.class.getName());
     /**
      * Article repository.
      */
@@ -169,14 +169,14 @@ public final class CommentGAERepository extends AbstractGAERepository
      *
      * @return the singleton
      */
-    public static CommentGAERepository getInstance() {
+    public static CommentRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private CommentGAERepository() {
+    private CommentRepositoryImpl() {
     }
 
     /**
@@ -190,8 +190,8 @@ public final class CommentGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final CommentGAERepository SINGLETON =
-                new CommentGAERepository();
+        private static final CommentRepositoryImpl SINGLETON =
+                new CommentRepositoryImpl();
 
         /**
          * Private default constructor.
