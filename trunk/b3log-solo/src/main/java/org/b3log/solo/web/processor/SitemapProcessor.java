@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Site map (sitemap) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Sep 22, 2011
+ * @version 1.0.0.1, Sep 23, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -93,7 +93,7 @@ public final class SitemapProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/sitemap"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/sitemap.xml"}, method = HTTPRequestMethod.GET)
     public void sitemap(final HTTPRequestContext context) {
         final TextXMLRenderer renderer = new TextXMLRenderer();
         context.setRenderer(renderer);
