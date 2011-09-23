@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.3.3, Sep 16, 2011
+    Version: 1.0.3.4, Sep 23, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -75,6 +75,11 @@
         <filter-name>InitCheckFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    
+    <security-role>
+        <role-name>admin</role-name>
+    </security-role>
+        
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Upgrade and Initialization</web-resource-name>
