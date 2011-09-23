@@ -433,7 +433,7 @@ admin.article = {
             mode : "exact",
             elements : "articleContent, abstract",
             theme : "advanced",
-            plugins : "autosave,style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl",
+            plugins : "autosave,style,advhr,advimage,advlink,preview,media,paste,fullscreen,syntaxhl,inlinepopups",
 
             // Theme options
             theme_advanced_buttons1 : "forecolor,backcolor,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
