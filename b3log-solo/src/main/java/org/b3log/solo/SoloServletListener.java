@@ -60,7 +60,7 @@ import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.repository.gae.PreferenceGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;

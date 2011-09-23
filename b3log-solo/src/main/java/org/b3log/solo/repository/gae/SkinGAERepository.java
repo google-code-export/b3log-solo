@@ -13,47 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.repository.impl;
+package org.b3log.solo.repository.gae;
 
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.model.File;
-import org.b3log.solo.repository.FileRepository;
+import org.b3log.solo.model.Skin;
+import org.b3log.solo.repository.SkinRepository;
 
 /**
- * File Google App Engine repository.
+ * Skin Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Feb 8, 2011
+ * @version 1.0.0.1, Jan 12, 2011
  */
-public final class FileGAERepository extends AbstractGAERepository
-        implements FileRepository {
+public final class SkinGAERepository extends AbstractGAERepository
+        implements SkinRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(FileGAERepository.class.getName());
+            Logger.getLogger(SkinGAERepository.class.getName());
 
     @Override
     public String getName() {
-        return File.FILE;
+        return Skin.SKIN;
     }
 
     /**
-     * Gets the {@link FileGAERepository} singleton.
+     * Gets the {@link SkinGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static FileGAERepository getInstance() {
+    public static SkinGAERepository getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
-     * Private default constructor. Disables cache.
+     * Private default constructor.
      */
-    private FileGAERepository() {
-        setCacheEnabled(false);
+    private SkinGAERepository() {
     }
 
     /**
@@ -67,8 +66,8 @@ public final class FileGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final FileGAERepository SINGLETON =
-                new FileGAERepository();
+        private static final SkinGAERepository SINGLETON =
+                new SkinGAERepository();
 
         /**
          * Private default constructor.

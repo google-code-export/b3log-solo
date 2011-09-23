@@ -13,46 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.repository.impl;
+package org.b3log.solo.repository.gae;
 
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.PreferenceRepository;
+import org.b3log.solo.model.File;
+import org.b3log.solo.repository.FileRepository;
 
 /**
- * Preference Google App Engine repository.
+ * File Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.3, Feb 8, 2011
  */
-public final class PreferenceGAERepository extends AbstractGAERepository
-        implements PreferenceRepository {
+public final class FileGAERepository extends AbstractGAERepository
+        implements FileRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PreferenceGAERepository.class.getName());
+            Logger.getLogger(FileGAERepository.class.getName());
 
     @Override
     public String getName() {
-        return Preference.PREFERENCE;
+        return File.FILE;
     }
 
     /**
-     * Gets the {@link PreferenceGAERepository} singleton.
+     * Gets the {@link FileGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static PreferenceGAERepository getInstance() {
+    public static FileGAERepository getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
-     * Private default constructor.
+     * Private default constructor. Disables cache.
      */
-    private PreferenceGAERepository() {
+    private FileGAERepository() {
+        setCacheEnabled(false);
     }
 
     /**
@@ -66,8 +67,8 @@ public final class PreferenceGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final PreferenceGAERepository SINGLETON =
-                new PreferenceGAERepository();
+        private static final FileGAERepository SINGLETON =
+                new FileGAERepository();
 
         /**
          * Private default constructor.

@@ -13,15 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.repository.impl;
+package org.b3log.solo.repository.gae;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
@@ -29,40 +26,37 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.PageRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Tag Google App Engine repository.
+ * Page Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Mar 7, 2011
+ * @version 1.0.0.5, Aug 20, 2011
  */
-public final class TagGAERepository extends AbstractGAERepository
-        implements TagRepository {
+public final class PageGAERepository extends AbstractGAERepository
+        implements PageRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(TagGAERepository.class.getName());
-    /**
-     * Tag-Article relation repository.
-     */
-    private TagArticleGAERepository tagArticleRepository =
-            TagArticleGAERepository.getInstance();
+            Logger.getLogger(PageGAERepository.class.getName());
 
     @Override
     public String getName() {
-        return Tag.TAG;
+        return Page.PAGE;
     }
 
     @Override
-    public JSONObject getByTitle(final String tagTitle)
-            throws RepositoryException {
+    public JSONObject getByPermalink(final String permalink) {
         final Query query = new Query();
-        query.addFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, tagTitle);
+        query.addFilter(Page.PAGE_PERMALINK,
+                        FilterOperator.EQUAL, permalink);
         try {
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
@@ -80,40 +74,54 @@ public final class TagGAERepository extends AbstractGAERepository
     }
 
     @Override
-    public List<JSONObject> getMostUsedTags(final int num) {
+    public int getMaxOrder() throws RepositoryException {
         final Query query = new Query();
-        query.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                      SortDirection.DESCENDING);
-        query.setCurrentPageNum(1);
-        query.setPageSize(num);
+        query.addSort(Page.PAGE_ORDER, SortDirection.DESCENDING);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return -1;
+        }
 
         try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-            
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final Exception e) {
+            return array.getJSONObject(0).getInt(Page.PAGE_ORDER);
+        } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return Collections.emptyList();
+            throw new RepositoryException(e);
         }
     }
 
     @Override
-    public List<JSONObject> getByArticleId(final String articleId)
-            throws RepositoryException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+    public JSONObject getByOrder(final int order) {
+        final Query query = new Query();
+        query.addFilter(Page.PAGE_ORDER, FilterOperator.EQUAL, order);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            return null;
+        }
+    }
+
+    @Override
+    public List<JSONObject> getPages() throws RepositoryException {
+        List<JSONObject> ret = new ArrayList<JSONObject>();
+        final Query query = new Query().addSort(
+                Page.PAGE_ORDER, SortDirection.ASCENDING);
+        final JSONObject result = get(query);
 
         try {
-            final List<JSONObject> tagArticleRelations =
-                    tagArticleRepository.getByArticleId(articleId);
-            for (final JSONObject tagArticleRelation : tagArticleRelations) {
-                final String tagId =
-                        tagArticleRelation.getString(Tag.TAG + "_"
-                                                     + Keys.OBJECT_ID);
-                final JSONObject tag = get(tagId);
-
-                ret.add(tag);
-            }
+            ret = CollectionUtils.jsonArrayToList(
+                    result.getJSONArray(Keys.RESULTS));
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
@@ -123,18 +131,18 @@ public final class TagGAERepository extends AbstractGAERepository
     }
 
     /**
-     * Gets the {@link TagGAERepository} singleton.
+     * Gets the {@link PageGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static TagGAERepository getInstance() {
+    public static PageGAERepository getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private TagGAERepository() {
+    private PageGAERepository() {
     }
 
     /**
@@ -148,8 +156,8 @@ public final class TagGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final TagGAERepository SINGLETON =
-                new TagGAERepository();
+        private static final PageGAERepository SINGLETON =
+                new PageGAERepository();
 
         /**
          * Private default constructor.

@@ -25,8 +25,8 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.gae.ArticleGAERepository;
+import org.b3log.solo.repository.gae.StatisticGAERepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 

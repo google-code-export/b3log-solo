@@ -24,7 +24,7 @@ import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.repository.impl.PluginGAERepository;
+import org.b3log.solo.repository.gae.PluginGAERepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

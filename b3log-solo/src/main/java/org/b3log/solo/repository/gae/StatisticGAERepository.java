@@ -13,46 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.repository.impl;
+package org.b3log.solo.repository.gae;
 
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.model.Skin;
-import org.b3log.solo.repository.SkinRepository;
+import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.StatisticRepository;
 
 /**
- * Skin Google App Engine repository.
+ * Statistic Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 12, 2011
  */
-public final class SkinGAERepository extends AbstractGAERepository
-        implements SkinRepository {
+public final class StatisticGAERepository extends AbstractGAERepository
+        implements StatisticRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(SkinGAERepository.class.getName());
+            Logger.getLogger(StatisticGAERepository.class.getName());
 
     @Override
     public String getName() {
-        return Skin.SKIN;
+        return Statistic.STATISTIC;
     }
 
     /**
-     * Gets the {@link SkinGAERepository} singleton.
+     * Gets the {@link StatisticGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static SkinGAERepository getInstance() {
+    public static StatisticGAERepository getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private SkinGAERepository() {
+    private StatisticGAERepository() {
     }
 
     /**
@@ -66,8 +66,8 @@ public final class SkinGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final SkinGAERepository SINGLETON =
-                new SkinGAERepository();
+        private static final StatisticGAERepository SINGLETON =
+                new StatisticGAERepository();
 
         /**
          * Private default constructor.

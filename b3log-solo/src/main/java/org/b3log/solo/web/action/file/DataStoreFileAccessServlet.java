@@ -41,7 +41,7 @@ import org.b3log.solo.model.ErrorPage;
 import org.b3log.solo.model.File;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
-import org.b3log.solo.repository.impl.FileGAERepository;
+import org.b3log.solo.repository.gae.FileGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONObject;

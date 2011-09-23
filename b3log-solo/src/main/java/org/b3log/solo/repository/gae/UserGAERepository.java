@@ -13,100 +13,116 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.repository.impl;
+package org.b3log.solo.repository.gae;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.model.Sign;
-import org.b3log.solo.repository.ArticleSignRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Article-Sign relation Google App Engine repository.
+ * User Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.6, Feb 22, 2011
  */
-public final class ArticleSignGAERepository extends AbstractGAERepository
-        implements ArticleSignRepository {
+public final class UserGAERepository extends AbstractGAERepository
+        implements UserRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleSignGAERepository.class.getName());
+            Logger.getLogger(UserGAERepository.class.getName());
 
     @Override
     public String getName() {
-        return Article.ARTICLE + "_" + Sign.SIGN;
+        return User.USER;
     }
 
     @Override
-    public List<JSONObject> getBySignId(final String signId)
-            throws RepositoryException {
+    public JSONObject getByEmail(final String email) {
         final Query query = new Query();
-        query.addFilter(Sign.SIGN + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, signId);
-        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL,
+                        email.toLowerCase().trim());
 
-        final JSONObject result = get(query);
         try {
+            final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final JSONException e) {
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return Collections.emptyList();
+
+            return null;
         }
     }
 
     @Override
-    public JSONObject getByArticleId(final String articleId)
-            throws RepositoryException {
+    public JSONObject getAdmin() {
         final Query query = new Query();
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, articleId);
+        query.addFilter(User.USER_ROLE, FilterOperator.EQUAL,
+                        Role.ADMIN_ROLE);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+            if (0 == array.length()) {
+                return null;
+            }
 
-        if (0 == array.length()) {
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
             return null;
+        }
+    }
+
+    @Override
+    public boolean isAdminEmail(final String email)
+            throws RepositoryException {
+        final JSONObject user = getByEmail(email);
+
+        if (null == user) {
+            return false;
         }
 
         try {
-            return array.getJSONObject(0);
+            return Role.ADMIN_ROLE.equals(user.getString(User.USER_ROLE));
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
             throw new RepositoryException(e);
         }
     }
 
     /**
-     * Gets the {@link ArticleSignGAERepository} singleton.
+     * Gets the {@link UserGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static ArticleSignGAERepository getInstance() {
+    public static UserGAERepository getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private ArticleSignGAERepository() {
+    private UserGAERepository() {
     }
 
     /**
@@ -120,8 +136,8 @@ public final class ArticleSignGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final ArticleSignGAERepository SINGLETON =
-                new ArticleSignGAERepository();
+        private static final UserGAERepository SINGLETON =
+                new UserGAERepository();
 
         /**
          * Private default constructor.
