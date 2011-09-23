@@ -23,7 +23,7 @@ import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONObject;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
-import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.repository.gae.PreferenceGAERepository;
 import static org.b3log.solo.model.Preference.*;
 
 /**

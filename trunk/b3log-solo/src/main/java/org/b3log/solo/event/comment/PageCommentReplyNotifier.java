@@ -31,7 +31,7 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.gae.CommentGAERepository;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 

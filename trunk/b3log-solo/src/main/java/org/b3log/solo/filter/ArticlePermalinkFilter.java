@@ -30,7 +30,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.gae.ArticleGAERepository;
 import org.json.JSONObject;
 
 /**

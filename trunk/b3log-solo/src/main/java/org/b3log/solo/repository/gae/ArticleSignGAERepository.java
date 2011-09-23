@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.repository.impl;
+package org.b3log.solo.repository.gae;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
@@ -29,76 +27,86 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.model.Sign;
+import org.b3log.solo.repository.ArticleSignRepository;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Tag-Article relation Google App Engine repository.
+ * Article-Sign relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 12, 2011
+ * @version 1.0.0.1, Jan 12, 2011
  */
-public final class TagArticleGAERepository extends AbstractGAERepository
-        implements TagArticleRepository {
+public final class ArticleSignGAERepository extends AbstractGAERepository
+        implements ArticleSignRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(TagArticleGAERepository.class.getName());
+            Logger.getLogger(ArticleSignGAERepository.class.getName());
 
     @Override
     public String getName() {
-        return Tag.TAG + "_" + Article.ARTICLE;
+        return Article.ARTICLE + "_" + Sign.SIGN;
     }
 
     @Override
-    public List<JSONObject> getByArticleId(final String articleId)
+    public List<JSONObject> getBySignId(final String signId)
             throws RepositoryException {
         final Query query = new Query();
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, articleId);
+        query.addFilter(Sign.SIGN + "_" + Keys.OBJECT_ID,
+                        FilterOperator.EQUAL, signId);
+        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
+        final JSONObject result = get(query);
         try {
-            final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
             return CollectionUtils.jsonArrayToList(array);
-        } catch (final Exception e) {
+        } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             return Collections.emptyList();
         }
     }
 
     @Override
-    public JSONObject getByTagId(final String tagId,
-                                 final int currentPageNum,
-                                 final int pageSize)
+    public JSONObject getByArticleId(final String articleId)
             throws RepositoryException {
         final Query query = new Query();
-        query.addFilter(Tag.TAG + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, tagId);
-        query.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                      SortDirection.DESCENDING);
-        query.setCurrentPageNum(currentPageNum);
-        query.setPageSize(pageSize);
+        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                        FilterOperator.EQUAL, articleId);
 
-        return get(query);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return null;
+        }
+
+        try {
+            return array.getJSONObject(0);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
     }
 
     /**
-     * Gets the {@link TagArticleGAERepository} singleton.
+     * Gets the {@link ArticleSignGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static TagArticleGAERepository getInstance() {
+    public static ArticleSignGAERepository getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private TagArticleGAERepository() {
+    private ArticleSignGAERepository() {
     }
 
     /**
@@ -112,8 +120,8 @@ public final class TagArticleGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final TagArticleGAERepository SINGLETON =
-                new TagArticleGAERepository();
+        private static final ArticleSignGAERepository SINGLETON =
+                new ArticleSignGAERepository();
 
         /**
          * Private default constructor.

@@ -21,7 +21,7 @@ import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
-import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.gae.StatisticGAERepository;
 import org.b3log.solo.util.Statistics;
 
 /**

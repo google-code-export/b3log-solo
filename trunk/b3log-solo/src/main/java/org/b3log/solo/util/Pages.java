@@ -25,8 +25,8 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.repository.gae.CommentGAERepository;
+import org.b3log.solo.repository.gae.PageGAERepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
