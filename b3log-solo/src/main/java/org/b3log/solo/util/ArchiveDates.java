@@ -27,9 +27,9 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
-import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,17 +50,17 @@ public final class ArchiveDates {
      * Archive date repository.
      */
     private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateGAERepository.getInstance();
+            ArchiveDateRepositoryImpl.getInstance();
     /**
      * Archive date-Article repository.
      */
     private ArchiveDateArticleRepository archiveDateArticleRepository =
-            ArchiveDateArticleGAERepository.getInstance();
+            ArchiveDateArticleRepositoryImpl.getInstance();
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
 
     /**
      * Archive the create date with the specified article.

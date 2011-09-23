@@ -18,46 +18,45 @@ package org.b3log.solo.repository.impl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.model.Role;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.model.BlogSync;
+import org.b3log.solo.repository.BlogSyncManagementRepository;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * User Google App Engine repository.
+ * Blog sync management Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Feb 22, 2011
+ * @version 1.0.0.2, Jan 12, 2011
  */
-public final class UserGAERepository extends AbstractGAERepository
-        implements UserRepository {
+public final class BlogSyncMgmtRepositoryImpl extends AbstractGAERepository
+        implements BlogSyncManagementRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(UserGAERepository.class.getName());
+            Logger.getLogger(BlogSyncMgmtRepositoryImpl.class.getName());
 
     @Override
     public String getName() {
-        return User.USER;
+        return BlogSync.BLOG_SYNC_MANAGEMENT;
     }
 
     @Override
-    public JSONObject getByEmail(final String email) {
+    public JSONObject getByExternalBloggingSystem(
+            final String externalBloggingSystem) {
         final Query query = new Query();
-        query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL,
-                        email.toLowerCase().trim());
+        query.addFilter(BlogSync.BLOG_SYNC_EXTERNAL_BLOGGING_SYS,
+                        FilterOperator.EQUAL, externalBloggingSystem);
+
 
         try {
             final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+            final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
             if (0 == array.length()) {
                 return null;
@@ -66,63 +65,23 @@ public final class UserGAERepository extends AbstractGAERepository
             return array.getJSONObject(0);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
             return null;
-        }
-    }
-
-    @Override
-    public JSONObject getAdmin() {
-        final Query query = new Query();
-        query.addFilter(User.USER_ROLE, FilterOperator.EQUAL,
-                        Role.ADMIN_ROLE);
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            return null;
-        }
-    }
-
-    @Override
-    public boolean isAdminEmail(final String email)
-            throws RepositoryException {
-        final JSONObject user = getByEmail(email);
-
-        if (null == user) {
-            return false;
-        }
-
-        try {
-            return Role.ADMIN_ROLE.equals(user.getString(User.USER_ROLE));
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            throw new RepositoryException(e);
         }
     }
 
     /**
-     * Gets the {@link UserGAERepository} singleton.
+     * Gets the {@link BlogSyncMgmtGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static UserGAERepository getInstance() {
+    public static BlogSyncMgmtRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private UserGAERepository() {
+    private BlogSyncMgmtRepositoryImpl() {
     }
 
     /**
@@ -136,8 +95,8 @@ public final class UserGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final UserGAERepository SINGLETON =
-                new UserGAERepository();
+        private static final BlogSyncMgmtRepositoryImpl SINGLETON =
+                new BlogSyncMgmtRepositoryImpl();
 
         /**
          * Private default constructor.

@@ -19,9 +19,9 @@ import org.b3log.latke.repository.Repository;
 import java.util.Iterator;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.UserGAERepository;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.repository.ArchiveDateRepository;
-import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Dates;
@@ -29,7 +29,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
-import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import java.util.ArrayList;
@@ -47,9 +47,9 @@ import org.jsoup.Jsoup;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.TagArticleGAERepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Articles;
 import java.io.IOException;
 import java.util.List;
@@ -71,7 +71,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
@@ -97,16 +97,16 @@ public final class ArticleProcessor {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository =
-            TagArticleGAERepository.getInstance();
+            TagArticleRepositoryImpl.getInstance();
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagGAERepository.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Filler.
      */
@@ -135,16 +135,16 @@ public final class ArticleProcessor {
      * Archive date-Article repository.
      */
     private ArchiveDateArticleRepository archiveDateArticleRepository =
-            ArchiveDateArticleGAERepository.getInstance();
+            ArchiveDateArticleRepositoryImpl.getInstance();
     /**
      * Archive date repository.
      */
     private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateGAERepository.getInstance();
+            ArchiveDateRepositoryImpl.getInstance();
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserGAERepository.getInstance();
+    private UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
      * Default update count for article random value.
      */
@@ -206,7 +206,7 @@ public final class ArticleProcessor {
         }
 
         final Repository statisticRepository =
-                StatisticGAERepository.getInstance();
+                StatisticRepositoryImpl.getInstance();
         final Transaction transaction =
                 statisticRepository.beginTransaction();
         transaction.clearQueryCache(false);
@@ -692,7 +692,7 @@ public final class ArticleProcessor {
 
         if (!Strings.isEmptyOrNull(articleId)) {
             final Repository statisticRepository =
-                    StatisticGAERepository.getInstance();
+                    StatisticRepositoryImpl.getInstance();
             final Transaction transaction =
                     statisticRepository.beginTransaction();
             transaction.clearQueryCache(false);

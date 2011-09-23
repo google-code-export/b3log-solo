@@ -24,8 +24,8 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 
 /**
  * Permalink utilities.
@@ -40,12 +40,12 @@ public final class Permalinks {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Page repository.
      */
     private PageRepository pageRepository =
-            PageGAERepository.getInstance();
+            PageRepositoryImpl.getInstance();
     /**
      * Reserved permalinks.
      */

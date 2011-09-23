@@ -38,7 +38,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.repository.impl.StatisticGAERepository;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
@@ -67,7 +67,7 @@ public final class PageCacheFilter implements Filter {
      * Statistic repository.
      */
     private Repository statisticRepository =
-            StatisticGAERepository.getInstance();
+            StatisticRepositoryImpl.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {

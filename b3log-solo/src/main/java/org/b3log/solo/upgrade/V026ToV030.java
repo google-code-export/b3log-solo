@@ -37,8 +37,8 @@ import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
-import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
+import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,12 +85,12 @@ public final class V026ToV030 extends HttpServlet {
      * Preference repository.
      */
     private PreferenceRepository preferenceRepository =
-            PreferenceGAERepository.getInstance();
+            PreferenceRepositoryImpl.getInstance();
     /**
      * Archive date repository.
      */
     private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateGAERepository.getInstance();
+            ArchiveDateRepositoryImpl.getInstance();
 
     @Override
     protected void doGet(final HttpServletRequest request,

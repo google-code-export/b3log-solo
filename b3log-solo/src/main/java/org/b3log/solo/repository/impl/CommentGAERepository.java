@@ -53,7 +53,7 @@ public final class CommentGAERepository extends AbstractGAERepository
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
 
     @Override
     public String getName() {

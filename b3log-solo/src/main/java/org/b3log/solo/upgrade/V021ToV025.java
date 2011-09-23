@@ -44,12 +44,12 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.LinkGAERepository;
-import org.b3log.solo.repository.impl.StatisticGAERepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
-import org.b3log.solo.repository.impl.UserGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.LinkRepositoryImpl;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -143,12 +143,12 @@ public final class V021ToV025 extends HttpServlet {
      * Statistic repository.
      */
     private StatisticRepository statisticRepository =
-            StatisticGAERepository.getInstance();
+            StatisticRepositoryImpl.getInstance();
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Preference utilities.
      */
@@ -161,20 +161,20 @@ public final class V021ToV025 extends HttpServlet {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagGAERepository.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Archive date repository.
      */
     private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateGAERepository.getInstance();
+            ArchiveDateRepositoryImpl.getInstance();
     /**
      * Link repository.
      */
-    private LinkRepository linkRepository = LinkGAERepository.getInstance();
+    private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserGAERepository.getInstance();
+    private UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
      * Update size in an request.
      */

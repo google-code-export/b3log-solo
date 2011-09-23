@@ -30,7 +30,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.json.JSONObject;
 
 /**
@@ -50,7 +50,7 @@ public final class ArticlePermalinkFilter implements Filter {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {

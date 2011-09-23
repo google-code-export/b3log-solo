@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.4, Jan 12, 2011
  */
-public final class ExternalArticleSoloArticleGAERepository
+public final class ExternalArticleSoloArticleRepositoryImpl
         extends AbstractGAERepository
         implements ExternalArticleSoloArticleRepository {
 
@@ -43,7 +43,7 @@ public final class ExternalArticleSoloArticleGAERepository
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ExternalArticleSoloArticleGAERepository.class.
+            Logger.getLogger(ExternalArticleSoloArticleRepositoryImpl.class.
             getName());
 
     @Override
@@ -157,14 +157,14 @@ public final class ExternalArticleSoloArticleGAERepository
      *
      * @return the singleton
      */
-    public static ExternalArticleSoloArticleGAERepository getInstance() {
+    public static ExternalArticleSoloArticleRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private ExternalArticleSoloArticleGAERepository() {
+    private ExternalArticleSoloArticleRepositoryImpl() {
     }
 
     /**
@@ -178,8 +178,8 @@ public final class ExternalArticleSoloArticleGAERepository
         /**
          * Singleton.
          */
-        private static final ExternalArticleSoloArticleGAERepository SINGLETON =
-                new ExternalArticleSoloArticleGAERepository();
+        private static final ExternalArticleSoloArticleRepositoryImpl SINGLETON =
+                new ExternalArticleSoloArticleRepositoryImpl();
 
         /**
          * Private default constructor.

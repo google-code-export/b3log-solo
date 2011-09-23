@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.impl.PreferenceGAERepository;
+import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONObject;
 
@@ -88,7 +88,7 @@ public final class Callback extends HttpServlet {
         final OauthKey oauthKey = AuthorizeToken.parseToken(resp);
 
          final Transaction transaction =
-                PreferenceGAERepository.getInstance().beginTransaction();
+                PreferenceRepositoryImpl.getInstance().beginTransaction();
         try {
             preference.put(Preference.TENCENT_MICROBLOG_APP_KEY, appKey);
             preference.put(Preference.TENCENT_MICROBLOG_APP_SECRET, appSecret);

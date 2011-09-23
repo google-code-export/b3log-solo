@@ -15,69 +15,48 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
+import org.b3log.solo.model.Article;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.model.ArchiveDate;
+import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Tag-Article relation Google App Engine repository.
+ * Archive date-Article relation Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 12, 2011
+ * @version 1.0.0.5, Jan 12, 2011
  */
-public final class TagArticleGAERepository extends AbstractGAERepository
-        implements TagArticleRepository {
+public final class ArchiveDateArticleRepositoryImpl
+        extends AbstractGAERepository
+        implements ArchiveDateArticleRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(TagArticleGAERepository.class.getName());
+            Logger.getLogger(ArchiveDateArticleRepositoryImpl.class.getName());
 
     @Override
     public String getName() {
-        return Tag.TAG + "_" + Article.ARTICLE;
+        return ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE;
     }
 
     @Override
-    public List<JSONObject> getByArticleId(final String articleId)
+    public JSONObject getByArchiveDateId(final String archiveDateId,
+                                         final int currentPageNum,
+                                         final int pageSize)
             throws RepositoryException {
         final Query query = new Query();
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, articleId);
-
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return Collections.emptyList();
-        }
-    }
-
-    @Override
-    public JSONObject getByTagId(final String tagId,
-                                 final int currentPageNum,
-                                 final int pageSize)
-            throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(Tag.TAG + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, tagId);
+        query.addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
+                        FilterOperator.EQUAL, archiveDateId);
         query.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                       SortDirection.DESCENDING);
         query.setCurrentPageNum(currentPageNum);
@@ -86,19 +65,35 @@ public final class TagArticleGAERepository extends AbstractGAERepository
         return get(query);
     }
 
+    @Override
+    public JSONObject getByArticleId(final String articleId)
+            throws RepositoryException {
+        final Query query = new Query();
+        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                        FilterOperator.EQUAL, articleId);
+        
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
+
     /**
-     * Gets the {@link TagArticleGAERepository} singleton.
+     * Gets the {@link ArchiveDateArticleGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static TagArticleGAERepository getInstance() {
+    public static ArchiveDateArticleRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private TagArticleGAERepository() {
+    private ArchiveDateArticleRepositoryImpl() {
     }
 
     /**
@@ -112,8 +107,8 @@ public final class TagArticleGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final TagArticleGAERepository SINGLETON =
-                new TagArticleGAERepository();
+        private static final ArchiveDateArticleRepositoryImpl SINGLETON =
+                new ArchiveDateArticleRepositoryImpl();
 
         /**
          * Private default constructor.

@@ -50,14 +50,14 @@ import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.LinkGAERepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
-import org.b3log.solo.repository.impl.StatisticGAERepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
-import org.b3log.solo.repository.impl.UserGAERepository;
+import org.b3log.solo.repository.impl.LinkRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Tags;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,7 +80,7 @@ public final class Filler {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Comment repository.
      */
@@ -90,11 +90,11 @@ public final class Filler {
      * Archive date repository.
      */
     private ArchiveDateRepository archiveDateRepository =
-            ArchiveDateGAERepository.getInstance();
+            ArchiveDateRepositoryImpl.getInstance();
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagGAERepository.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Article utilities.
      */
@@ -106,20 +106,20 @@ public final class Filler {
     /**
      * Link repository.
      */
-    private LinkRepository linkRepository = LinkGAERepository.getInstance();
+    private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageGAERepository.getInstance();
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
     /**
      * Statistic repository.
      */
     private StatisticRepository statisticRepository =
-            StatisticGAERepository.getInstance();
+            StatisticRepositoryImpl.getInstance();
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserGAERepository.getInstance();
+    private UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
      * {@code true} for published.
      */

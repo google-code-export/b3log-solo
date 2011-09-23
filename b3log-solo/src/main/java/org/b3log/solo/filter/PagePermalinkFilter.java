@@ -30,7 +30,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.json.JSONObject;
 
 /**
@@ -49,7 +49,7 @@ public final class PagePermalinkFilter implements Filter {
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageGAERepository.getInstance();
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {

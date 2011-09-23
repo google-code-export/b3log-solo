@@ -51,9 +51,9 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.PreferenceGAERepository;
-import org.b3log.solo.repository.impl.StatisticGAERepository;
-import org.b3log.solo.repository.impl.UserGAERepository;
+import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
@@ -84,16 +84,16 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * Preference repository.
      */
     private PreferenceRepository preferenceRepository =
-            PreferenceGAERepository.getInstance();
+            PreferenceRepositoryImpl.getInstance();
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserGAERepository.getInstance();
+    private UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
      * Statistic repository.
      */
     private StatisticRepository statisticRepository =
-            StatisticGAERepository.getInstance();
+            StatisticRepositoryImpl.getInstance();
     /**
      * Event manager.
      */

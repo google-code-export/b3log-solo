@@ -17,42 +17,42 @@ package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.PreferenceRepository;
+import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.StatisticRepository;
 
 /**
- * Preference Google App Engine repository.
+ * Statistic Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 12, 2011
  */
-public final class PreferenceGAERepository extends AbstractGAERepository
-        implements PreferenceRepository {
+public final class StatisticRepositoryImpl extends AbstractGAERepository
+        implements StatisticRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PreferenceGAERepository.class.getName());
+            Logger.getLogger(StatisticRepositoryImpl.class.getName());
 
     @Override
     public String getName() {
-        return Preference.PREFERENCE;
+        return Statistic.STATISTIC;
     }
 
     /**
-     * Gets the {@link PreferenceGAERepository} singleton.
+     * Gets the {@link StatisticGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static PreferenceGAERepository getInstance() {
+    public static StatisticRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private PreferenceGAERepository() {
+    private StatisticRepositoryImpl() {
     }
 
     /**
@@ -66,8 +66,8 @@ public final class PreferenceGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final PreferenceGAERepository SINGLETON =
-                new PreferenceGAERepository();
+        private static final StatisticRepositoryImpl SINGLETON =
+                new StatisticRepositoryImpl();
 
         /**
          * Private default constructor.

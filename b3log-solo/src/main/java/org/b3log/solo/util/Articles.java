@@ -41,11 +41,11 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.ArticleSignGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.TagArticleGAERepository;
-import org.b3log.solo.repository.impl.UserGAERepository;
+import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,17 +72,17 @@ public final class Articles {
      * Article-Sign repository.
      */
     private ArticleSignRepository articleSignRepository =
-            ArticleSignGAERepository.getInstance();
+            ArticleSignRepositoryImpl.getInstance();
     /**
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository =
-            TagArticleGAERepository.getInstance();
+            TagArticleRepositoryImpl.getInstance();
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Statistic utilities.
      */
@@ -90,7 +90,7 @@ public final class Articles {
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserGAERepository.getInstance();
+    private UserRepository userRepository = UserRepositoryImpl.getInstance();
 
     /**
      * Gets the specified article's author. The specified article has a property

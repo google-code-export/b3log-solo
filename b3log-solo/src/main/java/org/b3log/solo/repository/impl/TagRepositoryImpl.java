@@ -15,45 +15,54 @@
  */
 package org.b3log.solo.repository.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.solo.model.Tag;
+import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.model.Link;
-import org.b3log.solo.repository.LinkRepository;
+import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Link Google App Engine repository.
+ * Tag Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 12, 2011
+ * @version 1.0.0.9, Mar 7, 2011
  */
-public final class LinkGAERepository extends AbstractGAERepository
-        implements LinkRepository {
+public final class TagRepositoryImpl extends AbstractGAERepository
+        implements TagRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(LinkGAERepository.class.getName());
+            Logger.getLogger(TagRepositoryImpl.class.getName());
+    /**
+     * Tag-Article relation repository.
+     */
+    private TagArticleRepositoryImpl tagArticleRepository =
+            TagArticleRepositoryImpl.getInstance();
 
     @Override
     public String getName() {
-        return Link.LINK;
+        return Tag.TAG;
     }
 
     @Override
-    public JSONObject getByAddress(final String address) {
+    public JSONObject getByTitle(final String tagTitle)
+            throws RepositoryException {
         final Query query = new Query();
-        query.addFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address);
-
+        query.addFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, tagTitle);
         try {
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
@@ -65,65 +74,67 @@ public final class LinkGAERepository extends AbstractGAERepository
             return array.getJSONObject(0);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
             return null;
         }
-
     }
 
     @Override
-    public int getMaxOrder() throws RepositoryException {
+    public List<JSONObject> getMostUsedTags(final int num) {
         final Query query = new Query();
-        query.addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
-
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        if (0 == array.length()) {
-            return -1;
-        }
+        query.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
+                      SortDirection.DESCENDING);
+        query.setCurrentPageNum(1);
+        query.setPageSize(num);
 
         try {
-            return array.getJSONObject(0).getInt(Link.LINK_ORDER);
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+            
+            return CollectionUtils.jsonArrayToList(array);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public List<JSONObject> getByArticleId(final String articleId)
+            throws RepositoryException {
+        final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+        try {
+            final List<JSONObject> tagArticleRelations =
+                    tagArticleRepository.getByArticleId(articleId);
+            for (final JSONObject tagArticleRelation : tagArticleRelations) {
+                final String tagId =
+                        tagArticleRelation.getString(Tag.TAG + "_"
+                                                     + Keys.OBJECT_ID);
+                final JSONObject tag = get(tagId);
+
+                ret.add(tag);
+            }
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
-    }
 
-    @Override
-    public JSONObject getByOrder(final int order) {
-        final Query query = new Query();
-        query.addFilter(Link.LINK_ORDER, FilterOperator.EQUAL, order);
-
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
-
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            return null;
-        }
+        return ret;
     }
 
     /**
-     * Gets the {@link LinkGAERepository} singleton.
+     * Gets the {@link TagGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static LinkGAERepository getInstance() {
+    public static TagRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private LinkGAERepository() {
+    private TagRepositoryImpl() {
     }
 
     /**
@@ -137,8 +148,8 @@ public final class LinkGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final LinkGAERepository SINGLETON =
-                new LinkGAERepository();
+        private static final TagRepositoryImpl SINGLETON =
+                new TagRepositoryImpl();
 
         /**
          * Private default constructor.

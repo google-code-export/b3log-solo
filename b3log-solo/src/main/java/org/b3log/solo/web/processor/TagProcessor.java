@@ -20,10 +20,10 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.repository.TagArticleRepository;
-import org.b3log.solo.repository.impl.TagArticleGAERepository;
+import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,7 +37,7 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.LangPropsService;
@@ -80,7 +80,7 @@ public final class TagProcessor {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagGAERepository.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Filler.
      */
@@ -101,7 +101,7 @@ public final class TagProcessor {
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository =
-            TagArticleGAERepository.getInstance();
+            TagArticleRepositoryImpl.getInstance();
     /**
      * Article utilities.
      */
@@ -110,7 +110,7 @@ public final class TagProcessor {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Tag utilities.
      */

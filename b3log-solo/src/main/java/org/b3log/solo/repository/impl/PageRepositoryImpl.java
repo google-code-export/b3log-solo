@@ -16,7 +16,6 @@
 package org.b3log.solo.repository.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,115 +26,123 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.repository.ArchiveDateRepository;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.PageRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Archive date Google App Engine repository.
+ * Page Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jun 30, 2011
+ * @version 1.0.0.5, Aug 20, 2011
  */
-public final class ArchiveDateGAERepository extends AbstractGAERepository
-        implements ArchiveDateRepository {
+public final class PageRepositoryImpl extends AbstractGAERepository
+        implements PageRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArchiveDateGAERepository.class.getName());
+            Logger.getLogger(PageRepositoryImpl.class.getName());
 
     @Override
     public String getName() {
-        return ArchiveDate.ARCHIVE_DATE;
+        return Page.PAGE;
     }
 
     @Override
-    public JSONObject getByArchiveDate(final String archiveDate)
-            throws RepositoryException {
+    public JSONObject getByPermalink(final String permalink) {
+        final Query query = new Query();
+        query.addFilter(Page.PAGE_PERMALINK,
+                        FilterOperator.EQUAL, permalink);
         try {
-            final Query query = new Query();
-            query.addFilter(ArchiveDate.ARCHIVE_TIME,
-                            FilterOperator.EQUAL,
-                            ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime());
-            
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
-            
+
             if (0 == array.length()) {
                 return null;
             }
-             
+
             return array.getJSONObject(0);
         } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            return null;
+        }
+    }
+
+    @Override
+    public int getMaxOrder() throws RepositoryException {
+        final Query query = new Query();
+        query.addSort(Page.PAGE_ORDER, SortDirection.DESCENDING);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return -1;
+        }
+
+        try {
+            return array.getJSONObject(0).getInt(Page.PAGE_ORDER);
+        } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
     }
 
     @Override
-    public List<JSONObject> getArchiveDates() throws RepositoryException {
-        final org.b3log.latke.repository.Query query =
-                new org.b3log.latke.repository.Query().addSort(
-                ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING);
+    public JSONObject getByOrder(final int order) {
+        final Query query = new Query();
+        query.addFilter(Page.PAGE_ORDER, FilterOperator.EQUAL, order);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            return null;
+        }
+    }
+
+    @Override
+    public List<JSONObject> getPages() throws RepositoryException {
+        List<JSONObject> ret = new ArrayList<JSONObject>();
+        final Query query = new Query().addSort(
+                Page.PAGE_ORDER, SortDirection.ASCENDING);
         final JSONObject result = get(query);
 
-        List<JSONObject> ret = new ArrayList<JSONObject>();
         try {
-            final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
-
-            ret = CollectionUtils.jsonArrayToList(archiveDates);
+            ret = CollectionUtils.jsonArrayToList(
+                    result.getJSONArray(Keys.RESULTS));
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
-        }
-
-        try {
-            removeForUnpublishedArticles(ret);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return ret;
     }
 
     /**
-     * Removes archive dates of unpublished articles from the specified archive
-     * dates.
-     *
-     * @param archiveDates the specified archive dates
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    private void removeForUnpublishedArticles(
-            final List<JSONObject> archiveDates) throws JSONException,
-                                                        RepositoryException {
-        final Iterator<JSONObject> iterator = archiveDates.iterator();
-        while (iterator.hasNext()) {
-            final JSONObject archiveDate = iterator.next();
-            if (0 == archiveDate.getInt(
-                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
-                iterator.remove();
-            }
-        }
-    }
-
-    /**
-     * Gets the {@link ArchiveDateGAERepository} singleton.
+     * Gets the {@link PageGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static ArchiveDateGAERepository getInstance() {
+    public static PageRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private ArchiveDateGAERepository() {
+    private PageRepositoryImpl() {
     }
 
     /**
@@ -149,8 +156,8 @@ public final class ArchiveDateGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final ArchiveDateGAERepository SINGLETON =
-                new ArchiveDateGAERepository();
+        private static final PageRepositoryImpl SINGLETON =
+                new PageRepositoryImpl();
 
         /**
          * Private default constructor.

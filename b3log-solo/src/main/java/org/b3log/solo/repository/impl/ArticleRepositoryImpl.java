@@ -41,14 +41,14 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.3.1, Jul 10, 2011
  */
-public final class ArticleGAERepository extends AbstractGAERepository
+public final class ArticleRepositoryImpl extends AbstractGAERepository
         implements ArticleRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleGAERepository.class.getName());
+            Logger.getLogger(ArticleRepositoryImpl.class.getName());
 
     @Override
     public String getName() {
@@ -349,14 +349,14 @@ public final class ArticleGAERepository extends AbstractGAERepository
      *
      * @return the singleton
      */
-    public static ArticleGAERepository getInstance() {
+    public static ArticleRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private ArticleGAERepository() {
+    private ArticleRepositoryImpl() {
     }
 
     /**
@@ -370,8 +370,8 @@ public final class ArticleGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final ArticleGAERepository SINGLETON =
-                new ArticleGAERepository();
+        private static final ArticleRepositoryImpl SINGLETON =
+                new ArticleRepositoryImpl();
 
         /**
          * Private default constructor.

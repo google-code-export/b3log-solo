@@ -46,7 +46,7 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentGAERepository;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Comments;
@@ -96,7 +96,7 @@ public final class AddArticleCommentFromSymphonyAction
      * Article repository.
      */
     private static ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Statistic utilities.
      */

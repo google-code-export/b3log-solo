@@ -26,7 +26,7 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentGAERepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,7 +52,7 @@ public final class Pages {
      * Page repository.
      */
     private PageRepository pageRepository =
-            PageGAERepository.getInstance();
+            PageRepositoryImpl.getInstance();
     /**
      * Statistic utilities.
      */

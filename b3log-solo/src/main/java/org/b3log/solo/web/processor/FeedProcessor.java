@@ -49,9 +49,9 @@ import org.b3log.solo.model.feed.rss.Item;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArticleGAERepository;
-import org.b3log.solo.repository.impl.TagArticleGAERepository;
-import org.b3log.solo.repository.impl.TagGAERepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.TimeZones;
@@ -77,7 +77,7 @@ public final class FeedProcessor {
      * Article repository.
      */
     private ArticleRepository articleRepository =
-            ArticleGAERepository.getInstance();
+            ArticleRepositoryImpl.getInstance();
     /**
      * Preference utilities.
      */
@@ -98,12 +98,12 @@ public final class FeedProcessor {
      * Tag repository.
      */
     private TagRepository tagRepository =
-            TagGAERepository.getInstance();
+            TagRepositoryImpl.getInstance();
     /**
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository =
-            TagArticleGAERepository.getInstance();
+            TagArticleRepositoryImpl.getInstance();
 
     /**
      * Blog articles Atom output.

@@ -16,43 +16,44 @@
 package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
-import org.b3log.latke.model.Plugin;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.repository.PluginRepository;
+import org.b3log.solo.model.File;
+import org.b3log.solo.repository.FileRepository;
 
 /**
- * Plugin Google App Engine repository.
+ * File Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 21, 2011
+ * @version 1.0.0.3, Feb 8, 2011
  */
-public final class PluginGAERepository extends AbstractGAERepository
-        implements PluginRepository {
+public final class FileRepositoryImpl extends AbstractGAERepository
+        implements FileRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PluginGAERepository.class.getName());
+            Logger.getLogger(FileRepositoryImpl.class.getName());
 
     @Override
     public String getName() {
-        return Plugin.PLUGIN;
+        return File.FILE;
     }
 
     /**
-     * Gets the {@link PluginGAERepository} singleton.
+     * Gets the {@link FileGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static PluginGAERepository getInstance() {
+    public static FileRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
-     * Private default constructor.
+     * Private default constructor. Disables cache.
      */
-    private PluginGAERepository() {
+    private FileRepositoryImpl() {
+        setCacheEnabled(false);
     }
 
     /**
@@ -66,8 +67,8 @@ public final class PluginGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final PluginGAERepository SINGLETON =
-                new PluginGAERepository();
+        private static final FileRepositoryImpl SINGLETON =
+                new FileRepositoryImpl();
 
         /**
          * Private default constructor.

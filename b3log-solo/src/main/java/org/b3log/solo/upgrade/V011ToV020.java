@@ -29,7 +29,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.PageGAERepository;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -56,7 +56,7 @@ public final class V011ToV020 extends HttpServlet {
      * Page repository.
      */
     private PageRepository pageRepository =
-            PageGAERepository.getInstance();
+            PageRepositoryImpl.getInstance();
 
     @Override
     protected void doGet(final HttpServletRequest request,

@@ -16,43 +16,43 @@
 package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
+import org.b3log.latke.model.Plugin;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
-import org.b3log.solo.model.Skin;
-import org.b3log.solo.repository.SkinRepository;
+import org.b3log.solo.repository.PluginRepository;
 
 /**
- * Skin Google App Engine repository.
+ * Plugin Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.0, Jul 21, 2011
  */
-public final class SkinGAERepository extends AbstractGAERepository
-        implements SkinRepository {
+public final class PluginRepositoryImpl extends AbstractGAERepository
+        implements PluginRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(SkinGAERepository.class.getName());
+            Logger.getLogger(PluginRepositoryImpl.class.getName());
 
     @Override
     public String getName() {
-        return Skin.SKIN;
+        return Plugin.PLUGIN;
     }
 
     /**
-     * Gets the {@link SkinGAERepository} singleton.
+     * Gets the {@link PluginGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static SkinGAERepository getInstance() {
+    public static PluginRepositoryImpl getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private SkinGAERepository() {
+    private PluginRepositoryImpl() {
     }
 
     /**
@@ -66,8 +66,8 @@ public final class SkinGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final SkinGAERepository SINGLETON =
-                new SkinGAERepository();
+        private static final PluginRepositoryImpl SINGLETON =
+                new PluginRepositoryImpl();
 
         /**
          * Private default constructor.
