@@ -153,7 +153,7 @@
         <url-pattern>/admin-file-list.do</url-pattern>
         <url-pattern>/admin-page-list.do</url-pattern>
         <url-pattern>/admin-others.do</url-pattern>
-        <url-pattern>admin-draft-list.do</url-pattern>
+        <url-pattern>/admin-draft-list.do</url-pattern>
         <url-pattern>/admin-user-list.do</url-pattern>
         <url-pattern>/admin-plugin-list.do</url-pattern>
         <url-pattern>/admin-main.do</url-pattern>
