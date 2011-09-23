@@ -20,9 +20,9 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.SoloServletListener;
@@ -205,7 +205,7 @@ public final class UpgradeProcessor {
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Aug 25, 2011
  */
-final class PageCommentGAERepository extends AbstractGAERepository {
+final class PageCommentGAERepository extends AbstractRepository {
 
     /**
      * Logger.
@@ -265,7 +265,7 @@ final class PageCommentGAERepository extends AbstractGAERepository {
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.6, Aug 25, 2011
  */
-final class ArticleCommentGAERepository extends AbstractGAERepository {
+final class ArticleCommentGAERepository extends AbstractRepository {
 
     /**
      * Logger.
