@@ -38,7 +38,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.repository.gae.StatisticGAERepository;
+import org.b3log.solo.repository.impl.StatisticGAERepository;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 

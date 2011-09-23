@@ -27,9 +27,9 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.gae.ArchiveDateArticleGAERepository;
-import org.b3log.solo.repository.gae.ArchiveDateGAERepository;
-import org.b3log.solo.repository.gae.ArticleGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleGAERepository;
+import org.b3log.solo.repository.impl.ArchiveDateGAERepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 

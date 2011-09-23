@@ -37,7 +37,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.repository.PluginRepository;
-import org.b3log.solo.repository.gae.PluginGAERepository;
+import org.b3log.solo.repository.impl.PluginGAERepository;
 import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;

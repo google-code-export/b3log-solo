@@ -25,7 +25,7 @@ import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.PluginRepository;
-import org.b3log.solo.repository.gae.PluginGAERepository;
+import org.b3log.solo.repository.impl.PluginGAERepository;
 import org.b3log.solo.util.Plugins;
 
 /**

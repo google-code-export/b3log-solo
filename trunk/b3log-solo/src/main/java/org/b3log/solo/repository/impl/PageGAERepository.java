@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.repository.gae;
+package org.b3log.solo.repository.impl;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
@@ -27,86 +26,123 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.gae.AbstractGAERepository;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.model.Sign;
-import org.b3log.solo.repository.ArticleSignRepository;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.PageRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Article-Sign relation Google App Engine repository.
+ * Page Google App Engine repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.5, Aug 20, 2011
  */
-public final class ArticleSignGAERepository extends AbstractGAERepository
-        implements ArticleSignRepository {
+public final class PageGAERepository extends AbstractGAERepository
+        implements PageRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleSignGAERepository.class.getName());
+            Logger.getLogger(PageGAERepository.class.getName());
 
     @Override
     public String getName() {
-        return Article.ARTICLE + "_" + Sign.SIGN;
+        return Page.PAGE;
     }
 
     @Override
-    public List<JSONObject> getBySignId(final String signId)
-            throws RepositoryException {
+    public JSONObject getByPermalink(final String permalink) {
         final Query query = new Query();
-        query.addFilter(Sign.SIGN + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, signId);
-        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
-        final JSONObject result = get(query);
+        query.addFilter(Page.PAGE_PERMALINK,
+                        FilterOperator.EQUAL, permalink);
         try {
+            final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
-            return CollectionUtils.jsonArrayToList(array);
-        } catch (final JSONException e) {
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            return Collections.emptyList();
+
+            return null;
         }
     }
 
     @Override
-    public JSONObject getByArticleId(final String articleId)
-            throws RepositoryException {
+    public int getMaxOrder() throws RepositoryException {
         final Query query = new Query();
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, articleId);
-
+        query.addSort(Page.PAGE_ORDER, SortDirection.DESCENDING);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
         if (0 == array.length()) {
-            return null;
+            return -1;
         }
 
         try {
-            return array.getJSONObject(0);
+            return array.getJSONObject(0).getInt(Page.PAGE_ORDER);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
     }
 
+    @Override
+    public JSONObject getByOrder(final int order) {
+        final Query query = new Query();
+        query.addFilter(Page.PAGE_ORDER, FilterOperator.EQUAL, order);
+        try {
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (0 == array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            return null;
+        }
+    }
+
+    @Override
+    public List<JSONObject> getPages() throws RepositoryException {
+        List<JSONObject> ret = new ArrayList<JSONObject>();
+        final Query query = new Query().addSort(
+                Page.PAGE_ORDER, SortDirection.ASCENDING);
+        final JSONObject result = get(query);
+
+        try {
+            ret = CollectionUtils.jsonArrayToList(
+                    result.getJSONArray(Keys.RESULTS));
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
+
+        return ret;
+    }
+
     /**
-     * Gets the {@link ArticleSignGAERepository} singleton.
+     * Gets the {@link PageGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static ArticleSignGAERepository getInstance() {
+    public static PageGAERepository getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private default constructor.
      */
-    private ArticleSignGAERepository() {
+    private PageGAERepository() {
     }
 
     /**
@@ -120,8 +156,8 @@ public final class ArticleSignGAERepository extends AbstractGAERepository
         /**
          * Singleton.
          */
-        private static final ArticleSignGAERepository SINGLETON =
-                new ArticleSignGAERepository();
+        private static final PageGAERepository SINGLETON =
+                new PageGAERepository();
 
         /**
          * Private default constructor.

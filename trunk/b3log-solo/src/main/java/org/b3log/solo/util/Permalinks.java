@@ -24,8 +24,8 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.gae.ArticleGAERepository;
-import org.b3log.solo.repository.gae.PageGAERepository;
+import org.b3log.solo.repository.impl.ArticleGAERepository;
+import org.b3log.solo.repository.impl.PageGAERepository;
 
 /**
  * Permalink utilities.
