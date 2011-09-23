@@ -52,7 +52,7 @@ import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.CommentGAERepository;
+import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
@@ -85,7 +85,7 @@ public final class Filler {
      * Comment repository.
      */
     private CommentRepository commentRepository =
-            CommentGAERepository.getInstance();
+            CommentRepositoryImpl.getInstance();
     /**
      * Archive date repository.
      */
