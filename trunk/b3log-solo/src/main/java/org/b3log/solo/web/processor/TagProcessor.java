@@ -241,6 +241,13 @@ public final class TagProcessor {
                 Collections.sort(articles,
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
+
+            if (pageCount == currentPageNum + 1) { // The next page is the last page
+                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+            } else {
+                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
+                                                                   + 1);
+            }
             dataModel.put(Article.ARTICLES, articles);
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
