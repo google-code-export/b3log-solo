@@ -22,4 +22,4 @@
 ||15||Solo Issue 流程文档|| || || || || || ||
 ||16||Latke <font color='grey'>Local</font> Image Service||D||2011-08-07||2011-10-01|| ||<font color='blue'>50%</font>|| || 
 ||17||Latke <font color='grey'>Local</font> (Sleepycat) Repository|| D||2011-09-24||2011-11-01|| ||<font color='blue'>65%</font>|| ||
-||18||B3log <font color='grey'>Android</font>客户端|| L||2011-10-01||2012-01-01|| ||<font color='blue'>2%</font>|| ||
+||18||B3log <font color='grey'>Android</font>客户端|| L||2011-10-01||2012-01-01|| ||<font color='blue'>2%</font>||这是长期事件，会慢慢增加功能和完善||
