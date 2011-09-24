@@ -66,7 +66,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Sep 13, 2011
+ * @version 1.1.0.2, Sep 25, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -241,19 +241,8 @@ public final class TagProcessor {
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
 
-            if (pageCount == currentPageNum + 1) { // The next page is the last page
-                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
-            } else {
-                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
-                                                                   + 1);
-            }
-            dataModel.put(Article.ARTICLES, articles);
-            dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
-            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                          pageNums.get(pageNums.size() - 1));
-            dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+            fillPagination(dataModel, pageCount, currentPageNum,
+                           articles, pageNums);
             dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle,
                                                                     "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
@@ -271,6 +260,38 @@ public final class TagProcessor {
                 LOGGER.severe(ex.getMessage());
             }
         }
+    }
+
+    /**
+     * Fills pagination.
+     * 
+     * @param dataModel the specified data model
+     * @param pageCount the specified page count
+     * @param currentPageNum the specified current page number
+     * @param articles the specified articles
+     * @param pageNums the specified page numbers
+     */
+    private void fillPagination(final Map<String, Object> dataModel,
+                                final int pageCount, final int currentPageNum,
+                                final List<JSONObject> articles,
+                                final List<Integer> pageNums) {
+        final String previousPageNum =
+                Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+        dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
+                      "0".equals(previousPageNum) ? "" : previousPageNum);
+        if (pageCount == currentPageNum + 1) { // The next page is the last page
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+        } else {
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM,
+                          currentPageNum + 1);
+        }
+        dataModel.put(Article.ARTICLES, articles);
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+        dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                      pageNums.get(pageNums.size() - 1));
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
     }
 
     /**
