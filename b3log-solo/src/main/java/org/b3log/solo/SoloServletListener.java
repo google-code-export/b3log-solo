@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,8 @@ import java.util.zip.ZipFile;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.image.Image;
@@ -122,6 +125,14 @@ public final class SoloServletListener extends AbstractServletListener {
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         super.contextInitialized(servletContextEvent);
+
+        if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()) {
+            final String repositoryPath = ResourceBundle.getBundle("local").
+                    getString("repositoryPath");
+
+            Latkes.setRepositoryPath(repositoryPath);
+            LOGGER.log(Level.INFO, "Sets repository[path={0}]", repositoryPath);
+        }
 
         final PreferenceRepository preferenceRepository =
                 PreferenceRepositoryImpl.getInstance();
