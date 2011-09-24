@@ -15,9 +15,10 @@
 ||8||Latke <font color='grey'>Local</font> User Service||Y||2011-08-07||2011-10-15|| ||<font color='red'>未开始</font>|| ||
 ||9||用户 FAQ||L||2011-06-11||2011-08-07|| || <font color='red'>未开始</font>|| ||
 ||10||Index 修改与发布||L||2011-08-07||2011-08-25|| ||<font color='blue'>10%</font>|| ||
-||11||Latke <font color='grey'>Local</font> (MySQL) Repository||L, D||2011-08-07||2011-10-01|| ||<font color='red'>未开始</font>|| ||
+||~~<font color='purple'>11</font>~~||Latke <font color='grey'>Local</font> (MySQL) Repository||L, D||2011-08-07||2011-10-01|| ||<font color='red'>未开始</font>||使用 Sleepycat 实现本地存储，见 #17||
 ||12||开发 FAQ||J||2011-06-11||2011-07-15||2011-07-15||<font color='green'>已完成</font>||还需要持续补充||
 ||13||入伙文档||J||2011-06-11||2011-07-01||2011-07-01||<font color='green'>已完成</font>|| ||
 ||14||Latke <font color='grey'>Local</font> Mail Service||J||2011-08-07||2011-10-01|| ||<font color='red'>未开始</font>|| || 
 ||15||Solo Issue 流程文档|| || || || || || ||
 ||16||Latke <font color='grey'>Local</font> Image Service||D||2011-08-07||2011-10-01|| ||<font color='blue'>50%</font>|| || 
+||17||Latke <font color='grey'>Local</font> (Sleepycat) Repository|| D||2011-09-24||2011-11-01|| ||<font color='blue'>65%</font>|| ||
