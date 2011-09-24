@@ -233,7 +233,6 @@ public final class TagProcessor {
                                        windowSize);
 
             LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
-
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles,
                                  Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
