@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: B3log Solo.
+    Version: 2.0.0.0, Sep 26, 2011
+    Author: Liang Ding
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>solo-core</artifactId>
+    <packaging>jar</packaging>
+    <version>0.3.1</version>
+    <name>B3log Solo (Core)</name>
+    <url>http://b3log-solo.googlecode.com</url>
+    <description>B3log Solo Core.</description>
+    <inceptionYear>2010</inceptionYear>
+
+	<parent>
+        <groupId>org.b3log</groupId>
+        <artifactId>solo</artifactId>
+        <version>0.3.1</version>
+    </parent>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skipTests>false</skipTests>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>${maven-license-plugin.version}</version>
+                <configuration>
+                    <basedir>${basedir}</basedir>
+                    <header>src/main/resources/etc/header.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <strictCheck>true</strictCheck>
+                    <includes>
+                        <include>**/src/*/java/**/*.java</include>
+                        <include>**/src/*/webapp/js/*.js</include>
+                        <include>**/src/*/webapp/js/admin/*.js</include>
+                        <include>**/src/*/resources/*.properties</include>
+                        <include>**/src/*/webapp/WEB-INF/*.xml</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/src/main/java/**/package-info.java</exclude>
+                        <exclude>**/src/*/webapp/js/lib/*.js</exclude>
+                        <exclude>**/src/main/java/com/**/*.java</exclude>
+                    </excludes>
+
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>2009, 2010, 2011</year>
+                        <devTeam>B3log Team</devTeam>
+                    </properties>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- For source code style check -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <configLocation>src/main/resources/etc/beyondtrack_checks.xml</configLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <excludes>
+                    com/**/*.java,
+                    org/b3log/solo/sync/**/*.java
+                    </excludes>
+                    <consoleOutput>true</consoleOutput>
+                    <failOnViolation>true</failOnViolation>
+                    <failsOnError>true</failsOnError>
+                    <encoding>UTF-8</encoding>
+                    <!-- Do NOT skip code style check before committing -->
+                    <skip>false</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <show>private</show>
+                </configuration>
+            </plugin>
+            
+            <plugin>            
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webXml>../src/main/webapp/WEB-INF/web.xml</webXml>
+                    <warSourceDirectory>../src/main/webapp</warSourceDirectory>
+                </configuration>
+            </plugin>
+
+            
+        </plugins>
+
+        <finalName>b3log-solo-core</finalName>
+    </build>
+    
+</project>
+
