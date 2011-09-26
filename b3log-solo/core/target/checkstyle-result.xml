@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="5.0">
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\event\comment\ArticleCommentReplyNotifier.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\event\comment\PageCommentReplyNotifier.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\event\EventTypes.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\event\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\event\ping\AddArticleGoogleBlogSearchPinger.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\event\ping\UpdateArticleGoogleBlogSearchPinger.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\event\plugin\PluginRefresher.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\event\rhythm\ArticleSender.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\event\tencent\microblog\TencentMicroblogSender.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\filter\ArticlePermalinkFilter.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\filter\AuthFilter.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\filter\InitCheckFilter.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\filter\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\filter\PageCacheFilter.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\filter\PagePermalinkFilter.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\filter\Skips.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\AbstractGAEJSONRpcService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\AdminService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\ArticleService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\BlogSyncService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\CommentService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\FileService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\LinkService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\PageService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\PluginService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\PreferenceService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\StatisticService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\impl\TagService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\jsonrpc\PermalinkException.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\ArchiveDate.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Article.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\BlogSync.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Cache.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Comment.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Common.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\ErrorPage.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\feed\atom\Category.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\feed\atom\Entry.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\feed\atom\Feed.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\feed\rss\Category.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\feed\rss\Channel.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\feed\rss\Item.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\File.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Google.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Link.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Page.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\PageTypes.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Preference.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Sign.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\sitemap\Sitemap.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\sitemap\URL.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Skin.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Statistic.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\model\Tag.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\plugin\cache\AdminCache.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\plugin\cache\AdminCacheService.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\plugin\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\plugin\symphony\NewsGetter.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\ArchiveDateArticleRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\ArchiveDateRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\ArticleRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\ArticleSignRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\BlogSyncManagementRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\CommentRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\ExternalArticleSoloArticleRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\FileRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\ArchiveDateArticleRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\ArchiveDateRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\ArticleRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\ArticleSignRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\BlogSyncMgmtRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\CommentRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\ExternalArticleSoloArticleRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\FileRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\LinkRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\PageRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\PluginRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\PreferenceRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\SkinRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\StatisticRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\TagArticleRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\TagRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\impl\UserRepositoryImpl.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\LinkRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\PageRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\PluginRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\PreferenceRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\SkinRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\StatisticRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\TagArticleRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\TagRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\repository\UserRepository.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\SoloServletListener.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\tencent\microblog\oauth\AuthorizeToken.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\tencent\microblog\oauth\Callback.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\upgrade\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\upgrade\V010ToV011.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\upgrade\V011ToV020.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\upgrade\V020ToV021.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\upgrade\V021ToV025.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\upgrade\V026ToV030.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\ArchiveDates.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Articles.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Comments.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\comparator\ArticleCreateDateComparator.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\comparator\ArticleUpdateDateComparator.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\comparator\Comparators.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\comparator\TagRefCntComparator.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\jabsorb\serializer\StatusCodesSerializer.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Pages.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Permalinks.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Plugins.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Preferences.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Skins.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Statistics.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Tags.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\TimeZones.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\util\Users.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\action\file\DataStoreFileAccessServlet.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\action\impl\AbstractAdminAction.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\action\impl\AddArticleCommentFromSymphonyAction.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\action\impl\AdminDoNothingAction.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\action\impl\AdminErrorAction.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\action\impl\AdminIndexAction.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\action\impl\InitAction.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\action\package-info.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\action\StatusCodes.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\ArticleProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\CacheProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\CaptchaProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\CommentProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\FeedProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\IndexProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\PageProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\renderer\FrontFreeMarkerRenderer.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\RepairProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\SitemapProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\TagProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\processor\UpgradeProcessor.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\util\Filler.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\main\java\org\b3log\solo\web\util\Requests.java">
+</file>
+<file name="D:\NetBeansProjects\b3log-solo\core\src\test\java\org\b3log\solo\util\PermalinksTestCase.java">
+</file>
+</checkstyle>

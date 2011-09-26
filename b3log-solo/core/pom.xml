@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: B3log Solo.
+    Version: 2.0.0.0, Sep 26, 2011
+    Author: Liang Ding
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>solo-core</artifactId>
+    <packaging>jar</packaging>
+    <name>B3log Solo (Core)</name>
+    <description>B3log Solo Core.</description>
+
+    <parent>
+        <groupId>org.b3log</groupId>
+        <artifactId>solo</artifactId>
+        <version>0.3.1</version>
+    </parent>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skipTests>false</skipTests>
+                </configuration>
+            </plugin>
+
+            <!-- For source code style check -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${maven-checkstyle-plugin.version}</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <configLocation>src/main/resources/etc/beyondtrack_checks.xml</configLocation>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <excludes>
+                    com/**/*.java,
+                    org/b3log/solo/sync/**/*.java
+                    </excludes>
+                    <consoleOutput>true</consoleOutput>
+                    <failOnViolation>true</failOnViolation>
+                    <failsOnError>true</failsOnError>
+                    <encoding>UTF-8</encoding>
+                    <!-- Do NOT skip code style check before committing -->
+                    <skip>false</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>checkstyle</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <show>private</show>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.b3log.latke</groupId>
+                <artifactId>maven-min-plugin</artifactId>
+                <configuration>
+                    <cssSourceDir>${basedir}/../src/main/webapp/css</cssSourceDir>
+                    <jsSourceDir>${basedir}/../src/main/webapp/js</jsSourceDir>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+    </build>
+    
+</project>
+
