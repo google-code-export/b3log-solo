@@ -124,15 +124,6 @@
                 </configuration>
             </plugin>
             
-            <plugin>
-                <groupId>org.b3log.latke</groupId>
-                <artifactId>maven-min-plugin</artifactId>
-                <configuration>
-                    <cssSourceDir>${basedir}/../src/main/webapp/css</cssSourceDir>
-                    <jsSourceDir>${basedir}/../src/main/webapp/js</jsSourceDir>
-                </configuration>
-            </plugin>
-            
         </plugins>
     </build>
     
