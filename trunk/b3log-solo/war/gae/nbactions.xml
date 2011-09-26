@@ -48,13 +48,6 @@
         </properties>
     </action>
     <action>
-        <actionName>CUSTOM-checkstyle-checkstyle</actionName>
-        <displayName>checkstyle-checkstyle</displayName>
-        <goals>
-            <goal>checkstyle:checkstyle</goal>
-        </goals>
-    </action>
-    <action>
         <actionName>build-with-dependencies</actionName>
         <basedir>..</basedir>
         <reactor>also-make</reactor>
