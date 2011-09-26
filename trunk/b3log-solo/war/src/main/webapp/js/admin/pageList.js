@@ -249,6 +249,10 @@ admin.pageList = {
                             var msg = Label.addFailLabel + ", " + Label.duplicatedPermalinkLabel;
                             $("#tipMsg").text(msg);
                             break;
+                        case "ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT":
+                            msg = Label.addFailLabel + ", " + Label.invalidPermalinkFormatLabel;
+                            $("#tipMsg").text(msg);
+                            break;
                         case "ADD_PAGE_SUCC":
                             admin.pageList.id = "";
                             $("#pagePermalink").val("");
