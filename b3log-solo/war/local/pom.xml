@@ -50,6 +50,14 @@
         </resources>
         
         <plugins>
+			<plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <header>../../src/main/resources/etc/header.txt</header>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.b3log.latke</groupId>
                 <artifactId>maven-min-plugin</artifactId>

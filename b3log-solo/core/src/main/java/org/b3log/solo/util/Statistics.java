@@ -16,10 +16,6 @@
 package org.b3log.solo.util;
 
 import java.util.logging.Logger;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeEnv;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Statistic;
@@ -34,7 +30,8 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Sep 11, 2011
+ * @version 1.0.0.9, Sep 26, 2011
+ * @since 0.3.1
  */
 public final class Statistics {
 
@@ -54,29 +51,9 @@ public final class Statistics {
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
     /**
-     * Statistic cache.
-     */
-    public static final Cache<String, Object> CACHE;
-    /**
      * Statistic cache name.
      */
     public static final String STATISTIC_CACHE_NAME = "statisticCache";
-
-    /**
-     * Initializes cache.
-     */
-    static {
-        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
-        if (!runtimeEnv.equals(RuntimeEnv.GAE)) {
-            throw new IllegalStateException(
-                    "GAE cache can only runs on Google App Engine, please "
-                    + "check your configuration and make sure "
-                    + "Latkes.setRuntimeEnv(RuntimeEnv.GAE) was invoked before "
-                    + "using GAE cache.");
-        }
-
-        CACHE = CacheFactory.getCache(STATISTIC_CACHE_NAME);
-    }
 
     /**
      * Get blog comment count.
