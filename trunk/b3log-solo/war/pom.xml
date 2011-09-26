@@ -26,12 +26,18 @@
         <module>gae</module>
         <module>local</module>
     </modules>
-    
 
     <dependencies>
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>solo-core</artifactId>
+            <exclusions>
+                 <!-- Container provided -->
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     
