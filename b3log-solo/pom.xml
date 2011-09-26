@@ -15,8 +15,8 @@
     <name>B3log Solo</name>
     <url>http://b3log-solo.googlecode.com</url>
     <description>
-        B3log Solo is a single-user blogging program based on Google App Engine
-        Java Edition.
+        B3log Solo is a blogging program, which could run on Google App Engine
+        or a standard Servlet container.
     </description>
     <inceptionYear>2010</inceptionYear>
 
@@ -266,6 +266,51 @@
                     <webXml>../src/main/webapp/WEB-INF/web.xml</webXml>
                     <warSourceDirectory>../src/main/webapp</warSourceDirectory>
                 </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>${maven-license-plugin.version}</version>
+                <configuration>
+                    <basedir>${basedir}</basedir>
+                    <header>src/main/resources/etc/header.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <strictCheck>true</strictCheck>
+                    <includes>
+                        <include>**/src/*/java/**/*.java</include>
+                        <include>**/src/*/webapp/js/*.js</include>
+                        <include>**/src/*/webapp/js/admin/*.js</include>
+                        <include>**/src/*/resources/*.properties</include>
+                        <include>**/src/*/webapp/WEB-INF/*.xml</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/src/main/java/**/package-info.java</exclude>
+                        <exclude>**/src/*/webapp/js/lib/*.js</exclude>
+                        <exclude>**/src/main/java/com/**/*.java</exclude>
+                    </excludes>
+
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                    </mapping>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>2009, 2010, 2011</year>
+                        <devTeam>B3log Team</devTeam>
+                    </properties>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             
         </plugins>
