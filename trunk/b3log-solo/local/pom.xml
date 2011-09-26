@@ -11,12 +11,9 @@
     <groupId>org.b3log</groupId>
     <artifactId>solo-local</artifactId>
     <packaging>war</packaging>
-    <version>0.3.1</version>
     <name>B3log Solo (Local)</name>
-    <url>http://b3log-solo.googlecode.com</url>
     <description>
-        B3log Solo is a single-user blogging program based on Google App Engine
-        Java Edition.
+        B3log Solo standard Servlet container war.
     </description>
 
     <parent>
