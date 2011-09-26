@@ -116,8 +116,6 @@
             </plugin>
             
         </plugins>
-
-        <finalName>b3log-solo-core</finalName>
     </build>
     
 </project>
