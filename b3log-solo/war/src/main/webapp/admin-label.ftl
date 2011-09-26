@@ -35,6 +35,7 @@
         "putTopFailLabel": "${putTopFailLabel}",
         "addFailLabel": "${addFailLabel}",
         "duplicatedPermalinkLabel": "${duplicatedPermalinkLabel}",
+        "invalidPermalinkFormatLabel": "${invalidPermalinkFormatLabel}",
         "addSuccLabel": "${addSuccLabel}",
         "updateSuccLabel": "${updateSuccLabel}",
         "updateFailLabel": "${updateFailLabel}",

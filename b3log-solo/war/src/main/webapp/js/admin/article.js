@@ -192,6 +192,10 @@ admin.article = {
                             var msg = Label.addFailLabel + ", " + Label.duplicatedPermalinkLabel;
                             $("#tipMsg").text(msg);
                             break;
+                        case "ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT":
+                            msg = Label.addFailLabel + ", " + Label.invalidPermalinkFormatLabel;
+                            $("#tipMsg").text(msg);
+                            break;
                         case "ADD_ARTICLE_SUCC":
                             if (articleIsPublished) {
                                 admin.article.status.id = undefined;
