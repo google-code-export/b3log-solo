@@ -31,7 +31,7 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Sep 22, 2011
+ * @version 1.1.0.2, Sep 27, 2011
  * @since 0.3.1
  */
 public final class Permalinks {
@@ -70,6 +70,8 @@ public final class Permalinks {
         RESERVED_LINKS.add("/add-page-comment.do");
         RESERVED_LINKS.add("/get-article-content");
         RESERVED_LINKS.add("/sitemap");
+        RESERVED_LINKS.add("/login");
+        RESERVED_LINKS.add("/logout");
 
         RESERVED_LINKS.addAll(Arrays.asList(Skips.ADMIN_ACTIONS));
     }
