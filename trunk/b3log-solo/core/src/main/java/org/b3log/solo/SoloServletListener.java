@@ -64,6 +64,7 @@ import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
@@ -299,10 +300,10 @@ public final class SoloServletListener extends AbstractServletListener {
     // XXX: to find a better way (isInited)?
     public static boolean isInited() {
         try {
-            final JSONObject preference =
-                    Preferences.getInstance().getPreference();
+            final JSONObject admin =
+                    UserRepositoryImpl.getInstance().getAdmin();
 
-            return null != preference;
+            return null != admin;
         } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "B3log Solo has not been initialized");
             return false;
