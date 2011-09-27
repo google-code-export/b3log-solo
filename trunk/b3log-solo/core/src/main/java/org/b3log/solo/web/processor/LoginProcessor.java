@@ -331,7 +331,7 @@ public final class LoginProcessor {
             LOGGER.info("Initialized admin");
 
             final HttpServletResponse response = context.getResponse();
-            response.sendRedirect("/init");
+            response.sendRedirect("/init.do");
 
             return;
         } catch (final Exception e) {
