@@ -295,10 +295,6 @@ public final class LoginProcessor {
         LOGGER.info("Initializing admin....");
         final HttpServletRequest request = context.getRequest();
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-        final JSONObject jsonObject = new JSONObject();
-        renderer.setJSONObject(jsonObject);
 
         final String name = request.getParameter(User.USER_NAME);
         final String email = request.getParameter(User.USER_EMAIL);
@@ -317,6 +313,13 @@ public final class LoginProcessor {
 
             userRepository.add(admin);
             transaction.commit();
+
+            LOGGER.info("Initialized admin");
+
+            final HttpServletResponse response = context.getResponse();
+            response.sendRedirect("/init");
+
+            return;
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -328,6 +331,9 @@ public final class LoginProcessor {
             throw new RuntimeException(e);
         }
 
-        LOGGER.info("Initialized admin");
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
     }
 }
