@@ -67,7 +67,8 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.7, Aug 5, 2011
+ * @version 1.0.2.8, Sep 27, 2011
+ * @since 0.3.1
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
 
@@ -606,6 +607,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         final String email = user.getEmail().toLowerCase().trim();
         admin.put(User.USER_EMAIL, email);
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+        admin.put(User.USER_PASSWORD, "111111");
 
         userRepository.add(admin);
 
