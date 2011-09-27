@@ -33,10 +33,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Tag-Article relation Google App Engine repository.
+ * Tag-Article relation repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.8, Jan 12, 2011
+ * @since 0.3.1
  */
 public final class TagArticleRepositoryImpl extends AbstractRepository
         implements TagArticleRepository {

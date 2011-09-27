@@ -34,10 +34,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Archive date Google App Engine repository.
+ * Archive date repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.5, Jun 30, 2011
+ * @since 0.3.1
  */
 public final class ArchiveDateRepositoryImpl extends AbstractRepository
         implements ArchiveDateRepository {
