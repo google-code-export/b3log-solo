@@ -75,10 +75,9 @@ public final class LoginProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/login?goto=*"}, method = HTTPRequestMethod.GET)
     public void showLogin(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
-
 
         String destinationURL = request.getParameter("goto");
         if (Strings.isEmptyOrNull(destinationURL)) {
