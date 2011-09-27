@@ -92,7 +92,7 @@ public final class InitCheckFilter implements Filter {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 LOGGER.log(Level.WARNING,
-                           "B3log Solo has not been initialized, so redirects to /init-admin.do");
+                           "B3log Solo has not been initialized, so redirects to /init-admin");
                 ((HttpServletResponse) response).sendRedirect("/init-admin");
             } else {
                 // XXX: Wrong state of SoloServletListener.isInited()
