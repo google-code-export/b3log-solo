@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.web.processor;
 
+import freemarker.template.Template;
+import java.io.IOException;
 import java.util.logging.Level;
 import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
@@ -24,10 +26,10 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -36,6 +38,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
+import org.b3log.solo.web.action.impl.InitAction;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -75,17 +78,31 @@ public final class LoginProcessor {
     @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.GET)
     public void showLogin(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        
-        
+
+
         String destinationURL = request.getParameter("goto");
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = "/admin-index.do#main";
         }
-        
-        final FreeMarkerRenderer renderer = new FreeMarkerRenderer();
+
+        final AbstractFreeMarkerRenderer renderer =
+                new AbstractFreeMarkerRenderer() {
+
+                    @Override
+                    protected Template getTemplate(final String templateName)
+                            throws IOException {
+                        return InitAction.TEMPLATE_CFG.getTemplate(templateName);
+                    }
+
+                    @Override
+                    protected void afterRender(final HTTPRequestContext context)
+                            throws Exception {
+                    }
+                };
+
         renderer.setTemplateName("login.ftl");
         context.setRenderer(renderer);
-        
+
         renderer.getDataModel().put("goto", destinationURL);
     }
 
