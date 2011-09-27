@@ -49,7 +49,9 @@ import org.json.JSONObject;
 
 /**
  * Login/logout processor.
- *
+ * 
+ * <p>Initializes administrator</p>.
+ * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.1.0.0, Sep 27, 2011
  * @since 0.3.1
@@ -304,8 +306,7 @@ public final class LoginProcessor {
 
         // XXX: check
 
-        final Transaction transaction =
-                userRepository.beginTransaction();
+        final Transaction transaction = userRepository.beginTransaction();
         try {
             final JSONObject admin = new JSONObject();
 
