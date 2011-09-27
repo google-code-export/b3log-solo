@@ -265,7 +265,7 @@ public final class ArticleProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
-            skins.fillLanguage(preference, dataModel);
+            skins.fillSkinLangs(preference, dataModel);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -418,7 +418,7 @@ public final class ArticleProcessor {
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
 
-            skins.fillLanguage(preference, dataModel);
+            skins.fillSkinLangs(preference, dataModel);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -581,7 +581,7 @@ public final class ArticleProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
-            skins.fillLanguage(preference, dataModel);
+            skins.fillSkinLangs(preference, dataModel);
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
 

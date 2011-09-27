@@ -17,15 +17,19 @@ package org.b3log.solo.web.processor;
 
 import freemarker.template.Template;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Map;
 import java.util.logging.Level;
 import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -69,19 +73,23 @@ public final class LoginProcessor {
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Show login page.
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/login?goto=*"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.GET)
     public void showLogin(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter("goto");
         if (Strings.isEmptyOrNull(destinationURL)) {
-            destinationURL = "/admin-index.do#main";
+            destinationURL = "/";
         }
 
         final AbstractFreeMarkerRenderer renderer =
@@ -102,7 +110,13 @@ public final class LoginProcessor {
         renderer.setTemplateName("login.ftl");
         context.setRenderer(renderer);
 
-        renderer.getDataModel().put("goto", destinationURL);
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        final Map<String, String> langs =
+                langPropsService.getAll(Latkes.getLocale());
+        dataModel.putAll(langs);
+        dataModel.put("goto", destinationURL);
+        dataModel.put(Common.YEAR,
+                      String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
     }
 
     /**
@@ -112,7 +126,7 @@ public final class LoginProcessor {
      */
     @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.POST)
     public void login(final HTTPRequestContext context) {
-        final HttpServletRequest httpServletRequest = context.getRequest();
+        final HttpServletRequest request = context.getRequest();
 
         final JSONRenderer renderer = new JSONRenderer();
         final JSONObject jsonObject = new JSONObject();
@@ -120,9 +134,9 @@ public final class LoginProcessor {
 
         try {
             final String userEmail =
-                    httpServletRequest.getParameter(User.USER_EMAIL);
+                    request.getParameter(User.USER_EMAIL);
             final String userPwd =
-                    httpServletRequest.getParameter(User.USER_PASSWORD);
+                    request.getParameter(User.USER_PASSWORD);
 
             if (Strings.isEmptyOrNull(userEmail)
                 || Strings.isEmptyOrNull(userPwd)) {
@@ -141,14 +155,13 @@ public final class LoginProcessor {
             }
 
             if (userPwd.equals(user.getString(User.USER_PASSWORD))) {
-                Sessions.login(httpServletRequest, user);
+                Sessions.login(request, user);
 
                 LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
 
-                final String destinationURL = httpServletRequest.getParameter(
-                        "goto");
+                final String destinationURL = request.getParameter("goto");
 
                 final HttpServletResponse httpServletResponse =
                         context.getResponse();

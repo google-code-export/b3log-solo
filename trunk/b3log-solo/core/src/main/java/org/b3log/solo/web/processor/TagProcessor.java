@@ -158,7 +158,7 @@ public final class TagProcessor {
 
             final JSONObject preference = preferenceUtils.getPreference();
 
-            skins.fillLanguage(preference, dataModel);
+            skins.fillSkinLangs(preference, dataModel);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -318,7 +318,7 @@ public final class TagProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
-            skins.fillLanguage(preference, dataModel);
+            skins.fillSkinLangs(preference, dataModel);
 
             request.setAttribute(CACHED_OID, "No id");
             final Map<String, String> langs =

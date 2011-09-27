@@ -99,7 +99,7 @@ public final class PageProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
-            skins.fillLanguage(preference, dataModel);
+            skins.fillSkinLangs(preference, dataModel);
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
