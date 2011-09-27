@@ -27,6 +27,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -67,11 +68,33 @@ public final class LoginProcessor {
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
 
     /**
-     * Logins.
+     * Show login page.
      * 
      * @param context the specified context
      */
     @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.GET)
+    public void showLogin(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        
+        
+        String destinationURL = request.getParameter("goto");
+        if (Strings.isEmptyOrNull(destinationURL)) {
+            destinationURL = "/admin-index.do#main";
+        }
+        
+        final FreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        renderer.setTemplateName("login.ftl");
+        context.setRenderer(renderer);
+        
+        renderer.getDataModel().put("goto", destinationURL);
+    }
+
+    /**
+     * Logins.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.POST)
     public void login(final HTTPRequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
