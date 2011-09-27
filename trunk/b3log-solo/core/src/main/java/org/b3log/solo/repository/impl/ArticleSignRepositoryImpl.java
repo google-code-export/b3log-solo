@@ -34,10 +34,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Article-Sign relation Google App Engine repository.
+ * Article-Sign relation repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 12, 2011
+ * @since 0.3.1
  */
 public final class ArticleSignRepositoryImpl extends AbstractRepository
         implements ArticleSignRepository {

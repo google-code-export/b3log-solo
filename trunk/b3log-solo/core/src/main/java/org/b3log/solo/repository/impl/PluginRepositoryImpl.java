@@ -21,10 +21,11 @@ import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.solo.repository.PluginRepository;
 
 /**
- * Plugin Google App Engine repository.
+ * Plugin repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Jul 21, 2011
+ * @since 0.3.1
  */
 public final class PluginRepositoryImpl extends AbstractRepository
         implements PluginRepository {

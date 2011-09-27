@@ -21,10 +21,11 @@ import org.b3log.solo.model.File;
 import org.b3log.solo.repository.FileRepository;
 
 /**
- * File Google App Engine repository.
+ * File repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.3, Feb 8, 2011
+ * @since 0.3.1
  */
 public final class FileRepositoryImpl extends AbstractRepository
         implements FileRepository {

@@ -30,10 +30,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * External blog article-Solo article Google App Engine repository.
+ * External blog article-Solo article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.4, Jan 12, 2011
+ * @since 0.3.1
  */
 public final class ExternalArticleSoloArticleRepositoryImpl
         extends AbstractRepository

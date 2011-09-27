@@ -21,10 +21,11 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.SkinRepository;
 
 /**
- * Skin Google App Engine repository.
+ * Skin repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 12, 2011
+ * @since 0.3.1
  */
 public final class SkinRepositoryImpl extends AbstractRepository
         implements SkinRepository {
