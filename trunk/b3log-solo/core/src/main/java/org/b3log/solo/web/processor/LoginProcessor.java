@@ -92,6 +92,8 @@ public final class LoginProcessor {
                 return;
             }
 
+            LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
+
             final JSONObject user = userRepository.getByEmail(userEmail);
             if (null == user) {
                 jsonObject.put(Common.IS_LOGGED_IN, false);
@@ -101,6 +103,8 @@ public final class LoginProcessor {
 
             if (userPwd.equals(user.getString(User.USER_PASSWORD))) {
                 Sessions.login(httpServletRequest, user);
+
+                LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
 
