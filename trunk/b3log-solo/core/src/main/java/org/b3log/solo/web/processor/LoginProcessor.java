@@ -71,7 +71,7 @@ public final class LoginProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.GET)
     public void login(final HTTPRequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
