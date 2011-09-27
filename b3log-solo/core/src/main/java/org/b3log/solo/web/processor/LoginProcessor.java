@@ -299,8 +299,8 @@ public final class LoginProcessor {
         renderer.setJSONObject(jsonObject);
 
         final String name = request.getParameter(User.USER_NAME);
-        String email = request.getParameter(User.USER_EMAIL);
-        String password = request.getParameter(User.USER_PASSWORD);
+        final String email = request.getParameter(User.USER_EMAIL);
+        final String password = request.getParameter(User.USER_PASSWORD);
 
         // XXX: check
 
