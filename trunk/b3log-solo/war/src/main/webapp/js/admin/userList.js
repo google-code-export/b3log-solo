@@ -124,7 +124,7 @@ admin.userList = {
     },
     
     /*
-     * 添加链接
+     * 添加用户
      */
     add: function () {
         if (this.validate()) {
@@ -166,8 +166,8 @@ admin.userList = {
     },
     
     /*
-     * 获取链接
-     * @id 链接 id
+     * 获取用户
+     * @id 用户 id
      */
     get: function (id, userRole) {
         $("#loadMsg").text(Label.loadingLabel);
@@ -191,6 +191,7 @@ admin.userList = {
                         } else {
                             $userEmailUpdate.removeAttr("disabled");
                         }
+                        
                         break;
                     case "GET_USER_FAIL_":
                         break;
@@ -203,7 +204,7 @@ admin.userList = {
     },
     
     /*
-     * 更新自定义页面
+     * 更新用户
      */
     update: function () {
         if (this.validate("Update")) {
@@ -240,8 +241,8 @@ admin.userList = {
     },
     
     /*
-     * 删除链接
-     * @id 链接 id
+     * 删除用户
+     * @id 用户 id
      */
     del: function (id) {
         var isDelete = confirm(Label.confirmRemoveLabel);
