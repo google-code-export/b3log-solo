@@ -107,7 +107,7 @@ public final class IndexProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
-            skins.fillLanguage(preference, dataModel);
+            skins.fillSkinLangs(preference, dataModel);
 
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
@@ -187,7 +187,7 @@ public final class IndexProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
-            skins.fillLanguage(preference, dataModel);
+            skins.fillSkinLangs(preference, dataModel);
 
             filler.fillSide(dataModel, preference);
             filler.fillBlogHeader(dataModel, preference);

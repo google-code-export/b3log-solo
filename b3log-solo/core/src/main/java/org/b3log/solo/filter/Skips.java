@@ -21,8 +21,9 @@ import java.util.logging.Logger;
  * Skips for request filtering.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.7, Sep 12, 2011
+ * @version 1.0.3.8, Sep 27, 2011
  * @see #shouldSkip(java.lang.String) 
+ * @since 0.3.1
  */
 public final class Skips {
 
@@ -81,6 +82,8 @@ public final class Skips {
                || requestURI.equals("/get-random-articles.do")
                || requestURI.equals("/article-random-double-gen.do")
                || requestURI.equals("/upgrade/checker.do")
+               || requestURI.equals("/login")
+               || requestURI.equals("/logout")
                || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")
                || requestURI.contains("/skins/")
