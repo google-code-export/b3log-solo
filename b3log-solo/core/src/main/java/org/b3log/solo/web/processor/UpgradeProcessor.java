@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
@@ -31,7 +32,9 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,7 +43,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 12, 2011
+ * @version 1.1.0.1, Sep 27, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -54,18 +57,22 @@ public final class UpgradeProcessor {
     /**
      * Article-Comment repository.
      */
-    private ArticleCommentGAERepository articleCommentRepository =
-            ArticleCommentGAERepository.getInstance();
+    private ArticleCommentRepository articleCommentRepository =
+            ArticleCommentRepository.getInstance();
     /**
      * Page-Comment repository.
      */
-    private PageCommentGAERepository pageCommentRepository =
-            PageCommentGAERepository.getInstance();
+    private PageCommentRepository pageCommentRepository =
+            PageCommentRepository.getInstance();
     /**
      * Comment repository.
      */
     private CommentRepository commentRepository =
             CommentRepositoryImpl.getInstance();
+    /**
+     * User repository.
+     */
+    private UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
      * Preference utility.
      */
@@ -124,6 +131,10 @@ public final class UpgradeProcessor {
      *       Adds a property(named {@value Preference#VERSION}) to
      *       entity {@link Preference preference}
      *     </li>
+     *     <li>
+     *       Adds a property(named {@value User#USER_PASSWORD}) to
+     *       entity {@link User user}
+     *     </li>
      *   </ul>
      * </p>
      * @throws Exception upgrade fails
@@ -139,6 +150,14 @@ public final class UpgradeProcessor {
             final JSONObject preference = preferences.getPreference();
             preference.put(Preference.VERSION, "0.3.1");
             preferences.setPreference(preference);
+            final JSONArray users = 
+                    userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < users.length(); i++) {
+                final JSONObject user = users.getJSONObject(i);
+                user.put(User.USER_PASSWORD, "111111"); // Default password
+                
+                userRepository.update(user.getString(Keys.OBJECT_ID), user);
+            }
 
             transaction.commit();
         } catch (final Exception e) {
@@ -205,20 +224,20 @@ public final class UpgradeProcessor {
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Aug 25, 2011
  */
-final class PageCommentGAERepository extends AbstractRepository {
+final class PageCommentRepository extends AbstractRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(PageCommentGAERepository.class.getName());
+            Logger.getLogger(PageCommentRepository.class.getName());
 
     /**
      * Gets the {@link PageCommentGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static PageCommentGAERepository getInstance() {
+    public static PageCommentRepository getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
@@ -227,7 +246,7 @@ final class PageCommentGAERepository extends AbstractRepository {
      * 
      * @param name the specified name
      */
-    private PageCommentGAERepository(final String name) {
+    private PageCommentRepository(final String name) {
         super(name);
     }
 
@@ -242,8 +261,8 @@ final class PageCommentGAERepository extends AbstractRepository {
         /**
          * Singleton.
          */
-        private static final PageCommentGAERepository SINGLETON =
-                new PageCommentGAERepository(Page.PAGE + "_" + Comment.COMMENT);
+        private static final PageCommentRepository SINGLETON =
+                new PageCommentRepository(Page.PAGE + "_" + Comment.COMMENT);
 
         /**
          * Private default constructor.
@@ -263,20 +282,20 @@ final class PageCommentGAERepository extends AbstractRepository {
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.6, Aug 25, 2011
  */
-final class ArticleCommentGAERepository extends AbstractRepository {
+final class ArticleCommentRepository extends AbstractRepository {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleCommentGAERepository.class.getName());
+            Logger.getLogger(ArticleCommentRepository.class.getName());
 
     /**
      * Gets the {@link ArticleCommentGAERepository} singleton.
      *
      * @return the singleton
      */
-    public static ArticleCommentGAERepository getInstance() {
+    public static ArticleCommentRepository getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
@@ -285,7 +304,7 @@ final class ArticleCommentGAERepository extends AbstractRepository {
      * 
      * @param name the specified name
      */
-    private ArticleCommentGAERepository(final String name) {
+    private ArticleCommentRepository(final String name) {
         super(name);
     }
 
@@ -300,9 +319,9 @@ final class ArticleCommentGAERepository extends AbstractRepository {
         /**
          * Singleton.
          */
-        private static final ArticleCommentGAERepository SINGLETON =
-                new ArticleCommentGAERepository(Article.ARTICLE + "_"
-                                                + Comment.COMMENT);
+        private static final ArticleCommentRepository SINGLETON =
+                new ArticleCommentRepository(Article.ARTICLE + "_"
+                                             + Comment.COMMENT);
 
         /**
          * Private default constructor.
