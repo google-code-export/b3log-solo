@@ -94,7 +94,7 @@ public final class InitAction extends AbstractAction {
 
         try {
             if (SoloServletListener.isInited()) {
-                response.sendRedirect("/");
+                response.sendRedirect("/init-admin");
                 return ret;
             }
         } catch (final Exception e) {
