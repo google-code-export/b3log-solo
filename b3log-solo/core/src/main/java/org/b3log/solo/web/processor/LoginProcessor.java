@@ -41,6 +41,7 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -256,10 +257,16 @@ public final class LoginProcessor {
      * Shows the administrator initialization page.
      *
      * @param context the specified context
+     * @throws IOException io exception 
      */
     @RequestProcessing(value = {"/init-admin"}, method = HTTPRequestMethod.GET)
-    public void showInitAdmin(final HTTPRequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+    public void showInitAdmin(final HTTPRequestContext context)
+            throws IOException {
+        if (SoloServletListener.isInited()) {
+            context.getResponse().sendRedirect("/");
+
+            return;
+        }
 
         final AbstractFreeMarkerRenderer renderer =
                 new AbstractFreeMarkerRenderer() {
@@ -289,10 +296,16 @@ public final class LoginProcessor {
      * Initializes administrator.
      *
      * @param context the specified context
-     * @throws JSONException json exception 
+     * @throws Exception exception 
      */
     @RequestProcessing(value = {"/init-admin"}, method = HTTPRequestMethod.POST)
-    public void initAdmin(final HTTPRequestContext context) throws JSONException {
+    public void initAdmin(final HTTPRequestContext context) throws Exception {
+        if (SoloServletListener.isInited()) {
+            context.getResponse().sendRedirect("/");
+
+            return;
+        }
+
         LOGGER.info("Initializing admin....");
         final HttpServletRequest request = context.getRequest();
 
