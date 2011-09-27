@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Level;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +80,7 @@ public final class LoginProcessor {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Show login page.
+     * Shows login page.
      * 
      * @param context the specified context
      */
@@ -246,5 +247,86 @@ public final class LoginProcessor {
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+    }
+
+    /**
+     * Shows the administrator initialization page.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/init-admin"}, method = HTTPRequestMethod.GET)
+    public void showInitAdmin(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
+        final AbstractFreeMarkerRenderer renderer =
+                new AbstractFreeMarkerRenderer() {
+
+                    @Override
+                    protected Template getTemplate(final String templateName)
+                            throws IOException {
+                        return InitAction.TEMPLATE_CFG.getTemplate(templateName);
+                    }
+
+                    @Override
+                    protected void afterRender(final HTTPRequestContext context)
+                            throws Exception {
+                    }
+                };
+
+        renderer.setTemplateName("init-admin.ftl");
+        context.setRenderer(renderer);
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        final Map<String, String> langs =
+                langPropsService.getAll(Latkes.getLocale());
+        dataModel.putAll(langs);
+    }
+
+    /**
+     * Initializes administrator.
+     *
+     * @param context the specified context
+     * @throws JSONException json exception 
+     */
+    @RequestProcessing(value = {"/init-admin"}, method = HTTPRequestMethod.POST)
+    public void initAdmin(final HTTPRequestContext context) throws JSONException {
+        LOGGER.info("Initializing admin....");
+        final HttpServletRequest request = context.getRequest();
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        final String name = request.getParameter(User.USER_NAME);
+        String email = request.getParameter(User.USER_EMAIL);
+        String password = request.getParameter(User.USER_PASSWORD);
+
+        // XXX: check
+
+        final Transaction transaction =
+                userRepository.beginTransaction();
+        try {
+            final JSONObject admin = new JSONObject();
+
+            admin.put(User.USER_NAME, name);
+            admin.put(User.USER_EMAIL, email.toLowerCase().trim());
+            admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+            admin.put(User.USER_PASSWORD, password);
+
+            userRepository.add(admin);
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE,
+                       "Initializes administrator failed", e);
+
+            throw new RuntimeException(e);
+        }
+
+        LOGGER.info("Initialized admin");
     }
 }
