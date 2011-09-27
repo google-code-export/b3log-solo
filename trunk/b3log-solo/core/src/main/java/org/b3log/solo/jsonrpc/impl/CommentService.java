@@ -61,7 +61,8 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.2, Aug 19, 2011
+ * @version 1.0.4.3, Sep 27, 2011
+ * @see 0.3.1
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 
@@ -137,7 +138,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
 
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -241,7 +242,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -303,7 +304,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                         final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -355,7 +356,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                              final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -367,7 +368,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
             final JSONObject comment = commentRepository.get(commentId);
             final String articleId = comment.getString(Comment.COMMENT_ON_ID);
 
-            if (!userUtils.canAccessArticle(articleId)) {
+            if (!userUtils.canAccessArticle(articleId, request)) {
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.REMOVE_COMMENT_FAIL_FORBIDDEN);
 
@@ -425,7 +426,7 @@ public final class CommentService extends AbstractGAEJSONRpcService {
                                           final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }

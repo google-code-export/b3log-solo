@@ -71,9 +71,9 @@ public final class CacheProcessor {
 
             if (Strings.isEmptyOrNull(all)) { // Just clears single page cache
                 final String uri = requestJSONObject.getString(Common.URI);
-                clearPageCache(uri, httpServletResponse);
+                clearPageCache(uri, httpServletRequest, httpServletResponse);
             } else { // Clears all page caches
-                clearAllPageCache(httpServletResponse);
+                clearAllPageCache(httpServletRequest, httpServletResponse);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -84,14 +84,16 @@ public final class CacheProcessor {
      * Clears a page cache specified by the given URI.
      *
      * @param uri the specified URI
+     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws ActionException action exception
      * @throws IOException io exception
      */
     private void clearPageCache(final String uri,
+                                final HttpServletRequest request,
                                 final HttpServletResponse response)
             throws ActionException, IOException {
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -106,13 +108,15 @@ public final class CacheProcessor {
     /**
      * Clears all page cache.
      *
+     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    private void clearAllPageCache(final HttpServletResponse response)
+    private void clearAllPageCache(final HttpServletRequest request,
+                                   final HttpServletResponse response)
             throws ActionException, IOException {
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

@@ -100,8 +100,7 @@ public final class LoginProcessor {
             }
 
             if (userPwd.equals(user.getString(User.USER_PASSWORD))) {
-                Sessions.login(httpServletRequest,
-                               user.getString(User.USER_NAME), userPwd);
+                Sessions.login(httpServletRequest, user);
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
 
@@ -143,7 +142,8 @@ public final class LoginProcessor {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject currentUser = userUtils.getCurrentUser();
+        final HttpServletRequest request = context.getRequest();
+        final JSONObject currentUser = userUtils.getCurrentUser(request);
         final JSONObject jsonObjectToRender = new JSONObject();
         renderer.setJSONObject(jsonObjectToRender);
 
@@ -151,7 +151,8 @@ public final class LoginProcessor {
             jsonObjectToRender.put(Common.IS_LOGGED_IN, false);
 
             if (null == currentUser) {
-                if (userService.isUserLoggedIn() && userService.isUserAdmin()) {
+                if (userService.isUserLoggedIn(request)
+                    && userService.isUserAdmin(request)) {
                     // Only should happen with the following cases:
                     // 1. Init Solo
                     //    Because of there is no any user in datastore before init Solo
@@ -159,7 +160,8 @@ public final class LoginProcessor {
                     // 2. The collaborate administrator
                     jsonObjectToRender.put(Common.IS_LOGGED_IN, true);
                     jsonObjectToRender.put(Common.IS_ADMIN, true);
-                    final GeneralUser admin = userService.getCurrentUser();
+                    final GeneralUser admin =
+                            userService.getCurrentUser(request);
                     jsonObjectToRender.put(User.USER_NAME, admin.getNickname());
 
                     return;
@@ -181,7 +183,7 @@ public final class LoginProcessor {
             String userName = currentUser.getString(User.USER_NAME);
             if (Strings.isEmptyOrNull(userName)) {
                 // The administrators may be added via GAE Admin Console Permissions
-                userName = userService.getCurrentUser().getNickname();
+                userName = userService.getCurrentUser(request).getNickname();
                 jsonObjectToRender.put(Common.IS_ADMIN, true);
             }
             jsonObjectToRender.put(User.USER_NAME, userName);

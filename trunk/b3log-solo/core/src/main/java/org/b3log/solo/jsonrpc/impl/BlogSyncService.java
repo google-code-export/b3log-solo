@@ -55,6 +55,8 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.8, Jan 12, 2011
+ * @deprecated As of Solo 0.3.1, the blogging service synchronization has been
+ * removed.
  */
 public final class BlogSyncService extends AbstractGAEJSONRpcService {
 
@@ -134,7 +136,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                       final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -183,7 +185,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                       final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -286,7 +288,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                                              final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -311,7 +313,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
                             externalArticle.getString(Keys.OBJECT_ID),
                             externalArticle);
                     final JSONObject soloArticle =
-                            toSoloArticle(externalArticle);
+                            toSoloArticle(externalArticle, request);
 
                     final String categoriesString = externalArticle.getString(
                             BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES);
@@ -382,7 +384,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -530,7 +532,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
             final HttpServletResponse response) throws ActionException,
                                                        IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -559,10 +561,12 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
      * article.
      *
      * @param externalArticle the specified external Blog article
+     * @param request the specified request
      * @return Solo article
      * @throws Exception exception
      */
-    private JSONObject toSoloArticle(final JSONObject externalArticle)
+    private JSONObject toSoloArticle(final JSONObject externalArticle,
+                                     final HttpServletRequest request)
             throws Exception {
         final JSONObject ret = new JSONObject();
         final String articleId = externalArticle.getString(Article.ARTICLE
@@ -592,7 +596,7 @@ public final class BlogSyncService extends AbstractGAEJSONRpcService {
         ret.put(Article.ARTICLE_PUT_TOP, false);
         ret.put(Article.ARTICLE_IS_PUBLISHED, true);
         ret.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
-        final JSONObject currentUser = userUtils.getCurrentUser();
+        final JSONObject currentUser = userUtils.getCurrentUser(request);
         final String currentUserEmail = currentUser.getString(User.USER_EMAIL);
         ret.put(Article.ARTICLE_AUTHOR_EMAIL, currentUserEmail);
 

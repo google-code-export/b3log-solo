@@ -52,6 +52,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.3.0, Sep 1, 2011
+ * @since 0.3.1
  */
 public final class PreferenceService extends AbstractGAEJSONRpcService {
 
@@ -85,6 +86,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
     /**
      * Gets signs.
      *
+     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
      * <pre>
@@ -95,12 +97,13 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      * </pre>
      * @throws ActionException action exception
      */
-    public JSONArray getSigns(
-            final HttpServletResponse response) throws ActionException {
+    public JSONArray getSigns(final HttpServletRequest request,
+                              final HttpServletResponse response)
+            throws ActionException {
         final JSONArray ret = new JSONArray();
 
         try {
-            if (!userUtils.isLoggedIn()) {
+            if (!userUtils.isLoggedIn(request)) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return ret;
             }
@@ -122,6 +125,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
     /**
      * Gets preference.
      *
+     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
      * <pre>
@@ -167,11 +171,12 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      */
     public JSONObject getPreference(
+            final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
         final JSONObject ret = new JSONObject();
 
         try {
-            if (!userUtils.isAdminLoggedIn()) {
+            if (!userUtils.isAdminLoggedIn(request)) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
                 return ret;
             }
@@ -240,7 +245,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
                                        final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }

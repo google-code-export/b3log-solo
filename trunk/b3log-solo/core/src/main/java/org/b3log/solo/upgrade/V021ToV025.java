@@ -188,9 +188,9 @@ public final class V021ToV025 extends HttpServlet {
             LOGGER.info("Checking for consistency....");
 
             final String currentUserEmail =
-                    USER_SERVICE.getCurrentUser().getEmail();
+                    USER_SERVICE.getCurrentUser(request).getEmail();
             final String currentUserName =
-                    USER_SERVICE.getCurrentUser().getNickname();
+                    USER_SERVICE.getCurrentUser(request).getNickname();
 
             upgradePreference(currentUserEmail);
             upgradeStatistic();

@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.model.User;
 import org.b3log.solo.web.util.Filler;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.util.Preferences;
@@ -68,10 +66,6 @@ public final class AdminIndexAction extends AbstractAdminAction {
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
-    /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -101,7 +95,7 @@ public final class AdminIndexAction extends AbstractAdminAction {
             final Map<String, String> langs = langPropsService.getAll(locale);
             ret.putAll(langs);
 
-            final JSONObject currentUser = userUtils.getCurrentUser();
+            final JSONObject currentUser = userUtils.getCurrentUser(request);
             final String userName = currentUser.getString(User.USER_NAME);
             final String roleName = currentUser.getString(User.USER_ROLE);
 

@@ -41,6 +41,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.6, Jan 20, 2011
+ * @since 0.3.1
  */
 public final class TagService extends AbstractGAEJSONRpcService {
 
@@ -78,7 +79,7 @@ public final class TagService extends AbstractGAEJSONRpcService {
                                           final HttpServletResponse response)
             throws ActionException, IOException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -118,7 +119,7 @@ public final class TagService extends AbstractGAEJSONRpcService {
                                        final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -171,7 +172,7 @@ public final class TagService extends AbstractGAEJSONRpcService {
                              final HttpServletResponse response)
             throws ActionException, IOException {
         JSONArray ret = new JSONArray();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }

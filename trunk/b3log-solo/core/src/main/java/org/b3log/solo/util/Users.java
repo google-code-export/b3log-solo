@@ -17,6 +17,7 @@ package org.b3log.solo.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
@@ -38,7 +39,8 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jan 20, 2011
+ * @version 1.0.1.0, Sep 27, 2011
+ * @see 0.3.1
  */
 public final class Users {
 
@@ -80,23 +82,25 @@ public final class Users {
      * Can the current user access an article specified by the given article id?
      *
      * @param articleId the given article id
+     * @param request the specified request
      * @return {@code true} if the current user can access the article,
      * {@code false} otherwise
      * @throws Exception exception
      */
-    public boolean canAccessArticle(final String articleId)
+    public boolean canAccessArticle(final String articleId,
+                                    final HttpServletRequest request)
             throws Exception {
         if (Strings.isEmptyOrNull(articleId)) {
             return false;
         }
 
-        if (isAdminLoggedIn()) {
+        if (isAdminLoggedIn(request)) {
             return true;
         }
 
         final JSONObject article = articleRepository.get(articleId);
         final String currentUserEmail =
-                getCurrentUser().getString(User.USER_EMAIL);
+                getCurrentUser(request).getString(User.USER_EMAIL);
 
         if (!article.getString(Article.ARTICLE_AUTHOR_EMAIL).
                 equals(currentUserEmail)) {
@@ -110,20 +114,21 @@ public final class Users {
      * Determines whether the current logged in user is a collaborate
      * administrator(added via GAE Admin Console Permissions).
      *
+     * @param request the specified request
      * @return {@code true} if it is, {@code false} otherwise
      */
-    public boolean isCollaborateAdmin() {
-        final boolean isUserLoggedIn = userService.isUserLoggedIn();
+    public boolean isCollaborateAdmin(final HttpServletRequest request) {
+        final boolean isUserLoggedIn = userService.isUserLoggedIn(request);
         if (!isUserLoggedIn) {
             return false;
         }
 
-        final boolean isUserAdmin = userService.isUserAdmin();
+        final boolean isUserAdmin = userService.isUserAdmin(request);
         if (!isUserAdmin) {
             return false;
         }
 
-        final GeneralUser currentUser = userService.getCurrentUser();
+        final GeneralUser currentUser = userService.getCurrentUser(request);
         return !isSoloUser(currentUser.getEmail());
     }
 
@@ -131,35 +136,40 @@ public final class Users {
      * Checks whether the current request is made by logged in user(including
      * default user and administrator lists in <i>users</i>).
      *
+     * @param request the specified request
      * @return {@code true} if the current request is made by logged in user,
      * returns {@code false} otherwise
      */
-    public boolean isLoggedIn() {
-        final GeneralUser currentUser = userService.getCurrentUser();
+    public boolean isLoggedIn(final HttpServletRequest request) {
+        final GeneralUser currentUser = userService.getCurrentUser(request);
         if (null == currentUser) {
             return false;
         }
 
-        return isSoloUser(currentUser.getEmail()) || userService.isUserAdmin();
+        return isSoloUser(currentUser.getEmail())
+               || userService.isUserAdmin(request);
     }
 
     /**
      * Checks whether the current request is made by logged in administrator.
      *
+     * @param request the specified request
      * @return {@code true} if the current request is made by logged in
      * administrator, returns {@code false} otherwise
      */
-    public boolean isAdminLoggedIn() {
-        return userService.isUserLoggedIn() && userService.isUserAdmin();
+    public boolean isAdminLoggedIn(final HttpServletRequest request) {
+        return userService.isUserLoggedIn(request)
+               && userService.isUserAdmin(request);
     }
 
     /**
      * Gets the current user.
      *
+     * @param request the specified request
      * @return the current user, {@code null} if not found
      */
-    public JSONObject getCurrentUser() {
-        final GeneralUser currentUser = userService.getCurrentUser();
+    public JSONObject getCurrentUser(final HttpServletRequest request) {
+        final GeneralUser currentUser = userService.getCurrentUser(request);
         if (null == currentUser) {
             return null;
         }

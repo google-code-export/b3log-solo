@@ -46,6 +46,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.5, Aug 24, 2011
+ * @since 0.3.1
  */
 public final class AdminCacheService extends AbstractGAEJSONRpcService {
 
@@ -78,6 +79,7 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
      * Gets page cache status with the specified http servlet request and http
      * servlet response.
      *
+     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @return for example,
      * <pre>
@@ -94,10 +96,11 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public JSONObject getPageCache(final HttpServletResponse response)
+    public JSONObject getPageCache(final HttpServletRequest request,
+                                   final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -169,7 +172,7 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
                                final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -231,6 +234,7 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
      * Sets page cache states with the specified http servlet response and 
      * settings.
      *
+     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param settings the specified settings, for example,
      * <pre>
@@ -241,10 +245,11 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
      * @throws ActionException action exception
      * @throws IOException io exception
      */
-    public void setPageCache(final HttpServletResponse response,
+    public void setPageCache(final HttpServletRequest request,
+                             final HttpServletResponse response,
                              final JSONObject settings)
             throws ActionException, IOException {
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
