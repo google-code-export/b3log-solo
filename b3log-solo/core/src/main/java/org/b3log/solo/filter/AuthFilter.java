@@ -24,6 +24,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
@@ -41,6 +42,7 @@ import org.b3log.solo.util.Users;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 12, 2011
+ * @since 0.3.1
  */
 public final class AuthFilter implements Filter {
 
@@ -81,7 +83,8 @@ public final class AuthFilter implements Filter {
                 (HttpServletResponse) response;
 
         try {
-            final GeneralUser currentUser = userService.getCurrentUser();
+            final GeneralUser currentUser = userService.getCurrentUser(
+                    (HttpServletRequest) request);
             if (null == currentUser) {
                 LOGGER.warning("The request has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -92,7 +95,7 @@ public final class AuthFilter implements Filter {
             final String currentUserEmail = currentUser.getEmail();
             LOGGER.log(Level.FINER, "Current user email[{0}]", currentUserEmail);
             if (users.isSoloUser(currentUserEmail)
-                || users.isCollaborateAdmin()) {
+                || users.isCollaborateAdmin((HttpServletRequest) request)) {
                 chain.doFilter(request, response);
 
                 return;

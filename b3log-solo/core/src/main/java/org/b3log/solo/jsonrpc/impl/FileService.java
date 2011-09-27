@@ -42,6 +42,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.5, Jan 20, 2011
+ * @since 0.3.1
  */
 public final class FileService extends AbstractGAEJSONRpcService {
 
@@ -96,7 +97,7 @@ public final class FileService extends AbstractGAEJSONRpcService {
                                final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -166,7 +167,7 @@ public final class FileService extends AbstractGAEJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }

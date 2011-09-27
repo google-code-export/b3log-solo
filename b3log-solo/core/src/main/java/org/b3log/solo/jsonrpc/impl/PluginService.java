@@ -47,6 +47,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jul 22, 2011
+ * @since 0.3.1
  */
 public final class PluginService extends AbstractGAEJSONRpcService {
 
@@ -92,7 +93,7 @@ public final class PluginService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
 
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -188,7 +189,7 @@ public final class PluginService extends AbstractGAEJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }

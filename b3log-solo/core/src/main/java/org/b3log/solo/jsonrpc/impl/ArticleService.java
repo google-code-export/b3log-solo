@@ -71,6 +71,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.3.8, Aug 10, 2011
+ * @since 0.3.1
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
 
@@ -186,18 +187,18 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
 
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
-        
+
         // TODO: add article args check
 
         final Transaction transaction = articleRepository.beginTransaction();
         final JSONObject status = new JSONObject();
         try {
             ret.put(Keys.STATUS, status);
-            if (userUtils.isCollaborateAdmin()) {
+            if (userUtils.isCollaborateAdmin(request)) {
                 status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
 
                 return ret;
@@ -274,7 +275,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
             // Step 12: Set author email
             final String authorEmail =
-                    userUtils.getCurrentUser().getString(User.USER_EMAIL);
+                    userUtils.getCurrentUser(request).getString(User.USER_EMAIL);
             article.put(ARTICLE_AUTHOR_EMAIL, authorEmail);
             // Step 13: Set random double
             article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
@@ -351,7 +352,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                  final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -455,7 +456,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                   final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -552,7 +553,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -563,7 +564,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS, status);
 
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
-            if (!userUtils.canAccessArticle(articleId)) {
+            if (!userUtils.canAccessArticle(articleId, request)) {
                 status.put(Keys.CODE, StatusCodes.REMOVE_ARTICLE_FAIL_FORBIDDEN);
 
                 return ret;
@@ -633,7 +634,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                     final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             try {
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.PUT_TOP_ARTICLE_FAIL_FORBIDDEN);
@@ -696,7 +697,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                        final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn()) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             try {
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.CANCEL_TOP_ARTICLE_FAIL_FORBIDDEN);
@@ -777,7 +778,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
 
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -788,7 +789,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         try {
             ret.put(Keys.STATUS, status);
 
-            if (userUtils.isCollaborateAdmin()) {
+            if (userUtils.isCollaborateAdmin(request)) {
                 status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
 
                 return ret;
@@ -796,7 +797,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             final JSONObject article = requestJSONObject.getJSONObject(ARTICLE);
             final String articleId = article.getString(Keys.OBJECT_ID);
-            if (!userUtils.canAccessArticle(articleId)) {
+            if (!userUtils.canAccessArticle(articleId, request)) {
                 status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
 
                 return ret;
@@ -979,7 +980,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn()) {
+        if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return ret;
         }
@@ -990,7 +991,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             final String articleId =
                     requestJSONObject.getString(Keys.OBJECT_ID);
 
-            if (!userUtils.canAccessArticle(articleId)) {
+            if (!userUtils.canAccessArticle(articleId, request)) {
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.CANCEL_PUBLISH_ARTICLE_FAIL_FORBIDDEN);
 
