@@ -25,6 +25,7 @@ import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
@@ -328,12 +329,12 @@ public final class LoginProcessor {
             LOGGER.log(Level.SEVERE,
                        "Initializes administrator failed", e);
 
-            throw new RuntimeException(e);
-        }
+            final JSONRenderer renderer = new JSONRenderer();
+            context.setRenderer(renderer);
+            final JSONObject jsonObject = new JSONObject();
 
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-        final JSONObject jsonObject = new JSONObject();
-        renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.STATUS_CODE, false);
+            renderer.setJSONObject(jsonObject);
+        }
     }
 }
