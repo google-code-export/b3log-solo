@@ -563,13 +563,12 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
 
-        JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(Article.ARTICLE, article);
-        final String articleId = articleService.addArticle(
-                requestJSONObject, request,
-                response).getString(Keys.OBJECT_ID);
+        final JSONObject addArticleRet = new JSONObject();
+        ArticleService.addArticleInternal(
+                article, addArticleRet, new JSONObject(), request);
+        final String articleId = addArticleRet.getString(Keys.OBJECT_ID);
 
-        requestJSONObject = new JSONObject();
+        final JSONObject requestJSONObject = new JSONObject();
         final String captchaForInit = "captchaForInit";
         request.getSession().setAttribute(CaptchaProcessor.CAPTCHA,
                                           captchaForInit);
