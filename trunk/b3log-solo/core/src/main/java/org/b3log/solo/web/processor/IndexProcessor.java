@@ -128,6 +128,8 @@ public final class IndexProcessor {
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    
+                    return;
                 } catch (final IOException ex) {
                     LOGGER.severe(ex.getMessage());
                 }
