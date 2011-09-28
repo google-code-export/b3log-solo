@@ -524,9 +524,14 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             }
         }
 
+        final Transaction transaction = userRepository.beginTransaction();
         try {
             helloWorld(request, response);
+            transaction.commit();
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
             LOGGER.log(Level.SEVERE, "Hello World error?!", e);
         }
         
