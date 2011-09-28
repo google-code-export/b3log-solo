@@ -21,6 +21,7 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -93,7 +94,9 @@ public final class InitCheckFilter implements Filter {
             if (null == preference) {
                 LOGGER.log(Level.WARNING,
                            "B3log Solo has not been initialized, so redirects to /init.do");
-                ((HttpServletResponse) response).sendRedirect("/init.do");
+                final RequestDispatcher requestDispatcher =
+                        httpServletRequest.getRequestDispatcher("/init.do");
+                requestDispatcher.forward(request, response);
             } else {
                 // XXX: Wrong state of SoloServletListener.isInited()
                 chain.doFilter(request, response);
