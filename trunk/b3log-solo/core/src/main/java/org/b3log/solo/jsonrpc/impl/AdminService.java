@@ -366,6 +366,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *     "oId": "",
      *     "userName": "",
      *     "userEmail": "",
+     *     "userPassword": "",
      *     "userRole": ""
      * }
      * </pre>
@@ -394,19 +395,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         try {
             final String oldUserId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject oldUser = userRepository.get(oldUserId);
-            final String userNewEmail =
-                    requestJSONObject.getString(User.USER_EMAIL).trim();
-
-            final String userRole = requestJSONObject.getString(User.USER_ROLE);
-            if (Role.ADMIN_ROLE.equals(userRole)) {
-                final String adminOldEmail = oldUser.getString(User.USER_EMAIL);
-                if (!adminOldEmail.equals(userNewEmail)) {
-                    // Can't update the admin's email
-                    ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_USER_FAIL_);
-
-                    return ret;
-                }
-            }
 
             // Remove old user
             if (null == oldUser) {
@@ -415,6 +403,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 return ret;
             }
 
+            final String userNewEmail =
+                    requestJSONObject.getString(User.USER_EMAIL).
+                    toLowerCase().trim();
             // Check email is whether duplicated
             final JSONObject mayBeAnother = userRepository.getByEmail(
                     userNewEmail);
@@ -429,8 +420,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             // Update
             final String userName = requestJSONObject.getString(User.USER_NAME);
+            final String userPassword = 
+                    requestJSONObject.getString(User.USER_PASSWORD);
             oldUser.put(User.USER_EMAIL, userNewEmail);
             oldUser.put(User.USER_NAME, userName);
+            oldUser.put(User.USER_PASSWORD, userPassword);
             // Unchanges the default role
 
             userRepository.update(oldUserId, oldUser);
@@ -534,7 +528,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             }
             LOGGER.log(Level.SEVERE, "Hello World error?!", e);
         }
-        
+
         return ret;
     }
 
@@ -622,7 +616,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         userRepository.add(admin);
 
         LOGGER.info("Initialized admin");
-        
+
         Sessions.login(request, admin);
     }
 
@@ -802,7 +796,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Private default constructor.
      */
-    
     private AdminService() {
     }
 
