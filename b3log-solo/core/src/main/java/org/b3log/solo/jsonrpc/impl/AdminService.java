@@ -37,6 +37,7 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
@@ -528,7 +529,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Hello World error?!", e);
         }
-
+        
         return ret;
     }
 
@@ -589,7 +590,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Initializes administrator.
+     * Initializes administrator and login it.
      * 
      * <p>
      *   <ul>
@@ -616,6 +617,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         userRepository.add(admin);
 
         LOGGER.info("Initialized admin");
+        
+        Sessions.login(request, admin);
     }
 
     /**
