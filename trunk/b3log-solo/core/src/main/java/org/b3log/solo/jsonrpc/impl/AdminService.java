@@ -467,6 +467,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *   Posts "Hello World!" article and its comment while B3log Solo 
      *   initialized.
      * </p>
+     * 
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws ActionException action exception
@@ -793,6 +794,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Private default constructor.
      */
+    
     private AdminService() {
     }
 
