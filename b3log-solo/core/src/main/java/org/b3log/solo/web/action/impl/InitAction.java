@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * B3log Solo initialization action. init.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Sep 27, 2011
+ * @version 1.1.0.0, Sep 28, 2011
  * @since 0.3.1
  */
 public final class InitAction extends AbstractAction {
@@ -95,7 +95,7 @@ public final class InitAction extends AbstractAction {
 
         try {
             if (SoloServletListener.isInited()) {
-                response.sendRedirect("/init-admin");
+                response.sendRedirect("/");
                 return ret;
             }
         } catch (final Exception e) {
