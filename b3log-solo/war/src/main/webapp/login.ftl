@@ -7,8 +7,8 @@
     </head>
     <body>
         <form action="/login?goto=${goto}" method="POST">
-            <input name="userName" />
-            <input name="userPassword" />
+            UserEmail: <input name="userEmail" />
+            UserPwd: <input name="userPassword" />
 
             <button type="submit">${loginLabel}</button>
         </form>
