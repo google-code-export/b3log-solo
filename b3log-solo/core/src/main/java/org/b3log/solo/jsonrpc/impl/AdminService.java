@@ -612,10 +612,10 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         LOGGER.info("Initializing admin....");
         final JSONObject admin = new JSONObject();
 
-        admin.put(User.USER_NAME, "Admin");
-        admin.put(User.USER_EMAIL, "test@b3log.org");
+        admin.put(User.USER_NAME, Default.DEFAULT_ADMIN_NAME);
+        admin.put(User.USER_EMAIL, Default.DEFAULT_ADMIN_EMAIL);
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-        admin.put(User.USER_PASSWORD, "111111");
+        admin.put(User.USER_PASSWORD, Default.DEFAULT_ADMIN_PWD);
 
         userRepository.add(admin);
 
@@ -690,8 +690,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         ret.put(BLOG_TITLE, Default.DEFAULT_BLOG_TITLE);
         ret.put(BLOG_SUBTITLE, Default.DEFAULT_BLOG_SUBTITLE);
         ret.put(BLOG_HOST, Default.DEFAULT_BLOG_HOST);
-        ret.put(ADMIN_EMAIL, // Current logged in adminstrator's email
-                userService.getCurrentUser(request).getEmail());
+        ret.put(ADMIN_EMAIL, Default.DEFAULT_ADMIN_EMAIL);
         ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
         ret.put(ENABLE_ARTICLE_UPDATE_HINT,
                 Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);

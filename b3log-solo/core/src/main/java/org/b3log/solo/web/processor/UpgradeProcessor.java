@@ -150,12 +150,13 @@ public final class UpgradeProcessor {
             final JSONObject preference = preferences.getPreference();
             preference.put(Preference.VERSION, "0.3.1");
             preferences.setPreference(preference);
-            final JSONArray users = 
+            final JSONArray users =
                     userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
             for (int i = 0; i < users.length(); i++) {
                 final JSONObject user = users.getJSONObject(i);
-                user.put(User.USER_PASSWORD, "111111"); // Default password
-                
+                user.put(User.USER_PASSWORD,
+                         Preference.Default.DEFAULT_ADMIN_PWD);
+
                 userRepository.update(user.getString(Keys.OBJECT_ID), user);
             }
 

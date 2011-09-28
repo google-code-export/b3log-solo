@@ -25,7 +25,8 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Sep 3, 2011
+ * @version 1.1.0.0, Sep 28, 2011
+ * @since 0.3.1
  */
 public final class Preference {
 
@@ -192,7 +193,8 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.1.2, Sep 3, 2011
+     * @version 1.1.0.0, Sep 28, 2011
+     * @since 0.3.1
      */
     public static final class Default {
 
@@ -314,6 +316,18 @@ public final class Preference {
          */
         public static final boolean DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK =
                 false;
+        /**
+         * Default administrator's username.
+         */
+        public static final String DEFAULT_ADMIN_NAME = "Admin";
+        /**
+         * Default administrator's password.
+         */
+        public static final String DEFAULT_ADMIN_PWD = "111111";
+        /**
+         * Default administrator's email.
+         */
+        public static final String DEFAULT_ADMIN_EMAIL = "test@b3log.org";
 
         static {
             final JSONArray signs = new JSONArray();
