@@ -20,12 +20,10 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Level;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
@@ -41,7 +39,6 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -55,7 +52,7 @@ import org.json.JSONObject;
  * <p>Initializes administrator</p>.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 27, 2011
+ * @version 1.1.0.1, Sep 28, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -250,104 +247,6 @@ public final class LoginProcessor {
             jsonObjectToRender.put(User.USER_NAME, userName);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Shows the administrator initialization page.
-     *
-     * @param context the specified context
-     * @throws IOException io exception 
-     */
-    @RequestProcessing(value = {"/init-admin"}, method = HTTPRequestMethod.GET)
-    public void showInitAdmin(final HTTPRequestContext context)
-            throws IOException {
-        if (SoloServletListener.isInited()) {
-            context.getResponse().sendRedirect("/");
-
-            return;
-        }
-
-        final AbstractFreeMarkerRenderer renderer =
-                new AbstractFreeMarkerRenderer() {
-
-                    @Override
-                    protected Template getTemplate(final String templateName)
-                            throws IOException {
-                        return InitAction.TEMPLATE_CFG.getTemplate(templateName);
-                    }
-
-                    @Override
-                    protected void afterRender(final HTTPRequestContext context)
-                            throws Exception {
-                    }
-                };
-
-        renderer.setTemplateName("init-admin.ftl");
-        context.setRenderer(renderer);
-
-        final Map<String, Object> dataModel = renderer.getDataModel();
-        final Map<String, String> langs =
-                langPropsService.getAll(Latkes.getLocale());
-        dataModel.putAll(langs);
-    }
-
-    /**
-     * Initializes administrator.
-     *
-     * @param context the specified context
-     * @throws Exception exception 
-     */
-    @RequestProcessing(value = {"/init-admin"}, method = HTTPRequestMethod.POST)
-    public void initAdmin(final HTTPRequestContext context) throws Exception {
-        if (SoloServletListener.isInited()) {
-            context.getResponse().sendRedirect("/");
-
-            return;
-        }
-
-        LOGGER.info("Initializing admin....");
-        final HttpServletRequest request = context.getRequest();
-
-
-        final String name = request.getParameter(User.USER_NAME);
-        final String email = request.getParameter(User.USER_EMAIL);
-        final String password = request.getParameter(User.USER_PASSWORD);
-
-        // XXX: check
-
-        final Transaction transaction = userRepository.beginTransaction();
-        try {
-            final JSONObject admin = new JSONObject();
-
-            admin.put(User.USER_NAME, name);
-            admin.put(User.USER_EMAIL, email.toLowerCase().trim());
-            admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-            admin.put(User.USER_PASSWORD, password);
-
-            userRepository.add(admin);
-            transaction.commit();
-
-            LOGGER.info("Initialized admin");
-
-            final HttpServletResponse response = context.getResponse();
-            response.sendRedirect("/init.do");
-
-            return;
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.SEVERE,
-                       "Initializes administrator failed", e);
-
-            final JSONRenderer renderer = new JSONRenderer();
-            context.setRenderer(renderer);
-            final JSONObject jsonObject = new JSONObject();
-
-            jsonObject.put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
         }
     }
 }

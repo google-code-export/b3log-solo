@@ -35,6 +35,7 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.freemarker.Templates;
@@ -455,6 +456,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *   <ol>
      *     <li>Statistic.</li>
      *     <li>Preference.</li>
+     *     <li>Administrator.</li>
      *   </ol>
      * </p>
      * 
@@ -495,6 +497,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 if (null == statistic) {
                     initStatistic();
                     initPreference(request);
+                    initAdmin(request);
                 }
 
                 ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
@@ -586,6 +589,36 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 + "to delete them.");
 
         CommentProcessor.addArticleCommentInteral(requestJSONObject, request);
+    }
+
+    /**
+     * Initializes administrator.
+     * 
+     * <p>
+     *   <ul>
+     *     <li>Username: Admin</li>
+     *     <li>User Email: test@b3log.org</li>
+     *     Used for login authentication.
+     *     <li>User Password: 111111</li>
+     *     Used for login authentication.
+     *   </ul>
+     * </p>
+     *
+     * @param request the specified request
+     * @throws Exception exception
+     */
+    private void initAdmin(final HttpServletRequest request) throws Exception {
+        LOGGER.info("Initializing admin....");
+        final JSONObject admin = new JSONObject();
+
+        admin.put(User.USER_NAME, "Admin");
+        admin.put(User.USER_EMAIL, "test@b3log.org");
+        admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
+        admin.put(User.USER_PASSWORD, "111111");
+
+        userRepository.add(admin);
+
+        LOGGER.info("Initialized admin");
     }
 
     /**

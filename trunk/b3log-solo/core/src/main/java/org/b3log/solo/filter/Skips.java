@@ -84,7 +84,6 @@ public final class Skips {
                || requestURI.equals("/upgrade/checker.do")
                || requestURI.equals("/login")
                || requestURI.equals("/logout")
-               || requestURI.equals("/init-admin")
                || requestURI.contains("/_ah/") // For local dev server
                || requestURI.contains("/datastore-file-access.do")
                || requestURI.contains("/skins/")
