@@ -523,9 +523,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         }
 
         try {
-            final JSONObject get =
-                    userRepository.get(new Query());
-
             helloWorld(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Hello World error?!", e);
