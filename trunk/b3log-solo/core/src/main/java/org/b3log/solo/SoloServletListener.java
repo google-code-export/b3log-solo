@@ -177,6 +177,10 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     @Override
+    public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
+    }
+
+    @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
     }
 
