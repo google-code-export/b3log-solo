@@ -344,7 +344,7 @@ public final class CommentProcessor {
                     AbstractAction.parseRequestJSONObject(httpServletRequest,
                                                           httpServletResponse);
             final JSONObject jsonObject =
-                    addArticleCommentInteral(requestJSONObject,
+                    addArticleCommentInternal(requestJSONObject,
                                              httpServletRequest);
 
             transaction.commit();
@@ -375,7 +375,7 @@ public final class CommentProcessor {
      * @return result
      * @throws Exception exception
      */
-    public static JSONObject addArticleCommentInteral(
+    public static JSONObject addArticleCommentInternal(
             final JSONObject requestJSONObject,
             final HttpServletRequest request) throws Exception {
         final JSONObject ret = new JSONObject();

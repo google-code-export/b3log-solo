@@ -584,7 +584,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 + "view the post's comments. There you will have the option "
                 + "to delete them.");
 
-        CommentProcessor.addArticleCommentInteral(requestJSONObject, request);
+        CommentProcessor.addArticleCommentInternal(requestJSONObject, request);
         LOGGER.info("Hello World!");
     }
 

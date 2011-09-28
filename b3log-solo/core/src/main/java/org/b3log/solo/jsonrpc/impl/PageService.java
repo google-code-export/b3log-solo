@@ -31,7 +31,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
-import org.b3log.solo.jsonrpc.PermalinkException;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
@@ -45,7 +44,7 @@ import org.json.JSONObject;
  * Page service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Jun 29, 2011
+ * @version 1.1.0.0, Sep 28, 2011
  * @since 0.3.1
  */
 public final class PageService extends AbstractGAEJSONRpcService {
@@ -254,8 +253,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     ret.put(Keys.STATUS_CODE,
                             StatusCodes.UPDATE_PAGE_FAIL_INVALID_PERMALINK_FORMAT);
 
-                    throw new PermalinkException("Update page fail, caused by invalid permalink format["
-                                                 + ret + "]");
+                    throw new Exception("Update page fail, caused by invalid permalink format["
+                                        + ret + "]");
                 }
 
                 if (!oldPermalink.equals(permalink)
@@ -263,8 +262,8 @@ public final class PageService extends AbstractGAEJSONRpcService {
                     ret.put(Keys.STATUS_CODE,
                             StatusCodes.UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK);
 
-                    throw new PermalinkException("Update page fail, caused by duplicated permalink["
-                                                 + permalink + "]");
+                    throw new Exception("Update page fail, caused by duplicated permalink["
+                                        + permalink + "]");
                 }
             }
             newPage.put(Page.PAGE_PERMALINK, permalink);
@@ -275,12 +274,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_PAGE_SUCC);
 
             LOGGER.log(Level.FINER, "Updated a page[oId={0}]", pageId);
-        } catch (final PermalinkException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
@@ -402,16 +395,16 @@ public final class PageService extends AbstractGAEJSONRpcService {
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT);
 
-                throw new PermalinkException("Add page fail, caused by invalid permalink format["
-                                             + ret + "]");
+                throw new Exception("Add page fail, caused by invalid permalink format["
+                                    + ret + "]");
             }
 
             if (permalinks.exist(permalink)) {
                 ret.put(Keys.STATUS_CODE,
                         StatusCodes.ADD_PAGE_FAIL_DUPLICATED_PERMALINK);
 
-                throw new PermalinkException("Add page fail, caused by duplicated permalink["
-                                             + permalink + "]");
+                throw new Exception("Add page fail, caused by duplicated permalink["
+                                    + permalink + "]");
             }
             page.put(Page.PAGE_PERMALINK, permalink);
 
@@ -421,12 +414,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.OBJECT_ID, pageId);
 
             ret.put(Keys.STATUS_CODE, StatusCodes.ADD_PAGE_SUCC);
-        } catch (final PermalinkException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
