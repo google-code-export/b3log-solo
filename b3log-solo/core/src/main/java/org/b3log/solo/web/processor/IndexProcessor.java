@@ -105,6 +105,7 @@ public final class IndexProcessor {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             skins.fillSkinLangs(preference, dataModel);
