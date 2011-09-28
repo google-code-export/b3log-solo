@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Description: B3log Solo.
-    Version: 2.0.0.0, Sep 26, 2011
+    Description: B3log Solo core.
+    Version: 2.0.0.1, Sep 28, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -24,6 +24,13 @@
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
