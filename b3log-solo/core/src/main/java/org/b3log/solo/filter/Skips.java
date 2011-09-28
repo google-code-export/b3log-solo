@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * Skips for request filtering.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.8, Sep 27, 2011
+ * @version 1.1.0.0, Sep 28, 2011
  * @see #shouldSkip(java.lang.String) 
  * @since 0.3.1
  */
@@ -64,7 +64,8 @@ public final class Skips {
      * </p>
      *
      * @param requestURI the specified request URI
-     * @return {@code true} if should be skipped, {@code false} otherwise
+     * @return {@code true} if should be skipped, returns {@code false} 
+     * otherwise
      */
     // XXX: performance issue, super hard coding....
     // TODO: skips new urls....
@@ -90,7 +91,8 @@ public final class Skips {
                || requestURI.contains("/images/")
                || requestURI.contains("/styles/")
                || requestURI.contains("/get-article-content")
-               || equalAdminActions(requestURI);
+               || equalAdminActions(requestURI)
+               || isStatic(requestURI);
     }
 
     /**
@@ -98,7 +100,8 @@ public final class Skips {
      * URI patterns.
      *
      * @param requestURI the specified request URI
-     * @return {@code true} if it is equals to, {@code false} otherwise
+     * @return {@code true} if it is equals to, returns {@code false} 
+     * otherwise
      * @see #ADMIN_ACTIONS
      */
     private static boolean equalAdminActions(final String requestURI) {
@@ -109,6 +112,18 @@ public final class Skips {
         }
 
         return false;
+    }
+
+    /**
+     * Determines whether the specified request URI points to a static resource.
+     * 
+     * @param requestURI the specified request URI
+     * @return {@code true} if the specified request URI points to a static 
+     * resource, returns {@code false} otherwise
+     */
+    private static boolean isStatic(final String requestURI) {
+        return requestURI.endsWith(".css") || requestURI.endsWith(".js")
+               || requestURI.endsWith("png"); // XXX: todo static postfix
     }
 
     /**
