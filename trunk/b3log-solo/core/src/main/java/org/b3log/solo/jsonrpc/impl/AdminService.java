@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, Sep 27, 2011
+ * @version 1.1.0.0, Sep 28, 2011
  * @since 0.3.1
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
@@ -482,8 +482,10 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+        if (SoloServletListener.isInited()) {
+            response.sendRedirect("/");
+
             return ret;
         }
 
