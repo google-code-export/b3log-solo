@@ -541,8 +541,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     private void helloWorld(final HttpServletRequest request,
                             final HttpServletResponse response)
             throws Exception {
-        LOGGER.info("Hello World!");
-
         final JSONObject article = new JSONObject();
 
         // XXX: no i18n
@@ -587,6 +585,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                 + "to delete them.");
 
         CommentProcessor.addArticleCommentInteral(requestJSONObject, request);
+        LOGGER.info("Hello World!");
     }
 
     /**
