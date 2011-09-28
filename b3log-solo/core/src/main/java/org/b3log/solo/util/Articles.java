@@ -93,9 +93,18 @@ public final class Articles {
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
 
     /**
-     * Gets the specified article's author. The specified article has a property
+     * Gets the specified article's author. 
+     * 
+     * <p>
+     * The specified article has a property
      * {@value Article#ARTICLE_AUTHOR_EMAIL}, this method will use this property
      * to get a user from users.
+     * </p>
+     * 
+     * <p>
+     * If can't find the specified article's author (i.e. the author has been 
+     * removed by administrator), returns administrator.
+     * </p>
      *
      * @param article the specified article
      * @return user, {@code null} if not found
