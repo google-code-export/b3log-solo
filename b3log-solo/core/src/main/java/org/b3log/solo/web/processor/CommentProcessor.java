@@ -382,17 +382,15 @@ public final class CommentProcessor {
 
         String articleId, commentId;
 
-        final String captcha = requestJSONObject.getString(
-                CaptchaProcessor.CAPTCHA);
+        final String captcha =
+                requestJSONObject.getString(CaptchaProcessor.CAPTCHA);
         final HttpSession session = request.getSession();
-        final String storedCaptcha = (String) session.getAttribute(
-                CaptchaProcessor.CAPTCHA);
+        final String storedCaptcha =
+                (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
         if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
             ret.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
 
             return ret;
-
-
         }
 
         synchronized (CommentService.class) {
