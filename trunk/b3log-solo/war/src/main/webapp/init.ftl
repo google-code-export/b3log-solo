@@ -54,21 +54,6 @@
         </div>
         <script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript">
-            (function () {
-                $.ajax({
-                    type: "POST",
-                    url: "/check-login.do",
-                    success: function(result){
-                        if (!result.isLoggedIn) {
-                            $(".introContent").html("<h1>" + $(".introContent h2").html() + "</h1>"
-                                + "<img class='left' src='/images/arrow.png' title='B3log' alt='B3log'/><button onclick='login();'>${loginLabel}</button>")
-                            .removeClass("introContent").addClass("introContentLogin");
-                            $($(".introContentLogin h1 span")[0]).css("font-size", "36px");
-                        }
-                    }
-                });
-            })();
-
             var initSys = function () {
                 if(confirm("${confirmInitLabel}")){
                     var rslt = jsonRpc.adminService.init();
@@ -78,11 +63,6 @@
                         alert("init error!");
                     }
                 }
-            }
-
-            var login = function () {
-                var loginURL = jsonRpc.adminService.getLoginURL("/init.do");
-                window.location.href = loginURL;
             }
         </script>
     </body>
