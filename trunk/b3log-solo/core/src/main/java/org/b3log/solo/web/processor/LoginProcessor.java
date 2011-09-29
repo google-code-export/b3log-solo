@@ -176,12 +176,10 @@ public final class LoginProcessor {
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
 
-                final String destinationURL = request.getParameter("goto");
-
                 final HttpServletResponse httpServletResponse =
                         context.getResponse();
 
-                httpServletResponse.sendRedirect(destinationURL);
+                httpServletResponse.sendRedirect("/admin-index.do#main");
 
                 return;
             }
