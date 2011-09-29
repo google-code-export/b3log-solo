@@ -11,22 +11,20 @@
         <meta name="revised" content="B3log, ${year}" />
         <meta name="robots" content="noindex, follow" />
         <meta http-equiv="Window-target" content="_top" />
-        <link type="text/css" rel="stylesheet" href="/css/default-base${miniPostfix}.css" charset="utf-8" />
         <link type="text/css" rel="stylesheet" href="/css/default-init${miniPostfix}.css" charset="utf-8" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" charset="utf-8"></script>
-        <script type="text/javascript" src="/js/lib/jsonrpc.min.js" charset="utf-8"></script>
     </head>
     <body>
         <div class="wrapper">
             <div class="wrap">
                 <div class="content">
-                    <div class="introImg">
+                    <div class="logo">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
                             <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="/images/logo.png"/>
                         </a>
                     </div>
-                    <div class="introContent">
+                    <div class="main">
                         <h2>
                             <span>Welcome to</span>
                             <a target="_blank" href="http://b3log-solo.googlecode.com">
@@ -34,39 +32,85 @@
                                 <span style="color: orangered;">&nbsp;Solo</span>
                             </a>
                         </h2>
-                        <div>
-                            ${userName1Label}<input /><br>
-                            ${userPassword1Label}<input /><br>
-                            重复${userPassword1Label}<input /><br>
-                            <button onclick='initSys();'>${initLabel}</button>
-                            <span class="clear"></span>
+                        <div id="init">
+                            <div id="user">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <label for="userEmail">
+                                                ${commentEmail1Label}
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id="userEmail" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="userName">
+                                                ${userName1Label}
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input id="userName" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="userPassword">
+                                                ${userPassword1Label}
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input type="password" id="userPassword" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <label for="userPasswordConfirm">
+                                                userPasswordConfirm
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <input type="password" id="userPasswordConfirm" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button onclick='getUserInfo();'>${confirmLabel}</button>
+                                            <span id="tip"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div id="sys" class="none">
+                                <p>This web page provides the initialization of "Preferences" and "Blog Statistic".</p>
+                                <ul>
+                                    <li>
+                                        If you had initialized your blog, MUST NOT click it to prevent 
+                                        <font color="red">data loss</font>! (
+                                        <a href="/admin-index.do#main">Click</a> 
+                                        to return Admin Console).
+                                    </li>
+                                    <li>
+                                        If this is your first time using 
+                                        <a target="_blank" href="http://b3log-solo.googlecode.com">
+                                            ${b3logLabel}&nbsp;
+                                            <span style="color: orangered; font-weight: bold;">Solo</span>
+                                        </a>
+                                        , please click "Initial" button to initialize your blog.
+                                    </li>
+                                </ul>
+                                <button onclick='initSys();'>${initLabel}</button>
+                                <button onclick='returnTo();'>${returnToLabel}</button>
+                                <span class="clear"></span>
+                            </div>
                         </div>
-                        <div>
-                            <p>This web page provides the initialization of "Preferences" and "Blog Statistic".</p>
-                            <ul>
-                                <li>
-                                    If you had initialized your blog, MUST NOT click it to prevent 
-                                    <font color="red">data loss</font>! (
-                                    <a href="/admin-index.do#main">Click</a> 
-                                    to return Admin Console).
-                                </li>
-                                <li>
-                                    If this is your first time using 
-                                    <a target="_blank" href="http://b3log-solo.googlecode.com">
-                                        ${b3logLabel}&nbsp;
-                                        <span style="color: orangered; font-weight: bold;">Solo</span>
-                                    </a>
-                                    , please click "Initial" button to initialize your blog.
-                                </li>
-                            </ul>
-                            <button onclick='initSys();'>${initLabel}</button>
-                            <span class="clear"></span>
-                        </div>
+                        <a href="http://b3log-solo.googlecode.com" target="_blank">
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="/favicon.png"/>
+                        </a>
                     </div>
-
-                    <a href="http://b3log-solo.googlecode.com" target="_blank">
-                        <img border="0" style="width:16px;height:16px;" class="introSign" alt="B3log" title="B3log" src="/favicon.png"/>
-                    </a>
+                    <span class="clear"></span>
                 </div>
             </div>
 
@@ -74,25 +118,76 @@
                 <div class="footer">
                     &copy; ${year}
                     Powered by
-                    <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
+                    <a href="http://b3log-solo.googlecode.com" target="_blank">
                         ${b3logLabel}&nbsp;
                         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
                     ver ${version}
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="js/common.js"></script>
         <script type="text/javascript">
+            var validate = function () {
+                if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#userEmail" + status).val())) {
+                    $("#tip").text("${mailInvalidLabel}");
+                } else if ($("#userName").val().replace(/\s/g, "") === "") {
+                    $("#tip").text("${nameEmptyLabel}");
+                } else if ($("#userPassword").val().replace(/\s/g, "") === "") {
+                    $("#tip").text("${passwordEmptyLabel}");
+                } else if ($("#userPassword").val() !== $("#userPasswordConfirm").val()) {
+                    $("#tip").text("${passwordNotMatchLabel}");
+                } else {
+                    return true;
+                }  
+                return false;
+            };
+            
+            var getUserInfo = function () {
+                if (validate()) {
+                    $("#init").animate({
+                        "top": -170
+                    }); 
+                    $("#user").animate({
+                        "opacity": 0
+                    }); 
+                    $("#sys").animate({
+                        "opacity": 100
+                    }); 
+                }
+            };
+            
+            var returnTo = function () {
+                $("#init").animate({
+                    "top": 102
+                }); 
+                $("#sys").animate({
+                    "opacity": 0
+                }); 
+                $("#user").animate({
+                    "opacity": 100
+                }); 
+            };
+            
             var initSys = function () {
                 if(confirm("${confirmInitLabel}")){
-                    var rslt = jsonRpc.adminService.init();
-                    if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
-                        window.location.href = "/admin-index.do#tools/user-list";
-                    } else {
-                        alert("init error!");
-                    }
+                    var requestJSONObject = {
+                        "userName": $("userName").val(),
+                        "userEmail": $("userEmail").val(),
+                        "userPassword": $("userPassword").val()
+                    };
+                    $.ajax({
+                        url: "/init.do",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(requestJSONObject),
+                        error: function(){
+                            // alert("Error loading articles from Rhythm");
+                        },
+                        success: function(data, textStatus){
+                            window.location.reload();
+                        }
+                    });
                 }
-            }
+            };
         </script>
     </body>
 </html>
