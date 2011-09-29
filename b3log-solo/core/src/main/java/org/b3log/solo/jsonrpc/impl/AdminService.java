@@ -463,6 +463,14 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *   initialized.
      * </p>
      * 
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "userName": "",
+     *     "userEmail": "",
+     *     "userPassword": ""
+     * }
+     * </pre>
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @throws ActionException action exception
@@ -474,7 +482,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * }
      * </pre>
      */
-    public JSONObject init(final HttpServletRequest request,
+    public JSONObject init(final JSONObject requestJSONObject,
+                           final HttpServletRequest request,
                            final HttpServletResponse response)
             throws ActionException, IOException {
         final JSONObject ret = new JSONObject();
@@ -493,8 +502,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
                         statisticRepository.get(Statistic.STATISTIC);
                 if (null == statistic) {
                     initStatistic();
-                    initPreference(request);
-                    initAdmin(request);
+                    initPreference(requestJSONObject);
+                    initAdmin(requestJSONObject, request);
                 }
 
                 ret.put(Keys.STATUS_CODE, StatusCodes.INIT_B3LOG_SOLO_SUCC);
@@ -601,22 +610,26 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *   </ul>
      * </p>
      *
+     * @param requestJSONObject the specified request json object
      * @param request the specified request
      * @throws Exception exception
      */
-    private void initAdmin(final HttpServletRequest request) throws Exception {
+    private void initAdmin(final JSONObject requestJSONObject,
+            final HttpServletRequest request) throws Exception {
         LOGGER.info("Initializing admin....");
         final JSONObject admin = new JSONObject();
 
-        final String userName = request.getParameter(User.USER_NAME);
-        final String userEmail = request.getParameter(User.USER_EMAIL);
+        final String userName = requestJSONObject.getString(User.USER_NAME);
+        final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
+        final String userPassword = 
+                requestJSONObject.getString(User.USER_PASSWORD);
         
         // TODO: checks - init admin
 
         admin.put(User.USER_NAME, userName);
         admin.put(User.USER_EMAIL, userEmail);
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-        admin.put(User.USER_PASSWORD, Default.DEFAULT_ADMIN_PWD);
+        admin.put(User.USER_PASSWORD, userPassword);
 
         userRepository.add(admin);
 
@@ -652,11 +665,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     /**
      * Initializes preference.
      *
-     * @param request the specified request
+     * @param requestJSONObject the specified json object
      * @return preference
      * @throws Exception exception
      */
-    private JSONObject initPreference(final HttpServletRequest request)
+    private JSONObject initPreference(final JSONObject requestJSONObject)
             throws Exception {
         LOGGER.info("Initializing preference....");
 
@@ -693,7 +706,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         ret.put(BLOG_TITLE, Default.DEFAULT_BLOG_TITLE);
         ret.put(BLOG_SUBTITLE, Default.DEFAULT_BLOG_SUBTITLE);
         ret.put(BLOG_HOST, Default.DEFAULT_BLOG_HOST);
-       final String userEmail = request.getParameter(User.USER_EMAIL);
+       final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
         ret.put(ADMIN_EMAIL, userEmail);
         ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
         ret.put(ENABLE_ARTICLE_UPDATE_HINT,
