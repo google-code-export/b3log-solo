@@ -68,7 +68,7 @@
                                     <tr>
                                         <td>
                                             <label for="userPasswordConfirm">
-                                                userPasswordConfirm
+                                                ${userPasswordConfirm}
                                             </label>
                                         </td>
                                         <td>
