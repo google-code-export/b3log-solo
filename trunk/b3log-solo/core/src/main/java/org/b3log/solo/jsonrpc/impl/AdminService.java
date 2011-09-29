@@ -589,7 +589,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Initializes administrator and login it.
+     * Initializes administrator and logins it.
      * 
      * <p>
      *   <ul>
@@ -693,7 +693,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         ret.put(BLOG_TITLE, Default.DEFAULT_BLOG_TITLE);
         ret.put(BLOG_SUBTITLE, Default.DEFAULT_BLOG_SUBTITLE);
         ret.put(BLOG_HOST, Default.DEFAULT_BLOG_HOST);
-        ret.put(ADMIN_EMAIL, Default.DEFAULT_ADMIN_EMAIL);
+       final String userEmail = request.getParameter(User.USER_EMAIL);
+        ret.put(ADMIN_EMAIL, userEmail);
         ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
         ret.put(ENABLE_ARTICLE_UPDATE_HINT,
                 Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
