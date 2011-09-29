@@ -43,6 +43,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Common;
@@ -237,6 +238,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                           final JSONObject status,
                                           final HttpServletRequest request)
             throws Exception {
+        final String articleId = Ids.genTimeMillisId();
+        article.put(Keys.OBJECT_ID, articleId);
+        dataModel.put(Keys.OBJECT_ID, articleId);
+
         // Step 1: Add tags
         final String tagsString =
                 article.getString(ARTICLE_TAGS_REF);
@@ -254,19 +259,16 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         article.put(ARTICLE_CREATE_DATE, date);
         // Step 4: Set put top to false
         article.put(ARTICLE_PUT_TOP, false);
-        // Step 5: Add article
-        final String articleId = articleRepository.add(article);
-        dataModel.put(Keys.OBJECT_ID, articleId);
-        // Step 6: Add tag-article relations
+        // Step 5: Add tag-article relations
         articleUtils.addTagArticleRelation(tags, article);
-        // Step 7: Inc blog article count statictis
+        // Step 6: Inc blog article count statictis
         statistics.incBlogArticleCount();
         if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
             statistics.incPublishedBlogArticleCount();
         }
-        // Step 8: Add archive date-article relations
+        // Step 7: Add archive date-article relations
         archiveDateUtils.archiveDate(article);
-        // Step 9: Set permalink
+        // Step 8: Set permalink
         String permalink = article.optString(ARTICLE_PERMALINK);
         if (Strings.isEmptyOrNull(permalink)) {
             permalink = "/articles/" + PERMALINK_FORMAT.format(date) + "/"
@@ -293,24 +295,24 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                                 + permalink + "]");
         }
         article.put(ARTICLE_PERMALINK, permalink);
-        // Step 10: Add article-sign relation
+        // Step 9: Add article-sign relation
         final String signId =
                 article.getString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
         articleUtils.addArticleSignRelation(signId, articleId);
         article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-        // Step 11: Set had been published status
+        // Step 10: Set had been published status
         article.put(ARTICLE_HAD_BEEN_PUBLISHED, false);
         if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
             // Publish it directly
             article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
         }
-        // Step 12: Set author email
+        // Step 11: Set author email
         final JSONObject currentUser = userUtils.getCurrentUser(request);
         article.put(ARTICLE_AUTHOR_EMAIL, currentUser.getString(User.USER_EMAIL));
-        // Step 13: Set random double
+        // Step 12: Set random double
         article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
-        // Step 14: Update article
-        articleRepository.update(articleId, article);
+        // Step 13: Addarticle
+        articleRepository.add(article);
 
         if (article.getBoolean(ARTICLE_IS_PUBLISHED)) {
             // Fire add article event
