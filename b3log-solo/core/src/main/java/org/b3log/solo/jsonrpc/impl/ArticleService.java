@@ -306,11 +306,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         }
         // Step 12: Set author email
         final JSONObject currentUser = userUtils.getCurrentUser(request);
-        String authorEmail = Preference.Default.DEFAULT_ADMIN_EMAIL;
-        if (null != currentUser) {
-            authorEmail = currentUser.getString(User.USER_EMAIL);
-        }
-        article.put(ARTICLE_AUTHOR_EMAIL, authorEmail);
+        article.put(ARTICLE_AUTHOR_EMAIL, currentUser.getString(User.USER_EMAIL));
         // Step 13: Set random double
         article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
         // Step 14: Update article
