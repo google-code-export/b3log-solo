@@ -420,7 +420,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
             // Update
             final String userName = requestJSONObject.getString(User.USER_NAME);
-            final String userPassword = 
+            final String userPassword =
                     requestJSONObject.getString(User.USER_PASSWORD);
             oldUser.put(User.USER_EMAIL, userNewEmail);
             oldUser.put(User.USER_NAME, userName);
@@ -608,8 +608,13 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         LOGGER.info("Initializing admin....");
         final JSONObject admin = new JSONObject();
 
-        admin.put(User.USER_NAME, Default.DEFAULT_ADMIN_NAME);
-        admin.put(User.USER_EMAIL, Default.DEFAULT_ADMIN_EMAIL);
+        final String userName = request.getParameter(User.USER_NAME);
+        final String userEmail = request.getParameter(User.USER_EMAIL);
+        
+        // TODO: checks - init admin
+
+        admin.put(User.USER_NAME, userName);
+        admin.put(User.USER_EMAIL, userEmail);
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
         admin.put(User.USER_PASSWORD, Default.DEFAULT_ADMIN_PWD);
 
