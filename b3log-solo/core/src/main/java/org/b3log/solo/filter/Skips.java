@@ -123,7 +123,7 @@ public final class Skips {
      */
     private static boolean isStatic(final String requestURI) {
         return requestURI.endsWith(".css") || requestURI.endsWith(".js")
-               || requestURI.endsWith("png"); // XXX: todo static postfix
+               || requestURI.endsWith("png"); // TODO: todo static postfix, see HTTPRequestDispatcher#service
     }
 
     /**
