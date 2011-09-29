@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Role;
@@ -144,10 +145,13 @@ public final class LoginProcessor {
         renderer.setJSONObject(jsonObject);
 
         try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request,
+                                                          context.getResponse());
             final String userEmail =
-                    request.getParameter(User.USER_EMAIL);
+                    requestJSONObject.getString(User.USER_EMAIL);
             final String userPwd =
-                    request.getParameter(User.USER_PASSWORD);
+                    requestJSONObject.getString(User.USER_PASSWORD);
 
             if (Strings.isEmptyOrNull(userEmail)
                 || Strings.isEmptyOrNull(userPwd)) {
