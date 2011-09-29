@@ -36,7 +36,7 @@
                             <div id="user">
                                 <table>
                                     <tr>
-                                        <td>
+                                        <td width="170px">
                                             <label for="userEmail">
                                                 ${commentEmail1Label}
                                             </label>
@@ -136,6 +136,7 @@
                 } else if ($("#userPassword").val() !== $("#userPasswordConfirm").val()) {
                     $("#tip").text("${passwordNotMatchLabel}");
                 } else {
+                    $("#tip").text("");
                     return true;
                 }  
                 return false;

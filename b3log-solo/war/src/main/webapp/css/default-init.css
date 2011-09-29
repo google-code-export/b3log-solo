@@ -31,6 +31,7 @@ button {
     vertical-align: top;
     float: right;
     margin: 12px 0 0 24px;
+    outline: none;
 }
 
 input{
@@ -60,6 +61,8 @@ input{
 
 .none {
     opacity: 0;
+    filter: alpha(opacity=0);
+    zoom: 1;
 }
 .wrapper {
     height: auto;
@@ -90,7 +93,7 @@ input{
 }
 .logo {
     float: left;
-    padding: 106px 12px 0;
+    padding: 162px 12px 0;
     width: 153px;
 }
 .main {
@@ -106,7 +109,7 @@ input{
 #init {
     position: absolute;
     top: 102px;
-    margin-right: 24px;
+    width: 470px;
 }
 
 #tip  {
