@@ -39,6 +39,7 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -124,7 +125,8 @@ public final class LoginProcessor {
         dataModel.put("goto", destinationURL);
         dataModel.put(Common.YEAR,
                       String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        
+        dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+
         filler.fillMinified(dataModel);
     }
 
