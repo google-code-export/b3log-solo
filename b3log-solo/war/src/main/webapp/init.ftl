@@ -14,6 +14,7 @@
         <link type="text/css" rel="stylesheet" href="/css/default-init${miniPostfix}.css" charset="utf-8" />
         <link rel="icon" type="image/png" href="/favicon.png" />
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/js/lib/jsonrpc.min.js" charset="utf-8"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -169,24 +170,19 @@
             };
             
             var initSys = function () {
+                var requestJSONObject = {
+                    "userName": $("userName").val(),
+                    "userEmail": $("userEmail").val(),
+                    "userPassword": $("userPassword").val()
+                };
+                    
                 if(confirm("${confirmInitLabel}")){
-                    var requestJSONObject = {
-                        "userName": $("userName").val(),
-                        "userEmail": $("userEmail").val(),
-                        "userPassword": $("userPassword").val()
-                    };
-                    $.ajax({
-                        url: "/init.do",
-                        type: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify(requestJSONObject),
-                        error: function(){
-                            // alert("Error loading articles from Rhythm");
-                        },
-                        success: function(data, textStatus){
-                            window.location.reload();
-                        }
-                    });
+                    var rslt = jsonRpc.adminService.init(requestJSONObject);
+                    if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
+                        window.location.href = "/admin-index.do#main";
+                    } else {
+                        alert("init error!");
+                    }
                 }
             };
         </script>
