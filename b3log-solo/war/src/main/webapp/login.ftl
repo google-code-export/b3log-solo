@@ -86,8 +86,8 @@
                     $("#tip").text("${passwordEmptyLabel}");
                 } else {
                     var requestJSONObject = {
-                        "userEmail": $("userEmail").val(),
-                        "userPassword": $("userPassword").val()
+                        "userEmail": $("#userEmail").val(),
+                        "userPassword": $("#userPassword").val()
                     };
                     $.ajax({
                         url: "/login",
