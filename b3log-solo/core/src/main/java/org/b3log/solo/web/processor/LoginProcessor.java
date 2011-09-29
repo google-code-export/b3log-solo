@@ -43,6 +43,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.web.action.impl.InitAction;
+import org.b3log.solo.web.util.Filler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -79,6 +80,10 @@ public final class LoginProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Filler.
+     */
+    private Filler filler = Filler.getInstance();
 
     /**
      * Shows login page.
@@ -119,6 +124,8 @@ public final class LoginProcessor {
         dataModel.put("goto", destinationURL);
         dataModel.put(Common.YEAR,
                       String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        
+        filler.fillMinified(dataModel);
     }
 
     /**
