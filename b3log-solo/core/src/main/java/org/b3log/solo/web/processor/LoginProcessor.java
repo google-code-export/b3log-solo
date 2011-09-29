@@ -141,6 +141,7 @@ public final class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
 
         final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
 
