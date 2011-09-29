@@ -145,7 +145,10 @@ public final class LoginProcessor {
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
 
+
         try {
+            jsonObject.put(Common.IS_LOGGED_IN, false);
+
             final JSONObject requestJSONObject =
                     AbstractAction.parseRequestJSONObject(request,
                                                           context.getResponse());
@@ -156,8 +159,6 @@ public final class LoginProcessor {
 
             if (Strings.isEmptyOrNull(userEmail)
                 || Strings.isEmptyOrNull(userPwd)) {
-                jsonObject.put(Common.IS_LOGGED_IN, false);
-
                 return;
             }
 
@@ -165,8 +166,6 @@ public final class LoginProcessor {
 
             final JSONObject user = userRepository.getByEmail(userEmail);
             if (null == user) {
-                jsonObject.put(Common.IS_LOGGED_IN, false);
-
                 return;
             }
 
