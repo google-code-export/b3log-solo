@@ -77,7 +77,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">
-                                            <button onclick='getUserInfo();'>${confirmLabel}</button>
+                                            <button onclick='getUserInfo();'>${nextStepLabel}</button>
                                             <span id="tip"></span>
                                         </td>
                                     </tr>
@@ -102,7 +102,7 @@
                                     </li>
                                 </ul>
                                 <button onclick='initSys();'>${initLabel}</button>
-                                <button onclick='returnTo();'>${returnToLabel}</button>
+                                <button onclick='returnTo();'>${previousStepLabel}</button>
                                 <span class="clear"></span>
                             </div>
                         </div>
