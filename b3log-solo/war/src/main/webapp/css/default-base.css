@@ -206,9 +206,6 @@ button:hover,.button:hover {
     text-decoration: none;
     text-shadow: 0 0 1px #EEEEEE;
 }
-.logo span {
-    margin: 0 -2px;
-}
 
 /* start icon */
 .putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon, 
