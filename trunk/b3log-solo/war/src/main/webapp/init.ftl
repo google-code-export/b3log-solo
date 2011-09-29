@@ -27,8 +27,41 @@
                         </a>
                     </div>
                     <div class="introContent">
-                        ${initIntroLabel}
-                        <button onclick='initSys();'>${initLabel}</button>
+                        <h2>
+                            <span>Welcome to</span>
+                            <a target="_blank" href="http://b3log-solo.googlecode.com">
+                                ${b3logLabel}
+                                <span style="color: orangered;">&nbsp;Solo</span>
+                            </a>
+                        </h2>
+                        <div>
+                            ${userName1Label}<input /><br>
+                            ${userPassword1Label}<input /><br>
+                            重复${userPassword1Label}<input /><br>
+                            <button onclick='initSys();'>${initLabel}</button>
+                            <span class="clear"></span>
+                        </div>
+                        <div>
+                            <p>This web page provides the initialization of "Preferences" and "Blog Statistic".</p>
+                            <ul>
+                                <li>
+                                    If you had initialized your blog, MUST NOT click it to prevent 
+                                    <font color="red">data loss</font>! (
+                                    <a href="/admin-index.do#main">Click</a> 
+                                    to return Admin Console).
+                                </li>
+                                <li>
+                                    If this is your first time using 
+                                    <a target="_blank" href="http://b3log-solo.googlecode.com">
+                                        ${b3logLabel}&nbsp;
+                                        <span style="color: orangered; font-weight: bold;">Solo</span>
+                                    </a>
+                                    , please click "Initial" button to initialize your blog.
+                                </li>
+                            </ul>
+                            <button onclick='initSys();'>${initLabel}</button>
+                            <span class="clear"></span>
+                        </div>
                     </div>
 
                     <a href="http://b3log-solo.googlecode.com" target="_blank">
@@ -42,11 +75,7 @@
                     &copy; ${year}
                     Powered by
                     <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
-                        <span style="color: orange;">B</span>
-                        <span style="font-size: 9px; color: blue;"><sup>3</sup></span>
-                        <span style="color: green;">L</span>
-                        <span style="color: red;">O</span>
-                        <span style="color: blue;">G</span>&nbsp;
+                        ${b3logLabel}&nbsp;
                         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
                     ver ${version}
                 </div>
