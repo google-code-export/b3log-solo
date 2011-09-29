@@ -179,7 +179,7 @@
                 if(confirm("${confirmInitLabel}")){
                     var rslt = jsonRpc.adminService.init(requestJSONObject);
                     if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
-//                        window.location.href = "/admin-index.do#main";
+                        window.location.href = "/admin-index.do#main";
                     } else {
                         alert("init error!");
                     }
