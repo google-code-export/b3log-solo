@@ -90,7 +90,7 @@
                         "userPassword": $("userPassword").val()
                     };
                     $.ajax({
-                        url: "/login.do",
+                        url: "/login",
                         type: "POST",
                         contentType: "application/json",
                         data: JSON.stringify(requestJSONObject),
