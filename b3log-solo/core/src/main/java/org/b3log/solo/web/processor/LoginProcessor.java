@@ -210,7 +210,7 @@ public final class LoginProcessor {
     public void logout(final HTTPRequestContext context) throws IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
-        Sessions.logout(httpServletRequest);
+        Sessions.logout(httpServletRequest, context.getResponse());
 
         String destinationURL = httpServletRequest.getParameter("goto");
         if (Strings.isEmptyOrNull(destinationURL)) {
