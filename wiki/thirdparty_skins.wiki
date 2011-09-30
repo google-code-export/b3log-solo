@@ -1,5 +1,6 @@
 #summary 非官方皮肤
 ==iDream==
+ http://imgmi.net/a/a4903728.png
  # 演示地址：http://www.noday.net 
  # 下载地址：http://noday.googlecode.com/files/N-iDream.zip
  # 作者：燃烧
