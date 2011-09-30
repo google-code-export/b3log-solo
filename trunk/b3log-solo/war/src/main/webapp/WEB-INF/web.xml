@@ -47,7 +47,6 @@
         <url-pattern>/admin-user-list.do</url-pattern>
         <url-pattern>/admin-plugin-list.do</url-pattern>
         <url-pattern>/admin-about.do</url-pattern>
-        <url-pattern>/upgrade/*</url-pattern>
         <url-pattern>/rm-all-data.do</url-pattern>
         <url-pattern>/tencent-microblog-oauth-authorize-token.do</url-pattern>
         <url-pattern>/tencent-microblog-oauth-callback.do</url-pattern>
