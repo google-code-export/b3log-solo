@@ -98,8 +98,9 @@
                             // alert("Error loading articles from Rhythm");
                         },
                         success: function(data, textStatus){
-                            var search = window.location.search;
-                            window.location.href = search.substring(3, search.length);
+                            if (!data.isLoggedIn) {
+                               alert(data.msg);
+                            }
                         }
                     });
                 }
