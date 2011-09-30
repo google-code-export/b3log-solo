@@ -27,7 +27,7 @@
  # 在 skins 目录中新建文件夹，用于存放一款皮肤所需的各个文件，文件结构如上所示。
  # 可参照 /neoease 目录中的文件进行创建及相应的修改。
  # 建议从 index.ftl 开始修改。一旦 index.ftl 的结构确定下来，其余页面的结构与此基本类似。当然，其中通过 <#include "xxx.ftl"> 包含了一些通用的页面。
- # 如 JS、CSS 文件需要压缩。可分别创建两个文件，在开发环境中使用 XXX.css/js, 在线上环境使用 XXX.min.css/js. 其中 ${miniPostfix} 变量用于区别线上环境和本地环境。使用示例如下：
+ # 如 JS、CSS 文件需要压缩。可分别创建两个文件，在开发环境中使用 XXX.css.js, 在线上环境使用 XXX.min.css.js. 其中 ${miniPostfix} 变量用于区别线上环境和本地环境。使用示例如下：
 <code language="xml">
 {{{
 <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/css/${skinDirName}${miniPostfix}.css" charset="utf-8" />
@@ -39,6 +39,8 @@
 ===注意事项===
  # macro-comments.ftl 中标签 id 不可进行更改。
  # top-nav.ftl 不可进行更改。
+ # footer.ftl 中版权声明如下：
+http://imgmi.net/e/ef15c4f9.png
  # 部分公用方法已被提取到 /js/common.js 和 /js/page.js 文件中。
  # 如有任何疑问请与 [http://vanessa.b3log.org Vanessa] 联系
 
