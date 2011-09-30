@@ -30,6 +30,7 @@ import org.b3log.solo.util.Statistics;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.3, Sep 18, 2011
+ * @since 0.3.1
  */
 public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
 
