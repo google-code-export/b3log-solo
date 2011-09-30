@@ -205,12 +205,20 @@ public final class LoginProcessor {
      * Logout.
      * 
      * @param context the specified context
+     * @throws IOException io exception 
      */
     @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
-    public void logout(final HTTPRequestContext context) {
+    public void logout(final HTTPRequestContext context) throws IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
         Sessions.logout(httpServletRequest);
+
+        String destinationURL = httpServletRequest.getParameter("goto");
+        if (Strings.isEmptyOrNull(destinationURL)) {
+            destinationURL = "/";
+        }
+        
+        context.getResponse().sendRedirect(destinationURL);
     }
 
     /**
