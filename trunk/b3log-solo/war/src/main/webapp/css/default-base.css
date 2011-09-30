@@ -3,7 +3,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, Sep 16, 2011
+ * @version 1.0.1.1, Sep 30, 2011
 */
 *,html,body {
     margin: 0;
@@ -212,7 +212,7 @@ button:hover,.button:hover {
 .homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon, 
 .postIcon,.articlesIcon,.draftsIcon,.usersIcon,.linkIcon,
 .preferenceIcon,.blogSyncIcon, .pageIcon, .trueIcon,.falseIcon,
-.fileIcon, .othersIcon, .goTopIcon, .goBottomIcon, .cacheIcon {
+.fileIcon, .othersIcon, .goTopIcon, .goBottomIcon, .cacheIcon, .aboutIcon {
     background-image: url("/images/icon.png");
     cursor: pointer;
     height: 16px;
