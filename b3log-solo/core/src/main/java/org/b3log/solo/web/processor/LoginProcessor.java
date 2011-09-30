@@ -22,7 +22,9 @@ import java.util.Map;
 import java.util.logging.Level;
 import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
@@ -38,6 +40,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -77,7 +80,8 @@ public final class LoginProcessor {
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    private static UserRepository userRepository =
+            UserRepositoryImpl.getInstance();
     /**
      * Language service.
      */
@@ -212,7 +216,7 @@ public final class LoginProcessor {
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = "/";
         }
-        
+
         context.getResponse().sendRedirect(destinationURL);
     }
 
@@ -231,6 +235,8 @@ public final class LoginProcessor {
         final JSONObject currentUser = userUtils.getCurrentUser(request);
         final JSONObject jsonObjectToRender = new JSONObject();
         renderer.setJSONObject(jsonObjectToRender);
+
+        tryLogInWithCookie(request, context.getResponse());
 
         try {
             jsonObjectToRender.put(Common.IS_LOGGED_IN, false);
@@ -274,6 +280,49 @@ public final class LoginProcessor {
             jsonObjectToRender.put(User.USER_NAME, userName);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Tries to login with cookie.
+     * 
+     * @param request the specified request
+     * @param response the specified response
+     */
+    public static void tryLogInWithCookie(final HttpServletRequest request,
+                                          final HttpServletResponse response) {
+        try {
+            final Cookie[] cookies = request.getCookies();
+            for (int i = 0; i < cookies.length; i++) {
+                final Cookie cookie = cookies[i];
+                if ("b3log-solo".equals(cookie.getName())) {
+                    final JSONObject cookieJSONObject =
+                            new JSONObject(cookie.getValue());
+
+                    final String userEmail =
+                            cookieJSONObject.getString(User.USER_EMAIL);
+                    if (Strings.isEmptyOrNull(userEmail)) {
+                        break;
+                    }
+
+                    final JSONObject user =
+                            userRepository.getByEmail(
+                            userEmail.toLowerCase().trim());
+                    if (null == user) {
+                        break;
+                    }
+
+                    final String userPassword =
+                            user.getString(User.USER_PASSWORD);
+                    final String hashPassword =
+                            cookieJSONObject.getString(User.USER_PASSWORD);
+                    if (MD5.hash(userPassword).equals(hashPassword)) {
+                        Sessions.login(request, response, user);
+                    }
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARNING, "Try login with cookie failed", e);
         }
     }
 }
