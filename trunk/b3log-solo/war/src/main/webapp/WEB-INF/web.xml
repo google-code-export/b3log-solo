@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.3.5, Sep 28, 2011
+    Version: 1.0.3.6, Sep 30, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -46,6 +46,7 @@
         <url-pattern>/admin-draft-list.do</url-pattern>
         <url-pattern>/admin-user-list.do</url-pattern>
         <url-pattern>/admin-plugin-list.do</url-pattern>
+        <url-pattern>/admin-about.do</url-pattern>
         <url-pattern>/upgrade/*</url-pattern>
         <url-pattern>/rm-all-data.do</url-pattern>
         <url-pattern>/tencent-microblog-oauth-authorize-token.do</url-pattern>
@@ -127,6 +128,7 @@
         <url-pattern>/admin-user-list.do</url-pattern>
         <url-pattern>/admin-plugin-list.do</url-pattern>
         <url-pattern>/admin-main.do</url-pattern>
+        <url-pattern>/admin-about.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>InitAction</servlet-name>
