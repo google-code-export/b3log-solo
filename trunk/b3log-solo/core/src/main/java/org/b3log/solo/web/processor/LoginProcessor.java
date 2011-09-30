@@ -158,9 +158,7 @@ public final class LoginProcessor {
 
         try {
             jsonObject.put(Common.IS_LOGGED_IN, false);
-            final String loginFailLabel =
-                    langPropsService.getLabels(Latkes.getLocale()).
-                    getString("loginFailLabel");
+            final String loginFailLabel = langPropsService.get("loginFailLabel");
             jsonObject.put(Keys.MSG, loginFailLabel);
 
             final JSONObject requestJSONObject =
