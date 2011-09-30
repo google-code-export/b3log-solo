@@ -18,7 +18,7 @@
  * user list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Aug 10, 2011
+ * @version 1.0.0.7, Sep 30, 2011
  */
 
 /* user-list 相关操作 */
@@ -60,7 +60,7 @@ admin.userList = {
         
         $("#userUpdate").dialog({
             width: 700,
-            height: 160,
+            height: 190,
             "modal": true,
             "hideFooter": true
         });
@@ -132,7 +132,8 @@ admin.userList = {
             $("#tipMsg").text("");
             var requestJSONObject = {
                 "userName": $("#userName").val(),
-                "userEmail": $("#userEmail").val()
+                "userEmail": $("#userEmail").val(),
+                "userPassword": $("#userPassword").val()
             };
             jsonRpc.adminService.addUser(function (result, error) {
                 try {
@@ -140,6 +141,7 @@ admin.userList = {
                         case "ADD_USER_SUCC":
                             $("#userName").val("");
                             $("#userEmail").val("");
+                            $("#userPassword").val("");
                             if (admin.userList.pageInfo.currentCount === Label.PAGE_SIZE &&
                                 admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
                                 admin.userList.pageInfo.pageCount++;
@@ -191,7 +193,7 @@ admin.userList = {
                         } else {
                             $userEmailUpdate.removeAttr("disabled");
                         }
-                        
+                        $("#userPasswordUpdate").val(result.user.userPassword);
                         break;
                     case "GET_USER_FAIL_":
                         break;
@@ -215,7 +217,8 @@ admin.userList = {
                 "userName": $("#userNameUpdate").val(),
                 "oId": userInfo.oId,
                 "userEmail": $("#userEmailUpdate").val(),
-                "userRole": userInfo.userRole
+                "userRole": userInfo.userRole,
+                "userPassword": $("#userPasswordUpdate").val()
             };
             jsonRpc.adminService.updateUser(function (result, error) {
                 try {
@@ -302,6 +305,9 @@ admin.userList = {
         } else if(!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#userEmail" + status).val())) {
             $("#tipMsg").text(Label.mailInvalidLabel);
             $("#userEmail" + status).focus();
+        } else if ($("#userPassword" + status).val().replace(/\s/g, "") === "") {
+            $("#tipMsg").text(Label.passwordEmptyLabel);
+            $("#userPassword" + status).focus();
         } else {
             return true;
         }

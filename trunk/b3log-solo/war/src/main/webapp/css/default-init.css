@@ -3,7 +3,7 @@
  * init b3log page style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Sep 29, 2011
+ * @version 1.0.0.4, Sep 30, 2011
 */
 html {
     height: 100%;
@@ -124,7 +124,7 @@ input{
 }
 
 .main ul {
-    margin-bottom: 24px;
+    margin-bottom: 92px;
 }
 
 .main li {
