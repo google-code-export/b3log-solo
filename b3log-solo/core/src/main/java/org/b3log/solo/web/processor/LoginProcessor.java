@@ -18,12 +18,14 @@ package org.b3log.solo.web.processor;
 import freemarker.template.Template;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
@@ -134,6 +136,15 @@ public final class LoginProcessor {
     /**
      * Logins.
      * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "isLoggedIn": boolean
+     * }
+     * </pre>
+     * </p>
+     * 
      * @param context the specified context
      */
     @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.POST)
@@ -148,6 +159,10 @@ public final class LoginProcessor {
 
         try {
             jsonObject.put(Common.IS_LOGGED_IN, false);
+            final String loginFailLabel =
+                    langPropsService.getLabels(Latkes.getLocale()).
+                    getString("loginFailLabel");
+            jsonObject.put(Keys.MSG, loginFailLabel);
 
             final JSONObject requestJSONObject =
                     AbstractAction.parseRequestJSONObject(request,
@@ -175,6 +190,7 @@ public final class LoginProcessor {
                 LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
+                jsonObject.remove(Keys.MSG);
 
                 final HttpServletResponse httpServletResponse =
                         context.getResponse();
