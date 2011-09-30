@@ -293,6 +293,10 @@ public final class LoginProcessor {
                                           final HttpServletResponse response) {
         try {
             final Cookie[] cookies = request.getCookies();
+            if (null == cookies) {
+                return;
+            }
+            
             for (int i = 0; i < cookies.length; i++) {
                 final Cookie cookie = cookies[i];
                 if ("b3log-solo".equals(cookie.getName())) {
