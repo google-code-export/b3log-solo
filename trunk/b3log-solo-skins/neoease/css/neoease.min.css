@@ -21,7 +21,6 @@ textarea, input{outline:none;}
 #top a, #top span span{border-right:1px solid #D9D9D9;color:#4C4C4C;float:left;line-height:14px;margin:6px 0;padding:0 6px;text-shadow:0 -1px 0 #FFF;font-weight:normal;}
 #top a:hover, #top a.hover{background-color:#EEF2FA;border-left-color:#707070;border-radius:0 13px 13px 0;margin:0;line-height:26px;}
 .logo{padding:0 5px;text-shadow:0 0 1px #EEE;}
-.logo span{margin:0 -2px;}
 .tip{color:#D54E21;font-size:11px;}
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
 .em10, .em11, .em12, .em13, .em14{background-image:url("/images/emotions-black.png");float:left;height:24px;margin-right:5px;width:24px;}
