@@ -139,7 +139,8 @@ public final class LoginProcessor {
      * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "isLoggedIn": boolean
+     *     "isLoggedIn": boolean,
+     *     "msg": "" // optional, exists if isLoggedIn equals to false
      * }
      * </pre>
      * </p>
