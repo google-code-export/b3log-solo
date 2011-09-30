@@ -252,7 +252,8 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *     "user": {
      *         "oId": "",
      *         "userName": "",
-     *         "userEmail": ""
+     *         "userEmail": "",
+     *         "userPassword": ""
      *     },
      *     "sc": "GET_USER_SUCC"
      * }
@@ -303,6 +304,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      *         "oId": "",
      *         "userName": "",
      *         "userEmail": "",
+     *         "userPassword": "",
      *         "roleName": ""
      *      }, ....]
      *     "sc": "GET_USERS_SUCC"
