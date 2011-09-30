@@ -107,8 +107,15 @@
                                 <div id="tabs_others">
                                     <a href="#tools/others">${othersLabel}</a>
                                 </div>
-                            </li>   
+                            </li>  
                         </ul>
+                    </li>
+                    <li>
+                        <div id="tabs_about">
+                            <a href="#about">
+                                <span class="left aboutIcon"></span>${aboutLabel}
+                            </a>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -125,6 +132,7 @@
                 <div id="tabsPanel_user-list" class="none"></div>
                 <div id="tabsPanel_comment-list" class="none"></div>
                 <div id="tabsPanel_plugin-list" class="none"></div>
+                <div id="tabsPanel_about" class="none"></div>
             </div>
             <div class="footer">
                 Powered by

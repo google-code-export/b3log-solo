@@ -3,7 +3,7 @@
  * skin classic style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Aug 31, 2011
+ * @version 1.0.0.4, Sep 30, 2011
 */
 a, a:link {
     color: #0000CC;
@@ -19,7 +19,7 @@ h5 {
 }
 .content {
     margin: 0 auto;
-    max-width: 1280px;
+    max-width: 1250px;
 }
 .header {
     height: 108px;
