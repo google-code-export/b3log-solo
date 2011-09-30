@@ -12,7 +12,7 @@
     <tbody>
         <tr>
             <th width="48px">
-                ${commentName1Label}
+                <label for="userName">${commentName1Label}</label>
             </th>
             <td>
                 <input id="userName" type="text"/>
@@ -20,10 +20,18 @@
         </tr>
         <tr>
             <th>
-                ${commentEmail1Label}
+                <label for="userEmail">${commentEmail1Label}</label>
             </th>
             <td>
                 <input id="userEmail" type="text"/>
+            </td>
+        </tr>
+         <tr>
+            <th>
+                <label for="userPassword">${userPassword1Label}</label>
+            </th>
+            <td>
+                <input id="userPassword" type="password"/>
             </td>
         </tr>
         <tr>
@@ -45,7 +53,7 @@
         <tbody>
             <tr>
                 <th width="48px">
-                    ${commentName1Label}
+                    <label for="userNameUpdate">${commentName1Label}</label>
                 </th>
                 <td>
                     <input id="userNameUpdate" type="text"/>
@@ -53,10 +61,18 @@
             </tr>
             <tr>
                 <th>
-                    ${commentEmail1Label}
+                    <label for="userEmailUpdate">${commentEmail1Label}</label>
                 </th>
                 <td>
                     <input id="userEmailUpdate" type="text"/>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="userPasswordUpdate">${userPassword1Label}</label>
+                </th>
+                <td>
+                    <input id="userPasswordUpdate" type="password"/>
                 </td>
             </tr>
             <tr>

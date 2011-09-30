@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>${welcomeToSoloLabel}</title>
+        <title>${welcomeToSoloLabel}B3log Solo!</title>
         <meta name="keywords" content="GAE 博客,GAE blog,b3log" />
         <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客" />
         <meta name="author" content="B3log Team" />
@@ -26,13 +26,13 @@
                     </div>
                     <div class="main">
                         <h2>
-                            <span>Welcome to</span>
+                            <span>${welcomeToSoloLabel}</span>
                             <a target="_blank" href="http://b3log-solo.googlecode.com">
                                 ${b3logLabel}
                                 <span style="color: orangered;">&nbsp;Solo</span>
                             </a>
                         </h2>
-                        <table>
+                        <table style="margin: 66px 30px;">
                             <tr>
                                 <td width="170px">
                                     <label for="userEmail">
@@ -99,7 +99,10 @@
                         },
                         success: function(data, textStatus){
                             if (!data.isLoggedIn) {
-                               alert(data.msg);
+                                $("#tip").text(data.msg);
+                            } else {
+                                var search = window.location.search;
+                                window.location.href = search.substring(6, search.length) + window.location.hash;
                             }
                         }
                     });

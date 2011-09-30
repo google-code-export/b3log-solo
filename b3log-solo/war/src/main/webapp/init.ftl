@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>${welcomeToSoloLabel}</title>
+        <title>${welcomeToSoloLabel}B3log Solo!</title>
         <meta name="keywords" content="GAE 博客,GAE blog,b3log,init" />
         <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客,初始化程序" />
         <meta name="author" content="B3log Team" />
@@ -27,7 +27,7 @@
                     </div>
                     <div class="main">
                         <h2>
-                            <span>Welcome to</span>
+                            <span>${welcomeToSoloLabel}</span>
                             <a target="_blank" href="http://b3log-solo.googlecode.com">
                                 ${b3logLabel}
                                 <span style="color: orangered;">&nbsp;Solo</span>
@@ -85,23 +85,7 @@
                                 </table>
                             </div>
                             <div id="sys" class="none">
-                                <p>This web page provides the initialization of "Preferences" and "Blog Statistic".</p>
-                                <ul>
-                                    <li>
-                                        If you had initialized your blog, MUST NOT click it to prevent 
-                                        <font color="red">data loss</font>! (
-                                        <a href="/admin-index.do#main">Click</a> 
-                                        to return Admin Console).
-                                    </li>
-                                    <li>
-                                        If this is your first time using 
-                                        <a target="_blank" href="http://b3log-solo.googlecode.com">
-                                            ${b3logLabel}&nbsp;
-                                            <span style="color: orangered; font-weight: bold;">Solo</span>
-                                        </a>
-                                        , please click "Initial" button to initialize your blog.
-                                    </li>
-                                </ul>
+                                ${initIntroLabel}
                                 <button onclick='initSys();'>${initLabel}</button>
                                 <button onclick='returnTo();'>${previousStepLabel}</button>
                                 <span class="clear"></span>
