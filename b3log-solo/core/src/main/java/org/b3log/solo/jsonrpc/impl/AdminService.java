@@ -176,6 +176,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * {
      *     "userName": "",
      *     "userEmail": "",
+     *     "userPassword": "",
      *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead,
      *                       if not speciffied
      * }
@@ -219,6 +220,9 @@ public final class AdminService extends AbstractGAEJSONRpcService {
             final String userName = requestJSONObject.getString(User.USER_NAME);
             user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
+            final String userPassword = 
+                    requestJSONObject.getString(User.USER_PASSWORD);
+            user.put(User.USER_PASSWORD, userPassword);
             final String roleName = requestJSONObject.optString(
                     User.USER_ROLE, Role.DEFAULT_ROLE);
             user.put(User.USER_ROLE, roleName);
