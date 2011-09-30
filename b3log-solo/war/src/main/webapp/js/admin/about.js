@@ -23,17 +23,34 @@
 
 /* about 相关操作 */
 admin.about = {
-    
+    init: function () {
+        $.ajax({
+            url: "http://rhythm.b3log.org/version/solo/latest",
+            type: "GET",
+            dataType:"jsonp",
+            error: function() {
+            // alert("Error loading articles from Rhythm");
+            },
+            success: function(data, textStatus) {
+                var version = data.soloVersion;
+                if (version === Label.version) {
+                    $("#aboutLatest").text(Label.upToDateLabel);
+                } else {
+                    $("#aboutLatest").html(Label.outOfDateLabel +
+                        "<a href='" + data.soloDownload + "'>" + version + "</a>");
+                }
+                $("#loadMsg").text("");
+            }
+        });
+    }
 };
 
 /*
  * 注册到 admin 进行管理 
  */
-admin.register["about"] =  {
+admin.register["about"] = {
     "obj": admin.about,
-    "init": function () {
-        $("#loadMsg").text("");
-    },
+    "init": admin.about.init,
     "refresh": function () {
         $("#loadMsg").text("");
     }

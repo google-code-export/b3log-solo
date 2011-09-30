@@ -349,4 +349,9 @@ a:hover {
     float: left;
     margin: 36px;
 }
+
+#aboutLatest {
+    font-size: 20px;
+    margin: 20px 0;
+}
 /* end about */
