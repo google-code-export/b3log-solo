@@ -182,7 +182,7 @@ public final class LoginProcessor {
             }
 
             if (userPwd.equals(user.getString(User.USER_PASSWORD))) {
-                Sessions.login(request, user);
+                Sessions.login(request, context.getResponse(), user);
 
                 LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
 
