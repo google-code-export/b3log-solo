@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * Skips for request filtering.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 28, 2011
+ * @version 1.1.0.1, Sep 30, 2011
  * @see #shouldSkip(java.lang.String) 
  * @since 0.3.1
  */
@@ -48,6 +48,7 @@ public final class Skips {
         "/admin-draft-list.do",
         "/admin-user-list.do",
         "/admin-plugin-list.do",
+        "/admin-about.do",
         "/rm-all-data.do",
         "/init.do",
         "/clear-cache.do",
