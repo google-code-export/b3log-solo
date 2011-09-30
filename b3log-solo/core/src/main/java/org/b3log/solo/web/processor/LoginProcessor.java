@@ -190,11 +190,6 @@ public final class LoginProcessor {
                 jsonObject.put(Common.IS_LOGGED_IN, true);
                 jsonObject.remove(Keys.MSG);
 
-                final HttpServletResponse httpServletResponse =
-                        context.getResponse();
-
-                httpServletResponse.sendRedirect("/admin-index.do#main");
-
                 return;
             }
         } catch (final Exception e) {
