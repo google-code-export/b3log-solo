@@ -18,7 +18,7 @@
  * @fileoverview Page util, load heighlight and process comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Sep 1, 2011
+ * @version 1.0.0.9, Sep 30, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -269,7 +269,6 @@ $.extend(Page.prototype, {
                 + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
                 type: "GET",
                 dataType:"jsonp",
-                jsonp: "callback",
                 error: function(){
                 // alert("Error loading articles from Rhythm");
                 },

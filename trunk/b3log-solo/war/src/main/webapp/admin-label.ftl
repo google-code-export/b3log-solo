@@ -4,8 +4,11 @@
         "PAGE_SIZE": 18,
         "WINDOW_SIZE": 10,
         "localeString": "${localeString}",
+        "version": "${version}",
         "reportIssueLabel": "please report this issue on http://code.google.com/p/b3log-solo/issues/list",
         
+        "outOfDateLabel":　"${outOfDateLabel}",
+        "upToDateLabel": "${upToDateLabel}",
         "commentContentLabel": "${commentContentLabel}",
         "loadingLabel": "${loadingLabel}",
         "removeSuccLabel": "${removeSuccLabel}",
