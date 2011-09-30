@@ -24,20 +24,13 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.model.User;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
-import org.b3log.latke.util.MD5;
-import org.b3log.latke.util.Sessions;
-import org.b3log.latke.util.Strings;
-import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Users;
-import org.json.JSONObject;
+import org.b3log.solo.web.processor.LoginProcessor;
 
 /**
  * Authentication filter.
@@ -67,10 +60,6 @@ public final class AuthFilter implements Filter {
      * User utilities.
      */
     private Users users = Users.getInstance();
-    /**
-     * User repository.
-     */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -97,36 +86,8 @@ public final class AuthFilter implements Filter {
                 (HttpServletRequest) request;
 
         try {
-            final Cookie[] cookies = httpServletRequest.getCookies();
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
-                if ("b3log-solo".equals(cookie.getName())) {
-                    final JSONObject cookieJSONObject =
-                            new JSONObject(cookie.getValue());
-
-                    final String userEmail =
-                            cookieJSONObject.getString(User.USER_EMAIL);
-                    if (Strings.isEmptyOrNull(userEmail)) {
-                        break;
-                    }
-
-                    final JSONObject user =
-                            userRepository.getByEmail(
-                            userEmail.toLowerCase().trim());
-                    if (null == user) {
-                        break;
-                    }
-
-                    final String userPassword =
-                            user.getString(User.USER_PASSWORD);
-                    final String hashPassword =
-                            cookieJSONObject.getString(User.USER_PASSWORD);
-                    if (MD5.hash(userPassword).equals(hashPassword)) {
-                        Sessions.login(httpServletRequest, httpServletResponse,
-                                       user);
-                    }
-                }
-            }
+            LoginProcessor.tryLogInWithCookie(httpServletRequest,
+                                              httpServletResponse);
 
             final GeneralUser currentUser =
                     userService.getCurrentUser(httpServletRequest);
