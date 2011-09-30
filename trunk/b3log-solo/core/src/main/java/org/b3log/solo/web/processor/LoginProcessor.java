@@ -18,7 +18,6 @@ package org.b3log.solo.web.processor;
 import freemarker.template.Template;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import org.b3log.solo.util.Users;
