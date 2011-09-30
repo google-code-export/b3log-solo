@@ -8,7 +8,7 @@
                   style="height: 500px;width:100%;"></textarea>
     </div>
     <div>
-        <label>${tags1Label}</label>
+        <label>${tags1WithTips1Label}</label>
         <input id="tag" type="text"/>
     </div>
     <div>
