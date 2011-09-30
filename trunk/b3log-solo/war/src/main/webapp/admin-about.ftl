@@ -8,7 +8,9 @@
                 <img src="/images/logo.png" alt="B3log Solo" title="B3log Solo" />
             </a>
         </div>
+
         <div class="left">
+            ${aboutContentLabel}
             <h3><a href="http://code.google.com/p/b3log-solo/wiki/about_us" target="_blank">About Us</a></h3>
             <ul>
                 <li><a href="http://88250.b3log.org" target="_blank">88250</a></li>
