@@ -116,7 +116,7 @@ a:hover {
     overflow: auto;
 }
 
-/* first tab */
+/* start first tab */
 #tabs {
     background-color: #ECECEC;
     border-radius: 0 5px 5px 0;
@@ -187,7 +187,9 @@ a:hover {
 #tabs .aboutIcon {
     margin: 6px 9px 0 0;
 }
-/* sub tabs */
+/* end first tabs */
+
+/* start sub tabs */
 #tabPreference {
     border-bottom: 1px solid #DFDFDF;
     height: 30px;
@@ -219,8 +221,9 @@ a:hover {
     border-bottom: 1px solid #DFDFDF;
     padding: 12px;
 }
-/* start common */
-/* form */
+/* end preference tabs*/
+
+/* start form */
 .form>div {
     margin: 12px 0;
 }
@@ -229,8 +232,9 @@ a:hover {
     line-height: 28px;
     margin-right: 12px;
 }
+/* end form */
 
-/* module */
+/* start module */
 .module-panel {
     border: 1px solid #DFDFDF;
     border-radius: 3px 3px 3px 3px;
@@ -262,7 +266,7 @@ a:hover {
 }
 /* end module */
 
-/* article sync */
+/* start article sync */
 #syncBlogType {
     background-color: #E3E9FF;
     padding: 12px 0 0 12px;
@@ -282,6 +286,9 @@ a:hover {
 #articlesCount {
     line-height: 28px;
 }
+/* end article sync */
+
+/* start preference */
 .subTable {
     background-color: #FFFFFF;
     border-radius: 12px;
@@ -324,6 +331,7 @@ a:hover {
     background-image: none;
     color: #555555;
 }
+/* end preference */
 
 /* start common list */
 #commentTable .table-hasExpend {
@@ -334,3 +342,11 @@ a:hover {
     width: 24px;
     margin-right: 3px;
 }
+/* end common list */
+
+/* start about */
+.about-logo {
+    float: left;
+    margin: 36px;
+}
+/* end about */
