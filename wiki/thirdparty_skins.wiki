@@ -2,5 +2,5 @@
 ==iDream==
  http://imgmi.net/a/a4903728.png
  # 演示地址：http://www.noday.net 
- # 下载地址：http://noday.googlecode.com/files/N-iDream.zip
+ # 下载地址：http://noday.googlecode.com/files/iDream_b3log_3.0.1.rar
  # 作者：燃烧
