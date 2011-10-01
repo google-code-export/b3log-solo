@@ -39,9 +39,9 @@
 ===注意事项===
  # macro-comments.ftl 中标签 id 不可进行更改。
  # top-nav.ftl 不可进行更改。
+ # 部分公用方法已被提取到 /js/common.js 和 /js/page.js 文件中。
+ # 不用引入 /css/default-base.css。里面样式重置较多，且可减少一个请求哦 ^^ （规划ing, 你看不到我，看不到我，看不到我哦。。。）
+ # 如有任何疑问请与 [http://vanessa.b3log.org Vanessa] 联系
  # footer.ftl 中版权声明如下：
 http://imgmi.net/e/ef15c4f9.png
- # 部分公用方法已被提取到 /js/common.js 和 /js/page.js 文件中。
- # 如有任何疑问请与 [http://vanessa.b3log.org Vanessa] 联系
-
 <g:plusone size="medium" href="http://code.google.com/p/b3log-solo/w/edit/develop_steps"></g:plusone>
