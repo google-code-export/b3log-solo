@@ -233,15 +233,16 @@ public final class LoginProcessor {
     @RequestProcessing(value = {"/check-login.do"},
                        method = HTTPRequestMethod.POST)
     public void checkLoggedIn(final HTTPRequestContext context) {
+        
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         final HttpServletRequest request = context.getRequest();
+        tryLogInWithCookie(request, context.getResponse());
+        
         final JSONObject currentUser = userUtils.getCurrentUser(request);
         final JSONObject jsonObjectToRender = new JSONObject();
         renderer.setJSONObject(jsonObjectToRender);
-
-        tryLogInWithCookie(request, context.getResponse());
 
         try {
             jsonObjectToRender.put(Common.IS_LOGGED_IN, false);

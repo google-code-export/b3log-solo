@@ -17,18 +17,30 @@ package org.b3log.solo.web.processor.renderer;
 
 import freemarker.template.Template;
 import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.action.AbstractCacheablePageAction;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
+import org.b3log.latke.user.GeneralUser;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.Users;
 import org.b3log.solo.web.action.impl.InitAction;
+import org.b3log.solo.web.processor.LoginProcessor;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * <a href="http://freemarker.org">FreeMarker</a> HTTP response 
@@ -54,6 +66,14 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
      */
     private Repository statisticRepository =
             StatisticRepositoryImpl.getInstance();
+    /**
+     * User utilities.
+     */
+    private Users userUtils = Users.getInstance();
+    /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * {@inheritDoc}
@@ -87,8 +107,61 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
             final Template topBarTemplate =
                     InitAction.TEMPLATE_CFG.getTemplate("top-bar.ftl");
             final StringWriter stringWriter = new StringWriter();
-            topBarTemplate.process(context, stringWriter);
-            
+
+
+            final Map<String, Object> topBarModel =
+                    new HashMap<String, Object>();
+
+            LoginProcessor.tryLogInWithCookie(request, context.getResponse());
+            final JSONObject currentUser = userUtils.getCurrentUser(request);
+
+            try {
+                topBarModel.put(Common.IS_LOGGED_IN, false);
+
+                if (null == currentUser) {
+                    if (userService.isUserLoggedIn(request)
+                        && userService.isUserAdmin(request)) {
+                        // Only should happen with the following cases:
+                        // 1. Init Solo
+                        //    Because of there is no any user in datastore before init Solo
+                        //    although the administrator has been logged in for init
+                        // 2. The collaborate administrator
+                        topBarModel.put(Common.IS_LOGGED_IN, true);
+                        topBarModel.put(Common.IS_ADMIN, true);
+                        final GeneralUser admin =
+                                userService.getCurrentUser(request);
+                        topBarModel.put(User.USER_NAME,
+                                        admin.getNickname());
+
+                        return;
+                    }
+
+                    topBarModel.put(Common.LOGIN_URL,
+                                    userService.createLoginURL(
+                            Common.ADMIN_INDEX_URI));
+                    return;
+                }
+
+                topBarModel.put(Common.IS_LOGGED_IN, true);
+                topBarModel.put(Common.LOGOUT_URL,
+                                userService.createLogoutURL("/"));
+                topBarModel.put(Common.IS_ADMIN,
+                                Role.ADMIN_ROLE.equals(currentUser.getString(
+                        User.USER_ROLE)));
+
+                String userName = currentUser.getString(User.USER_NAME);
+                if (Strings.isEmptyOrNull(userName)) {
+                    // The administrators may be added via GAE Admin Console Permissions
+                    userName = userService.getCurrentUser(request).getNickname();
+                    topBarModel.put(Common.IS_ADMIN, true);
+                }
+                topBarModel.put(User.USER_NAME, userName);
+            } catch (final JSONException e) {
+                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            }
+
+            topBarTemplate.process(topBarModel, stringWriter);
+
             request.setAttribute(AbstractCacheablePageAction.CACHED_CONTENT,
                                  pageContent.replace(
                     Common.TOP_BAR_REPLACEMENT_FLAG, stringWriter.toString()));
