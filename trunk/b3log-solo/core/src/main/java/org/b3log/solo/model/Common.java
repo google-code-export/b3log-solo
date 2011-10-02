@@ -208,7 +208,7 @@ public final class Common {
      * Top bar replacement flag.
      */
     public static final String TOP_BAR_REPLACEMENT_FLAG =
-            "##topBarReplacement##";
+            "#B3logSolo#topBarReplacement#B3logSolo#";
 
     /**
      * Private default constructor.
