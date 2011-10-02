@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * <p>Initializes administrator</p>.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Sep 28, 2011
+ * @version 1.1.0.2, Oct 2, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -116,6 +116,11 @@ public final class LoginProcessor {
 
                     @Override
                     protected void afterRender(final HTTPRequestContext context)
+                            throws Exception {
+                    }
+
+                    @Override
+                    protected void beforeRender(HTTPRequestContext context)
                             throws Exception {
                     }
                 };
@@ -296,7 +301,7 @@ public final class LoginProcessor {
             if (null == cookies) {
                 return;
             }
-            
+
             for (int i = 0; i < cookies.length; i++) {
                 final Cookie cookie = cookies[i];
                 if ("b3log-solo".equals(cookie.getName())) {
