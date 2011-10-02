@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.6, Aug 19, 2011
+ * @version 1.0.3.7, Oct 2, 2011
  */
 public final class Common {
 
@@ -199,6 +199,16 @@ public final class Common {
      * Page comment type.
      */
     public static final String PAGE_COMMENT_TYPE = "pageComment";
+    /**
+     * Key of top bar replacement flag.
+     */
+    public static final String TOP_BAR_REPLACEMENT_FLAG_KEY =
+            "topBarReplacement";
+    /**
+     * Top bar replacement flag.
+     */
+    public static final String TOP_BAR_REPLACEMENT_FLAG =
+            "##topBarReplacement##";
 
     /**
      * Private default constructor.
