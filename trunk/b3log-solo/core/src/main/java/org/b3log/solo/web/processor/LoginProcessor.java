@@ -120,7 +120,7 @@ public final class LoginProcessor {
                     }
 
                     @Override
-                    protected void beforeRender(HTTPRequestContext context)
+                    protected void beforeRender(final HTTPRequestContext context)
                             throws Exception {
                     }
                 };

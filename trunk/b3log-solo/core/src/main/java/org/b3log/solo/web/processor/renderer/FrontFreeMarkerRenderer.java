@@ -39,7 +39,6 @@ import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.web.action.impl.InitAction;
 import org.b3log.solo.web.processor.LoginProcessor;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -100,7 +99,7 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
     protected void afterRender(final HTTPRequestContext context)
             throws Exception {
         final HttpServletRequest request = context.getRequest();
-        String pageContent =
+        final String pageContent =
                 (String) request.getAttribute(
                 AbstractCacheablePageAction.CACHED_CONTENT);
         if (null != pageContent) {
