@@ -67,7 +67,8 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.2, Aug 9, 2011
+ * @version 1.0.4.3, Oct 2, 2011
+ * @since 0.3.1
  */
 public final class Filler {
 
@@ -148,7 +149,7 @@ public final class Filler {
                           FilterOperator.EQUAL, PUBLISHED);
 
         query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        
+
         if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
             query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
         } else {
@@ -514,6 +515,15 @@ public final class Filler {
                         articleUtils.hasUpdated(article));
         } else {
             article.put(Common.HAS_UPDATED, false);
+        }
+
+        final String articleListStyle =
+                preference.getString(Preference.ARTICLE_LIST_STYLE);
+        if ("titleOnly".equals(articleListStyle)) {
+            article.put(Article.ARTICLE_ABSTRACT, "");
+        } else if ("titleAndContent".equals(articleListStyle)) {
+            article.put(Article.ARTICLE_ABSTRACT,
+                        article.getString(Article.ARTICLE_CONTENT));
         }
     }
 
