@@ -160,6 +160,7 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
             request.setAttribute(AbstractCacheablePageAction.CACHED_CONTENT,
                                  pageContent.replace(
                     Common.TOP_BAR_REPLACEMENT_FLAG, stringWriter.toString()));
+            
         }
 
         super.afterRender(context);
