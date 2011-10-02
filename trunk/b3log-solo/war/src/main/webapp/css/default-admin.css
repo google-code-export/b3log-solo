@@ -92,6 +92,13 @@ a:hover {
 }
 
 #top a, #top span span {
+    float: left;
+    line-height: 14px;
+    margin: 6px 0;
+    padding: 0 6px;
+    text-decoration: none;
+    text-shadow: 0 -1px 0 #FFFFFF;
+    font-weight: normal;
     border-right: 1px solid #686868;
     color: #CCCCCC;
     text-shadow: 0 -1px 0 #555555;
@@ -99,7 +106,11 @@ a:hover {
 #top>a {
     color: #FFFFFF;
 }
+
 #top a:hover, #top a.hover {
+    border-radius: 0 13px 13px 0;
+    margin: 0px;
+    line-height: 26px;
     background-color: #4C4C4C;
     border-left-color: #707070;
 }

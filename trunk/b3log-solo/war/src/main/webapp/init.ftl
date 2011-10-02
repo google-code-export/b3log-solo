@@ -138,12 +138,15 @@
                     $("#init").animate({
                         "top": -170
                     }); 
+                    
                     $("#user").animate({
                         "opacity": 0
                     }); 
-                    $("#sys").animate({
-                        "opacity": 100
-                    }); 
+                    
+                    $("#sys").css({
+                        "display": "block",
+                        "opacity": 1
+                    });
                 }
             };
             
@@ -151,11 +154,15 @@
                 $("#init").animate({
                     "top": 102
                 }); 
+                
+                $("#user").animate({
+                    "opacity": 1
+                }); 
+                
                 $("#sys").animate({
                     "opacity": 0
-                }); 
-                $("#user").animate({
-                    "opacity": 100
+                }, 800, function () {
+                    this.style.display = "none";
                 }); 
             };
             
