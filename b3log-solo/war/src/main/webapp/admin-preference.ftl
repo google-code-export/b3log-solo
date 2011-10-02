@@ -204,6 +204,18 @@
                 </tr>
                 <tr>
                     <th>
+                        <label for="articleListDisplay">${articleListDisplay1Label}</label>
+                    </th>
+                    <td>
+                        <select id="articleListDisplay">
+                            <option value="titleOnly">${titleOnlyLabel}</option>
+                            <option value="titleAndAbstract">${titleAndAbstractLabel}</option>
+                            <option value="titleAndContent">${titleAndContentLabel}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         ${keyOfSolo1Label}
                     </th>
                     <td>
