@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.solo.model.Common;
@@ -48,6 +49,11 @@ public final class TopBars {
      * User service.
      */
     private static UserService userService = UserServiceFactory.getUserService();
+    /**
+     * Language service.
+     */
+    private static LangPropsService langPropsService = LangPropsService.
+            getInstance();
 
     /**
      * Generates top bar HTML.
@@ -88,11 +94,19 @@ public final class TopBars {
                         Role.ADMIN_ROLE.equals(currentUser.getString(
                 User.USER_ROLE)));
 
+        topBarModel.put("clearAllCacheLabel",
+                        langPropsService.get("clearAllCacheLabel"));
+        topBarModel.put("clearCacheLabel",
+                        langPropsService.get("clearCacheLabel"));
+        topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
+        topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
+        topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
+
         final String userName = currentUser.getString(User.USER_NAME);
         topBarModel.put(User.USER_NAME, userName);
 
         topBarTemplate.process(topBarModel, stringWriter);
-        
+
         return stringWriter.toString();
     }
 
