@@ -115,50 +115,46 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
             LoginProcessor.tryLogInWithCookie(request, context.getResponse());
             final JSONObject currentUser = userUtils.getCurrentUser(request);
 
-            try {
-                topBarModel.put(Common.IS_LOGGED_IN, false);
+            topBarModel.put(Common.IS_LOGGED_IN, false);
 
-                if (null == currentUser) {
-                    if (userService.isUserLoggedIn(request)
-                        && userService.isUserAdmin(request)) {
-                        // Only should happen with the following cases:
-                        // 1. Init Solo
-                        //    Because of there is no any user in datastore before init Solo
-                        //    although the administrator has been logged in for init
-                        // 2. The collaborate administrator
-                        topBarModel.put(Common.IS_LOGGED_IN, true);
-                        topBarModel.put(Common.IS_ADMIN, true);
-                        final GeneralUser admin =
-                                userService.getCurrentUser(request);
-                        topBarModel.put(User.USER_NAME,
-                                        admin.getNickname());
+            if (null == currentUser) {
+                if (userService.isUserLoggedIn(request)
+                    && userService.isUserAdmin(request)) {
+                    // Only should happen with the following cases:
+                    // 1. Init Solo
+                    //    Because of there is no any user in datastore before init Solo
+                    //    although the administrator has been logged in for init
+                    // 2. The collaborate administrator
+                    topBarModel.put(Common.IS_LOGGED_IN, true);
+                    topBarModel.put(Common.IS_ADMIN, true);
+                    final GeneralUser admin =
+                            userService.getCurrentUser(request);
+                    topBarModel.put(User.USER_NAME,
+                                    admin.getNickname());
 
-                        return;
-                    }
-
-                    topBarModel.put(Common.LOGIN_URL,
-                                    userService.createLoginURL(
-                            Common.ADMIN_INDEX_URI));
                     return;
                 }
 
-                topBarModel.put(Common.IS_LOGGED_IN, true);
-                topBarModel.put(Common.LOGOUT_URL,
-                                userService.createLogoutURL("/"));
-                topBarModel.put(Common.IS_ADMIN,
-                                Role.ADMIN_ROLE.equals(currentUser.getString(
-                        User.USER_ROLE)));
-
-                String userName = currentUser.getString(User.USER_NAME);
-                if (Strings.isEmptyOrNull(userName)) {
-                    // The administrators may be added via GAE Admin Console Permissions
-                    userName = userService.getCurrentUser(request).getNickname();
-                    topBarModel.put(Common.IS_ADMIN, true);
-                }
-                topBarModel.put(User.USER_NAME, userName);
-            } catch (final JSONException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                topBarModel.put(Common.LOGIN_URL,
+                                userService.createLoginURL(
+                        Common.ADMIN_INDEX_URI));
+                return;
             }
+
+            topBarModel.put(Common.IS_LOGGED_IN, true);
+            topBarModel.put(Common.LOGOUT_URL,
+                            userService.createLogoutURL("/"));
+            topBarModel.put(Common.IS_ADMIN,
+                            Role.ADMIN_ROLE.equals(currentUser.getString(
+                    User.USER_ROLE)));
+
+            String userName = currentUser.getString(User.USER_NAME);
+            if (Strings.isEmptyOrNull(userName)) {
+                // The administrators may be added via GAE Admin Console Permissions
+                userName = userService.getCurrentUser(request).getNickname();
+                topBarModel.put(Common.IS_ADMIN, true);
+            }
+            topBarModel.put(User.USER_NAME, userName);
 
             topBarTemplate.process(topBarModel, stringWriter);
 
