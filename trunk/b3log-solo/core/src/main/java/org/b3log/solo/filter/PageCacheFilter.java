@@ -28,6 +28,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -37,9 +38,11 @@ import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.web.util.TopBars;
 import org.json.JSONObject;
 
 /**
@@ -150,6 +153,12 @@ public final class PageCacheFilter implements Filter {
             String cachedPageContent =
                     cachedPageContentObject.getString(
                     AbstractCacheablePageAction.CACHED_CONTENT);
+            final String topBarHTML =
+                    TopBars.getTopBarHTML((HttpServletRequest) request,
+                                          (HttpServletResponse) response);
+            cachedPageContent = cachedPageContent.replace(
+                    Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
+
             final String cachedType = cachedPageContentObject.optString(
                     AbstractCacheablePageAction.CACHED_TYPE);
             final String cachedTitle = cachedPageContentObject.getString(
