@@ -15,9 +15,11 @@
  */
 package org.b3log.solo.web.processor.renderer;
 
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
@@ -67,6 +69,34 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
                            Common.TOP_BAR_REPLACEMENT_FLAG);
     }
 
+    @Override
+    protected void doRender(final String html,
+                            final HttpServletRequest request,
+                            final HttpServletResponse response)
+            throws Exception {
+        final PrintWriter writer = response.getWriter();
+        if (response.isCommitted()) { // response has been sent redirect
+            writer.flush();
+
+            return;
+        }
+
+        final String pageContent =
+                (String) request.getAttribute(
+                AbstractCacheablePageAction.CACHED_CONTENT);
+        String output = html;
+        if (null != pageContent) {
+            // Adds the top bar HTML content for output
+            final String topBarHTML = TopBars.getTopBarHTML(request, response);
+            output = html.replace(Common.TOP_BAR_REPLACEMENT_FLAG,
+                                  topBarHTML);
+        }
+
+        writer.write(output);
+        writer.flush();
+        writer.close();
+    }
+
     /**
      * {@inheritDoc}
      * 
@@ -77,19 +107,6 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
     @Override
     protected void afterRender(final HTTPRequestContext context)
             throws Exception {
-        final HttpServletRequest request = context.getRequest();
-        final String pageContent =
-                (String) request.getAttribute(
-                AbstractCacheablePageAction.CACHED_CONTENT);
-        if (null != pageContent) {
-            final String topBarHTML =
-                    TopBars.getTopBarHTML(context.getRequest(), context.
-                    getResponse());
-            request.setAttribute(AbstractCacheablePageAction.CACHED_CONTENT,
-                                 pageContent.replace(
-                    Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML));
-        }
-
         super.afterRender(context);
 
         final Transaction transaction = statisticRepository.beginTransaction();
