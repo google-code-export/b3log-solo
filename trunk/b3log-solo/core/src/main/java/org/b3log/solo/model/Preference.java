@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 28, 2011
+ * @version 1.1.0.1, Oct 2, 2011
  * @since 0.3.1
  */
 public final class Preference {
@@ -182,6 +182,10 @@ public final class Preference {
      * Key of version.
      */
     public static final String VERSION = "version";
+    /**
+     * Key of article list display style.
+     */
+    public static final String ARTICLE_LIST_STYLE = "articleListStyle";
 
     /**
      * Private default constructor.
@@ -193,7 +197,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.1.0.1, Sep 29, 2011
+     * @version 1.1.0.2, Oct 2, 2011
      * @since 0.3.1
      */
     public static final class Default {
@@ -320,6 +324,10 @@ public final class Preference {
          * Default administrator's password.
          */
         public static final String DEFAULT_ADMIN_PWD = "111111";
+        /**
+         * Default article list display style.
+         */
+        public static final String DEFAULT_ARTICLE_LIST_STYLE = "title+abstract";
 
         static {
             final JSONArray signs = new JSONArray();
