@@ -85,7 +85,6 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
             final String topBarHTML =
                     TopBars.getTopBarHTML(context.getRequest(), context.
                     getResponse());
-
             request.setAttribute(AbstractCacheablePageAction.CACHED_CONTENT,
                                  pageContent.replace(
                     Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML));
