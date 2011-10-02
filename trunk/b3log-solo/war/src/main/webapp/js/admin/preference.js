@@ -15,10 +15,11 @@
  */
 
 /**
- * preference for admin
+ * preference for admin.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Aug 22, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.8, Oct 2, 2011
  */
 
 /* preference 相关操作 */
@@ -100,6 +101,9 @@ admin.preference = {
                                 position: "bottom"
                             });
                         }
+                        
+                        // Article list style
+                        $("#articleListDisplay").val(preference.articleListStyle);
                         break;
                     default:
                         break;
@@ -167,7 +171,8 @@ admin.preference = {
                 "tencentMicroblogAppSecret": $("#tencentMicroblogAppSecret").val(),
                 "enablePostToTencentMicroblog": $("#postToTencentMicroblog").prop("checked"),
                 "keyOfSolo": $("#keyOfSolo").val(),
-                "allowVisitDraftViaPermalink": $("#allowVisitDraftViaPermalink").prop("checked")
+                "allowVisitDraftViaPermalink": $("#allowVisitDraftViaPermalink").prop("checked"),
+                "articleListStyle": $("#articleListDisplay").val()
             }
         }
         
