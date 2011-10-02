@@ -48,7 +48,7 @@
         <a href="admin-index.do#main" title="${adminLabel}">
             ${adminLabel}
         </a>
-        <a href="${logoutURL}" title="${logoutLabel}">logoutLabel}</a>
+        <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
         </#if>
         <#else>
         <a href="${loginURL}" title="${loginLabel}">${loginLabel}</a>
