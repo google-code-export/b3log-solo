@@ -163,7 +163,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *         }, ...]",
      *         "enablePostToTencentMicroblog": boolean,
      *         "allowVisitDraftViaPermalink": boolean,
-     *         "version": ""
+     *         "version": "",
+     *         "articleListStyle": ""
      *     }
      *     "sc": "GET_PREFERENCE_SUCC"
      * }
@@ -225,7 +226,8 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
      *             "signHTML": ""
      *         }, ...],
      *         "enablePostToTencentMicroblog": boolean,
-     *         "allowVisitDraftViaPermalink": boolean
+     *         "allowVisitDraftViaPermalink": boolean,
+     *         "articleListStyle": ""
      *     }
      * }, see {@link org.b3log.solo.model.Preference} for more details
      * </pre>
@@ -338,7 +340,7 @@ public final class PreferenceService extends AbstractGAEJSONRpcService {
             if (!Strings.isEmptyOrNull(version)) {
                 preference.put(VERSION, version);
             }
-
+            
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
             LOGGER.log(Level.FINER, "Current locale[string={0}]", localeString);
