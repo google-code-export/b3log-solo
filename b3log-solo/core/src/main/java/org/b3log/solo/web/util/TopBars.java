@@ -82,6 +82,8 @@ public final class TopBars {
         if (null == currentUser) {
             topBarModel.put(Common.LOGIN_URL,
                             userService.createLoginURL(Common.ADMIN_INDEX_URI));
+            topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
+            
             topBarTemplate.process(topBarModel, stringWriter);
 
             return stringWriter.toString();
@@ -100,7 +102,6 @@ public final class TopBars {
                         langPropsService.get("clearCacheLabel"));
         topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
         topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
-        topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
 
         final String userName = currentUser.getString(User.USER_NAME);
         topBarModel.put(User.USER_NAME, userName);
