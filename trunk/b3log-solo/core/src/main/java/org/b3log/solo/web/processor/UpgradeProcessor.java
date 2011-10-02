@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Sep 27, 2011
+ * @version 1.1.0.2, Oct 2, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -102,6 +102,8 @@ public final class UpgradeProcessor {
 
             if ("0.3.0".equals(version)) { // 0.3.0 -> 0.3.1
                 v030ToV031();
+            } else if ("0.3.1".equals(version)) { // 0.3.1 -> 0.3.5
+                v031ToV035();
             } else {
                 LOGGER.warning(
                         "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers");
@@ -171,6 +173,44 @@ public final class UpgradeProcessor {
         }
 
         LOGGER.info("Upgraded from v030 to v031 successfully :-)");
+    }
+
+    /**
+     * Upgrades from v031 to v035.
+     * 
+     * <p>
+     * Model:
+     *   <ul>
+     *     <li>
+     *       Adds a property(named {@value Preference#ARTICLE_LIST_STYLE}) to
+     *       entity {@link Preference preference}
+     *     </li>
+     *   </ul>
+     * </p>
+     * @throws Exception upgrade fails
+     */
+    private void v031ToV035() throws Exception {
+        LOGGER.info("Upgrading from v031 to v035....");
+
+        final Transaction transaction = userRepository.beginTransaction();
+        try {
+            final JSONObject preference = preferences.getPreference();
+            preference.put(Preference.ARTICLE_LIST_STYLE,
+                           Preference.Default.DEFAULT_ARTICLE_LIST_STYLE);
+
+            preferences.setPreference(preference);
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
+            throw new Exception("Upgrade fail from v031 to v035");
+        }
+
+        LOGGER.info("Upgraded from v031 to v035 successfully :-)");
     }
 
     /**
