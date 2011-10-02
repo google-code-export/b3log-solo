@@ -313,7 +313,7 @@ public final class IndexProcessor {
         }
 
         @Override
-        protected void beforeRender(HTTPRequestContext context) throws Exception {
+        protected void beforeRender(final HTTPRequestContext context) throws Exception {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
