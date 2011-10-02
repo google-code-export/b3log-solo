@@ -17,10 +17,13 @@ package org.b3log.solo.web.processor.renderer;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
 
@@ -53,12 +56,36 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
      * {@inheritDoc}
      * 
      * <p>
+     * Puts the top bar replacement flag into data model.
+     * </p>
+     */
+    @Override
+    protected void beforeRender(final HTTPRequestContext context)
+            throws Exception {
+        getDataModel().put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY,
+                           Common.TOP_BAR_REPLACEMENT_FLAG);
+    }
+
+    /**
+     * {@inheritDoc}
+     * 
+     * <p>
      * Blog statistic view count +1.
      * </p>
      */
     @Override
     protected void afterRender(final HTTPRequestContext context)
             throws Exception {
+        final HttpServletRequest request = context.getRequest();
+        String pageContent =
+                (String) request.getAttribute(
+                AbstractCacheablePageAction.CACHED_CONTENT);
+        if (null != pageContent) {
+            request.setAttribute(AbstractCacheablePageAction.CACHED_CONTENT,
+                                 pageContent.replace(
+                    Common.TOP_BAR_REPLACEMENT_FLAG, "test!"));
+        }
+
         super.afterRender(context);
 
         final Transaction transaction = statisticRepository.beginTransaction();
