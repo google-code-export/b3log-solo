@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.web.processor.renderer;
 
+import freemarker.template.Template;
+import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +28,7 @@ import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.web.action.impl.InitAction;
 
 /**
  * <a href="http://freemarker.org">FreeMarker</a> HTTP response 
@@ -81,9 +84,14 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
                 (String) request.getAttribute(
                 AbstractCacheablePageAction.CACHED_CONTENT);
         if (null != pageContent) {
+            final Template topBarTemplate =
+                    InitAction.TEMPLATE_CFG.getTemplate("top-bar.ftl");
+            final StringWriter stringWriter = new StringWriter();
+            topBarTemplate.process(context, stringWriter);
+            
             request.setAttribute(AbstractCacheablePageAction.CACHED_CONTENT,
                                  pageContent.replace(
-                    Common.TOP_BAR_REPLACEMENT_FLAG, "test!"));
+                    Common.TOP_BAR_REPLACEMENT_FLAG, stringWriter.toString()));
         }
 
         super.afterRender(context);
