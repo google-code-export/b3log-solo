@@ -327,7 +327,7 @@ public final class Preference {
         /**
          * Default article list display style.
          */
-        public static final String DEFAULT_ARTICLE_LIST_STYLE = "title+abstract";
+        public static final String DEFAULT_ARTICLE_LIST_STYLE = "titleAndAbstract";
 
         static {
             final JSONArray signs = new JSONArray();
