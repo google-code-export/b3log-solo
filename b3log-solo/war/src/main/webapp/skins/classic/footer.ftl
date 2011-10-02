@@ -11,12 +11,6 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 <script type="text/javascript" src="/js/common${miniPostfix}.js" charset="utf-8"></script>
 <script type="text/javascript">
     var common = new Common({
-        "clearAllCacheLabel": "${clearAllCacheLabel}",
-        "clearCacheLabel": "${clearCacheLabel}",
-        "adminLabel": "${adminLabel}",
-        "logoutLabel": "${logoutLabel}",
-        "skinDirName": "${skinDirName}",
-        "loginLabel": "${loginLabel}",
         "em00Label": "${em00Label}",
         "em01Label": "${em01Label}",
         "em02Label": "${em02Label}",

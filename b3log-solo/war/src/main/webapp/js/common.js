@@ -119,53 +119,16 @@ $.extend(Common.prototype, {
         window.scrollTo(0, 0);
     },
     
-    goBottom: function () {
-        switch (this.tips.skinDirName) {
-            case "tree-house":
-                window.scrollTo(0, $("body").height() - $(window).height() - 700);
-                break;
-            default :
-                window.scrollTo(0, $("body").height() - $(window).height());
-                break;
+    goBottom: function (bottom) {
+        if (!bottom) {
+            bottom = 0;
         }
+        window.scrollTo(0, $("body").height() - $(window).height() - bottom);
     },
     
     init: function () {
         //window.onerror = Util.error;
         Util.killIE();
-       
-        var tips = this.tips;
-
-        // common-top
-        $.ajax({
-            type: "POST",
-            url: "/check-login.do",
-            success: function(result){
-                if (result.isLoggedIn) {
-                    var loginHTML = "<span>" + result.userName + "</span>";
-
-                    if (result.isAdmin) {
-                        loginHTML += "<a href=\"javascript:common.clearCache('all');\">"
-                        + tips.clearAllCacheLabel + "</a>"
-                        + "<a href='javascript:common.clearCache();'>"
-                        + tips.clearCacheLabel + "</a>";
-                    }
-                    
-                    loginHTML += "<a href='/admin-index.do#main' title='"
-                    + tips.adminLabel + "'>" + tips.adminLabel + "</a>"
-                    + "<a href='" + result.logoutURL + "' title='" + 
-                    tips.logoutLabel+ "'>" + tips.logoutLabel+ "</a>";
-                
-                    $("#admin").append(loginHTML);
-                } else {
-                    $("#admin").append("<a href='"
-                        + result.loginURL + "' title='" + tips.loginLabel + "'>" + tips.loginLabel + "</a>");
-                }
-            },
-            error: function (event, XMLHttpRequest, ajaxOptions, thrownError) {
-                console.error(event);
-            }
-        });
     },
 
     clearCache: function (all) {
