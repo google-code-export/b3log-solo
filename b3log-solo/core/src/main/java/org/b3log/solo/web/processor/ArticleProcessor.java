@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.util.Statistics;
+import org.b3log.solo.service.ArticleUpdateService;
 import org.b3log.latke.repository.Repository;
 import java.util.Iterator;
 import org.b3log.latke.repository.Transaction;
@@ -30,7 +32,6 @@ import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
-import org.b3log.solo.util.Statistics;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,10 +45,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
 import org.b3log.solo.model.Preference;
 import org.jsoup.Jsoup;
-import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Articles;
@@ -72,6 +71,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
@@ -82,7 +82,7 @@ import static org.b3log.solo.model.Article.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Sep 17, 2011
+ * @version 1.1.0.2, Oct 3, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -94,10 +94,15 @@ public final class ArticleProcessor {
     private static final Logger LOGGER =
             Logger.getLogger(ArticleProcessor.class.getName());
     /**
-     * Article repository.
+     * Article query service.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleQueryService articleQueryService =
+            ArticleQueryService.getInstance();
+    /**
+     * Article update service.
+     */
+    private ArticleUpdateService articleUpdateService =
+            ArticleUpdateService.getInstance();
     /**
      * Tag-Article repository.
      */
@@ -120,13 +125,13 @@ public final class ArticleProcessor {
      */
     private Articles articleUtils = Articles.getInstance();
     /**
-     * Preference utilities
-     */
-    private Preferences preferenceUtils = Preferences.getInstance();
-    /**
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
+    /**
+     * Preference utilities.
+     */
+    private Preferences preferenceUtils = Preferences.getInstance();
     /**
      * Skin utilities.
      */
@@ -190,36 +195,16 @@ public final class ArticleProcessor {
             return;
         }
 
-        try {
-            final JSONObject article = articleRepository.get(articleId);
-            if (null == article) {
-                return;
-            }
+        final TextHTMLRenderer renderer = new TextHTMLRenderer();
+        context.setRenderer(renderer);
 
-            final TextHTMLRenderer renderer = new TextHTMLRenderer();
-            context.setRenderer(renderer);
-
-            final String content = article.getString(Article.ARTICLE_CONTENT);
-            renderer.setContent(content);
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARNING, "Updates article random value failed.");
+        final String content =
+                articleQueryService.getArticleContent(articleId);
+        if (null == content) {
+            return;
         }
 
-        final Repository statisticRepository =
-                StatisticRepositoryImpl.getInstance();
-        final Transaction transaction =
-                statisticRepository.beginTransaction();
-        transaction.clearQueryCache(false);
-        try {
-            statistics.incArticleViewCount(articleId);
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.WARNING, "Inc article view count failed", e);
-        }
+        renderer.setContent(content);
     }
 
     /**
@@ -289,9 +274,9 @@ public final class ArticleProcessor {
 
             final String authorEmail = author.getString(User.USER_EMAIL);
             final JSONObject result =
-                    articleRepository.getByAuthorEmail(authorEmail,
-                                                       currentPageNum,
-                                                       pageSize);
+                    articleQueryService.getArticlesByAuthorEmail(authorEmail,
+                                                                 currentPageNum,
+                                                                 pageSize);
             final List<JSONObject> articles =
                     org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                     getJSONArray(Keys.RESULTS));
@@ -448,7 +433,8 @@ public final class ArticleProcessor {
                         archiveDateArticleRelation.getString(Article.ARTICLE
                                                              + "_"
                                                              + Keys.OBJECT_ID);
-                final JSONObject article = articleRepository.get(articleId);
+                final JSONObject article =
+                        articleQueryService.getArticleById(articleId);
                 if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) { // Skips the unpublished article
                     continue;
                 }
@@ -535,26 +521,7 @@ public final class ArticleProcessor {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
 
-        final Transaction transaction = articleRepository.beginTransaction();
-        transaction.clearQueryCache(false);
-        try {
-            final List<JSONObject> randomArticles =
-                    articleRepository.getRandomly(updateCnt);
-
-            for (final JSONObject article : randomArticles) {
-                article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-                articleRepository.update(article.getString(Keys.OBJECT_ID),
-                                         article);
-            }
-
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.WARNING, "Updates article random value failed.");
-        }
+        articleUpdateService.updateArticlesRandomValue(updateCnt);
     }
 
     /**
@@ -638,7 +605,7 @@ public final class ArticleProcessor {
 
             LOGGER.finer("Getting the previous article....");
             final JSONObject previousArticle =
-                    articleRepository.getPreviousArticle(articleId);
+                    articleQueryService.getPreviousArticle(articleId);
             if (null != previousArticle) {
                 dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK,
                               previousArticle.getString(
@@ -650,7 +617,7 @@ public final class ArticleProcessor {
 
             LOGGER.finer("Getting the next article....");
             final JSONObject nextArticle =
-                    articleRepository.getNextArticle(articleId);
+                    articleQueryService.getNextArticle(articleId);
             if (null != nextArticle) {
                 dataModel.put(Common.NEXT_ARTICLE_PERMALINK,
                               nextArticle.getString(Article.ARTICLE_PERMALINK));
@@ -755,9 +722,9 @@ public final class ArticleProcessor {
                     continue;
                 }
 
-                if (articleRepository.isPublished(relatedArticleId)) {
+                if (articleQueryService.isArticlePublished(relatedArticleId)) {
                     final JSONObject article =
-                            articleRepository.get(relatedArticleId);
+                            articleQueryService.getArticleById(relatedArticleId);
 
                     boolean existed = false;
                     for (final JSONObject relevantArticle : articles) {
@@ -881,7 +848,7 @@ public final class ArticleProcessor {
             final int displayCnt =
                     preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
             final List<JSONObject> ret =
-                    articleRepository.getRandomly(displayCnt);
+                    articleQueryService.getArticlesRandomly(displayCnt);
 
             // Remove unused properties
             for (final JSONObject article : ret) {
