@@ -18,7 +18,7 @@
  * @fileoverview util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.2, Sep 7, 2011
+ * @version 1.0.1.3, Oct 3, 2011
  */
 var Util = {
     error: function () {
@@ -107,6 +107,13 @@ var Util = {
             str += "<span class='em" + key + "'></span>" + this._processEm(commentSplited[j].slice(3));
         }
         return str + "<div class='clear'></div>";
+    },
+    
+    proessURL: function (url) {
+        if (!/^\w+:\/\//.test(url)) {
+            url = "http://" + url;
+        }
+        return url;
     }
 };
 
