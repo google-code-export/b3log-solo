@@ -78,6 +78,7 @@
     
     <datastore-index kind="article" ancestor="false" source="auto">
         <property name="articleAuthorEmail" direction="asc"/>
+        <property name="articleIsPublished" direction="asc"/>
         <property name="articleUpdateDate" direction="desc"/>
     </datastore-index>
     
