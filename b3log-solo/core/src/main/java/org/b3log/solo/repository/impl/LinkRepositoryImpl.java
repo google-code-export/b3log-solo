@@ -108,7 +108,7 @@ public final class LinkRepositoryImpl extends AbstractRepository
     }
 
     /**
-     * Gets the {@link LinkGAERepository} singleton.
+     * Gets the {@link LinkRepositoryImpl} singleton.
      *
      * @return the singleton
      */

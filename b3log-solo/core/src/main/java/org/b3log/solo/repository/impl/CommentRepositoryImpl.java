@@ -161,7 +161,7 @@ public final class CommentRepositoryImpl extends AbstractRepository
     }
 
     /**
-     * Gets the {@link CommentGAERepository} singleton.
+     * Gets the {@link CommentRepositoryImpl} singleton.
      *
      * @return the singleton
      */

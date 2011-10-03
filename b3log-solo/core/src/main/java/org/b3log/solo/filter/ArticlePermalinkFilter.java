@@ -57,7 +57,7 @@ public final class ArticlePermalinkFilter implements Filter {
     }
 
     /**
-     * Redirects request URI to {@link org.b3log.solo.action.impl.ArticleAction}.
+     * Tries to dispatch request to article processor.
      *
      * @param request the specified request
      * @param response the specified response

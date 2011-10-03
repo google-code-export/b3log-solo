@@ -37,7 +37,7 @@ public final class StatisticRepositoryImpl extends AbstractRepository
             Logger.getLogger(StatisticRepositoryImpl.class.getName());
 
     /**
-     * Gets the {@link StatisticGAERepository} singleton.
+     * Gets the {@link StatisticRepositoryImpl} singleton.
      *
      * @return the singleton
      */

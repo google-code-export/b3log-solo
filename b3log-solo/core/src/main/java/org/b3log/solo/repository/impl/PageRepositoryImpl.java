@@ -127,7 +127,7 @@ public final class PageRepositoryImpl extends AbstractRepository
     }
 
     /**
-     * Gets the {@link PageGAERepository} singleton.
+     * Gets the {@link PageRepositoryImpl} singleton.
      *
      * @return the singleton
      */

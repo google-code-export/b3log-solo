@@ -55,14 +55,13 @@ import org.json.JSONObject;
  * Comment service for JavaScript client.
  *
  * <p>
- * Comment adding operation via servlet
- * {@link org.b3log.solo.action.impl.AddArticleCommentAction} and
- * {@link org.b3log.solo.action.impl.AddPageCommentAction}.
+ * Comment adding operation via web request processor
+ * {@link org.b3log.solo.web.processor.CommentProcessor}.
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.4.3, Sep 27, 2011
- * @see 0.3.1
+ * @since 0.3.1
  */
 public final class CommentService extends AbstractGAEJSONRpcService {
 

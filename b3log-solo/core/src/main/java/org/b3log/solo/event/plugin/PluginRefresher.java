@@ -72,7 +72,7 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * Gets the event type {@linkplain PluginManager#PLUGIN_LOADED_EVENT}.
      * 
      * @return event type
      */

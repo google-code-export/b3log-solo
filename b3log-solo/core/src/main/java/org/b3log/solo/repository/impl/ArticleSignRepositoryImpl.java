@@ -91,7 +91,7 @@ public final class ArticleSignRepositoryImpl extends AbstractRepository
     }
 
     /**
-     * Gets the {@link ArticleSignGAERepository} singleton.
+     * Gets the {@link ArticleSignRepositoryImpl} singleton.
      *
      * @return the singleton
      */

@@ -45,7 +45,6 @@ import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
-import org.b3log.solo.repository.impl.BlogSyncMgmtRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.ExternalArticleSoloArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.FileRepositoryImpl;
@@ -276,8 +275,6 @@ public final class RepairProcessor {
             remove(ArticleRepositoryImpl.getInstance());
 
             remove(ArticleSignRepositoryImpl.getInstance());
-
-            remove(BlogSyncMgmtRepositoryImpl.getInstance());
 
             remove(CommentRepositoryImpl.getInstance());
 

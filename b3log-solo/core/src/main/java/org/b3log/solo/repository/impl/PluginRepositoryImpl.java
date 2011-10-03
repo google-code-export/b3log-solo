@@ -37,7 +37,7 @@ public final class PluginRepositoryImpl extends AbstractRepository
             Logger.getLogger(PluginRepositoryImpl.class.getName());
 
     /**
-     * Gets the {@link PluginGAERepository} singleton.
+     * Gets the {@link PluginRepositoryImpl} singleton.
      *
      * @return the singleton
      */

@@ -66,8 +66,8 @@ public final class AuthFilter implements Filter {
     }
 
     /**
-     * If the specified request is NOT made by an authenticated user, sends error
-     * {@value HttpServletResponse#SC_FORBIDDEN}.
+     * If the specified request is NOT made by an authenticated user, sends 
+     * error 403.
      *
      * @param request the specified request
      * @param response the specified response

@@ -277,7 +277,7 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Gets the {@link PageCacheListService} singleton.
+     * Gets the {@link AdminCacheService} singleton.
      *
      * @return the singleton
      */

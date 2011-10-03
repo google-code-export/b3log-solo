@@ -37,7 +37,7 @@ public final class FileRepositoryImpl extends AbstractRepository
             Logger.getLogger(FileRepositoryImpl.class.getName());
 
     /**
-     * Gets the {@link FileGAERepository} singleton.
+     * Gets the {@link FileRepositoryImpl} singleton.
      *
      * @return the singleton
      */

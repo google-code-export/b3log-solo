@@ -37,7 +37,7 @@ public final class PreferenceRepositoryImpl extends AbstractRepository
             Logger.getLogger(PreferenceRepositoryImpl.class.getName());
 
     /**
-     * Gets the {@link PreferenceGAERepository} singleton.
+     * Gets the {@link PreferenceRepositoryImpl} singleton.
      *
      * @return the singleton
      */
