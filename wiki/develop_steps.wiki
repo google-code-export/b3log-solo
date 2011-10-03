@@ -19,7 +19,6 @@
 || side.ftl || 侧边栏，包括公告、最新评论、评论最多的文章访问最多的文章、分类标签、友情链接、存档。复用于各个页面。 ||
 || tag-articles.ftl || 含有某标签文章的列表页面。 ||
 || tags.ftl || 罗列所有标签的页面。 ||
-|| top-nav.ftl || 顶部导航，复用于各个页面。 ||
 || preview.png || 此皮肤首页截图（280*160）。 ||
 || skin.properties || 皮肤信息。<br>name：皮肤名称（此名称将作为皮肤名列在 “后台管理->偏好设定->皮肤” 中）。 <br>version：皮肤版本号。<br>forSolo：该皮肤适用哪一版本的。<br>memo：备注，可记录所仿皮肤的站点或名称等信息。||
 
@@ -38,9 +37,8 @@
 ----
 ===注意事项===
  # macro-comments.ftl 中标签 id 不可进行更改。
- # top-nav.ftl 不可进行更改。
  # 部分公用方法已被提取到 /js/common.js 和 /js/page.js 文件中。
- # 不用引入 /css/default-base.css。里面样式重置较多，且可减少一个请求哦 ^^ （规划ing, 你看不到我，看不到我，看不到我哦。。。）
+ # /css/default-base.css 重置样式较多，如不想引入时需拷贝.emXX 样式。
  # 如有任何疑问请与 [http://vanessa.b3log.org Vanessa] 联系
  # footer.ftl 中版权声明格式如下：
 http://imgmi.net/e/ef15c4f9.png
