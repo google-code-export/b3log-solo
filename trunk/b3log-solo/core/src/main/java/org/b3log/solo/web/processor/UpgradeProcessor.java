@@ -195,8 +195,11 @@ public final class UpgradeProcessor {
         final Transaction transaction = userRepository.beginTransaction();
         try {
             final JSONObject preference = preferences.getPreference();
-            preference.put(Preference.ARTICLE_LIST_STYLE,
-                           Preference.Default.DEFAULT_ARTICLE_LIST_STYLE);
+
+            if (!preference.has(Preference.ARTICLE_LIST_STYLE)) {
+                preference.put(Preference.ARTICLE_LIST_STYLE,
+                               Preference.Default.DEFAULT_ARTICLE_LIST_STYLE);
+            }
 
             preferences.setPreference(preference);
 
