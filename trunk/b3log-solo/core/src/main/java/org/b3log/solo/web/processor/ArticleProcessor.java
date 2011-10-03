@@ -18,7 +18,6 @@ package org.b3log.solo.web.processor;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.service.ArticleUpdateService;
 import org.b3log.latke.repository.Repository;
-import java.util.Iterator;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -280,14 +279,6 @@ public final class ArticleProcessor {
             final List<JSONObject> articles =
                     org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                     getJSONArray(Keys.RESULTS));
-            final Iterator<JSONObject> iterator = articles.iterator();
-            while (iterator.hasNext()) {
-                final JSONObject article = iterator.next();
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
-                    iterator.remove();
-                }
-            }
-
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -722,21 +713,22 @@ public final class ArticleProcessor {
                     continue;
                 }
 
-                if (articleQueryService.isArticlePublished(relatedArticleId)) {
-                    final JSONObject article =
-                            articleQueryService.getArticleById(relatedArticleId);
+                final JSONObject article =
+                        articleQueryService.getArticleById(relatedArticleId);
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    continue;
+                }
 
-                    boolean existed = false;
-                    for (final JSONObject relevantArticle : articles) {
-                        if (relevantArticle.getString(Keys.OBJECT_ID).
-                                equals(article.getString(Keys.OBJECT_ID))) {
-                            existed = true;
-                        }
+                boolean existed = false;
+                for (final JSONObject relevantArticle : articles) {
+                    if (relevantArticle.getString(Keys.OBJECT_ID).
+                            equals(article.getString(Keys.OBJECT_ID))) {
+                        existed = true;
                     }
+                }
 
-                    if (!existed) {
-                        articles.add(article);
-                    }
+                if (!existed) {
+                    articles.add(article);
                 }
             }
         }

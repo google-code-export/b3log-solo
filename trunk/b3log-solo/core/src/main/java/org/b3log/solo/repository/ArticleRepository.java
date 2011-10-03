@@ -24,7 +24,8 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Feb 8, 2011
+ * @version 1.0.1.6, Oct 3, 2011
+ * @since 0.3.1
  */
 public interface ArticleRepository extends Repository {
 
@@ -106,8 +107,6 @@ public interface ArticleRepository extends Repository {
     JSONObject getPreviousArticle(final String articleId)
             throws RepositoryException;
 
-    
-
     /**
      * Gets the next article(by create date, oId) by the specified article id.
      *
@@ -123,32 +122,6 @@ public interface ArticleRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     JSONObject getNextArticle(final String articleId)
-              throws RepositoryException;
-
-    /**
-     * Imports the specified article.
-     *
-     * <p>
-     *   <b>Note</b>: This interface is designed to import article for external
-     *   blogging system. Do NOT use this interface for adding article.
-     * </p>
-     *
-     * @param article the specified article, for example,
-     * <pre>
-     * {
-     *     "oId": "",
-     *     "articleTitle": "",
-     *     "articleAbstrace": "",
-     *     "articleTags": ["", "", ....],
-     *     "articleContent": ""
-     *     "articleCreateDate": java.util.Date,
-     *     "articleUpdateDate": java.util.Date,
-     *     "articlePermalink": ""
-     * }
-     * </pre>
-     * @throws RepositoryException repository exception
-     */
-    void importArticle(final JSONObject article)
             throws RepositoryException;
 
     /**
