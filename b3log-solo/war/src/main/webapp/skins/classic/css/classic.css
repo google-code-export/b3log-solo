@@ -3,7 +3,7 @@
  * skin classic style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Sep 30, 2011
+ * @version 1.0.0.5, Oct 3, 2011
 */
 a, a:link {
     color: #0000CC;
@@ -181,6 +181,7 @@ h5 {
     white-space: normal;
 }
 #sideNavi sup {
+    margin-right: 3px;
     color: green;
 }
 .side-comment {

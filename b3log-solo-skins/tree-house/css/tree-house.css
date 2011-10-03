@@ -3,7 +3,7 @@
  * skin tree-house style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Aug 10, 2011
+ * @version 1.0.0.3, Oct 3, 2011
 */
 html {
     min-width: 948px;
@@ -349,6 +349,7 @@ img.comment-picture {
     width: 167px;
 }
 #sideNavi li>a sup {
+    margin-right: 3px;
     color: #EC0A8B;
 }
 #sideNavi li>div {

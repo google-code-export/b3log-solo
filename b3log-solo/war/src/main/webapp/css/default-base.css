@@ -3,7 +3,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1, Sep 30, 2011
+ * @version 1.0.1.2, Oct 3, 2011
 */
 *,html,body {
     margin: 0;
@@ -144,7 +144,6 @@ button:hover,.button:hover {
 }
 .form input {
     height: 24px;
-    line-height: 24px;
 }
 .form input[type='checkbox'] {
     border: 0px;

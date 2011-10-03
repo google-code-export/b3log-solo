@@ -16,12 +16,9 @@
         <div class="arrow-right"></div>
         <div class="most-view-count-articles">
             <#list mostViewCountArticles as article>
-            <span class="nowrap">
-                <sup>[${article.articleViewCount}]</sup>
-                <a title="${article.articleTitle}" href="${article.articlePermalink}">
-                    <b>${article.articleTitle}</b>
-                </a>
-            </span>
+            <a title="${article.articleTitle}" href="${article.articlePermalink}">
+                <sup>[${article.articleViewCount}]</sup>${article.articleTitle}
+            </a>
             </#list>
         </div>
         <div class="clear"></div>
@@ -36,7 +33,7 @@
             <#list recentComments as comment>
             <div>
                 <a href="${comment.commentSharpURL}">
-                    <img class='left' title="${comment.commentContent?html}"
+                    <img class='left' title="${comment.commentContent}"
                          alt='${comment.commentName}'
                          src='${comment.commentThumbnailURL}'/>
                 </a>
