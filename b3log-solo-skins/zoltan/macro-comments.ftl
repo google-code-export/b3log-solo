@@ -131,7 +131,7 @@
                     <div class="input-reply">
                         <div class="top"></div>
                         <div class="bg">
-                            <img id="captcha" alt="validate" src="/captcha.do"></img>
+                           <img id="captcha" alt="validate" src="/captcha.do" />
                             <input type="text" class="normalInput" id="commentValidate"/>
                             <div class="clear"></div>
                         </div>
@@ -176,14 +176,7 @@
     var addComment = function (result, state) {
         var commentHTML = '<div id="' + result.oId + '"><img alt="' + 
             $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL +
-            '"/><div class="panel"><div>';
-
-        if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-            commentHTML += '<a>' + $("#commentName" + state).val() + '</a>';
-        } else {
-            commentHTML += '<a href="http://' + $("#commentURL" + state).val() +
-                '" target="_blank">' + $("#commentName" + state).val() + '</a>';
-        }
+            '"/><div class="panel"><div>' + result.replyNameHTML;
 
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId).find("a").first().text();

@@ -9,7 +9,7 @@
         </@head>
     </head>
     <body>
-        <#include "top-nav.ftl">
+        ${topBarReplacement}
         <#include "header.ftl">
         <div class="body">
             <div class="wrapper">

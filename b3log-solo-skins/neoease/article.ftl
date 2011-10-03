@@ -11,7 +11,7 @@
         <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css" charset="utf-8" />
     </head>
     <body>
-        <#include "top-nav.ftl">
+        ${topBarReplacement}
         <#include "header.ftl">
         <div class="body">
             <div class="wrapper">

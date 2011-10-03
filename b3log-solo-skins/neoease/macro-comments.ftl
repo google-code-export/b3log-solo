@@ -84,10 +84,10 @@
             <tr>
                 <td>
                     <input type="text" class="normalInput" id="commentValidate"/>
-                    <img id="captcha" alt="validate" src="/captcha.do"></img>
+                    <img id="captcha" alt="validate" src="/captcha.do" />
                 </td>
                 <th>
-                    <span class="tip" id="commentErrorTip"/>
+                    <span class="tip" id="commentErrorTip"></span>
                 </th>
             </tr>
             <tr>
@@ -129,14 +129,7 @@
         }
         var commentHTML = '<div id="' + result.oId + '" class="oddEven"><img class="comment-header" \
             title="' + $("#commentName" + state).val() + '" alt="' + $("#commentName" + state).val() + 
-            '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel"><div class="left">';
-
-        if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-            commentHTML += $("#commentName" + state).val();
-        } else {
-            commentHTML += '<a href="http://' + $("#commentURL" + state).val() + 
-                '" target="_blank">' + $("#commentName" + state).val() + '</a>';
-        }
+            '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel"><div class="left">' + result.replyNameHTML;
 
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId + " .comment-panel>.left a").first().text();

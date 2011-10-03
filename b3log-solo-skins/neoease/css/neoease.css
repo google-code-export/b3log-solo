@@ -3,7 +3,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Sep 16, 2011
+ * @version 1.0.0.6, Oct 3, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -44,6 +44,7 @@ img {
 textarea, input {
     outline: none;
 }
+
 .left {
     float: left;
 }
@@ -67,37 +68,6 @@ textarea, input {
     display: none;
 }
 
-#top {
-    background-image: linear-gradient(top,#FFF,#E5E5E5);
-    background-image: -moz-linear-gradient(top,#FFF,#E5E5E5);
-    background-image: -ms-linear-gradient(top,#FFF,#E5E5E5);
-    background-image: -o-linear-gradient(top,#FFF,#E5E5E5);
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#FFF),to(#E5E5E5));
-    filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFF', endColorstr='#E5E5E5');
-    border-bottom: 1px solid #E5E5E5;
-    height: 26px;
-    line-height: 26px;
-}
-
-#top a, #top span span {
-    border-right: 1px solid #D9D9D9;
-    color: #4C4C4C;
-    float: left;
-    line-height: 14px;
-    margin: 6px 0;
-    padding: 0 6px;
-    text-shadow: 0 -1px 0 #FFF;
-    font-weight: normal;
-}
-
-#top a:hover, #top a.hover {
-    background-color: #EEF2FA;
-    border-left-color: #707070;
-    border-radius: 0 13px 13px 0;
-    margin: 0;
-    line-height: 26px;
-}
-
 .logo {
     padding: 0 5px;
     text-shadow: 0 0 1px #EEE;
@@ -107,6 +77,7 @@ textarea, input {
     color: #D54E21;
     font-size: 11px;
 }
+
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
 .em10, .em11, .em12, .em13, .em14 {
     background-image: url("/images/emotions-black.png");

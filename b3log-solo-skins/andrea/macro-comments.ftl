@@ -98,10 +98,10 @@
             </th>
             <td>
                 <input type="text" id="commentValidate"/>
-                <img id="captcha" alt="validate" src="/captcha.do"></img>
+                <img id="captcha" alt="validate" src="/captcha.do" />
             </td>
             <th width="262px">
-                <span class="right error-msg" id="commentErrorTip"/>
+                <span class="right error-msg" id="commentErrorTip"></span>
             </th>
         </tr>
         <tr>
@@ -144,14 +144,7 @@
         var commentHTML = '<div id="' + result.oId
             + '" class="comment-body ' + oddEven + '"><div class="comment-panel"><div class="left comment-author">'
             + '<img alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL
-            + '"/></div><div class="left comment-info">';
-
-        if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-            commentHTML += '<a name="' + result.oId + '">' + $("#commentName" + state).val() + '</a>';
-        } else {
-            commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank" name="'
-                + result.oId + '">' + $("#commentName" + state).val() + '</a>';
-        }
+            + '"/></div><div class="left comment-info">' + result.replyNameHTML;
 
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-info a").first().text();
@@ -161,6 +154,7 @@
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">'
                 + commentOriginalCommentName + '</a>';
         }
+        
         commentHTML += '&nbsp;' + result.commentDate + '<div class="comment-content">'
             + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
             + '</div><div><a href="javascript:replyTo(\''

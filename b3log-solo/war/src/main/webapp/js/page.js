@@ -302,11 +302,13 @@ $.extend(Page.prototype, {
         if (!state) {
             state = '';
         }
-        var tips = this.tips,
+        var that = this; 
+        tips = this.tips,
         type = "article";
         if (tips.externalRelevantArticlesDisplayCount === undefined) {
             type = "page";
         }
+        
         if (this.validateComment(state)) {
             $("#submitCommentButton" + state).attr("disabled", "disabled");
             $("#commentErrorTip" + state).html(this.tips.loadingLabel);
@@ -339,18 +341,17 @@ $.extend(Page.prototype, {
                                 '" target="_blank">' + $("#commentName" + state).val() + '</a>';
                             }
                             
-                            addComment(result, state);
-                            $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
+                            that.addCommentAjax(addComment(result, state), state);
                             break;
                         case "CAPTCHA_ERROR":
                             $("#commentErrorTip" + state).html(tips.captchaErrorLabel);
-                            $("#captcha" + state).attr("src", "/captcha.do?code=" + Math.random());
                             $("#commentValidate" + state).val("").focus();
                             break;
                         default:
                             break;
                     }
                     $("#submitCommentButton" + state).removeAttr("disabled");
+                    $("#captcha" + state).attr("src", "/captcha.do?code=" + Math.random());
                 }
             });
 

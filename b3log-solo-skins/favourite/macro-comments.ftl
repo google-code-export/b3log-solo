@@ -96,10 +96,10 @@
                 <input type="text" class="normalInput" id="commentValidate"/>
             </td>
             <td>
-                <img id="captcha" alt="validate" src="/captcha.do"></img>
+                <img id="captcha" alt="validate" src="/captcha.do" />
             </td>
             <th align="right">
-                <span class="error-msg" id="commentErrorTip"/>
+                <span class="error-msg" id="commentErrorTip"></span>
             </th>
         </tr>
         <tr>
@@ -134,20 +134,18 @@
     var addComment = function (result, state) {
         var commentHTML = '<div id="' + result.oId
             + '" class="comment-body"><div class="comment-panel"><div class="left comment-author">'
-            + '<div><img alt="' + $("#commentName" + state).val() + '" src="' + result.commentThumbnailURL + '"/></div>';
-
-        if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-            commentHTML += '<a>' + $("#commentName" + state).val() + '</a>';
-        } else {
-            commentHTML += '<a href="http://' + $("#commentURL" + state).val() + '" target="_blank">' + $("#commentName" + state).val() + '</a>';
-        }
+            + '<div><img alt="' + $("#commentName" + state).val() +
+            '" src="' + result.commentThumbnailURL + '"/></div>' + result.replyNameHTML;
+        
         commentHTML += '</div><div class="left comment-info"><div class="left">' + result.commentDate;
+        
         if (state !== "") {
             var commentOriginalCommentName = $("#commentItem" + page.currentCommentId).find(".comment-author a").text();
             commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
+        
         commentHTML += '</div><div class="right"> <a class="no-underline" href="javascript:replyTo(\''
             + result.oId + '\');">${replyLabel}</a>'
             +'</div><div class="clear"></div><div class="comment-content">'
