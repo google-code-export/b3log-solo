@@ -18,7 +18,7 @@
  * @fileoverview Page util, load heighlight and process comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Sep 30, 2011
+ * @version 1.0.1.0, Oct 3, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -298,28 +298,29 @@ $.extend(Page.prototype, {
         }
     },
     
-    submitComment: function (commentId, statue) {
-        if (!statue) {
-            statue = '';
+    submitComment: function (commentId, state) {
+        if (!state) {
+            state = '';
         }
         var tips = this.tips,
         type = "article";
         if (tips.externalRelevantArticlesDisplayCount === undefined) {
             type = "page";
         }
-        if (this.validateComment(statue)) {
-            $("#submitCommentButton" + statue).attr("disabled", "disabled");
-            $("#commentErrorTip" + statue).html(this.tips.loadingLabel);
+        if (this.validateComment(state)) {
+            $("#submitCommentButton" + state).attr("disabled", "disabled");
+            $("#commentErrorTip" + state).html(this.tips.loadingLabel);
+            
             var requestJSONObject = {
                 "oId": tips.oId,
-                "commentContent": $("#comment" + statue).val().replace(/(^\s*)|(\s*$)/g, ""),
-                "commentEmail": $("#commentEmail" + statue).val(),
-                "commentURL": "http://" + $("#commentURL" + statue).val().replace(/(^\s*)|(\s*$)/g, ""),
-                "commentName": $("#commentName" + statue).val().replace(/(^\s*)|(\s*$)/g, ""),
-                "captcha": $("#commentValidate" + statue).val()
+                "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
+                "commentEmail": $("#commentEmail" + state).val(),
+                "commentURL": Util.proessURL($("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, "")),
+                "commentName": $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
+                "captcha": $("#commentValidate" + state).val()
             };
 
-            if (statue === "Reply") {
+            if (state === "Reply") {
                 requestJSONObject.commentOriginalCommentId = commentId;
             }
             $.ajax({
@@ -330,24 +331,32 @@ $.extend(Page.prototype, {
                 success: function(result){
                     switch (result.sc) {
                         case "COMMENT_" + type.toUpperCase() + "_SUCC":
-                            addComment(result, statue);
+                            result.replyNameHTML = "";
+                            if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
+                                result.replyNameHTML = '<a>' + $("#commentName" + state).val() + '</a>';
+                            } else {
+                                result.replyNameHTML = '<a href="' + Util.proessURL($("#commentURL" + state).val()) + 
+                                '" target="_blank">' + $("#commentName" + state).val() + '</a>';
+                            }
+                            
+                            addComment(result, state);
                             $("#captcha").attr("src", "/captcha.do?code=" + Math.random());
                             break;
                         case "CAPTCHA_ERROR":
-                            $("#commentErrorTip" + statue).html(tips.captchaErrorLabel);
-                            $("#captcha" + statue).attr("src", "/captcha.do?code=" + Math.random());
-                            $("#commentValidate" + statue).val("").focus();
+                            $("#commentErrorTip" + state).html(tips.captchaErrorLabel);
+                            $("#captcha" + state).attr("src", "/captcha.do?code=" + Math.random());
+                            $("#commentValidate" + state).val("").focus();
                             break;
                         default:
                             break;
                     }
-                    $("#submitCommentButton" + statue).removeAttr("disabled");
+                    $("#submitCommentButton" + state).removeAttr("disabled");
                 }
             });
 
             Cookie.createCookie("commentName", requestJSONObject.commentName, 365);
             Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
-            Cookie.createCookie("commentURL", $("#commentURL" + statue).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
+            Cookie.createCookie("commentURL", $("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
         }
     },
 
