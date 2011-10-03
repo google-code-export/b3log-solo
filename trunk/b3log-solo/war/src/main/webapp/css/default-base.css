@@ -3,7 +3,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.2, Oct 3, 2011
+ * @version 1.0.1.3, Oct 3, 2011
 */
 *,html,body {
     margin: 0;
@@ -392,18 +392,21 @@ button:hover,.button:hover {
 }
 
 #tags li {
-    margin: 3px 6px;
-    border-radius: 3px;
-    box-shadow: 1px 1px 3px #555555;
     float: left;
-    padding: 2px 12px;
-    background-image: none;
+    list-style: none;
+    height: 38px;
 }
-#tags li:hover {
+
+#tags a:hover {
     text-shadow: 0 0 2px #555555;
 }
 
 #tags a {
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 1px 1px 3px #555555;
+    float: left;
+    margin: 3px 6px;
+    padding: 3px 12px;
     text-decoration: none;
 }
 
@@ -413,22 +416,22 @@ button:hover,.button:hover {
 }
 
 #tags .tags2 {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: normal;
 }
 
 #tags .tags3 {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: normal;
 }
 
 #tags .tags4 {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
 }
 
 #tags .tags5 {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: bold;
 }
 /* end tags */

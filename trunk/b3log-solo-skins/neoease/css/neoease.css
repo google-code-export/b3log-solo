@@ -3,7 +3,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Oct 3, 2011
+ * @version 1.0.0.7, Oct 3, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -741,20 +741,22 @@ textarea, input {
 /* end article*/
 
 /* start tags */
-.tags li {
+#tags li {
     float: left;
     list-style: none;
+    height: 38px;
 }
 
-.tags li:hover {
+#tags a:hover {
     text-shadow: 0 0 2px;
 }
 
-#tags li {
-    margin: 5px;
-    border-radius: 3px;
-    box-shadow: 1px 1px 3px #555;
-    padding: 2px 12px;
+#tags a {
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 1px 1px 3px #555555;
+    float: left;
+    margin: 3px 6px;
+    padding: 3px 12px;
 }
 
 #tagsSide li a {
@@ -770,22 +772,22 @@ textarea, input {
 }
 
 .tags2 {
-    font-size: 16px;
+    font-size: 14px;
     color: #687F95;
 }
 
 .tags3 {
-    font-size: 20px;
+    font-size: 16px;
     color: #4C6E90;
 }
 
 .tags4 {
-    font-size: 24px;
+    font-size: 18px;
     color: #258;
 }
 
 .tags5 {
-    font-size: 28px;
+    font-size: 20px;
 }
 
 #tagsSide .tags2 {
