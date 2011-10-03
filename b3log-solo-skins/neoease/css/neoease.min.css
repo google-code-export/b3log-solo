@@ -3,7 +3,7 @@
  * skin neoease min style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Oct 3, 2011
+ * @version 1.0.0.7, Oct 3, 2011
 */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6{margin:0;padding:0;}
 body{background-color:#F9F9F9;color:#555;font-family:"Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1','Microsoft YaHei';font-size:12px;}
@@ -134,15 +134,15 @@ textarea, input{outline:none;}
 .form input{height:24px;line-height:16px;width:260px;}
 .form button{background-color:#B4D666;border-color:#B4D666 #81B840 #81B840 #B4D666;border-style:solid;border-width:1px;color:#2970A6;height:28px;line-height:28px;padding:0 12px;}
 .form button:hover{background-color:#98C64C;border-color:#76B33A #98C64C #98C64C #76B33A;color:#074A7E;}
-.tags li{float:left;list-style:none;}
-.tags li:hover{text-shadow:0 0 2px;}
-#tags li{border-radius:3px;box-shadow:1px 1px 3px #555;margin:5px;padding:2px 12px;}
+#tags li{float:left;height:38px;list-style:none;}
+#tags a:hover{text-shadow:0 0 2px;}
+#tags a{border-radius:3px 3px 3px 3px;box-shadow:1px 1px 3px #555555;float:left;margin:3px 6px;padding:3px 12px;}
 #tagsSide li a{float:left;line-height:20px;margin-right:7px;white-space:nowrap;}
 .tags1{color:#A1A1A1;font-size:12px;}
-.tags2{color:#687F95;font-size:16px;}
-.tags3{color:#4C6E90;font-size:20px;}
-.tags4{color:#258;font-size:24px;}
-.tags5{font-size:28px;}
+.tags2{color:#687F95;font-size:14px;}
+.tags3{color:#4C6E90;font-size:16px;}
+.tags4{color:#258;font-size:18px;}
+.tags5{font-size:20px;}
 #tagsSide .tags2{font-size:14px;}
 #tagsSide .tags3{font-size:16px;}
 #tagsSide .tags4{font-size:18px;}
