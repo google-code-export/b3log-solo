@@ -71,10 +71,14 @@
                         </div>
                         <div class="article-panel1">
                             <#if nextArticlePermalink??>
-                            <a class="left" href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
-                            </#if>
+                            <div class="right">
+                                <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                            </div><div class="clear"></div>
+                            </#if>                            
                             <#if previousArticlePermalink??>
-                            <a class="right" href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                             <div class="right">
+                                 <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                             </div>
                             </#if>
                             <div class="clear"></div>
                         </div>

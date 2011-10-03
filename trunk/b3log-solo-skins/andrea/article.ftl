@@ -77,7 +77,7 @@
                             <div class="article-relative">
                                 <#if nextArticlePermalink??>
                                 <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
-                                &nbsp;&nbsp;&nbsp;
+                                <br>
                                 </#if>
                                 <#if previousArticlePermalink??>
                                 <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>

@@ -78,13 +78,17 @@
                             </div>
                             <div class="article-relative">
                                 <#if nextArticlePermalink??>
-                                <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
-                                <br/>
+                                <div class="right">
+                                    <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                                </div>
+                                <div class="clear"></div>
                                 </#if>
                                 <#if previousArticlePermalink??>
-                                <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
-                                <br/>
+                                <div class="right">
+                                    <a href="${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+                                </div>
                                 </#if>
+                                <div class="clear"></div>
                             </div>
                             <#if 0 != relevantArticles?size>
                             <div class="article-relative">

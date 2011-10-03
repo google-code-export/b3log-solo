@@ -39,11 +39,11 @@
                             </#if>
                             ${viewCount1Label}<a href="${article.articlePermalink}">
                                 <span class="left article-browserIcon" title="${viewLabel}"></span>
-				            ${article.articleViewCount}
+                                ${article.articleViewCount}
                             </a> | ${commentCount1Label}  
                             <a href="${article.articlePermalink}#comments">
                                 <span class="left articles-commentIcon" title="${commentLabel}"></span>
-					        ${article.articleCommentCount}
+                                ${article.articleCommentCount}
                             </a>
                         </p>
                         <p>
@@ -65,10 +65,14 @@
                     </div>
                     <div class="marginBottom12">
                         <#if nextArticlePermalink??>
-                        <a class="left" href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                        <div class="right">
+                            <a href="${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>
+                        </div><div class="clear"></div>
                         </#if>
                         <#if previousArticlePermalink??>
-                        <a href="${previousArticlePermalink}" class="right">${previousArticle1Label}${previousArticleTitle}</a>
+                        <div class="right">
+                            <a href="${previousArticlePermalink}" >${previousArticle1Label}${previousArticleTitle}</a>
+                        </div>
                         </#if>
                         <div class="clear"></div>
                     </div>
