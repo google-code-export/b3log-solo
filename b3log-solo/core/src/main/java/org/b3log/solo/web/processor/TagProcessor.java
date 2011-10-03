@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.User;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
@@ -66,7 +65,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Sep 25, 2011
+ * @version 1.1.0.3, Oct 3, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -202,19 +201,8 @@ public final class TagProcessor {
                 if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
                     continue;
                 }
-                // Puts author name
-                final JSONObject author = articleUtils.getAuthor(article);
-                final String authorName = author.getString(User.USER_NAME);
-                article.put(Common.AUTHOR_NAME, authorName);
-                final String authorId = author.getString(Keys.OBJECT_ID);
-                article.put(Common.AUTHOR_ID, authorId);
-
-                if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                    article.put(Common.HAS_UPDATED,
-                                articleUtils.hasUpdated(article));
-                } else {
-                    article.put(Common.HAS_UPDATED, false);
-                }
+                
+                filler.setArticleExProperties(article, preference);
 
                 articles.add(article);
             }
