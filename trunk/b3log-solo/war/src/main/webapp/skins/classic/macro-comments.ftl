@@ -108,10 +108,10 @@
                 </th>
                 <td>
                     <input type="text" class="normalInput" id="commentValidate"/>
-                    <img id="captcha" alt="validate" src="/captcha.do"></img>
+                    <img id="captcha" alt="validate" src="/captcha.do" />
                 </td>
                 <th>
-                    <span class="error-msg" id="commentErrorTip"/>
+                    <span class="error-msg" id="commentErrorTip"></span>
                 </th>
             </tr>
             <tr>
@@ -145,14 +145,8 @@
     });
 
     var addComment = function (result, state) {
-        var commentHTML = '<div id="' + result.oId + '"><div class="comment-panel"><div class="comment-title">';
-
-        if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-            commentHTML += '<a>' + $("#commentName" + state).val() + '</a>';
-        } else {
-            commentHTML += '<a href="http://' + $("#commentURL" + state).val() + 
-                '" target="_blank">' + $("#commentName" + state).val() + '</a>';
-        }
+        var commentHTML = '<div id="' + result.oId + 
+            '"><div class="comment-panel"><div class="comment-title">' + result.replyNameHTML;
 
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-title a").first().text();
@@ -166,11 +160,10 @@
             + '</div><div class="clear"></div></div><div class="comment-body">'
             + '<div class="left comment-picture"><img alt="' + $("#commentName" + state).val()
             + '" src="' + result.commentThumbnailURL + '"/>'
-            + '</div><div class="comment-content">' + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
+            + '</div><div class="comment-content">' + 
+            Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
             + '</div><div class="clear"></div>'
             + '</div></div></div>';
-
-        page.addCommentAjax(commentHTML, state);
     }
 
     var replyTo = function (id) {

@@ -11,7 +11,7 @@
     <body>
         <div class="wrapper">
             <div class="bg-bottom">
-                <#include "top-nav.ftl">
+                ${topBarReplacement}
                 <div class="content">
                     <div class="header">
                         <#include "header.ftl">

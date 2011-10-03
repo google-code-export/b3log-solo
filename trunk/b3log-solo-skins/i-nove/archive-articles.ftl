@@ -8,7 +8,7 @@
         </@head>
     </head>
     <body>
-        <#include "top-nav.ftl">
+        ${topBarReplacement}
         <div class="wrapper">
             <div class="content">
                 <#include "header.ftl">
