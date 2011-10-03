@@ -262,7 +262,7 @@ public final class UpgradeProcessor {
  * Page-Comment relation Google App Engine repository.
  * 
  * <p>
- * <b>Note</b>: Do NOT use this class excepts {@link V030ToV031}.
+ * <b>Note</b>: Do NOT use this class excepts {@link UpgradeProcessor#v030ToV031()}.
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
@@ -277,7 +277,7 @@ final class PageCommentRepository extends AbstractRepository {
             Logger.getLogger(PageCommentRepository.class.getName());
 
     /**
-     * Gets the {@link PageCommentGAERepository} singleton.
+     * Gets the {@link PageCommentRepository} singleton.
      *
      * @return the singleton
      */
@@ -320,7 +320,7 @@ final class PageCommentRepository extends AbstractRepository {
  * Article-Comment relation Google App Engine repository.
  * 
  * <p>
- * <b>Note</b>: Do NOT use this class excepts {@link V030ToV031}.
+ * <b>Note</b>: Do NOT use this class excepts {@link UpgradeProcessor#v030ToV031()}.
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
@@ -335,7 +335,7 @@ final class ArticleCommentRepository extends AbstractRepository {
             Logger.getLogger(ArticleCommentRepository.class.getName());
 
     /**
-     * Gets the {@link ArticleCommentGAERepository} singleton.
+     * Gets the {@link ArticleCommentRepository} singleton.
      *
      * @return the singleton
      */

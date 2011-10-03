@@ -40,7 +40,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.0, Sep 27, 2011
- * @see 0.3.1
+ * @since 0.3.1
  */
 public final class Users {
 

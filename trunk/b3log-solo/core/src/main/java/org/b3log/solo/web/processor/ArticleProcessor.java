@@ -120,7 +120,7 @@ public final class ArticleProcessor {
      */
     private Articles articleUtils = Articles.getInstance();
     /**
-     * Preference utilities.
+     * Preference utilities
      */
     private Preferences preferenceUtils = Preferences.getInstance();
     /**

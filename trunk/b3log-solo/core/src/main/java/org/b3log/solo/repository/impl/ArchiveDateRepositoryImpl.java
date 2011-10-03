@@ -120,7 +120,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
     }
 
     /**
-     * Gets the {@link ArchiveDateGAERepository} singleton.
+     * Gets the {@link ArchiveDateRepositoryImpl} singleton.
      *
      * @return the singleton
      */

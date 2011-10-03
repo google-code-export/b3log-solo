@@ -78,7 +78,7 @@ public final class ArchiveDateArticleRepositoryImpl
     }
 
     /**
-     * Gets the {@link ArchiveDateArticleGAERepository} singleton.
+     * Gets the {@link ArchiveDateArticleRepositoryImpl} singleton.
      *
      * @return the singleton
      */

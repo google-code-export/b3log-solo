@@ -37,7 +37,7 @@ public final class SkinRepositoryImpl extends AbstractRepository
             Logger.getLogger(SkinRepositoryImpl.class.getName());
 
     /**
-     * Gets the {@link SkinGAERepository} singleton.
+     * Gets the {@link SkinRepositoryImpl} singleton.
      *
      * @return the singleton
      */

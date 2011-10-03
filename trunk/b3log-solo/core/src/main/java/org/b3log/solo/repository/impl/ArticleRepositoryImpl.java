@@ -341,7 +341,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository
     }
 
     /**
-     * Gets the {@link ArticleGAERepository} singleton.
+     * Gets the {@link ArticleRepositoryImpl} singleton.
      *
      * @return the singleton
      */

@@ -56,7 +56,7 @@ public final class PagePermalinkFilter implements Filter {
     }
 
     /**
-     * Redirects request URI to {@link org.b3log.solo.action.impl.PageAction}.
+     * Tries to dispatch request to page processor.
      *
      * @param request the specified request
      * @param response the specified response

@@ -119,7 +119,7 @@ public final class TagRepositoryImpl extends AbstractRepository
     }
 
     /**
-     * Gets the {@link TagGAERepository} singleton.
+     * Gets the {@link TagRepositoryImpl} singleton.
      *
      * @return the singleton
      */

@@ -149,7 +149,7 @@ public final class ExternalArticleSoloArticleRepositoryImpl
     }
 
     /**
-     * Gets the {@link ExternalArticleSoloArticleGAERepository} singleton.
+     * Gets the {@link ExternalArticleSoloArticleRepositoryImpl} singleton.
      *
      * @return the singleton
      */
