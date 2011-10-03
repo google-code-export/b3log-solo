@@ -1,0 +1,7 @@
+#summary 版本更新
+
+=== ver 0.3.5 ===
+ # 删除 top-nav.ftl 文件
+ # 把 <#include "top-nav.ftl"> 换为 ${topBarReplacement}
+ # 修改 macro-comments.ftl 中 addComment。
+http://imgmi.net/2/26404c97.png
