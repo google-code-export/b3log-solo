@@ -45,7 +45,7 @@
         <a href="javascript:common.clearCache();">
             ${clearCacheLabel}
         </a>
-        <a href="admin-index.do#main" title="${adminLabel}">
+        <a href="/admin-index.do#main" title="${adminLabel}">
             ${adminLabel}
         </a>
         <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
