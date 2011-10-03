@@ -58,8 +58,7 @@
             <#list mostViewCountArticles as article>
             <li>
                 <sup>[${article.articleViewCount}]</sup><a title="${article.articleTitle}"
-                                                           href="${article.articlePermalink}">
-                    ${article.articleTitle}
+                        href="${article.articlePermalink}">${article.articleTitle}
                 </a>
             </li>
             </#list>

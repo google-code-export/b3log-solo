@@ -3,7 +3,7 @@
  * skin community style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Sep 16, 2011
+ * @version 1.0.0.4, Oct 3, 2011
 */
 body {
     background-color: #EFEFEF;
@@ -464,6 +464,14 @@ a.header-title {
 .most-view-count-articles a {
     font: 18px 微软雅黑;
     margin-right: 20px;
+    font-weight: bold;
+}
+
+.most-view-count-articles sup {
+    font-size: 12px;
+    color: #555555;
+    font-weight: normal;
+    margin-right: 3px;
 }
 
 .recent-comments div {
