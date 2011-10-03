@@ -153,13 +153,23 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Gets articles by the specified author email, current page number and page
-     * size.
+     * Gets <em>published</em> articles by the specified author email, current page 
+     * number and page size.
      * 
      * @param authorEmail the specified author email
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
-     * @return query result
+     * @return query result, for example
+     * <pre>
+     * {
+     *     "pagination": {
+     *       "paginationPageCount": 88250
+     *     },
+     *     "rslts": [{
+     *         // article keys....
+     *     }, ....]
+     * }
+     * </pre>
      */
     public JSONObject getArticlesByAuthorEmail(final String authorEmail,
                                                final int currentPageNum,
@@ -168,7 +178,7 @@ public final class ArticleQueryService {
             return articleRepository.getByAuthorEmail(authorEmail,
                                                       currentPageNum,
                                                       pageSize);
-        } catch (final RepositoryException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets articles by author email failed[authorEmail="
                                      + authorEmail + ", currentPageNum="
                                      + currentPageNum + ", pageSize="

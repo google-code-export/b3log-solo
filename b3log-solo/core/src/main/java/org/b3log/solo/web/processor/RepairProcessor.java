@@ -46,7 +46,6 @@ import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.ExternalArticleSoloArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.FileRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
@@ -65,7 +64,7 @@ import org.json.JSONObject;
  * Provides patches on some special issues.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 12, 2011
+ * @version 1.1.0.1, Oct 3, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -277,8 +276,6 @@ public final class RepairProcessor {
             remove(ArticleSignRepositoryImpl.getInstance());
 
             remove(CommentRepositoryImpl.getInstance());
-
-            remove(ExternalArticleSoloArticleRepositoryImpl.getInstance());
 
             remove(FileRepositoryImpl.getInstance());
 

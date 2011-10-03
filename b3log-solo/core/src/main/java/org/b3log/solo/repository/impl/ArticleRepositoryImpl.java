@@ -30,7 +30,6 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.model.BlogSync;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +58,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository
         final Query query = new Query();
         query.addFilter(Article.ARTICLE_AUTHOR_EMAIL,
                         FilterOperator.EQUAL, authorEmail);
+        query.addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true);
         query.addSort(Article.ARTICLE_UPDATE_DATE,
                       SortDirection.DESCENDING);
         query.setCurrentPageNum(currentPageNum);
@@ -91,6 +91,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository
     @Override
     public List<JSONObject> getRecentArticles(final int fetchSize) {
         final Query query = new Query();
+        query.addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true);
         query.addSort(Article.ARTICLE_UPDATE_DATE,
                       SortDirection.DESCENDING);
         query.setCurrentPageNum(1);
@@ -230,41 +231,6 @@ public final class ArticleRepositoryImpl extends AbstractRepository
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
-    }
-
-    @Override
-    public void importArticle(final JSONObject article)
-            throws RepositoryException {
-        String articleId = null;
-        try {
-            if (!article.has(Keys.OBJECT_ID)) {
-                throw new RepositoryException("The article to import MUST exist "
-                                              + "id");
-            }
-            articleId = article.getString(Keys.OBJECT_ID);
-
-            if (!article.has(Article.ARTICLE_CREATE_DATE)) {
-                throw new RepositoryException("The article to import MUST exist "
-                                              + "create date");
-            }
-
-            // XXX:  check other params
-
-            // Remove external attributes, such as "blogSyncExternal...."
-            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ABSTRACT);
-            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_CATEGORIES);
-            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_CONTENT);
-            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_CREATE_DATE);
-            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_ID);
-            article.remove(BlogSync.BLOG_SYNC_EXTERNAL_ARTICLE_TITLE);
-
-            super.add(article);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new RepositoryException(e);
-        }
-
-        LOGGER.log(Level.FINER, "Imported an article[oId={0}]", articleId);
     }
 
     @Override
