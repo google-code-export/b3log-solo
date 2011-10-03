@@ -201,6 +201,8 @@ public final class UpgradeProcessor {
                                Preference.Default.DEFAULT_ARTICLE_LIST_STYLE);
             }
 
+            preference.put(Preference.VERSION, "0.3.5");
+            
             preferences.setPreference(preference);
 
             transaction.commit();
