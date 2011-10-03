@@ -70,11 +70,17 @@
                     </div>
                     <div class="marginTop12 marginBottom12">
                         <#if nextArticlePermalink??>
-                        <b>${nextArticle1Label}</b><a href="${nextArticlePermalink}">${nextArticleTitle}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="right">
+                            <b>${nextArticle1Label}</b><a href="${nextArticlePermalink}">${nextArticleTitle}</a>
+                        </div>
+                        <div class="clear"></div>
                         </#if>
                         <#if previousArticlePermalink??>
-                        <b>${previousArticle1Label}</b><a href="${previousArticlePermalink}">${previousArticleTitle}</a>
+                        <div class="right">
+                            <b>${previousArticle1Label}</b><a href="${previousArticlePermalink}">${previousArticleTitle}</a>
+                        </div>
                         </#if>
+                        <div class="clear"></div>
                     </div>
                     <#if 0 != relevantArticles?size>
                     <div class="article-relative">
