@@ -283,7 +283,7 @@ public final class LoginProcessor {
 
             for (int i = 0; i < cookies.length; i++) {
                 final Cookie cookie = cookies[i];
-                if ("b3log-solo".equals(cookie.getName())) {
+                if ("b3log-latke".equals(cookie.getName())) {
                     final JSONObject cookieJSONObject =
                             new JSONObject(cookie.getValue());
 
