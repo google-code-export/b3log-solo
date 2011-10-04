@@ -162,8 +162,6 @@ public final class ArticleProcessor {
     @RequestProcessing(value = {"/get-random-articles.do"},
                        method = HTTPRequestMethod.POST)
     public void getRandomArticles(final HTTPRequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-
         final List<JSONObject> randomArticles = getRandomArticles();
         final JSONObject jsonObject = new JSONObject();
 
@@ -182,11 +180,12 @@ public final class ArticleProcessor {
      * Gets article content with the specified context.
      * 
      * @param context the specified context
+     * @param request the specified request 
      */
     @RequestProcessing(value = {"/get-article-content"},
                        method = HTTPRequestMethod.GET)
-    public void getArticleContent(final HTTPRequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+    public void getArticleContent(final HTTPRequestContext context,
+                                  final HttpServletRequest request) {
         // XXX: Determines request coming from outer
         final String articleId = request.getParameter("id");
 
@@ -210,17 +209,18 @@ public final class ArticleProcessor {
      * Shows author articles with the specified context.
      * 
      * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response 
      */
     @RequestProcessing(value = {"/authors/**"}, method = HTTPRequestMethod.GET)
-    public void showAuthorArticles(final HTTPRequestContext context) {
+    public void showAuthorArticles(final HTTPRequestContext context,
+                                   final HttpServletRequest request,
+                                   final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("author-articles.ftl");
-
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         try {
             String requestURI = request.getRequestURI();
