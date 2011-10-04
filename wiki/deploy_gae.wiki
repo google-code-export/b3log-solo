@@ -24,3 +24,4 @@ appcfg.cmd update ${b3log-solo-x.x.x}
 _注意_：
  * 一定要使用自己的 Google 帐号进行初始化，不然会出现文章、评论发布问题。
  * 初始化功能（/init.do）只有在第一次部署时才可用，一旦初始化过后，该功能将被锁定。
+ * 如果出现 java.net.ConnectException: Connection timed out: connect，请重试。
