@@ -434,7 +434,7 @@ public final class ArticleProcessor {
     /**
      * Updates article random double value.
      * 
-     * @param requestthe specified request
+     * @param request the specified request
      */
     @RequestProcessing(value = {"/article-random-double-gen.do"},
                        method = HTTPRequestMethod.GET)
