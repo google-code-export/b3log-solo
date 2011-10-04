@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.web.util.TopBars;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import freemarker.template.Template;
@@ -129,7 +130,7 @@ public final class IndexProcessor {
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    
+
                     return;
                 } catch (final IOException ex) {
                     LOGGER.severe(ex.getMessage());
@@ -171,24 +172,27 @@ public final class IndexProcessor {
      * Handles errors with the specified context.
      * 
      * @param context the specified context
+     * @param request the specified request
+     * @param resposne the specified response 
      */
     @RequestProcessing(value = {"/error.do"}, method = HTTPRequestMethod.GET)
-    public void handleErrors(final HTTPRequestContext context) {
+    public void handleErrors(final HTTPRequestContext context,
+                             final HttpServletRequest request,
+                             final HttpServletResponse resposne) {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("error.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final String requestURI = request.getRequestURI();
         try {
             final JSONObject preference =
                     Preferences.getInstance().getPreference();
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            }
+
+            // Adds the top bar HTML content for output
+            final String topBarHTML = TopBars.getTopBarHTML(request, resposne);
+            dataModel.put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY,
+                          topBarHTML);
 
             skins.fillSkinLangs(preference, dataModel);
 
@@ -199,7 +203,7 @@ public final class IndexProcessor {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                resposne.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
@@ -313,7 +317,8 @@ public final class IndexProcessor {
         }
 
         @Override
-        protected void beforeRender(final HTTPRequestContext context) throws Exception {
+        protected void beforeRender(final HTTPRequestContext context) throws
+                Exception {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
