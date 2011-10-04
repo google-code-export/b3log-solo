@@ -218,7 +218,6 @@ public final class ArticleProcessor {
         context.setRenderer(renderer);
 
         renderer.setTemplateName("author-articles.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -248,8 +247,6 @@ public final class ArticleProcessor {
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
-
-            skins.fillSkinLangs(preference, dataModel);
 
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
@@ -287,35 +284,6 @@ public final class ArticleProcessor {
                 }
             }
 
-            final int pageCount = result.getJSONObject(
-                    Pagination.PAGINATION).getInt(
-                    Pagination.PAGINATION_PAGE_COUNT);
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
-
-            if (0 != pageNums.size()) {
-                dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
-                              pageNums.get(0));
-                dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                              pageNums.get(pageNums.size() - 1));
-            }
-            dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-            dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-            final String previousPageNum =
-                    Integer.toString(currentPageNum > 1 ? currentPageNum - 1
-                                     : 0);
-            dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
-                          "0".equals(previousPageNum) ? "" : previousPageNum);
-            if (pageCount == currentPageNum + 1) { // The next page is the last page
-                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
-            } else {
-                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
-                                                                   + 1);
-            }
-
             filler.setArticlesExProperties(articles, preference);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
@@ -325,16 +293,19 @@ public final class ArticleProcessor {
                 Collections.sort(articles,
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
-            dataModel.put(Article.ARTICLES, articles);
-            dataModel.put(Common.PATH, "/authors/" + authorId);
-            dataModel.put(Keys.OBJECT_ID, authorId);
 
-            final String authorName = author.getString(User.USER_NAME);
-            dataModel.put(Common.AUTHOR_NAME, authorName);
-            dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-            filler.fillSide(dataModel, preference);
-            filler.fillBlogHeader(dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            final int pageCount = result.getJSONObject(
+                    Pagination.PAGINATION).getInt(
+                    Pagination.PAGINATION_PAGE_COUNT);
+            final List<Integer> pageNums =
+                    Paginator.paginate(currentPageNum, pageSize, pageCount,
+                                       windowSize);
+
+            final Map<String, Object> dataModel = renderer.getDataModel();
+            prepareShowAuthorArticles(pageNums, dataModel, pageCount,
+                                      currentPageNum, articles, author,
+                                      preference);
+
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -358,7 +329,6 @@ public final class ArticleProcessor {
         context.setRenderer(renderer);
 
         renderer.setTemplateName("archive-articles.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -391,15 +361,8 @@ public final class ArticleProcessor {
             final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceUtils.getPreference();
-            final String localeString = preference.getString(
-                    Preference.LOCALE_STRING);
-
-            skins.fillSkinLangs(preference, dataModel);
-
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize = preference.getInt(
-                    Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final JSONObject result =
                     archiveDateArticleRepository.getByArchiveDateId(
@@ -438,44 +401,15 @@ public final class ArticleProcessor {
             final int pageCount = result.getJSONObject(
                     Pagination.PAGINATION).getInt(
                     Pagination.PAGINATION_PAGE_COUNT);
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
 
             sort(preference, articles);
 
-            dataModel.put(Article.ARTICLES, articles);
-            dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
-            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
-                          pageNums.get(pageNums.size() - 1));
-            dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-            dataModel.put(Common.PATH, "/archives/" + archiveDateString);
-            dataModel.put(Keys.OBJECT_ID, archiveDateId);
-
-            filler.fillSide(dataModel, preference);
-            filler.fillBlogHeader(dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
-
-            final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
-            final String dateString = ArchiveDate.DATE_FORMAT.format(time);
-            final String[] dateStrings = dateString.split("/");
-            final String year = dateStrings[0];
-            final String month = dateStrings[1];
-            archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
-            final String language = Locales.getLanguage(localeString);
-            String cachedTitle = null;
-            if ("en".equals(language)) {
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
-                                Dates.EN_MONTHS.get(month));
-                cachedTitle = Dates.EN_MONTHS.get(month) + " " + year;
-            } else {
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
-                cachedTitle = year + " " + dataModel.get("yearLabel") + " "
-                              + month + " " + dataModel.get("monthLabel");
-            }
-            dataModel.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
+            final Map<String, Object> dataModel = renderer.getDataModel();
+            final String cachedTitle =
+                    prepareShowArchiveArticles(preference, dataModel, articles,
+                                               currentPageNum,
+                                               pageCount, archiveDateString,
+                                               archiveDate);
 
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
@@ -527,8 +461,6 @@ public final class ArticleProcessor {
         context.setRenderer(renderer);
 
         renderer.setTemplateName("article.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -539,7 +471,6 @@ public final class ArticleProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
 
-            skins.fillSkinLangs(preference, dataModel);
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
 
@@ -569,7 +500,6 @@ public final class ArticleProcessor {
 
             LOGGER.log(Level.FINEST, "Article[title={0}]",
                        article.getString(Article.ARTICLE_TITLE));
-            dataModel.put(Article.ARTICLE, article);
 
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.getString(
@@ -594,50 +524,9 @@ public final class ArticleProcessor {
                         articleUtils.getSign(articleId, preference));
             LOGGER.finer("Got article sign");
 
-            LOGGER.finer("Getting the previous article....");
-            final JSONObject previousArticle =
-                    articleQueryService.getPreviousArticle(articleId);
-            if (null != previousArticle) {
-                dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK,
-                              previousArticle.getString(
-                        Article.ARTICLE_PERMALINK));
-                dataModel.put(Common.PREVIOUS_ARTICLE_TITLE,
-                              previousArticle.getString(Article.ARTICLE_TITLE));
-                LOGGER.finer("Got the previous article");
-            }
+            final Map<String, Object> dataModel = renderer.getDataModel();
 
-            LOGGER.finer("Getting the next article....");
-            final JSONObject nextArticle =
-                    articleQueryService.getNextArticle(articleId);
-            if (null != nextArticle) {
-                dataModel.put(Common.NEXT_ARTICLE_PERMALINK,
-                              nextArticle.getString(Article.ARTICLE_PERMALINK));
-                dataModel.put(Common.NEXT_ARTICLE_TITLE,
-                              nextArticle.getString(Article.ARTICLE_TITLE));
-                LOGGER.finer("Got the next article");
-            }
-
-            LOGGER.finer("Getting article's comments....");
-            final List<JSONObject> articleComments =
-                    articleUtils.getComments(articleId);
-            dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
-            LOGGER.finer("Got article's comments");
-
-            LOGGER.finer("Getting relevant articles....");
-            final List<JSONObject> relevantArticles = getRelevantArticles(
-                    articleId,
-                    article.getString(Article.ARTICLE_TAGS_REF),
-                    preference);
-            dataModel.put(Common.RELEVANT_ARTICLES, relevantArticles);
-            LOGGER.finer("Got relevant articles....");
-
-            dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-                          preference.getInt(
-                    Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
-
-            filler.fillSide(dataModel, preference);
-            filler.fillBlogHeader(dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            prepareShowArticle(preference, dataModel, article);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -862,5 +751,188 @@ public final class ArticleProcessor {
 
             return Collections.emptyList();
         }
+    }
+
+    /**
+     * Prepares the specified data model for rendering author articles.
+     * 
+     * @param pageNums the specified page numbers
+     * @param dataModel the specified data model
+     * @param pageCount the specified page count
+     * @param currentPageNum the specified  current page number 
+     * @param articles the specified articles
+     * @param author the specified author
+     * @param preference the specified preference
+     * @throws Exception exception
+     */
+    private void prepareShowAuthorArticles(final List<Integer> pageNums,
+                                           final Map<String, Object> dataModel,
+                                           final int pageCount,
+                                           final int currentPageNum,
+                                           final List<JSONObject> articles,
+                                           final JSONObject author,
+                                           final JSONObject preference)
+            throws Exception {
+        if (0 != pageNums.size()) {
+            dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
+                          pageNums.get(0));
+            dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                          pageNums.get(pageNums.size() - 1));
+        }
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+        final String previousPageNum =
+                Integer.toString(currentPageNum > 1 ? currentPageNum - 1
+                                 : 0);
+        dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
+                      "0".equals(previousPageNum) ? "" : previousPageNum);
+        if (pageCount == currentPageNum + 1) { // The next page is the last page
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+        } else {
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum
+                                                               + 1);
+        }
+
+        dataModel.put(Article.ARTICLES, articles);
+        final String authorId = author.getString(Keys.OBJECT_ID);
+        dataModel.put(Common.PATH, "/authors/" + authorId);
+        dataModel.put(Keys.OBJECT_ID, authorId);
+
+        dataModel.put(Common.AUTHOR_NAME, author.getString(User.USER_NAME));
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+
+        filler.fillSide(dataModel, preference);
+        filler.fillBlogHeader(dataModel, preference);
+        filler.fillBlogFooter(dataModel, preference);
+        skins.fillSkinLangs(preference, dataModel);
+    }
+
+    /**
+     * Prepares the specified data model for rendering archive articles.
+     * 
+     * @param preference the specified preference
+     * @param dataModel the specified data model
+     * @param articles the specified articles
+     * @param currentPageNum the specified current page number
+     * @param pageCount the specified page count
+     * @param archiveDateString the specified archive data string
+     * @param archiveDate the specified archive date
+     * @return page title for caching
+     * @throws Exception  exception
+     */
+    private String prepareShowArchiveArticles(final JSONObject preference,
+                                              final Map<String, Object> dataModel,
+                                              final List<JSONObject> articles,
+                                              final int currentPageNum,
+                                              final int pageCount,
+                                              final String archiveDateString,
+                                              final JSONObject archiveDate)
+            throws Exception {
+        final int pageSize = preference.getInt(
+                Preference.ARTICLE_LIST_DISPLAY_COUNT);
+        final int windowSize = preference.getInt(
+                Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+
+        final List<Integer> pageNums =
+                Paginator.paginate(currentPageNum, pageSize, pageCount,
+                                   windowSize);
+
+        skins.fillSkinLangs(preference, dataModel);
+        dataModel.put(Article.ARTICLES, articles);
+        dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+        dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
+        dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
+                      pageNums.get(pageNums.size() - 1));
+        dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+        dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+        dataModel.put(Common.PATH, "/archives/" + archiveDateString);
+        dataModel.put(Keys.OBJECT_ID, archiveDate.getString(Keys.OBJECT_ID));
+        filler.fillSide(dataModel, preference);
+        filler.fillBlogHeader(dataModel, preference);
+        filler.fillBlogFooter(dataModel, preference);
+        final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+        final String dateString = ArchiveDate.DATE_FORMAT.format(time);
+        final String[] dateStrings = dateString.split("/");
+        final String year = dateStrings[0];
+        final String month = dateStrings[1];
+        archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
+        final String language = Locales.getLanguage(
+                preference.getString(Preference.LOCALE_STRING));
+        String ret = null;
+        if ("en".equals(language)) {
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH,
+                            Dates.EN_MONTHS.get(month));
+            ret = Dates.EN_MONTHS.get(month) + " " + year;
+        } else {
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, month);
+            ret = year + " " + dataModel.get("yearLabel") + " "
+                  + month + " " + dataModel.get("monthLabel");
+        }
+        dataModel.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
+
+        return ret;
+    }
+
+    /**
+     * Prepares the specified data model for rendering article.
+     * 
+     * @param preference the specified preference
+     * @param dataModel the specified data model
+     * @param article the specified article
+     * @throws Exception exception
+     */
+    private void prepareShowArticle(final JSONObject preference,
+                                    final Map<String, Object> dataModel,
+                                    final JSONObject article)
+            throws Exception {
+        skins.fillSkinLangs(preference, dataModel);
+        dataModel.put(Article.ARTICLE, article);
+        final String articleId = article.getString(Keys.OBJECT_ID);
+        LOGGER.finer("Getting the previous article....");
+        final JSONObject previousArticle =
+                articleQueryService.getPreviousArticle(articleId);
+        if (null != previousArticle) {
+            dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK,
+                          previousArticle.getString(
+                    Article.ARTICLE_PERMALINK));
+            dataModel.put(Common.PREVIOUS_ARTICLE_TITLE,
+                          previousArticle.getString(Article.ARTICLE_TITLE));
+            LOGGER.finer("Got the previous article");
+        }
+
+        LOGGER.finer("Getting the next article....");
+        final JSONObject nextArticle =
+                articleQueryService.getNextArticle(articleId);
+        if (null != nextArticle) {
+            dataModel.put(Common.NEXT_ARTICLE_PERMALINK,
+                          nextArticle.getString(Article.ARTICLE_PERMALINK));
+            dataModel.put(Common.NEXT_ARTICLE_TITLE,
+                          nextArticle.getString(Article.ARTICLE_TITLE));
+            LOGGER.finer("Got the next article");
+        }
+
+        LOGGER.finer("Getting article's comments....");
+        final List<JSONObject> articleComments =
+                articleUtils.getComments(articleId);
+        dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
+        LOGGER.finer("Got article's comments");
+
+        LOGGER.finer("Getting relevant articles....");
+        final List<JSONObject> relevantArticles = getRelevantArticles(
+                articleId,
+                article.getString(Article.ARTICLE_TAGS_REF),
+                preference);
+        dataModel.put(Common.RELEVANT_ARTICLES, relevantArticles);
+        LOGGER.finer("Got relevant articles....");
+
+        dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
+                      preference.getInt(
+                Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+
+        filler.fillSide(dataModel, preference);
+        filler.fillBlogHeader(dataModel, preference);
+        filler.fillBlogFooter(dataModel, preference);
     }
 }
