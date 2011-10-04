@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Sep 27, 2011
+ * @version 1.0.1.1, Oct 4, 2011
  * @since 0.3.1
  */
 public final class Users {
@@ -108,28 +108,6 @@ public final class Users {
         }
 
         return true;
-    }
-
-    /**
-     * Determines whether the current logged in user is a collaborate
-     * administrator(added via GAE Admin Console Permissions).
-     *
-     * @param request the specified request
-     * @return {@code true} if it is, {@code false} otherwise
-     */
-    public boolean isCollaborateAdmin(final HttpServletRequest request) {
-        final boolean isUserLoggedIn = userService.isUserLoggedIn(request);
-        if (!isUserLoggedIn) {
-            return false;
-        }
-
-        final boolean isUserAdmin = userService.isUserAdmin(request);
-        if (!isUserAdmin) {
-            return false;
-        }
-
-        final GeneralUser currentUser = userService.getCurrentUser(request);
-        return !isSoloUser(currentUser.getEmail());
     }
 
     /**

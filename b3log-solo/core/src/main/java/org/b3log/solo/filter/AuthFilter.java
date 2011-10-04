@@ -42,7 +42,7 @@ import org.b3log.solo.web.processor.LoginProcessor;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Sep 30, 2011
+ * @version 1.0.0.3, Oct 4, 2011
  * @since 0.3.1
  */
 public final class AuthFilter implements Filter {
@@ -100,8 +100,7 @@ public final class AuthFilter implements Filter {
 
             final String currentUserEmail = currentUser.getEmail();
             LOGGER.log(Level.FINER, "Current user email[{0}]", currentUserEmail);
-            if (users.isSoloUser(currentUserEmail)
-                || users.isCollaborateAdmin((HttpServletRequest) request)) {
+            if (users.isSoloUser(currentUserEmail)) {
                 chain.doFilter(request, response);
 
                 return;

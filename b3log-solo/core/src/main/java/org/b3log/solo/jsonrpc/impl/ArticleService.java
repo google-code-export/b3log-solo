@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 28, 2011
+ * @version 1.1.0.1, Oct 4, 2011
  * @since 0.3.1
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
@@ -198,11 +198,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         final JSONObject status = new JSONObject();
         try {
             ret.put(Keys.STATUS, status);
-            if (userUtils.isCollaborateAdmin(request)) {
-                status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
-
-                return ret;
-            }
 
             final JSONObject article =
                     requestJSONObject.getJSONObject(ARTICLE);
@@ -800,12 +795,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
         final JSONObject status = new JSONObject();
         try {
             ret.put(Keys.STATUS, status);
-
-            if (userUtils.isCollaborateAdmin(request)) {
-                status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
-
-                return ret;
-            }
 
             final JSONObject article = requestJSONObject.getJSONObject(ARTICLE);
             final String articleId = article.getString(Keys.OBJECT_ID);
