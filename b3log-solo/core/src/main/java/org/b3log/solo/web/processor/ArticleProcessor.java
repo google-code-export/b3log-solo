@@ -434,15 +434,15 @@ public final class ArticleProcessor {
     /**
      * Updates article random double value.
      * 
-     * @param context the specified context
+     * @param requestthe specified request
      */
     @RequestProcessing(value = {"/article-random-double-gen.do"},
                        method = HTTPRequestMethod.GET)
-    public void updateArticlesRandomValue(final HTTPRequestContext context) {
+    public void updateArticlesRandomValue(final HttpServletRequest request) {
         int updateCnt = DEFAULT_UPDATE_CNT;
         try {
             updateCnt =
-                    Integer.valueOf(context.getRequest().getParameter("cnt"));
+                    Integer.valueOf(request.getParameter("cnt"));
         } catch (final NumberFormatException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
