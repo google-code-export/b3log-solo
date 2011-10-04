@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo WAR POM.
-    Version: 2.0.0.1, Oct 2, 2011
+    Version: 2.0.0.2, Oct 4, 2011
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -77,6 +77,7 @@
                         <param>commentList.js</param>
                         <param>plugin.js</param>
                         <param>main.js</param>
+                        <param>about.js</param>
                     </adminJSs>
                 </configuration>
                 <executions>
