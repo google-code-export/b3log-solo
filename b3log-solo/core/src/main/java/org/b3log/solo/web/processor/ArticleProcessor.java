@@ -321,17 +321,18 @@ public final class ArticleProcessor {
      * Shows archive articles with the specified context.
      * 
      * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response 
      */
     @RequestProcessing(value = {"/archives/**"}, method = HTTPRequestMethod.GET)
-    public void showArchiveArticles(final HTTPRequestContext context) {
+    public void showArchiveArticles(final HTTPRequestContext context,
+                                   final HttpServletRequest request,
+                                   final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
 
         renderer.setTemplateName("archive-articles.ftl");
-
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
 
         try {
             String requestURI = request.getRequestURI();
