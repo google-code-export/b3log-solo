@@ -147,9 +147,9 @@
             +'</div><div class="clear"></div><div class="comment-content">'
             + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
             + '</div></div><div class="clear"></div></div></div>';
-
-        page.addCommentAjax(commentHTML, state);
+        
         $("#comments").addClass("comments");
+        return commentHTML;
     }
 
     var replyTo = function (id) {
