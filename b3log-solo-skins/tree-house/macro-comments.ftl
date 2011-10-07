@@ -165,7 +165,7 @@
             + '</div>'
             + ' <div class="clear"></div></div></div><div class="comment-bottom"></div></div></div>';
 
-        page.addCommentAjax(commentHTML, state);
+        return commentHTML;
     }
 
     var replyTo = function (id) {

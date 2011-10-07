@@ -160,8 +160,7 @@
             + '</div><div><a href="javascript:replyTo(\''
             + result.oId + '\');">${replyLabel}</a>'
             +'</div></div><div class="clear"></div></div>';
-
-        page.addCommentAjax(commentHTML, state);
+        return commentHTML;
     }
 
     var replyTo = function (id) {
