@@ -81,7 +81,7 @@ import static org.b3log.solo.model.Article.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Oct 3, 2011
+ * @version 1.1.0.3, Oct 9, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -326,8 +326,8 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = {"/archives/**"}, method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context,
-                                   final HttpServletRequest request,
-                                   final HttpServletResponse response) {
+                                    final HttpServletRequest request,
+                                    final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
@@ -842,6 +842,16 @@ public final class ArticleProcessor {
 
         skins.fillSkinLangs(preference, dataModel);
         dataModel.put(Article.ARTICLES, articles);
+        final String previousPageNum =
+                Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+        dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM,
+                      "0".equals(previousPageNum) ? "" : previousPageNum);
+        if (pageCount == currentPageNum + 1) { // The next page is the last page
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
+        } else {
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM,
+                          currentPageNum + 1);
+        }
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
         dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
         dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM,
