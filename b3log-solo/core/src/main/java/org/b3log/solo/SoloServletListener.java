@@ -15,18 +15,9 @@
  */
 package org.b3log.solo;
 
-import java.io.BufferedInputStream;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpSessionEvent;
@@ -34,9 +25,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.image.Image;
-import org.b3log.latke.image.ImageService;
-import org.b3log.latke.image.ImageServiceFactory;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
@@ -73,7 +61,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.6, Oct 2, 2011
+ * @version 1.0.5.7, Oct 10, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -90,28 +78,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
-    /**
-     * Maximum captcha row.
-     */
-    public static final int MAX_CAPTCHA_ROW = 10;
-    /**
-     * Maximum captcha column.
-     */
-    public static final int MAX_CAPTCHA_COLUM = 10;
-    /**
-     * Width of a captcha character.
-     */
-    public static final int WIDTH_CAPTCHA_CHAR = 13;
-    /**
-     * Height of a captcha character.
-     */
-    public static final int HEIGHT_CAPTCHA_CHAR = 20;
-    /**
-     * Captcha &lt;"imageName", Image&gt;.
-     * For example &lt;"0/5.png", Image&gt;.
-     */
-    public static final Map<String, Image> CAPTCHAS =
-            new HashMap<String, Image>();
     /**
      * B3log Rhythm address.
      */
@@ -150,8 +116,6 @@ public final class SoloServletListener extends AbstractServletListener {
         }
 
         PluginManager.getInstance().load();
-
-        loadCaptchas();
 
         registerRemoteJSServices();
         registerEventProcessor();
@@ -230,57 +194,11 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * Loads captcha.
-     */
-    private void loadCaptchas() {
-        try {
-            final URL captchaURL =
-                    SoloServletListener.class.getClassLoader().getResource(
-                    "captcha.zip");
-            final ZipFile zipFile = new ZipFile(captchaURL.getFile());
-            final Set<String> imageNames = new HashSet<String>();
-            for (int row = 0; row < MAX_CAPTCHA_ROW; row++) {
-                for (int column = 0; column < MAX_CAPTCHA_COLUM; column++) {
-                    imageNames.add(row + "/" + column + ".png");
-                }
-
-            }
-
-            final ImageService imageService =
-                    ImageServiceFactory.getImageService();
-
-            final Iterator<String> i = imageNames.iterator();
-            while (i.hasNext()) {
-                final String imageName = i.next();
-                final ZipEntry zipEntry = zipFile.getEntry(imageName);
-
-                final BufferedInputStream bufferedInputStream =
-                        new BufferedInputStream(zipFile.getInputStream(zipEntry));
-                final byte[] captchaCharData = new byte[bufferedInputStream.
-                        available()];
-                bufferedInputStream.read(captchaCharData);
-                bufferedInputStream.close();
-
-                final Image captchaChar =
-                        imageService.makeImage(captchaCharData);
-
-                CAPTCHAS.put(imageName, captchaChar);
-            }
-
-            zipFile.close();
-        } catch (final Exception e) {
-            LOGGER.severe("Can not load captchs!");
-
-            throw new IllegalStateException(e);
-        }
-
-        LOGGER.info("Loaded captch images");
-    }
-
-    /**
      * Registers remote JavaScript service serializers.
      */
     private void registerRemoteJSServiceSerializers() {
+        LOGGER.log(Level.INFO,
+                   "Registering remote JavaScript service serializers....");
         final JSONRPCBridge jsonRpcBridge = JSONRPCBridge.getGlobalBridge();
 
         try {
@@ -289,6 +207,8 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
+        LOGGER.log(Level.INFO,
+                   "Registered remote JavaScript service serializers....");
     }
 
     /**
@@ -313,6 +233,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * Register event processors.
      */
     private void registerEventProcessor() {
+        LOGGER.log(Level.INFO, "Registering event processors....");
         try {
             final EventManager eventManager = EventManager.getInstance();
 
@@ -345,12 +266,14 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
             throw new IllegalStateException(e);
         }
+        LOGGER.log(Level.INFO, "Registering event processors....");
     }
 
     /**
      * Registers remote JavaScript services.
      */
     private void registerRemoteJSServices() {
+        LOGGER.log(Level.INFO, "Registering remote JavaScript services....");
         try {
             final AdminService adminService = AdminService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(adminService.
@@ -398,5 +321,6 @@ public final class SoloServletListener extends AbstractServletListener {
                        e);
             throw new IllegalStateException(e);
         }
+        LOGGER.log(Level.INFO, "Registered remote JavaScript services....");
     }
 }
