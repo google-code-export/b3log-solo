@@ -38,6 +38,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Sessions;
+import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
@@ -67,7 +68,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Oct 2, 2011
+ * @version 1.1.0.2, Oct 11, 2011
  * @since 0.3.1
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
@@ -604,19 +605,17 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Initializes administrator and logins it.
-     * 
-     * <p>
-     *   <ul>
-     *     <li>Username: Admin</li>
-     *     <li>User Email: test@b3log.org</li>
-     *     Used for login authentication.
-     *     <li>User Password: 111111</li>
-     *     Used for login authentication.
-     *   </ul>
-     * </p>
+     * Initializes administrator with the specified request json object, and 
+     * then logins it.
      *
-     * @param requestJSONObject the specified request json object
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "userName": "",
+     *     "userEmail": "",
+     *     "userPassowrd": ""
+     * }
+     * </pre>
      * @param request the specified request
      * @param response the specified response
      * @throws Exception exception
@@ -632,7 +631,13 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         final String userPassword =
                 requestJSONObject.getString(User.USER_PASSWORD);
 
-        // TODO: checks - init admin
+        if (Strings.isEmptyOrNull(userName)
+            || Strings.isEmptyOrNull(userEmail)
+            || Strings.isEmptyOrNull(userPassword)
+            || !Strings.isEmail(userEmail)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
         admin.put(User.USER_NAME, userName);
         admin.put(User.USER_EMAIL, userEmail);
