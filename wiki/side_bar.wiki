@@ -28,7 +28,7 @@
      * [skins_change_log 版本更新]
    * [https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w 插件开发]
  * B3log 团队
-    * [join_us 加入 B3log 团队]
+    * [join_us 加入团队]
     * [about_us 关于我们]
     * [b3_tasks 任务情况]
  * FAQ
