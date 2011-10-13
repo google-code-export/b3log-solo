@@ -577,10 +577,6 @@ public final class ArticleProcessor {
             final String articleId, final String articleTagsString,
             final JSONObject preference)
             throws JSONException, RepositoryException {
-        if (null == preference) {
-            throw new RepositoryException("Not found preference");
-        }
-
         final int displayCnt =
                 preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
         final String[] tagTitles = articleTagsString.split(",");
