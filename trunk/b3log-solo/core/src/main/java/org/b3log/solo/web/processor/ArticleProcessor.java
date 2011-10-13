@@ -582,6 +582,7 @@ public final class ArticleProcessor {
         final String[] tagTitles = articleTagsString.split(",");
         final int maxTagCnt = displayCnt > tagTitles.length
                               ? tagTitles.length : displayCnt;
+        
         final List<JSONObject> articles = new ArrayList<JSONObject>();
         for (int i = 0; i < maxTagCnt; i++) {  // XXX: should average by tag?
             final String tagTitle = tagTitles[i];
