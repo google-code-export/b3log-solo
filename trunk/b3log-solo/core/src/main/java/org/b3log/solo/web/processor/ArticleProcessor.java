@@ -164,7 +164,7 @@ public final class ArticleProcessor {
                        method = HTTPRequestMethod.POST)
     public void getRandomArticles(final HTTPRequestContext context) {
         Stopwatchs.start("Get Random Articles");
-        
+
         final List<JSONObject> randomArticles = getRandomArticles();
         final JSONObject jsonObject = new JSONObject();
 
@@ -177,7 +177,7 @@ public final class ArticleProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
-        
+
         Stopwatchs.end();
     }
 
@@ -582,7 +582,7 @@ public final class ArticleProcessor {
         final String[] tagTitles = articleTagsString.split(",");
         final int maxTagCnt = displayCnt > tagTitles.length
                               ? tagTitles.length : displayCnt;
-        
+
         final List<JSONObject> articles = new ArrayList<JSONObject>();
         for (int i = 0; i < maxTagCnt; i++) {  // XXX: should average by tag?
             final String tagTitle = tagTitles[i];
@@ -903,20 +903,6 @@ public final class ArticleProcessor {
         skins.fillSkinLangs(preference, dataModel);
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);
-        
-        Stopwatchs.start("Get Previous Article");
-        LOGGER.finer("Getting the previous article....");
-        final JSONObject previousArticle =
-                articleQueryService.getPreviousArticle(articleId);
-        if (null != previousArticle) {
-            dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK,
-                          previousArticle.getString(
-                    Article.ARTICLE_PERMALINK));
-            dataModel.put(Common.PREVIOUS_ARTICLE_TITLE,
-                          previousArticle.getString(Article.ARTICLE_TITLE));
-            LOGGER.finer("Got the previous article");
-        }
-        Stopwatchs.end();
 
         Stopwatchs.start("Get Next Article");
         LOGGER.finer("Getting the next article....");
@@ -928,6 +914,20 @@ public final class ArticleProcessor {
             dataModel.put(Common.NEXT_ARTICLE_TITLE,
                           nextArticle.getString(Article.ARTICLE_TITLE));
             LOGGER.finer("Got the next article");
+        }
+        Stopwatchs.end();
+
+        Stopwatchs.start("Get Previous Article");
+        LOGGER.finer("Getting the previous article....");
+        final JSONObject previousArticle =
+                articleQueryService.getPreviousArticle(articleId);
+        if (null != previousArticle) {
+            dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK,
+                          previousArticle.getString(
+                    Article.ARTICLE_PERMALINK));
+            dataModel.put(Common.PREVIOUS_ARTICLE_TITLE,
+                          previousArticle.getString(Article.ARTICLE_TITLE));
+            LOGGER.finer("Got the previous article");
         }
         Stopwatchs.end();
 
