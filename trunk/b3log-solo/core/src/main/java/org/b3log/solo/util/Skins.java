@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
@@ -71,6 +72,8 @@ public final class Skins {
     public void fillSkinLangs(final JSONObject preference,
                               final Map<String, Object> dataModel)
             throws Exception {
+        Stopwatchs.start("Fill Skin Langs");
+        
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         final String currentSkinDirName =
@@ -111,6 +114,8 @@ public final class Skins {
         }
 
         dataModel.putAll(langs);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -121,6 +126,8 @@ public final class Skins {
      * @throws JSONException json exception
      */
     public void loadSkins(final JSONObject preference) throws JSONException {
+        Stopwatchs.start("Load Skins");
+        
         LOGGER.info("Loading skins....");
 
         final String currentSkinDirName = preference.getString(SKIN_DIR_NAME);
@@ -179,6 +186,8 @@ public final class Skins {
         }
 
         LOGGER.info("Loaded skins....");
+        
+        Stopwatchs.end();
     }
 
     /**

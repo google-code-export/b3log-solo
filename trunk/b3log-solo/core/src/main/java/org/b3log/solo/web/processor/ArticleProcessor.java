@@ -65,6 +65,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -162,6 +163,8 @@ public final class ArticleProcessor {
     @RequestProcessing(value = {"/get-random-articles.do"},
                        method = HTTPRequestMethod.POST)
     public void getRandomArticles(final HTTPRequestContext context) {
+        Stopwatchs.start("Get Random Articles");
+        
         final List<JSONObject> randomArticles = getRandomArticles();
         final JSONObject jsonObject = new JSONObject();
 
@@ -174,6 +177,8 @@ public final class ArticleProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -901,6 +906,8 @@ public final class ArticleProcessor {
         skins.fillSkinLangs(preference, dataModel);
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);
+        
+        Stopwatchs.start("Get Previous Article");
         LOGGER.finer("Getting the previous article....");
         final JSONObject previousArticle =
                 articleQueryService.getPreviousArticle(articleId);
@@ -912,7 +919,9 @@ public final class ArticleProcessor {
                           previousArticle.getString(Article.ARTICLE_TITLE));
             LOGGER.finer("Got the previous article");
         }
+        Stopwatchs.end();
 
+        Stopwatchs.start("Get Next Article");
         LOGGER.finer("Getting the next article....");
         final JSONObject nextArticle =
                 articleQueryService.getNextArticle(articleId);
@@ -923,13 +932,17 @@ public final class ArticleProcessor {
                           nextArticle.getString(Article.ARTICLE_TITLE));
             LOGGER.finer("Got the next article");
         }
+        Stopwatchs.end();
 
+        Stopwatchs.start("Get Article CMTs");
         LOGGER.finer("Getting article's comments....");
         final List<JSONObject> articleComments =
                 articleUtils.getComments(articleId);
         dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
         LOGGER.finer("Got article's comments");
+        Stopwatchs.end();
 
+        Stopwatchs.start("Get Relevant Articles");
         LOGGER.finer("Getting relevant articles....");
         final List<JSONObject> relevantArticles = getRelevantArticles(
                 articleId,
@@ -937,6 +950,7 @@ public final class ArticleProcessor {
                 preference);
         dataModel.put(Common.RELEVANT_ARTICLES, relevantArticles);
         LOGGER.finer("Got relevant articles....");
+        Stopwatchs.end();
 
         dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                       preference.getInt(

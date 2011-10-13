@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
@@ -47,6 +48,8 @@ import org.b3log.solo.jsonrpc.impl.StatisticService;
 import org.b3log.solo.jsonrpc.impl.TagService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
+import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
@@ -61,7 +64,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.7, Oct 10, 2011
+ * @version 1.0.5.8, Oct 13, 2011
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -90,6 +93,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
+        Stopwatchs.start("Context Initialized");
         super.contextInitialized(servletContextEvent);
 
         if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()) {
@@ -119,9 +123,13 @@ public final class SoloServletListener extends AbstractServletListener {
 
         registerRemoteJSServices();
         registerEventProcessor();
-        registerRemoteJSServiceSerializers();
 
         LOGGER.info("Initialized the context");
+
+        Stopwatchs.end();
+        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}",
+                   new Object[]{Strings.LINE_SEPARATOR,
+                                Stopwatchs.getTimingStat()});
     }
 
     @Override
@@ -141,10 +149,20 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
+        final HttpServletRequest servletRequest =
+                (HttpServletRequest) servletRequestEvent.getServletRequest();
+        Stopwatchs.start("Request Initialized[requestURI=" + servletRequest.
+                getRequestURI() + "]");
     }
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
+        Stopwatchs.end();
+
+        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}",
+                   new Object[]{Strings.LINE_SEPARATOR,
+                                Stopwatchs.getTimingStat()});
+        Stopwatchs.release();
     }
 
     /**
@@ -162,6 +180,8 @@ public final class SoloServletListener extends AbstractServletListener {
      * </p>
      */
     private void loadPreference() {
+        Stopwatchs.start("Load Preference");
+
         LOGGER.info("Loading preference....");
 
         final PreferenceRepository preferenceRepository =
@@ -191,6 +211,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
             throw new IllegalStateException(e);
         }
+
+        Stopwatchs.end();
     }
 
     /**
@@ -233,6 +255,8 @@ public final class SoloServletListener extends AbstractServletListener {
      * Register event processors.
      */
     private void registerEventProcessor() {
+        Stopwatchs.start("Register Event Processors");
+
         LOGGER.log(Level.INFO, "Registering event processors....");
         try {
             final EventManager eventManager = EventManager.getInstance();
@@ -244,35 +268,24 @@ public final class SoloServletListener extends AbstractServletListener {
             eventManager.registerListener(
                     new UpdateArticleGoogleBlogSearchPinger());
             eventManager.registerListener(new ArticleSender());
-
-            /* 
-             * See issue 225 (http://code.google.com/p/b3log-solo/issues/detail?id=225#c4)
-             * for more details.
-             * 
-             * eventManager.registerListener(new BlogJavaAddArticleProcessor());
-             * eventManager.registerListener(new BlogJavaRemoveArticleProcessor());
-             * eventManager.registerListener(new BlogJavaUpdateArticleProcessor());
-             * eventManager.registerListener(new CSDNBlogAddArticleProcessor());
-             * eventManager.registerListener(new CSDNBlogRemoveArticleProcessor());
-             * eventManager.registerListener(new CSDNBlogUpdateArticleProcessor());
-             * eventManager.registerListener(new CnBlogsAddArticleProcessor());
-             * eventManager.registerListener(new CnBlogsRemoveArticleProcessor());
-             * eventManager.registerListener(new CnBlogsUpdateArticleProcessor());
-             */
-
             eventManager.registerListener(new PluginRefresher());
             eventManager.registerListener(new ViewLoadEventHandler());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
             throw new IllegalStateException(e);
         }
+
         LOGGER.log(Level.INFO, "Registering event processors....");
+
+        Stopwatchs.end();
     }
 
     /**
      * Registers remote JavaScript services.
      */
     private void registerRemoteJSServices() {
+        Stopwatchs.start("Register JS SVCs");
+
         LOGGER.log(Level.INFO, "Registering remote JavaScript services....");
         try {
             final AdminService adminService = AdminService.getInstance();
@@ -321,6 +334,11 @@ public final class SoloServletListener extends AbstractServletListener {
                        e);
             throw new IllegalStateException(e);
         }
+
         LOGGER.log(Level.INFO, "Registered remote JavaScript services....");
+
+        registerRemoteJSServiceSerializers();
+
+        Stopwatchs.end();
     }
 }

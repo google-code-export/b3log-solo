@@ -36,6 +36,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
@@ -67,7 +68,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.3, Oct 2, 2011
+ * @version 1.0.4.4, Oct 13, 2011
  * @since 0.3.1
  */
 public final class Filler {
@@ -138,6 +139,8 @@ public final class Filler {
                                   final int currentPageNum,
                                   final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Index Articles");
+        
         final int pageSize =
                 preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
         final int windowSize =
@@ -178,6 +181,8 @@ public final class Filler {
         setArticlesExProperties(articles, preference);
 
         dataModel.put(Article.ARTICLES, articles);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -189,6 +194,8 @@ public final class Filler {
      */
     private void fillLinks(final Map<String, Object> dataModel)
             throws JSONException, RepositoryException {
+        Stopwatchs.start("Fill Links");
+        
         final Map<String, SortDirection> sorts =
                 new HashMap<String, SortDirection>();
         sorts.put(Link.LINK_ORDER, SortDirection.ASCENDING);
@@ -199,6 +206,8 @@ public final class Filler {
                 jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
 
         dataModel.put(Link.LINKS, links);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -211,6 +220,8 @@ public final class Filler {
     public void fillMostUsedTags(final Map<String, Object> dataModel,
                                  final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Most Used Tags");
+        
         LOGGER.finer("Filling most used tags....");
         final int mostUsedTagDisplayCnt =
                 preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
@@ -220,6 +231,8 @@ public final class Filler {
         tagUtils.removeForUnpublishedArticles(tags);
 
         dataModel.put(Common.MOST_USED_TAGS, tags);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -232,6 +245,8 @@ public final class Filler {
     public void fillArchiveDates(final Map<String, Object> dataModel,
                                  final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Archive Dates");
+        
         LOGGER.finer("Filling archive dates....");
         final List<JSONObject> archiveDates =
                 archiveDateRepository.getArchiveDates();
@@ -256,6 +271,8 @@ public final class Filler {
         }
 
         dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -268,6 +285,8 @@ public final class Filler {
     public void fillMostViewCountArticles(final Map<String, Object> dataModel,
                                           final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Most View Articles");
+        
         LOGGER.finer("Filling the most view count articles....");
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
@@ -276,6 +295,8 @@ public final class Filler {
                 mostCommentArticleDisplayCnt);
 
         dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -288,6 +309,8 @@ public final class Filler {
     public void fillMostCommentArticles(final Map<String, Object> dataModel,
                                         final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Most CMMTs Articles");
+        
         LOGGER.finer("Filling most comment articles....");
         final int mostCommentArticleDisplayCnt =
                 preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
@@ -296,6 +319,8 @@ public final class Filler {
                 mostCommentArticleDisplayCnt);
 
         dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -308,6 +333,8 @@ public final class Filler {
     public void fillRecentArticles(final Map<String, Object> dataModel,
                                    final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Recent Articles");
+        
         final int recentArticleDisplayCnt =
                 preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
 
@@ -315,6 +342,8 @@ public final class Filler {
                 articleRepository.getRecentArticles(recentArticleDisplayCnt);
 
         dataModel.put(Common.RECENT_ARTICLES, recentArticles);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -327,6 +356,8 @@ public final class Filler {
     public void fillRecentComments(final Map<String, Object> dataModel,
                                    final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Recent Comments");
+        
         LOGGER.finer("Filling recent comments....");
         final int recentCommentDisplayCnt =
                 preference.getInt(Preference.RECENT_COMMENT_DISPLAY_CNT);
@@ -343,6 +374,8 @@ public final class Filler {
         }
 
         dataModel.put(Common.RECENT_COMMENTS, recentComments);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -355,6 +388,8 @@ public final class Filler {
     public void fillBlogFooter(final Map<String, Object> dataModel,
                                final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Footer");
+        
         LOGGER.finer("Filling footer....");
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         dataModel.put(Preference.BLOG_TITLE, blogTitle);
@@ -364,6 +399,8 @@ public final class Filler {
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.YEAR,
                       String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -376,6 +413,8 @@ public final class Filler {
     public void fillBlogHeader(final Map<String, Object> dataModel,
                                final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Header");
+        
         LOGGER.fine("Filling header....");
         dataModel.put(Preference.LOCALE_STRING,
                       preference.getString(Preference.LOCALE_STRING));
@@ -404,6 +443,8 @@ public final class Filler {
 
         fillPageNavigations(dataModel);
         fillStatistic(dataModel);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -434,6 +475,8 @@ public final class Filler {
     public void fillSide(final Map<String, Object> dataModel,
                          final JSONObject preference)
             throws Exception {
+        Stopwatchs.start("Fill Side");
+        
         LOGGER.fine("Filling side....");
         fillLinks(dataModel);
 //        fillRecentArticles(dataModel, preference);
@@ -446,6 +489,7 @@ public final class Filler {
         final String noticeBoard =
                 preference.getString(Preference.NOTICE_BOARD);
         dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
+        Stopwatchs.end();
     }
 
     /**
@@ -456,10 +500,14 @@ public final class Filler {
      */
     private void fillPageNavigations(final Map<String, Object> dataModel)
             throws Exception {
+        Stopwatchs.start("Fill Navigations");
+        
         LOGGER.finer("Filling page navigations....");
         final List<JSONObject> pages = pageRepository.getPages();
 
         dataModel.put(Common.PAGE_NAVIGATIONS, pages);
+        
+        Stopwatchs.end();
     }
 
     /**
@@ -470,6 +518,8 @@ public final class Filler {
      */
     private void fillStatistic(final Map<String, Object> dataModel)
             throws Exception {
+        Stopwatchs.start("Fill Statistic");
+        
         LOGGER.finer("Filling statistic....");
         final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
@@ -478,6 +528,8 @@ public final class Filler {
         statistic.remove(Statistic.STATISTIC_BLOG_COMMENT_COUNT);
 
         dataModel.put(Statistic.STATISTIC, statistic);
+        
+        Stopwatchs.end();
     }
 
     /**
