@@ -87,20 +87,7 @@
                                 </div>
                                 <div class="clear"></div>
                             </div>
-                            <#if 0 != relevantArticles?size>
-                            <div class="article-relative left" style="width: 50%;">
-                                <h4>${relevantArticles1Label}</h4>
-                                <ul class="marginLeft12">
-                                    <#list relevantArticles as relevantArticle>
-                                    <li>
-                                        <a href="${relevantArticle.articlePermalink}">
-                                            ${relevantArticle.articleTitle}
-                                        </a>
-                                    </li>
-                                    </#list>
-                                </ul>
-                            </div>
-                            </#if>
+                            <div id="relevantArticles" class="article-relative left" style="width: 50%;"></div>
                             <div id="randomArticles" class="left article-relative"></div>
                             <div class="clear"></div>
                             <div id="externalRelevantArticles" class="article-relative"></div>
@@ -121,6 +108,7 @@
         <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         page.loadRandomArticles();
+        page.loadRelevantArticles('${article.oId}');
         <#if 0 != externalRelevantArticlesDisplayCount>
         page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
         </#if>
