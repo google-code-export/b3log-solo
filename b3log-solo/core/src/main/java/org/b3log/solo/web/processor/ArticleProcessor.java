@@ -34,7 +34,6 @@ import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import java.util.ArrayList;
 import java.util.Collections;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
@@ -56,6 +55,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.solo.web.util.Filler;
@@ -82,7 +82,7 @@ import static org.b3log.solo.model.Article.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.3, Oct 9, 2011
+ * @version 1.1.0.4, Oct 15, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -165,11 +165,63 @@ public final class ArticleProcessor {
     public void getRandomArticles(final HTTPRequestContext context) {
         Stopwatchs.start("Get Random Articles");
 
-        final List<JSONObject> randomArticles = getRandomArticles();
+        final List<JSONObject> randomArticles =
+                getRandomArticles(preferenceUtils.getPreference());
         final JSONObject jsonObject = new JSONObject();
 
         try {
             jsonObject.put(Common.RANDOM_ARTICLES, randomArticles);
+
+            final JSONRenderer renderer = new JSONRenderer();
+            context.setRenderer(renderer);
+            renderer.setJSONObject(jsonObject);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+
+        Stopwatchs.end();
+    }
+
+    /**
+     * Gets relevant articles with the specified context.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     * @param response the specified response
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = {"/article/id/*/relevant/articles"},
+                       method = HTTPRequestMethod.GET)
+    public void getRelevantArticles(final HTTPRequestContext context,
+                                    final HttpServletRequest request,
+                                    final HttpServletResponse response)
+            throws Exception {
+        Stopwatchs.start("Get Relevant Articles");
+        final String requestURI = request.getRequestURI();
+
+        final String articleId =
+                StringUtils.substringBetween(requestURI,
+                                             "/article/id/",
+                                             "/relevant/articles");
+        if (Strings.isEmptyOrNull(articleId)) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        final JSONObject article = articleQueryService.getArticleById(articleId);
+        if (null == article) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+
+        final List<JSONObject> relevantArticles =
+                getRelevantArticles(article, preferenceUtils.getPreference());
+        final JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put(Common.RELEVANT_ARTICLES, relevantArticles);
 
             final JSONRenderer renderer = new JSONRenderer();
             context.setRenderer(renderer);
@@ -563,25 +615,23 @@ public final class ArticleProcessor {
     }
 
     /**
-     * Gets the relevant published articles by the specified article tags string
-     * excludes the specified article id.
+     * Gets the relevant published articles of the specified article.
      *
-     * @param articleId the specified article id
-     * @param articleTagsString the specified article tags string
+     * @param article the specified article
      * @param preference the specified preference
      * @return a list of articles, returns an empty list if not found
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
+     * @throws Exception exception
      */
     private List<JSONObject> getRelevantArticles(
-            final String articleId, final String articleTagsString,
-            final JSONObject preference)
-            throws JSONException, RepositoryException {
+            final JSONObject article, final JSONObject preference)
+            throws Exception {
         final int displayCnt =
                 preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
-        final String[] tagTitles = articleTagsString.split(",");
+        final String[] tagTitles =
+                article.getString(Article.ARTICLE_TAGS_REF).split(",");
         final int maxTagCnt = displayCnt > tagTitles.length
                               ? tagTitles.length : displayCnt;
+        final String articleId = article.getString(Keys.OBJECT_ID);
 
         final List<JSONObject> articles = new ArrayList<JSONObject>();
         for (int i = 0; i < maxTagCnt; i++) {  // XXX: should average by tag?
@@ -605,27 +655,28 @@ public final class ArticleProcessor {
                     continue;
                 }
 
-                final JSONObject article =
+                final JSONObject relevant =
                         articleQueryService.getArticleById(relatedArticleId);
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (!relevant.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     continue;
                 }
 
                 boolean existed = false;
                 for (final JSONObject relevantArticle : articles) {
                     if (relevantArticle.getString(Keys.OBJECT_ID).
-                            equals(article.getString(Keys.OBJECT_ID))) {
+                            equals(relevant.getString(Keys.OBJECT_ID))) {
                         existed = true;
                     }
                 }
 
                 if (!existed) {
-                    articles.add(article);
+                    articles.add(relevant);
                 }
             }
         }
 
         Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+        removeUnusedProperties(articles);
 
         if (displayCnt > articles.size()) {
             return articles;
@@ -724,35 +775,54 @@ public final class ArticleProcessor {
     /**
      * Gets the random articles.
      *
+     * @param preference the specified preference
      * @return a list of articles, returns an empty list if not found
      */
-    private List<JSONObject> getRandomArticles() {
+    private List<JSONObject> getRandomArticles(final JSONObject preference) {
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
             final int displayCnt =
                     preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
             final List<JSONObject> ret =
                     articleQueryService.getArticlesRandomly(displayCnt);
 
-            // Remove unused properties
-            for (final JSONObject article : ret) {
-                article.remove(Keys.OBJECT_ID);
-                article.remove(ARTICLE_AUTHOR_EMAIL);
-                article.remove(ARTICLE_ABSTRACT);
-                article.remove(ARTICLE_COMMENT_COUNT);
-                article.remove(ARTICLE_CONTENT);
-                article.remove(ARTICLE_CREATE_DATE);
-                article.remove(ARTICLE_TAGS_REF);
-                article.remove(ARTICLE_UPDATE_DATE);
-                article.remove(ARTICLE_VIEW_COUNT);
-                article.remove(ARTICLE_RANDOM_DOUBLE);
-            }
+            removeUnusedProperties(ret);
 
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Removes unused properties of each article in the specified articles.
+     * 
+     * <p>
+     * Remains the following properties:
+     * <ul>
+     *   <li>{@link Article#ARTICLE_TITLE article title}</li>
+     *   <li>{@link Article#ARTICLE_PERMALINK article permalink}</li>
+     * </ul>
+     * </p>
+     * 
+     * @param articles the specified articles
+     */
+    private void removeUnusedProperties(final List<JSONObject> articles) {
+        for (final JSONObject article : articles) {
+            article.remove(Keys.OBJECT_ID);
+            article.remove(ARTICLE_AUTHOR_EMAIL);
+            article.remove(ARTICLE_ABSTRACT);
+            article.remove(ARTICLE_COMMENT_COUNT);
+            article.remove(ARTICLE_CONTENT);
+            article.remove(ARTICLE_CREATE_DATE);
+            article.remove(ARTICLE_TAGS_REF);
+            article.remove(ARTICLE_UPDATE_DATE);
+            article.remove(ARTICLE_VIEW_COUNT);
+            article.remove(ARTICLE_RANDOM_DOUBLE);
+            article.remove(Article.ARTICLE_IS_PUBLISHED);
+            article.remove(Article.ARTICLE_PUT_TOP);
+            article.remove(Article.ARTICLE_HAD_BEEN_PUBLISHED);
         }
     }
 
@@ -941,10 +1011,8 @@ public final class ArticleProcessor {
 
         Stopwatchs.start("Get Relevant Articles");
         LOGGER.finer("Getting relevant articles....");
-        final List<JSONObject> relevantArticles = getRelevantArticles(
-                articleId,
-                article.getString(Article.ARTICLE_TAGS_REF),
-                preference);
+        final List<JSONObject> relevantArticles =
+                getRelevantArticles(article, preference);
         dataModel.put(Common.RELEVANT_ARTICLES, relevantArticles);
         LOGGER.finer("Got relevant articles....");
         Stopwatchs.end();
