@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Site map (sitemap) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 23, 2011
+ * @version 1.0.0.2, Oct 15, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -139,7 +139,7 @@ public final class SitemapProcessor {
         final Query query = new Query().setCurrentPageNum(1).
                 addFilter(Article.ARTICLE_IS_PUBLISHED,
                           FilterOperator.EQUAL, true).
-                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
         // Closes cache avoid Java heap space out of memory while caching 
         // query results
