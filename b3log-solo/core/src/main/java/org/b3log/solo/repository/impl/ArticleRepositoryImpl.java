@@ -17,7 +17,6 @@ package org.b3log.solo.repository.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,7 +37,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Jul 10, 2011
+ * @version 1.0.3.2, Oct 15, 2011
  * @since 0.3.1
  */
 public final class ArticleRepositoryImpl extends AbstractRepository
@@ -160,16 +159,12 @@ public final class ArticleRepositoryImpl extends AbstractRepository
     public JSONObject getPreviousArticle(final String articleId)
             throws RepositoryException {
         try {
-            final JSONObject current = get(articleId);
-            final Date currentDate = (Date) current.get(
-                    Article.ARTICLE_CREATE_DATE);
-
             final Query query = new Query();
-            query.addFilter(Article.ARTICLE_CREATE_DATE,
-                            FilterOperator.LESS_THAN, currentDate);
+            query.addFilter(Keys.OBJECT_ID,
+                            FilterOperator.LESS_THAN, articleId);
             query.addFilter(Article.ARTICLE_IS_PUBLISHED,
                             FilterOperator.EQUAL, true);
-            query.addSort(Article.ARTICLE_CREATE_DATE,
+            query.addSort(Keys.OBJECT_ID,
                           SortDirection.DESCENDING);
             query.setCurrentPageNum(1);
             query.setPageSize(1);
@@ -199,15 +194,12 @@ public final class ArticleRepositoryImpl extends AbstractRepository
     public JSONObject getNextArticle(final String articleId)
             throws RepositoryException {
         try {
-            final JSONObject current = get(articleId);
-            final Date currentDate = (Date) current.get(
-                    Article.ARTICLE_CREATE_DATE);
             final Query query = new Query();
-            query.addFilter(Article.ARTICLE_CREATE_DATE,
-                            FilterOperator.GREATER_THAN, currentDate);
+            query.addFilter(Keys.OBJECT_ID,
+                            FilterOperator.GREATER_THAN, articleId);
             query.addFilter(Article.ARTICLE_IS_PUBLISHED,
                             FilterOperator.EQUAL, true);
-            query.addSort(Article.ARTICLE_CREATE_DATE,
+            query.addSort(Keys.OBJECT_ID,
                           SortDirection.ASCENDING);
             query.setCurrentPageNum(1);
             query.setPageSize(1);
