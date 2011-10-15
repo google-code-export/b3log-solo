@@ -2,6 +2,8 @@
 
 === ver 0.3.5 ===
  # 删除 top-nav.ftl 文件
- # 把 <#include "top-nav.ftl"> 换为 ${topBarReplacement}
- # 修改 macro-comments.ftl 中 addComment。
+ # 把所有 <#include "top-nav.ftl"> 换为 ${topBarReplacement}
+ # 在 article.ftl 中的 <@comment_script oId=article.oId> 内添加 page.loadRelevantArticles('${article.oId}', '${relevantArticles1Label}');
+ # 在 article.ftl 中找到 <#if 0 != relevantArticles?size>，对其中的 div 加上 id="relevantArticles"，并移除其内部所有元素；删除 <#if 0 != relevantArticles?size> 及相匹配的 </#if>
+ # 修改 macro-comments.ftl 中 addComment
 http://imgmi.net/b/b55cff18.png
