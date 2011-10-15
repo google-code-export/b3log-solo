@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, Sep 12, 2011
+ * @version 1.1.0.1, Oct 15, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -136,7 +136,7 @@ public final class FeedProcessor {
                     setPageSize(ENTRY_OUTPUT_CNT).
                     addFilter(Article.ARTICLE_IS_PUBLISHED,
                               FilterOperator.EQUAL, true).
-                    addSort(Article.ARTICLE_CREATE_DATE,
+                    addSort(Keys.OBJECT_ID,
                             SortDirection.DESCENDING);
 
             final JSONObject articleResult = articleRepository.get(query);
@@ -351,7 +351,7 @@ public final class FeedProcessor {
                     setPageSize(ENTRY_OUTPUT_CNT).
                     addFilter(Article.ARTICLE_IS_PUBLISHED,
                               FilterOperator.EQUAL, true).
-                    addSort(Article.ARTICLE_CREATE_DATE,
+                    addSort(Keys.OBJECT_ID,
                             SortDirection.DESCENDING);
 
             final JSONObject articleResult = articleRepository.get(query);
