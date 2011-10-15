@@ -3,7 +3,7 @@
  * zoltan skin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Sep 16, 2011
+ * @version 1.0.0.5, Oct 15, 2011
 */
 body {
     background: url("../images/bg.jpg") repeat scroll 0 0 #EAE5D3;
@@ -362,18 +362,6 @@ table.reply input, table.reply textarea {
 
 .ico-message {
     background-position: -251px 0;
-}
-
-#commentURLLabel, #commentURLLabelReply {
-    float: left;
-    line-height: 17px;
-    margin-left: 10px;
-    width: 36px;
-}
-
-#commentURL, #commentURLReply {
-    margin-left: 0;
-    width: 295px;
 }
 
 #captcha, #captchaReply {

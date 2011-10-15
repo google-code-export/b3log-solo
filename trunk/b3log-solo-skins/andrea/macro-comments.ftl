@@ -56,9 +56,6 @@
                 ${commentURLLabel}
             </th>
             <td colspan="2">
-                <div id="commentURLLabel">
-                    http://
-                </div>
                 <input type="text" id="commentURL"/>
             </td>
         </tr>
@@ -167,11 +164,6 @@
         var commentFormHTML = "<table class='comment-form' id='replyForm' cellpadding='0' cellspacing='0'>";
                 
         page.addReplyForm(id, commentFormHTML);
-        $("#commentURLReply").focus(function () {
-            $("#commentURLLabelReply").addClass("selected");
-        }).blur(function () {
-            $("#commentURLLabelReply").removeClass("selected");
-        });
     }
             
     var showComment = function (it, id) {
@@ -189,12 +181,6 @@
 
     (function () {
         page.load();
-        // comment url
-        $("#commentURL").focus(function () {
-            $("#commentURLLabel").addClass("selected");
-        }).blur(function () {
-            $("#commentURLLabel").removeClass("selected");
-        });
         // emotions
         page.replaceCommentsEm("#comments .comment-content");
             <#nested>

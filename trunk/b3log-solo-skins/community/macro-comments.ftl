@@ -66,9 +66,6 @@
                 <span class="arrow-right"></span>
             </th>
             <td colspan="2">
-                <div id="commentURLLabel">
-                    http://
-                </div>
                 <input type="text" id="commentURL"/>
             </td>
         </tr>

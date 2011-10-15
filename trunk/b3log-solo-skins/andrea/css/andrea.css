@@ -3,7 +3,7 @@
  * skin andrea style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Sep 16, 2011
+ * @version 1.0.0.4, Oct 15, 2011
 */
 body {
     background-image: url("../images/bg-grey.jpg");
@@ -541,7 +541,7 @@ h2.comment-label {
     cursor: pointer;
 }
 
-.comment-form input, .comment-form textarea, #commentURLLabel, #commentURLLabelReply {
+.comment-form input, .comment-form textarea{
     border-radius:5px;
     background-color: #EBE9E5;
     border: 1px solid #BABAAE;
@@ -556,35 +556,6 @@ h2.comment-label {
 .comment-form input:focus, .comment-form textarea:focus {
     background-color: #E3EBCF;
     border-color: #73B722;
-}
-
-#commentURLLabel, #commentURLLabelReply {
-    border-radius: 5px 0 0 5px;
-    border-right: 0 none;
-    color: #000000;
-    float: left;
-    padding-right: 0;
-    width: 36px;
-    *margin-top:11px;
-}
-
-@media screen and (-webkit-min-device-pixel-ratio:0)
-{
-    #commentURLLabel, #commentURLLabelReply {
-     letter-spacing: -1px;
- } 
-}
-
-#commentURLLabel.selected, #commentURLLabelReply.selected {
-    background-color: #E3EBCF;
-    border-color: #73B722;
-}
-
-#commentURL, #commentURLReply {
-    border-radius: 0 5px 5px 0;
-    border-left: 0 none;
-    padding-left: 0;
-    width: 364px;
 }
 
 #commentValidate, #commentValidateReply {
