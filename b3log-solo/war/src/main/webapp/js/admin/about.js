@@ -18,14 +18,15 @@
  *  about for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Set 30, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.2, Oct 15, 2011
  */
 
 /* about 相关操作 */
 admin.about = {
     init: function () {
         $.ajax({
-            url: "http://rhythm.b3log.org/version/solo/latest",
+            url: "http://rhythm.b3log.org/version/solo/latest/" + Label.version,
             type: "GET",
             dataType:"jsonp",
             error: function() {
