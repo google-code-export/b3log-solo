@@ -462,6 +462,18 @@ $.extend(Page.prototype, {
     hideComment: function (id) {
         $("#commentRef" + id).hide();
     },
+    
+    showComment: function (it, id, top) {
+        if ( $("#commentRef" + id).length > 0) {
+            $("#commentRef" + id).show();
+        } else {
+            var $refComment = $("#" + id).clone();
+            $refComment.addClass("comment-body-ref").attr("id", "commentRef" + id);
+            $refComment.find("#replyForm").remove();
+            $("#comments").append($refComment);
+        }
+        $("#commentRef" + id).css("top", ($(it).position().top + top) + "px");
+    },
 
     addCommentAjax: function (commentHTML, state) {
         if ($("#comments>div").first().length === 1) {

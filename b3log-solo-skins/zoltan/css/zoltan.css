@@ -300,7 +300,7 @@ a:hover {
     word-wrap: break-word;
 }
 
-.comments .ref {
+.comments .comment-body-ref {
     left: 59px;
     opacity: 0.9;
     position: absolute;

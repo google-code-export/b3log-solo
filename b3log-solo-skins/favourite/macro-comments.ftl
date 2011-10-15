@@ -8,9 +8,9 @@
                     <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                 </div>
                 <#if "http://" == comment.commentURL>
-                <a class="left">${comment.commentName}</a>
+                <a class="left" title="${comment.commentName}">${comment.commentName}</a>
                 <#else>
-                <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
+                <a href="${comment.commentURL}" target="_blank" title="${comment.commentName}">${comment.commentName}</a>
                 </#if>
             </div>
             <div class="left comment-info">
@@ -19,7 +19,7 @@
                     <#if comment.isReply>
                     @
                     <a href="${permalink}#${comment.commentOriginalCommentId}"
-                       onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
+                       onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 3);"
                        onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                     </#if>
                 </div>
@@ -139,7 +139,7 @@
         if (state !== "") {
             var commentOriginalCommentName = $("#commentItem" + page.currentCommentId).find(".comment-author a").text();
             commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
-                + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
+                + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 3);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
         
@@ -156,19 +156,6 @@
     var replyTo = function (id) {
         var commentFormHTML = "<table class='marginTop12 comment-form' id='replyForm'>";
         page.addReplyForm(id, commentFormHTML);
-    }
-
-    var showComment = function (it, id) {
-        if ( $("#commentRef" + id).length > 0) {
-            $("#commentRef" + id).show();
-        } else {
-            var $refComment = $("#" + id + " .comment-panel").clone();
-            $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentRef" + id);
-            $refComment.find(".comment-info .right").remove();
-            $("#comments").append($refComment);
-        }
-        var position =  $(it).position();
-        $("#commentRef" + id).css("top", (position.top + 18) + "px");
     };
 
     (function () {

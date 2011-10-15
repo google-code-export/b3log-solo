@@ -8,9 +8,9 @@
                     <img alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
                 </div>
                 <#if "http://" == comment.commentURL>
-                <a name="${comment.oId}">${comment.commentName}</a>
+                <a title="${comment.commentName}" name="${comment.oId}">${comment.commentName}</a>
                 <#else>
-                <a name="${comment.oId}" href="${comment.commentURL}"
+                <a title="${comment.commentName}" name="${comment.oId}" href="${comment.commentURL}"
                    target="_blank">${comment.commentName}</a>
                 </#if>
             </div>
@@ -20,7 +20,7 @@
                     <#if comment.isReply>
                     @
                     <a href="${permalink}#${comment.commentOriginalCommentId}"
-                       onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
+                       onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 3);"
                        onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                     </#if>
                 </div>
@@ -102,7 +102,7 @@
         </tr>
         <tr>
             <td colspan="3" align="right">
-                <button onclick="page.submitComment();">${submmitCommentLabel}</button>
+                <button id="submitCommentButton" onclick="page.submitComment();">${submmitCommentLabel}</button>
             </td>
         </tr>
     </tbody>
@@ -139,7 +139,7 @@
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-author a").text();
             commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
-                + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
+                + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 3);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
         commentHTML += '</div><div class="right"> <a class="no-underline" href="javascript:replyTo(\''
@@ -155,19 +155,6 @@
     var replyTo = function (id) {
         var commentFormHTML = "<table class='marginTop12 comment-form' id='replyForm'>";
         page.addReplyForm(id, commentFormHTML);
-    }
-            
-    var showComment = function (it, id) {
-        if ( $("#commentRef" + id).length > 0) {
-            $("#commentRef" + id).show();
-        } else {
-            var $refComment = $("#" + id + " .comment-panel").clone();
-            $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentRef" + id);
-            $refComment.find(".comment-info .right").remove();
-            $("#comments").append($refComment);
-        }
-        var position =  $(it).position();
-        $("#commentRef" + id).css("top", ($(it).position().top + 18) + "px");
     };
     
     (function () {
