@@ -258,6 +258,7 @@ h5 {
 }
 .comment-author a {
     font-weight: bold;
+    white-space: nowrap;
     margin-right: 14px;
 }
 .comment-info {

@@ -16,7 +16,7 @@
                 <#if comment.isReply>
                 @
                 <a href="${permalink}#${comment.commentOriginalCommentId}"
-                   onmouseover="showComment(this, '${comment.commentOriginalCommentId}');"
+                   onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 23);"
                    onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
                 </#if>
                 <div class="right">
@@ -148,7 +148,7 @@
         if (state !== "") {
             var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-title a").first().text();
             commentHTML += '&nbsp;@&nbsp;<a href="' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
-                + 'onmouseover="showComment(this, \'' + page.currentCommentId + '\');"'
+                + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 23);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
 
@@ -167,17 +167,6 @@
     var replyTo = function (id) {
         var commentFormHTML = "<table class='form comment-reply' id='replyForm'>";
         page.addReplyForm(id, commentFormHTML);
-    }
-            
-    var showComment = function (it, id) {
-        if ( $("#commentRef" + id).length > 0) {
-            $("#commentRef" + id).show();
-        } else {
-            var $refComment = $("#" + id).clone();
-            $refComment.addClass("comment-body-ref").attr("id", "commentRef" + id);
-            $("#comments").append($refComment);
-        }
-        $("#commentRef" + id).css("top", ($(it).position().top + 23) + "px");
     };
 
     (function () {

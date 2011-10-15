@@ -441,7 +441,7 @@ footer img{
 .comment-author{float:left;text-align:center;width:81px;}
 .comment-author div{margin-top:10px;padding-right:14px;background:url("../images/commentpoint.png") no-repeat scroll 100% 33% transparent;}
 .comment-author img{border-radius : 4px;border:1px solid #999999;padding:1px;width:32px;height:32px;}
-.comment-author a{margin-right:14px;font-weight:bold;}
+.comment-author a{white-space: nowrap;margin-right:14px;font-weight:bold;}
 .comment-info{border-radius : 6px;width : 440px;padding : 5px 10px;background : #EDEFF0;border : 1px dotted #EDEFF0;}
 .comment-content{word-wrap:break-word;overflow: hidden;background:url("../images/comment.gif") no-repeat scroll 100% 100% transparent;line-height:145%;margin:0 -15px;padding:9px 15px 10px;font-size:12px;}
 .comment-form img{cursor:pointer;}
