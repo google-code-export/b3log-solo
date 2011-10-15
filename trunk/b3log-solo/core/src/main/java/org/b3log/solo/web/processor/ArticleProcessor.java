@@ -1009,14 +1009,6 @@ public final class ArticleProcessor {
         LOGGER.finer("Got article's comments");
         Stopwatchs.end();
 
-        Stopwatchs.start("Get Relevant Articles");
-        LOGGER.finer("Getting relevant articles....");
-        final List<JSONObject> relevantArticles =
-                getRelevantArticles(article, preference);
-        dataModel.put(Common.RELEVANT_ARTICLES, relevantArticles);
-        LOGGER.finer("Got relevant articles....");
-        Stopwatchs.end();
-
         dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                       preference.getInt(
                 Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
