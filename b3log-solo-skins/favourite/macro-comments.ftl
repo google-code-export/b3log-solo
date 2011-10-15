@@ -58,9 +58,6 @@
         </tr>
         <tr>
             <td>
-                <div id="commentURLLabel">
-                    http://
-                </div>
                 <input type="text" id="commentURL"/>
             </td>
             <td colspan="2">

@@ -75,9 +75,6 @@
                     <div class="input-reply">
                         <div class="top"></div>
                         <div class="bg">
-                            <div id="commentURLLabel">
-                                http://
-                            </div>
                             <input type="text" id="commentURL"/>
                             <div class="clear"></div>
                         </div>

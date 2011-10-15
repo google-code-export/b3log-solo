@@ -3,7 +3,7 @@
  * skin i-nove style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Oct 3, 2011
+ * @version 1.0.0.6, Oct 15, 2011
 */
 body {
     background: url("../images/bg.jpg") repeat-x scroll 0 20px #BEC3C6;
@@ -309,19 +309,6 @@ h5 {
     background: none repeat scroll 0 0 #98C64C;
     border-color: #76B33A #98C64C #98C64C #76B33A;
     color: #074A7E;
-}
-#commentURLLabel, #commentURLLabelReply {
-    background: url("../images/textfield.gif") repeat-x scroll 50% 0 #FFFFFF;
-    border: 1px solid #A6A6A6;
-    border-right: 0px;
-    float: left;
-    height: 20px;
-    line-height: 20px;
-    padding-left: 2px;
-}
-#commentURL, #commentURLReply {
-    border-left: 0 none;
-    width: 164px;
 }
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
     background-image: url("/images/emotions-black.png");

@@ -66,9 +66,6 @@
                     ${commentURL1Label}
                 </th>
                 <td colspan="2">
-                    <div id="commentURLLabel">
-                        http://
-                    </div>
                     <input type="text" id="commentURL"/>
                 </td>
             </tr>
@@ -169,22 +166,15 @@
 
     var replyTo = function (id) {
         var commentFormHTML = "<table class='form comment-reply' id='replyForm'>";
-                
         page.addReplyForm(id, commentFormHTML);
-        $("#commentURLReply").focus(function (event) {
-            $("#commentURLLabelReply").css("box-shadow", "3px 1px 2px rgba(0, 0, 0, 0.3) inset");
-        }).blur(function () {
-            $("#commentURLLabelReply").css("box-shadow", "");
-        });
     }
             
     var showComment = function (it, id) {
         if ( $("#commentRef" + id).length > 0) {
             $("#commentRef" + id).show();
         } else {
-            var $refComment = $("#" + id + " .comment-panel").clone();
-            $refComment.removeClass().addClass("comment-body-ref").attr("id", "commentRef" + id);
-            $refComment.find(".comment-title .right a").remove();
+            var $refComment = $("#" + id).clone();
+            $refComment.addClass("comment-body-ref").attr("id", "commentRef" + id);
             $("#comments").append($refComment);
         }
         $("#commentRef" + id).css("top", ($(it).position().top + 23) + "px");
@@ -192,13 +182,6 @@
 
     (function () {
         page.load();
-        
-        // comment url
-        $("#commentURL").focus(function (event) {
-            $("#commentURLLabel").css("box-shadow", "3px 1px 2px rgba(0, 0, 0, 0.3) inset");
-        }).blur(function () {
-            $("#commentURLLabel").css("box-shadow", "");
-        });
         // emotions
         page.replaceCommentsEm("#comments .comment-content");
             <#nested>

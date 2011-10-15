@@ -3,7 +3,7 @@
  * skin community style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Oct 3, 2011
+ * @version 1.0.0.5, Oct 15, 2011
 */
 body {
     background-color: #EFEFEF;
@@ -410,22 +410,6 @@ a.header-title {
 
 .comment #captchaReply {
     margin-left: 10px;
-}
-
-#commentURLLabel, #commentURLLabelReply {
-    background-color: #FFFFFF;
-    border: 1px solid #DDDDDD;
-    border-right: 0px;
-    color: #666666;
-    float: left;
-    font: 14px/14px Arial,Helvetica,sans-serif;
-    padding: 12px 0 10px 7px;
-}
-
-#commentURL, #commentURLReply {
-    padding-left: 0px;
-    width: 687px;
-    border-left: 0px;
 }
 
 #commentValidate, #commentValidateReply {
