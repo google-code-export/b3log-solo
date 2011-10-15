@@ -41,7 +41,6 @@ public final class Skips {
         "/admin-article-list.do",
         "/admin-link-list.do",
         "/admin-preference.do",
-        "/admin-article-sync.do",
         "/admin-file-list.do",
         "/admin-page-list.do",
         "/admin-others.do",

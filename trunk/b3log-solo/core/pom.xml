@@ -89,7 +89,6 @@
                     <includeTestSourceDirectory>true</includeTestSourceDirectory>
                     <excludes>
                     com/**/*.java,
-                    org/b3log/solo/sync/**/*.java
                     </excludes>
                     <consoleOutput>true</consoleOutput>
                     <failOnViolation>true</failOnViolation>
