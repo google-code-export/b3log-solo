@@ -277,28 +277,6 @@ a:hover {
 }
 /* end module */
 
-/* start article sync */
-#syncBlogType {
-    background-color: #E3E9FF;
-    padding: 12px 0 0 12px;
-}
-#tabsarticlesync_syncSetting {
-    height: 236px;
-    padding: 12px;
-}
-#tabsarticlesync_syncSetting fieldset {
-    border: 1px solid #A0A0A0;
-    border-radius: 12px;
-    moz-border-radius: 12px;
-    padding: 12px;
-    webkit-border-radius: 12px;
-    width: 411px;
-}
-#articlesCount {
-    line-height: 28px;
-}
-/* end article sync */
-
 /* start preference */
 .subTable {
     background-color: #FFFFFF;

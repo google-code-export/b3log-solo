@@ -157,10 +157,6 @@ public enum StatusCodes {
      */
     GET_PREFERENCE_SUCC,
     /**
-     * Indicates set blog sync management successfully.
-     */
-    SET_BLOG_SYNC_MGMT_SUCC,
-    /**
      * Indicates captcha error.
      */
     CAPTCHA_ERROR,
