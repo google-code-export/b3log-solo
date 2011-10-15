@@ -350,7 +350,7 @@ admin.article = {
         $("#title").val("");
         $("#permalink").val("");
         $(".signs button").each(function (i) {
-            if (i === $(".signs button").length - 1) {
+            if (i === 0) {
                 this.className = "selected";
             } else {
                 this.className = "";
@@ -369,7 +369,7 @@ admin.article = {
                 $(".signs button").each(function (i) {
                     // Sets signs.
                     if (i === result.length) {
-                        $("#articleSign0").addClass("selected");
+                        $("#articleSign1").addClass("selected");
                     } else {
                         $("#articleSign" + result[i].oId).tip({
                             content: result[i].signHTML === "" ? Label.signIsNullLabel : result[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
