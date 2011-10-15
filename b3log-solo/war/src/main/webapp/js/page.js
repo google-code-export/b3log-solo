@@ -283,7 +283,7 @@ $.extend(Page.prototype, {
                         var article = articles[i];
                         var title = article.articleTitle;
                         var articleLiHtml = "<li>"
-                        + "<a target='_blank' href='" + article.articlePermalink + "'>"
+                        + "<a href='" + article.articlePermalink + "'>"
                         +  title + "</a></li>"
                         listHtml += articleLiHtml
                     }
