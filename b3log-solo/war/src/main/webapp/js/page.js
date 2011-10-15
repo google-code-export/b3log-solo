@@ -18,7 +18,7 @@
  * @fileoverview Page util, load heighlight and process comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, Oct 3, 2011
+ * @version 1.0.1.1, Oct 15, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -259,6 +259,43 @@ $.extend(Page.prototype, {
                 $("#randomArticles").append(randomArticleListHtml);
             }
         });
+    },
+    
+    /*
+     * 加载相关文章
+     * @id {string} 文章 id
+     * @headtitle {string} 相关文章标题
+     */
+    loadRelevantArticles: function (id, headTitle) {
+        var tips = this.tips;
+        try {
+            $.ajax({
+                url: "/article/id/" + id + "/relevant/articles",
+                type: "GET",
+                success: function(data, textStatus){
+                    var articles = data.relevantArticles;
+                    if (0 === articles.length) {
+                        $("#relevantArticles").remove();
+                        return;
+                    }
+                    var listHtml = "";
+                    for (var i = 0; i < articles.length; i++) {
+                        var article = articles[i];
+                        var title = article.articleTitle;
+                        var articleLiHtml = "<li>"
+                        + "<a target='_blank' href='" + article.articlePermalink + "'>"
+                        +  title + "</a></li>"
+                        listHtml += articleLiHtml
+                    }
+                
+                    var relevantArticleListHtml = "<h4>" + headTitle + "</h4>"
+                    + "<ul class='marginLeft12'>"
+                    + listHtml + "</ul>";
+                    $("#relevantArticles").append(relevantArticleListHtml);
+                }
+            });
+        } catch (e) {
+        }
     },
     
     loadExternalRelevantArticles: function (tags) {
