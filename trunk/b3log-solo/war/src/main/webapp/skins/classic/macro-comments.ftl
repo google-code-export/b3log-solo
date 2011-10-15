@@ -141,8 +141,7 @@
         "skinDirName": "${skinDirName}",
         "blogHost": "${blogHost}",
         "randomArticles1Label": "${randomArticles1Label}",
-        "externalRelevantArticles1Label": "${externalRelevantArticles1Label}",
-        "relevantArticles1Label": "${relevantArticles1Label}"
+        "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
     });
 
     var addComment = function (result, state) {
