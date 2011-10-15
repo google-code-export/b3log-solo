@@ -54,7 +54,6 @@
   <tr><td>nextArticleTitle</td><td>String</td><td>下一篇文章标题</td><td></td></tr>
   <tr><td>previousArticlePermalink</td><td>String</td><td>上一篇文章链接</td><td></td></tr>
   <tr><td>previousArticleTitle</td><td>String</td><td>上一篇文章标题</td><td></td></tr>
-  <tr><td>relevantArticles</td><td>List`<`JSONObject`>`</td><td>相关文章列表</td><td></td></tr>
  </table>
 
 *page.ftl*
