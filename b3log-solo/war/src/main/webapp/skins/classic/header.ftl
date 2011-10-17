@@ -6,7 +6,7 @@
         <span class="sub-title">${blogSubtitle}</span>
     </h1>
 </div>
-<div class="left marginLeft12">
+<div class="left">
     <#list pageNavigations as page>
     <span>
         <a href="${page.pagePermalink}">${page.pageTitle}</a>&nbsp;&nbsp;

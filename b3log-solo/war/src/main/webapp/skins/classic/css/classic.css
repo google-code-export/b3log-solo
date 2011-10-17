@@ -3,7 +3,7 @@
  * skin classic style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Oct 15, 2011
+ * @version 1.0.0.7, Oct 17, 2011
 */
 a, a:link {
     color: #0000CC;
@@ -51,7 +51,7 @@ h5 {
     font-size: 11px;
 }
 .article, .comments {
-    padding: 0 0 24px 12px;
+    padding-bottom: 24px;
 }
 .article-title {
     background-color: #E3E9FF;

@@ -1,5 +1,5 @@
 <#macro comments commentList permalink>
-<h2 class="marginLeft12 marginBottom12">${commentLabel}</h2>  
+<h2 class="marginBottom12">${commentLabel}</h2>  
 <div class="comments" id="comments">
     <#if 0 == commentList?size>
     ${noCommentLabel}
