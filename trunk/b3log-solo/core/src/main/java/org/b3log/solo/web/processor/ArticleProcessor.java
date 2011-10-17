@@ -34,7 +34,6 @@ import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import java.util.ArrayList;
 import java.util.Collections;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,10 +42,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
 import org.b3log.solo.model.Preference;
 import org.jsoup.Jsoup;
-import org.b3log.solo.repository.TagArticleRepository;
-import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Articles;
 import java.io.IOException;
 import java.util.List;
@@ -76,13 +71,12 @@ import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
-import static org.b3log.solo.model.Article.*;
 
 /**
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.4, Oct 15, 2011
+ * @version 1.1.0.5, Oct 17, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -103,15 +97,6 @@ public final class ArticleProcessor {
      */
     private ArticleUpdateService articleUpdateService =
             ArticleUpdateService.getInstance();
-    /**
-     * Tag-Article repository.
-     */
-    private TagArticleRepository tagArticleRepository =
-            TagArticleRepositoryImpl.getInstance();
-    /**
-     * Tag repository.
-     */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Filler.
      */
@@ -217,7 +202,9 @@ public final class ArticleProcessor {
         }
 
         final List<JSONObject> relevantArticles =
-                getRelevantArticles(article, preferenceUtils.getPreference());
+                articleQueryService.getRelevantArticles(article,
+                                                        preferenceUtils.
+                getPreference());
         final JSONObject jsonObject = new JSONObject();
 
         try {
@@ -615,86 +602,6 @@ public final class ArticleProcessor {
     }
 
     /**
-     * Gets the relevant published articles of the specified article.
-     *
-     * @param article the specified article
-     * @param preference the specified preference
-     * @return a list of articles, returns an empty list if not found
-     * @throws Exception exception
-     */
-    private List<JSONObject> getRelevantArticles(
-            final JSONObject article, final JSONObject preference)
-            throws Exception {
-        final int displayCnt =
-                preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
-        final String[] tagTitles =
-                article.getString(Article.ARTICLE_TAGS_REF).split(",");
-        final int maxTagCnt = displayCnt > tagTitles.length
-                              ? tagTitles.length : displayCnt;
-        final String articleId = article.getString(Keys.OBJECT_ID);
-
-        final List<JSONObject> articles = new ArrayList<JSONObject>();
-        for (int i = 0; i < maxTagCnt; i++) {  // XXX: should average by tag?
-            final String tagTitle = tagTitles[i];
-            final JSONObject tag = tagRepository.getByTitle(tagTitle);
-            final String tagId = tag.getString(Keys.OBJECT_ID);
-            final JSONObject result =
-                    tagArticleRepository.getByTagId(tagId, 1, displayCnt);
-            final JSONArray tagArticleRelations =
-                    result.getJSONArray(Keys.RESULTS);
-
-            final int relationSize = displayCnt < tagArticleRelations.length()
-                                     ? displayCnt : tagArticleRelations.length();
-            for (int j = 0; j < relationSize; j++) {
-                final JSONObject tagArticleRelation =
-                        tagArticleRelations.getJSONObject(j);
-                final String relatedArticleId =
-                        tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
-                if (articleId.equals(relatedArticleId)) {
-                    continue;
-                }
-
-                final JSONObject relevant =
-                        articleQueryService.getArticleById(relatedArticleId);
-                if (!relevant.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    continue;
-                }
-
-                boolean existed = false;
-                for (final JSONObject relevantArticle : articles) {
-                    if (relevantArticle.getString(Keys.OBJECT_ID).
-                            equals(relevant.getString(Keys.OBJECT_ID))) {
-                        existed = true;
-                    }
-                }
-
-                if (!existed) {
-                    articles.add(relevant);
-                }
-            }
-        }
-
-        Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
-        removeUnusedProperties(articles);
-
-        if (displayCnt > articles.size()) {
-            return articles;
-        }
-
-        final List<Integer> randomIntegers =
-                CollectionUtils.getRandomIntegers(0,
-                                                  articles.size() - 1,
-                                                  displayCnt);
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        for (final int index : randomIntegers) {
-            ret.add(articles.get(index));
-        }
-
-        return ret;
-    }
-
-    /**
      * Sorts the specified articles by the specified preference.
      * 
      * @param preference the specified preference
@@ -785,44 +692,11 @@ public final class ArticleProcessor {
             final List<JSONObject> ret =
                     articleQueryService.getArticlesRandomly(displayCnt);
 
-            removeUnusedProperties(ret);
-
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             return Collections.emptyList();
-        }
-    }
-
-    /**
-     * Removes unused properties of each article in the specified articles.
-     * 
-     * <p>
-     * Remains the following properties:
-     * <ul>
-     *   <li>{@link Article#ARTICLE_TITLE article title}</li>
-     *   <li>{@link Article#ARTICLE_PERMALINK article permalink}</li>
-     * </ul>
-     * </p>
-     * 
-     * @param articles the specified articles
-     */
-    private void removeUnusedProperties(final List<JSONObject> articles) {
-        for (final JSONObject article : articles) {
-            article.remove(Keys.OBJECT_ID);
-            article.remove(ARTICLE_AUTHOR_EMAIL);
-            article.remove(ARTICLE_ABSTRACT);
-            article.remove(ARTICLE_COMMENT_COUNT);
-            article.remove(ARTICLE_CONTENT);
-            article.remove(ARTICLE_CREATE_DATE);
-            article.remove(ARTICLE_TAGS_REF);
-            article.remove(ARTICLE_UPDATE_DATE);
-            article.remove(ARTICLE_VIEW_COUNT);
-            article.remove(ARTICLE_RANDOM_DOUBLE);
-            article.remove(Article.ARTICLE_IS_PUBLISHED);
-            article.remove(Article.ARTICLE_PUT_TOP);
-            article.remove(Article.ARTICLE_HAD_BEEN_PUBLISHED);
         }
     }
 
