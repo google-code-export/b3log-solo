@@ -77,7 +77,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Oct 17, 2011
+ * @version 1.1.0.6, Oct 18, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -94,9 +94,9 @@ public final class ArticleProcessor {
     private ArticleQueryService articleQueryService =
             ArticleQueryService.getInstance();
     /**
-     * Article update service.
+     * Article management service.
      */
-    private ArticleMgmtService articleUpdateService =
+    private ArticleMgmtService articleMgmtService =
             ArticleMgmtService.getInstance();
     /**
      * Comment query service.
@@ -497,7 +497,7 @@ public final class ArticleProcessor {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
 
-        articleUpdateService.updateArticlesRandomValue(updateCnt);
+        articleMgmtService.updateArticlesRandomValue(updateCnt);
     }
 
     /**

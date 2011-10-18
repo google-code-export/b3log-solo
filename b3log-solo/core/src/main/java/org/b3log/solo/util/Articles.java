@@ -193,33 +193,6 @@ public final class Articles {
     }
 
     /**
-     * Removes article comments by the specified article id.
-     *
-     * <p>
-     * Removes related comments, sets article/blog comment statistic count.
-     * </p>
-     *
-     * @param articleId the specified article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void removeArticleComments(final String articleId)
-            throws JSONException, RepositoryException {
-        final int removedCnt = commentRepository.removeComments(articleId);
-        int blogCommentCount = statistics.getBlogCommentCount();
-        blogCommentCount -= removedCnt;
-        statistics.setBlogCommentCount(blogCommentCount);
-
-        final JSONObject article = articleRepository.get(articleId);
-        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            int publishedBlogCommentCount =
-                    statistics.getPublishedBlogCommentCount();
-            publishedBlogCommentCount -= removedCnt;
-            statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
-        }
-    }
-
-    /**
      * Adds relation of the specified tags and article.
      *
      * @param tags the specified tags
