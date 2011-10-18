@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.cache.Cache;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
  * Comment repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 25, 2011
+ * @version 1.0.0.8, Oct 18, 2011
  * @since 0.3.1
  */
 public final class CommentRepositoryImpl extends AbstractRepository
@@ -55,6 +56,10 @@ public final class CommentRepositoryImpl extends AbstractRepository
      */
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
+    /**
+     * Recent comments query results cache key.
+     */
+    public static final String RECENT_CMTS_CACHE_KEY = "recentCMTs";
 
     @Override
     public int removeComments(final String onId) throws RepositoryException {
@@ -104,7 +109,16 @@ public final class CommentRepositoryImpl extends AbstractRepository
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<JSONObject> getRecentComments(final int num) {
+        if (isCacheEnabled()) {
+            final Cache<String, Object> cache = getCache();
+            final Object ret = cache.get(RECENT_CMTS_CACHE_KEY);
+            if (null != ret) {
+                return (List<JSONObject>) ret;
+            }
+        }
+
         final Query query = new Query();
         query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
         query.setCurrentPageNum(1);
@@ -117,15 +131,17 @@ public final class CommentRepositoryImpl extends AbstractRepository
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
             ret = CollectionUtils.jsonArrayToList(array);
+            
+            // Removes unpublished article related comments
+            removeForUnpublishedArticles(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             return ret;
         }
 
-        try {
-            removeForUnpublishedArticles(ret);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        if (isCacheEnabled()) {
+            final Cache<String, Object> cache = getCache();
+            cache.put(RECENT_CMTS_CACHE_KEY, (Object) ret);
         }
 
         return ret;
