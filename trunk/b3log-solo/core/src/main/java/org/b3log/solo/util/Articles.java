@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.util;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
@@ -35,11 +33,9 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.ArticleSignRepository;
-import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.json.JSONArray;
@@ -61,16 +57,6 @@ public final class Articles {
     private static final Logger LOGGER =
             Logger.getLogger(Articles.class.getName());
     /**
-     * Comment repository.
-     */
-    private CommentRepository commentRepository =
-            CommentRepositoryImpl.getInstance();
-    /**
-     * Article-Sign repository.
-     */
-    private ArticleSignRepository articleSignRepository =
-            ArticleSignRepositoryImpl.getInstance();
-    /**
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository =
@@ -81,9 +67,10 @@ public final class Articles {
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
     /**
-     * Statistic utilities.
+     * Article-Sign repository.
      */
-    private Statistics statistics = Statistics.getInstance();
+    private ArticleSignRepository articleSignRepository =
+            ArticleSignRepositoryImpl.getInstance();
     /**
      * User repository.
      */
@@ -153,88 +140,6 @@ public final class Articles {
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt - 1);
         articleRepository.update(articleId, newArticle);
-    }
-
-    /**
-     * Removes tag-article relations by the specified article id and tag ids of
-     * the relations to be removed.
-     *
-     * <p>
-     * Removes all relations if not specified the tag ids.
-     * </p>
-     *
-     * @param articleId the specified article id
-     * @param tagIds the specified tag ids of the relations to be removed
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void removeTagArticleRelations(final String articleId,
-                                          final String... tagIds)
-            throws JSONException, RepositoryException {
-        final List<String> tagIdList = Arrays.asList(tagIds);
-        final List<JSONObject> tagArticleRelations =
-                tagArticleRepository.getByArticleId(articleId);
-        for (int i = 0; i < tagArticleRelations.size(); i++) {
-            final JSONObject tagArticleRelation =
-                    tagArticleRelations.get(i);
-            String relationId = null;
-            if (tagIdList.isEmpty()) { // Removes all if un-specified
-                relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
-                tagArticleRepository.remove(relationId);
-            } else {
-                if (tagIdList.contains(
-                        tagArticleRelation.getString(Tag.TAG + "_"
-                                                     + Keys.OBJECT_ID))) {
-                    relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
-                    tagArticleRepository.remove(relationId);
-                }
-            }
-        }
-    }
-
-    /**
-     * Adds relation of the specified tags and article.
-     *
-     * @param tags the specified tags
-     * @param article the specified article
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void addTagArticleRelation(final JSONArray tags,
-                                      final JSONObject article)
-            throws JSONException, RepositoryException {
-        for (int i = 0; i < tags.length(); i++) {
-            final JSONObject tag = tags.getJSONObject(i);
-            final JSONObject tagArticleRelation = new JSONObject();
-
-            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
-                                   tag.getString(Keys.OBJECT_ID));
-            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                   article.getString(Keys.OBJECT_ID));
-
-            tagArticleRepository.add(tagArticleRelation);
-        }
-    }
-
-    /**
-     * Adds relation of the specified article and sign.
-     *
-     * @param signId the specified sign id
-     * @param articleId the specified article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void addArticleSignRelation(final String signId,
-                                       final String articleId)
-            throws JSONException, RepositoryException {
-        final JSONObject articleSignRelation = new JSONObject();
-
-        articleSignRelation.put(Sign.SIGN + "_" + Keys.OBJECT_ID,
-                                signId);
-        articleSignRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                articleId);
-
-        articleSignRepository.add(articleSignRelation);
     }
 
     /**

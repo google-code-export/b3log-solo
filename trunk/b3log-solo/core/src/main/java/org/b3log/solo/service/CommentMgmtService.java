@@ -16,15 +16,11 @@
 package org.b3log.solo.service;
 
 import java.util.logging.Logger;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.util.Statistics;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Comment management service.
@@ -62,34 +58,6 @@ public final class CommentMgmtService {
      */
     public static CommentMgmtService getInstance() {
         return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Removes article comments by the specified article id.
-     *
-     * <p>
-     * Removes related comments, sets article/blog comment statistic count.
-     * </p>
-     *
-     * @param articleId the specified article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void removeArticleComments(final String articleId)
-            throws JSONException, RepositoryException {
-        // TODO: 88250, remove article encap transaction
-        final int removedCnt = commentRepository.removeComments(articleId);
-        int blogCommentCount = statistics.getBlogCommentCount();
-        blogCommentCount -= removedCnt;
-        statistics.setBlogCommentCount(blogCommentCount);
-
-        final JSONObject article = articleRepository.get(articleId);
-        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            int publishedBlogCommentCount =
-                    statistics.getPublishedBlogCommentCount();
-            publishedBlogCommentCount -= removedCnt;
-            statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
-        }
     }
 
     /**

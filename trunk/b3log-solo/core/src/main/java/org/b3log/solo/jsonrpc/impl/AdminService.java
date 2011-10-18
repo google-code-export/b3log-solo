@@ -55,6 +55,7 @@ import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
+import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
@@ -68,7 +69,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Oct 11, 2011
+ * @version 1.1.0.3, Oct 18, 2011
  * @since 0.3.1
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
@@ -82,6 +83,11 @@ public final class AdminService extends AbstractGAEJSONRpcService {
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+    /**
+     * Article management service.
+     */
+    private ArticleMgmtService articleMgmtService =
+            ArticleMgmtService.getInstance();
     /**
      * Preference repository.
      */
@@ -581,7 +587,7 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
 
         final JSONObject addArticleRet = new JSONObject();
-        ArticleService.addArticleInternal(
+        articleMgmtService.addArticleInternal(
                 article, addArticleRet, new JSONObject(), request);
         final String articleId = addArticleRet.getString(Keys.OBJECT_ID);
 
