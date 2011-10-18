@@ -67,6 +67,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
@@ -97,6 +98,11 @@ public final class ArticleProcessor {
      */
     private ArticleUpdateService articleUpdateService =
             ArticleUpdateService.getInstance();
+    /**
+     * Comment query service.
+     */
+    private CommentQueryService commentQueryService =
+            CommentQueryService.getInstance();
     /**
      * Filler.
      */
@@ -878,7 +884,7 @@ public final class ArticleProcessor {
         Stopwatchs.start("Get Article CMTs");
         LOGGER.finer("Getting article's comments....");
         final List<JSONObject> articleComments =
-                articleUtils.getComments(articleId);
+                commentQueryService.getComments(articleId);
         dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
         LOGGER.finer("Got article's comments");
         Stopwatchs.end();
