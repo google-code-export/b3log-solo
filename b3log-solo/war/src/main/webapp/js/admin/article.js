@@ -18,7 +18,8 @@
  *  article for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, Aug 22, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.1.1, Oct 18, 2011
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -114,28 +115,12 @@ admin.article = {
             var requestJSONObject = {
                 "oId": id
             };
+            
             jsonRpc.articleService.removeArticle(function (result, error) {
                 try {
-                    switch (result.status.code) {
+                    switch (result.sc) {
                         case "REMOVE_ARTICLE_SUCC":
-                            var events = result.status.events,
                             msg = Label.removeSuccLabel;
-                            if (events) {
-                                if ("BLOG_SYNC_FAIL" === events.blogSyncCSDNBlog.code) {
-                                    msg +=  ", " + Label.syncCSDNBlogFailLabel
-                                    + events.blogSyncCSDNBlog.msg;
-                                }
-
-                                if ("BLOG_SYNC_FAIL" === events.blogSyncCnBlogs.code) {
-                                    msg += ", " + Label.syncCnBlogsFailLabel
-                                    + events.blogSyncCnBlogs.msg;
-                                }
-
-                                if ("BLOG_SYNC_FAIL" === events.blogSyncBlogJava.code) {
-                                    msg += ", " + Label.syncBlogJavaFailLabel 
-                                    + events.blogSyncBlogJava.msg;
-                                }
-                            }
                             $("#tipMsg").text(msg);
                             admin[fromId + "List"].getList(1);
                             break;
