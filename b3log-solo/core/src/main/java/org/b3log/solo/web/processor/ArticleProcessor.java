@@ -16,7 +16,7 @@
 package org.b3log.solo.web.processor;
 
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.service.ArticleUpdateService;
+import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.UserRepository;
@@ -96,8 +96,8 @@ public final class ArticleProcessor {
     /**
      * Article update service.
      */
-    private ArticleUpdateService articleUpdateService =
-            ArticleUpdateService.getInstance();
+    private ArticleMgmtService articleUpdateService =
+            ArticleMgmtService.getInstance();
     /**
      * Comment query service.
      */
