@@ -30,16 +30,16 @@ import org.json.JSONObject;
  * Article update service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 3, 2011
+ * @version 1.0.0.1, Oct 18, 2011
  * @since 0.3.5
  */
-public final class ArticleUpdateService {
+public final class ArticleMgmtService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticleUpdateService.class.getName());
+            Logger.getLogger(ArticleMgmtService.class.getName());
     /**
      * Article repository.
      */
@@ -81,18 +81,18 @@ public final class ArticleUpdateService {
     }
 
     /**
-     * Gets the {@link ArticleUpdateService} singleton.
+     * Gets the {@link ArticleMgmtService} singleton.
      *
      * @return the singleton
      */
-    public static ArticleUpdateService getInstance() {
+    public static ArticleMgmtService getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private constructor.
      */
-    private ArticleUpdateService() {
+    private ArticleMgmtService() {
     }
 
     /**
@@ -106,8 +106,8 @@ public final class ArticleUpdateService {
         /**
          * Singleton.
          */
-        private static final ArticleUpdateService SINGLETON =
-                new ArticleUpdateService();
+        private static final ArticleMgmtService SINGLETON =
+                new ArticleMgmtService();
 
         /**
          * Private default constructor.
