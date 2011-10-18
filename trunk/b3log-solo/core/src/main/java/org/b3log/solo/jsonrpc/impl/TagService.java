@@ -26,6 +26,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Tag;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Tag service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jan 20, 2011
+ * @version 1.0.0.7, Oct 18, 2011
  * @since 0.3.1
  */
 public final class TagService extends AbstractGAEJSONRpcService {
@@ -124,8 +125,10 @@ public final class TagService extends AbstractGAEJSONRpcService {
             return ret;
         }
         final JSONArray tags = getTags(request, response);
-
+        
+        final Transaction transaction = tagRepository.beginTransaction();
         try {
+            
             for (int i = 0; i < tags.length(); i++) {
                 final JSONObject tag = tags.getJSONObject(i);
                 final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
@@ -135,10 +138,14 @@ public final class TagService extends AbstractGAEJSONRpcService {
                 }
             }
 
-
+            transaction.commit();
+            
             ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_UNUSED_TAGS_SUCC);
-
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            
             LOGGER.log(Level.SEVERE, "Remove unused tags fail: {0}",
                        e.getMessage());
 
