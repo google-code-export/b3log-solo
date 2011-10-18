@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,9 +31,6 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.repository.ArticleRepository;
@@ -54,7 +50,8 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Aug 25, 2011
+ * @version 1.0.2.4, Oct 18, 2011
+ * @since 0.3.1
  */
 public final class Articles {
 
@@ -244,42 +241,6 @@ public final class Articles {
 
             tagArticleRepository.add(tagArticleRelation);
         }
-    }
-
-    /**
-     * Gets comments of an article specified by the article id.
-     *
-     * @param articleId the specified article id
-     * @return a list of comments, returns an empty list if not found
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
-     */
-    public List<JSONObject> getComments(final String articleId)
-            throws JSONException, RepositoryException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-
-        final List<JSONObject> comments =
-                commentRepository.getComments(articleId, 1, Integer.MAX_VALUE);
-        for (final JSONObject comment : comments) {
-            final String content = comment.getString(Comment.COMMENT_CONTENT).
-                    replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
-            comment.put(Comment.COMMENT_CONTENT, content);
-            comment.remove(Comment.COMMENT_EMAIL); // Remove email
-
-            if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
-                comment.put(Common.IS_REPLY, true);
-                final String originalCommentName = comment.getString(
-                        Comment.COMMENT_ORIGINAL_COMMENT_NAME);
-                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME,
-                            originalCommentName);
-            } else {
-                comment.put(Common.IS_REPLY, false);
-            }
-
-            ret.add(comment);
-        }
-
-        return ret;
     }
 
     /**
