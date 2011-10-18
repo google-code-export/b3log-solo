@@ -54,6 +54,7 @@ import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
+import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Permalinks;
@@ -70,7 +71,7 @@ import org.json.JSONObject;
  * Article service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Oct 4, 2011
+ * @version 1.1.0.2, Oct 18, 2011
  * @since 0.3.1
  */
 public final class ArticleService extends AbstractGAEJSONRpcService {
@@ -80,6 +81,11 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     private static final Logger LOGGER =
             Logger.getLogger(ArticleService.class.getName());
+    /**
+     * Comment management service.
+     */
+    private CommentMgmtService commentMgmtService =
+            CommentMgmtService.getInstance();
     /**
      * Article repository.
      */
@@ -581,7 +587,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             tagUtils.decTagRefCount(articleId);
             archiveDateUtils.unArchiveDate(articleId);
             articleUtils.removeTagArticleRelations(articleId);
-            articleUtils.removeArticleComments(articleId);
+            commentMgmtService.removeArticleComments(articleId);
             final JSONObject article = articleRepository.get(articleId);
             articleRepository.remove(articleId);
             System.out.println("3: " + statistics.getBlogCommentCount());
