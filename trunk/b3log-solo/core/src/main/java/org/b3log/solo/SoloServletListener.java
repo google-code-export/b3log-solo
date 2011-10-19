@@ -93,8 +93,6 @@ public final class SoloServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
 
-        registerEventProcessor();
-
         super.contextInitialized(servletContextEvent);
 
         if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()) {
@@ -126,7 +124,8 @@ public final class SoloServletListener extends AbstractServletListener {
         PluginManager.getInstance().load();
 
         registerRemoteJSServices();
-
+        registerEventProcessor();
+        
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
