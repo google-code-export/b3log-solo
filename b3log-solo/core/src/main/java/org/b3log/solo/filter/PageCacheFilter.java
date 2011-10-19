@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 2, 2011
+ * @version 1.0.0.3, Oct 19, 2011
  * @since 0.3.1
  */
 public final class PageCacheFilter implements Filter {
@@ -91,25 +91,12 @@ public final class PageCacheFilter implements Filter {
                          final ServletResponse response,
                          final FilterChain chain) throws IOException,
                                                          ServletException {
-        final HttpServletRequest httpServletRequest =
-                (HttpServletRequest) request;
-
         final long startTimeMillis = System.currentTimeMillis();
         request.setAttribute(AbstractCacheablePageAction.START_TIME_MILLIS,
                              startTimeMillis);
 
-        if (Latkes.isPageCacheEnabled()) {
-            final String requestURI = httpServletRequest.getRequestURI();
-            final String queryString = httpServletRequest.getQueryString();
-            String pageCacheKey =
-                    (String) request.getAttribute(Keys.PAGE_CACHE_KEY);
-            if (Strings.isEmptyOrNull(pageCacheKey)) {
-                pageCacheKey = PageCaches.getPageCacheKey(requestURI,
-                                                          queryString);
-                request.setAttribute(Keys.PAGE_CACHE_KEY, pageCacheKey);
-            }
-        }
-
+        final HttpServletRequest httpServletRequest =
+                (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
@@ -126,9 +113,15 @@ public final class PageCacheFilter implements Filter {
             return;
         }
 
+        String pageCacheKey = null;
         final String queryString = httpServletRequest.getQueryString();
-        final String pageCacheKey =
-                PageCaches.getPageCacheKey(requestURI, queryString);
+        pageCacheKey =
+                (String) request.getAttribute(Keys.PAGE_CACHE_KEY);
+        if (Strings.isEmptyOrNull(pageCacheKey)) {
+            pageCacheKey = PageCaches.getPageCacheKey(requestURI,
+                                                      queryString);
+            request.setAttribute(Keys.PAGE_CACHE_KEY, pageCacheKey);
+        }
 
         final JSONObject cachedPageContentObject = PageCaches.get(pageCacheKey,
                                                                   true);
@@ -184,7 +177,7 @@ public final class PageCacheFilter implements Filter {
                     "<!-- Cached by B3log Solo(%1$d ms), %2$s -->",
                     endimeMillis - startTimeMillis, dateString);
             LOGGER.finer(msg);
-            cachedPageContent += "\r\n" + msg;
+            cachedPageContent += Strings.LINE_SEPARATOR + msg;
             writer.write(cachedPageContent);
             writer.flush();
             writer.close();
