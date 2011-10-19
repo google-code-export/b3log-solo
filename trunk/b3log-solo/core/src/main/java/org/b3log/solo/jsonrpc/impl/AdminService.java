@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
-import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
@@ -41,7 +40,6 @@ import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.web.action.StatusCodes;
-import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -69,7 +67,7 @@ import org.json.JSONObject;
  * Administrator service for JavaScript client.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.3, Oct 18, 2011
+ * @version 1.1.0.4, Oct 19, 2011
  * @since 0.3.1
  */
 public final class AdminService extends AbstractGAEJSONRpcService {
@@ -774,10 +772,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
 
         ret.put(Keys.OBJECT_ID, preferenceId);
         preferenceRepository.add(ret);
-
-        eventManager.fireEventSynchronously(// for upgrade extensions
-                new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
-                                      ret));
 
         preferenceRepository.update(preferenceId, ret);
 

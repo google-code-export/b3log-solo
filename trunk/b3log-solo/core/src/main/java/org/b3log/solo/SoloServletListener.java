@@ -24,13 +24,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
-import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
-import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
@@ -55,7 +53,6 @@ import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
@@ -64,7 +61,8 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.8, Oct 13, 2011
+ * @version 1.0.5.9, Oct 19, 2011
+ * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
 
@@ -94,6 +92,9 @@ public final class SoloServletListener extends AbstractServletListener {
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Stopwatchs.start("Context Initialized");
+
+        registerEventProcessor();
+
         super.contextInitialized(servletContextEvent);
 
         if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()) {
@@ -108,6 +109,9 @@ public final class SoloServletListener extends AbstractServletListener {
                 PreferenceRepositoryImpl.getInstance();
 
         final Transaction transaction = preferenceRepository.beginTransaction();
+
+        // Cache will be cleared manaully if necessary, see loadPreference.
+        transaction.clearQueryCache(false);
         try {
             loadPreference();
 
@@ -122,7 +126,6 @@ public final class SoloServletListener extends AbstractServletListener {
         PluginManager.getInstance().load();
 
         registerRemoteJSServices();
-        registerEventProcessor();
 
         LOGGER.info("Initialized the context");
 
@@ -169,13 +172,14 @@ public final class SoloServletListener extends AbstractServletListener {
      * Loading preference.
      * 
      * <p>
-     * Loads preference from repository, loads skins from skin directory then
-     * sets it into preference, puts preference into cache and saves it to 
-     * repository finally.
+     *   Loads preference from repository, loads skins from skin directory then
+     *   sets it into preference, puts preference into cache and saves it to 
+     *   repository finally.
      * </p>
      * 
      * <p>
-     *   <b>Note</b>: Do NOT use method {@linkplain Preferences#getPreference()}
+     *   <b>Note</b>: Do NOT use method 
+     *   {@linkplain org.b3log.solo.util.Preferences#getPreference()}
      *   to load it, caused by the method may retrieve it from cache.
      * </p>
      */
@@ -198,14 +202,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
             final Skins skins = Skins.getInstance();
             skins.loadSkins(preference);
-
-            final EventManager eventManager = EventManager.getInstance();
-
-            eventManager.fireEventSynchronously(// for upgrade extensions
-                    new Event<JSONObject>(EventTypes.PREFERENCE_LOAD,
-                                          preference));
-
-            Preferences.getInstance().setPreference(preference);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
