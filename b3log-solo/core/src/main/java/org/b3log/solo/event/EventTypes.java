@@ -19,7 +19,8 @@ package org.b3log.solo.event;
  * Event types.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Oct 29, 2010
+ * @version 1.0.0.6, Oct 19, 2011
+ * @since 0.3.1
  */
 public final class EventTypes {
 
@@ -47,14 +48,6 @@ public final class EventTypes {
      * Indicates a remove comment event.
      */
     public static final String REMOVE_COMMENT = "Remove Comment";
-    /**
-     * Indicates the preference load event.
-     */
-    public static final String PREFERENCE_LOAD = "Preference Load";
-    /**
-     * Indicates the upgrade event.
-     */
-    public static final String UPGRADE = "Upgrade";
 
     /**
      * Private default constructor.

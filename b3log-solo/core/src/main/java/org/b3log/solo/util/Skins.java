@@ -35,14 +35,13 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
 import static org.b3log.solo.model.Skin.*;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, Sep 27, 2011
+ * @version 1.0.2.0, Oct 19, 2011
  * @since 0.3.1
  */
 public final class Skins {
@@ -73,7 +72,7 @@ public final class Skins {
                               final Map<String, Object> dataModel)
             throws Exception {
         Stopwatchs.start("Fill Skin Langs");
-        
+
         final String localeString = preference.getString(
                 Preference.LOCALE_STRING);
         final String currentSkinDirName =
@@ -114,28 +113,26 @@ public final class Skins {
         }
 
         dataModel.putAll(langs);
-        
+
         Stopwatchs.end();
     }
 
     /**
      * Loads skins for the specified preference and initializes templates 
      * loading.
+     * 
+     * <p>
+     * If the skins directory has been changed, persists the change into 
+     * preference.
+     * </p>
      *
      * @param preference the specified preference
-     * @throws JSONException json exception
+     * @throws Exception exception
      */
-    public void loadSkins(final JSONObject preference) throws JSONException {
+    public void loadSkins(final JSONObject preference) throws Exception {
         Stopwatchs.start("Load Skins");
-        
+
         LOGGER.info("Loading skins....");
-
-        final String currentSkinDirName = preference.getString(SKIN_DIR_NAME);
-        preference.put(SKIN_DIR_NAME, currentSkinDirName);
-
-        final String skinName = getSkinName(currentSkinDirName);
-        preference.put(SKIN_NAME, skinName);
-        LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
 
         final Set<String> skinDirNames = getSkinDirNames();
         LOGGER.log(Level.FINER, "Loaded skins[dirNames={0}]", skinDirNames);
@@ -156,6 +153,19 @@ public final class Skins {
             skinArray.put(skin);
         }
 
+        final String skinsString = skinArray.toString();
+        if (!skinsString.equals(preference.getString(SKINS))) {
+            LOGGER.log(Level.INFO, "The skins directory has been changed, persists "
+                                   + "the change into preference");
+            preference.put(SKINS, skinsString);
+            Preferences.getInstance().setPreference(preference);
+            PageCaches.removeAll(); // Clears cache manually.
+        }
+
+        final String currentSkinDirName = preference.getString(SKIN_DIR_NAME);
+        final String skinName = preference.getString(SKIN_NAME);
+        LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
+
         if (!skinDirNames.contains(currentSkinDirName)) {
             LOGGER.log(Level.WARNING,
                        "Configred skin[dirName={0}] can not find, try to use "
@@ -173,10 +183,10 @@ public final class Skins {
             preference.put(SKIN_DIR_NAME, "classic");
             preference.put(SKIN_NAME, "经典淡蓝");
 
-            PageCaches.removeAll();
+            Preferences.getInstance().setPreference(preference);
+            PageCaches.removeAll(); // Clears cache manually.
         }
 
-        preference.put(SKINS, skinArray.toString());
         setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));
 
         final String localeString = preference.getString(
@@ -186,7 +196,7 @@ public final class Skins {
         }
 
         LOGGER.info("Loaded skins....");
-        
+
         Stopwatchs.end();
     }
 
