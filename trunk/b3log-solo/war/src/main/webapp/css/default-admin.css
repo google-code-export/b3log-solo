@@ -336,10 +336,10 @@ a:hover {
 /* start about */
 .about-logo {
     float: left;
-    margin: 36px;
+    margin: 62px 36px 62px 24px;
 }
 
-#aboutLatest {
+.about-margin {
     font-size: 20px;
     margin: 20px 0;
 }
