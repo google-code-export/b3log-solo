@@ -8,8 +8,8 @@
                 <img src="/images/logo.png" alt="B3log Solo" title="B3log Solo" />
             </a>
         </div>
-        <div class="left">
-            <div id="aboutLatest">${checkingVersionLabel}</div>
+        <div class="left" style="width: 73%">
+            <div id="aboutLatest" class="about-margin">${checkingVersionLabel}</div>
             ${aboutContentLabel}
         </div>
         <span class="clear"></span>
