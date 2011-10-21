@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
@@ -41,7 +42,7 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Oct 19, 2011
+ * @version 1.0.2.1, Oct 21, 2011
  * @since 0.3.1
  */
 public final class Skins {
@@ -185,6 +186,12 @@ public final class Skins {
 
             Preferences.getInstance().setPreference(preference);
             PageCaches.removeAll(); // Clears cache manually.
+        }
+
+        if (preference.getBoolean(Preference.PAGE_CACHE_ENABLED)) {
+            Latkes.enablePageCache();
+        } else {
+            Latkes.disablePageCache();
         }
 
         setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));

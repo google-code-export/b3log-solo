@@ -211,9 +211,12 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
             for (final String key : keys) {
                 LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
 
-                final JSONObject cachedPage = PageCaches.get(key, false);
+                JSONObject cachedPage = PageCaches.get(key, false);
 
                 if (null != cachedPage) {
+                    // Do a copy for properties removing and retrieving
+                    cachedPage = new JSONObject(cachedPage,
+                                                JSONObject.getNames(cachedPage));
                     cachedPage.remove(CACHED_CONTENT);
                     pages.add(cachedPage);
                 }
