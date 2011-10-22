@@ -182,13 +182,13 @@ $.extend(Common.prototype, {
         
         // 根据引用次数添加样式，产生云效果
         var classes = ["tags1", "tags2", "tags3", "tags4", "tags5"],
-        bList = $("#" + id + " b").get(),
-        reg = /^[u4E00-u9FA5]+$/;
+        bList = $("#" + id + " b").get();
         var max = parseInt($("#" + id + " b").last().text());
         var distance = Math.ceil(max / classes.length);
 
         for (var i = 0; i < bList.length; i++) {
             var num = parseInt(bList[i].innerHTML);
+            // 算出当前 tag 数目所在的区间，加上 class
             for (var j = 0; j < classes.length; j++) {
                 if (num > j * distance && num <= (j + 1) * distance) {
                     bList[i].parentNode.className = classes[j];
@@ -201,11 +201,8 @@ $.extend(Common.prototype, {
         $("#" + id).html($("#" + id + " li").get().sort(function(a, b) {
             var valA = $(a).find("span").text().toLowerCase();
             var valB = $(b).find("span").text().toLowerCase();
-            if (!reg.test(valA) && !reg.test(valB)) {
-                return valA.localeCompare(valB);
-            } else {
-                return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;	
-            }	
+            // 对中英文排序的处理
+            return valA.localeCompare(valB);
         }));
     }
 });
