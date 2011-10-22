@@ -141,6 +141,7 @@ public final class TagProcessor {
             final int currentPageNum = getCurrentPageNum(requestURI, tagTitle);
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             LOGGER.log(Level.FINER, "Tag[title={0}, currentPageNum={1}]",
@@ -151,6 +152,7 @@ public final class TagProcessor {
 
             if (null == tag) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             final String tagId = tag.getString(Keys.OBJECT_ID);
@@ -185,6 +187,7 @@ public final class TagProcessor {
             if (0 == tagArticleRelations.length()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    return;
                 } catch (final IOException ex) {
                     LOGGER.severe(ex.getMessage());
                 }
@@ -201,7 +204,7 @@ public final class TagProcessor {
                 if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
                     continue;
                 }
-                
+
                 filler.setArticleExProperties(article, preference);
 
                 articles.add(article);
@@ -244,6 +247,7 @@ public final class TagProcessor {
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
@@ -304,6 +308,7 @@ public final class TagProcessor {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             skins.fillSkinLangs(preference, dataModel);
@@ -333,6 +338,7 @@ public final class TagProcessor {
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }

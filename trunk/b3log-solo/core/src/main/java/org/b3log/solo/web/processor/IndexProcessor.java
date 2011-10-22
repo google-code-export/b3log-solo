@@ -101,6 +101,7 @@ public final class IndexProcessor {
             final int currentPageNum = getCurrentPageNum(requestURI);
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             final JSONObject preference = preferenceUtils.getPreference();

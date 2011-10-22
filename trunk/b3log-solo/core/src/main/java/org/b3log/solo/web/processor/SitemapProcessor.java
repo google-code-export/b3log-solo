@@ -118,6 +118,7 @@ public final class SitemapProcessor {
             try {
                 context.getResponse().sendError(
                         HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+                return;
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -143,12 +144,12 @@ public final class SitemapProcessor {
 
         // Closes cache avoid Java heap space out of memory while caching 
         // query results
-        articleRepository.setCacheEnabled(false); 
-        
+        articleRepository.setCacheEnabled(false);
+
         final JSONObject articleResult = articleRepository.get(query);
-        
+
         articleRepository.setCacheEnabled(true); // Restores cache
-        
+
         final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
         for (int i = 0; i < articles.length(); i++) {
             final JSONObject article = articles.getJSONObject(i);

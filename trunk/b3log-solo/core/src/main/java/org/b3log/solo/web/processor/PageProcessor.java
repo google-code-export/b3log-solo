@@ -97,6 +97,7 @@ public final class PageProcessor {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             skins.fillSkinLangs(preference, dataModel);
@@ -108,6 +109,7 @@ public final class PageProcessor {
                     (JSONObject) request.getAttribute(Page.PAGE);
             if (null == page) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             final String pageId = page.getString(Keys.OBJECT_ID);
@@ -129,6 +131,7 @@ public final class PageProcessor {
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
