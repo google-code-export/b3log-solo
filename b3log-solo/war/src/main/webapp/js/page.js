@@ -410,8 +410,12 @@ $.extend(Page.prototype, {
         } else {
             $("#replyForm").remove();
             endHTML = endHTML ? endHTML : "";
-            $("#" + id).append(commentFormHTML  + $("#commentForm").html() + "</table>" + endHTML);
-            
+            if (endHTML === "</div>") {
+                $("#" + id).append(commentFormHTML  + $("#commentForm").html() + endHTML);
+            } else {
+                $("#" + id).append(commentFormHTML  + $("#commentForm").html() + "</table>" + endHTML);
+            }
+
             // change id, bind event and set value
             $("#replyForm input, #replyForm textarea").each(function () {
                 this.id = this.id + "Reply";
