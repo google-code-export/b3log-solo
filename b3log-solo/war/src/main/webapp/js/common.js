@@ -190,7 +190,7 @@ $.extend(Common.prototype, {
         for (var i = 0; i < bList.length; i++) {
             var num = parseInt(bList[i].innerHTML);
             for (var j = 0; j < classes.length; j++) {
-                if (num > j * distance && num < (j + 1) * distance) {
+                if (num > j * distance && num <= (j + 1) * distance) {
                     bList[i].parentNode.className = classes[j];
                     break;
                 }
