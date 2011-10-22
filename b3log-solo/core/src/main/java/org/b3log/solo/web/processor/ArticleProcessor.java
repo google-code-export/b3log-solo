@@ -287,6 +287,7 @@ public final class ArticleProcessor {
                                                                authorId);
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             LOGGER.log(Level.FINER,
@@ -296,6 +297,7 @@ public final class ArticleProcessor {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             final int pageSize = preference.getInt(
@@ -329,6 +331,7 @@ public final class ArticleProcessor {
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    return;
                 } catch (final IOException ex) {
                     LOGGER.severe(ex.getMessage());
                 }
@@ -361,6 +364,7 @@ public final class ArticleProcessor {
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
@@ -394,6 +398,7 @@ public final class ArticleProcessor {
             final int currentPageNum = getArchiveCurrentPageNum(requestURI);
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             LOGGER.log(Level.FINER,
@@ -407,6 +412,7 @@ public final class ArticleProcessor {
                                           + "archive date[string={0}]",
                            archiveDate);
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
@@ -425,6 +431,7 @@ public final class ArticleProcessor {
             if (0 == archiveDateArticleRelations.length()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    return;
                 } catch (final IOException ex) {
                     LOGGER.severe(ex.getMessage());
                 }
@@ -475,6 +482,7 @@ public final class ArticleProcessor {
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
@@ -520,6 +528,7 @@ public final class ArticleProcessor {
             final JSONObject preference = preferenceUtils.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             final Map<String, String> langs =
@@ -531,6 +540,7 @@ public final class ArticleProcessor {
                     (JSONObject) request.getAttribute(Article.ARTICLE);
             if (null == article) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
 
             articleId = article.getString(Keys.OBJECT_ID);
@@ -541,6 +551,8 @@ public final class ArticleProcessor {
             if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)
                 && !allowVisitDraftViaPermalink) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
             }
 
             request.setAttribute(CACHED_OID, articleId);
@@ -583,6 +595,7 @@ public final class ArticleProcessor {
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
