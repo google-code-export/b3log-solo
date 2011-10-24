@@ -376,24 +376,33 @@ admin.article = {
             }
         });
         
-        // tag auto completed
-        jsonRpc.tagService.getTags(function (result, error) {
-            try {
-                if (result.length > 0) {
-                    var tags = [];
-                    for (var i = 0; i < result.length; i++) {
-                        tags.push(result[i].tagTitle);
-                    }
-                    $("#tag").completed({
-                        height: 160,
-                        data: tags
-                    });
+        // For tag auto-completion
+        $.ajax({ // Gets all tags
+            url: "/console/tags",
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    return;
                 }
-            } catch (e) {}
-            
-            $("#loadMsg").text("");
+           
+                if (0 >= result.tags.length) {
+                    return;
+                }
+                
+                var tags = [];
+                for (var i = 0; i < result.tags.length; i++) {
+                    tags.push(result.tags[i].tagTitle);
+                }
+                
+                $("#tag").completed({
+                    height: 160,
+                    data: tags
+                });
+                
+                $("#loadMsg").text("");
+            }
         });
-
+    
         // submit action
         $("#submitArticle").click(function () {
             if (admin.article.status.id) {
