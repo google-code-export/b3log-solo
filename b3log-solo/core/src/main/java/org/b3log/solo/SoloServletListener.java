@@ -43,7 +43,6 @@ import org.b3log.solo.jsonrpc.impl.LinkService;
 import org.b3log.solo.jsonrpc.impl.PageService;
 import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.jsonrpc.impl.StatisticService;
-import org.b3log.solo.jsonrpc.impl.TagService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.util.Stopwatchs;
@@ -61,7 +60,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.9, Oct 19, 2011
+ * @version 1.0.6.0, Oct 24, 2011
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -316,10 +315,6 @@ public final class SoloServletListener extends AbstractServletListener {
                     StatisticService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(statisticService.
                     getServiceObjectName(), statisticService);
-
-            final TagService tagService = TagService.getInstance();
-            JSONRPCBridge.getGlobalBridge().registerObject(tagService.
-                    getServiceObjectName(), tagService);
 
             final PluginService pluginService = PluginService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(pluginService.

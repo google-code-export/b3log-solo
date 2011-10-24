@@ -18,24 +18,46 @@
  * others for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Aug 19, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.5, Oct 24, 2011
  */
 
 /* oterhs 相关操作 */
 admin.others = {
+    
     /*
-     * 移除未使用的 tag
+     * 移除未使用的标签。
      */
     removeUnusedTags: function () {
         $("#tipMsg").text("");
-        jsonRpc.tagService.removeUnusedTags(function (result, error) {
-            try {
-                if (result.sc === "REMOVE_UNUSED_TAGS_SUCC") {
-                    $("#tipMsg").text(Label.removeSuccLabel);
-                } else {
-                    $("#tipMsg").text(Label.removeFailLabel);
+        
+        $.ajax({
+            url: "/console/tag/unused",
+            type: "DELETE",
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);                
+            }
+        });
+    },
+    
+    /*
+     * 获取未使用的标签。
+     */
+    getUnusedTags: function () {
+        $.ajax({
+            url: "/console/tag/unused",
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    return;
                 }
-            } catch (e) {
+                
+                var unusedTags = result.unusedTags;
+                if (0 === unusedTags.length) {
+                    return;
+                }
+
+                // XXX: Not used this function yet.
             }
         });
     }

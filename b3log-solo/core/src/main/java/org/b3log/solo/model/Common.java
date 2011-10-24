@@ -19,7 +19,8 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.7, Oct 2, 2011
+ * @version 1.0.3.8, Oct 24, 2011
+ * @since 0.3.1
  */
 public final class Common {
 
@@ -209,6 +210,10 @@ public final class Common {
      */
     public static final String TOP_BAR_REPLACEMENT_FLAG =
             "#B3logSolo#topBarReplacement#B3logSolo#";
+    /**
+     * Key of unused tags.
+     */
+    public static final String UNUSED_TAGS = "unusedTags";
 
     /**
      * Private default constructor.
