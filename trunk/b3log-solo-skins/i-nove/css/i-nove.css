@@ -3,7 +3,7 @@
  * skin i-nove style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Oct 15, 2011
+ * @version 1.0.0.7, Oct 25, 2011
 */
 body {
     background: url("../images/bg.jpg") repeat-x scroll 0 20px #BEC3C6;
@@ -340,7 +340,6 @@ h5 {
 }
 .side-navi .navi-comments .side-comment {
     color: #555555;
-    display: block;
     font-weight: normal;
     height: 18px;
 }
@@ -358,6 +357,9 @@ h5 {
     padding: 2px 0;
 }
 .side-navi .navi-comments li div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
     width: 227px;
 }
 .side-navi a.selected {

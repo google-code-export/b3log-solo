@@ -211,7 +211,7 @@ $.extend(Common.prototype, {
  * @fileoverview neoease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Sep 16, 2011
+ * @version 1.0.0.6, Oct 25, 2011
  */
 var goTop = function (acceleration) {
     acceleration = acceleration || 0.1;
@@ -326,11 +326,16 @@ var goTranslate = function () {
     // recent comment mouse click
     $(".recent-comments .expand-ico").click(function () {
         if (this.className === "expand-ico") {
-            $(this).parent().next().css("height", "auto");
+            $(this).parent().next().css({
+                "height": "auto",
+                "white-space": "normal"
+            });
             this.className = "collapse-ico";
         } else {
             $(this).parent().next().animate({
-                "height": "16px"
+                "height": "18px"
+            }, function () {
+                $(this).css("white-space", "nowrap");
             });
             this.className = "expand-ico";
         }
