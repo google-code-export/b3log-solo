@@ -34,7 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Tag query service.
+ * File query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Oct 25, 2011
