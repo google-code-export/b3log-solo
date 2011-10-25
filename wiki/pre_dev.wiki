@@ -4,4 +4,4 @@
 在开始搭建开发环境之前，您必须掌握如下知识或技能：
  * 能够使用 Java 开发应用程序 
  * 对 [http://code.google.com/appengine/docs/java/overview.html Google App Engine（for Java）]有一定了解
- * 熟悉 [http://maven.apache.org Maven2+]
+ * 熟悉 [http://maven.apache.org Maven2+]（建议使用 [http://www.apache.org/dyn/closer.cgi/maven/binaries/apache-maven-2.2.1-bin.zip Maven 2.2.1]）
