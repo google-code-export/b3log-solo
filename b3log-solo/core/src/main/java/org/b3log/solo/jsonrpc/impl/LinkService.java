@@ -62,48 +62,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     private Users userUtils = Users.getInstance();
 
     /**
-     * Gets a link by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "oId": ""
-     * }
-     * </pre>
-     * @return for example,
-     * <pre>
-     * {
-     *     "link": {
-     *         "oId": "",
-     *         "linkTitle": "",
-     *         "linkAddress": ""
-     *     },
-     *     "sc": "GET_LINK_SUCC"
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     */
-    public JSONObject getLink(final JSONObject requestJSONObject)
-            throws ActionException {
-        final JSONObject ret = new JSONObject();
-
-        try {
-            final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final JSONObject link = linkRepository.get(linkId);
-            ret.put(Link.LINK, link);
-
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINK_SUCC);
-
-            LOGGER.log(Level.FINER, "Got a link[oId={0}]", linkId);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
-
-    /**
      * Gets links by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
