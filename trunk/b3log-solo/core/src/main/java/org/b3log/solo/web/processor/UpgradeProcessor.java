@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Oct 2, 2011
+ * @version 1.1.0.3, Oct 24, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -88,6 +88,12 @@ public final class UpgradeProcessor {
     public void upgrade(final HTTPRequestContext context) {
         try {
             final JSONObject preference = preferences.getPreference();
+            if (null == preference) { // Not init yet
+                LOGGER.log(Level.INFO, "Not init yet");
+                
+                return;
+            }
+            
             if (!preference.has(Preference.VERSION)) {
                 v030ToV031();
 
