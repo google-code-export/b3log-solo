@@ -18,6 +18,7 @@ package org.b3log.solo.service;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.repository.FileRepository;
 import org.b3log.solo.repository.impl.FileRepositoryImpl;
 
@@ -44,9 +45,9 @@ public final class FileMgmtService {
      * Removes a file specified by the given file id.
      *
      * @param fileId the given file id
-     * @throws Exception exception
+     * @throws ServiceException service exception
      */
-    public void removeFile(final String fileId) throws Exception {
+    public void removeFile(final String fileId) throws ServiceException {
         final Transaction transaction = fileRepository.beginTransaction();
 
         try {
@@ -58,6 +59,8 @@ public final class FileMgmtService {
             }
 
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            
+            throw new ServiceException(e);
         }
     }
 

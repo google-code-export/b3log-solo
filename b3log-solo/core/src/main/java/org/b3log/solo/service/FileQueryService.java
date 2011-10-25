@@ -15,21 +15,19 @@
  */
 package org.b3log.solo.service;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.File;
 import org.b3log.solo.repository.FileRepository;
 import org.b3log.solo.repository.impl.FileRepositoryImpl;
-import org.b3log.solo.service.util.QueryResults;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -79,11 +77,10 @@ public final class FileQueryService {
      *     }, ....]
      * }
      * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
+     * @throws ServiceException service exception
      */
     public JSONObject getFiles(final JSONObject requestJSONObject)
-            throws ActionException, IOException {
+            throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         try {
@@ -125,7 +122,7 @@ public final class FileQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            return QueryResults.defaultResult();
+            throw new ServiceException(e);
         }
     }
 

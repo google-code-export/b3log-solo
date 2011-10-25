@@ -243,12 +243,10 @@ public final class ArticleMgmtService {
      * Removes the article specified by the given id.
      * 
      * @param articleId the given id
-     * @return remove result
+     * @throws Exception exception 
      */
-    public JSONObject removeArticle(final String articleId) {
+    public void removeArticle(final String articleId) throws Exception {
         LOGGER.log(Level.FINER, "Removing an article[id={0}]", articleId);
-
-        final JSONObject ret = new JSONObject();
 
         try {
             decTagRefCount(articleId);
@@ -264,21 +262,13 @@ public final class ArticleMgmtService {
             if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 statistics.decPublishedBlogArticleCount();
             }
-
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Removes an article[id=" + articleId
                                      + "] failed", e);
-
-            try {
-                ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_FAIL_);
-            } catch (final JSONException ex) {
-                throw new RuntimeException(ex);
-            }
+            throw e;
         }
 
         LOGGER.log(Level.FINER, "Removed an article[oId={0}]", articleId);
-
-        return ret;
     }
 
     /**
