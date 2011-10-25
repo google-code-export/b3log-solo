@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.service.util;
+package org.b3log.solo.util;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * Query result utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 3, 2011
+ * @version 1.0.0.1, Oct 25, 2011
  * @since 0.3.5
  */
 public final class QueryResults {
@@ -33,7 +33,26 @@ public final class QueryResults {
     /**
      * Constructs a default query result.
      * 
-     * @return a default query result,
+     * @return a default query result, 
+     * <pre>
+     * {
+     *     "sc": false
+     * }
+     * </pre>
+     */
+    public static JSONObject defaultResult() {
+        try {
+            return new JSONObject().put(Keys.STATUS_CODE, false);
+        } catch (final JSONException e) {
+            // Should never
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Constructs a default query results.
+     * 
+     * @return a default query results,
      * <pre>
      * {
      *     "pagination": {
@@ -43,7 +62,7 @@ public final class QueryResults {
      * }
      * </pre>
      */
-    public static JSONObject defaultResult() {
+    public static JSONObject defaultResults() {
         try {
             final JSONObject ret = new JSONObject();
             final JSONObject pagination = new JSONObject();

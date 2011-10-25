@@ -35,7 +35,7 @@ import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
-import org.b3log.solo.service.util.QueryResults;
+import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
@@ -288,7 +288,7 @@ public final class ArticleQueryService {
                                      + currentPageNum + ", pageSize="
                                      + pageSize + "]", e);
 
-            return QueryResults.defaultResult();
+            return QueryResults.defaultResults();
         }
     }
 

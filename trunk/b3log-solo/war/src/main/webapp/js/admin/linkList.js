@@ -173,26 +173,23 @@ admin.linkList = {
     get: function (id) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#updateLink").dialog("open");
-        var requestJSONObject = {
-            "oId": id
-        };
-
-        jsonRpc.linkService.getLink(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_LINK_SUCC":
-                        admin.linkList.id = id;
-                        $("#linkTitleUpdate").val(result.link.linkTitle);
-                        $("#linkAddressUpdate").val(result.link.linkAddress);
-                        break;
-                    case "GET_LINK_FAIL_":
-                        break;
-                    default:
-                        break;
+        
+        $.ajax({
+            url: "/console/link/" + id,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    return;
                 }
+                
+                admin.linkList.id = id;
+                $("#linkTitleUpdate").val(result.link.linkTitle);
+                $("#linkAddressUpdate").val(result.link.linkAddress);
                 $("#loadMsg").text("");
-            } catch (e) {}
-        }, requestJSONObject);
+            }
+        });
+        
+        $("#loadMsg").text("");
     },
     
     /*
