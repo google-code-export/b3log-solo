@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Oct 24, 2011
+ * @version 1.0.0.8, Oct 24, 2011
  */
 
 /* file-list 相关操作 */
@@ -61,12 +61,12 @@ admin.fileList = {
         this.getList(page);
         
         $("#formActionHidden").load(function () {
-            admin.fileList.getList(1);
             var $iframe = $("#formActionHidden").contents();
             var tip = $iframe.find("pre").html();
             if (tip === "") {
                 tip = Label.addSuccLabel; 
                 $("#uploadFile").html("<input type='file' name='myFile' size='45'>");
+                admin.fileList.getList(1);
             }
             $("#tipMsg").html(tip);
         });
