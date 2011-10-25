@@ -16,7 +16,6 @@
 package org.b3log.solo.web.processor;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +61,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Oct 15, 2011
+ * @version 1.1.0.2, Oct 25, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -292,9 +291,7 @@ public final class FeedProcessor {
                 }
             }
 
-            final PrintWriter writer = response.getWriter();
-            writer.write(feed.toString());
-            writer.close();
+            renderer.setContent(feed.toString());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Get tag article feed error", e);
 
