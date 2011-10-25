@@ -209,10 +209,6 @@ public enum StatusCodes {
      */
     REMOVE_UNUSED_TAGS_FAIL_,
     /**
-     * Indicates get files successfully.
-     */
-    GET_FILES_SUCC,
-    /**
      * Indicates upload a file successfully.
      */
     UPLOAD_FILES_SUCC,

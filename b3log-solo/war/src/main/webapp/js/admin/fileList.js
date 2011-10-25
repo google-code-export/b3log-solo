@@ -18,7 +18,8 @@
  * file list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Aug 19, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.7, Oct 24, 2011
  */
 
 /* file-list 相关操作 */
@@ -78,15 +79,18 @@ admin.fileList = {
     getList: function (pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
         var that = this;
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": Label.PAGE_SIZE,
-            "paginationWindowSize": Label.WINDOW_SIZE
-        };
+        
         this.pageInfo.currentPage = pageNum;
-        var result = jsonRpc.fileService.getFiles(requestJSONObject);
-        switch (result.sc) {
-            case "GET_FILES_SUCC":
+        
+        $.ajax({
+            url: "/console/files/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    // TODO: Vanessa, exception handling
+                    return;
+                }
+                
                 var files = result.files;
                 var fileData = [];
                 admin.fileList.pageInfo.currentCount = files.length;
@@ -95,7 +99,7 @@ admin.fileList = {
                     fileData[i] = {};
                     fileData[i].name = "<a class='no-underline' href='" + files[i].fileDownloadURL + "'>"
                     + files[i].fileName + "</a>";
-                    fileData[i].uploadDate = $.bowknot.getDate(files[i].fileUploadDate.time, 1);
+                    fileData[i].uploadDate = $.bowknot.getDate(files[i].fileUploadTime, 1);
                     fileData[i].downloadCnt = files[i].fileDownloadCount;
                     fileData[i].size = files[i].fileSize;
                     fileData[i].expendRow = "<a href='" + files[i].fileDownloadURL + "'>" + Label.downloadLabel + "</a>  \
@@ -103,10 +107,9 @@ admin.fileList = {
                 }
 
                 that.tablePagination.updateTablePagination(fileData, pageNum, result.pagination);
-                break;
-            default:
-                break;
-        }
+            }
+        });
+        
         $("#loadMsg").text("");
     },
 
