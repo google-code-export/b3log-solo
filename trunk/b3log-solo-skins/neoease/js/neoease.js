@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @fileoverview util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.3, Oct 3, 2011
+ * @version 1.0.1.4, Oct 22, 2011
  */
 var Util = {
     error: function () {
@@ -179,36 +180,30 @@ $.extend(Common.prototype, {
     buildTags: function (id) {
         id = id || "tags";
         
-        // 按字母进行排序
+        // 根据引用次数添加样式，产生云效果
+        var classes = ["tags1", "tags2", "tags3", "tags4", "tags5"],
+        bList = $("#" + id + " b").get();
+        var max = parseInt($("#" + id + " b").last().text());
+        var distance = Math.ceil(max / classes.length);
+
+        for (var i = 0; i < bList.length; i++) {
+            var num = parseInt(bList[i].innerHTML);
+            // 算出当前 tag 数目所在的区间，加上 class
+            for (var j = 0; j < classes.length; j++) {
+                if (num > j * distance && num <= (j + 1) * distance) {
+                    bList[i].parentNode.className = classes[j];
+                    break;
+                }
+            }
+        }
+        
+        // 按字母或者中文拼音进行排序
         $("#" + id).html($("#" + id + " li").get().sort(function(a, b) {
             var valA = $(a).find("span").text().toLowerCase();
             var valB = $(b).find("span").text().toLowerCase();
-            return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;		
+            // 对中英文排序的处理
+            return valA.localeCompare(valB);
         }));
-        
-        // 按引用次数进行排序
-        var aList = $("#" + id + " a").get();
-        aList.sort(function(a, b) {
-            var valA = parseInt($(a).data("count"));
-            var valB = parseInt($(b).data("count"));
-            return (valA < valB) ? -1 : (valA > valB) ? 1 : 0;		
-        });
-                
-        // 根据引用次数添加样式，产生云效果
-        var aLength = aList.length,
-        classes = ["tags1", "tags2", "tags3", "tags4", "tags5"];
-        var arr = Math.round(aLength / classes.length);
-        for (var i = 0, c = 0; i < aLength; i++) {
-            if (c < classes.length - 1) {
-                for (var j = 0; j < arr; j++) {
-                    aList[i++].className = classes[c];
-                }
-                c++;
-                i--;
-            } else {
-                aList[i].className = classes[c];
-            }
-        }
     }
 });
 
