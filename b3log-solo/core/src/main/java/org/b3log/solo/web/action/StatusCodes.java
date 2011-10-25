@@ -201,25 +201,9 @@ public enum StatusCodes {
      */
     GET_PAGES_SUCC,
     /**
-     * Indicates remove unused tags successfully.
-     */
-    REMOVE_UNUSED_TAGS_SUCC,
-    /**
-     * Indicates remove unused tags fails.
-     */
-    REMOVE_UNUSED_TAGS_FAIL_,
-    /**
      * Indicates upload a file successfully.
      */
     UPLOAD_FILES_SUCC,
-    /**
-     * Indicates remove a file successfully.
-     */
-    REMOVE_FILE_SUCC,
-    /**
-     * Indicates update a file successfully.
-     */
-    UPDATE_FILE_SUCC,
     /**
      * Indicates initializes B3log Solo successfully.
      */
