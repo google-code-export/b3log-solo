@@ -30,7 +30,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Sep 12, 2011
+ * @version 1.0.0.9, Oct 25, 2011
  */
 public final class Preferences {
 
@@ -48,10 +48,6 @@ public final class Preferences {
      */
     private PreferenceRepository preferenceRepository =
             PreferenceRepositoryImpl.getInstance();
-    /**
-     * Skin utilities.
-     */
-    private Skins skins = Skins.getInstance();
 
     static {
         userPreferenceCache = CacheFactory.getCache(PREFERENCE);
@@ -59,6 +55,10 @@ public final class Preferences {
 
     /**
      * Gets the user preference.
+     * 
+     * <p>
+     *   <b>Note</b>: Invoking the method will not load skin.
+     * </p>
      *
      * @return user preference, returns {@code null} if not found
      */
@@ -70,7 +70,7 @@ public final class Preferences {
         try {
             if (null == preferenceString) {
                 LOGGER.finest("Can't get preference from cache, "
-                             + "so loads it from datastore");
+                              + "so loads it from datastore");
                 ret = preferenceRepository.get(PREFERENCE);
 
                 if (null == ret) {
@@ -78,8 +78,6 @@ public final class Preferences {
                                "Can not load preference from datastore");
                     return null;
                 }
-
-                skins.loadSkins(ret);
 
                 userPreferenceCache.put(PREFERENCE, ret.toString());
             } else {

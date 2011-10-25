@@ -167,12 +167,12 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * Loading preference.
+     * Loads preference.
      * 
      * <p>
      *   Loads preference from repository, loads skins from skin directory then
-     *   sets it into preference, puts preference into cache and saves it to 
-     *   repository finally.
+     *   sets it into preference if the skins changed. Puts preference into 
+     *   cache and persists it to repository finally.
      * </p>
      * 
      * <p>
@@ -208,7 +208,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         Stopwatchs.end();
     }
-
+    
     /**
      * Registers remote JavaScript service serializers.
      */
