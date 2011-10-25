@@ -23,9 +23,11 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.solo.service.FileMgmtService;
 import org.b3log.solo.service.FileQueryService;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.web.util.Requests;
@@ -55,9 +57,17 @@ public final class FileConsole {
      */
     private FileQueryService fileQueryService = FileQueryService.getInstance();
     /**
+     * File management service.
+     */
+    private FileMgmtService fileMgmtService = FileMgmtService.getInstance();
+    /**
      * Get files request URI prefix.
      */
     private static final String GET_FILES_REQUEST_URI_PREFIX = "/console/files/";
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Gets the file with the specified request json object, http servlet
@@ -135,6 +145,58 @@ public final class FileConsole {
             final JSONObject jsonObject = new JSONObject();
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
+
+    /**
+     * Removes a file by the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = "/console/file/*",
+                       method = HTTPRequestMethod.DELETE)
+    public void removeFile(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+        // TODO: check the file whether is the current user's
+
+        try {
+            final String fileId =
+                    request.getRequestURI().substring("/console/file/".length());
+
+            fileMgmtService.removeFile(fileId);
+
+            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
     }
 }

@@ -87,7 +87,8 @@ admin.fileList = {
             type: "GET",
             success: function(result, textStatus){
                 if (!result.sc) {
-                    // TODO: Vanessa, exception handling
+                    $("#loadMsg").text(result.msg);
+                    
                     return;
                 }
                 
@@ -122,38 +123,30 @@ admin.fileList = {
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            var requestJSONObject = {
-                "oId": id
-            };
-
-            jsonRpc.fileService.removeFile(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "REMOVE_FILE_SUCC":
-                            var pageNum = admin.fileList.pageInfo.currentPage;
-                            if (admin.fileList.pageInfo.currentCount === 1 && admin.fileList.pageInfo.pageCount !== 1 &&
-                                admin.fileList.pageInfo.currentPage === admin.fileList.pageInfo.pageCount) {
-                                admin.fileList.pageInfo.pageCount--;
-                                pageNum = admin.fileList.pageInfo.pageCount;
-                            }
-                            var hashList = window.location.hash.split("/");
-                            if (pageNum !== parseInt(hashList[hashList.length - 1])) {
-                                admin.setHashByPage(pageNum);
-                            }
-                            admin.fileList.getList(pageNum);
-                            $("#tipMsg").text(Label.removeSuccLabel);
-                            break;
-                        case "REMOVE_FILE_FAIL_":
-                            $("#tipMsg").text(Label.removeFailLabel);
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/file/" + id,
+                type: "DELETE",
+                success: function(result, textStatus){
+                    $("#loadMsg").text(result.msg);
+                    
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {
-                    console.error(e);
+                
+                    var pageNum = admin.fileList.pageInfo.currentPage;
+                    if (admin.fileList.pageInfo.currentCount === 1 && admin.fileList.pageInfo.pageCount !== 1 &&
+                        admin.fileList.pageInfo.currentPage === admin.fileList.pageInfo.pageCount) {
+                        admin.fileList.pageInfo.pageCount--;
+                        pageNum = admin.fileList.pageInfo.pageCount;
+                    }
+                    var hashList = window.location.hash.split("/");
+                    if (pageNum !== parseInt(hashList[hashList.length - 1])) {
+                        admin.setHashByPage(pageNum);
+                    }
+                    admin.fileList.getList(pageNum);
                 }
-            }, requestJSONObject);
+            });
         }
     }
 };
