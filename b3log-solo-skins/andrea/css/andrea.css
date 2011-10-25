@@ -3,7 +3,7 @@
  * skin andrea style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Oct 15, 2011
+ * @version 1.0.0.5, Oct 25, 2011
 */
 body {
     background-image: url("../images/bg-grey.jpg");
@@ -286,6 +286,9 @@ a:hover {
     white-space: nowrap;
     overflow: hidden;
     height: 21px;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    color: #EAE7E0;
 }
 
 .side-navi .item dd li:hover {

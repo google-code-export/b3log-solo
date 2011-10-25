@@ -11,5 +11,17 @@
 <link type="text/css" rel="stylesheet" href="/skins/${skinDirName}/css/${skinDirName}.css" charset="utf-8" />
 <link href="blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
 <link rel="icon" type="image/png" href="/favicon.png" />
+<script type="text/javascript">
+    (function() {
+        if (! 
+            /*@cc_on!@*/
+        0) return;
+        var e = "abbr, article, aside, audio, canvas, datalist, details, dialog, eventsource, figure, footer, header, hgroup, mark, menu, meter, nav, output, progress, section, time, video".split(', ');
+        var i= e.length;
+        while (i--){
+            document.createElement(e[i])
+        } 
+    })() 
+</script>
 ${htmlHead}
 </#macro>

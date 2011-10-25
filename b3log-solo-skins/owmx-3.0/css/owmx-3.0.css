@@ -12,7 +12,7 @@ Update: 	Dongxu Wang 2011-02-24
 /*
  * skin owmx-3.0 style
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Aug 10, 2011
+ * @version 1.0.0.4, Oct 25, 2011
 */
 /* Reset */
 header, footer, article, nav, section, aside, time, hgroup {
@@ -258,9 +258,8 @@ aside ul.aside-comments img{
 aside ul.aside-comments a{
     font-weight:bold;
 }
-aside ul.aside-comments .side-comment{
+aside ul.aside-comments .side-comment{ 
     color: #555555;
-    display: block;
     font-weight: normal;
     overflow: hidden;
     white-space: nowrap;
@@ -282,6 +281,9 @@ aside ul.aside-comments li div{
 aside ul.aside-comments li div.left div {
     height: 18px;
     line-height: 18px;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
 }
 aside ul.navi-tags li{padding-left:0px;background-image:none;}
 aside ul.navi-tags li img{ margin-bottom:3px;padding-right:6px;height:16px;width:16px;}

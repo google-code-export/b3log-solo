@@ -3,7 +3,7 @@
  * skin favoutite style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Oct 15, 2011
+ * @version 1.0.0.4, Oct 25, 2011
 */
 body {
     background: url("../images/bg.jpg") repeat scroll left top transparent;
@@ -331,7 +331,6 @@ h5 {
 }
 .side-navi .navi-comments .side-comment {
     color: white;
-    display: block;
     font-weight: normal;
     height: 18px;
     width: 210px;
@@ -348,6 +347,9 @@ h5 {
 }
 .side-navi .navi-comments li div {
     width: 215px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
 }
 .side-navi a.selected {
     color: #555555;

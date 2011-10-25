@@ -3,7 +3,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Oct 3, 2011
+ * @version 1.0.0.8, Oct 25, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -435,6 +435,8 @@ textarea, input {
 .recent-comments-content {
     height: 18px;
     overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;   
 }
 /* end side */
 

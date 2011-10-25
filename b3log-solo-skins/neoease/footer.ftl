@@ -47,6 +47,10 @@
     $(".recent-comments .recent-comments-main").each(function () {
         if ($(this).find(".recent-comments-content>a").height() < 30) {
             $(this).find(".expand-ico").remove();
+        } else {
+            $(this).find(".expand-ico").parent().next().css({
+                "white-space": "nowrap"
+            });
         }
     });
 </script>
