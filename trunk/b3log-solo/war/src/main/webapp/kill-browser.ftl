@@ -19,28 +19,28 @@
         <div class="wrapper">
             <div class="wrap">
                 <div class="content">
-                    <div class="introImg">
+                    <div class="logo">
                         <a href="http://b3log-solo.googlecode.com" target="_blank">
                             <img border="0" style="width: 153px;height:56px;" alt="B3log" title="B3log" src="/images/logo.png"/>
                         </a>
                     </div>
-                    <div class="introContent">
+                    <div class="main">
                         ${killBrowserLabel}
-                        <img src='/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
+                        <img class="kill" src='/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
+                        <a href="http://b3log-solo.googlecode.com" target="_blank">
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="/favicon.png"/>
+                        </a>
                     </div>
 
-                    <a href="http://b3log-solo.googlecode.com" target="_blank">
-                        <img border="0" style="width:16px;height:16px;" class="introSign" alt="B3log" title="B3log" src="/favicon.png"/>
-                    </a>
+                    <span class="clear"></span>
                 </div>
-
             </div>
 
             <div class="footerWrapper">
                 <div class="footer">
                     &copy; ${year} - <a href="http://${blogHost}">${blogTitle}</a><br/>
                     Powered by
-                    <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
+                    <a href="http://b3log-solo.googlecode.com" target="_blank">
                         ${b3logLabel}&nbsp;
                         <span style="color: orangered; font-weight: bold;">Solo</span></a>,
                     ver ${version}
