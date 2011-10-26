@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * Comment repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 25, 2011
+ * @version 1.0.0.4, Oct 26, 2011
  */
 public interface CommentRepository extends Repository {
 
@@ -34,8 +34,10 @@ public interface CommentRepository extends Repository {
      *
      * @param fetchSize the specified fetch size
      * @return a list of comments recently, returns an empty list if not found
+     * @throws RepositoryException repository exception 
      */
-    List<JSONObject> getRecentComments(final int fetchSize);
+    List<JSONObject> getRecentComments(final int fetchSize)
+            throws RepositoryException;
 
     /**
      * Gets comments with the specified on id, current page number and page size.
@@ -44,10 +46,11 @@ public interface CommentRepository extends Repository {
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
      * @return a list of comments, returns an empty list if not found
+     * @throws RepositoryException repository exception 
      */
     List<JSONObject> getComments(final String onId,
                                  final int currentPageNum,
-                                 final int pageSize);
+                                 final int pageSize) throws RepositoryException;
 
     /**
      * Removes comments with the specified on id.

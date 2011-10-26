@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
  * Tag management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 24, 2011
+ * @version 1.0.0.1, Oct 26, 2011
  * @since 0.4.0
  */
 public final class TagMgmtService {
@@ -46,19 +47,18 @@ public final class TagMgmtService {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository =
-            TagRepositoryImpl.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
 
     /**
      * Removes all unused tags.
      *
-     * @throws Exception if get tags failed, or remove failed
+     * @throws ServiceException if get tags failed, or remove failed
      */
-    public void removeUnusedTags() throws Exception {
-        final List<JSONObject> tags = tagQueryService.getTags();
-
+    public void removeUnusedTags() throws ServiceException {
         final Transaction transaction = tagRepository.beginTransaction();
+
         try {
+            final List<JSONObject> tags = tagQueryService.getTags();
 
             for (int i = 0; i < tags.size(); i++) {
                 final JSONObject tag = tags.get(i);
@@ -77,7 +77,7 @@ public final class TagMgmtService {
 
             LOGGER.log(Level.SEVERE, "Removes unused tags failed", e);
 
-            throw e;
+            throw new ServiceException(e);
         }
     }
 

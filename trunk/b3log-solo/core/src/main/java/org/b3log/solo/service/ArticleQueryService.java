@@ -24,6 +24,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
@@ -35,7 +36,6 @@ import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
-import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
@@ -79,20 +79,22 @@ public final class ArticleQueryService {
      *
      * @param fetchSize the specified fetch size
      * @return a list of json objects, its size less or equal to the specified
-     * fetch size, returns an empty list if not found
+     * fetch size
+     * @throws ServiceException service exception 
      */
-    public List<JSONObject> getArticlesRandomly(final int fetchSize) {
+    public List<JSONObject> getArticlesRandomly(final int fetchSize)
+            throws ServiceException {
         try {
             final List<JSONObject> ret =
                     articleRepository.getRandomly(fetchSize);
-            
+
             removeUnusedProperties(ret);
 
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets articles randomly failed[fetchSize="
                                      + fetchSize + "]", e);
-            return Collections.emptyList();
+            throw new ServiceException(e);
         }
     }
 
@@ -102,93 +104,104 @@ public final class ArticleQueryService {
      * @param article the specified article
      * @param preference the specified preference
      * @return a list of articles, returns an empty list if not found
-     * @throws Exception exception
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getRelevantArticles(
             final JSONObject article, final JSONObject preference)
-            throws Exception {
-        final int displayCnt =
-                preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
-        final String[] tagTitles =
-                article.getString(Article.ARTICLE_TAGS_REF).split(",");
-        final int maxTagCnt = displayCnt > tagTitles.length
-                              ? tagTitles.length : displayCnt;
-        final String articleId = article.getString(Keys.OBJECT_ID);
+            throws ServiceException {
+        try {
+            final int displayCnt =
+                    preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
+            final String[] tagTitles =
+                    article.getString(Article.ARTICLE_TAGS_REF).split(",");
+            final int maxTagCnt = displayCnt > tagTitles.length
+                                  ? tagTitles.length : displayCnt;
+            final String articleId = article.getString(Keys.OBJECT_ID);
 
-        final List<JSONObject> articles = new ArrayList<JSONObject>();
-        for (int i = 0; i < maxTagCnt; i++) {  // XXX: should average by tag?
-            final String tagTitle = tagTitles[i];
-            final JSONObject tag = tagRepository.getByTitle(tagTitle);
-            final String tagId = tag.getString(Keys.OBJECT_ID);
-            final JSONObject result =
-                    tagArticleRepository.getByTagId(tagId, 1, displayCnt);
-            final JSONArray tagArticleRelations =
-                    result.getJSONArray(Keys.RESULTS);
+            final List<JSONObject> articles = new ArrayList<JSONObject>();
+            for (int i = 0; i < maxTagCnt; i++) {  // XXX: should average by tag?
+                final String tagTitle = tagTitles[i];
+                final JSONObject tag = tagRepository.getByTitle(tagTitle);
+                final String tagId = tag.getString(Keys.OBJECT_ID);
+                final JSONObject result =
+                        tagArticleRepository.getByTagId(tagId, 1, displayCnt);
+                final JSONArray tagArticleRelations =
+                        result.getJSONArray(Keys.RESULTS);
 
-            final int relationSize = displayCnt < tagArticleRelations.length()
-                                     ? displayCnt : tagArticleRelations.length();
-            for (int j = 0; j < relationSize; j++) {
-                final JSONObject tagArticleRelation =
-                        tagArticleRelations.getJSONObject(j);
-                final String relatedArticleId =
-                        tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
-                if (articleId.equals(relatedArticleId)) {
-                    continue;
-                }
+                final int relationSize = displayCnt
+                                         < tagArticleRelations.length()
+                                         ? displayCnt : tagArticleRelations.
+                        length();
+                for (int j = 0; j < relationSize; j++) {
+                    final JSONObject tagArticleRelation =
+                            tagArticleRelations.getJSONObject(j);
+                    final String relatedArticleId =
+                            tagArticleRelation.getString(Article.ARTICLE + "_"
+                                                         + Keys.OBJECT_ID);
+                    if (articleId.equals(relatedArticleId)) {
+                        continue;
+                    }
 
-                final JSONObject relevant =
-                        articleRepository.get(relatedArticleId);
-                if (!relevant.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    continue;
-                }
+                    final JSONObject relevant =
+                            articleRepository.get(relatedArticleId);
+                    if (!relevant.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                        continue;
+                    }
 
-                boolean existed = false;
-                for (final JSONObject relevantArticle : articles) {
-                    if (relevantArticle.getString(Keys.OBJECT_ID).
-                            equals(relevant.getString(Keys.OBJECT_ID))) {
-                        existed = true;
+                    boolean existed = false;
+                    for (final JSONObject relevantArticle : articles) {
+                        if (relevantArticle.getString(Keys.OBJECT_ID).
+                                equals(relevant.getString(Keys.OBJECT_ID))) {
+                            existed = true;
+                        }
+                    }
+
+                    if (!existed) {
+                        articles.add(relevant);
                     }
                 }
-
-                if (!existed) {
-                    articles.add(relevant);
-                }
             }
+
+            Collections.sort(articles,
+                             Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+            removeUnusedProperties(articles);
+
+            if (displayCnt > articles.size()) {
+                return articles;
+            }
+
+            final List<Integer> randomIntegers =
+                    CollectionUtils.getRandomIntegers(0,
+                                                      articles.size() - 1,
+                                                      displayCnt);
+            final List<JSONObject> ret = new ArrayList<JSONObject>();
+            for (final int index : randomIntegers) {
+                ret.add(articles.get(index));
+            }
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Gets relevant articles failed", e);
+
+            throw new ServiceException(e);
         }
-
-        Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
-        removeUnusedProperties(articles);
-
-        if (displayCnt > articles.size()) {
-            return articles;
-        }
-
-        final List<Integer> randomIntegers =
-                CollectionUtils.getRandomIntegers(0,
-                                                  articles.size() - 1,
-                                                  displayCnt);
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-        for (final int index : randomIntegers) {
-            ret.add(articles.get(index));
-        }
-
-        return ret;
     }
 
     /**
      * Determines an article specified by the given article id is published.
      * 
      * @param articleId the given article id
-     * @return {@code true} if it is published, {@code false} otherwise
+     * @return {@code true} if it is published
+     * @throws ServiceException service exception 
      */
-    public boolean isArticlePublished(final String articleId) {
+    public boolean isArticlePublished(final String articleId)
+            throws ServiceException {
         try {
             return articleRepository.isPublished(articleId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Determines the article publish status failed[articleId="
                                      + articleId + "]", e);
-            return false;
+            throw new ServiceException(e);
         }
     }
 
@@ -205,14 +218,16 @@ public final class ArticleQueryService {
      * }
      * </pre>
      * returns {@code null} if not found
+     * @throws ServiceException service exception 
      */
-    public JSONObject getNextArticle(final String articleId) {
+    public JSONObject getNextArticle(final String articleId)
+            throws ServiceException {
         try {
             return articleRepository.getNextArticle(articleId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets the next article failed[articleId="
                                      + articleId + "]", e);
-            return null;
+            throw new ServiceException(e);
         }
     }
 
@@ -229,14 +244,16 @@ public final class ArticleQueryService {
      * }
      * </pre>
      * returns {@code null} if not found
+     * @throws ServiceException service exception 
      */
-    public JSONObject getPreviousArticle(final String articleId) {
+    public JSONObject getPreviousArticle(final String articleId)
+            throws ServiceException {
         try {
             return articleRepository.getPreviousArticle(articleId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets the previous article failed[articleId="
                                      + articleId + "]", e);
-            return null;
+            throw new ServiceException(e);
         }
     }
 
@@ -245,14 +262,16 @@ public final class ArticleQueryService {
      * 
      * @param articleId the specified article id
      * @return an article, returns {@code null} if not found
+     * @throws ServiceException service exception 
      */
-    public JSONObject getArticleById(final String articleId) {
+    public JSONObject getArticleById(final String articleId)
+            throws ServiceException {
         try {
             return articleRepository.get(articleId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets an article[articleId=" + articleId
                                      + "] failed", e);
-            return null;
+            throw new ServiceException(e);
         }
     }
 
@@ -274,10 +293,12 @@ public final class ArticleQueryService {
      *     }, ....]
      * }
      * </pre>
+     * @throws ServiceException service exception 
      */
     public JSONObject getArticlesByAuthorEmail(final String authorEmail,
                                                final int currentPageNum,
-                                               final int pageSize) {
+                                               final int pageSize)
+            throws ServiceException {
         try {
             return articleRepository.getByAuthorEmail(authorEmail,
                                                       currentPageNum,
@@ -288,7 +309,7 @@ public final class ArticleQueryService {
                                      + currentPageNum + ", pageSize="
                                      + pageSize + "]", e);
 
-            return QueryResults.defaultResults();
+            throw new ServiceException(e);
         }
     }
 
@@ -301,8 +322,10 @@ public final class ArticleQueryService {
      * 
      * @param articleId the specified article id
      * @return article contents, returns {@code null} if not found
+     * @throws ServiceException service exception 
      */
-    public String getArticleContent(final String articleId) {
+    public String getArticleContent(final String articleId)
+            throws ServiceException {
         if (Strings.isEmptyOrNull(articleId)) {
             return null;
         }
@@ -337,7 +360,7 @@ public final class ArticleQueryService {
             LOGGER.log(Level.SEVERE, "Gets article content failed[articleId="
                                      + articleId + "]", e);
 
-            return null;
+            throw new ServiceException(e);
         }
     }
 

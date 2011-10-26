@@ -29,6 +29,7 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
@@ -67,7 +68,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 18, 2011
+ * @version 1.0.0.2, Oct 26, 2011
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -243,9 +244,9 @@ public final class ArticleMgmtService {
      * Removes the article specified by the given id.
      * 
      * @param articleId the given id
-     * @throws Exception exception 
+     * @throws ServiceException service exception
      */
-    public void removeArticle(final String articleId) throws Exception {
+    public void removeArticle(final String articleId) throws ServiceException {
         LOGGER.log(Level.FINER, "Removing an article[id={0}]", articleId);
 
         try {
@@ -265,7 +266,7 @@ public final class ArticleMgmtService {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Removes an article[id=" + articleId
                                      + "] failed", e);
-            throw e;
+            throw new ServiceException(e);
         }
 
         LOGGER.log(Level.FINER, "Removed an article[oId={0}]", articleId);
@@ -276,8 +277,10 @@ public final class ArticleMgmtService {
      * update count.
      * 
      * @param updateCnt the specified update count
+     * @throws ServiceException service exception 
      */
-    public void updateArticlesRandomValue(final int updateCnt) {
+    public void updateArticlesRandomValue(final int updateCnt)
+            throws ServiceException {
         final Transaction transaction = articleRepository.beginTransaction();
         transaction.clearQueryCache(false);
         try {
@@ -298,6 +301,8 @@ public final class ArticleMgmtService {
             }
 
             LOGGER.log(Level.WARNING, "Updates article random value failed");
+
+            throw new ServiceException(e);
         }
     }
 
@@ -306,32 +311,40 @@ public final class ArticleMgmtService {
      * given article id.
      *
      * @param articleId the given article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws ServiceException service exception
      */
     private void decTagRefCount(final String articleId)
-            throws JSONException, RepositoryException {
-        final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
-        final JSONObject article = articleRepository.get(articleId);
+            throws ServiceException {
+        try {
+            final List<JSONObject> tags =
+                    tagRepository.getByArticleId(articleId);
+            final JSONObject article = articleRepository.get(articleId);
 
-        for (final JSONObject tag : tags) {
-            final String tagId = tag.getString(Keys.OBJECT_ID);
-            final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
-            tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
-            final int publishedRefCnt =
-                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
-            } else {
-                tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
+            for (final JSONObject tag : tags) {
+                final String tagId = tag.getString(Keys.OBJECT_ID);
+                final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+                tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
+                final int publishedRefCnt =
+                        tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt
+                                                               - 1);
+                } else {
+                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
+                }
+                tagRepository.update(tagId, tag);
+                LOGGER.log(Level.FINEST,
+                           "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[oId={3}]",
+                           new Object[]{tag.getString(Tag.TAG_TITLE),
+                                        tag.getInt(Tag.TAG_REFERENCE_COUNT),
+                                        tag.getInt(
+                            Tag.TAG_PUBLISHED_REFERENCE_COUNT),
+                                        articleId});
             }
-            tagRepository.update(tagId, tag);
-            LOGGER.log(Level.FINEST,
-                       "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[oId={3}]",
-                       new Object[]{tag.getString(Tag.TAG_TITLE),
-                                    tag.getInt(Tag.TAG_REFERENCE_COUNT),
-                                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
-                                    articleId});
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Decs tag references count of article[id"
+                                     + articleId + "] failed", e);
+            throw new ServiceException(e);
         }
 
         LOGGER.log(Level.FINER,
@@ -343,105 +356,52 @@ public final class ArticleMgmtService {
      * Un-archive an article specified by the given specified article id.
      *
      * @param articleId the given article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws ServiceException service exception
      */
     private void unArchiveDate(final String articleId)
-            throws JSONException, RepositoryException {
-        final JSONObject archiveDateArticleRelation =
-                archiveDateArticleRepository.getByArticleId(articleId);
-        final String archiveDateId =
-                archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
-                                                     + "_" + Keys.OBJECT_ID);
-        final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
-        int archiveDateArticleCnt =
-                archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT);
-        --archiveDateArticleCnt;
-        int archiveDatePublishedArticleCnt =
-                archiveDate.getInt(
-                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
-        final JSONObject article = articleRepository.get(articleId);
-        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            --archiveDatePublishedArticleCnt;
-        }
-
-        if (0 == archiveDateArticleCnt) {
-            archiveDateRepository.remove(archiveDateId);
-        } else {
-            final JSONObject newArchiveDate = new JSONObject(
-                    archiveDate,
-                    CollectionUtils.jsonArrayToArray(archiveDate.names(),
-                                                     String[].class));
-            newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT,
-                               archiveDateArticleCnt);
-            newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                               archiveDatePublishedArticleCnt);
-            archiveDateRepository.update(archiveDateId, newArchiveDate);
-        }
-
-        archiveDateArticleRepository.remove(archiveDateArticleRelation.getString(
-                Keys.OBJECT_ID));
-    }
-
-    /**
-     * Removes tag-article relations by the specified article id and tag ids of
-     * the relations to be removed.
-     *
-     * <p>
-     * Removes all relations if not specified the tag ids.
-     * </p>
-     *
-     * @param articleId the specified article id
-     * @param tagIds the specified tag ids of the relations to be removed
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    private void removeTagArticleRelations(final String articleId,
-                                           final String... tagIds)
-            throws JSONException, RepositoryException {
-        final List<String> tagIdList = Arrays.asList(tagIds);
-        final List<JSONObject> tagArticleRelations =
-                tagArticleRepository.getByArticleId(articleId);
-        for (int i = 0; i < tagArticleRelations.size(); i++) {
-            final JSONObject tagArticleRelation =
-                    tagArticleRelations.get(i);
-            String relationId = null;
-            if (tagIdList.isEmpty()) { // Removes all if un-specified
-                relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
-                tagArticleRepository.remove(relationId);
-            } else {
-                if (tagIdList.contains(
-                        tagArticleRelation.getString(Tag.TAG + "_"
-                                                     + Keys.OBJECT_ID))) {
-                    relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
-                    tagArticleRepository.remove(relationId);
-                }
+            throws ServiceException {
+        try {
+            final JSONObject archiveDateArticleRelation =
+                    archiveDateArticleRepository.getByArticleId(articleId);
+            final String archiveDateId =
+                    archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
+                                                         + "_" + Keys.OBJECT_ID);
+            final JSONObject archiveDate = archiveDateRepository.get(
+                    archiveDateId);
+            int archiveDateArticleCnt =
+                    archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT);
+            --archiveDateArticleCnt;
+            int archiveDatePublishedArticleCnt =
+                    archiveDate.getInt(
+                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
+            final JSONObject article = articleRepository.get(articleId);
+            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                --archiveDatePublishedArticleCnt;
             }
-        }
-    }
 
-    /**
-     * Adds relation of the specified tags and article.
-     *
-     * @param tags the specified tags
-     * @param article the specified article
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void addTagArticleRelation(final JSONArray tags,
-                                      final JSONObject article)
-            throws JSONException, RepositoryException {
-        // TODO: public -> private
-        for (int i = 0; i < tags.length(); i++) {
-            final JSONObject tag = tags.getJSONObject(i);
-            final JSONObject tagArticleRelation = new JSONObject();
+            if (0 == archiveDateArticleCnt) {
+                archiveDateRepository.remove(archiveDateId);
+            } else {
+                final JSONObject newArchiveDate = new JSONObject(
+                        archiveDate,
+                        CollectionUtils.jsonArrayToArray(archiveDate.names(),
+                                                         String[].class));
+                newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT,
+                                   archiveDateArticleCnt);
+                newArchiveDate.put(
+                        ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                        archiveDatePublishedArticleCnt);
+                archiveDateRepository.update(archiveDateId, newArchiveDate);
+            }
 
-            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
-                                   tag.getString(Keys.OBJECT_ID));
-            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                                   article.getString(Keys.OBJECT_ID));
+            archiveDateArticleRepository.remove(archiveDateArticleRelation.
+                    getString(
+                    Keys.OBJECT_ID));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Unarchive date for article[id="
+                                     + articleId + "] failed", e);
 
-            tagArticleRepository.add(tagArticleRelation);
+            throw new ServiceException(e);
         }
     }
 
@@ -559,6 +519,68 @@ public final class ArticleMgmtService {
         final JSONArray tags = tag(tagStrings, newArticle);
 
         addTagArticleRelation(tags, newArticle);
+    }
+
+    /**
+     * Removes tag-article relations by the specified article id and tag ids of
+     * the relations to be removed.
+     *
+     * <p>
+     * Removes all relations if not specified the tag ids.
+     * </p>
+     *
+     * @param articleId the specified article id
+     * @param tagIds the specified tag ids of the relations to be removed
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void removeTagArticleRelations(final String articleId,
+                                           final String... tagIds)
+            throws JSONException, RepositoryException {
+        final List<String> tagIdList = Arrays.asList(tagIds);
+        final List<JSONObject> tagArticleRelations =
+                tagArticleRepository.getByArticleId(articleId);
+        for (int i = 0; i < tagArticleRelations.size(); i++) {
+            final JSONObject tagArticleRelation =
+                    tagArticleRelations.get(i);
+            String relationId = null;
+            if (tagIdList.isEmpty()) { // Removes all if un-specified
+                relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
+                tagArticleRepository.remove(relationId);
+            } else {
+                if (tagIdList.contains(
+                        tagArticleRelation.getString(Tag.TAG + "_"
+                                                     + Keys.OBJECT_ID))) {
+                    relationId =
+                            tagArticleRelation.getString(Keys.OBJECT_ID);
+                    tagArticleRepository.remove(relationId);
+                }
+            }
+        }
+    }
+
+    /**
+     * Adds relation of the specified tags and article.
+     *
+     * @param tags the specified tags
+     * @param article the specified article
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void addTagArticleRelation(final JSONArray tags,
+                                       final JSONObject article)
+            throws JSONException, RepositoryException {
+        for (int i = 0; i < tags.length(); i++) {
+            final JSONObject tag = tags.getJSONObject(i);
+            final JSONObject tagArticleRelation = new JSONObject();
+
+            tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID,
+                                   tag.getString(Keys.OBJECT_ID));
+            tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                                   article.getString(Keys.OBJECT_ID));
+
+            tagArticleRepository.add(tagArticleRelation);
+        }
     }
 
     /**
