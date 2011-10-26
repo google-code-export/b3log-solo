@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 24, 2011
+ * @version 1.0.0.1, Oct 26, 2011
  * @since 0.4.0
  */
 public final class TagQueryService {
@@ -44,8 +44,7 @@ public final class TagQueryService {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository =
-            TagRepositoryImpl.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
 
     /**
      * Gets all tags.
@@ -57,19 +56,18 @@ public final class TagQueryService {
      *     ....
      * ]
      * </pre>
-     * @throws Exception exception
+     * @throws ServiceException service exception
      */
-    public List<JSONObject> getTags()
-            throws Exception {
+    public List<JSONObject> getTags() throws ServiceException {
         try {
             final JSONObject result = tagRepository.get(new Query());
             final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
 
             return CollectionUtils.jsonArrayToList(tagArray);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Gets tags failed", e);
 
-            throw new Exception(e);
+            throw new ServiceException(e);
         }
     }
 

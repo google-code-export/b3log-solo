@@ -17,21 +17,21 @@ package org.b3log.solo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Comment query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 18, 2011
+ * @version 1.0.0.1, Oct 26, 2011
  * @since 0.3.5
  */
 public final class CommentQueryService {
@@ -61,29 +61,35 @@ public final class CommentQueryService {
      *
      * @param articleId the specified article id
      * @return a list of comments, returns an empty list if not found
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception
+     * @throws ServiceException repository exception
      */
     public List<JSONObject> getComments(final String articleId)
-            throws JSONException, RepositoryException {
+            throws ServiceException {
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
-        final List<JSONObject> comments =
-                commentRepository.getComments(articleId, 1, Integer.MAX_VALUE);
-        for (final JSONObject comment : comments) {
-            final String content = comment.getString(Comment.COMMENT_CONTENT).
-                    replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
-            comment.put(Comment.COMMENT_CONTENT, content);
-            comment.remove(Comment.COMMENT_EMAIL); // Removes email
+        try {
+            final List<JSONObject> comments =
+                    commentRepository.getComments(articleId, 1,
+                                                  Integer.MAX_VALUE);
+            for (final JSONObject comment : comments) {
+                final String content =
+                        comment.getString(Comment.COMMENT_CONTENT).
+                        replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+                comment.put(Comment.COMMENT_CONTENT, content);
+                comment.remove(Comment.COMMENT_EMAIL); // Removes email
 
-            comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
+                comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
 
-            if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
-                // This comment is a reply
-                comment.put(Common.IS_REPLY, true);
+                if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
+                    // This comment is a reply
+                    comment.put(Common.IS_REPLY, true);
+                }
+
+                ret.add(comment);
             }
-
-            ret.add(comment);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Gets comments failed", e);
+            throw new ServiceException(e);
         }
 
         return ret;

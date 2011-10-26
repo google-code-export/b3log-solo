@@ -55,6 +55,7 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.solo.web.util.Filler;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -246,8 +247,14 @@ public final class ArticleProcessor {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
         context.setRenderer(renderer);
 
-        final String content =
-                articleQueryService.getArticleContent(articleId);
+        String content = null;
+        try {
+            content = articleQueryService.getArticleContent(articleId);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, "Can not get article content", e);
+            return;
+        }
+
         if (null == content) {
             return;
         }
@@ -505,7 +512,11 @@ public final class ArticleProcessor {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
 
-        articleMgmtService.updateArticlesRandomValue(updateCnt);
+        try {
+            articleMgmtService.updateArticlesRandomValue(updateCnt);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, "Updates articles random values failed", e);
+        }
     }
 
     /**
