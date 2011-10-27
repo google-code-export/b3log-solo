@@ -56,59 +56,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     private Users userUtils = Users.getInstance();
 
     /**
-     * Changes link order by the specified link id and order.
-     *
-     * @param linkId the specified link id
-     * @param linkOrder the specified order
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return {@code true} if changed, {@code false} otherwise
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public boolean changeOrder(final String linkId, final int linkOrder,
-                               final HttpServletRequest request,
-                               final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return false;
-        }
-
-        final Transaction transaction = linkRepository.beginTransaction();
-
-        try {
-            final JSONObject link1 = linkRepository.get(linkId);
-            final String link1Id = linkId;
-            final JSONObject link2 = linkRepository.getByOrder(linkOrder);
-            final String link2Id = link2.getString(Keys.OBJECT_ID);
-            final int oldLink1Order = link1.getInt(Link.LINK_ORDER);
-
-            final JSONObject newLink2 =
-                    new JSONObject(link2, JSONObject.getNames(link2));
-            newLink2.put(Link.LINK_ORDER, oldLink1Order);
-            final JSONObject newLink1 =
-                    new JSONObject(link1, JSONObject.getNames(link1));
-            newLink1.put(Link.LINK_ORDER, linkOrder);
-
-            linkRepository.update(link2Id, newLink2);
-            linkRepository.update(link1Id, newLink1);
-
-            transaction.commit();
-
-            return true;
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            return false;
-        }
-    }
-
-    /**
      * Updates a link by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
