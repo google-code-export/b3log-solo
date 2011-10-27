@@ -98,6 +98,7 @@ public final class FileConsole {
      *      }
      * }
      * </pre>
+     * </p>
      * 
      * @param request the specified http servlet request
      * @param response the specified http servlet response
@@ -143,7 +144,7 @@ public final class FileConsole {
     }
 
     /**
-     * Removes a file by the specified request json object.
+     * Removes a file by the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -153,6 +154,7 @@ public final class FileConsole {
      *     "msg": ""
      * }
      * </pre>
+     * </p>
      *
      * @param request the specified http servlet request
      * @param response the specified http servlet response

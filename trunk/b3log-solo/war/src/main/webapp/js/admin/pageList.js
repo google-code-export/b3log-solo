@@ -185,39 +185,33 @@ admin.pageList = {
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            var requestJSONObject = {
-                "oId": id
-            };
 
-            jsonRpc.pageService.removePage(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "REMOVE_PAGE_SUCC":
-                            var pageNum = admin.pageList.pageInfo.currentPage;
-                            if (admin.pageList.pageInfo.currentCount === 1 && admin.pageList.pageInfo.pageCount !== 1 &&
-                                admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
-                                admin.pageList.pageInfo.pageCount--;
-                                pageNum = admin.pageList.pageInfo.pageCount;
-                            }
-                            var hashList = window.location.hash.split("/");
-                            if (pageNum == hashList[hashList.length - 1]) {
-                                admin.pageList.getList(pageNum);
-                            } else {
-                                admin.setHashByPage(pageNum);
-                            }
-                            $("#tipMsg").text(Label.removeSuccLabel);
-                            break;
-                        case "REMOVE_PAGE_FAIL_":
-                            $("#tipMsg").text(Label.removeFailLabel);
-                            break;
-                        default:
-                            break;
+            $.ajax({
+                url: "/console/page/" + id,
+                type: "DELETE",
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {
-                    console.error(e);
+                    
+                    var pageNum = admin.pageList.pageInfo.currentPage;
+                    if (admin.pageList.pageInfo.currentCount === 1 && admin.pageList.pageInfo.pageCount !== 1 &&
+                        admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
+                        admin.pageList.pageInfo.pageCount--;
+                        pageNum = admin.pageList.pageInfo.pageCount;
+                    }
+                    var hashList = window.location.hash.split("/");
+                    if (pageNum == hashList[hashList.length - 1]) {
+                        admin.pageList.getList(pageNum);
+                    } else {
+                        admin.setHashByPage(pageNum);
+                    }
                 }
-            }, requestJSONObject);
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     

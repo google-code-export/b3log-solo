@@ -236,9 +236,6 @@ admin.linkList = {
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            var requestJSONObject = {
-                "oId": id
-            };
             
             $.ajax({
                 url: "/console/link/" + id,

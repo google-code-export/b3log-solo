@@ -81,7 +81,7 @@ public final class LinkConsole {
                                                         + "order/";
 
     /**
-     * Removes a link by the specified request json object.
+     * Removes a link by the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -91,25 +91,19 @@ public final class LinkConsole {
      *     "msg": ""
      * }
      * </pre>
+     * </p>
      *
-     * @param request the specified http servlet request, for example,
-     * <pre>
-     * {
-     *     "oId": "",
-     * }
-     * </pre>
+     * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = LINK_URI_PREFIX + "*",
                        method = HTTPRequestMethod.DELETE)
-    public void removeLink(
-            final HttpServletRequest request,
-            final HttpServletResponse response,
-            final HTTPRequestContext context)
+    public void removeLink(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final HTTPRequestContext context)
             throws Exception {
-        final JSONObject ret = new JSONObject();
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -148,6 +142,7 @@ public final class LinkConsole {
      *     "msg": ""
      * }
      * </pre>
+     * </p>
      *
      * @param request the specified http servlet request, for example,
      * <pre>
@@ -209,6 +204,7 @@ public final class LinkConsole {
      *     "msg": ""
      * }
      * </pre>
+     * </p>
      *
      * @param request the specified http servlet request, for example,
      * <pre>
@@ -272,6 +268,7 @@ public final class LinkConsole {
      *     "msg": ""
      * }
      * </pre>
+     * </p>
      * 
      * @param request the specified http servlet request, for example,
      * <pre>
@@ -347,6 +344,7 @@ public final class LinkConsole {
      *      }, ....]
      * }
      * </pre>
+     * </p>
      *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
@@ -400,6 +398,7 @@ public final class LinkConsole {
      *     }
      * }
      * </pre>
+     * </p>
      * 
      * @param request the specified http servlet request
      * @param response the specified http servlet response

@@ -82,6 +82,58 @@ public final class PageConsole {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
+     * Removes a page by the specified request.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = PAGE_URI_PREFIX + "*",
+                       method = HTTPRequestMethod.DELETE)
+    public void removePage(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        try {
+            final String pageId =
+                    request.getRequestURI().substring(PAGE_URI_PREFIX.length());
+
+            pageMgmtService.removePage(pageId);
+
+            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+
+        }
+    }
+
+    /**
      * Adds a page with the specified request json object.
      * 
      * <p>
@@ -137,7 +189,7 @@ public final class PageConsole {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) { // May be permalink check exception
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
@@ -156,6 +208,7 @@ public final class PageConsole {
      *     "msg": ""
      * }
      * </pre>
+     * </p>
      *
      * @param request the specified http servlet request, for example,
      * <pre>
@@ -292,6 +345,7 @@ public final class PageConsole {
      *     "sc": "GET_PAGES_SUCC"
      * }
      * </pre>
+     * </p>
      *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
