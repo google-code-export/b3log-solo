@@ -116,10 +116,6 @@ public enum StatusCodes {
      */
     REMOVE_COMMENT_FAIL_FORBIDDEN,
     /**
-     * Indicates add a link successfully.
-     */
-    ADD_LINK_SUCC,
-    /**
      * Indicates remove a link successfully.
      */
     REMOVE_LINK_SUCC,

@@ -232,63 +232,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Adds a link with the specified request json object.
-     * 
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "link": {
-     *         "linkTitle": "",
-     *         "linkAddress": ""
-     *     }
-     * }, see {@link Link} for more details
-     * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
-     *     "oId": generatedLinkId,
-     *     "sc": ADD_LINK_SUCC
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public JSONObject addLink(final JSONObject requestJSONObject,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
-        final Transaction transaction = linkRepository.beginTransaction();
-
-        try {
-            final JSONObject link =
-                    requestJSONObject.getJSONObject(Link.LINK);
-            final int maxOrder = linkRepository.getMaxOrder();
-            link.put(Link.LINK_ORDER, maxOrder + 1);
-            final String linkId = linkRepository.add(link);
-
-            transaction.commit();
-            ret.put(Keys.OBJECT_ID, linkId);
-
-            ret.put(Keys.STATUS_CODE, StatusCodes.ADD_LINK_SUCC);
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
-
-    /**
      * Gets the {@link LinkService} singleton.
      *
      * @return the singleton
