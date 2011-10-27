@@ -17,7 +17,6 @@ package org.b3log.solo.jsonrpc.impl;
 
 import org.b3log.latke.plugin.AbstractPlugin;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,14 +26,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.Paginator;
-import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
@@ -149,92 +144,6 @@ public final class PluginService extends AbstractGAEJSONRpcService {
         } catch (final JSONException ex) {
             throw new ActionException("Set plugin status fatal error!");
         }
-    }
-
-    /**
-     * Gets plugins by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10,
-     * }, see {@link Pagination} for more details
-     * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
-     *     "pagination": {
-     *         "paginationPageCount": 100,
-     *         "paginationPageNums": [1, 2, 3, 4, 5]
-     *     },
-     *     "plugins": [{
-     *         "name": "",
-     *         "version": "",
-     *         "author": "",
-     *         "status": "", // Enumeration name of {@link PluginStatus}
-     *      }, ....]
-     *     "sc": "GET_PLUGINS_SUCC"
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     * @see Pagination
-     */
-    public JSONObject getPlugins(final JSONObject requestJSONObject,
-                                 final HttpServletRequest request,
-                                 final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
-
-        try {
-            final int currentPageNum = requestJSONObject.getInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
-            final int pageSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_PAGE_SIZE);
-            final int windowSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_WINDOW_SIZE);
-
-            final List<JSONObject> pluginJSONObjects =
-                    new ArrayList<JSONObject>();
-            final List<AbstractPlugin> plugins =
-                    PluginManager.getInstance().getPlugins();
-            for (final AbstractPlugin plugin : plugins) {
-                final JSONObject jsonObject = plugin.toJSONObject();
-
-                pluginJSONObjects.add(jsonObject);
-            }
-
-            final int pageCount = (int) Math.ceil((double) pluginJSONObjects.
-                    size() / (double) pageSize);
-            final JSONObject pagination = new JSONObject();
-            ret.put(Pagination.PAGINATION, pagination);
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
-            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-            final int start = pageSize * (currentPageNum - 1);
-            int end = start + pageSize;
-            end = end > pluginJSONObjects.size()
-                  ? pluginJSONObjects.size() : end;
-            ret.put(Plugin.PLUGINS, pluginJSONObjects.subList(start, end));
-
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_PLUGINS_SUCC);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
     }
 
     /**
