@@ -17,13 +17,17 @@ package org.b3log.solo.web.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Strings;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Request utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 24, 2011
+ * @version 1.0.0.2, Oct 27, 2011
+ * @see #PAGINATION_PATH_PATTERN
  */
 // TODO: 88250, moves the class into Latke
 public final class Requests {
@@ -41,6 +45,13 @@ public final class Requests {
      * second star represents "the page size", and the third star represents 
      * "the window size". Argument of each of these stars should be a number.
      * </p>
+     * 
+     * <p>
+     * For example, the request URI is "xxx/1/2/3", so the specified path is 
+     * "1/2/3". The first number represents "the current page number", the 
+     * second number represents "the page size", and the third number represents 
+     * "the window size", all of these for pagination.
+     * </p>
      */
     public static final String PAGINATION_PATH_PATTERN = "*/*/*";
     /**
@@ -57,18 +68,47 @@ public final class Requests {
     private static final int DEFAULT_WINDOW_SIZE = 20;
 
     /**
+     * Builds pagination request with the specified path.
+     * 
+     * @param path the specified path, see {@link #PAGINATION_PATH_PATTERN} 
+     * for the details
+     * @return pagination request json object, for example, 
+     * <pre>
+     * {
+     *     "paginationCurrentPageNum": int,
+     *     "paginationPageSize": int,
+     *     "paginationWindowSize": int
+     * }
+     * </pre>
+     * @see #PAGINATION_PATH_PATTERN
+     */
+    public static JSONObject buildPaginationRequest(final String path) {
+        try {
+            final Integer currentPageNum = Requests.getCurrentPageNum(path);
+            final Integer pageSize = Requests.getPageSize(path);
+            final Integer windowSize = Requests.getWindowSize(path);
+
+            final JSONObject ret = new JSONObject();
+            ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM,
+                    currentPageNum);
+            ret.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+            ret.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+            return ret;
+        } catch (final JSONException e) {
+            // Should never
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Gets the request page number from the specified path.
      * 
-     * <p>
-     * For example, the request URI is "xxx/1/2/3", so the specified path is 
-     * "1/2/3". The first number represents "the current page number", the 
-     * second number represents "the page size", and the third number represents 
-     * "the window size", all of these for pagination.
-     * </p>
-     * 
-     * @param path the specified path
+     * @param path the specified path, see {@link #PAGINATION_PATH_PATTERN} 
+     * for the details
      * @return page number, returns {@value #DEFAULT_CURRENT_PAGE_NUM} if the 
      * specified request URI can not convert to an number
+     * @see #PAGINATION_PATH_PATTERN
      */
     public static int getCurrentPageNum(final String path) {
         LOGGER.log(Level.FINEST, "Page number[string={0}]", path);
@@ -89,16 +129,11 @@ public final class Requests {
     /**
      * Gets the request page size from the specified path.
      * 
-     * <p>
-     * For example, the request URI is "xxx/1/2/3", so the specified path is 
-     * "1/2/3". The first number represents "the current page number", the 
-     * second number represents "the page size", and the third number represents 
-     * "the window size", all of these for pagination.
-     * </p>
-     * 
-     * @param path the specified path
+     * @param path the specified path, see {@link #PAGINATION_PATH_PATTERN} 
+     * for the details
      * @return page number, returns {@value #DEFAULT_PAGE_SIZE} if the 
      * specified request URI can not convert to an number
+     * @see #PAGINATION_PATH_PATTERN
      */
     public static int getPageSize(final String path) {
         LOGGER.log(Level.FINEST, "Page number[string={0}]", path);
@@ -124,16 +159,11 @@ public final class Requests {
     /**
      * Gets the request window size from the specified path.
      * 
-     * <p>
-     * For example, the request URI is "xxx/1/2/3", so the specified path is 
-     * "1/2/3". The first number represents "the current page number", the 
-     * second number represents "the page size", and the third number represents 
-     * "the window size", all of these for pagination.
-     * </p>
-     * 
-     * @param path the specified path
+     * @param path the specified path, see {@link #PAGINATION_PATH_PATTERN} 
+     * for the details
      * @return page number, returns {@value #DEFAULT_WINDOW_SIZE} if the 
      * specified request URI can not convert to an number
+     * @see #PAGINATION_PATH_PATTERN
      */
     public static int getWindowSize(final String path) {
         LOGGER.log(Level.FINEST, "Page number[string={0}]", path);

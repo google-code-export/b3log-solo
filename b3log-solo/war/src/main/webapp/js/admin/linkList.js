@@ -63,7 +63,8 @@ admin.linkList = {
     },
 
     /* 
-     * 根据当前页码获取列表
+     * 根据当前页码获取链接列表
+     * 
      * @pagNum 当前页码
      */
     getList: function (pageNum) {
@@ -73,58 +74,53 @@ admin.linkList = {
         }
         this.pageInfo.currentPage = pageNum;
         var that = this;
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": Label.PAGE_SIZE,
-            "paginationWindowSize": Label.WINDOW_SIZE
-        };
-        jsonRpc.linkService.getLinks(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_LINKS_SUCC":
-                        var links = result.links;
-                        var linkData = [];
-                        admin.linkList.pageInfo.currentCount = links.length;
-                        admin.linkList.pageInfo.pageCount = result.pagination.paginationPageCount === 0 ? 1 : result.pagination.paginationPageCount;
+        
+        $.ajax({
+            url: "/console/links/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    return;
+                }
+                
+                var links = result.links;
+                var linkData = [];
+                admin.linkList.pageInfo.currentCount = links.length;
+                admin.linkList.pageInfo.pageCount = result.pagination.paginationPageCount === 0 ? 1 : result.pagination.paginationPageCount;
 
-                        for (var i = 0; i < links.length; i++) {
-                            linkData[i] = {};
-                            if (i === 0) {
-                                if (links.length === 1) {
-                                    linkData[i].linkOrder = "";
-                                } else {
-                                    linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
+                for (var i = 0; i < links.length; i++) {
+                    linkData[i] = {};
+                    if (i === 0) {
+                        if (links.length === 1) {
+                            linkData[i].linkOrder = "";
+                        } else {
+                            linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
                             </div>';
-                                }
-                            } else if (i === links.length - 1) {
-                                linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
+                        }
+                    } else if (i === links.length - 1) {
+                        linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
                             </div>';
-                            } else {
-                                linkData[i].linkOrder = '<div class="table-center" style="width:38px">\
+                    } else {
+                        linkData[i].linkOrder = '<div class="table-center" style="width:38px">\
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
                             </div>';
-                            }
-                            linkData[i].linkTitle = links[i].linkTitle;
-                            linkData[i].linkAddress = "<a target='_blank' class='no-underline' href='" + links[i].linkAddress + "'>"
-                            + links[i].linkAddress + "</a>";
-                            linkData[i].expendRow = "<span><a href='" + links[i].linkAddress + "' target='_blank'>" + Label.viewLabel + "</a>  \
+                    }
+                    linkData[i].linkTitle = links[i].linkTitle;
+                    linkData[i].linkAddress = "<a target='_blank' class='no-underline' href='" + links[i].linkAddress + "'>"
+                    + links[i].linkAddress + "</a>";
+                    linkData[i].expendRow = "<span><a href='" + links[i].linkAddress + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.get('" + links[i].oId + "')\">" + Label.updateLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.del('" + links[i].oId + "')\">" + Label.removeLabel + "</a></span>";
-                        }
-
-                        that.tablePagination.updateTablePagination(linkData, pageNum, result.pagination);
-                        break;
-                    default:
-                        break;
                 }
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+
+                that.tablePagination.updateTablePagination(linkData, pageNum, result.pagination);
             }
-        }, requestJSONObject);
+        });
+        
+        $("#loadMsg").text("");
     },
     
     /*

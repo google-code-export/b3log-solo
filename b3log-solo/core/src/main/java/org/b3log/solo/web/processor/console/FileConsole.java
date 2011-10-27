@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
-import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -37,7 +36,7 @@ import org.json.JSONObject;
  * File console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 24, 2011
+ * @version 1.0.0.1, Oct 27, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -124,15 +123,8 @@ public final class FileConsole {
             final String path =
                     requestURI.substring(GET_FILES_REQUEST_URI_PREFIX.length());
 
-            final Integer currentPageNum = Requests.getCurrentPageNum(path);
-            final Integer pageSize = Requests.getPageSize(path);
-            final Integer windowSize = Requests.getWindowSize(path);
-
-            final JSONObject requestJSONObject = new JSONObject();
-            requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM,
-                                  currentPageNum);
-            requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
-            requestJSONObject.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+            final JSONObject requestJSONObject =
+                    Requests.buildPaginationRequest(path);
 
             final JSONObject result =
                     fileQueryService.getFiles(requestJSONObject);
