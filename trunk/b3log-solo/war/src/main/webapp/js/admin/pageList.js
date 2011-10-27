@@ -94,61 +94,58 @@ admin.pageList = {
     getList: function (pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
         var that = this;
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": Label.PAGE_SIZE,
-            "paginationWindowSize": Label.WINDOW_SIZE
-        };
-        this.pageInfo.currentPage = pageNum;
         
-        jsonRpc.pageService.getPages(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_PAGES_SUCC":
-                        var pages = result.pages;
-                        var pageData = [];
-                        admin.pageList.pageInfo.currentCount = pages.length;
-                        admin.pageList.pageInfo.pageCount = result.pagination.paginationPageCount === 0 ? 1 : result.pagination.paginationPageCount;
-                        for (var i = 0; i < pages.length; i++) {
-                            pageData[i] = {};
-                            if (i === 0) {
-                                if (pages.length === 1) {
-                                    pageData[i].pageOrder = "";
-                                } else {
-                                    pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
+        $.ajax({
+            url: "/console/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    $("#loadMsg").text(result.msg);
+                    
+                    return;
+                }
+                
+                var pages = result.pages;
+                var pageData = [];
+                admin.pageList.pageInfo.currentCount = pages.length;
+                admin.pageList.pageInfo.pageCount = result.pagination.paginationPageCount === 0 ? 1 : result.pagination.paginationPageCount;
+                for (var i = 0; i < pages.length; i++) {
+                    pageData[i] = {};
+                    if (i === 0) {
+                        if (pages.length === 1) {
+                            pageData[i].pageOrder = "";
+                        } else {
+                            pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
                                         <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" \
                                         class="table-downIcon"></span></div>';
-                                }
-                            } else if (i === pages.length - 1) {
-                                pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
+                        }
+                    } else if (i === pages.length - 1) {
+                        pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
                                     <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
                                     </div>';
-                            } else {
-                                pageData[i].pageOrder = '<div class="table-center" style="width:38px">\
+                    } else {
+                        pageData[i].pageOrder = '<div class="table-center" style="width:38px">\
                                     <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
                                     <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
                                     </div>';
-                            }
+                    }
                             
-                            pageData[i].pageTitle = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>" +
-                            pages[i].pageTitle + "</a>";
-                            pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
-                            + pages[i].pagePermalink + "</a>";
-                            pageData[i].comments = pages[i].pageCommentCount;
-                            pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
+                    pageData[i].pageTitle = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>" +
+                    pages[i].pageTitle + "</a>";
+                    pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
+                    + pages[i].pagePermalink + "</a>";
+                    pageData[i].comments = pages[i].pageCommentCount;
+                    pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "')\">" + Label.removeLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + pages[i].oId + "', 'page')\">" + Label.commentLabel + "</a></span>";
-                        }
-                        
-                        that.tablePagination.updateTablePagination(pageData, pageNum, result.pagination);
-                        break;
-                    default:
-                        break;
                 }
-                $("#loadMsg").text("");
-            } catch (e) {}
-        }, requestJSONObject);
+                        
+                that.tablePagination.updateTablePagination(pageData, pageNum, result.pagination);
+            }
+        });
+        
+        $("#loadMsg").text("");
     },
     
     /*

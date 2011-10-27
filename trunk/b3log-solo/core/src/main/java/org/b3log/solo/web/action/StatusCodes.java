@@ -185,10 +185,6 @@ public enum StatusCodes {
      */
     UPDATE_PAGE_FAIL_INVALID_PERMALINK_FORMAT,
     /**
-     * Indicates get pages successfully.
-     */
-    GET_PAGES_SUCC,
-    /**
      * Indicates upload a file successfully.
      */
     UPLOAD_FILES_SUCC,
@@ -235,9 +231,5 @@ public enum StatusCodes {
     /**
      * Indicates get user successfully.
      */
-    GET_USER_SUCC,
-    /**
-     * Indicates get plugins successfully.
-     */
-    GET_PLUGINS_SUCC
+    GET_USER_SUCC
 }
