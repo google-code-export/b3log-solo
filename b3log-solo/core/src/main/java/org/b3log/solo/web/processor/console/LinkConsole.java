@@ -81,6 +81,67 @@ public final class LinkConsole {
                                                         + "order/";
 
     /**
+     * Updates a link by the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     *
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "link": {
+     *         "oId": "",
+     *         "linkTitle": "",
+     *         "linkAddress": ""
+     *     }
+     * }, see {@link Link} for more details
+     * </pre>
+     * @param context the specified http request context
+     * @param response the specified http servlet response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = LINK_URI_PREFIX,
+                       method = HTTPRequestMethod.PUT)
+    public void updateLink(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+
+            linkMgmtService.updateLink(requestJSONObject);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+
+            renderer.setJSONObject(ret);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
+        }
+    }
+
+    /**
      * Changes link order by the specified link id and order.
      * 
      * <p>
