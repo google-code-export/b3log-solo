@@ -67,15 +67,15 @@ public final class LinkConsole {
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
-     * Link request URI prefix.
+     * Link URI prefix.
      */
     private static final String LINK_URI_PREFIX = "/console/link/";
     /**
-     * Links request URI prefix.
+     * Links URI prefix.
      */
     private static final String LINKS_URI_PREFIX = "/console/links/";
     /**
-     * Link order request URI prefix.
+     * Link order URI prefix.
      */
     private static final String LINK_ORDER_URI_PREFIX = LINK_URI_PREFIX
                                                         + "order/";
@@ -199,7 +199,7 @@ public final class LinkConsole {
     }
 
     /**
-     * Changes link order by the specified link id and order.
+     * Changes a link order by the specified link id and order.
      * 
      * <p>
      * Renders the response with a json object, for example,

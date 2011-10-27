@@ -303,57 +303,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Changes page order by the specified page id and order.
-     *
-     * @param pageId the specified page id
-     * @param pageOrder the specified order
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return {@code true} if changed, {@code false} otherwise
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public boolean changeOrder(final String pageId, final int pageOrder,
-                               final HttpServletRequest request,
-                               final HttpServletResponse response)
-            throws ActionException, IOException {
-        if (!userUtils.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return false;
-        }
-
-        final Transaction transaction = pageRepository.beginTransaction();
-        try {
-            final JSONObject page1 = pageRepository.get(pageId);
-            final String page1Id = pageId;
-            final JSONObject page2 = pageRepository.getByOrder(pageOrder);
-            final String page2Id = page2.getString(Keys.OBJECT_ID);
-            final int oldPage1Order = page1.getInt(Page.PAGE_ORDER);
-
-            final JSONObject newPage2 =
-                    new JSONObject(page2, JSONObject.getNames(page2));
-            newPage2.put(Page.PAGE_ORDER, oldPage1Order);
-            final JSONObject newPage1 =
-                    new JSONObject(page1, JSONObject.getNames(page1));
-            newPage1.put(Page.PAGE_ORDER, pageOrder);
-
-            pageRepository.update(page2Id, newPage2);
-            pageRepository.update(page1Id, newPage1);
-
-            transaction.commit();
-
-            return true;
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            return false;
-        }
-    }
-
-    /**
      * Gets the {@link PageService} singleton.
      *
      * @return the singleton
