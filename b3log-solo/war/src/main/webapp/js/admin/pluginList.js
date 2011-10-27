@@ -66,43 +66,36 @@ admin.pluginList = {
     getList: function (pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
         var that = this;
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": Label.PAGE_SIZE,
-            "paginationWindowSize": Label.WINDOW_SIZE
-        };
-        jsonRpc.pluginService.getPlugins(function (result, error) {
-            try {
-                if (!result) {
-                     $("#loadMsg").text("");
+        
+        $.ajax({
+            url: "/console/plugins/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    $("#loadMsg").text(result.msg);
+                    
                     return;
                 }
-                switch (result.sc) {
-                    case "GET_PLUGINS_SUCC":
-                        admin.pluginList.pageInfo.currentPage = pageNum;
-                        var datas = result.plugins;
-                        for (var i = 0; i < datas.length; i++) {
-                            datas[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.pluginList.changeStatus('" + 
-                            datas[i].oId + "', '" + datas[i].status + "')\">";
-                            if (datas[i].status === "ENABLED") {
-                                datas[i].status = Label.enabledLabel;
-                                datas[i].expendRow += Label.disableLabel;
-                            } else {
-                                datas[i].status = Label.disabledLabel;
-                                datas[i].expendRow += Label.enableLabel;
-                            }
-                            datas[i].expendRow += "</a>";
-                        }
-                        that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
-                        break;
-                    default:
-                        break;
+                
+                admin.pluginList.pageInfo.currentPage = pageNum;
+                var datas = result.plugins;
+                for (var i = 0; i < datas.length; i++) {
+                    datas[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.pluginList.changeStatus('" + 
+                    datas[i].oId + "', '" + datas[i].status + "')\">";
+                    if (datas[i].status === "ENABLED") {
+                        datas[i].status = Label.enabledLabel;
+                        datas[i].expendRow += Label.disableLabel;
+                    } else {
+                        datas[i].status = Label.disabledLabel;
+                        datas[i].expendRow += Label.enableLabel;
+                    }
+                    datas[i].expendRow += "</a>";
                 }
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+                that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
             }
-        }, requestJSONObject);
+        });
+        
+        $("#loadMsg").text("");
     },
     
     changeStatus: function (pluginId, status) {

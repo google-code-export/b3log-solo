@@ -28,6 +28,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.service.FileMgmtService;
 import org.b3log.solo.service.FileQueryService;
+import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.web.util.Requests;
 import org.json.JSONObject;
@@ -60,9 +61,9 @@ public final class FileConsole {
      */
     private FileMgmtService fileMgmtService = FileMgmtService.getInstance();
     /**
-     * Get files request URI prefix.
+     * Files URI prefix.
      */
-    private static final String GET_FILES_REQUEST_URI_PREFIX = "/console/files/";
+    private static final String FILES_URI_PREFIX = "/console/files/";
     /**
      * Language service.
      */
@@ -102,8 +103,9 @@ public final class FileConsole {
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
+     * @see Requests#PAGINATION_PATH_PATTERN
      */
-    @RequestProcessing(value = GET_FILES_REQUEST_URI_PREFIX
+    @RequestProcessing(value = FILES_URI_PREFIX
                                + Requests.PAGINATION_PATH_PATTERN,
                        method = HTTPRequestMethod.GET)
     public void getFiles(final HttpServletRequest request,
@@ -121,7 +123,7 @@ public final class FileConsole {
         try {
             final String requestURI = request.getRequestURI();
             final String path =
-                    requestURI.substring(GET_FILES_REQUEST_URI_PREFIX.length());
+                    requestURI.substring(FILES_URI_PREFIX.length());
 
             final JSONObject requestJSONObject =
                     Requests.buildPaginationRequest(path);
@@ -134,9 +136,8 @@ public final class FileConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            final JSONObject jsonObject = new JSONObject();
+            final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
     }
