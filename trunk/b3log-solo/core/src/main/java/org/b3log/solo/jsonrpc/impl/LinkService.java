@@ -25,7 +25,6 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
-import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.util.Users;
@@ -54,72 +53,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
-
-    /**
-     * Updates a link by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "link": {
-     *         "oId": "",
-     *         "linkTitle": "",
-     *         "linkAddress": ""
-     *     }
-     * }, see {@link Link} for more details
-     * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
-     *     "sc": "UPDATE_LINK_SUCC"
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public JSONObject updateLink(final JSONObject requestJSONObject,
-                                 final HttpServletRequest request,
-                                 final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
-        final Transaction transaction = linkRepository.beginTransaction();
-
-        try {
-            final JSONObject link =
-                    requestJSONObject.getJSONObject(Link.LINK);
-            final String linkId = link.getString(Keys.OBJECT_ID);
-            final JSONObject oldLink = linkRepository.get(linkId);
-            link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
-
-            linkRepository.update(linkId, link);
-
-            transaction.commit();
-            ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_SUCC);
-
-            LOGGER.log(Level.FINER, "Updated a link[oId={0}]",
-                       linkId);
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            try {
-                ret.put(Keys.STATUS_CODE, StatusCodes.UPDATE_LINK_FAIL_);
-            } catch (final JSONException ex) {
-                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
-                throw new ActionException(ex);
-            }
-        }
-
-        return ret;
-    }
 
     /**
      * Removes a link by the specified request json object.

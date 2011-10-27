@@ -193,7 +193,7 @@ admin.linkList = {
     },
     
     /*
-     * 跟新自定义页面
+     * 更新链接
      */
     update: function () {
         if (this.validate("Update")) {
@@ -206,24 +206,24 @@ admin.linkList = {
                     "linkAddress": $("#linkAddressUpdate").val()
                 }
             };
-            jsonRpc.linkService.updateLink(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "UPDATE_LINK_SUCC":
-                            $("#updateLink").dialog("close");
-                            admin.linkList.getList(admin.linkList.pageInfo.currentPage);
-                            $("#tipMsg").text(Label.updateSuccLabel);
-                            break;
-                        case "UPDATE_LINK_FAIL_":
-                            $("#updateLink").dialog("close");
-                            $("#tipMsg").text(Label.updateFailLabel);
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/link/",
+                type: "PUT",
+                data: JSON.stringify(requestJSONObject),
+                success: function(result, textStatus){
+                    $("#updateLink").dialog("close");
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {}
-            }, requestJSONObject);
+                    
+                    admin.linkList.getList(admin.linkList.pageInfo.currentPage);
+                }
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     

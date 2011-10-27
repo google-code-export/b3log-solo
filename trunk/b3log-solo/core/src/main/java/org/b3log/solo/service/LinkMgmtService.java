@@ -45,6 +45,48 @@ public final class LinkMgmtService {
     private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
 
     /**
+     * Updates a link by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "link": {
+     *         "oId": "",
+     *         "linkTitle": "",
+     *         "linkAddress": ""
+     *     }
+     * }, see {@link Link} for more details
+     * </pre>
+     * @throws ServiceException service exception
+     */
+    public void updateLink(final JSONObject requestJSONObject)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        final Transaction transaction = linkRepository.beginTransaction();
+
+        try {
+            final JSONObject link =
+                    requestJSONObject.getJSONObject(Link.LINK);
+            final String linkId = link.getString(Keys.OBJECT_ID);
+            final JSONObject oldLink = linkRepository.get(linkId);
+
+            link.put(Link.LINK_ORDER, oldLink.getInt(Link.LINK_ORDER));
+
+            linkRepository.update(linkId, link);
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Changes the order of a link specified by the given link id to the 
      * specified target order.
      *
@@ -59,13 +101,13 @@ public final class LinkMgmtService {
         try {
             final JSONObject link1 = linkRepository.get(linkId);
             final JSONObject link2 = linkRepository.getByOrder(targetLinkOrder);
-            
+
             final int srcLinkOrder = link1.getInt(Link.LINK_ORDER);
-            
+
             // Swap
             link2.put(Link.LINK_ORDER, srcLinkOrder);
             link1.put(Link.LINK_ORDER, targetLinkOrder);
-            
+
             linkRepository.update(link1.getString(Keys.OBJECT_ID), link1);
             linkRepository.update(link2.getString(Keys.OBJECT_ID), link2);
 
