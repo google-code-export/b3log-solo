@@ -16,17 +16,12 @@
 package org.b3log.solo.jsonrpc.impl;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.Paginator;
-import org.b3log.latke.model.Pagination;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.web.action.StatusCodes;
@@ -37,7 +32,6 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Users;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -108,79 +102,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_PAGE_SUCC);
 
             LOGGER.log(Level.FINER, "Got page [oId={0}]", pageId);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
-
-    /**
-     * Gets pages by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10
-     * }, see {@link Pagination} for more details
-     * </pre>
-     * @return for example,
-     * <pre>
-     * {
-     *     "pagination": {
-     *         "paginationPageCount": 100,
-     *         "paginationPageNums": [1, 2, 3, 4, 5]
-     *     },
-     *     "pages": [{
-     *         "oId": "",
-     *         "pageTitle": "",
-     *         "pageCommentCount": int,
-     *         "pageOrder": int,
-     *         "pagePermalink": ""
-     *      }, ....]
-     *     "sc": "GET_PAGES_SUCC"
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @see Pagination
-     */
-    public JSONObject getPages(final JSONObject requestJSONObject)
-            throws ActionException {
-        final JSONObject ret = new JSONObject();
-        try {
-            final int currentPageNum = requestJSONObject.getInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
-            final int pageSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_PAGE_SIZE);
-            final int windowSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_WINDOW_SIZE);
-
-            final Query query = new Query().setCurrentPageNum(currentPageNum).
-                    setPageSize(pageSize).
-                    addSort(Page.PAGE_ORDER, SortDirection.ASCENDING);
-            final JSONObject result = pageRepository.get(query);
-            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
-                    getInt(Pagination.PAGINATION_PAGE_COUNT);
-
-            final JSONObject pagination = new JSONObject();
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
-            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-            final JSONArray pages = result.getJSONArray(Keys.RESULTS);
-            for (int i = 0; i < pages.length(); i++) { // remove unused properties
-                final JSONObject page = pages.getJSONObject(i);
-                page.remove(Page.PAGE_CONTENT);
-            }
-
-            ret.put(Pagination.PAGINATION, pagination);
-            ret.put(Page.PAGES, pages);
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_PAGES_SUCC);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
