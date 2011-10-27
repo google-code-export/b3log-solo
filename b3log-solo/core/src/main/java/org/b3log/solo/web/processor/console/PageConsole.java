@@ -82,6 +82,71 @@ public final class PageConsole {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
+     * Updates a page by the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "page": {
+     *         "oId": "",
+     *         "pageTitle": "",
+     *         "pageContent": "",
+     *         "pageOrder": int,
+     *         "pageCommentCount": int,
+     *         "pagePermalink": ""
+     *     }
+     * }, see {@link Page} for more details
+     * </pre>
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = PAGE_URI_PREFIX,
+                       method = HTTPRequestMethod.PUT)
+    public void updatePage(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+
+            pageMgmtService.updatePage(requestJSONObject);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+
+            renderer.setJSONObject(ret);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
+
+    /**
      * Removes a page by the specified request.
      * 
      * <p>

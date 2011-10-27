@@ -64,6 +64,94 @@ public final class PageMgmtService {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
+     * Updates a page by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "page": {
+     *         "oId": "",
+     *         "pageTitle": "",
+     *         "pageContent": "",
+     *         "pageOrder": int,
+     *         "pageCommentCount": int,
+     *         "pagePermalink": ""
+     *     }
+     * }, see {@link Page} for more details
+     * </pre>
+     * @throws ServiceException service exception
+     */
+    public void updatePage(final JSONObject requestJSONObject)
+            throws ServiceException {
+
+        final Transaction transaction = pageRepository.beginTransaction();
+        try {
+            final JSONObject page =
+                    requestJSONObject.getJSONObject(Page.PAGE);
+            final String pageId = page.getString(Keys.OBJECT_ID);
+            final JSONObject oldPage = pageRepository.get(pageId);
+            final JSONObject newPage =
+                    new JSONObject(page, JSONObject.getNames(page));
+            newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
+            newPage.put(Page.PAGE_COMMENT_COUNT,
+                        oldPage.getInt(Page.PAGE_COMMENT_COUNT));
+            String permalink = page.optString(Page.PAGE_PERMALINK).trim();
+
+            final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
+            if (!oldPermalink.equals(permalink)) {
+                if (Strings.isEmptyOrNull(permalink)) {
+                    permalink = "/pages/" + pageId + ".html";
+                }
+
+                if (!permalink.startsWith("/")) {
+                    permalink = "/" + permalink;
+                }
+
+                if (permalinks.invalidPagePermalinkFormat(permalink)) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    throw new ServiceException(langPropsService.get(
+                            "invalidPermalinkFormatLabel"));
+                }
+
+
+                if (!oldPermalink.equals(permalink)
+                    && permalinks.exist(permalink)) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+
+                    throw new ServiceException(langPropsService.get(
+                            "duplicatedPermalinkLabel"));
+                }
+            }
+            newPage.put(Page.PAGE_PERMALINK, permalink);
+
+            pageRepository.update(pageId, newPage);
+
+            transaction.commit();
+
+            LOGGER.log(Level.FINER, "Updated a page[oId={0}]", pageId);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw new ServiceException(e);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Removes a page specified by the given page id.
      *
      * @param pageId the given page id
@@ -128,11 +216,19 @@ public final class PageMgmtService {
             }
 
             if (permalinks.invalidPagePermalinkFormat(permalink)) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
                 throw new ServiceException(langPropsService.get(
                         "invalidPermalinkFormatLabel"));
             }
 
             if (permalinks.exist(permalink)) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
                 throw new ServiceException(langPropsService.get(
                         "duplicatedPermalinkLabel"));
             }

@@ -38,7 +38,6 @@ import org.b3log.solo.event.tencent.microblog.TencentMicroblogSender;
 import org.b3log.solo.jsonrpc.impl.AdminService;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.jsonrpc.impl.CommentService;
-import org.b3log.solo.jsonrpc.impl.PageService;
 import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
@@ -289,10 +288,6 @@ public final class SoloServletListener extends AbstractServletListener {
             final CommentService commentService = CommentService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(commentService.
                     getServiceObjectName(), commentService);
-
-            final PageService pageService = PageService.getInstance();
-            JSONRPCBridge.getGlobalBridge().registerObject(pageService.
-                    getServiceObjectName(), pageService);
 
             final PreferenceService preferenceService =
                     PreferenceService.getInstance();
