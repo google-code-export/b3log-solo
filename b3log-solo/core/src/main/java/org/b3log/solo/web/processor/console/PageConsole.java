@@ -69,6 +69,70 @@ public final class PageConsole {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
+     * Gets a page by the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean
+     *     "page": {
+     *         "oId": "",
+     *         "pageTitle": "",
+     *         "pageContent": ""
+     *         "pageOrder": int,
+     *         "pagePermalink": "",
+     *         "pageCommentCount": int,
+     *     }
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = PAGE_URI_PREFIX + "*",
+                       method = HTTPRequestMethod.GET)
+    public void getPage(final HttpServletRequest request,
+                        final HttpServletResponse response,
+                        final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        try {
+            final String requestURI = request.getRequestURI();
+            final String pageId =
+                    requestURI.substring(PAGE_URI_PREFIX.length());
+
+            final JSONObject result = pageQueryService.getPage(pageId);
+
+            if (null == result) {
+                renderer.setJSONObject(QueryResults.defaultResult());
+
+                return;
+            }
+
+            renderer.setJSONObject(result);
+            result.put(Keys.STATUS_CODE, true);
+            result.put(Keys.MSG, langPropsService.get("getSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
+
+    /**
      * Gets pages by the specified request json object.
      * 
      * <p>
@@ -111,7 +175,6 @@ public final class PageConsole {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
-        final JSONObject ret = new JSONObject();
         try {
             final String requestURI = request.getRequestURI();
             final String path =

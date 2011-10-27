@@ -60,6 +60,45 @@ public final class PageQueryService {
     private Permalinks permalinks = Permalinks.getInstance();
 
     /**
+     * Gets a page by the specified page id.
+     *
+     * @param pageId the specified page id
+     * @return for example,
+     * <pre>
+     * {
+     *     "page": {
+     *         "oId": "",
+     *         "pageTitle": "",
+     *         "pageContent": ""
+     *         "pageOrder": int,
+     *         "pagePermalink": "",
+     *         "pageCommentCount": int,
+     *     }
+     * }
+     * </pre>, returns {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getPage(final String pageId)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        
+        try {
+            final JSONObject page = pageRepository.get(pageId);
+            if (null == page) {
+                return null;
+            }
+            
+            ret.put(Page.PAGE, page);
+            
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets pages by the specified request json object.
      * 
      * @param requestJSONObject the specified request json object, for example,
