@@ -20,12 +20,14 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
@@ -56,17 +58,83 @@ public final class LinkConsole {
      */
     private LinkQueryService linkQueryService = LinkQueryService.getInstance();
     /**
+     * Link management service.
+     */
+    private LinkMgmtService linkMgmtService = LinkMgmtService.getInstance();
+    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
-     * Get link request URI prefix.
+     * Link request URI prefix.
      */
-    private static final String GET_LINK_REQUEST_URI_PREFIX = "/console/link/";
+    private static final String LINK_REQUEST_URI_PREFIX = "/console/link/";
     /**
-     * Get links request URI prefix.
+     * Links request URI prefix.
      */
-    private static final String GET_LINKS_REQUEST_URI_PREFIX = "/console/links/";
+    private static final String LINKS_REQUEST_URI_PREFIX = "/console/links/";
+
+    /**
+     * Adds a link with the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "oId": "", // Generated link id
+     *     "msg": ""
+     * }
+     * </pre>
+     * 
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "link": {
+     *         "linkTitle": "",
+     *         "linkAddress": ""
+     *     }
+     * }
+     * </pre>
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = LINK_REQUEST_URI_PREFIX,
+                       method = HTTPRequestMethod.POST)
+    public void addLink(final HttpServletRequest request,
+                        final HttpServletResponse response,
+                        final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+
+            final String linkId = linkMgmtService.addLink(requestJSONObject);
+
+            ret.put(Keys.OBJECT_ID, linkId);
+            ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
+            ret.put(Keys.STATUS_CODE, true);
+
+            renderer.setJSONObject(ret);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
+        }
+    }
 
     /**
      * Gets links by the specified request json object.
@@ -99,7 +167,7 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = GET_LINKS_REQUEST_URI_PREFIX
+    @RequestProcessing(value = LINKS_REQUEST_URI_PREFIX
                                + Requests.PAGINATION_PATH_PATTERN,
                        method = HTTPRequestMethod.GET)
     public void getLinks(final HttpServletRequest request,
@@ -111,7 +179,7 @@ public final class LinkConsole {
         try {
             final String requestURI = request.getRequestURI();
             final String path =
-                    requestURI.substring(GET_LINKS_REQUEST_URI_PREFIX.length());
+                    requestURI.substring(LINKS_REQUEST_URI_PREFIX.length());
 
             final JSONObject requestJSONObject =
                     Requests.buildPaginationRequest(path);
@@ -152,7 +220,7 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = GET_LINK_REQUEST_URI_PREFIX + "*",
+    @RequestProcessing(value = LINK_REQUEST_URI_PREFIX + "*",
                        method = HTTPRequestMethod.GET)
     public void getLink(final HttpServletRequest request,
                         final HttpServletResponse response,
@@ -169,7 +237,7 @@ public final class LinkConsole {
         try {
             final String requestURI = request.getRequestURI();
             final String linkId =
-                    requestURI.substring(GET_LINK_REQUEST_URI_PREFIX.length());
+                    requestURI.substring(LINK_REQUEST_URI_PREFIX.length());
 
             final JSONObject result = linkQueryService.getLink(linkId);
 

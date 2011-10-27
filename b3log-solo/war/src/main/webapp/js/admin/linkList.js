@@ -136,29 +136,33 @@ admin.linkList = {
                     "linkAddress": $("#linkAddress").val()
                 }
             };
-            jsonRpc.linkService.addLink(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "ADD_LINK_SUCC":
-                            $("#linkTitle").val("");
-                            $("#linkAddress").val("");
-                            if (admin.linkList.pageInfo.currentCount === Label.PAGE_SIZE &&
-                                admin.linkList.pageInfo.currentPage === admin.linkList.pageInfo.pageCount) {
-                                admin.linkList.pageInfo.pageCount++;
-                            }
-                            var hashList = window.location.hash.split("/");
-                            if (admin.linkList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
-                                admin.setHashByPage(admin.linkList.pageInfo.pageCount);
-                            }
-                            admin.linkList.getList(admin.linkList.pageInfo.pageCount);
-                            $("#tipMsg").text(Label.addSuccLabel);
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/link/",
+                type: "POST",
+                data: JSON.stringify(requestJSONObject),
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {}
-            }, requestJSONObject);
+                    
+                    $("#linkTitle").val("");
+                    $("#linkAddress").val("");
+                    if (admin.linkList.pageInfo.currentCount === Label.PAGE_SIZE &&
+                        admin.linkList.pageInfo.currentPage === admin.linkList.pageInfo.pageCount) {
+                        admin.linkList.pageInfo.pageCount++;
+                    }
+                    var hashList = window.location.hash.split("/");
+                    if (admin.linkList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
+                        admin.setHashByPage(admin.linkList.pageInfo.pageCount);
+                    }
+                    admin.linkList.getList(admin.linkList.pageInfo.pageCount);
+                }
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     

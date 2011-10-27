@@ -15,9 +15,14 @@
  */
 package org.b3log.solo.service;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.ServiceException;
+import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
+import org.json.JSONObject;
 
 /**
  * Link management service.
@@ -37,6 +42,45 @@ public final class LinkMgmtService {
      * Link repository.
      */
     private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
+
+    /**
+     * Adds a link with the specified request json object.
+     * 
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "link": {
+     *         "linkTitle": "",
+     *         "linkAddress": ""
+     *     }
+     * }, see {@link Link} for more details
+     * </pre>
+     * @return generated link id
+     * @throws ServiceException service exception
+     */
+    public String addLink(final JSONObject requestJSONObject)
+            throws ServiceException {
+        final Transaction transaction = linkRepository.beginTransaction();
+
+        try {
+            final JSONObject link =
+                    requestJSONObject.getJSONObject(Link.LINK);
+            final int maxOrder = linkRepository.getMaxOrder();
+            link.put(Link.LINK_ORDER, maxOrder + 1);
+            final String ret = linkRepository.add(link);
+
+            transaction.commit();
+            
+            return ret;
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            
+            LOGGER.log(Level.SEVERE, "Adds link failed", e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets the {@link LinkMgmtService} singleton.
