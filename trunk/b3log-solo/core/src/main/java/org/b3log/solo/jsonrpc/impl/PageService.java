@@ -66,51 +66,6 @@ public final class PageService extends AbstractGAEJSONRpcService {
     private Users userUtils = Users.getInstance();
 
     /**
-     * Gets a page by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "oId": ""
-     * }
-     * </pre>
-     * @return for example,
-     * <pre>
-     * {
-     *     "page": {
-     *         "oId": "",
-     *         "pageTitle": "",
-     *         "pageContent": ""
-     *         "pageOrder": int,
-     *         "pagePermalink": "",
-     *         "pageCommentCount": int,
-     *     },
-     *     "sc": "GET_PAGE_SUCC"
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     */
-    public JSONObject getPage(final JSONObject requestJSONObject)
-            throws ActionException {
-        final JSONObject ret = new JSONObject();
-
-        try {
-            final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final JSONObject page = pageRepository.get(pageId);
-            ret.put(Page.PAGE, page);
-
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_PAGE_SUCC);
-
-            LOGGER.log(Level.FINER, "Got page [oId={0}]", pageId);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
-
-    /**
      * Updates a page by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,

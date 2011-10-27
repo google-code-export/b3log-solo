@@ -155,29 +155,25 @@ admin.pageList = {
     get: function (id) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        var requestJSONObject = {
-            "oId": id
-        };
-
-        jsonRpc.pageService.getPage(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_PAGE_SUCC":
-                        admin.pageList.id = id;
-                        tinyMCE.get('pageContent').setContent(result.page.pageContent);
-                        $("#pagePermalink").val(result.page.pagePermalink);
-                        $("#pageTitle").val(result.page.pageTitle);
-                        $("#tipMsg").text(Label.getSuccLabel);
-                        break;
-                    case "GET_PAGE_FAIL_":
-                        $("#tipMsg").text(Label.getFailLabels);
-                        break;
-                    default:
-                        break;
+        
+        $.ajax({
+            url: "/console/page/" + id,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    return;
                 }
-                $("#loadMsg").text("");
-            } catch (e) {}
-        }, requestJSONObject);
+                
+                admin.pageList.id = id;
+                tinyMCE.get('pageContent').setContent(result.page.pageContent);
+                $("#pagePermalink").val(result.page.pagePermalink);
+                $("#pageTitle").val(result.page.pageTitle);
+                
+                $("#tipMsg").text(result.msg);
+            }
+        });
+        
+        $("#loadMsg").text("");
     },
 
     /* 
