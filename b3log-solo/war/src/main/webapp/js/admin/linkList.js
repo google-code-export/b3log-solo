@@ -297,23 +297,29 @@ admin.linkList = {
         $("#tipMsg").text("");
         var srcOrder = order;
         if (status === "up") {
-            srcOrder -= 1;
+            srcOrder--;
         } else {
-            srcOrder += 1;
+            srcOrder++;
         }
-
-        jsonRpc.linkService.changeOrder(function (result, error) {
-            try {
-                if (result) {
-                    admin.linkList.getList(admin.linkList.pageInfo.currentPage);
-                } else {
-                    $("#tipMsg").text(Label.updateFailLabel);
-                }
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+        
+        var requestJSONObject = {
+            "oId": id.toString(),
+            "linkOrder": srcOrder
+        };
+        
+        $.ajax({
+            url: "/console/link/order/",
+            type: "PUT",
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+                
+                // Refershes the link list
+                admin.linkList.getList(admin.linkList.pageInfo.currentPage);
             }
-        }, id.toString(), srcOrder);
+        });
+        
+        $("#loadMsg").text("");
     }
 };
 

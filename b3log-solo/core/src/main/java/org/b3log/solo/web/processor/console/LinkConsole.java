@@ -27,6 +27,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.solo.model.Link;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.util.QueryResults;
@@ -68,11 +69,78 @@ public final class LinkConsole {
     /**
      * Link request URI prefix.
      */
-    private static final String LINK_REQUEST_URI_PREFIX = "/console/link/";
+    private static final String LINK_URI_PREFIX = "/console/link/";
     /**
      * Links request URI prefix.
      */
-    private static final String LINKS_REQUEST_URI_PREFIX = "/console/links/";
+    private static final String LINKS_URI_PREFIX = "/console/links/";
+    /**
+     * Link order request URI prefix.
+     */
+    private static final String LINK_ORDER_URI_PREFIX = LINK_URI_PREFIX
+                                                        + "order/";
+
+    /**
+     * Changes link order by the specified link id and order.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     *
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "linkOrder": int // the target order
+     * }
+     * </pre>
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = LINK_ORDER_URI_PREFIX,
+                       method = HTTPRequestMethod.PUT)
+    public void changeOrder(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+            final String linkId =
+                    requestJSONObject.getString(Keys.OBJECT_ID);
+            final int targetLinkOrder =
+                    requestJSONObject.getInt(Link.LINK_ORDER);
+
+            linkMgmtService.changeOrder(linkId, targetLinkOrder);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+
+            renderer.setJSONObject(ret);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
+        }
+    }
 
     /**
      * Adds a link with the specified request json object.
@@ -100,7 +168,7 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = LINK_REQUEST_URI_PREFIX,
+    @RequestProcessing(value = LINK_URI_PREFIX,
                        method = HTTPRequestMethod.POST)
     public void addLink(final HttpServletRequest request,
                         final HttpServletResponse response,
@@ -167,7 +235,7 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = LINKS_REQUEST_URI_PREFIX
+    @RequestProcessing(value = LINKS_URI_PREFIX
                                + Requests.PAGINATION_PATH_PATTERN,
                        method = HTTPRequestMethod.GET)
     public void getLinks(final HttpServletRequest request,
@@ -179,7 +247,7 @@ public final class LinkConsole {
         try {
             final String requestURI = request.getRequestURI();
             final String path =
-                    requestURI.substring(LINKS_REQUEST_URI_PREFIX.length());
+                    requestURI.substring(LINKS_URI_PREFIX.length());
 
             final JSONObject requestJSONObject =
                     Requests.buildPaginationRequest(path);
@@ -220,7 +288,7 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = LINK_REQUEST_URI_PREFIX + "*",
+    @RequestProcessing(value = LINK_URI_PREFIX + "*",
                        method = HTTPRequestMethod.GET)
     public void getLink(final HttpServletRequest request,
                         final HttpServletResponse response,
@@ -237,7 +305,7 @@ public final class LinkConsole {
         try {
             final String requestURI = request.getRequestURI();
             final String linkId =
-                    requestURI.substring(LINK_REQUEST_URI_PREFIX.length());
+                    requestURI.substring(LINK_URI_PREFIX.length());
 
             final JSONObject result = linkQueryService.getLink(linkId);
 

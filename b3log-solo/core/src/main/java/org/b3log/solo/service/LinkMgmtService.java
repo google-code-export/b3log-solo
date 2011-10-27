@@ -17,6 +17,7 @@ package org.b3log.solo.service;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Link;
@@ -42,6 +43,43 @@ public final class LinkMgmtService {
      * Link repository.
      */
     private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
+
+    /**
+     * Changes the order of a link specified by the given link id to the 
+     * specified target order.
+     *
+     * @param linkId the given link id
+     * @param targetLinkOrder the specified target order
+     * @throws ServiceException service exception
+     */
+    public void changeOrder(final String linkId, final int targetLinkOrder)
+            throws ServiceException {
+        final Transaction transaction = linkRepository.beginTransaction();
+
+        try {
+            final JSONObject link1 = linkRepository.get(linkId);
+            final JSONObject link2 = linkRepository.getByOrder(targetLinkOrder);
+            
+            final int srcLinkOrder = link1.getInt(Link.LINK_ORDER);
+            
+            // Swap
+            link2.put(Link.LINK_ORDER, srcLinkOrder);
+            link1.put(Link.LINK_ORDER, targetLinkOrder);
+            
+            linkRepository.update(link1.getString(Keys.OBJECT_ID), link1);
+            linkRepository.update(link2.getString(Keys.OBJECT_ID), link2);
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Changes link's order failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Adds a link with the specified request json object.
@@ -70,13 +108,13 @@ public final class LinkMgmtService {
             final String ret = linkRepository.add(link);
 
             transaction.commit();
-            
+
             return ret;
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            
+
             LOGGER.log(Level.SEVERE, "Adds link failed", e);
             throw new ServiceException(e);
         }
