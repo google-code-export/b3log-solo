@@ -19,7 +19,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.Ids;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
@@ -53,6 +56,73 @@ public final class PageMgmtService {
      * Permalink utilities.
      */
     private Permalinks permalinks = Permalinks.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Adds a page with the specified request json object.
+     * 
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "page": {
+     *         "pageTitle": "",
+     *         "pageContent": "",
+     *         "pagePermalink": "" // optional
+     *     }
+     * }, see {@link Page} for more details
+     * </pre>
+     * @return generated link id
+     * @throws ServiceException if permalink format checks failed or persists
+     * failed
+     */
+    public String addPage(final JSONObject requestJSONObject)
+            throws ServiceException {
+        final Transaction transaction = pageRepository.beginTransaction();
+        try {
+            final JSONObject page =
+                    requestJSONObject.getJSONObject(Page.PAGE);
+            page.put(Page.PAGE_COMMENT_COUNT, 0);
+            final int maxOrder = pageRepository.getMaxOrder();
+            page.put(Page.PAGE_ORDER, maxOrder + 1);
+
+            String permalink = page.optString(Page.PAGE_PERMALINK);
+            if (Strings.isEmptyOrNull(permalink)) {
+                permalink = "/pages/" + Ids.genTimeMillisId() + ".html";
+            }
+
+            if (!permalink.startsWith("/")) {
+                permalink = "/" + permalink;
+            }
+
+            if (permalinks.invalidPagePermalinkFormat(permalink)) {
+                throw new ServiceException(langPropsService.get(
+                        "invalidPermalinkFormatLabel"));
+            }
+
+            if (permalinks.exist(permalink)) {
+                throw new ServiceException(langPropsService.get(
+                        "duplicatedPermalinkLabel"));
+            }
+
+            page.put(Page.PAGE_PERMALINK, permalink);
+
+            final String ret = pageRepository.add(page);
+
+            transaction.commit();
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Changes the order of a page specified by the given page id to the 

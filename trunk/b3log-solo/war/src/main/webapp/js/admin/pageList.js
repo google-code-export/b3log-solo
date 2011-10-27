@@ -235,45 +235,41 @@ admin.pageList = {
                     "pagePermalink": $("#pagePermalink").val()
                 }
             };
-            jsonRpc.pageService.addPage(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "ADD_PAGE_FAIL_DUPLICATED_PERMALINK":
-                            var msg = Label.addFailLabel + ", " + Label.duplicatedPermalinkLabel;
-                            $("#tipMsg").text(msg);
-                            break;
-                        case "ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT":
-                            msg = Label.addFailLabel + ", " + Label.invalidPermalinkFormatLabel;
-                            $("#tipMsg").text(msg);
-                            break;
-                        case "ADD_PAGE_SUCC":
-                            admin.pageList.id = "";
-                            $("#pagePermalink").val("");
-                            $("#pageTitle").val("");
-                            if (tinyMCE.get("pageContent")) {
-                                tinyMCE.get('pageContent').setContent("");
-                            } else {
-                                $("#pageContent").val("");
-                            }
-                            
-                            if (admin.pageList.pageInfo.currentCount === Label.PAGE_SIZE &&
-                                admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
-                                admin.pageList.pageInfo.pageCount++;
-                            }
-                            var hashList = window.location.hash.split("/");
-                            if (admin.pageList.pageInfo.pageCount == hashList[hashList.length - 1]) {
-                                admin.pageList.getList(admin.pageList.pageInfo.pageCount);
-                            } else {
-                                admin.setHashByPage(admin.pageList.pageInfo.pageCount);
-                            }
-                            $("#tipMsg").text(Label.addSuccLabel);
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/page/",
+                type: "POST",
+                data: JSON.stringify(requestJSONObject),
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {}
-            }, requestJSONObject);
+                    
+                    admin.pageList.id = "";
+                    $("#pagePermalink").val("");
+                    $("#pageTitle").val("");
+                    if (tinyMCE.get("pageContent")) {
+                        tinyMCE.get('pageContent').setContent("");
+                    } else {
+                        $("#pageContent").val("");
+                    }
+                            
+                    if (admin.pageList.pageInfo.currentCount === Label.PAGE_SIZE &&
+                        admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
+                        admin.pageList.pageInfo.pageCount++;
+                    }
+                    var hashList = window.location.hash.split("/");
+                    if (admin.pageList.pageInfo.pageCount == hashList[hashList.length - 1]) {
+                        admin.pageList.getList(admin.pageList.pageInfo.pageCount);
+                    } else {
+                        admin.setHashByPage(admin.pageList.pageInfo.pageCount);
+                    }
+                }
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     

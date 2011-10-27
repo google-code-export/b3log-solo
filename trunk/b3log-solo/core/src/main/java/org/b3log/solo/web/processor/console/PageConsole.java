@@ -24,6 +24,7 @@ import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -79,6 +80,70 @@ public final class PageConsole {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Adds a page with the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "oId": "", // Generated page id
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param context the specified http request context
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "page": {
+     *         "pageTitle": "",
+     *         "pageContent": "",
+     *         "pagePermalink": "" // optional
+     *     }
+     * }, see {@link Page} for more details
+     * </pre>
+     * @param response the specified http servlet response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = PAGE_URI_PREFIX,
+                       method = HTTPRequestMethod.POST)
+    public void addPage(final HTTPRequestContext context,
+                        final HttpServletRequest request,
+                        final HttpServletResponse response)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+
+            final String pageId = pageMgmtService.addPage(requestJSONObject);
+
+            ret.put(Keys.OBJECT_ID, pageId);
+            ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
+            ret.put(Keys.STATUS_CODE, true);
+
+            renderer.setJSONObject(ret);
+        } catch (final ServiceException e) { // May be permalink check exception
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
 
     /**
      * Changes a page order by the specified page id and order.
