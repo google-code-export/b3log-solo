@@ -16,17 +16,12 @@
 package org.b3log.solo.jsonrpc.impl;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
-import org.b3log.latke.action.util.Paginator;
-import org.b3log.latke.model.Pagination;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
@@ -34,7 +29,6 @@ import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.util.Users;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,73 +54,6 @@ public final class LinkService extends AbstractGAEJSONRpcService {
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
-
-    /**
-     * Gets links by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10
-     * }, see {@link Pagination} for more details
-     * </pre>
-     * @return for example,
-     * <pre>
-     * {
-     *     "pagination": {
-     *         "paginationPageCount": 100,
-     *         "paginationPageNums": [1, 2, 3, 4, 5]
-     *     },
-     *     "links": [{
-     *         "oId": "",
-     *         "linkTitle": "",
-     *         "linkAddress": "",
-     *      }, ....]
-     *     "sc": "GET_LINKS_SUCC"
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @see Pagination
-     */
-    public JSONObject getLinks(final JSONObject requestJSONObject)
-            throws ActionException {
-        final JSONObject ret = new JSONObject();
-        try {
-            final int currentPageNum = requestJSONObject.getInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
-            final int pageSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_PAGE_SIZE);
-            final int windowSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_WINDOW_SIZE);
-
-            final Query query = new Query().setCurrentPageNum(currentPageNum).
-                    setPageSize(pageSize).
-                    addSort(Link.LINK_ORDER, SortDirection.ASCENDING);
-            final JSONObject result = linkRepository.get(query);
-            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
-                    getInt(Pagination.PAGINATION_PAGE_COUNT);
-
-            final JSONObject pagination = new JSONObject();
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
-            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
-            final JSONArray links = result.getJSONArray(Keys.RESULTS);
-
-            ret.put(Pagination.PAGINATION, pagination);
-            ret.put(Link.LINKS, links);
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_LINKS_SUCC);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
 
     /**
      * Changes link order by the specified link id and order.

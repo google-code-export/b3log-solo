@@ -29,13 +29,14 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
+import org.b3log.solo.web.util.Requests;
 import org.json.JSONObject;
 
 /**
  * Link console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 25, 2011
+ * @version 1.0.0.1, Oct 27, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -62,6 +63,72 @@ public final class LinkConsole {
      * Get link request URI prefix.
      */
     private static final String GET_LINK_REQUEST_URI_PREFIX = "/console/link/";
+    /**
+     * Get links request URI prefix.
+     */
+    private static final String GET_LINKS_REQUEST_URI_PREFIX = "/console/links/";
+
+    /**
+     * Gets links by the specified request json object.
+     * 
+     * <p>
+     * The request URI contains the pagination arguments. For example, the 
+     * request URI is /console/links/1/10/20, means the current page is 1, the
+     * page size is 10, and the window size is 20.
+     * </p>
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "links": [{
+     *         "oId": "",
+     *         "linkTitle": "",
+     *         "linkAddress": "",
+     *      }, ....]
+     * }
+     * </pre>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = GET_LINKS_REQUEST_URI_PREFIX
+                               + Requests.PAGINATION_PATH_PATTERN,
+                       method = HTTPRequestMethod.GET)
+    public void getLinks(final HttpServletRequest request,
+                         final HttpServletResponse response,
+                         final HTTPRequestContext context) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        try {
+            final String requestURI = request.getRequestURI();
+            final String path =
+                    requestURI.substring(GET_LINKS_REQUEST_URI_PREFIX.length());
+
+            final JSONObject requestJSONObject =
+                    Requests.buildPaginationRequest(path);
+
+            final JSONObject result =
+                    linkQueryService.getLinks(requestJSONObject);
+            result.put(Keys.STATUS_CODE, true);
+
+            renderer.setJSONObject(result);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
 
     /**
      * Gets the file with the specified request json object, http servlet

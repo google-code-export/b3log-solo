@@ -136,14 +136,6 @@ public enum StatusCodes {
      */
     UPDATE_LINK_FAIL_,
     /**
-     * Indicates get a link successfully.
-     */
-    GET_LINK_SUCC,
-    /**
-     * Indicates get links successfully.
-     */
-    GET_LINKS_SUCC,
-    /**
      * Indicates update preference successfully.
      */
     UPDATE_PREFERENCE_SUCC,
