@@ -13,65 +13,53 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.jsonrpc.impl;
+package org.b3log.solo.service;
 
-import org.b3log.latke.plugin.AbstractPlugin;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.action.ActionException;
+import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.PluginStatus;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
-import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Plugin service for JavaScript client.
+ * Plugin management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jul 22, 2011
- * @since 0.3.1
+ * @version 1.0.0.0, Oct 27, 2011
+ * @since 0.4.0
  */
-public final class PluginService extends AbstractGAEJSONRpcService {
+public final class PluginMgmtService {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(AdminService.class.getName());
-    /**
-     * User utilities.
-     */
-    private Users userUtils = Users.getInstance();
-    /**
-     * Language service.
-     */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+            Logger.getLogger(PluginMgmtService.class.getName());
     /**
      * Plugin repository.
      */
     private PluginRepository pluginRepository =
             PluginRepositoryImpl.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Sets a plugin's status with the specified plugin id, status.
      * 
      * @param pluginId the specified plugin id
      * @param status the specified status, see {@link PluginStatus}
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
      * @return for example,
      * <pre>
      * {
@@ -79,25 +67,15 @@ public final class PluginService extends AbstractGAEJSONRpcService {
      *     "msg": "" 
      * }
      * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
      */
-    public JSONObject setPluginStatus(final String pluginId, final String status,
-                                      final HttpServletRequest request,
-                                      final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-
-        if (!userUtils.isLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
-
+    public JSONObject setPluginStatus(final String pluginId, final String status) {
         final Map<String, String> langs =
                 langPropsService.getAll(Latkes.getLocale());
 
         final PluginManager pluginManager = PluginManager.getInstance();
         final List<AbstractPlugin> plugins = pluginManager.getPlugins();
+
+        final JSONObject ret = new JSONObject();
 
         for (final AbstractPlugin plugin : plugins) {
             if (plugin.getId().equals(pluginId)) {
@@ -114,6 +92,7 @@ public final class PluginService extends AbstractGAEJSONRpcService {
 
                     ret.put(Keys.STATUS_CODE, true);
                     ret.put(Keys.MSG, langs.get("setSuccLabel"));
+
                     return ret;
                 } catch (final Exception e) {
                     if (transaction.isActive()) {
@@ -125,16 +104,15 @@ public final class PluginService extends AbstractGAEJSONRpcService {
                     try {
                         ret.put(Keys.STATUS_CODE, false);
                         ret.put(Keys.MSG, langs.get("setFailLabel"));
+
                         return ret;
                     } catch (final JSONException ex) {
-                        throw new ActionException(
+                        throw new RuntimeException(
                                 "Set plugin status fatal error!");
                     }
                 }
             }
         }
-
-
 
         try {
             ret.put(Keys.STATUS_CODE, false);
@@ -142,39 +120,38 @@ public final class PluginService extends AbstractGAEJSONRpcService {
 
             return ret;
         } catch (final JSONException ex) {
-            throw new ActionException("Set plugin status fatal error!");
+            throw new RuntimeException("Set plugin status fatal error!");
         }
     }
 
     /**
-     * Gets the {@link PluginService} singleton.
+     * Gets the {@link PluginQueryService} singleton.
      *
      * @return the singleton
      */
-    public static PluginService getInstance() {
+    public static PluginMgmtService getInstance() {
         return SingletonHolder.SINGLETON;
-
-
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
-    private PluginService() {
+    private PluginMgmtService() {
     }
 
     /**
      * Singleton holder.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
+     * @version 1.0.0.0, Oct 27, 2011
      */
     private static final class SingletonHolder {
 
         /**
          * Singleton.
          */
-        private static final PluginService SINGLETON = new PluginService();
+        private static final PluginMgmtService SINGLETON =
+                new PluginMgmtService();
 
         /**
          * Private default constructor.

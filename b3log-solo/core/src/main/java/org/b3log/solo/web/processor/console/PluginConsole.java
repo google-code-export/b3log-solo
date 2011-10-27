@@ -20,12 +20,15 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.model.Plugin;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
@@ -54,16 +57,68 @@ public final class PluginConsole {
     /**
      * Plugin query service.
      */
-    private PluginQueryService pluginQueryService = PluginQueryService.
-            getInstance();
+    private PluginQueryService pluginQueryService =
+            PluginQueryService.getInstance();
     /**
-     * Get files request URI prefix.
+     * Plugin management service.
+     */
+    private PluginMgmtService pluginMgmtService =
+            PluginMgmtService.getInstance();
+    /**
+     * Plugins URI prefix.
      */
     private static final String PLUGINS_URI_PREFIX = "/console/plugins/";
+    /**
+     * Plugin URI prefix.
+     */
+    private static final String PLUGIN_URI_PREFIX = "/console/plugin/";
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Sets a plugin's status with the specified plugin id, status.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": "" 
+     * }
+     * </pre>
+     * 
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = PLUGIN_URI_PREFIX + "status/",
+                       method = HTTPRequestMethod.PUT)
+    public void setPluginStatus(final HttpServletRequest request,
+                                final HttpServletResponse response,
+                                final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        
+        final JSONObject requestJSONObject =
+                AbstractAction.parseRequestJSONObject(request, response);
+        
+        final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
+        final String status = requestJSONObject.getString(Plugin.PLUGIN_STATUS);
+
+        final JSONObject result = pluginMgmtService.setPluginStatus(pluginId,
+                                                                    status);
+
+        renderer.setJSONObject(result);
+    }
 
     /**
      * Gets plugins by the specified request json object.

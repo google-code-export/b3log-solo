@@ -104,11 +104,26 @@ admin.pluginList = {
         } else {
             status = "ENABLED";
         }
-        jsonRpc.pluginService.setPluginStatus(function () {
-            //admin.pluginList.getList(admin.pluginList.pageInfo.currentPage);
-            $("#tipMsg").text(Label.updateSuccLabel);
-            window.location.reload();
-        }, pluginId, status);
+        
+        var requestJSONObject = {
+            "oId": pluginId,
+            "status": status
+        };
+        
+        $.ajax({
+            url: "/console/plugin/status/",
+            type: "PUT",
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+                $("#loadMsg").text(result.msg);
+                
+                if (!result.sc) {
+                    return;
+                }
+                
+                window.location.reload();
+            }
+        });
     }
 };
 
