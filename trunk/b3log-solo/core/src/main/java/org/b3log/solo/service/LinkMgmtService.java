@@ -86,7 +86,6 @@ public final class LinkMgmtService {
      */
     public void updateLink(final JSONObject requestJSONObject)
             throws ServiceException {
-        final JSONObject ret = new JSONObject();
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {

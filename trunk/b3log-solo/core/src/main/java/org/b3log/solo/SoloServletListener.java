@@ -45,7 +45,6 @@ import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.plugin.PluginRefresher;
-import org.b3log.solo.jsonrpc.impl.PluginService;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -299,10 +298,6 @@ public final class SoloServletListener extends AbstractServletListener {
                     PreferenceService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(preferenceService.
                     getServiceObjectName(), preferenceService);
-
-            final PluginService pluginService = PluginService.getInstance();
-            JSONRPCBridge.getGlobalBridge().registerObject(pluginService.
-                    getServiceObjectName(), pluginService);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register remote JavaScript service error",
                        e);
