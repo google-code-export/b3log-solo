@@ -88,6 +88,7 @@ public final class PluginConsole {
      *     "msg": "" 
      * }
      * </pre>
+     * </p>
      * 
      * @param request the specified http servlet request
      * @param response the specified http servlet response
@@ -107,10 +108,10 @@ public final class PluginConsole {
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-        
+
         final JSONObject requestJSONObject =
                 AbstractAction.parseRequestJSONObject(request, response);
-        
+
         final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
         final String status = requestJSONObject.getString(Plugin.PLUGIN_STATUS);
 
@@ -146,6 +147,7 @@ public final class PluginConsole {
      *      }, ....]
      * }
      * </pre>
+     * </p>
      * 
      * @param request the specified http servlet request
      * @param response the specified http servlet response

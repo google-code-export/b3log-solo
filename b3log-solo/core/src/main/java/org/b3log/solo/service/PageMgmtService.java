@@ -18,6 +18,7 @@ package org.b3log.solo.service;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -28,6 +29,7 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Permalinks;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -60,6 +62,34 @@ public final class PageMgmtService {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Removes a page specified by the given page id.
+     *
+     * @param pageId the given page id
+     * @throws ServiceException service exception
+     */
+    public void removePage(final String pageId)
+            throws ServiceException {
+        final Transaction transaction = pageRepository.beginTransaction();
+        try {
+            LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
+            pageUtils.removePageComments(pageId);
+            pageRepository.remove(pageId);
+
+            transaction.commit();
+
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Removes a page[id=" + pageId + "] failed",
+                       e);
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Adds a page with the specified request json object.
@@ -107,6 +137,7 @@ public final class PageMgmtService {
                         "duplicatedPermalinkLabel"));
             }
 
+
             page.put(Page.PAGE_PERMALINK, permalink);
 
             final String ret = pageRepository.add(page);
@@ -114,7 +145,14 @@ public final class PageMgmtService {
             transaction.commit();
 
             return ret;
-        } catch (final Exception e) {
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw new ServiceException(e);
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             if (transaction.isActive()) {
                 transaction.rollback();
