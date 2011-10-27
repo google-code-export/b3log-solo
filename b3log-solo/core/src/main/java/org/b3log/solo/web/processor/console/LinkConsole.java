@@ -81,6 +81,63 @@ public final class LinkConsole {
                                                         + "order/";
 
     /**
+     * Removes a link by the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     *
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     * }
+     * </pre>
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = LINK_URI_PREFIX + "*",
+                       method = HTTPRequestMethod.DELETE)
+    public void removeLink(
+            final HttpServletRequest request,
+            final HttpServletResponse response,
+            final HTTPRequestContext context)
+            throws Exception {
+        final JSONObject ret = new JSONObject();
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        try {
+            final String linkId =
+                    request.getRequestURI().substring(LINK_URI_PREFIX.length());
+
+            linkMgmtService.removeLink(linkId);
+
+            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+        }
+    }
+
+    /**
      * Updates a link by the specified request json object.
      * 
      * <p>

@@ -45,6 +45,31 @@ public final class LinkMgmtService {
     private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
 
     /**
+     * Removes a link specified by the given link id.
+     *
+     * @param linkId the given link id
+     * @throws ServiceException service exception
+     */
+    public void removeLink(final String linkId)
+            throws ServiceException {
+        final Transaction transaction = linkRepository.beginTransaction();
+
+        try {
+            linkRepository.remove(linkId);
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Removes a link[id=" + linkId + "] failed",
+                       e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Updates a link by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,

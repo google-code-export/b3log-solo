@@ -239,33 +239,34 @@ admin.linkList = {
             var requestJSONObject = {
                 "oId": id
             };
-
-            jsonRpc.linkService.removeLink(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "REMOVE_LINK_SUCC":
-                            var pageNum = admin.linkList.pageInfo.currentPage;
-                            if (admin.linkList.pageInfo.currentCount === 1 && admin.linkList.pageInfo.pageCount !== 1 &&
-                                admin.linkList.pageInfo.currentPage === admin.linkList.pageInfo.pageCount) {
-                                admin.linkList.pageInfo.pageCount--;
-                                pageNum = admin.linkList.pageInfo.pageCount;
-                            }
-                            var hashList = window.location.hash.split("/");
-                            if (pageNum !== parseInt(hashList[hashList.length - 1])) {
-                                admin.setHashByPage(pageNum);
-                            }
-                            admin.linkList.getList(pageNum);
-                            $("#tipMsg").text(Label.removeSuccLabel);
-                            break;
-                        case "REMOVE_LINK_FAIL_":
-                            $("#tipMsg").text(Label.removeFailLabel);
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/link/" + id,
+                type: "DELETE",
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {}
-            }, requestJSONObject);
+                    
+                    var pageNum = admin.linkList.pageInfo.currentPage;
+                    if (admin.linkList.pageInfo.currentCount === 1 && admin.linkList.pageInfo.pageCount !== 1 &&
+                        admin.linkList.pageInfo.currentPage === admin.linkList.pageInfo.pageCount) {
+                        admin.linkList.pageInfo.pageCount--;
+                        pageNum = admin.linkList.pageInfo.pageCount;
+                    }
+                    
+                    var hashList = window.location.hash.split("/");
+                    if (pageNum !== parseInt(hashList[hashList.length - 1])) {
+                        admin.setHashByPage(pageNum);
+                    }
+                    
+                    admin.linkList.getList(pageNum);
+                }
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     

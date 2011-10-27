@@ -38,7 +38,6 @@ import org.b3log.solo.event.tencent.microblog.TencentMicroblogSender;
 import org.b3log.solo.jsonrpc.impl.AdminService;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.jsonrpc.impl.CommentService;
-import org.b3log.solo.jsonrpc.impl.LinkService;
 import org.b3log.solo.jsonrpc.impl.PageService;
 import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.jsonrpc.impl.StatisticService;
@@ -59,7 +58,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.0, Oct 24, 2011
+ * @version 1.0.6.1, Oct 27, 2011
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -123,7 +122,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         registerRemoteJSServices();
         registerEventProcessor();
-        
+
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
@@ -207,7 +206,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         Stopwatchs.end();
     }
-    
+
     /**
      * Registers remote JavaScript service serializers.
      */
@@ -292,10 +291,6 @@ public final class SoloServletListener extends AbstractServletListener {
             final CommentService commentService = CommentService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(commentService.
                     getServiceObjectName(), commentService);
-
-            final LinkService linkService = LinkService.getInstance();
-            JSONRPCBridge.getGlobalBridge().registerObject(linkService.
-                    getServiceObjectName(), linkService);
 
             final PageService pageService = PageService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(pageService.
