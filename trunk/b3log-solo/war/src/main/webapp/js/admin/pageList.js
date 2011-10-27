@@ -18,7 +18,8 @@
  * page list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Aug 6, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.8, Oct 27, 2011
  */
 
 /* page-list 相关操作 */
@@ -282,27 +283,27 @@ admin.pageList = {
                     "pagePermalink": $("#pagePermalink").val()
                 }
             };
-            jsonRpc.pageService.updatePage(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK":
-                            var msg = Label.addFailLabel + ", " + Label.duplicatedPermalinkLabel;
-                            $("#tipMsg").text(msg);
-                            break;
-                        case "UPDATE_PAGE_SUCC":
-                            admin.pageList.getList(admin.pageList.pageInfo.currentPage);
-                            admin.pageList.id = "";
-                            $("#tipMsg").text(Label.updateSuccLabel);
-                            $("#pageTitle").val("");
-                            tinyMCE.get('pageContent').setContent("");
-                            $("#pagePermalink").val("");
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/page/",
+                type: "PUT",
+                data: JSON.stringify(requestJSONObject),
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {}
-            }, requestJSONObject);
+                    
+                    admin.pageList.getList(admin.pageList.pageInfo.currentPage);
+                    admin.pageList.id = "";
+                    $("#pageTitle").val("");
+                    tinyMCE.get('pageContent').setContent("");
+                    $("#pagePermalink").val("");
+                }
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     

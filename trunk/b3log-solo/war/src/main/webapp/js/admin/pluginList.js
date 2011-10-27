@@ -18,7 +18,8 @@
  * plugin list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.9, Aug 24, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.1.0, Oct 27, 2011
  */
 
 /* plugin-list 相关操作 */
