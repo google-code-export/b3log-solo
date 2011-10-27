@@ -20,12 +20,15 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.PageQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
@@ -56,6 +59,10 @@ public final class PageConsole {
      */
     private PageQueryService pageQueryService = PageQueryService.getInstance();
     /**
+     * Page management service.
+     */
+    private PageMgmtService pageMgmtService = PageMgmtService.getInstance();
+    /**
      * Pages URI prefix.
      */
     private static final String PAGES_URI_PREFIX = "/console/pages/";
@@ -64,9 +71,76 @@ public final class PageConsole {
      */
     private static final String PAGE_URI_PREFIX = "/console/page/";
     /**
+     * Page order URI prefix.
+     */
+    private static final String PAGE_ORDER_URI_PREFIX = PAGE_URI_PREFIX
+                                                        + "order/";
+    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Changes a page order by the specified page id and order.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     *
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "pageOrder": int // the target order
+     * }
+     * </pre>
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = PAGE_ORDER_URI_PREFIX,
+                       method = HTTPRequestMethod.PUT)
+    public void changeOrder(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+            final String linkId =
+                    requestJSONObject.getString(Keys.OBJECT_ID);
+            final int targetLinkOrder =
+                    requestJSONObject.getInt(Page.PAGE_ORDER);
+
+            pageMgmtService.changeOrder(linkId, targetLinkOrder);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+
+            renderer.setJSONObject(ret);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
+        }
+    }
 
     /**
      * Gets a page by the specified request json object.

@@ -128,7 +128,7 @@ public final class LinkMgmtService {
 
             final int srcLinkOrder = link1.getInt(Link.LINK_ORDER);
 
-            // Swap
+            // Swaps
             link2.put(Link.LINK_ORDER, srcLinkOrder);
             link1.put(Link.LINK_ORDER, targetLinkOrder);
 

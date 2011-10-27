@@ -27,8 +27,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
-import org.b3log.solo.util.Pages;
-import org.b3log.solo.util.Permalinks;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -50,14 +48,6 @@ public final class PageQueryService {
      * Page repository.
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
-    /**
-     * Page utilities.
-     */
-    private Pages pageUtils = Pages.getInstance();
-    /**
-     * Permalink utilities.
-     */
-    private Permalinks permalinks = Permalinks.getInstance();
 
     /**
      * Gets a page by the specified page id.

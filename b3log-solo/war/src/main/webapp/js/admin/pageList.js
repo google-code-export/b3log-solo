@@ -350,23 +350,29 @@ admin.pageList = {
         $("#tipMsg").text("");
         var srcOrder = order;
         if (status === "up") {
-            srcOrder -= 1;
+            srcOrder--;
         } else {
-            srcOrder += 1;
+            srcOrder++;
         }
-
-        jsonRpc.pageService.changeOrder(function (result, error) {
-            try {
-                if (result) {
-                    admin.pageList.getList(admin.pageList.pageInfo.currentPage);
-                } else {
-                    $("#tipMsg").text(Label.updateFailLabel);
-                }
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+        
+        var requestJSONObject = {
+            "oId": id.toString(),
+            "pageOrder": srcOrder
+        };
+        
+        $.ajax({
+            url: "/console/page/order/",
+            type: "PUT",
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+                
+                // Refershes the page list
+                admin.pageList.getList(admin.pageList.pageInfo.currentPage);
             }
-        }, id.toString(), srcOrder);
+        });
+        
+        $("#loadMsg").text("");
     }
 };
 
