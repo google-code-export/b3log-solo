@@ -38,7 +38,6 @@ import org.b3log.solo.event.tencent.microblog.TencentMicroblogSender;
 import org.b3log.solo.jsonrpc.impl.AdminService;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.jsonrpc.impl.CommentService;
-import org.b3log.solo.jsonrpc.impl.PreferenceService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.util.Stopwatchs;
@@ -288,11 +287,6 @@ public final class SoloServletListener extends AbstractServletListener {
             final CommentService commentService = CommentService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(commentService.
                     getServiceObjectName(), commentService);
-
-            final PreferenceService preferenceService =
-                    PreferenceService.getInstance();
-            JSONRPCBridge.getGlobalBridge().registerObject(preferenceService.
-                    getServiceObjectName(), preferenceService);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register remote JavaScript service error",
                        e);

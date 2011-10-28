@@ -55,7 +55,8 @@ import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,9 +77,10 @@ public final class RepairProcessor {
     private static final Logger LOGGER =
             Logger.getLogger(RepairProcessor.class.getName());
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Skin utilities.
      */
@@ -116,17 +118,14 @@ public final class RepairProcessor {
         context.setRenderer(renderer);
 
         final Repository repository = PreferenceRepositoryImpl.getInstance();
-        final Transaction transaction = repository.beginTransaction();
 
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String originalSigns =
                     preference.getString(Preference.SIGNS);
             preference.put(Preference.SIGNS, Preference.Default.DEFAULT_SIGNS);
 
-            preferenceUtils.setPreference(preference);
-
-            transaction.commit();
+            PreferenceMgmtService.getInstance().updatePreference(preference);
 
             // Sends the sample signs to developer
             final Message msg = new MailService.Message();
@@ -140,10 +139,6 @@ public final class RepairProcessor {
             MAIL_SVC.send(msg);
             renderer.setContent("Restores signs succeeded.");
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             renderer.setContent("Restores signs failed, error msg["
                                 + e.getMessage() + "]");

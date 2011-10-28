@@ -349,15 +349,22 @@ admin.article = {
     init: function (fun) {
         //admin.article.clear();
         // Inits Signs.
-        jsonRpc.preferenceService.getSigns(function (result, error) {
-            try {
+        
+        $.ajax({
+            url: "/console/signs/",
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    return;
+                }
+                    
                 $(".signs button").each(function (i) {
                     // Sets signs.
-                    if (i === result.length) {
+                    if (i === result.signs.length) {
                         $("#articleSign1").addClass("selected");
                     } else {
-                        $("#articleSign" + result[i].oId).tip({
-                            content: result[i].signHTML === "" ? Label.signIsNullLabel : result[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
+                        $("#articleSign" + result.signs[i].oId).tip({
+                            content: result.signs[i].signHTML === "" ? Label.signIsNullLabel : result.signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
                             position: "top"
                         });
                     }
@@ -371,8 +378,6 @@ admin.article = {
                         }
                     });
                 });
-            } catch(e) {
-                console.error(e);
             }
         });
         

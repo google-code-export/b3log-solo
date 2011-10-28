@@ -31,88 +31,88 @@ admin.preference = {
      */
     init: function () {
         $("#tabPreference").tabs();
-         
-        jsonRpc.preferenceService.getPreference(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_PREFERENCE_SUCC":
-                        // preference
-                        var preference = result.preference;
-                        $("#metaKeywords").val(preference.metaKeywords),
-                        $("#metaDescription").val(preference.metaDescription),
-                        $("#blogTitle").val(preference.blogTitle),
-                        $("#blogSubtitle").val(preference.blogSubtitle),
-                        $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
-                        $("#mostViewArticleDisplayCount").val(preference.mostViewArticleDisplayCount),
-                        $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
-                        $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
-                        $("#articleListDisplayCount").val(preference.articleListDisplayCount);
-                        $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
-                        $("#blogHost").val(preference.blogHost);
-                        $("#localeString").val(preference.localeString);
-                        $("#timeZoneId").val(preference.timeZoneId);
-                        $("#noticeBoard").val(preference.noticeBoard);
-                        $("#htmlHead").val(preference.htmlHead);
-                        $("#secret").val(preference.googleOAuthConsumerSecret);
-                        $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
-                        $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
-                        $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
-                        $("#keyOfSolo").val(preference.keyOfSolo);
-                        preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
-                        // Tencent micro blog settings
-                        preference.enablePostToTencentMicroblog ? $("#postToTencentMicroblog").attr("checked", "checked") : $("#postToTencentMicroblog").removeAttr("checked");
-                        $("#tencentMicroblogAppKey").val(preference.tencentMicroblogAppKey);
-                        $("#tencentMicroblogAppSecret").val(preference.tencentMicroblogAppSecret);
-                        
-                        preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
-
-                        admin.preference.locale = preference.localeString;
-
-                        // skin
-                        $("#skinMain").data("skinDirName", preference.skinDirName);
-                        var skins = eval('(' + preference.skins + ')');
-                        var skinsHTML = "";
-                        for (var i = 0; i < skins.length; i++) {
-                            if (skins[i].skinName === preference.skinName
-                                && skins[i].skinDirName === preference.skinDirName ) {
-                                skinsHTML += "<div title='" + skins[i].skinDirName
-                                + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
-                                + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
-                            } else {
-                                skinsHTML += "<div title='" + skins[i].skinDirName
-                                + "' class='left skinItem'><img class='skinPreview' src='skins/"
-                                + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
-                            }
-                        }
-                        $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
-
-                        $(".skinItem").click(function () {
-                            $(".skinItem").removeClass("selected");
-                            $(this).addClass("selected");
-                            $("#skinMain").data("skinDirName", this.title);
-                        });
-
-                        // sign
-                        var signs = eval('(' + preference.signs + ')');
-                        for (var j = 1; j < signs.length; j++) {
-                            $("#preferenceSign" + j).val(signs[j].signHTML);
-                            $("#preferenceSignButton" + j).tip({
-                                content: signs[j].signHTML === "" ? Label.signIsNullLabel : signs[j].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
-                                position: "bottom"
-                            });
-                        }
-                        
-                        // Article list style
-                        $("#articleListDisplay").val(preference.articleListStyle);
-                        break;
-                    default:
-                        break;
+        
+        $.ajax({
+            url: "/console/preference/",
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    $("#tipMsg").text(result.msg);
+                    
+                    return;
                 }
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+                
+                var preference = result.preference;
+                $("#metaKeywords").val(preference.metaKeywords),
+                $("#metaDescription").val(preference.metaDescription),
+                $("#blogTitle").val(preference.blogTitle),
+                $("#blogSubtitle").val(preference.blogSubtitle),
+                $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
+                $("#mostViewArticleDisplayCount").val(preference.mostViewArticleDisplayCount),
+                $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
+                $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
+                $("#articleListDisplayCount").val(preference.articleListDisplayCount);
+                $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
+                $("#blogHost").val(preference.blogHost);
+                $("#localeString").val(preference.localeString);
+                $("#timeZoneId").val(preference.timeZoneId);
+                $("#noticeBoard").val(preference.noticeBoard);
+                $("#htmlHead").val(preference.htmlHead);
+                $("#secret").val(preference.googleOAuthConsumerSecret);
+                $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
+                $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
+                $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
+                $("#keyOfSolo").val(preference.keyOfSolo);
+                preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
+                // Tencent micro blog settings
+                preference.enablePostToTencentMicroblog ? $("#postToTencentMicroblog").attr("checked", "checked") : $("#postToTencentMicroblog").removeAttr("checked");
+                $("#tencentMicroblogAppKey").val(preference.tencentMicroblogAppKey);
+                $("#tencentMicroblogAppSecret").val(preference.tencentMicroblogAppSecret);
+                        
+                preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
+
+                admin.preference.locale = preference.localeString;
+
+                // skin
+                $("#skinMain").data("skinDirName", preference.skinDirName);
+                var skins = eval('(' + preference.skins + ')');
+                var skinsHTML = "";
+                for (var i = 0; i < skins.length; i++) {
+                    if (skins[i].skinName === preference.skinName
+                        && skins[i].skinDirName === preference.skinDirName ) {
+                        skinsHTML += "<div title='" + skins[i].skinDirName
+                        + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
+                        + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
+                    } else {
+                        skinsHTML += "<div title='" + skins[i].skinDirName
+                        + "' class='left skinItem'><img class='skinPreview' src='skins/"
+                        + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
+                    }
+                }
+                $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
+
+                $(".skinItem").click(function () {
+                    $(".skinItem").removeClass("selected");
+                    $(this).addClass("selected");
+                    $("#skinMain").data("skinDirName", this.title);
+                });
+
+                // sign
+                var signs = eval('(' + preference.signs + ')');
+                for (var j = 1; j < signs.length; j++) {
+                    $("#preferenceSign" + j).val(signs[j].signHTML);
+                    $("#preferenceSignButton" + j).tip({
+                        content: signs[j].signHTML === "" ? Label.signIsNullLabel : signs[j].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
+                        position: "bottom"
+                    });
+                }
+                        
+                // Article list style
+                $("#articleListDisplay").val(preference.articleListStyle);
             }
         });
+        
+        $("#loadMsg").text("");
     },
     
     /*
@@ -174,44 +174,37 @@ admin.preference = {
                 "allowVisitDraftViaPermalink": $("#allowVisitDraftViaPermalink").prop("checked"),
                 "articleListStyle": $("#articleListDisplay").val()
             }
-        }
+        };
         
-        jsonRpc.preferenceService.updatePreference(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "UPDATE_PREFERENCE_SUCC":
-                        $("#tipMsg").text(Label.updateSuccLabel);
-                        if ($("#localeString").val() !== admin.preference.locale) {
-                            window.location.reload();
-                        }
+        $.ajax({
+            url: "/console/preference/",
+            type: "PUT",
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+                     
+                if (!result.sc) {
+                    return;
+                }
+                    
+                $("#tipMsg").text(Label.updateSuccLabel);
+                if ($("#localeString").val() !== admin.preference.locale) {
+                    window.location.reload();
+                }
                         
-                        // update article and preferences signs
-                        for (var i = 1; i < signs.length; i++) {
-                            if ($("#articleSign" + signs[i].oId).length === 1) {
-                                $("#articleSign" + signs[i].oId).tip("option", "content", 
-                                    signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
-                            }
-                            $("#preferenceSignButton" + signs[i].oId).tip("option", "content", 
-                                signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
-                        }
-                        break;
-                    case "UPDATE_PREFERENCE_FAIL_":
-                        $("#tipMsg").text(Label.updatePreferenceFailLabel);
-                        break;
-                    case "UPDATE_PREFERENCE_FAIL_CANNT_BE_LOCALHOST":
-                        $("#tipMsg").text(Label.canntBeLocalhostOnProductionLabel);
-                        break;
-                    case "UPDATE_PREFERENCE_FAIL_NEED_MUL_USERS":
-                        $("#tipMsg").text(Label.updatePreferenceFailNeedMulUsersLabel);
-                        break;
-                    default:
-                        break;
-                } 
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+                // update article and preferences signs
+                for (var i = 1; i < signs.length; i++) {
+                    if ($("#articleSign" + signs[i].oId).length === 1) {
+                        $("#articleSign" + signs[i].oId).tip("option", "content", 
+                            signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
+                    }
+                    $("#preferenceSignButton" + signs[i].oId).tip("option", "content", 
+                        signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
+                }
             }
-        }, requestJSONObject);
+        });
+        
+        $("#loadMsg").text("");
     },
     
     /*

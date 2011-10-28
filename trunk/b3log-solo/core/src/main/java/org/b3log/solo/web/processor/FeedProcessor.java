@@ -51,8 +51,8 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Articles;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -78,9 +78,10 @@ public final class FeedProcessor {
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Count of output entry.
      */
@@ -117,7 +118,7 @@ public final class FeedProcessor {
 
         final Feed feed = new Feed();
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(
@@ -234,7 +235,7 @@ public final class FeedProcessor {
             final String tagTitle =
                     tagRepository.get(tagId).getString(Tag.TAG_TITLE);
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -318,7 +319,7 @@ public final class FeedProcessor {
 
         final Channel channel = new Channel();
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -445,7 +446,7 @@ public final class FeedProcessor {
             final String tagTitle =
                     tagRepository.get(tagId).getString(Tag.TAG_TITLE);
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;

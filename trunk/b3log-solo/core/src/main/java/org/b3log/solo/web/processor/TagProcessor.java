@@ -15,13 +15,13 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Tags;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.util.Articles;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import java.net.URLDecoder;
@@ -56,7 +56,6 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
@@ -89,9 +88,10 @@ public final class TagProcessor {
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Skin utilities.
      */
@@ -101,10 +101,6 @@ public final class TagProcessor {
      */
     private TagArticleRepository tagArticleRepository =
             TagArticleRepositoryImpl.getInstance();
-    /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
     /**
      * Article repository.
      */
@@ -157,7 +153,7 @@ public final class TagProcessor {
 
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
 
             skins.fillSkinLangs(preference, dataModel);
 
@@ -305,7 +301,7 @@ public final class TagProcessor {
 
 
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;

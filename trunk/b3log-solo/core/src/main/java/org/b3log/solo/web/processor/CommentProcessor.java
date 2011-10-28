@@ -58,9 +58,9 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.web.action.StatusCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,9 +95,10 @@ public final class CommentProcessor {
     private static CommentRepository commentRepository =
             CommentRepositoryImpl.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private static Preferences preferenceUtils = Preferences.getInstance();
+    private static PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Time zone utilities.
      */
@@ -220,7 +221,7 @@ public final class CommentProcessor {
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
             final Date date = timeZoneUtils.getTime(timeZoneId);
@@ -345,7 +346,7 @@ public final class CommentProcessor {
                                                           httpServletResponse);
             final JSONObject jsonObject =
                     addArticleCommentInternal(requestJSONObject,
-                                             httpServletRequest);
+                                              httpServletRequest);
 
             transaction.commit();
 
@@ -418,7 +419,7 @@ public final class CommentProcessor {
         comment.put(Comment.COMMENT_EMAIL, commentEmail);
         comment.put(Comment.COMMENT_URL, commentURL);
         comment.put(Comment.COMMENT_CONTENT, commentContent);
-        final JSONObject preference = preferenceUtils.getPreference();
+        final JSONObject preference = preferenceQueryService.getPreference();
         final String timeZoneId =
                 preference.getString(Preference.TIME_ZONE_ID);
         final Date date = timeZoneUtils.getTime(timeZoneId);

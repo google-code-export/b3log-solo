@@ -55,7 +55,6 @@ import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Permalinks;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
@@ -113,9 +112,10 @@ public final class ArticleMgmtService {
     private ArticleSignRepository articleSignRepository =
             ArticleSignRepositoryImpl.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Time zone utilities.
      */
@@ -164,7 +164,7 @@ public final class ArticleMgmtService {
         article.put(Article.ARTICLE_COMMENT_COUNT, 0);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
         // Step 3: Set create/updat date
-        final JSONObject preference = preferenceUtils.getPreference();
+        final JSONObject preference = preferenceQueryService.getPreference();
         final String timeZoneId =
                 preference.getString(Preference.TIME_ZONE_ID);
         final Date date = timeZoneUtils.getTime(timeZoneId);

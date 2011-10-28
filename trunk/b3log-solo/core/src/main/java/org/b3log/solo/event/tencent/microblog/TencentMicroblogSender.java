@@ -22,10 +22,11 @@ import java.util.logging.Logger;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
@@ -34,6 +35,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jun 23, 2011
+ * @since 0.3.1
  */
 public final class TencentMicroblogSender extends AbstractEventListener<JSONObject> {
 
@@ -43,20 +45,26 @@ public final class TencentMicroblogSender extends AbstractEventListener<JSONObje
     private static final Logger LOGGER =
             Logger.getLogger(TencentMicroblogSender.class.getName());
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
-        final JSONObject preference = preferenceUtils.getPreference();
-        if (null == preference) {
-            throw new EventException("Not found preference");
-        }
+        JSONObject preference = null;
 
-        final boolean enabled = preference.optBoolean(
-                Preference.ENABLE_POST_TO_TENCENT_MICROBLOG);
-        if (!enabled) {
+        try {
+            preference = preferenceQueryService.getPreference();
+
+            final boolean enabled = preference.optBoolean(
+                    Preference.ENABLE_POST_TO_TENCENT_MICROBLOG);
+            if (!enabled) {
+                return;
+            }
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
             return;
         }
 

@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.web.util.TopBars;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
@@ -43,7 +44,6 @@ import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
@@ -68,9 +68,10 @@ public final class IndexProcessor {
      */
     private Filler filler = Filler.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Skin utilities.
      */
@@ -104,7 +105,7 @@ public final class IndexProcessor {
                 return;
             }
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -188,7 +189,7 @@ public final class IndexProcessor {
 
         try {
             final JSONObject preference =
-                    Preferences.getInstance().getPreference();
+                    preferenceQueryService.getPreference();
 
             // Adds the top bar HTML content for output
             final String topBarHTML = TopBars.getTopBarHTML(request, resposne);
@@ -230,7 +231,7 @@ public final class IndexProcessor {
             final Map<String, String> langs =
                     langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             filler.fillBlogFooter(dataModel, preference);
             filler.fillMinified(dataModel);
 

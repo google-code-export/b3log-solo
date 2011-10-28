@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.latke.repository.Repository;
@@ -69,7 +70,6 @@ import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.CommentQueryService;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
@@ -121,9 +121,10 @@ public final class ArticleProcessor {
      */
     private Statistics statistics = Statistics.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Skin utilities.
      */
@@ -157,11 +158,13 @@ public final class ArticleProcessor {
     public void getRandomArticles(final HTTPRequestContext context) {
         Stopwatchs.start("Get Random Articles");
 
-        final List<JSONObject> randomArticles =
-                getRandomArticles(preferenceUtils.getPreference());
+
         final JSONObject jsonObject = new JSONObject();
 
         try {
+            final List<JSONObject> randomArticles =
+                    getRandomArticles(preferenceQueryService.getPreference());
+
             jsonObject.put(Common.RANDOM_ARTICLES, randomArticles);
 
             final JSONRenderer renderer = new JSONRenderer();
@@ -210,7 +213,7 @@ public final class ArticleProcessor {
 
         final List<JSONObject> relevantArticles =
                 articleQueryService.getRelevantArticles(article,
-                                                        preferenceUtils.
+                                                        preferenceQueryService.
                 getPreference());
         final JSONObject jsonObject = new JSONObject();
 
@@ -301,7 +304,7 @@ public final class ArticleProcessor {
                        "Request author articles[authorId={0}, currentPageNum={1}]",
                        new Object[]{authorId, currentPageNum});
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -424,7 +427,7 @@ public final class ArticleProcessor {
 
             final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
 
@@ -536,7 +539,7 @@ public final class ArticleProcessor {
 
         String articleId = null;
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;

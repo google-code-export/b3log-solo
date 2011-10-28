@@ -132,23 +132,6 @@ public enum StatusCodes {
      */
     UPDATE_LINK_FAIL_,
     /**
-     * Indicates update preference successfully.
-     */
-    UPDATE_PREFERENCE_SUCC,
-    /**
-     * Indicates update preference fails.
-     */
-    UPDATE_PREFERENCE_FAIL_,
-    /**
-     * Indicates update preference fails, caused by cannot set blog host as
-     * "localhost" on production.
-     */
-    UPDATE_PREFERENCE_FAIL_CANNT_BE_LOCALHOST,
-    /**
-     * Indicates get preference successfully.
-     */
-    GET_PREFERENCE_SUCC,
-    /**
      * Indicates captcha error.
      */
     CAPTCHA_ERROR,

@@ -33,12 +33,11 @@ import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.util.Users;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.util.Preferences;
-import org.json.JSONException;
+import org.b3log.solo.service.PreferenceMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
@@ -60,9 +59,15 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
      */
     private Users userUtils = Users.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
+    /**
+     * Preference management service.
+     */
+    private PreferenceMgmtService preferenceMgmtService =
+            PreferenceMgmtService.getInstance();
     /**
      * User repository.
      */
@@ -120,13 +125,13 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
             ret.put(Cache.CACHE_HIT_BYTES, hitBytes);
             ret.put(Cache.CACHE_MISS_COUNT, missCount);
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final boolean pageCacheEnabled =
                     preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
             ret.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
 
             ret.put(Common.PAGE_CACHED_CNT, PageCaches.getKeys().size());
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets page cache status error: {0}",
                        e.getMessage());
             throw new ActionException(e);
@@ -258,21 +263,15 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
             return;
         }
 
-        final Transaction transaction = userRepository.beginTransaction();
         try {
             final boolean pageCacheEnabled =
                     settings.getBoolean(Preference.PAGE_CACHE_ENABLED);
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             preference.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
 
-            preferenceUtils.setPreference(preference);
-
-            transaction.commit();
+            preferenceMgmtService.updatePreference(preference);
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
             LOGGER.log(Level.SEVERE, "Sets page cache error: {0}",
                        e.getMessage());
             throw new ActionException(e);

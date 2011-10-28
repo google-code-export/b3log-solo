@@ -28,7 +28,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
@@ -46,9 +46,10 @@ public final class InitCheckFilter implements Filter {
     private static final Logger LOGGER =
             Logger.getLogger(InitCheckFilter.class.getName());
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -90,7 +91,7 @@ public final class InitCheckFilter implements Filter {
 
             LOGGER.finer(
                     "Try to get preference to confirm whether the preference exixts");
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 LOGGER.log(Level.WARNING,
                            "B3log Solo has not been initialized, so redirects to /init.do");

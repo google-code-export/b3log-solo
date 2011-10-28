@@ -33,7 +33,7 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
@@ -41,6 +41,7 @@ import org.json.JSONObject;
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.6, Jun 23, 2011
+ * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
@@ -55,9 +56,10 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     private final URLFetchService urlFetchService = URLFetchServiceFactory.
             getURLFetchService();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * URL of adding article to Rhythm.
      */
@@ -93,7 +95,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 throw new EventException("Not found preference");
             }
