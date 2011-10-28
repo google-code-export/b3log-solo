@@ -157,7 +157,5 @@ admin.fileList = {
 admin.register["file-list"] =  {
     "obj": admin.fileList,
     "init": admin.fileList.init,
-    "refresh": function () {
-        $("#loadMsg").text("");
-    }
+    "refresh": admin.fileList.getList
 }
