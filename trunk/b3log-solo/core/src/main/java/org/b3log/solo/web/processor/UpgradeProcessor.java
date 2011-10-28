@@ -23,17 +23,23 @@ import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
+import org.b3log.solo.repository.impl.LinkRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
@@ -70,6 +76,14 @@ public final class UpgradeProcessor {
     private CommentRepository commentRepository =
             CommentRepositoryImpl.getInstance();
     /**
+     * Link repository.
+     */
+    private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
+    /**
+     * Page repository.
+     */
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    /**
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
@@ -90,10 +104,10 @@ public final class UpgradeProcessor {
             final JSONObject preference = preferences.getPreference();
             if (null == preference) { // Not init yet
                 LOGGER.log(Level.INFO, "Not init yet");
-                
+
                 return;
             }
-            
+
             if (!preference.has(Preference.VERSION)) {
                 v030ToV031();
 
@@ -110,6 +124,8 @@ public final class UpgradeProcessor {
                 v030ToV031();
             } else if ("0.3.1".equals(version)) { // 0.3.1 -> 0.3.5
                 v031ToV035();
+            } else if ("0.3.5".equals(version)) { // 0.3.5 -> 0.4.0
+                v035ToV040();
             } else {
                 LOGGER.warning(
                         "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers");
@@ -120,7 +136,7 @@ public final class UpgradeProcessor {
     }
 
     /**
-     * Upgrades from v030 to v031.
+     * Upgrades from version 030 to version 031.
      * 
      * <p>
      * Model:
@@ -148,7 +164,7 @@ public final class UpgradeProcessor {
      * @throws Exception upgrade fails
      */
     private void v030ToV031() throws Exception {
-        LOGGER.info("Upgrading from v030 to v031....");
+        LOGGER.info("Upgrading from version 030 to version 031....");
 
         final Transaction transaction = pageCommentRepository.beginTransaction();
         try {
@@ -175,14 +191,80 @@ public final class UpgradeProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
-            throw new Exception("Upgrade fail from v030 to v031");
+            throw new Exception("Upgrade fail from version 030 to version 031");
         }
 
-        LOGGER.info("Upgraded from v030 to v031 successfully :-)");
+        LOGGER.info("Upgraded from version 030 to version 031 successfully :-)");
     }
 
     /**
-     * Upgrades from v031 to v035.
+     * Upgrades from version 035 to version 040.
+     * 
+     * <p>
+     * Model:
+     *   <ul>
+     *     <li>
+     *       Restores the orders of links
+     *     </li>
+     *     <li>
+     *       Restores the orders of pages
+     *     </li>
+     *   </ul>
+     * </p>
+     * @throws Exception upgrade fails
+     */
+    private void v035ToV040() throws Exception {
+        LOGGER.info("Upgrading from versiona 035 to version 040....");
+
+        final Transaction transaction = linkRepository.beginTransaction();
+        try {
+            final JSONObject preference = preferences.getPreference();
+
+            // Restores the orders of links.
+            final JSONObject linkResult =
+                    linkRepository.get(
+                    new Query().addSort(Link.LINK_ORDER, SortDirection.ASCENDING));
+            final JSONArray links = linkResult.getJSONArray(Keys.RESULTS);
+
+            for (int i = 0; i < links.length(); i++) {
+                final JSONObject link = links.getJSONObject(i);
+                link.put(Link.LINK_ORDER, i);
+
+                linkRepository.update(link.getString(Keys.OBJECT_ID), link);
+            }
+
+            // Restores the orders of pages.
+            final JSONObject pageResult =
+                    pageRepository.get(
+                    new Query().addSort(Page.PAGE_ORDER, SortDirection.ASCENDING));
+            final JSONArray pages = pageResult.getJSONArray(Keys.RESULTS);
+
+            for (int i = 0; i < pages.length(); i++) {
+                final JSONObject page = pages.getJSONObject(i);
+                page.put(Page.PAGE_ORDER, i);
+
+                pageRepository.update(page.getString(Keys.OBJECT_ID), page);
+            }
+
+            preference.put(Preference.VERSION, "0.4.0");
+
+            preferences.setPreference(preference);
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
+            throw new Exception("Upgrade fail from version 035 to version 040");
+        }
+
+        LOGGER.info("Upgraded from version 035 to version 040 successfully :-)");
+    }
+
+    /**
+     * Upgrades from version 031 to version 035.
      * 
      * <p>
      * Model:
@@ -196,7 +278,7 @@ public final class UpgradeProcessor {
      * @throws Exception upgrade fails
      */
     private void v031ToV035() throws Exception {
-        LOGGER.info("Upgrading from v031 to v035....");
+        LOGGER.info("Upgrading from version 031 to version 035....");
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
@@ -208,7 +290,7 @@ public final class UpgradeProcessor {
             }
 
             preference.put(Preference.VERSION, "0.3.5");
-            
+
             preferences.setPreference(preference);
 
             transaction.commit();
@@ -218,10 +300,10 @@ public final class UpgradeProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Upgrade comments fail.", e);
-            throw new Exception("Upgrade fail from v031 to v035");
+            throw new Exception("Upgrade fail from version 031 to version 035");
         }
 
-        LOGGER.info("Upgraded from v031 to v035 successfully :-)");
+        LOGGER.info("Upgraded from version 031 to version 035 successfully :-)");
     }
 
     /**
