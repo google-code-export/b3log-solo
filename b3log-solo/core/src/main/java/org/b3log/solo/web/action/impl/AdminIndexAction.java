@@ -29,7 +29,7 @@ import org.b3log.solo.web.util.Filler;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
@@ -59,9 +59,10 @@ public final class AdminIndexAction extends AbstractAdminAction {
      */
     private Filler filler = Filler.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * User utilities.
      */
@@ -75,7 +76,7 @@ public final class AdminIndexAction extends AbstractAdminAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 LOGGER.log(Level.WARNING,
                            "B3log Solo has not been initialized, so redirects to /init.do");

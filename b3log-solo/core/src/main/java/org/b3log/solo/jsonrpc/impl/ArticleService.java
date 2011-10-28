@@ -55,10 +55,10 @@ import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.CommentMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Permalinks;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.TimeZones;
@@ -131,9 +131,10 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      */
     private static ArchiveDates archiveDateUtils = ArchiveDates.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private static Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Permalink utilities.
      */
@@ -294,7 +295,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
             article.put(ARTICLE_TAGS_REF, tags);
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String signId = articleUtils.getSign(
                     articleId, preference).getString(Keys.OBJECT_ID);
             article.put(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, signId);
@@ -712,7 +713,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             fillAutoProperties(oldArticle, article);
             // Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String timeZoneId =
                     preference.getString(Preference.TIME_ZONE_ID);
             final Date date = timeZoneUtils.getTime(timeZoneId);
@@ -759,7 +760,7 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
                 articleSignRepository.remove(
                         articleSignRelation.getString(Keys.OBJECT_ID));
             }
-            
+
             articleMgmtService.addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             if (publishNewArticle) {

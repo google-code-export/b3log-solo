@@ -82,7 +82,7 @@ public final class TagMgmtService {
     }
 
     /**
-     * Gets the {@link TagQueryService} singleton.
+     * Gets the {@link TagMgmtService} singleton.
      *
      * @return the singleton
      */

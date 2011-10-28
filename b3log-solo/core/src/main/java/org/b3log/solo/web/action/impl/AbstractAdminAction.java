@@ -30,7 +30,7 @@ import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
@@ -55,9 +55,10 @@ public abstract class AbstractAdminAction extends AbstractAction {
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
@@ -67,7 +68,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return ret;

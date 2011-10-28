@@ -48,9 +48,9 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONException;
@@ -85,9 +85,10 @@ public final class AddArticleCommentFromSymphonyAction
      */
     private static Articles articleUtils = Articles.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private static Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Time zone utilities.
      */
@@ -165,7 +166,7 @@ public final class AddArticleCommentFromSymphonyAction
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String keyOfSolo =
                     preference.optString(Preference.KEY_OF_SOLO);
             final String key =

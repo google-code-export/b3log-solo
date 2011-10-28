@@ -26,11 +26,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
@@ -38,6 +37,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Jan 26, 2011
+ * @since 0.3.1
  */
 public final class Callback extends HttpServlet {
 
@@ -51,9 +51,15 @@ public final class Callback extends HttpServlet {
     private static final Logger LOGGER =
             Logger.getLogger(Callback.class.getName());
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
+    /**
+     * Preference management service.
+     */
+    private PreferenceMgmtService preferenceMgmtService =
+            PreferenceMgmtService.getInstance();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -61,35 +67,28 @@ public final class Callback extends HttpServlet {
             throws ServletException, IOException {
         LOGGER.fine("Tencent microblog OAuth allback....");
 
-        final JSONObject preference = preferenceUtils.getPreference();
         String appKey = null;
         String appSecret = null;
         String tokenSecret = null;
         try {
+            final JSONObject preference = preferenceQueryService.getPreference();
             appKey = preference.getString(Preference.TENCENT_MICROBLOG_APP_KEY);
             appSecret = preference.getString(
                     Preference.TENCENT_MICROBLOG_APP_SECRET);
             tokenSecret = preference.getString(
                     Preference.TENCENT_MICROBLOG_TOKEN_SECRET);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            return;
-        }
 
-        final String tokenKey = request.getParameter("oauth_token");
-        final String verifier = request.getParameter("oauth_verifier");
+            final String tokenKey = request.getParameter("oauth_token");
+            final String verifier = request.getParameter("oauth_verifier");
 
-        final QWeiboSyncApi api = new QWeiboSyncApi();
-        final String resp =
-                api.getAccessToken(appKey, appSecret,
-                                   tokenKey, tokenSecret,
-                                   verifier);
-        final OauthKey oauthKey = AuthorizeToken.parseToken(resp);
+            final QWeiboSyncApi api = new QWeiboSyncApi();
+            final String resp =
+                    api.getAccessToken(appKey, appSecret,
+                                       tokenKey, tokenSecret,
+                                       verifier);
+            final OauthKey oauthKey = AuthorizeToken.parseToken(resp);
 
-         final Transaction transaction =
-                PreferenceRepositoryImpl.getInstance().beginTransaction();
-        try {
             preference.put(Preference.TENCENT_MICROBLOG_APP_KEY, appKey);
             preference.put(Preference.TENCENT_MICROBLOG_APP_SECRET, appSecret);
             preference.put(Preference.TENCENT_MICROBLOG_TOKEN_KEY,
@@ -97,24 +96,20 @@ public final class Callback extends HttpServlet {
             preference.put(Preference.TENCENT_MICROBLOG_TOKEN_SECRET,
                            oauthKey.tokenSecret);
 
-            preferenceUtils.setPreference(preference);
-            transaction.commit();
+            preferenceMgmtService.updatePreference(preference);
+
+            final String homeMsg = api.getHomeMsg(appKey, appSecret,
+                                                  oauthKey.tokenKey,
+                                                  oauthKey.tokenSecret,
+                                                  ResultType.ResultType_Json,
+                                                  PageFlag.PageFlag_First, 20);
+            LOGGER.finer(homeMsg);
+
+            response.sendRedirect(Common.ADMIN_INDEX_URI);
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Authorizes callback failed", e);
 
-            return;
+            throw new ServletException(e);
         }
-
-        final String homeMsg = api.getHomeMsg(appKey, appSecret,
-                                              oauthKey.tokenKey,
-                                              oauthKey.tokenSecret,
-                                              ResultType.ResultType_Json,
-                                              PageFlag.PageFlag_First, 20);
-        LOGGER.finer(homeMsg);
-
-        response.sendRedirect(Common.ADMIN_INDEX_URI);
     }
 }

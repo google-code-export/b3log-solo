@@ -52,7 +52,7 @@ public final class CommentMgmtService {
     private Statistics statistics = Statistics.getInstance();
 
     /**
-     * Gets the {@link CommentQueryService} singleton.
+     * Gets the {@link CommentMgmtService} singleton.
      *
      * @return the singleton
      */

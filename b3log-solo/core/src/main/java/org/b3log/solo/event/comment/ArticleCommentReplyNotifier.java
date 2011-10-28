@@ -32,7 +32,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
@@ -40,6 +40,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.1.3, Aug 8, 2011
+ * @since 0.3.1
  */
 public final class ArticleCommentReplyNotifier
         extends AbstractEventListener<JSONObject> {
@@ -59,9 +60,10 @@ public final class ArticleCommentReplyNotifier
      */
     private MailService mailService = MailServiceFactory.getMailService();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
 
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
@@ -91,7 +93,7 @@ public final class ArticleCommentReplyNotifier
                 return;
             }
 
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 throw new EventException("Not found preference");
             }

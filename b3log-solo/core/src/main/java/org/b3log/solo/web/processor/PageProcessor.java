@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -35,7 +36,6 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.util.Preferences;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
@@ -68,9 +68,10 @@ public final class PageProcessor {
      */
     private Pages pageUtils = Pages.getInstance();
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Skin utilities.
      */
@@ -94,7 +95,7 @@ public final class PageProcessor {
         final HttpServletResponse response = context.getResponse();
 
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;

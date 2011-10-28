@@ -36,12 +36,13 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.util.Preferences;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -88,9 +89,10 @@ public final class UpgradeProcessor {
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
     /**
-     * Preference utility.
+     * Preference repository.
      */
-    private Preferences preferences = Preferences.getInstance();
+    private PreferenceRepository preferenceRepository =
+            PreferenceRepositoryImpl.getInstance();
 
     /**
      * Checks upgrade.
@@ -101,7 +103,8 @@ public final class UpgradeProcessor {
                        method = HTTPRequestMethod.GET)
     public void upgrade(final HTTPRequestContext context) {
         try {
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference =
+                    preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) { // Not init yet
                 LOGGER.log(Level.INFO, "Not init yet");
 
@@ -171,9 +174,13 @@ public final class UpgradeProcessor {
             upgradeComments(Article.ARTICLE);
             upgradeComments(Page.PAGE);
 
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference =
+                    preferenceRepository.get(Preference.PREFERENCE);
+            
             preference.put(Preference.VERSION, "0.3.1");
-            preferences.setPreference(preference);
+            
+            preferenceRepository.update(Preference.PREFERENCE, preference);
+
             final JSONArray users =
                     userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
             for (int i = 0; i < users.length(); i++) {
@@ -218,7 +225,8 @@ public final class UpgradeProcessor {
 
         final Transaction transaction = linkRepository.beginTransaction();
         try {
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference =
+                    preferenceRepository.get(Preference.PREFERENCE);
 
             // Restores the orders of links.
             final JSONObject linkResult =
@@ -248,7 +256,7 @@ public final class UpgradeProcessor {
 
             preference.put(Preference.VERSION, "0.4.0");
 
-            preferences.setPreference(preference);
+            preferenceRepository.update(Preference.PREFERENCE, preference);
 
             transaction.commit();
         } catch (final Exception e) {
@@ -282,7 +290,8 @@ public final class UpgradeProcessor {
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference =
+                    preferenceRepository.get(Preference.PREFERENCE);
 
             if (!preference.has(Preference.ARTICLE_LIST_STYLE)) {
                 preference.put(Preference.ARTICLE_LIST_STYLE,
@@ -291,7 +300,7 @@ public final class UpgradeProcessor {
 
             preference.put(Preference.VERSION, "0.3.5");
 
-            preferences.setPreference(preference);
+            preferenceRepository.update(Preference.PREFERENCE, preference);
 
             transaction.commit();
         } catch (final Exception e) {

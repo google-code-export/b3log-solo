@@ -42,7 +42,7 @@ import org.b3log.solo.model.File;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.FileRepository;
 import org.b3log.solo.repository.impl.FileRepositoryImpl;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONObject;
 
@@ -75,9 +75,10 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
      */
     private static final long MAX_SIZE = 1024 * 1024;
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Time zone utilities.
      */
@@ -98,7 +99,8 @@ public final class DataStoreFileAccessServlet extends HttpServlet {
                 final FileItemStream item = iterator.next();
                 final InputStream stream = item.openStream();
 
-                final JSONObject preference = preferenceUtils.getPreference();
+                final JSONObject preference = preferenceQueryService.
+                        getPreference();
                 if (null == preference) {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     return;

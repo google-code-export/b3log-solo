@@ -45,7 +45,7 @@ import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -65,9 +65,10 @@ public final class SitemapProcessor {
     private static final Logger LOGGER =
             Logger.getLogger(SitemapProcessor.class.getName());
     /**
-     * Preference utility.
+     * Preference query service.
      */
-    private Preferences preferences = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
     /**
      * Article repository.
      */
@@ -101,7 +102,7 @@ public final class SitemapProcessor {
         final Sitemap sitemap = new Sitemap();
 
         try {
-            final JSONObject preference = preferences.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
 
             addArticles(sitemap, preference);
             addPages(sitemap, preference);

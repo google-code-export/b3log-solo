@@ -125,7 +125,7 @@ public final class PluginMgmtService {
     }
 
     /**
-     * Gets the {@link PluginQueryService} singleton.
+     * Gets the {@link PluginMgmtService} singleton.
      *
      * @return the singleton
      */

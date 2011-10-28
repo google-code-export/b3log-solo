@@ -29,7 +29,7 @@ import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
@@ -46,6 +46,7 @@ import org.json.JSONObject;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.2, Jun 23, 2011
  * @see UpdateArticleGoogleBlogSearchPinger
+ * @since 0.3.1
  */
 public final class AddArticleGoogleBlogSearchPinger
         extends AbstractEventListener<JSONObject> {
@@ -60,10 +61,6 @@ public final class AddArticleGoogleBlogSearchPinger
      */
     private static final URLFetchService URL_FETCH_SERVICE =
             URLFetchServiceFactory.getURLFetchService();
-    /**
-     * Preference utilities.
-     */
-    private Preferences preferenceUtils = Preferences.getInstance();
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
@@ -83,7 +80,8 @@ public final class AddArticleGoogleBlogSearchPinger
         try {
             final JSONObject article = eventData.getJSONObject(Article.ARTICLE);
             articleTitle = article.getString(Article.ARTICLE_TITLE);
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference =
+                    PreferenceQueryService.getInstance().getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             String blogHost = preference.getString(Preference.BLOG_HOST).
                     toLowerCase().trim();
@@ -109,7 +107,7 @@ public final class AddArticleGoogleBlogSearchPinger
                        + "article[title=" + articleTitle + "]", spec);
             final HTTPRequest request = new HTTPRequest();
             request.setURL(new URL(spec));
-            
+
             URL_FETCH_SERVICE.fetchAsync(request);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE,

@@ -24,11 +24,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
@@ -36,6 +35,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Jan 26, 2010
+ * @since 0.3.1
  */
 public final class AuthorizeToken extends HttpServlet {
 
@@ -49,9 +49,15 @@ public final class AuthorizeToken extends HttpServlet {
     private static final Logger LOGGER =
             Logger.getLogger(AuthorizeToken.class.getName());
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
+    /**
+     * Preference management service.
+     */
+    private PreferenceMgmtService preferenceMgmtService =
+            PreferenceMgmtService.getInstance();
 
     @Override
     protected void doGet(final HttpServletRequest request,
@@ -69,25 +75,24 @@ public final class AuthorizeToken extends HttpServlet {
             return;
         }
 
-        final JSONObject preference = preferenceUtils.getPreference();
-        final String blogHost = preference.optString(Preference.BLOG_HOST);
-
-        final QWeiboSyncApi api = new QWeiboSyncApi();
-        final String callbackURL =
-                "http://" + blogHost + "/tencent-microblog-oauth-callback.do";
-        final String resp = api.getRequestToken(appKey, appSecret,
-                                                callbackURL);
-
-        LOGGER.log(Level.FINER, "Response[{0}]", resp);
-
-        final OauthKey oauthKey = parseToken(resp);
-        if (null == oauthKey) {
-            return;
-        }
-
-        final Transaction transaction =
-                PreferenceRepositoryImpl.getInstance().beginTransaction();
         try {
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final String blogHost = preference.optString(Preference.BLOG_HOST);
+
+            final QWeiboSyncApi api = new QWeiboSyncApi();
+            final String callbackURL =
+                    "http://" + blogHost
+                    + "/tencent-microblog-oauth-callback.do";
+            final String resp = api.getRequestToken(appKey, appSecret,
+                                                    callbackURL);
+
+            LOGGER.log(Level.FINER, "Response[{0}]", resp);
+
+            final OauthKey oauthKey = parseToken(resp);
+            if (null == oauthKey) {
+                return;
+            }
+
             preference.put(Preference.TENCENT_MICROBLOG_APP_KEY, appKey);
             preference.put(Preference.TENCENT_MICROBLOG_APP_SECRET, appSecret);
             preference.put(Preference.TENCENT_MICROBLOG_TOKEN_KEY,
@@ -95,19 +100,15 @@ public final class AuthorizeToken extends HttpServlet {
             preference.put(Preference.TENCENT_MICROBLOG_TOKEN_SECRET,
                            oauthKey.tokenSecret);
 
-            preferenceUtils.setPreference(preference);
-            transaction.commit();
+            preferenceMgmtService.updatePreference(preference);
+
+            response.sendRedirect("http://open.t.qq.com/cgi-bin/authorize?oauth_token="
+                                  + oauthKey.tokenKey);
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Authorizes token failed", e);
 
-            return;
+            throw new ServletException(e);
         }
-
-        response.sendRedirect("http://open.t.qq.com/cgi-bin/authorize?oauth_token="
-                              + oauthKey.tokenKey);
     }
 
     /**

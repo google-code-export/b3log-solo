@@ -34,6 +34,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.service.PreferenceMgmtService;
 import static org.b3log.solo.model.Skin.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -159,7 +160,7 @@ public final class Skins {
             LOGGER.log(Level.INFO, "The skins directory has been changed, persists "
                                    + "the change into preference");
             preference.put(SKINS, skinsString);
-            Preferences.getInstance().setPreference(preference);
+            PreferenceMgmtService.getInstance().updatePreference(preference);
             PageCaches.removeAll(); // Clears cache manually.
         }
 
@@ -184,7 +185,7 @@ public final class Skins {
             preference.put(SKIN_DIR_NAME, "classic");
             preference.put(SKIN_NAME, "经典淡蓝");
 
-            Preferences.getInstance().setPreference(preference);
+            PreferenceMgmtService.getInstance().updatePreference(preference);
             PageCaches.removeAll(); // Clears cache manually.
         }
 

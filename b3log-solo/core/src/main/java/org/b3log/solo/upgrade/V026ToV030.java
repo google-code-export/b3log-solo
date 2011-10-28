@@ -39,7 +39,8 @@ import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
-import org.b3log.solo.util.Preferences;
+import org.b3log.solo.service.PreferenceMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,9 +79,15 @@ public final class V026ToV030 extends HttpServlet {
     private static final Logger LOGGER =
             Logger.getLogger(V026ToV030.class.getName());
     /**
-     * Preference utilities.
+     * Preference query service.
      */
-    private Preferences preferenceUtils = Preferences.getInstance();
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
+    /**
+     * Preference management service.
+     */
+    private PreferenceMgmtService preferenceMgmtService =
+            PreferenceMgmtService.getInstance();
     /**
      * Preference repository.
      */
@@ -161,9 +168,8 @@ public final class V026ToV030 extends HttpServlet {
      * @throws ServletException upgrade fails
      */
     private void upgradePreference() throws ServletException {
-        final Transaction transaction = preferenceRepository.beginTransaction();
         try {
-            final JSONObject preference = preferenceUtils.getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
 
             if (!preference.has(Preference.PAGE_CACHE_ENABLED)) {
                 preference.put(Preference.PAGE_CACHE_ENABLED,
@@ -175,12 +181,8 @@ public final class V026ToV030 extends HttpServlet {
                                Preference.Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
             }
 
-            preferenceUtils.setPreference(preference);
-            transaction.commit();
+            preferenceMgmtService.updatePreference(preference);
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
             LOGGER.log(Level.SEVERE, "Upgrade preference fail.", e);
             throw new ServletException("Upgrade fail from v026 to v030");
         }
