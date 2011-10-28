@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1, Aug 24, 2011
+ * @version 1.0.1.2, Oct 28, 2011
  */
 
 var Admin = function () {
@@ -61,7 +61,6 @@ $.extend(Admin.prototype, {
      */
     selectTab: function (id) {
         window.location.hash = "#" + id;
-       
     },
     
     /*
@@ -75,12 +74,8 @@ $.extend(Admin.prototype, {
         tags.page = 1,
         tags.hashList = [];
         for (var i = 0; i < tagList.length; i++) {
-            if (i === tagList.length - 1) {
-                if (/^\d+$/.test(tagList[i])) {
-                    tags.page = tagList[i];
-                } else {
-                    tags.hashList.push(tagList[i]);
-                }
+            if (i === tagList.length - 1 && (/^\d+$/.test(tagList[i]))) {
+                tags.page = tagList[i];
             } else {
                 tags.hashList.push(tagList[i]);
             }
