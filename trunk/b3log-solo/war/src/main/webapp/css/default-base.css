@@ -3,7 +3,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.3, Oct 3, 2011
+ * @version 1.0.1.4, Oct 29, 2011
 */
 *,html,body {
     margin: 0;
@@ -178,7 +178,7 @@ button:hover,.button:hover {
 .putTopIcon,.notPutTopIcon,.deleteIcon,.updateIcon,.commentIcon, 
 .homeIcon,.adminIcon,.loginIcon,.logoutIcon,.calendarIcon,.browserIcon, 
 .postIcon,.articlesIcon,.draftsIcon,.usersIcon,.linkIcon,
-.preferenceIcon,.blogSyncIcon, .pageIcon, .trueIcon,.falseIcon,
+.preferenceIcon, .pageIcon, .trueIcon,.falseIcon,
 .fileIcon, .othersIcon, .goTopIcon, .goBottomIcon, .cacheIcon, .aboutIcon {
     background-image: url("/images/icon.png");
     cursor: pointer;
@@ -187,9 +187,6 @@ button:hover,.button:hover {
 }
 .adminIcon,.loginIcon,.logoutIcon,.homeIcon {
     margin-top: 3px;
-}
-.blogSyncIcon {
-    background-position: 0 0;
 }
 .pageIcon {
     background-position: -144px 0px;
@@ -315,10 +312,6 @@ button:hover,.button:hover {
 }
 .article-body ol, .article-body ul, .article-body dir, .article-body menu, .article-body dd {
     margin-left: 40px;
-}
-#stack img {
-    height: 32px;
-    width: 32px;
 }
 /* start icon */
 
