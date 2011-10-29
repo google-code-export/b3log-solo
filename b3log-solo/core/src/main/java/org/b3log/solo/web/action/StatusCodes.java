@@ -123,25 +123,4 @@ public enum StatusCodes {
      * Indicates cancels a published article fails caused by forbidden.
      */
     CANCEL_PUBLISH_ARTICLE_FAIL_FORBIDDEN,
-    /**
-     * Indicates adds a user successfully.
-     */
-    ADD_USER_SUCC,
-    /**
-     * Indicates adds a user fails, caused by duplicated user email.
-     */
-    ADD_USER_FAIL_DUPLICATED_EMAIL,
-    /**
-     * Indicates removes a user successfully.
-     */
-    REMOVE_USER_SUCC,
-    /**
-     * Indicates updates a user successfully.
-     */
-    UPDATE_USER_SUCC,
-    /**
-     * Indicates updates a user fails.
-     */
-    UPDATE_USER_FAIL_,
-
 }

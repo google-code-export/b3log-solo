@@ -181,7 +181,7 @@ public final class LinkMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds link failed", e);
+            LOGGER.log(Level.SEVERE, "Adds a link failed", e);
             throw new ServiceException(e);
         }
     }
