@@ -109,14 +109,14 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
+            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
+            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
             throw new ServiceException(e);
         }
     }
