@@ -286,6 +286,9 @@ admin.linkList = {
         } else if ($("#linkAddress" + status).val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.addressEmptyLabel);
             $("#linkAddress" + status).focus().val("");
+        } else if (!/^\w+:\/\//.test($("#linkAddress" + status).val())) {
+            $("#tipMsg").text(Label.addressInvalidLabel);
+            $("#linkAddress" + status).focus().val("");
         } else {
             return true;
         }
