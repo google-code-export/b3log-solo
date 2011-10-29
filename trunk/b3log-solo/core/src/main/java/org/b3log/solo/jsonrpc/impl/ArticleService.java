@@ -22,7 +22,6 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.solo.web.action.StatusCodes;
-import org.b3log.solo.event.EventTypes;
 import static org.b3log.solo.model.Article.*;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
@@ -31,15 +30,12 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.Paginator;
-import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
@@ -321,82 +317,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
 
             ret.put(Keys.STATUS_CODE, StatusCodes.GET_ARTICLES_SUCC);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
-
-    /**
-     * Removes an article by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "oId": "",
-     * }
-     * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
-     *     "status": {
-     *         "code": "REMOVE_ARTICLE_SUCC",
-     *         "events": { // optional
-     *             "blogSyncCSDNBlog": {
-     *                 "code": "",
-     *                 "msg": "" // optional
-     *             },
-     *             ....
-     *         }
-     *     }
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public JSONObject removeArticle(final JSONObject requestJSONObject,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
-
-        final Transaction transaction = articleRepository.beginTransaction();
-        try {
-            final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
-            if (!userUtils.canAccessArticle(articleId, request)) {
-                ret.put(Keys.STATUS_CODE,
-                        StatusCodes.REMOVE_ARTICLE_FAIL_FORBIDDEN);
-
-                return ret;
-            }
-
-            articleMgmtService.removeArticle(articleId);
-
-            final JSONObject eventData = new JSONObject();
-            eventData.put(Keys.OBJECT_ID, articleId);
-            try {
-                eventManager.fireEventSynchronously(
-                        new Event<JSONObject>(EventTypes.REMOVE_ARTICLE,
-                                              eventData));
-            } catch (final EventException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            }
-
-            transaction.commit();
-
-            ret.put(Keys.STATUS_CODE, StatusCodes.REMOVE_ARTICLE_SUCC);
-            LOGGER.log(Level.FINER, "Removed an article[oId={0}]", articleId);
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
         }
