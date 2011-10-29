@@ -112,33 +112,20 @@ admin.article = {
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            var requestJSONObject = {
-                "oId": id
-            };
             
-            jsonRpc.articleService.removeArticle(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "REMOVE_ARTICLE_SUCC":
-                            msg = Label.removeSuccLabel;
-                            $("#tipMsg").text(msg);
-                            admin[fromId + "List"].getList(1);
-                            break;
-                        case "REMOVE_ARTICLE_FAIL_FORBIDDEN":
-                            $("#tipMsg").text(Label.forbiddenLabel);
-                            break;
-                        case "REMOVE_ARTICLE_FAIL_":
-                            $("#tipMsg").text(Label.removeFailLabel);
-                            break;
-                        default:
-                            $("#tipMsg").text("");
-                            break;
+            $.ajax({
+                url: "/console/article" + id,
+                type: "DELETE",
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {
-                    console.error(e);
+                    
+                    admin[fromId + "List"].getList(1);
                 }
-            }, requestJSONObject);
+            });
         }
     },
     

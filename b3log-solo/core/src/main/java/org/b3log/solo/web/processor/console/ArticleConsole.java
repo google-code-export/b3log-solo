@@ -72,7 +72,68 @@ public final class ArticleConsole {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Cancels publish an article by the specified request json object.
+     * Removes an article by the specified request.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = ARTICLE_URI_PREFIX + "*",
+                       method = HTTPRequestMethod.DELETE)
+    public void removeArticle(final HTTPRequestContext context,
+                              final HttpServletRequest request,
+                              final HttpServletResponse response)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
+
+        try {
+            final String articleId =
+                    request.getRequestURI().substring(
+                    ARTICLE_URI_PREFIX.length());
+
+            if (!userUtils.canAccessArticle(articleId, request)) {
+                ret.put(Keys.STATUS_CODE, false);
+                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+
+                return;
+            }
+
+            articleMgmtService.removeArticle(articleId);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = new JSONObject();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+        }
+    }
+
+    /**
+     * Cancels publish an article by the specified request.
      *
      * <p>
      * Renders the response with a json object, for example,

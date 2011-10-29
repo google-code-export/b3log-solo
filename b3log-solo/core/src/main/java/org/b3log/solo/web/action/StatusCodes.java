@@ -32,18 +32,6 @@ public enum StatusCodes {
      */
     GET_ARTICLE_SUCC,
     /**
-     * Indicates remove an article successfully.
-     */
-    REMOVE_ARTICLE_SUCC,
-    /**
-     * Indicates remove an article fails.
-     */
-    REMOVE_ARTICLE_FAIL_,
-    /**
-     * Indicates remove an article fails caused by forbidden.
-     */
-    REMOVE_ARTICLE_FAIL_FORBIDDEN,
-    /**
      * Indicates comment an article successfully.
      */
     COMMENT_ARTICLE_SUCC,
