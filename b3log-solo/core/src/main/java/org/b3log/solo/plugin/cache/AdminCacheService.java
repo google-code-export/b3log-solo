@@ -285,7 +285,7 @@ public final class AdminCacheService {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/plugins/admin-cache/enable/",
+    @RequestProcessing(value = "/console/plugins/admin-cache/enable/*",
                        method = HTTPRequestMethod.PUT)
     public void setPageCache(final HttpServletRequest request,
                              final HttpServletResponse response,
