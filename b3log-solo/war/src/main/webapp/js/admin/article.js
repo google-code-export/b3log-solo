@@ -471,19 +471,20 @@ admin.article = {
      * 取消发布
      */
     unPublish: function () {
-        jsonRpc.articleService.cancelPublishArticle(function (result, error) {
-            try {
-                if (result.sc === "CANCEL_PUBLISH_ARTICLE_SUCC") {
-                    $("#tipMsg").text(Label.unPulbishSuccLabel);
-                    admin.selectTab("article/draft-list");
-                    admin.article.status.id = undefined;
-                    admin.article.isConfirm = false;
-                } else {
-                    $("#tipMsg").text(Label.unPulbishFailLabel);
+        $.ajax({
+            url: "/console/article/unpublish/" + admin.article.status.id,
+            type: "PUT",
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+                     
+                if (!result.sc) {
+                    return;
                 }
-            } catch (e) {}
-        }, {
-            oId: admin.article.status.id
+                    
+                admin.selectTab("article/draft-list");
+                admin.article.status.id = undefined;
+                admin.article.isConfirm = false;
+            }
         });
     },
     

@@ -53,10 +53,8 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -101,10 +99,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
      * Event manager.
      */
     private static EventManager eventManager = EventManager.getInstance();
-    /**
-     * Tag utilities.
-     */
-    private static Tags tagUtils = Tags.getInstance();
     /**
      * Article utilities.
      */
@@ -405,85 +399,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new ActionException(e);
-        }
-
-        return ret;
-    }
-
-    /**
-     * Cancels publish an article by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "oId": "",
-     * }
-     * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
-     *   "sc": "CANCEL_PUBLISH_ARTICLE_SUCC"
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public JSONObject cancelPublishArticle(final JSONObject requestJSONObject,
-                                           final HttpServletRequest request,
-                                           final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-        if (!userUtils.isLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
-
-        final Transaction transaction =
-                articleRepository.beginTransaction();
-        try {
-            final String articleId =
-                    requestJSONObject.getString(Keys.OBJECT_ID);
-
-            if (!userUtils.canAccessArticle(articleId, request)) {
-                ret.put(Keys.STATUS_CODE,
-                        StatusCodes.CANCEL_PUBLISH_ARTICLE_FAIL_FORBIDDEN);
-
-                return ret;
-            }
-
-            final JSONObject article = articleRepository.get(articleId);
-            article.put(ARTICLE_IS_PUBLISHED, false);
-            tagUtils.decTagPublishedRefCount(articleId);
-            archiveDateUtils.decArchiveDatePublishedRefCount(articleId);
-            articleRepository.update(articleId, article);
-            statistics.decPublishedBlogArticleCount();
-            final int blogCmtCnt =
-                    statistics.getPublishedBlogCommentCount();
-            final int articleCmtCnt =
-                    article.getInt(ARTICLE_COMMENT_COUNT);
-            statistics.setPublishedBlogCommentCount(
-                    blogCmtCnt - articleCmtCnt);
-
-            transaction.commit();
-
-            ret.put(Keys.STATUS_CODE, StatusCodes.CANCEL_PUBLISH_ARTICLE_SUCC);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            try {
-                ret.put(Keys.STATUS_CODE,
-                        StatusCodes.CANCEL_PUBLISH_ARTICLE_FAIL_);
-            } catch (final JSONException ex) {
-                LOGGER.severe(ex.getMessage());
-                throw new ActionException(e);
-            }
-
-            return ret;
         }
 
         return ret;

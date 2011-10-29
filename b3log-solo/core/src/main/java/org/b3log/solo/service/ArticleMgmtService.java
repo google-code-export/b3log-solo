@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.solo.util.Tags;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import org.b3log.solo.util.Articles;
@@ -154,10 +155,50 @@ public final class ArticleMgmtService {
      */
     private static Articles articleUtils = Articles.getInstance();
     /**
+     * Tag utilities.
+     */
+    private static Tags tagUtils = Tags.getInstance();
+    /**
      * Permalink date format(yyyy/MM/dd).
      */
     public static final DateFormat PERMALINK_FORMAT =
             new SimpleDateFormat("yyyy/MM/dd");
+
+    /**
+     * Cancels publish an article by the specified article id.
+     *
+     * @param articleId the specified article id
+     * @throws ServiceException service exception
+     */
+    public void cancelPublishArticle(final String articleId)
+            throws ServiceException {
+        final Transaction transaction =
+                articleRepository.beginTransaction();
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            article.put(ARTICLE_IS_PUBLISHED, false);
+            tagUtils.decTagPublishedRefCount(articleId);
+            archiveDateUtils.decArchiveDatePublishedRefCount(articleId);
+            articleRepository.update(articleId, article);
+            statistics.decPublishedBlogArticleCount();
+            final int blogCmtCnt =
+                    statistics.getPublishedBlogCommentCount();
+            final int articleCmtCnt =
+                    article.getInt(ARTICLE_COMMENT_COUNT);
+            statistics.setPublishedBlogCommentCount(
+                    blogCmtCnt - articleCmtCnt);
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Cancels publish article failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Puts an article specified by the given article id to top or cancel top.

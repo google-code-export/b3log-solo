@@ -59,15 +59,4 @@ public enum StatusCodes {
      * Indicates upload a file successfully.
      */
     UPLOAD_FILES_SUCC,
-    /**
-     * Indicates cancels a published article successfully.
-     */
-    CANCEL_PUBLISH_ARTICLE_SUCC,
-    /**
-     * Indicates cancels a published article fails.
-     */
-    CANCEL_PUBLISH_ARTICLE_FAIL_,
-    /**
-     * Indicates cancels a published article fails caused by forbidden.
-     */
-    CANCEL_PUBLISH_ARTICLE_FAIL_FORBIDDEN,}
+}
