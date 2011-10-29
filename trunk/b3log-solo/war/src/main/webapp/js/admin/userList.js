@@ -127,40 +127,41 @@ admin.userList = {
         if (this.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
+            
             var requestJSONObject = {
                 "userName": $("#userName").val(),
                 "userEmail": $("#userEmail").val(),
                 "userPassword": $("#userPassword").val()
             };
-            jsonRpc.adminService.addUser(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "ADD_USER_SUCC":
-                            $("#userName").val("");
-                            $("#userEmail").val("");
-                            $("#userPassword").val("");
-                            if (admin.userList.pageInfo.currentCount === Label.PAGE_SIZE &&
-                                admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
-                                admin.userList.pageInfo.pageCount++;
-                            }
-                            var hashList = window.location.hash.split("/");
-                            if (admin.userList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
-                                admin.setHashByPage(admin.userList.pageInfo.pageCount);
-                            }
-                            admin.userList.getList(admin.userList.pageInfo.pageCount);
-                            $("#tipMsg").text(Label.addSuccLabel);
-                            break;
-                        case "ADD_USER_FAIL_DUPLICATED_EMAIL":
-                            $("#tipMsg").text(Label.duplicatedEmailLabel);
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/user/",
+                type: "POST",
+                data: JSON.stringify(requestJSONObject),
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {
-                    console.error(e);
+                    
+                    $("#userName").val("");
+                    $("#userEmail").val("");
+                    $("#userPassword").val("");
+                    if (admin.userList.pageInfo.currentCount === Label.PAGE_SIZE &&
+                        admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
+                        admin.userList.pageInfo.pageCount++;
+                    }
+                    var hashList = window.location.hash.split("/");
+                    if (admin.userList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
+                        admin.setHashByPage(admin.userList.pageInfo.pageCount);
+                    }
+                    
+                    admin.userList.getList(admin.userList.pageInfo.pageCount);
                 }
-            }, requestJSONObject);
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     
@@ -207,6 +208,7 @@ admin.userList = {
         if (this.validate("Update")) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
+            
             var userInfo = $("#userNameUpdate").data("userInfo");
             var requestJSONObject = {
                 "userName": $("#userNameUpdate").val(),
@@ -215,26 +217,24 @@ admin.userList = {
                 "userRole": userInfo.userRole,
                 "userPassword": $("#userPasswordUpdate").val()
             };
-            jsonRpc.adminService.updateUser(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "UPDATE_USER_SUCC":
-                            admin.userList.getList(admin.userList.pageInfo.currentPage);
-                            $("#tipMsg").text(Label.updateSuccLabel);
-                            $("#userUpdate").dialog("close");
-                            break;
-                        case "UPDATE_USER_FAIL_DUPLICATED_EMAIL":
-                            $("#tipMsg").text(Label.duplicatedEmailLabel);
-                            break;
-                        case "UPDATE_USER_FAIL_":
-                            $("#tipMsg").text(Label.updateFailLabel);
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/user/",
+                type: "PUT",
+                data: JSON.stringify(requestJSONObject),
+                success: function(result, textStatus){
+                    $("#userUpdate").dialog("close");
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {}
-            }, requestJSONObject);
+                    
+                    admin.userList.getList(admin.userList.pageInfo.currentPage);
+                }
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     
@@ -250,35 +250,32 @@ admin.userList = {
             var requestJSONObject = {
                 "oId": id
             };
-
-            jsonRpc.adminService.removeUser(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "REMOVE_USER_SUCC":
-                            var pageNum = admin.userList.pageInfo.currentPage;
-                            if (admin.userList.pageInfo.currentCount === 1 && admin.userList.pageInfo.pageCount !== 1 &&
-                                admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
-                                admin.userList.pageInfo.pageCount--;
-                                pageNum = admin.userList.pageInfo.pageCount;
-                            }
-                            var hashList = window.location.hash.split("/");
-                            if (pageNum !== parseInt(hashList[hashList.length - 1])) {
-                                admin.setHashByPage(pageNum);
-                            }
-                            admin.userList.getList(pageNum);
-                            $("#tipMsg").text(Label.removeSuccLabel);
-                            break;
-                        case "REMOVE_USER_FAIL_SKIN_NEED_MUL_USERS":
-                            $("#tipMsg").text(Label.removeUserFailSkinNeedMulUsersLabel);
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/user/" + id,
+                type: "DELETE",
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {
-                    console.error(e);
+                    
+                    var pageNum = admin.userList.pageInfo.currentPage;
+                    if (admin.userList.pageInfo.currentCount === 1 && admin.userList.pageInfo.pageCount !== 1 &&
+                        admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
+                        admin.userList.pageInfo.pageCount--;
+                        pageNum = admin.userList.pageInfo.pageCount;
+                    }
+                    var hashList = window.location.hash.split("/");
+                    if (pageNum !== parseInt(hashList[hashList.length - 1])) {
+                        admin.setHashByPage(pageNum);
+                    }
+                    admin.userList.getList(pageNum);
                 }
-            }, requestJSONObject);
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     

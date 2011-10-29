@@ -35,7 +35,6 @@ import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.event.tencent.microblog.TencentMicroblogSender;
-import org.b3log.solo.jsonrpc.impl.AdminService;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
@@ -275,10 +274,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         LOGGER.log(Level.INFO, "Registering remote JavaScript services....");
         try {
-            final AdminService adminService = AdminService.getInstance();
-            JSONRPCBridge.getGlobalBridge().registerObject(adminService.
-                    getServiceObjectName(), adminService);
-
             final ArticleService articleService = ArticleService.getInstance();
             JSONRPCBridge.getGlobalBridge().registerObject(articleService.
                     getServiceObjectName(), articleService);

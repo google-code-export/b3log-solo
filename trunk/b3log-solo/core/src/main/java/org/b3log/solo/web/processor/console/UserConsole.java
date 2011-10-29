@@ -20,12 +20,14 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
@@ -52,6 +54,10 @@ public final class UserConsole {
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
     /**
+     * User management service.
+     */
+    private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+    /**
      * User URI prefix.
      */
     private static final String USER_URI_PREFIX = "/console/user/";
@@ -67,6 +73,183 @@ public final class UserConsole {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Updates a user by the specified request.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "userName": "",
+     *     "userEmail": "",
+     *     "userPassword": "",
+     *     "userRole": ""
+     * }
+     * </pre>
+     * @param context the specified http request context
+     * @param response the specified http servlet response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = USER_URI_PREFIX,
+                       method = HTTPRequestMethod.PUT)
+    public void updateUser(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+
+            userMgmtService.updateUser(requestJSONObject);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+
+            renderer.setJSONObject(ret);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
+        }
+    }
+
+    /**
+     * Adds a user with the specified request.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "oId": "", // Generated user id
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "userName": "",
+     *     "userEmail": "",
+     *     "userPassword": "",
+     *     "userRole": "" // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead,
+     *                       if not speciffied
+     * }
+     * </pre>
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = USER_URI_PREFIX,
+                       method = HTTPRequestMethod.POST)
+    public void addUser(final HttpServletRequest request,
+                        final HttpServletResponse response,
+                        final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+
+            final String userId = userMgmtService.addUser(requestJSONObject);
+
+            ret.put(Keys.OBJECT_ID, userId);
+            ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
+            ret.put(Keys.STATUS_CODE, true);
+
+            renderer.setJSONObject(ret);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
+        }
+    }
+
+    /**
+     * Removes a user by the specified request.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = USER_URI_PREFIX + "*",
+                       method = HTTPRequestMethod.DELETE)
+    public void removeUser(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        try {
+            final String userId =
+                    request.getRequestURI().substring(USER_URI_PREFIX.length());
+
+            userMgmtService.removeUser(userId);
+
+            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+        }
+    }
 
     /**
      * Gets users by the specified request json object.
