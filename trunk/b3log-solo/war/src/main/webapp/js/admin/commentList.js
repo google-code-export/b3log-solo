@@ -18,7 +18,8 @@
  * comment list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Aug 19, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.6, Oct 28, 2011
  */
 
 /* comment-list 相关操作 */
