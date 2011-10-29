@@ -114,7 +114,7 @@ admin.article = {
             $("#tipMsg").text("");
             
             $.ajax({
-                url: "/console/article" + id,
+                url: "/console/article/" + id,
                 type: "DELETE",
                 success: function(result, textStatus){
                     $("#tipMsg").text(result.msg);
