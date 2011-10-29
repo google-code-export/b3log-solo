@@ -24,6 +24,7 @@ import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -127,12 +128,12 @@ public final class UserConsole {
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
 
             renderer.setJSONObject(ret);
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
+            jsonObject.put(Keys.MSG, e.getMessage());
         }
     }
 
@@ -191,12 +192,12 @@ public final class UserConsole {
             ret.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(ret);
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
+            jsonObject.put(Keys.MSG, e.getMessage());
         }
     }
 
@@ -243,7 +244,7 @@ public final class UserConsole {
 
             jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
@@ -312,7 +313,7 @@ public final class UserConsole {
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
@@ -374,7 +375,7 @@ public final class UserConsole {
             renderer.setJSONObject(result);
             result.put(Keys.STATUS_CODE, true);
 
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
