@@ -44,30 +44,6 @@ public enum StatusCodes {
      */
     REMOVE_ARTICLE_FAIL_FORBIDDEN,
     /**
-     * Indicates put top an article successfully.
-     */
-    PUT_TOP_ARTICLE_SUCC,
-    /**
-     * Indicates put top an article fails.
-     */
-    PUT_TOP_ARTICLE_FAIL_,
-    /**
-     * Indicates put top an article fails caused by forbidden.
-     */
-    PUT_TOP_ARTICLE_FAIL_FORBIDDEN,
-    /**
-     * Indicates cancel top an article successfully.
-     */
-    CANCEL_TOP_ARTICLE_SUCC,
-    /**
-     * Indicates cancel top an article fails.
-     */
-    CANCEL_TOP_ARTICLE_FAIL_,
-    /**
-     * Indicates cancel top an article fails caused by forbidden.
-     */
-    CANCEL_TOP_ARTICLE_FAIL_FORBIDDEN,
-    /**
      * Indicates comment an article successfully.
      */
     COMMENT_ARTICLE_SUCC,
@@ -94,5 +70,4 @@ public enum StatusCodes {
     /**
      * Indicates cancels a published article fails caused by forbidden.
      */
-    CANCEL_PUBLISH_ARTICLE_FAIL_FORBIDDEN,
-}
+    CANCEL_PUBLISH_ARTICLE_FAIL_FORBIDDEN,}
