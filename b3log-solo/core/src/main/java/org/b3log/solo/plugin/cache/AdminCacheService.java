@@ -205,7 +205,8 @@ public final class AdminCacheService {
         try {
             final String requestURI = request.getRequestURI();
             final String path =
-                    requestURI.substring("/console/plugins/admin-cache/pages/".length());
+                    requestURI.substring(
+                    "/console/plugins/admin-cache/pages/".length());
 
             final JSONObject requestJSONObject =
                     Requests.buildPaginationRequest(path);
