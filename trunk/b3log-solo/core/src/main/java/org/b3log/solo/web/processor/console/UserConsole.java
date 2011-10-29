@@ -29,6 +29,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
+import org.b3log.solo.web.util.Requests;
 import org.json.JSONObject;
 
 /**
@@ -66,6 +67,76 @@ public final class UserConsole {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Gets users by the specified request json object.
+     * <p>
+     * The request URI contains the pagination arguments. For example, the 
+     * request URI is /console/users/1/10/20, means the current page is 1, the
+     * page size is 10, and the window size is 20.
+     * </p>
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "users": [{
+     *         "oId": "",
+     *         "userName": "",
+     *         "userEmail": "",
+     *         "userPassword": "",
+     *         "roleName": ""
+     *      }, ....]
+     *     "sc": "GET_USERS_SUCC"
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = USERS_URI_PREFIX
+                               + Requests.PAGINATION_PATH_PATTERN,
+                       method = HTTPRequestMethod.GET)
+    public void getUsers(final HttpServletRequest request,
+                         final HttpServletResponse response,
+                         final HTTPRequestContext context)
+            throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        try {
+            final String requestURI = request.getRequestURI();
+            final String path =
+                    requestURI.substring(USERS_URI_PREFIX.length());
+
+            final JSONObject requestJSONObject =
+                    Requests.buildPaginationRequest(path);
+
+            final JSONObject result =
+                    userQueryService.getUsers(requestJSONObject);
+            result.put(Keys.STATUS_CODE, true);
+
+            renderer.setJSONObject(result);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
 
     /**
      * Gets a user by the specified request.

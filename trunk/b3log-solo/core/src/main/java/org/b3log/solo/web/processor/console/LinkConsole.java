@@ -357,6 +357,11 @@ public final class LinkConsole {
     public void getLinks(final HttpServletRequest request,
                          final HttpServletResponse response,
                          final HTTPRequestContext context) throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 

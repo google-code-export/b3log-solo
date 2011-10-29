@@ -143,8 +143,5 @@ public enum StatusCodes {
      * Indicates updates a user fails.
      */
     UPDATE_USER_FAIL_,
-    /**
-     * Indicates get users successfully.
-     */
-    GET_USERS_SUCC,
+
 }

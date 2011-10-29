@@ -80,6 +80,7 @@ public final class LinkQueryService {
     public JSONObject getLinks(final JSONObject requestJSONObject)
             throws ServiceException {
         final JSONObject ret = new JSONObject();
+        
         try {
             final int currentPageNum = requestJSONObject.getInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM);
