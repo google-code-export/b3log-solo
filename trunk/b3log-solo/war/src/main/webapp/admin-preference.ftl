@@ -1,13 +1,8 @@
 <div id="tabPreference">
     <ul>
         <li>
-            <div id="tabPreference_preferences">
-                <a class="tab-current" href="#tools/preference/preferences">${paramSettingsLabel}</a>
-            </div>
-        </li>
-        <li>
             <div id="tabPreference_skins">
-                <a href="#tools/preference/skins">${skinLabel}</a>
+                <a class="tab-current" href="#tools/preference/skins">${skinLabel}</a>
             </div>
         </li>
         <li>
@@ -15,11 +10,26 @@
                 <a href="#tools/preference/signs">${signLabel}</a>
             </div>
         </li>
+        <li>
+            <div id="tabPreference_setting">
+                <a href="#tools/preference/setting">${paramSettingsLabel}</a>
+            </div>
+        </li>
+        <li>
+            <div id="tabPreference_config">
+                <a href="#tools/preference/config">${configSettingsLabel}</a>
+            </div>
+        </li>
+        <li>
+            <div id="tabPreference_solo">
+                <a href="#tools/preference/solo">Solo</a>
+            </div>
+        </li>
     </ul>
 </div>
 <div id="tabPreferencePanel">
-    <div id="tabPreferencePanel_preferences">
-        <table class="form subTable" width="98%" cellpadding="0" cellspacing="9px">
+    <div id="tabPreferencePanel_config" class="none">
+        <table class="form" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
                     <td colspan="2" align="right">
@@ -68,14 +78,6 @@
                 </tr>
                 <tr>
                     <th valign="top">
-                        <label for="noticeBoard">${noticeBoard1Label}</label>
-                    </th>
-                    <td>
-                        <textarea rows="9" id="noticeBoard"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th valign="top">
                         <label for="htmlHead">${htmlhead1Label}</label>
                     </th>
                     <td>
@@ -84,16 +86,53 @@
                 </tr>
                 <tr>
                     <th valign="top">
-                        <label for="replayEmailTemplate">${replayEmailTemplateLabel}</label>
+                        <label for="noticeBoard">${noticeBoard1Label}</label>
+                    </th>
+                    <td>
+                        <textarea rows="9" id="noticeBoard"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top">
+                        <label for="replayEmailTemplate">${replayEmailTemplate1Label}</label>
                     </th>
                     <td>
                         <textarea rows="9" id="replayEmailTemplate"></textarea>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="2" align="right">
+                        <button onclick="admin.preference.update()">${updateLabel}</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
-        <table class="form subTable" width="98%" cellpadding="0" cellspacing="9px">
+    </div>
+    <div id="tabPreferencePanel_solo" class="none">
+        <table class="form" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
+                <tr>
+                    <th width="80px">
+                        <label for="keyOfSolo">${keyOfSolo1Label}</label>
+                    </th>
+                    <td width="160px">
+                        <input id="keyOfSolo" class="normalInput" type="text"/>
+                    </td>
+                    <td>
+                        <button onclick="admin.preference.update()">${updateLabel}</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="tabPreferencePanel_setting" class="none">
+        <table class="form" width="98%" cellpadding="0" cellspacing="9px">
+            <tbody>
+                <tr>
+                    <td colspan="2" align="right">
+                        <button onclick="admin.preference.update()">${updateLabel}</button>
+                    </td>
+                </tr>
                 <tr>
                     <th width="234px">
                         <label for="localeString">${localeString1Label}</label>
@@ -112,6 +151,18 @@
                     <td>
                         <select id="timeZoneId">
                             ${timeZoneIdOptions}
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="articleListDisplay">${articleListDisplay1Label}</label>
+                    </th>
+                    <td>
+                        <select id="articleListDisplay">
+                            <option value="titleOnly">${titleOnlyLabel}</option>
+                            <option value="titleAndAbstract">${titleAndAbstractLabel}</option>
+                            <option value="titleAndContent">${titleAndContentLabel}</option>
                         </select>
                     </td>
                 </tr>
@@ -206,26 +257,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>
-                        <label for="articleListDisplay">${articleListDisplay1Label}</label>
-                    </th>
-                    <td>
-                        <select id="articleListDisplay">
-                            <option value="titleOnly">${titleOnlyLabel}</option>
-                            <option value="titleAndAbstract">${titleAndAbstractLabel}</option>
-                            <option value="titleAndContent">${titleAndContentLabel}</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="keyOfSolo">${keyOfSolo1Label}</label>
-                    </th>
-                    <td>
-                        <input id="keyOfSolo" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
                     <th colspan="2">
                         <button onclick="admin.preference.update()">${updateLabel}</button>
                     </th>
@@ -233,7 +264,7 @@
             </tbody>
         </table>
     </div>
-    <div id="tabPreferencePanel_skins" class="none">
+    <div id="tabPreferencePanel_skins">
         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
         <div class="clear"></div>
         <div id="skinMain">
@@ -242,7 +273,7 @@
         <div class="clear"></div>
     </div>
     <div id="tabPreferencePanel_signs" class="none">
-        <table class="form subTable" width="98%" cellpadding="0" cellspacing="9px">
+        <table class="form" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
                     <th colspan="2">

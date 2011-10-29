@@ -72,7 +72,7 @@
                     <li>
                         <div id="tabToolsTitle" onclick="admin.collapseNav(this)">
                             <span class="left preferenceIcon"></span>
-                            Tool
+                            ${ToolLabel}
                             <span class="ico-arrow-down"></span>
                         </div>
                         <ul class="none" id="tabTools">
