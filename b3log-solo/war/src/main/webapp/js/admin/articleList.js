@@ -122,52 +122,37 @@ admin.articleList = {
     popTop: function (it, id) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        var requestJSONObject = {
-            "oId": id
-        };
+        
         var $it = $(it);
+        
         if ($it.html() === Label.putTopLabel) {
-            jsonRpc.articleService.putTopArticle(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "PUT_TOP_ARTICLE_SUCC":
-                            $it.html(Label.cancelPutTopLabel);
-                            $("#tipMsg").text(Label.putTopSuccLabel);
-                            break;
-                        case "PUT_TOP_ARTICLE_FAIL_":
-                            $("#tipMsg").text(Label.putTopFailLabel);
-                            break;
-                        case "PUT_TOP_ARTICLE_FAIL_FORBIDDEN":
-                            $("#tipMsg").text(Label.forbiddenLabel);
-                            break;
-                        default:
-                            $("#tipMsg").text("");
-                            break;
+            $.ajax({
+                url: "/console/article/puttop/" + id,
+                type: "PUT",
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {}
-            }, requestJSONObject);
+                    
+                    $it.html(Label.cancelPutTopLabel);
+                }
+            });
         } else {
-            jsonRpc.articleService.cancelTopArticle(function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "CANCEL_TOP_ARTICLE_SUCC":
-                            $it.html(Label.putTopLabel);
-                            $("#tipMsg").text(Label.cancelTopSuccLabel);
-                            break;
-                        case "CANCEL_TOP_ARTICLE_FAIL_":
-                            $("#tipMsg").text(Label.cancelTopFailLabel);
-                            break;
-                        case "CANCEL_TOP_ARTICLE_FAIL_FORBIDDEN":
-                            $("#tipMsg").text(Label.forbiddenLabel);
-                            break;
-                        default:
-                            $("#tipMsg").text("");
-                            break;
+            $.ajax({
+                url: "/console/article/canceltop/" + id,
+                type: "PUT",
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {}
-            }, requestJSONObject);
+                    
+                    $it.html(Label.putTopLabel);
+                }
+            });
         }
     }
 };

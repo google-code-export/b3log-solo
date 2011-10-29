@@ -160,6 +160,35 @@ public final class ArticleMgmtService {
             new SimpleDateFormat("yyyy/MM/dd");
 
     /**
+     * Puts an article specified by the given article id to top or cancel top.
+     * 
+     * @param articleId the given article id
+     * @param top the specified flag, {@code true} to top, {@code false} to 
+     * cancel top
+     * @throws ServiceException service exception
+     */
+    public void topArticle(final String articleId, final boolean top)
+            throws ServiceException {
+        final Transaction transaction =
+                articleRepository.beginTransaction();
+        try {
+            final JSONObject topArticle = articleRepository.get(articleId);
+            topArticle.put(ARTICLE_PUT_TOP, top);
+            articleRepository.update(articleId, topArticle);
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Can't put the article[oId{0}] to top",
+                       articleId);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Updates an article by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
