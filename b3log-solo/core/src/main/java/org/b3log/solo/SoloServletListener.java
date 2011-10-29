@@ -34,7 +34,6 @@ import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.rhythm.ArticleSender;
-import org.b3log.solo.event.tencent.microblog.TencentMicroblogSender;
 import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
@@ -247,7 +246,6 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final EventManager eventManager = EventManager.getInstance();
 
-            eventManager.registerListener(new TencentMicroblogSender());
             eventManager.registerListener(new ArticleCommentReplyNotifier());
             eventManager.registerListener(new PageCommentReplyNotifier());
             eventManager.registerListener(new AddArticleGoogleBlogSearchPinger());
