@@ -104,10 +104,6 @@ public enum StatusCodes {
      */
     COMMENT_PAGE_SUCC,
     /**
-     * Indicates get comments successfully.
-     */
-    GET_COMMENTS_SUCC,
-    /**
      * Indicates remove a comment successfully.
      */
     REMOVE_COMMENT_SUCC,
@@ -116,57 +112,9 @@ public enum StatusCodes {
      */
     REMOVE_COMMENT_FAIL_FORBIDDEN,
     /**
-     * Indicates remove a link successfully.
-     */
-    REMOVE_LINK_SUCC,
-    /**
-     * Indicates remove a link fails.
-     */
-    REMOVE_LINK_FAIL_,
-    /**
-     * Indicates update a link successfully.
-     */
-    UPDATE_LINK_SUCC,
-    /**
-     * Indicates update a link fails.
-     */
-    UPDATE_LINK_FAIL_,
-    /**
      * Indicates captcha error.
      */
     CAPTCHA_ERROR,
-    /**
-     * Indicates add a page successfully.
-     */
-    ADD_PAGE_SUCC,
-    /**
-     * Indicates add a page fails, caused by duplicated permalink.
-     */
-    ADD_PAGE_FAIL_DUPLICATED_PERMALINK,
-    /**
-     * Indicates add an page fails, caused by invalid permalink format.
-     */
-    ADD_PAGE_FAIL_INVALID_PERMALINK_FORMAT,
-    /**
-     * Indicates remove a page successfully.
-     */
-    REMOVE_PAGE_SUCC,
-    /**
-     * Indicates update a page successfully.
-     */
-    UPDATE_PAGE_SUCC,
-    /**
-     * Indicates get a page successfully.
-     */
-    GET_PAGE_SUCC,
-    /**
-     * Indicates update a page fails, caused by duplicated permalink.
-     */
-    UPDATE_PAGE_FAIL_DUPLICATED_PERMALINK,
-    /**
-     * Indicates update an page fails, caused by invalid permalink format.
-     */
-    UPDATE_PAGE_FAIL_INVALID_PERMALINK_FORMAT,
     /**
      * Indicates upload a file successfully.
      */
