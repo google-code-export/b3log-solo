@@ -122,7 +122,7 @@ public final class PluginConsole {
     }
 
     /**
-     * Gets plugins by the specified request json object.
+     * Gets plugins by the specified request.
      * 
      * <p>
      * The request URI contains the pagination arguments. For example, the 

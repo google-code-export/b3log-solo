@@ -225,7 +225,7 @@ public final class PreferenceConsole {
     }
 
     /**
-     * Updates the preference by the specified request json object.
+     * Updates the preference by the specified request.
      *
      * @param request the specified http servlet request, for example,
      * <pre>
