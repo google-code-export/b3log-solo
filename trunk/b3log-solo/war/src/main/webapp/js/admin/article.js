@@ -223,57 +223,52 @@ admin.article = {
                     "articleSign_oId": signId
                 }
             };
-
-            jsonRpc.articleService.updateArticle(function (result, error) {
-                try {
-                    switch (result.status.code) {
-                        case "UPDATE_ARTICLE_FAIL_FORBIDDEN":
-                            $("#tipMsg").text(Label.forbiddenLabel);
-                            break;
-                        case "UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK":
-                            var msg = Label.addFailLabel + ", " + Label.duplicatedPermalinkLabel;
-                            $("#tipMsg").text(msg);
-                            break;
-                        case "UPDATE_ARTICLE_SUCC":
-                            if (articleIsPublished){
-                                admin.selectTab("article/article-list");
-                            } else {
-                                admin.selectTab("article/draft-list");
-                            }
-                            
-                            $("#tipMsg").text(Label.updateSuccLabel);
-                            // reset article form
-                            if (tinyMCE.get("articleContent")) {
-                                tinyMCE.get('articleContent').setContent("");
-                            } else {
-                                $("#articleContent").val("");
-                            }
-                            if (tinyMCE.get('abstract')) {
-                                tinyMCE.get('abstract').setContent("");
-                            } else {
-                                $("#abstract").val("");
-                            }
-                            $("#tag").val("");
-                            $("#permalink").val("");
-                            $(".signs button").each(function (i) {
-                                if (i === $(".signs button").length - 1) {
-                                    this.className = "selected";
-                                } else {
-                                    this.className = "";
-                                }
-                            });
-                            admin.article.status.id = undefined;
-                            admin.article.isConfirm = false;
-                            break;
-                        default:
-                            $("#tipMsg").text(Label.updateFailLabel);
-                            break;
+            
+            $.ajax({
+                url: "/console/article/",
+                type: "PUT",
+                data: JSON.stringify(requestJSONObject),
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("loadMsg").text("");
-                } catch (e) {
-                    console.error(e);
+                    
+                    if (articleIsPublished){
+                        admin.selectTab("article/article-list");
+                    } else {
+                        admin.selectTab("article/draft-list");
+                    }
+                            
+                    $("#tipMsg").text(Label.updateSuccLabel);
+                    // reset article form
+                    if (tinyMCE.get("articleContent")) {
+                        tinyMCE.get('articleContent').setContent("");
+                    } else {
+                        $("#articleContent").val("");
+                    }
+                    if (tinyMCE.get('abstract')) {
+                        tinyMCE.get('abstract').setContent("");
+                    } else {
+                        $("#abstract").val("");
+                    }
+                    $("#tag").val("");
+                    $("#permalink").val("");
+                    $(".signs button").each(function (i) {
+                        if (i === $(".signs button").length - 1) {
+                            this.className = "selected";
+                        } else {
+                            this.className = "";
+                        }
+                    });
+                    
+                    admin.article.status.id = undefined;
+                    admin.article.isConfirm = false;
                 }
-            }, requestJSONObject);
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     

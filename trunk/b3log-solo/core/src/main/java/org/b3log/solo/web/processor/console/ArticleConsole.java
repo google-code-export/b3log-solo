@@ -28,6 +28,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
@@ -70,6 +71,85 @@ public final class ArticleConsole {
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
+    /** 
+     * Updates an article by the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "article": {
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleAbstract": "",
+     *         "articleContent": "",
+     *         "articleTags": "tag1,tag2,tag3",
+     *         "articlePermalink": "", // optional
+     *         "articleIsPublished": boolean,
+     *         "articleSign_oId": "" // optional
+     *     }
+     * }
+     * </pre>
+     * @param response the specified http servlet response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = ARTICLE_URI_PREFIX,
+                       method = HTTPRequestMethod.PUT)
+    public void updateArticle(final HTTPRequestContext context,
+                              final HttpServletRequest request,
+                              final HttpServletResponse response)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+
+
+            final JSONObject article =
+                    requestJSONObject.getJSONObject(Article.ARTICLE);
+            final String articleId = article.getString(Keys.OBJECT_ID);
+
+            renderer.setJSONObject(ret);
+
+            if (!userUtils.canAccessArticle(articleId, request)) {
+                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+                ret.put(Keys.STATUS_CODE, false);
+
+                return;
+            }
+
+            articleMgmtService.updateArticle(requestJSONObject, request);
+
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
+
     /**
      * Adds an article with the specified request.
      * 
@@ -106,8 +186,8 @@ public final class ArticleConsole {
     @RequestProcessing(value = ARTICLE_URI_PREFIX,
                        method = HTTPRequestMethod.POST)
     public void addArticle(final HttpServletRequest request,
-                        final HttpServletResponse response,
-                        final HTTPRequestContext context)
+                           final HttpServletResponse response,
+                           final HTTPRequestContext context)
             throws Exception {
         if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);

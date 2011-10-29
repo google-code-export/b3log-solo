@@ -24,18 +24,6 @@ package org.b3log.solo.web.action;
 public enum StatusCodes {
 
     /**
-     * Indicates add an article successfully.
-     */
-    ADD_ARTICLE_SUCC,
-    /**
-     * Indicates add an article fails, caused by duplicated permalink.
-     */
-    ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK,
-    /**
-     * Indicates add an article fails, caused by invalid permalink format.
-     */
-    ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT,
-    /**
      * Indicates get articles successfully.
      */
     GET_ARTICLES_SUCC,
@@ -79,22 +67,6 @@ public enum StatusCodes {
      * Indicates cancel top an article fails caused by forbidden.
      */
     CANCEL_TOP_ARTICLE_FAIL_FORBIDDEN,
-    /**
-     * Indicates update an article successfully.
-     */
-    UPDATE_ARTICLE_SUCC,
-    /**
-     * Indicates update an article fails, caused by duplicated permalink.
-     */
-    UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK,
-    /**
-     * Indicates update an article fails, caused by invalid permalink format.
-     */
-    UPDATE_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT,
-    /**
-     * Indicates update an article fails caused by forbidden.
-     */
-    UPDATE_ARTICLE_FAIL_FORBIDDEN,
     /**
      * Indicates comment an article successfully.
      */
