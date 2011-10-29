@@ -332,7 +332,5 @@ admin.linkList = {
 admin.register["link-list"] =  {
     "obj": admin.linkList,
     "init": admin.linkList.init,
-    "refresh": function () {
-        $("#loadMsg").text("");
-    }
+    "refresh": admin.linkList.getList
 }
