@@ -15,11 +15,6 @@
                 <a href="#tools/preference/signs">${signLabel}</a>
             </div>
         </li>
-        <li>
-            <div id="tabPreference_tencent">
-                <a href="#tools/preference/tencent">${tencentLabel}</a>
-            </div>
-        </li>
     </ul>
 </div>
 <div id="tabPreferencePanel">
@@ -33,7 +28,7 @@
                 </tr>
                 <tr>
                     <th width="234px">
-                        ${blogTitle1Label}
+                        <label for="blogTitle">${blogTitle1Label}</label>
                     </th>
                     <td>
                         <input id="blogTitle" type="text"/>
@@ -41,7 +36,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${blogSubtitle1Label}
+                        <label for="blogSubtitle">${blogSubtitle1Label}</label>
                     </th>
                     <td>
                         <input id="blogSubtitle" type="text"/>
@@ -49,7 +44,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${blogHost1Label}
+                        <label for="blogHost">${blogHost1Label}</label>
                     </th>
                     <td>
                         <input id="blogHost" type="text"/>
@@ -57,7 +52,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${metaKeywords1Label}
+                        <label for="metaKeywords">${metaKeywords1Label}</label>
                     </th>
                     <td>
                         <input id="metaKeywords" type="text"/>
@@ -65,26 +60,34 @@
                 </tr>
                 <tr>
                     <th>
-                        ${metaDescription1Label}
+                        <label for="metaDescription">${metaDescription1Label}</label>
                     </th>
                     <td>
                         <input id="metaDescription" type="text" />
                     </td>
                 </tr>
                 <tr>
-                    <th>
-                        ${noticeBoard1Label}
+                    <th valign="top">
+                        <label for="noticeBoard">${noticeBoard1Label}</label>
                     </th>
                     <td>
                         <textarea rows="9" id="noticeBoard"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <th>
-                        ${htmlhead1Label}
+                    <th valign="top">
+                        <label for="htmlHead">${htmlhead1Label}</label>
                     </th>
                     <td>
                         <textarea rows="9" id="htmlHead"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top">
+                        <label for="replayEmailTemplate">${replayEmailTemplateLabel}</label>
+                    </th>
+                    <td>
+                        <textarea rows="9" id="replayEmailTemplate"></textarea>
                     </td>
                 </tr>
             </tbody>
@@ -93,7 +96,7 @@
             <tbody>
                 <tr>
                     <th width="234px">
-                        ${localeString1Label}
+                        <label for="localeString">${localeString1Label}</label>
                     </th>
                     <td>
                         <select id="localeString">
@@ -104,7 +107,7 @@
                 </tr>
                 <tr>
                     <th width="234px">
-                        ${timeZoneId1Label}
+                        <label for="timeZoneId">${timeZoneId1Label}</label>
                     </th>
                     <td>
                         <select id="timeZoneId">
@@ -114,7 +117,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${indexTagDisplayCnt1Label}
+                        <label for="mostUsedTagDisplayCount">${indexTagDisplayCnt1Label}</label>
                     </th>
                     <td>
                         <input id="mostUsedTagDisplayCount" class="normalInput" type="text"/>
@@ -122,7 +125,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${indexRecentCommentDisplayCnt1Label}
+                        <label for="recentCommentDisplayCount">${indexRecentCommentDisplayCnt1Label}</label>
                     </th>
                     <td>
                         <input id="recentCommentDisplayCount" class="normalInput" type="text"/>
@@ -130,7 +133,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${indexMostCommentArticleDisplayCnt1Label}
+                        <label for="mostCommentArticleDisplayCount">${indexMostCommentArticleDisplayCnt1Label}</label>
                     </th>
                     <td>
                         <input id="mostCommentArticleDisplayCount" class="normalInput" type="text"/>
@@ -138,7 +141,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${indexMostViewArticleDisplayCnt1Label}
+                        <label for="mostViewArticleDisplayCount">${indexMostViewArticleDisplayCnt1Label}</label>
                     </th>
                     <td>
                         <input id="mostViewArticleDisplayCount" class="normalInput" type="text"/>
@@ -146,7 +149,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${pageSize1Label}
+                        <label for="articleListDisplayCount">${pageSize1Label}</label>
                     </th>
                     <td>
                         <input id="articleListDisplayCount" class="normalInput" type="text"/>
@@ -154,7 +157,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${windowSize1Label}
+                        <label for="articleListPaginationWindowSize">${windowSize1Label}</label>
                     </th>
                     <td>
                         <input id="articleListPaginationWindowSize" class="normalInput" type="text"/>
@@ -162,7 +165,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${randomArticlesDisplayCnt1Label}
+                        <label for="randomArticlesDisplayCount">${randomArticlesDisplayCnt1Label}</label>
                     </th>
                     <td>
                         <input id="randomArticlesDisplayCount" class="normalInput" type="text"/>
@@ -170,7 +173,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${relevantArticlesDisplayCnt1Label}
+                        <label for="relevantArticlesDisplayCount">${relevantArticlesDisplayCnt1Label}</label>
                     </th>
                     <td>
                         <input id="relevantArticlesDisplayCount" class="normalInput" type="text"/>
@@ -178,7 +181,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${externalRelevantArticlesDisplayCnt1Label}
+                        <label for="externalRelevantArticlesDisplayCount">${externalRelevantArticlesDisplayCnt1Label}</label>
                     </th>
                     <td>
                         <input id="externalRelevantArticlesDisplayCount" class="normalInput" type="text"/>
@@ -216,7 +219,7 @@
                 </tr>
                 <tr>
                     <th>
-                        ${keyOfSolo1Label}
+                        <label for="keyOfSolo">${keyOfSolo1Label}</label>
                     </th>
                     <td>
                         <input id="keyOfSolo" class="normalInput" type="text"/>
@@ -273,49 +276,6 @@
                 <tr>
                     <th colspan="2">
                         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
-                    </th>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div id="tabPreferencePanel_tencent" class="none">
-        <table class="form" width="98%" cellpadding="0" cellspacing="9px">
-            <tbody>
-                <tr>
-                    <th width="160">
-                        ${appKey1Label}
-                    </th>
-                    <td colspan="3">
-                        <input id="tencentMicroblogAppKey" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        ${appSecret1Label}
-                    </th>
-                    <td colspan="3">
-                        <input id="tencentMicroblogAppSecret" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        ${authorizeTencentMicroblog1Label}
-                    </th>
-                    <td width="20%">
-                        <img class="pointer" src="images/tencent-microblog.png"
-                             onclick="admin.preference.oauthTencent();" alt="${authorizeTencentMicroblog1Label}"/>
-                    </td>
-                    <th width="20%">
-                        <label for="postToTencentMicroblog">${postToTencentMicroblogWhilePublishArticleLabel}</label>
-                    </th>
-                    <td>
-                        <input id="postToTencentMicroblog" type="checkbox" class="normalInput"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="4">
-                        <button onclick="admin.preference.update()">${saveLabel}</button>
                     </th>
                 </tr>
             </tbody>

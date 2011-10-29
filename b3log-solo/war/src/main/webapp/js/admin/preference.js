@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Oct 2, 2011
+ * @version 1.0.0.9, Oct 29, 2011
  */
 
 /* preference 相关操作 */
@@ -58,16 +58,11 @@ admin.preference = {
                 $("#timeZoneId").val(preference.timeZoneId);
                 $("#noticeBoard").val(preference.noticeBoard);
                 $("#htmlHead").val(preference.htmlHead);
-                $("#secret").val(preference.googleOAuthConsumerSecret);
                 $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
                 $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
                 $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                 $("#keyOfSolo").val(preference.keyOfSolo);
                 preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
-                // Tencent micro blog settings
-                preference.enablePostToTencentMicroblog ? $("#postToTencentMicroblog").attr("checked", "checked") : $("#postToTencentMicroblog").removeAttr("checked");
-                $("#tencentMicroblogAppKey").val(preference.tencentMicroblogAppKey);
-                $("#tencentMicroblogAppSecret").val(preference.tencentMicroblogAppSecret);
                         
                 preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
 
@@ -121,12 +116,6 @@ admin.preference = {
     update: function () {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        if ($("#syncGoogle").hasClass("selected")) {
-            if ("" === $("#secret").val().replace(/\s/g, "")) {
-                $("#tipMsg").text(Label.contentEmptyLabel);
-                return;
-            }
-        }
 
         var signs = [{
             "oId": 0,
@@ -150,7 +139,6 @@ admin.preference = {
                 "blogSubtitle": $("#blogSubtitle").val(),
                 "mostCommentArticleDisplayCount": $("#mostCommentArticleDisplayCount").val(),
                 "mostViewArticleDisplayCount": $("#mostViewArticleDisplayCount").val(),
-                "recentArticleDisplayCount": 10, // XXX: remove recentArticleDisplayCount
                 "recentCommentDisplayCount": $("#recentCommentDisplayCount").val(),
                 "mostUsedTagDisplayCount": $("#mostUsedTagDisplayCount").val(),
                 "articleListDisplayCount": $("#articleListDisplayCount").val(),
@@ -161,15 +149,11 @@ admin.preference = {
                 "timeZoneId": $("#timeZoneId").val(),
                 "noticeBoard": $("#noticeBoard").val(),
                 "htmlHead": $("#htmlHead").val(),
-                "googleOAuthConsumerSecret": ""/*$("#secret").val()*/,
                 "externalRelevantArticlesDisplayCount": $("#externalRelevantArticlesDisplayCount").val(),
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
                 "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
                 "enableArticleUpdateHint": $("#enableArticleUpdateHint").prop("checked"),
                 "signs": signs,
-                "tencentMicroblogAppKey": $("#tencentMicroblogAppKey").val(),
-                "tencentMicroblogAppSecret": $("#tencentMicroblogAppSecret").val(),
-                "enablePostToTencentMicroblog": $("#postToTencentMicroblog").prop("checked"),
                 "keyOfSolo": $("#keyOfSolo").val(),
                 "allowVisitDraftViaPermalink": $("#allowVisitDraftViaPermalink").prop("checked"),
                 "articleListStyle": $("#articleListDisplay").val()
@@ -205,27 +189,6 @@ admin.preference = {
         });
         
         $("#loadMsg").text("");
-    },
-    
-    /*
-     * 腾讯微博认证
-     */
-    oauthTencent: function () {
-        if ("" === $("#tencentMicroblogAppKey").val().replace(/\s/g, "")) {
-            $("#tipMsg").text(Label.contentEmptyLabel);
-            return;
-        }
-
-        if ("" === $("#tencentMicroblogAppSecret").val().replace(/\s/g, "")) {
-            $("#tipMsg").text(Label.contentEmptyLabel);
-            return;
-        }
-
-        $("#loadMsg").text(Label.loadingLabel);
-        window.location = "tencent-microblog-oauth-authorize-token.do?appKey="
-        + $("#tencentMicroblogAppKey").val()
-        + "&appSecret=" + $("#tencentMicroblogAppSecret").val();
-
     }
 };
 
