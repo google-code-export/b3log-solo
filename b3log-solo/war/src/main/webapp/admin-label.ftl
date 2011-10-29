@@ -7,6 +7,7 @@
         "version": "${version}",
         "reportIssueLabel": "please report this issue on http://code.google.com/p/b3log-solo/issues/list",
         
+        "selectLabel": "${selectLabel}",
         "outOfDateLabel":　"${outOfDateLabel}",
         "upToDateLabel": "${upToDateLabel}",
         "commentContentLabel": "${commentContentLabel}",
