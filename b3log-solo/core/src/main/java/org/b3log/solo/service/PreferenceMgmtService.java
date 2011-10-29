@@ -173,7 +173,7 @@ public final class PreferenceMgmtService {
             timeZoneUtils.setTimeZone(timeZoneId);
 
             preference.put(Preference.SIGNS,
-                           preference.getJSONArray(Preference.SIGNS).toString());
+                           preference.get(Preference.SIGNS).toString());
 
             final JSONObject oldPreference =
                     preferenceQueryService.getPreference();
