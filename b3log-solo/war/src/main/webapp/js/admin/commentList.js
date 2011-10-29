@@ -129,29 +129,22 @@ admin.commentList = {
     del: function (id, type) {
         if (confirm(Label.confirmRemoveLabel)) {
             $("#loadMsg").text(Label.loadingLabel);
-            jsonRpc.commentService["removeCommentOf" + type](function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "REMOVE_COMMENT_FAIL_FORBIDDEN":
-                            $("#tipMsg").text(Label.forbiddenLabel);
-                            break;
-                        case "REMOVE_COMMENT_SUCC":
-                            admin.commentList.getList(admin.commentList.pageInfo.currentPage);
-                            $("#tipMsg").text(Label.removeSuccLabel);
-                            break;
-                        case "REMOVE_COMMENT_FAIL_":
-                            $("#tipMsg").text(Label.removeFailLabel);
-                            break;
-                        default:
-                            break;
+            
+            $.ajax({
+                url: "/console/" + type.toLowerCase() + "/comment/" + id,
+                type: "DELETE",
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text(Label.loadingLabel);
-                } catch (e) {
-                    console.error(e);
+                    
+                    admin.commentList.getList(admin.commentList.pageInfo.currentPage);
                 }
-            }, {
-                "oId": id
-            });   
+            });
+        
+            $("#loadMsg").text("");
         }
     }
 };

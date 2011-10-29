@@ -43,7 +43,7 @@ admin.comment = {
         $("#" + fromId + "Comments").html("");
         
         var from = "article";
-        if (fromId === "page") { // XXX: V，D 表示没看懂这句 -__-|
+        if (fromId === "page") {
             from = "page";
         }
         
@@ -61,7 +61,7 @@ admin.comment = {
                 commentsHTML = '';
                 for (var i = 0; i < comments.length; i++) {
                     var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>",
-                    content = comments[i].commentContent;
+                    content = comments[i].commentContent,
                     contentHTML = Util.replaceEmString(content);
                         
                     if (comments[i].commentURL === "http://") {
@@ -75,7 +75,7 @@ admin.comment = {
                         commentsHTML += "@" + comments[i].commentOriginalCommentName;
                     }
                     commentsHTML += "</span><span title='" + Label.removeLabel + "' class='right deleteIcon' onclick=\"admin.comment.del('"
-                    + comments[i].oId + "', '" + fromId + "', '" + articleId + "')\"></span><span class='right'><a href='mailto:"
+                    + comments[i].oId + "', '" + fromId + "', '" + onId + "')\"></span><span class='right'><a href='mailto:"
                     + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
                     + $.bowknot.getDate(comments[i].commentTime, 1)
                     + "&nbsp;</span><div class='clear'></div></div><div class='margin12'>"
@@ -84,6 +84,7 @@ admin.comment = {
                 if ("" === commentsHTML) {
                     commentsHTML = Label.noCommentLabel;
                 }
+                
                 $("#" + fromId + "Comments").html(commentsHTML);
             }
         });
@@ -100,29 +101,26 @@ admin.comment = {
         var isDelete = confirm(Label.confirmRemoveLabel);
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
-            var from = "Article";
+            var from = "article";
             if (fromId === "page") {
-                from = "Page";
+                from = "page";
             }
-            jsonRpc.commentService["removeCommentOf" + from](function (result, error) {
-                try {
-                    switch (result.sc) {
-                        case "REMOVE_COMMENT_FAIL_FORBIDDEN":
-                            $("#tipMsg").text(Label.forbiddenLabel);
-                            break;
-                        case "REMOVE_COMMENT_SUCC":
-                            admin.comment.getList(articleId, fromId);
-                            $("#tipMsg").text(Label.removeSuccLabel);
-                            break;
-                        default:
-                            $("#tipMsg").text("");
-                            $("#loadMsg").text("");
-                            break;
+            
+            $.ajax({
+                url: "/console/" + from + "/comment/" + id,
+                type: "DELETE",
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                } catch (e) {}
-            }, {
-                "oId": id
+                    
+                    admin.comment.getList(articleId, fromId);
+                }
             });
+        
+            $("#loadMsg").text("");
         }
     }
 };
