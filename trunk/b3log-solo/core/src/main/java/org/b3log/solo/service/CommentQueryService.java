@@ -192,7 +192,6 @@ public final class CommentQueryService {
                         comment.getString(Comment.COMMENT_CONTENT).
                         replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
                 comment.put(Comment.COMMENT_CONTENT, content);
-                comment.remove(Comment.COMMENT_EMAIL); // Removes email
 
                 comment.put(Comment.COMMENT_TIME,
                             ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
