@@ -1,12 +1,13 @@
 <script type="text/javascript">
     var Label = {
         "userRole": "${userRole}",
-        "PAGE_SIZE": 18,
+        "PAGE_SIZE": 2,
         "WINDOW_SIZE": 10,
         "localeString": "${localeString}",
         "version": "${version}",
         "reportIssueLabel": "please report this issue on http://code.google.com/p/b3log-solo/issues/list",
         
+        "addressInvalidLabel": "${addressInvalidLabel}",
         "selectLabel": "${selectLabel}",
         "outOfDateLabel":　"${outOfDateLabel}",
         "upToDateLabel": "${upToDateLabel}",
