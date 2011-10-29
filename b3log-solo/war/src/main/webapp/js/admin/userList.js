@@ -74,53 +74,50 @@ admin.userList = {
         $("#loadMsg").text(Label.loadingLabel);
         this.pageInfo.currentPage = pageNum;
         var that = this;
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": Label.PAGE_SIZE,
-            "paginationWindowSize": Label.WINDOW_SIZE
-        };
-        jsonRpc.adminService.getUsers(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_USERS_SUCC":
-                        var users = result.users;
-                        var userData = [];
-                        admin.userList.pageInfo.currentCount = users.length;
-                        admin.userList.pageInfo.pageCount = result.pagination.paginationPageCount;
-                        if (users.length < 1) {
-                            alert("No user\n " + Label.reportIssueLabel);
-                            $("#loadMsg").text("");
-                            return;
-                        }
+        
+        $.ajax({
+            url: "/console/users/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    $("#tipMsg").text(result.msg);
                     
-                        for (var i = 0; i < users.length; i++) {
-                            userData[i] = {};
-                            userData[i].userName = users[i].userName;
-                            userData[i].userEmail = users[i].userEmail;
-                            
-                            if ("adminRole" === users[i].userRole) {
-                                userData[i].isAdmin = "&nbsp;" + Label.administratorLabel;
-                                userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
-                                users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>";
-                            } else {
-                                userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
-                                users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "')\">" + Label.removeLabel + "</a>";
-                                userData[i].isAdmin = Label.commonUserLabel;
-                            }
-                            
-                        }
-                        
-                        that.tablePagination.updateTablePagination(userData, pageNum, result.pagination);
-                        break;
-                    default:
-                        break;
+                    return;
                 }
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+                
+                var users = result.users;
+                var userData = [];
+                admin.userList.pageInfo.currentCount = users.length;
+                admin.userList.pageInfo.pageCount = result.pagination.paginationPageCount;
+                if (users.length < 1) {
+                    alert("No user\n " + Label.reportIssueLabel);
+                    $("#loadMsg").text("");
+                    return;
+                }
+                    
+                for (var i = 0; i < users.length; i++) {
+                    userData[i] = {};
+                    userData[i].userName = users[i].userName;
+                    userData[i].userEmail = users[i].userEmail;
+                            
+                    if ("adminRole" === users[i].userRole) {
+                        userData[i].isAdmin = "&nbsp;" + Label.administratorLabel;
+                        userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
+                        users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>";
+                    } else {
+                        userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
+                        users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
+                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "')\">" + Label.removeLabel + "</a>";
+                        userData[i].isAdmin = Label.commonUserLabel;
+                    }
+                            
+                }
+                        
+                that.tablePagination.updateTablePagination(userData, pageNum, result.pagination);
             }
-        }, requestJSONObject);
+        });
+        
+        $("#loadMsg").text("");
     },
     
     /*
