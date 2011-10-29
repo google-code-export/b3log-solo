@@ -20,7 +20,6 @@
         "forbiddenLabel": "${forbiddenLabel}",
         "removeSuccLabel": "${removeSuccLabel}",
         "removeLabel": "${removeLabel}",
-        "cancelPutTopLabel": "${cancelPutTopLabel}",
         "putTopLabel": "${putTopLabel}",
         "viewLabel": "${viewLabel}",
         "updateLabel": "${updateLabel}",
