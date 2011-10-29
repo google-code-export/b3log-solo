@@ -18,7 +18,7 @@
             $("#loadMsg").text("${loadingLabel}");
             
             $.ajax({
-                url: "/console/links/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+                url: "/console/plugins/admin-cache/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
                 type: "GET",
                 success: function(result, textStatus){
                     if (!result.sc) {
@@ -53,7 +53,7 @@
             }
             
             $.ajax({
-                url: "/plugins/admin-cache/enable/" + flag,
+                url: "/console/plugins/admin-cache/enable/" + flag,
                 type: "PUT",
                 success: function(result, textStatus){
                     if (!result.sc) {
@@ -80,7 +80,7 @@
             $("#loadMsg").text("${loadingLabel}");
             
             $.ajax({
-                url: "/plugins/admin-cache/status/",
+                url: "/console/plugins/admin-cache/status/",
                 type: "GET",
                 success: function(result, textStatus){
                     if (!result.sc) {

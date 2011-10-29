@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * Skips for request filtering.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Sep 30, 2011
+ * @version 1.1.0.2, Oct 30, 2011
  * @see #shouldSkip(java.lang.String) 
  * @since 0.3.1
  */
@@ -70,7 +70,8 @@ public final class Skips {
     // XXX: performance issue, super hard coding....
     // TODO: skips new urls....
     static boolean shouldSkip(final String requestURI) {
-        return requestURI.equals("/captcha.do")
+        return requestURI.startsWith("/console/")
+               || requestURI.equals("/captcha.do")
                || requestURI.equals("/tag-articles-feed.do")
                || requestURI.equals("/blog-articles-feed.do")
                || requestURI.equals("/tag-articles-rss.do")

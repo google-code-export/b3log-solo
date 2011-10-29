@@ -101,7 +101,7 @@ public final class AdminCacheService {
      * @param response the specified http servlet response
      * @throws Exception 
      */
-    @RequestProcessing(value = "/plugins/admin-cache/status/",
+    @RequestProcessing(value = "/console/plugins/admin-cache/status/",
                        method = HTTPRequestMethod.GET)
     public void getPageCache(final HTTPRequestContext context,
                              final HttpServletRequest request,
@@ -184,7 +184,7 @@ public final class AdminCacheService {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = "/plugins/admin-cache/pages/"
+    @RequestProcessing(value = "/console/plugins/admin-cache/pages/"
                                + Requests.PAGINATION_PATH_PATTERN,
                        method = HTTPRequestMethod.GET)
     public void getPages(final HttpServletRequest request,
@@ -285,7 +285,7 @@ public final class AdminCacheService {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/plugins/admin-cache/enable/",
+    @RequestProcessing(value = "/console/plugins/admin-cache/enable/",
                        method = HTTPRequestMethod.PUT)
     public void setPageCache(final HttpServletRequest request,
                              final HttpServletResponse response,
@@ -324,42 +324,6 @@ public final class AdminCacheService {
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, "Admin Cache plugin exception: " + e.
                     getMessage());
-        }
-    }
-
-    /**
-     * Gets the {@link AdminCacheService} singleton.
-     *
-     * @return the singleton
-     */
-    public static AdminCacheService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private default constructor.
-     */
-    private AdminCacheService() {
-    }
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jun 20, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final AdminCacheService SINGLETON =
-                new AdminCacheService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {
         }
     }
 }
