@@ -169,37 +169,30 @@ admin.article = {
                     "postToCommunity": $("#postToCommunity").prop("checked")
                 }
             };
-
-            jsonRpc.articleService.addArticle(function (result, error) {
-                try {
-                    switch (result.status.code) {
-                        case "ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK":
-                            var msg = Label.addFailLabel + ", " + Label.duplicatedPermalinkLabel;
-                            $("#tipMsg").text(msg);
-                            break;
-                        case "ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT":
-                            msg = Label.addFailLabel + ", " + Label.invalidPermalinkFormatLabel;
-                            $("#tipMsg").text(msg);
-                            break;
-                        case "ADD_ARTICLE_SUCC":
-                            if (articleIsPublished) {
-                                admin.article.status.id = undefined;
-                                admin.selectTab("article/article-list");
-                            } else {
-                                admin.selectTab("article/draft-list");
-                            }
-                            $("#tipMsg").text(Label.addSuccLabel);
-                            admin.article.isConfirm = false;
-                            break;
-                        default:
-                            $("#tipMsg").text(Label.addFailLabel);
-                            break;
+            
+            $.ajax({
+                url: "/console/article/",
+                type: "POST",
+                data: JSON.stringify(requestJSONObject),
+                success: function(result, textStatus){
+                    $("#tipMsg").text(result.msg);
+                     
+                    if (!result.sc) {
+                        return;
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {
-                    console.error(e);
+                    
+                    if (articleIsPublished) {
+                        admin.article.status.id = undefined;
+                        admin.selectTab("article/article-list");
+                    } else {
+                        admin.selectTab("article/draft-list");
+                    }
+                    
+                    admin.article.isConfirm = false;
                 }
-            }, requestJSONObject);
+            });
+        
+            $("#loadMsg").text("");
         }
     },
     
