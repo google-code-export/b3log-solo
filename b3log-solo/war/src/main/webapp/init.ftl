@@ -13,7 +13,11 @@
         <meta http-equiv="Window-target" content="_top" />
         <link type="text/css" rel="stylesheet" href="/css/default-init${miniPostfix}.css" charset="utf-8" />
         <link rel="icon" type="image/png" href="/favicon.png" />
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" charset="utf-8"></script>
+        <#if "" == miniPostfix>
+        <script type="text/javascript" src="/js/lib/jquery/jquery-1.6.4.min.js" charset="utf-8"></script>
+        <#else>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" charset="utf-8"></script>
+        </#if>
         <script type="text/javascript" src="/js/lib/jsonrpc.min.js" charset="utf-8"></script>
     </head>
     <body>

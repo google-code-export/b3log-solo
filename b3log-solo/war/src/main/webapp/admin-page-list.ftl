@@ -8,7 +8,6 @@
 <div class="form">
     <div>
         <label>${title1Label}</label>
-
         <input id="pageTitle" type="text"/>
     </div>
     <div>

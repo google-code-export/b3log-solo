@@ -4,12 +4,18 @@
         <input id="title" type="text"/>
     </div>
     <div>
+        <label>${content1Label}</label>
+    </div>
+    <div>
         <textarea id="articleContent" name="articleContent"
                   style="height: 500px;width:100%;"></textarea>
     </div>
     <div>
         <label>${tags1WithTips1Label}</label>
         <input id="tag" type="text"/>
+    </div>
+    <div>
+        <label>${abstract1Label}</label>
     </div>
     <div>
         <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
