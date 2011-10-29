@@ -28,13 +28,11 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
-import org.b3log.solo.util.jabsorb.serializer.StatusCodesSerializer;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.rhythm.ArticleSender;
-import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.util.Stopwatchs;
@@ -44,14 +42,13 @@ import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Skins;
-import org.jabsorb.JSONRPCBridge;
 import org.json.JSONObject;
 
 /**
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.1, Oct 27, 2011
+ * @version 1.0.6.2, Oct 29, 2011
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -113,7 +110,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         PluginManager.getInstance().load();
 
-        registerRemoteJSServices();
         registerEventProcessor();
 
         LOGGER.info("Initialized the context");
@@ -201,24 +197,6 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * Registers remote JavaScript service serializers.
-     */
-    private void registerRemoteJSServiceSerializers() {
-        LOGGER.log(Level.INFO,
-                   "Registering remote JavaScript service serializers....");
-        final JSONRPCBridge jsonRpcBridge = JSONRPCBridge.getGlobalBridge();
-
-        try {
-            jsonRpcBridge.registerSerializer(new StatusCodesSerializer());
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new IllegalStateException(e);
-        }
-        LOGGER.log(Level.INFO,
-                   "Registered remote JavaScript service serializers....");
-    }
-
-    /**
      * Determines Solo had been initialized.
      *
      * @return {@code true} if it had been initialized, {@code false} otherwise
@@ -260,30 +238,6 @@ public final class SoloServletListener extends AbstractServletListener {
         }
 
         LOGGER.log(Level.INFO, "Registering event processors....");
-
-        Stopwatchs.end();
-    }
-
-    /**
-     * Registers remote JavaScript services.
-     */
-    private void registerRemoteJSServices() {
-        Stopwatchs.start("Register JS SVCs");
-
-        LOGGER.log(Level.INFO, "Registering remote JavaScript services....");
-        try {
-            final ArticleService articleService = ArticleService.getInstance();
-            JSONRPCBridge.getGlobalBridge().registerObject(articleService.
-                    getServiceObjectName(), articleService);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Register remote JavaScript service error",
-                       e);
-            throw new IllegalStateException(e);
-        }
-
-        LOGGER.log(Level.INFO, "Registered remote JavaScript services....");
-
-        registerRemoteJSServiceSerializers();
 
         Stopwatchs.end();
     }

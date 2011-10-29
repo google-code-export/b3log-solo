@@ -18,7 +18,8 @@
  * article list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, July 24, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.7, Oct 28, 2011
  */
 
 /* article-list 相关操作 */
@@ -72,46 +73,42 @@ admin.articleList = {
     getList: function (pageNum) {
         var that = this;
         $("#loadMsg").text(Label.loadingLabel);
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": Label.PAGE_SIZE,
-            "paginationWindowSize": Label.WINDOW_SIZE,
-            "articleIsPublished": true
-        };
-        jsonRpc.articleService.getArticles(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_ARTICLES_SUCC":
-                        var articles = result.articles,
-                        articleData = [];
-                        for (var i = 0; i < articles.length; i++) {
-                            articleData[i] = {};
-                            articleData[i].tags = articles[i].articleTags;
-                            articleData[i].title = "<a href='" + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle + "' class='no-underline'>"
-                            + articles[i].articleTitle + "</a>";
-                            articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
-                            articleData[i].comments = articles[i].articleCommentCount;
-                            articleData[i].articleViewCount = articles[i].articleViewCount;
-                            articleData[i].author = articles[i].authorName;
+        
+        $.ajax({
+            url: "/console/articles/status/published/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    $("#tipMsg").text(result.msg);
+                    
+                    return;
+                }
+                
+                var articles = result.articles,
+                articleData = [];
+                for (var i = 0; i < articles.length; i++) {
+                    articleData[i] = {};
+                    articleData[i].tags = articles[i].articleTags;
+                    articleData[i].title = "<a href='" + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle + "' class='no-underline'>"
+                    + articles[i].articleTitle + "</a>";
+                    articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime, 1);
+                    articleData[i].comments = articles[i].articleCommentCount;
+                    articleData[i].articleViewCount = articles[i].articleViewCount;
+                    articleData[i].author = articles[i].authorName;
                             
-                            var topClass = articles[i].articlePutTop ? Label.cancelPutTopLabel : Label.putTopLabel;
-                            articleData[i].expendRow = "<a target='_blank' href='" + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
+                    var topClass = articles[i].articlePutTop ? Label.cancelPutTopLabel : Label.putTopLabel;
+                    articleData[i].expendRow = "<a target='_blank' href='" + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', true)\">" + Label.updateLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'article')\">" + Label.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.articleList.popTop(this, '" + articles[i].oId + "')\">" + topClass + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + articles[i].oId + "', 'article')\">" + Label.commentLabel + "</a>";
-                        }
-                    
-                        that.tablePagination.updateTablePagination(articleData, pageNum, result.pagination);
-                        break;
-                    default:
-                        break;
                 }
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+                    
+                that.tablePagination.updateTablePagination(articleData, pageNum, result.pagination);
             }
-        }, requestJSONObject);
+        });
+        
+        $("#loadMsg").text("");
     },
 
     /* 

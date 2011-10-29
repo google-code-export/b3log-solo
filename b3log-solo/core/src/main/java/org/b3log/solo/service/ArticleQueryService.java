@@ -15,6 +15,17 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.solo.model.Sign;
+import org.b3log.solo.model.Tag;
+import java.util.Date;
+import org.b3log.latke.model.User;
+import org.b3log.solo.model.Common;
+import org.b3log.solo.util.Articles;
+import org.b3log.latke.action.util.Paginator;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.model.Pagination;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,12 +51,13 @@ import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import static org.b3log.solo.model.Article.*;
 
 /**
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 17, 2011
+ * @version 1.0.0.2, Oct 28, 2011
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -61,6 +73,11 @@ public final class ArticleQueryService {
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
     /**
+     * Preference query service.
+     */
+    private PreferenceQueryService preferenceQueryService =
+            PreferenceQueryService.getInstance();
+    /**
      * Tag repository.
      */
     private TagRepository tagRepository = TagRepositoryImpl.getInstance();
@@ -73,6 +90,194 @@ public final class ArticleQueryService {
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
+    /**
+     * Article utilities.
+     */
+    private static Articles articleUtils = Articles.getInstance();
+
+    /**
+     * Gets an article by the specified article id.
+     *
+     * @param articleId the specified article id
+     * @return for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "articleTitle": "",
+     *     "articleAbstract": "",
+     *     "articleContent": "",
+     *     "articlePermalink": "",
+     *     "articleHadBeenPublished": boolean,
+     *     "articleTags": [{
+     *         "oId": "",
+     *         "tagTitle": ""
+     *     }, ....],
+     *     "articleSign_oId": "",
+     *     "signs": [{
+     *         "oId": "",
+     *         "signHTML": ""
+     *     }, ....]
+     *     "sc": "GET_ARTICLE_SUCC"
+     * }
+     * </pre>
+     * @throws ServiceException service exception
+     */
+    public JSONObject getArticle(final String articleId)
+            throws ServiceException {
+        try {
+            final JSONObject ret = new JSONObject();
+
+            final JSONObject article = articleRepository.get(articleId);
+            ret.put(ARTICLE, article);
+
+            final JSONArray tags = new JSONArray();
+            final List<JSONObject> tagArticleRelations =
+                    tagArticleRepository.getByArticleId(articleId);
+            for (int i = 0; i < tagArticleRelations.size(); i++) {
+                final JSONObject tagArticleRelation =
+                        tagArticleRelations.get(i);
+                final String tagId = tagArticleRelation.getString(
+                        Tag.TAG + "_" + Keys.OBJECT_ID);
+                final JSONObject tag = tagRepository.get(tagId);
+
+                tags.put(tag);
+            }
+            article.put(ARTICLE_TAGS_REF, tags);
+
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final String signId = articleUtils.getSign(
+                    articleId, preference).getString(Keys.OBJECT_ID);
+            article.put(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, signId);
+
+            final JSONArray signs =
+                    new JSONArray(preference.getString(Preference.SIGNS));
+            article.put(Sign.SIGNS, signs);
+
+            // Remove unused properties
+            article.remove(ARTICLE_AUTHOR_EMAIL);
+            article.remove(ARTICLE_COMMENT_COUNT);
+            article.remove(ARTICLE_CREATE_DATE);
+            article.remove(ARTICLE_IS_PUBLISHED);
+            article.remove(ARTICLE_PUT_TOP);
+            article.remove(ARTICLE_UPDATE_DATE);
+            article.remove(ARTICLE_VIEW_COUNT);
+            article.remove(ARTICLE_RANDOM_DOUBLE);
+
+            LOGGER.log(Level.FINER, "Got an article[oId={0}]", articleId);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Gets an article failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets articles(by crate date descending) by the specified request json
+     * object.
+     *
+     * <p>
+     * If the property "articleIsPublished" of the specified request json object
+     * is {@code true}, the returned articles all are unpublished, {@code false}
+     * otherwise.
+     * </p>
+     * 
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "paginationCurrentPageNum": 1,
+     *     "paginationPageSize": 20,
+     *     "paginationWindowSize": 10,
+     *     "articleIsPublished": boolean
+     * }, see {@link Pagination} for more details
+     * </pre>
+     * @return for example,
+     * <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "articles": [{
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleCommentCount": int,
+     *         "articleCreateTime"; long,
+     *         "articleViewCount": int,
+     *         "articleTags": "tag1, tag2, ....",
+     *         "articlePutTop": boolean,
+     *         "articleIsPublished": boolean
+     *      }, ....]
+     * }
+     * </pre>, order by article update date and sticky(put top).
+     * @throws ServiceException service exception
+     * @see Pagination
+     */
+    public JSONObject getArticles(final JSONObject requestJSONObject)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        try {
+            final int currentPageNum = requestJSONObject.getInt(
+                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
+            final int pageSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_PAGE_SIZE);
+            final int windowSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_WINDOW_SIZE);
+            final boolean articleIsPublished =
+                    requestJSONObject.optBoolean(ARTICLE_IS_PUBLISHED, true);
+
+            final Query query = new Query().setCurrentPageNum(currentPageNum).
+                    setPageSize(pageSize).
+                    addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING).
+                    addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING).
+                    addFilter(ARTICLE_IS_PUBLISHED,
+                              FilterOperator.EQUAL,
+                              articleIsPublished);
+            final JSONObject result = articleRepository.get(query);
+
+            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
+                    getInt(Pagination.PAGINATION_PAGE_COUNT);
+
+            final JSONObject pagination = new JSONObject();
+            ret.put(Pagination.PAGINATION, pagination);
+            final List<Integer> pageNums =
+                    Paginator.paginate(currentPageNum, pageSize, pageCount,
+                                       windowSize);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+            final JSONArray articles = result.getJSONArray(Keys.RESULTS);
+
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.getJSONObject(i);
+                final JSONObject author = articleUtils.getAuthor(article);
+                final String authorName = author.getString(User.USER_NAME);
+                article.put(Common.AUTHOR_NAME, authorName);
+
+                article.put(ARTICLE_CREATE_TIME,
+                            ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
+
+                // Remove unused properties
+                article.remove(ARTICLE_CONTENT);
+                article.remove(ARTICLE_ABSTRACT);
+                article.remove(ARTICLE_UPDATE_DATE);
+                article.remove(ARTICLE_CREATE_DATE);
+                article.remove(ARTICLE_AUTHOR_EMAIL);
+                article.remove(ARTICLE_HAD_BEEN_PUBLISHED);
+                article.remove(ARTICLE_IS_PUBLISHED);
+                article.remove(ARTICLE_RANDOM_DOUBLE);
+            }
+
+            ret.put(ARTICLES, articles);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Gets articles failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets a list of articles randomly with the specified fetch size.

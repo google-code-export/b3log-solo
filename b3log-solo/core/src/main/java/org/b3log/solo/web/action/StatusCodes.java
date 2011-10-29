@@ -24,14 +24,6 @@ package org.b3log.solo.web.action;
 public enum StatusCodes {
 
     /**
-     * Indicates get articles successfully.
-     */
-    GET_ARTICLES_SUCC,
-    /**
-     * Indicates get an article successfully.
-     */
-    GET_ARTICLE_SUCC,
-    /**
      * Indicates comment an article successfully.
      */
     COMMENT_ARTICLE_SUCC,
