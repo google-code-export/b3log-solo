@@ -28,6 +28,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
@@ -59,6 +60,11 @@ public final class CommentConsole {
     private CommentQueryService commentQueryService =
             CommentQueryService.getInstance();
     /**
+     * Comment management service.
+     */
+    private CommentMgmtService commentMgmtService =
+            CommentMgmtService.getInstance();
+    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
@@ -70,6 +76,108 @@ public final class CommentConsole {
      * Comments URI prefix.
      */
     private static final String COMMENTS_URI_PREFIX = "/console/comments/";
+
+    /**
+     * Removes a comment of an article by the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/page/comment/*",
+                       method = HTTPRequestMethod.DELETE)
+    public void removePageComment(final HttpServletRequest request,
+                                  final HttpServletResponse response,
+                                  final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        try {
+            final String commentId = request.getRequestURI().substring(
+                    "/console/page/comment/".length());
+
+            commentMgmtService.removePageComment(commentId);
+
+            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+        }
+    }
+
+    /**
+     * Removes a comment of an article by the specified request json object.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/article/comment/*",
+                       method = HTTPRequestMethod.DELETE)
+    public void removeArticleComment(final HttpServletRequest request,
+                                     final HttpServletResponse response,
+                                     final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        try {
+            final String commentId = request.getRequestURI().substring(
+                    "/console/article/comment/".length());
+
+            commentMgmtService.removeArticleComment(commentId);
+
+            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+        }
+    }
 
     /**
      * Gets comments by the specified request json object.
