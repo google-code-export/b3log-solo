@@ -71,6 +71,126 @@ public final class ArticleConsole {
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
+    /**
+     * Puts an article to top by the specified request.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = ARTICLE_URI_PREFIX + "canceltop/*",
+                       method = HTTPRequestMethod.PUT)
+    public void cancelTopArticle(final HTTPRequestContext context,
+                              final HttpServletRequest request,
+                              final HttpServletResponse response)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
+
+        if (!userUtils.isAdminLoggedIn(request)) {
+            ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+            ret.put(Keys.STATUS_CODE, false);
+
+            return;
+        }
+
+        try {
+            final String articleId =
+                    request.getRequestURI().substring((ARTICLE_URI_PREFIX
+                                                       + "canceltop/").length());
+            articleMgmtService.topArticle(articleId, false);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("cancelTopSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = new JSONObject();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("cancelTopFailLabel"));
+        }
+    }
+
+    /**
+     * Puts an article to top by the specified request.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = ARTICLE_URI_PREFIX + "puttop/*",
+                       method = HTTPRequestMethod.PUT)
+    public void putTopArticle(final HTTPRequestContext context,
+                              final HttpServletRequest request,
+                              final HttpServletResponse response)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
+
+        if (!userUtils.isAdminLoggedIn(request)) {
+            ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+            ret.put(Keys.STATUS_CODE, false);
+
+            return;
+        }
+
+        try {
+            final String articleId =
+                    request.getRequestURI().substring((ARTICLE_URI_PREFIX
+                                                       + "puttop/").length());
+            articleMgmtService.topArticle(articleId, true);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("putTopSuccLabel"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = new JSONObject();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("putTopFailLabel"));
+        }
+    }
+
     /** 
      * Updates an article by the specified request json object.
      * 
@@ -122,7 +242,6 @@ public final class ArticleConsole {
         try {
             final JSONObject requestJSONObject =
                     AbstractAction.parseRequestJSONObject(request, response);
-
 
             final JSONObject article =
                     requestJSONObject.getJSONObject(Article.ARTICLE);
