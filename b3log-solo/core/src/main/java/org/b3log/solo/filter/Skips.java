@@ -70,8 +70,7 @@ public final class Skips {
     // XXX: performance issue, super hard coding....
     // TODO: skips new urls....
     static boolean shouldSkip(final String requestURI) {
-        return requestURI.equals("/json-rpc.do")
-               || requestURI.equals("/captcha.do")
+        return requestURI.equals("/captcha.do")
                || requestURI.equals("/tag-articles-feed.do")
                || requestURI.equals("/blog-articles-feed.do")
                || requestURI.equals("/tag-articles-rss.do")
