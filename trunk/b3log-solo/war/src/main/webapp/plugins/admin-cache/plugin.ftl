@@ -16,66 +16,84 @@
         getList: function (pageNum) {
             var that = this;
             $("#loadMsg").text("${loadingLabel}");
-        
-            var requestJSONObject = {
-                "paginationCurrentPageNum": pageNum,
-                "paginationPageSize": Label.PAGE_SIZE,
-                "paginationWindowSize": Label.WINDOW_SIZE
-            };
-        
-            jsonRpc.adminCacheService.getPages(function (result, error) {
-                try {
-                    if (!result) {
-                        alert("${pageLabel}" + ":" + pageNum + " " + "${noDataLable}");
+            
+            $.ajax({
+                url: "/console/links/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+                type: "GET",
+                success: function(result, textStatus){
+                    if (!result.sc) {
+                        $("#tipMsg").text(result.msg);
+                    
                         return;
                     }
-                    if (result.sc) {
-                        var caches = result.pages;
-                        var cacheData = caches;
-                        for (var i = 0; i < caches.length; i++) {
-                            cacheData[i].cachedTitle = "<a href='" + caches[i].cachedLink + "'  target='_blank'>" 
-                                + caches[i].cachedTitle + "</a>";
-                            cacheData[i].cachedTime = $.bowknot.getDate(cacheData[i].cachedTime, 1);
-                        }
-
-                        that.tablePagination.updateTablePagination(cacheData, pageNum, result.pagination);
+                
+                    var caches = result.pages;
+                    var cacheData = caches;
+                    for (var i = 0; i < caches.length; i++) {
+                        cacheData[i].cachedTitle = "<a href='" + caches[i].cachedLink + "'  target='_blank'>" 
+                            + caches[i].cachedTitle + "</a>";
+                        cacheData[i].cachedTime = $.bowknot.getDate(cacheData[i].cachedTime, 1);
                     }
-                    $("#loadMsg").text("");
-                } catch (e) {
-                    console.error(3);
+
+                    that.tablePagination.updateTablePagination(cacheData, pageNum, result.pagination);
                 }
-            }, requestJSONObject);
-        },        
+            });
+        
+            $("#loadMsg").text("");
+        },
     
         changeStatus: function (it) {
             $("#loadMsg").text("${loadingLabel}");
-            var $it = $(it),
-            requestJSONObject = {};
+            
+            var $it = $(it);
+            var flag = "true";
+            
             if ($it.text() === "${enabledLabel}") {
-                requestJSONObject.pageCacheEnabled = false;
-            } else {
-                requestJSONObject.pageCacheEnabled = true;
+                flag = "false";
             }
             
-            jsonRpc.adminCacheService.setPageCache(function () {
-                if ($it.text() === "${enabledLabel}") {
-                    $it.text("${disabledLabel}");
-                } else {
-                    $it.text("${enabledLabel}");
+            $.ajax({
+                url: "/plugins/admin-cache/enable/" + flag,
+                type: "PUT",
+                success: function(result, textStatus){
+                    if (!result.sc) {
+                        $("#tipMsg").text(result.msg);
+                    
+                        return;
+                    }
+                
+                    if ($it.text() === "${enabledLabel}") {
+                        $it.text("${disabledLabel}");
+                    } else {
+                        $it.text("${enabledLabel}");
+                    }
+                    
+                    $("#tipMsg").text("${updateSuccLabel}");
+                    
                 }
-                $("#tipMsg").text("${updateSuccLabel}");
-                $("#loadMsg").text("");
-            }, requestJSONObject);
+            });
+            
+            $("#loadMsg").text("");
         },
         
         getCache: function () {
             $("#loadMsg").text("${loadingLabel}");
-            jsonRpc.adminCacheService.getPageCache(function (result, error) {
-                try {
+            
+            $.ajax({
+                url: "/plugins/admin-cache/status/",
+                type: "GET",
+                success: function(result, textStatus){
+                    if (!result.sc) {
+                        $("#tipMsg").text(result.msg);
+                    
+                        return;
+                    }
+                
                     var pageCacheStatusLabel = "${disabledLabel}";
                     if (result.pageCacheEnabled) {
                         pageCacheStatusLabel = "${enabledLabel}";
                     }
+                    
                     var cacheHTML = "</span>${cachedBytes1Label}<span class='f-blue'> " + result.cacheCachedBytes
                         + " </span>&nbsp;${cachedCount1Label}<span class='f-blue'>" + result.cacheCachedCount
                         + " </span>&nbsp;${hitCount1Label}<span class='f-blue'>" + result.cacheHitCount
@@ -85,12 +103,12 @@
                         + pageCacheStatusLabel
                         + "</button><br/>"
                         + "${pageCachedCnt1Label}<span class='f-blue'>" + result.pageCachedCnt; 
+                    
                     $("#cacheContent").html(cacheHTML);
-                    $("#loadMsg").text("");
-                } catch (e) {
-                    console.error(e);
                 }
             });
+        
+            $("#loadMsg").text("");
         },
     
         init: function (page) {   

@@ -18,7 +18,8 @@
  * draft list for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Aug 19, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.8, Oct 28, 2011
  */
 
 /* draft-list 相关操作 */
@@ -72,42 +73,38 @@ admin.draftList = {
     getList: function (pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
         var that = this;
-        var requestJSONObject = {
-            "paginationCurrentPageNum": pageNum,
-            "paginationPageSize": Label.PAGE_SIZE,
-            "paginationWindowSize": Label.WINDOW_SIZE,
-            "articleIsPublished": false
-        };
-        jsonRpc.articleService.getArticles(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_ARTICLES_SUCC":
-                        var articles = result.articles,
-                        articleData = [];
-                        for (var i = 0; i < articles.length; i++) {
-                            articleData[i] = {};
-                            articleData[i].tags = articles[i].articleTags;
-                            articleData[i].date = $.bowknot.getDate(articles[i].articleCreateDate.time, 1);
-                            articleData[i].comments = articles[i].articleCommentCount;
-                            articleData[i].articleViewCount = articles[i].articleViewCount;
-                            articleData[i].author = articles[i].authorName;
-                            articleData[i].title = "<a class='no-underline' href='" + articles[i].articlePermalink + "' target='_blank'>" + articles[i].articleTitle + "</a>";
-                            articleData[i].expendRow = "<a target='_blank' href='" + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
+        
+        $.ajax({
+            url: "/console/articles/status/unpublished/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    $("#tipMsg").text(result.msg);
+                    
+                    return;
+                }
+                
+                var articles = result.articles,
+                articleData = [];
+                for (var i = 0; i < articles.length; i++) {
+                    articleData[i] = {};
+                    articleData[i].tags = articles[i].articleTags;
+                    articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime, 1);
+                    articleData[i].comments = articles[i].articleCommentCount;
+                    articleData[i].articleViewCount = articles[i].articleViewCount;
+                    articleData[i].author = articles[i].authorName;
+                    articleData[i].title = "<a class='no-underline' href='" + articles[i].articlePermalink + "' target='_blank'>" + articles[i].articleTitle + "</a>";
+                    articleData[i].expendRow = "<a target='_blank' href='" + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', false);\">" + Label.updateLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'draft')\">" + Label.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + articles[i].oId + "', 'draft')\">" + Label.commentLabel + "</a>";
-                        }
-                    
-                        that.tablePagination.updateTablePagination(articleData, pageNum, result.pagination);
-                        break;
-                    default:
-                        break;
                 }
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+                    
+                that.tablePagination.updateTablePagination(articleData, pageNum, result.pagination);
             }
-        }, requestJSONObject);
+        });
+        
+        $("#loadMsg").text("");
     }
 };
 

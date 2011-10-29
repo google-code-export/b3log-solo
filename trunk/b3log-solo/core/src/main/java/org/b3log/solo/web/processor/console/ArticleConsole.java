@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
@@ -30,8 +31,10 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.service.ArticleMgmtService;
+import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
+import org.b3log.solo.web.util.Requests;
 import org.json.JSONObject;
 
 /**
@@ -55,6 +58,11 @@ public final class ArticleConsole {
     private ArticleMgmtService articleMgmtService =
             ArticleMgmtService.getInstance();
     /**
+     * Article query service.
+     */
+    private ArticleQueryService articleQueryService =
+            ArticleQueryService.getInstance();
+    /**
      * Article URI prefix.
      */
     private static final String ARTICLE_URI_PREFIX = "/console/article/";
@@ -70,6 +78,149 @@ public final class ArticleConsole {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Gets an article by the specified request json object.
+     *
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "articleTitle": "",
+     *     "articleAbstract": "",
+     *     "articleContent": "",
+     *     "articlePermalink": "",
+     *     "articleHadBeenPublished": boolean,
+     *     "articleTags": [{
+     *         "oId": "",
+     *         "tagTitle": ""
+     *     }, ....],
+     *     "articleSign_oId": "",
+     *     "signs": [{
+     *         "oId": "",
+     *         "signHTML": ""
+     *     }, ....]
+     *     "sc": "GET_ARTICLE_SUCC"
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = ARTICLE_URI_PREFIX + "*",
+                       method = HTTPRequestMethod.GET)
+    public void getArticle(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        try {
+            final String articleId = request.getRequestURI().substring(
+                    ARTICLE_URI_PREFIX.length());
+
+            final JSONObject result = articleQueryService.getArticle(articleId);
+
+            result.put(Keys.STATUS_CODE, true);
+            renderer.setJSONObject(result);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
+
+    /**
+     * Gets articles(by crate date descending) by the specified request json
+     * object.
+     * 
+     * <p>
+     * The request URI contains the pagination arguments. For example, the 
+     * request URI is /console/articles/status/published/1/10/20, means the 
+     * current page is 1, the page size is 10, and the window size is 20.
+     * </p>
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "articles": [{
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleCommentCount": int,
+     *         "articleCreateTime"; long,
+     *         "articleViewCount": int,
+     *         "articleTags": "tag1, tag2, ....",
+     *         "articlePutTop": boolean,
+     *         "articleIsPublished": boolean
+     *      }, ....]
+     * }
+     * </pre>, order by article update date and sticky(put top).
+     * </p>
+     * 
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = ARTICLES_URI_PREFIX + "status/*"
+                               + Requests.PAGINATION_PATH_PATTERN,
+                       method = HTTPRequestMethod.GET)
+    public void getArticles(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        try {
+            String path =
+                    request.getRequestURI().substring((ARTICLES_URI_PREFIX
+                                                       + "status/").length());
+            final String status = StringUtils.substringBefore(path, "/");
+            path = path.substring((status + "/").length());
+
+            final boolean published = "published".equals(status) ? true : false;
+
+            final JSONObject requestJSONObject =
+                    Requests.buildPaginationRequest(path);
+            requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, published);
+
+            final JSONObject result =
+                    articleQueryService.getArticles(requestJSONObject);
+
+            result.put(Keys.STATUS_CODE, true);
+            renderer.setJSONObject(result);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
 
     /**
      * Removes an article by the specified request.

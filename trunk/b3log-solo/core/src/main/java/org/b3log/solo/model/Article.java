@@ -19,7 +19,8 @@ package org.b3log.solo.model;
  * This class defines all article model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Jan 10, 2011
+ * @version 1.0.1.2, Oct 28, 2011
+ * @since 0.3.1
  */
 public final class Article {
 
@@ -47,6 +48,10 @@ public final class Article {
      * Key of create date.
      */
     public static final String ARTICLE_CREATE_DATE = "articleCreateDate";
+    /**
+     * Key of create time.
+     */
+    public static final String ARTICLE_CREATE_TIME = "articleCreateTime";
     /**
      * Key of update date.
      */

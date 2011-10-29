@@ -43,63 +43,60 @@ admin.article = {
     
     getAndSet: function () {
         $("#loadMsg").text(Label.loadingLabel);
-        var requestJSONObject = {
-            "oId": admin.article.status.id
-        };
-                        
-        jsonRpc.articleService.getArticle(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_ARTICLE_SUCC":
-                        // set default value for article.
-                        $("#title").val(result.article.articleTitle);
-                        admin.article.status.articleHadBeenPublished =  result.article.articleHadBeenPublished;
-                        if (tinyMCE.get('articleContent')) {
-                            tinyMCE.get('articleContent').setContent(result.article.articleContent);
-                        } else {
-                            $("#articleContent").val(result.article.articleContent);
-                        }
-                        if (tinyMCE.get('abstract')) {
-                            tinyMCE.get('abstract').setContent(result.article.articleAbstract);
-                        } else {
-                            $("#abstract").val(result.article.articleAbstract);
-                        }
-
-                        var tags = result.article.articleTags,
-                        tagsString = '';
-                        for (var i = 0; i < tags.length; i++) {
-                            if (0 === i) {
-                                tagsString = tags[i].tagTitle;
-                            } else {
-                                tagsString += "," + tags[i].tagTitle;
-                            }
-                        }
-                        $("#tag").val(tagsString);
-                        $("#permalink").val(result.article.articlePermalink);
-
-                        // signs
-                        var signs = result.article.signs;
-                        $(".signs button").each(function (i) {
-                            if (parseInt(result.article.articleSign_oId) === parseInt(signs[i].oId)) {
-                                $("#articleSign" + signs[i].oId).addClass("selected");
-                            } else {
-                                $("#articleSign" + signs[i].oId).removeClass("selected");
-                            }
-                        });
-
-                        admin.article.setStatus();
-                        $("#tipMsg").text(Label.getSuccLabel);
-                        break;
-                    case "GET_ARTICLE_FAIL_":
-                        break;
-                    default:
-                        break;
+        
+        $.ajax({
+            url: "/console/article/" + admin.article.status.id,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    $("#tipMsg").text(result.msg);
+                    
+                    return;
                 }
-                $("#loadMsg").text("");
-            } catch (e) {
-                console.error(e);
+                
+                // set default value for article.
+                $("#title").val(result.article.articleTitle);
+                admin.article.status.articleHadBeenPublished =  result.article.articleHadBeenPublished;
+                if (tinyMCE.get('articleContent')) {
+                    tinyMCE.get('articleContent').setContent(result.article.articleContent);
+                } else {
+                    $("#articleContent").val(result.article.articleContent);
+                }
+                if (tinyMCE.get('abstract')) {
+                    tinyMCE.get('abstract').setContent(result.article.articleAbstract);
+                } else {
+                    $("#abstract").val(result.article.articleAbstract);
+                }
+
+                var tags = result.article.articleTags,
+                tagsString = '';
+                for (var i = 0; i < tags.length; i++) {
+                    if (0 === i) {
+                        tagsString = tags[i].tagTitle;
+                    } else {
+                        tagsString += "," + tags[i].tagTitle;
+                    }
+                }
+                
+                $("#tag").val(tagsString);
+                $("#permalink").val(result.article.articlePermalink);
+
+                // signs
+                var signs = result.article.signs;
+                $(".signs button").each(function (i) {
+                    if (parseInt(result.article.articleSign_oId) === parseInt(signs[i].oId)) {
+                        $("#articleSign" + signs[i].oId).addClass("selected");
+                    } else {
+                        $("#articleSign" + signs[i].oId).removeClass("selected");
+                    }
+                });
+
+                admin.article.setStatus();
+                $("#tipMsg").text(Label.getSuccLabel);
             }
-        }, requestJSONObject);
+        });
+        
+        $("#loadMsg").text("");
     },
     
     /*

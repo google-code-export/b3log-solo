@@ -17,7 +17,6 @@ package org.b3log.solo.plugin.cache;
 
 import org.b3log.solo.model.Cache;
 import org.b3log.solo.model.Common;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,29 +24,34 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.ActionException;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
-import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.util.Users;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.latke.annotation.RequestProcessing;
+import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.QueryResults;
+import org.b3log.solo.web.util.Requests;
 import org.json.JSONObject;
 
 /**
- * Admin cache service for JavaScript client.
+ * Admin cache service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.5, Aug 24, 2011
  * @since 0.3.1
  */
-public final class AdminCacheService extends AbstractGAEJSONRpcService {
+@RequestProcessor
+public final class AdminCacheService {
 
     /**
      * Logger.
@@ -69,24 +73,16 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
     private PreferenceMgmtService preferenceMgmtService =
             PreferenceMgmtService.getInstance();
     /**
-     * User repository.
+     * Language service.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
-
-    /**
-     * Test method.
-     */
-    public void test() {
-        LOGGER.entering(AdminCacheService.class.getName(), "test()");
-    }
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Gets page cache status with the specified http servlet request and http
      * servlet response.
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "cacheCachedCount": long,
@@ -98,17 +94,29 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
      *     "pageCachedCnt": int
      * }
      * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
+     * </p>
+     *
+     * @param context the specified http request context
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @throws Exception 
      */
-    public JSONObject getPageCache(final HttpServletRequest request,
-                                   final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
+    @RequestProcessing(value = "/plugins/admin-cache/status/",
+                       method = HTTPRequestMethod.GET)
+    public void getPageCache(final HTTPRequestContext context,
+                             final HttpServletRequest request,
+                             final HttpServletResponse response)
+            throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
+            return;
         }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
 
         final org.b3log.latke.cache.Cache<String, Object> cache =
                 PageCaches.getCache();
@@ -131,31 +139,33 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
             ret.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
 
             ret.put(Common.PAGE_CACHED_CNT, PageCaches.getKeys().size());
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets page cache status error: {0}",
-                       e.getMessage());
-            throw new ActionException(e);
-        }
 
-        return ret;
+            ret.put(Keys.STATUS_CODE, true);
+
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, "Admin Cache plugin exception: "
+                                     + e.getMessage());
+        }
     }
 
     /**
      * Gets page cache list by the specified request json object.
      * 
-     * @param requestJSONObject the specified request json object, for example,
+     * <p>
+     * The request URI contains the pagination arguments. For example, the 
+     * request URI is /console/admin-cache/pages/1/10/20, means the 
+     * current page is 1, the page size is 10, and the window size is 20.
+     * </p>
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
      * <pre>
      * {
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10
-     * }, see {@link Pagination} for more details
-     * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
+     *     "sc": boolean,
      *     "pagination": {
      *         "paginationPageCount": 100,
      *         "paginationPageNums": [1, 2, 3, 4, 5]
@@ -165,24 +175,41 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
      *         "cachedType": "",
      *         "cachedTitle": "",
      *      }, ....]
-     *     "sc": boolean
      * }
-     * </pre>, order by article update date and sticky(put top).
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     * @see Pagination
+     * </pre>
+     * </p>
+     * 
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception 
      */
-    public JSONObject getPages(final JSONObject requestJSONObject,
-                               final HttpServletRequest request,
-                               final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
+    @RequestProcessing(value = "/plugins/admin-cache/pages/"
+                               + Requests.PAGINATION_PATH_PATTERN,
+                       method = HTTPRequestMethod.GET)
+    public void getPages(final HttpServletRequest request,
+                         final HttpServletResponse response,
+                         final HTTPRequestContext context)
+            throws Exception {
         if (!userUtils.isLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
+            return;
         }
 
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
+
         try {
+            final String requestURI = request.getRequestURI();
+            final String path =
+                    requestURI.substring("/plugins/admin-cache/pages/".length());
+
+            final JSONObject requestJSONObject =
+                    Requests.buildPaginationRequest(path);
+
             final int currentPageNum = requestJSONObject.getInt(
                     Pagination.PAGINATION_CURRENT_PAGE_NUM);
             final int pageSize = requestJSONObject.getInt(
@@ -232,49 +259,71 @@ public final class AdminCacheService extends AbstractGAEJSONRpcService {
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
 
-        return ret;
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, "Admin Cache plugin exception: "
+                                     + e.getMessage());
+        }
     }
 
     /**
-     * Sets page cache states with the specified http servlet response and 
-     * settings.
+     * Sets page cache states.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
      *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
-     * @param settings the specified settings, for example,
-     * <pre>
-     * {
-     *     "pageCacheEnabled": boolean,
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
+     * @param context the specified http request context
+     * @throws Exception exception
      */
+    @RequestProcessing(value = "/plugins/admin-cache/enable/",
+                       method = HTTPRequestMethod.PUT)
     public void setPageCache(final HttpServletRequest request,
                              final HttpServletResponse response,
-                             final JSONObject settings)
-            throws ActionException, IOException {
+                             final HTTPRequestContext context)
+            throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
+
         try {
-            final boolean pageCacheEnabled =
-                    settings.getBoolean(Preference.PAGE_CACHE_ENABLED);
+            final String path =
+                    request.getRequestURI().substring("/plugins/admin-cache/enable/".
+                    length());
+
+            final boolean pageCacheEnabled = "true".equals(path) ? true : false;
 
             final JSONObject preference = preferenceQueryService.getPreference();
             preference.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
 
             preferenceMgmtService.updatePreference(preference);
+
+            ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Sets page cache error: {0}",
                        e.getMessage());
-            throw new ActionException(e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, "Admin Cache plugin exception: " + e.
+                    getMessage());
         }
     }
 
