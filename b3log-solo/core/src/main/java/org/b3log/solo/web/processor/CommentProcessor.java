@@ -51,7 +51,6 @@ import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.jsonrpc.impl.CommentService;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
@@ -195,9 +194,7 @@ public final class CommentProcessor {
                 return;
             }
 
-            synchronized (CommentService.class) {
-                session.removeAttribute(CaptchaProcessor.CAPTCHA);
-            }
+            session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
             pageId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject page = pageRepository.get(pageId);
@@ -394,9 +391,8 @@ public final class CommentProcessor {
             return ret;
         }
 
-        synchronized (CommentService.class) {
-            session.removeAttribute(CaptchaProcessor.CAPTCHA);
-        }
+        session.removeAttribute(CaptchaProcessor.CAPTCHA);
+
         articleId = requestJSONObject.getString(Keys.OBJECT_ID);
         final JSONObject article = articleRepository.get(articleId);
         final String commentName =

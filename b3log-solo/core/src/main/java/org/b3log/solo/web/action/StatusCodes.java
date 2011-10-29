@@ -104,14 +104,6 @@ public enum StatusCodes {
      */
     COMMENT_PAGE_SUCC,
     /**
-     * Indicates remove a comment successfully.
-     */
-    REMOVE_COMMENT_SUCC,
-    /**
-     * Indicates remove a comment fails caused by forbidden.
-     */
-    REMOVE_COMMENT_FAIL_FORBIDDEN,
-    /**
      * Indicates captcha error.
      */
     CAPTCHA_ERROR,
