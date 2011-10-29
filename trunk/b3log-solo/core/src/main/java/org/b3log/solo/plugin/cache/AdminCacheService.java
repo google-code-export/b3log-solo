@@ -205,7 +205,7 @@ public final class AdminCacheService {
         try {
             final String requestURI = request.getRequestURI();
             final String path =
-                    requestURI.substring("/plugins/admin-cache/pages/".length());
+                    requestURI.substring("/console/plugins/admin-cache/pages/".length());
 
             final JSONObject requestJSONObject =
                     Requests.buildPaginationRequest(path);
@@ -305,7 +305,7 @@ public final class AdminCacheService {
 
         try {
             final String path =
-                    request.getRequestURI().substring("/plugins/admin-cache/enable/".
+                    request.getRequestURI().substring("/console/plugins/admin-cache/enable/".
                     length());
 
             final boolean pageCacheEnabled = "true".equals(path) ? true : false;
