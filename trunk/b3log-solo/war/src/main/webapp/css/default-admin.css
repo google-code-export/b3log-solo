@@ -181,7 +181,7 @@ a:hover {
 
 #tabs li li a {
     background-color: #FFFFFF;
-    text-align: center;
+    padding-left: 36px;
     line-height: 28px;
     height: 28px;
 }
@@ -298,13 +298,13 @@ a:hover {
     width: 280px;
 }
 .skinItem {
-    border-radius: 4px 4px 4px 4px;
+    border-radius: 3px;
     box-shadow: 0 0 2px #333333;
     line-height: 16px;
     margin: 24px 12px;
     padding: 10px 5px;
     text-align: center;
-    width: 304px;
+    width: 306px;
 }
 #skinMain .skinItem.selected {
     background-color: #D54121;
@@ -549,7 +549,7 @@ a:hover {
 }
 .tip-panel {
     background-color: #FFF;
-    box-shadow: 0 4px 10px #8B8B8B;
+    box-shadow: 0 3px 10px #8B8B8B;
     display: none;
     max-height: 500px;
     max-width: 500px;
