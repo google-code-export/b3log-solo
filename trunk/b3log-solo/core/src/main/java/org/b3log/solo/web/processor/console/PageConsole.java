@@ -82,7 +82,7 @@ public final class PageConsole {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Updates a page by the specified request json object.
+     * Updates a page by the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -199,7 +199,7 @@ public final class PageConsole {
     }
 
     /**
-     * Adds a page with the specified request json object.
+     * Adds a page with the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -326,7 +326,7 @@ public final class PageConsole {
     }
 
     /**
-     * Gets a page by the specified request json object.
+     * Gets a page by the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -390,7 +390,7 @@ public final class PageConsole {
     }
 
     /**
-     * Gets pages by the specified request json object.
+     * Gets pages by the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,

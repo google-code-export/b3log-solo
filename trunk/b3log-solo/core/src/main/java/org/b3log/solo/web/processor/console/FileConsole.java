@@ -70,8 +70,7 @@ public final class FileConsole {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Gets the file with the specified request json object, http servlet
-     * request and response.
+     * Gets the file with the specified request.
      * 
      * <p>
      * The request URI contains the pagination arguments. For example, the 

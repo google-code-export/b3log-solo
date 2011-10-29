@@ -147,8 +147,4 @@ public enum StatusCodes {
      * Indicates get users successfully.
      */
     GET_USERS_SUCC,
-    /**
-     * Indicates get user successfully.
-     */
-    GET_USER_SUCC
 }

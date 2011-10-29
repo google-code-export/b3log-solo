@@ -132,7 +132,7 @@ public final class LinkConsole {
     }
 
     /**
-     * Updates a link by the specified request json object.
+     * Updates a link by the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -257,7 +257,7 @@ public final class LinkConsole {
     }
 
     /**
-     * Adds a link with the specified request json object.
+     * Adds a link with the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -320,7 +320,7 @@ public final class LinkConsole {
     }
 
     /**
-     * Gets links by the specified request json object.
+     * Gets links by the specified request.
      * 
      * <p>
      * The request URI contains the pagination arguments. For example, the 
@@ -383,8 +383,7 @@ public final class LinkConsole {
     }
 
     /**
-     * Gets the file with the specified request json object, http servlet
-     * request and response.
+     * Gets the file with the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,

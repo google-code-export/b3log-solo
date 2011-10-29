@@ -144,7 +144,7 @@ public final class LinkQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.SEVERE, "Gets a link failed", e);
 
             throw new ServiceException(e);
         }

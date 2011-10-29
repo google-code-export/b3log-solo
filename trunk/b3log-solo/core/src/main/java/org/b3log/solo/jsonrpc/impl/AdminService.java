@@ -188,49 +188,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Gets a user by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "oId": ""
-     * }
-     * </pre>
-     * @return for example,
-     * <pre>
-     * {
-     *     "user": {
-     *         "oId": "",
-     *         "userName": "",
-     *         "userEmail": "",
-     *         "userPassword": ""
-     *     },
-     *     "sc": "GET_USER_SUCC"
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     */
-    public JSONObject getUser(final JSONObject requestJSONObject)
-            throws ActionException {
-        final JSONObject ret = new JSONObject();
-
-        try {
-            final String userId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final JSONObject user = userRepository.get(userId);
-            ret.put(User.USER, user);
-
-            ret.put(Keys.STATUS_CODE, StatusCodes.GET_USER_SUCC);
-
-            LOGGER.log(Level.FINER, "Got a user[oId={0}]", userId);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
-        }
-
-        return ret;
-    }
-
-    /**
      * Gets users by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
@@ -392,43 +349,6 @@ public final class AdminService extends AbstractGAEJSONRpcService {
         }
 
         return ret;
-    }
-
-    /**
-     * Gets the URL of user logout.
-     *
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return logout URL, returns {@code null} if the user is not logged in
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public String getLogoutURL(final HttpServletRequest request,
-                               final HttpServletResponse response)
-            throws ActionException, IOException {
-        if (!userUtils.isLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return null;
-        }
-
-        return userService.createLogoutURL("/");
-    }
-
-    /**
-     * Gets the URL of user login.
-     *
-     * @param redirectURL redirect URL after logged in
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return login URL
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public String getLoginURL(final String redirectURL,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response)
-            throws ActionException, IOException {
-        return userService.createLoginURL(redirectURL);
     }
 
     /**

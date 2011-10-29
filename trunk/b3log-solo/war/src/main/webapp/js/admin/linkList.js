@@ -182,6 +182,8 @@ admin.linkList = {
             type: "GET",
             success: function(result, textStatus){
                 if (!result.sc) {
+                    $("#tipMsg").text(result.msg);
+                     
                     return;
                 }
                 

@@ -174,35 +174,33 @@ admin.userList = {
     get: function (id, userRole) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#userUpdate").dialog("open");
-        var requestJSONObject = {
-            "oId": id
-        };
-
-        jsonRpc.adminService.getUser(function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_USER_SUCC":
-                        var $userEmailUpdate = $("#userEmailUpdate");
-                        $("#userNameUpdate").val(result.user.userName).data("userInfo", {
-                            'oId': id,
-                            "userRole": userRole
-                        });
-                        $userEmailUpdate.val(result.user.userEmail);
-                        if ("adminRole" === userRole) {
-                            $userEmailUpdate.attr("disabled", "disabled");
-                        } else {
-                            $userEmailUpdate.removeAttr("disabled");
-                        }
-                        $("#userPasswordUpdate").val(result.user.userPassword);
-                        break;
-                    case "GET_USER_FAIL_":
-                        break;
-                    default:
-                        break;
+        
+        $.ajax({
+            url: "/console/user/" + id,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    $("#tipMsg").text(result.msg);
+                     
+                    return;
                 }
-                $("#loadMsg").text("");
-            } catch (e) {}
-        }, requestJSONObject);
+                
+                var $userEmailUpdate = $("#userEmailUpdate");
+                $("#userNameUpdate").val(result.user.userName).data("userInfo", {
+                    'oId': id,
+                    "userRole": userRole
+                });
+                $userEmailUpdate.val(result.user.userEmail);
+                if ("adminRole" === userRole) {
+                    $userEmailUpdate.attr("disabled", "disabled");
+                } else {
+                    $userEmailUpdate.removeAttr("disabled");
+                }
+                $("#userPasswordUpdate").val(result.user.userPassword);
+            }
+        });
+        
+        $("#loadMsg").text("");
     },
     
     /*

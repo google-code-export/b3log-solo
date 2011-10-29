@@ -36,8 +36,7 @@ $.extend(Admin.prototype, {
      * 登出
      */
     logout: function () {
-        var logoutURL = jsonRpc.adminService.getLogoutURL();
-        window.location.href = logoutURL;
+        window.location.href = "/logout?goto=/";
     },
     
     /*

@@ -78,7 +78,7 @@ public final class CommentConsole {
     private static final String COMMENTS_URI_PREFIX = "/console/comments/";
 
     /**
-     * Removes a comment of an article by the specified request json object.
+     * Removes a comment of an article by the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -129,7 +129,7 @@ public final class CommentConsole {
     }
 
     /**
-     * Removes a comment of an article by the specified request json object.
+     * Removes a comment of an article by the specified request.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -180,7 +180,7 @@ public final class CommentConsole {
     }
 
     /**
-     * Gets comments by the specified request json object.
+     * Gets comments by the specified request.
      * 
      * <p>
      * The request URI contains the pagination arguments. For example, the 
