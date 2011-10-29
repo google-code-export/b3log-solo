@@ -20,11 +20,13 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -102,13 +104,19 @@ public final class UserMgmtService {
 
             userRepository.update(oldUserId, oldUser);
             transaction.commit();
-        } catch (final Exception e) {
+        } catch (final JSONException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
+            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
+            throw new ServiceException(e);
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
 
+            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -163,7 +171,14 @@ public final class UserMgmtService {
             transaction.commit();
 
             return user.getString(Keys.OBJECT_ID);
-        } catch (final Exception e) {
+        } catch (final JSONException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
+            throw new ServiceException(e);
+        } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
