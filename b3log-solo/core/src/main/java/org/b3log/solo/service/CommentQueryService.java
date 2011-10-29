@@ -16,15 +16,28 @@
 package org.b3log.solo.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
+import org.b3log.latke.action.util.Paginator;
+import org.b3log.latke.model.Pagination;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -46,6 +59,15 @@ public final class CommentQueryService {
      */
     private CommentRepository commentRepository =
             CommentRepositoryImpl.getInstance();
+    /**
+     * Article repository.
+     */
+    private ArticleRepository articleRepository =
+            ArticleRepositoryImpl.getInstance();
+    /**
+     * Page repository.
+     */
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
 
     /**
      * Gets the {@link CommentQueryService} singleton.
@@ -57,6 +79,100 @@ public final class CommentQueryService {
     }
 
     /**
+     * Gets comments with the specified request json object, request and response.
+     * 
+     * @param requestJSONObject the specified request json object
+     * @return for example,
+     * <pre>
+     * {
+     *     "comments": [{
+     *         "oId": "",
+     *         "commentTitle": "",
+     *         "commentName": "",
+     *         "commentEmail": "",
+     *         "thumbnailUrl": "",
+     *         "commentURL": "",
+     *         "commentContent": "",
+     *         "commentTime": long,
+     *         "commentSharpURL": ""
+     *      }, ....]
+     *     "sc": "GET_COMMENTS_SUCC"
+     * }
+     * </pre>
+     * @throws ServiceException service exception
+     * @see Pagination
+     */
+    public JSONObject getComments(final JSONObject requestJSONObject)
+            throws ServiceException {
+        try {
+            final JSONObject ret = new JSONObject();
+
+            final int currentPageNum = requestJSONObject.getInt(
+                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
+            final int pageSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_PAGE_SIZE);
+            final int windowSize = requestJSONObject.getInt(
+                    Pagination.PAGINATION_WINDOW_SIZE);
+
+            final Query query = new Query().setCurrentPageNum(currentPageNum).
+                    setPageSize(pageSize).addSort(Comment.COMMENT_DATE,
+                                                  SortDirection.DESCENDING);
+            final JSONObject result = commentRepository.get(query);
+            final JSONArray comments = result.getJSONArray(Keys.RESULTS);
+
+            // Sets comment title and content escaping
+            for (int i = 0; i < comments.length(); i++) {
+                final JSONObject comment = comments.getJSONObject(i);
+                String title = null;
+
+                final String onType =
+                        comment.getString(Comment.COMMENT_ON_TYPE);
+                final String onId =
+                        comment.getString(Comment.COMMENT_ON_ID);
+                if (Article.ARTICLE.equals(onType)) {
+                    final JSONObject article = articleRepository.get(onId);
+                    title = article.getString(Article.ARTICLE_TITLE);
+                    comment.put(Common.TYPE, Common.ARTICLE_COMMENT_TYPE);
+                } else { // It's a comment of page
+                    final JSONObject page = pageRepository.get(onId);
+                    title = page.getString(Page.PAGE_TITLE);
+                    comment.put(Common.TYPE, Common.PAGE_COMMENT_TYPE);
+                }
+
+                comment.put(Common.COMMENT_TITLE, title);
+
+                comment.put(Comment.COMMENT_TIME,
+                            ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
+                comment.remove(Comment.COMMENT_DATE);
+
+                final String content =
+                        comment.getString(Comment.COMMENT_CONTENT).
+                        replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+                comment.put(Comment.COMMENT_CONTENT, content);
+            }
+
+            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
+                    getInt(Pagination.PAGINATION_PAGE_COUNT);
+            final JSONObject pagination = new JSONObject();
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum,
+                                                              pageSize,
+                                                              pageCount,
+                                                              windowSize);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
+
+            ret.put(Comment.COMMENTS, comments);
+            ret.put(Pagination.PAGINATION, pagination);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Gets comments failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets comments of an article specified by the article id.
      *
      * @param articleId the specified article id
@@ -65,9 +181,9 @@ public final class CommentQueryService {
      */
     public List<JSONObject> getComments(final String articleId)
             throws ServiceException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
-
         try {
+            final List<JSONObject> ret = new ArrayList<JSONObject>();
+
             final List<JSONObject> comments =
                     commentRepository.getComments(articleId, 1,
                                                   Integer.MAX_VALUE);
@@ -78,6 +194,10 @@ public final class CommentQueryService {
                 comment.put(Comment.COMMENT_CONTENT, content);
                 comment.remove(Comment.COMMENT_EMAIL); // Removes email
 
+                comment.put(Comment.COMMENT_TIME,
+                            ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
+                comment.remove(Comment.COMMENT_DATE);
+
                 comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
 
                 if (comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
@@ -87,12 +207,12 @@ public final class CommentQueryService {
 
                 ret.add(comment);
             }
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets comments failed", e);
             throw new ServiceException(e);
         }
-
-        return ret;
     }
 
     /**

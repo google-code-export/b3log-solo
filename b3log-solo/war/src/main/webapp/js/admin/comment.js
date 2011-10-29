@@ -34,58 +34,61 @@ admin.comment = {
     
     /*
      * 获取评论列表
-     * @id 该评论对应的 id
+     * 
+     * @onId 该评论对应的实体 id，可能是文章，也可能是自定义页面
      * @fromId 该评论来自文章/草稿/自定义页面
      */
-    getList: function (articleId, fromId) {
+    getList: function (onId, fromId) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#" + fromId + "Comments").html("");
         
-        var from = "Article";
-        if (fromId === "page") {
-            from = "Page";
+        var from = "article";
+        if (fromId === "page") { // XXX: V，D 表示没看懂这句 -__-|
+            from = "page";
         }
-        jsonRpc.commentService["getCommentsOf" + from](function (result, error) {
-            try {
-                switch (result.sc) {
-                    case "GET_COMMENTS_SUCC":
-                        var comments = result.comments,
-                        commentsHTML = '';
-                        for (var i = 0; i < comments.length; i++) {
-                            var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>",
-                            content = comments[i].commentContent;
-                            contentHTML = Util.replaceEmString(content);
+        
+        $.ajax({
+            url: "/console/comments/" + from + "/" + onId ,
+            type: "GET",
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    $("#tipMsg").text(result.msg);
+                    
+                    return;
+                }
+                
+                var comments = result.comments,
+                commentsHTML = '';
+                for (var i = 0; i < comments.length; i++) {
+                    var hrefHTML = "<a target='_blank' href='" + comments[i].commentURL + "'>",
+                    content = comments[i].commentContent;
+                    contentHTML = Util.replaceEmString(content);
                         
-                            if (comments[i].commentURL === "http://") {
-                                hrefHTML = "<a target='_blank'>";
-                            }
+                    if (comments[i].commentURL === "http://") {
+                        hrefHTML = "<a target='_blank'>";
+                    }
 
-                            commentsHTML += "<div class='comment-title'><span class='left'>"
-                            + hrefHTML + comments[i].commentName + "</a>";
+                    commentsHTML += "<div class='comment-title'><span class='left'>"
+                    + hrefHTML + comments[i].commentName + "</a>";
 
-                            if (comments[i].commentOriginalCommentName) {
-                                commentsHTML += "@" + comments[i].commentOriginalCommentName;
-                            }
-                            commentsHTML += "</span><span title='" + Label.removeLabel + "' class='right deleteIcon' onclick=\"admin.comment.del('"
-                            + comments[i].oId + "', '" + fromId + "', '" + articleId + "')\"></span><span class='right'><a href='mailto:"
-                            + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
-                            + $.bowknot.getDate(comments[i].commentDate.time, 1)
-                            + "&nbsp;</span><div class='clear'></div></div><div class='margin12'>"
-                            + contentHTML + "</div>";
-                        }
-                        if ("" === commentsHTML) {
-                            commentsHTML = Label.noCommentLabel;
-                        }
-                        $("#" + fromId + "Comments").html(commentsHTML);
-                        break;
-                    default:
-                        break;
-                };
-                $("#loadMsg").text("");
-            } catch (e) {}
-        }, {
-            "oId": articleId
+                    if (comments[i].commentOriginalCommentName) {
+                        commentsHTML += "@" + comments[i].commentOriginalCommentName;
+                    }
+                    commentsHTML += "</span><span title='" + Label.removeLabel + "' class='right deleteIcon' onclick=\"admin.comment.del('"
+                    + comments[i].oId + "', '" + fromId + "', '" + articleId + "')\"></span><span class='right'><a href='mailto:"
+                    + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
+                    + $.bowknot.getDate(comments[i].commentTime, 1)
+                    + "&nbsp;</span><div class='clear'></div></div><div class='margin12'>"
+                    + contentHTML + "</div>";
+                }
+                if ("" === commentsHTML) {
+                    commentsHTML = Label.noCommentLabel;
+                }
+                $("#" + fromId + "Comments").html(commentsHTML);
+            }
         });
+        
+        $("#loadMsg").text("");
     },
     
     /*
