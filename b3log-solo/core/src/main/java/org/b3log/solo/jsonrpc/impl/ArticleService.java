@@ -16,9 +16,6 @@
 package org.b3log.solo.jsonrpc.impl;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,14 +40,11 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.jsonrpc.AbstractGAEJSONRpcService;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
-import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.service.ArticleMgmtService;
@@ -58,10 +52,8 @@ import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.ArchiveDates;
 import org.b3log.solo.util.Articles;
-import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Tags;
-import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,11 +98,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     private TagArticleRepository tagArticleRepository =
             TagArticleRepositoryImpl.getInstance();
     /**
-     * Article-Sign repository.
-     */
-    private ArticleSignRepository articleSignRepository =
-            ArticleSignRepositoryImpl.getInstance();
-    /**
      * Event manager.
      */
     private static EventManager eventManager = EventManager.getInstance();
@@ -136,22 +123,9 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
     /**
-     * Permalink utilities.
-     */
-    private static Permalinks permalinks = Permalinks.getInstance();
-    /**
      * User utilities.
      */
     private static Users userUtils = Users.getInstance();
-    /**
-     * Time zone utilities.
-     */
-    private static TimeZones timeZoneUtils = TimeZones.getInstance();
-    /**
-     * Permalink date format(yyyy/MM/dd).
-     */
-    public static final DateFormat PERMALINK_FORMAT =
-            new SimpleDateFormat("yyyy/MM/dd");
 
     /**
      * Gets an article by the specified request json object.
@@ -562,216 +536,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
     }
 
     /**
-     * Updates an article by the specified request json object.
-     *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "article": {
-     *         "oId": "",
-     *         "articleTitle": "",
-     *         "articleAbstract": "",
-     *         "articleContent": "",
-     *         "articleTags": "tag1,tag2,tag3",
-     *         "articlePermalink": "", // optional
-     *         "articleIsPublished": boolean,
-     *         "articleSign_oId": "" // optional
-     *     }
-     * }
-     * </pre>
-     * @param request the specified http servlet request
-     * @param response the specified http servlet response
-     * @return for example,
-     * <pre>
-     * {
-     *     "status": {
-     *         "code": "UPDATE_ARTICLE_SUCC",
-     *         "events": { // optional
-     *             "blogSyncCSDNBlog": {
-     *                 "code": "",
-     *                 "msg": "" // optional
-     *             },
-     *             ....
-     *         }
-     *     }
-     * }
-     * </pre>
-     * @throws ActionException action exception
-     * @throws IOException io exception
-     */
-    public JSONObject updateArticle(final JSONObject requestJSONObject,
-                                    final HttpServletRequest request,
-                                    final HttpServletResponse response)
-            throws ActionException, IOException {
-        final JSONObject ret = new JSONObject();
-
-        if (!userUtils.isLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return ret;
-        }
-
-        final Transaction transaction = articleRepository.beginTransaction();
-
-        final JSONObject status = new JSONObject();
-        try {
-            ret.put(Keys.STATUS, status);
-
-            final JSONObject article = requestJSONObject.getJSONObject(ARTICLE);
-            final String articleId = article.getString(Keys.OBJECT_ID);
-            if (!userUtils.canAccessArticle(articleId, request)) {
-                status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_FAIL_FORBIDDEN);
-
-                return ret;
-            }
-            // Set permalink
-            final JSONObject oldArticle = articleRepository.get(articleId);
-            final String permalink = getPermalinkForUpdateArticle(
-                    oldArticle, article,
-                    (Date) oldArticle.get(ARTICLE_CREATE_DATE), status);
-            article.put(ARTICLE_PERMALINK, permalink);
-            // Process tag
-            articleMgmtService.processTagsForArticleUpdate(oldArticle, article);
-            // Fill auto properties
-            fillAutoProperties(oldArticle, article);
-            // Set date
-            article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
-            final JSONObject preference = preferenceQueryService.getPreference();
-            final String timeZoneId =
-                    preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = timeZoneUtils.getTime(timeZoneId);
-            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
-                if (articleUtils.hadBeenPublished(oldArticle)) {
-                    // Edit update date only for published article
-                    article.put(ARTICLE_UPDATE_DATE, date);
-                } else { // This article is a draft and this is the first time to publish it
-                    article.put(ARTICLE_CREATE_DATE, date);
-                    article.put(ARTICLE_UPDATE_DATE, date);
-                    article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
-                }
-            } else { // Save as draft
-                if (articleUtils.hadBeenPublished(oldArticle)) {
-                    // Save update date only for published article
-                    article.put(ARTICLE_UPDATE_DATE, date);
-                } else {
-                    // Reset create/update date to indicate this is an new draft
-                    article.put(ARTICLE_CREATE_DATE, date);
-                    article.put(ARTICLE_UPDATE_DATE, date);
-                }
-            }
-
-            final boolean publishNewArticle =
-                    !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)
-                    && article.getBoolean(ARTICLE_IS_PUBLISHED);
-            // Set statistic
-            if (publishNewArticle) {
-                // This article is updated from unpublished to published
-                statistics.incPublishedBlogArticleCount();
-                final int blogCmtCnt =
-                        statistics.getPublishedBlogCommentCount();
-                final int articleCmtCnt =
-                        article.getInt(ARTICLE_COMMENT_COUNT);
-                statistics.setPublishedBlogCommentCount(
-                        blogCmtCnt + articleCmtCnt);
-            }
-            // Add article-sign relation
-            final String signId =
-                    article.getString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-            final JSONObject articleSignRelation =
-                    articleSignRepository.getByArticleId(articleId);
-            if (null != articleSignRelation) {
-                articleSignRepository.remove(
-                        articleSignRelation.getString(Keys.OBJECT_ID));
-            }
-
-            articleMgmtService.addArticleSignRelation(signId, articleId);
-            article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-            if (publishNewArticle) {
-                archiveDateUtils.incArchiveDatePublishedRefCount(articleId);
-            }
-
-            // Update
-            articleRepository.update(articleId, article);
-
-            if (publishNewArticle) {
-                // Fire add article event
-                final JSONObject eventData = new JSONObject();
-                eventData.put(ARTICLE, article);
-                eventData.put(Keys.RESULTS, ret);
-                try {
-                    eventManager.fireEventSynchronously(
-                            new Event<JSONObject>(EventTypes.ADD_ARTICLE,
-                                                  eventData));
-                } catch (final EventException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-            } else {
-                // Fire update article event
-                final JSONObject eventData = new JSONObject();
-                eventData.put(ARTICLE, article);
-                eventData.put(Keys.RESULTS, ret);
-                try {
-                    eventManager.fireEventSynchronously(
-                            new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
-                                                  eventData));
-                } catch (final EventException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
-                }
-            }
-
-            transaction.commit();
-
-            status.put(Keys.CODE, StatusCodes.UPDATE_ARTICLE_SUCC);
-            ret.put(Keys.STATUS, status);
-            LOGGER.log(Level.FINER, "Updated an article[oId={0}]", articleId);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            return ret;
-        }
-
-        return ret;
-    }
-
-    /**
-     * Fills 'auto' properties for the specified article and old article.
-     *
-     * <p>
-     * Some properties of an article are not been changed while article updating,
-     * these properties are called 'auto' properties.
-     * </p>
-     *
-     * <p>
-     * The property(named {@value org.b3log.solo.model.Article#ARTICLE_RANDOM_DOUBLE})
-     * of the specified article will be regenerated.
-     * </p>
-     *
-     * @param oldArticle the specified old article
-     * @param article the specified article
-     * @throws JSONException json exception
-     */
-    private void fillAutoProperties(final JSONObject oldArticle,
-                                    final JSONObject article) throws
-            JSONException {
-
-        final Date createDate =
-                (Date) oldArticle.get(ARTICLE_CREATE_DATE);
-        article.put(ARTICLE_CREATE_DATE, createDate);
-        article.put(ARTICLE_COMMENT_COUNT,
-                    oldArticle.getInt(ARTICLE_COMMENT_COUNT));
-        article.put(ARTICLE_VIEW_COUNT, oldArticle.getInt(ARTICLE_VIEW_COUNT));
-        article.put(ARTICLE_PUT_TOP, oldArticle.getBoolean(ARTICLE_PUT_TOP));
-        article.put(ARTICLE_HAD_BEEN_PUBLISHED,
-                    oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
-        article.put(ARTICLE_AUTHOR_EMAIL,
-                    oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
-        article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
-    }
-
-    /**
      * Cancels publish an article by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
@@ -845,56 +609,6 @@ public final class ArticleService extends AbstractGAEJSONRpcService {
             }
 
             return ret;
-        }
-
-        return ret;
-    }
-
-    /**
-     * Gets article permalink for updating article with the specified old article,
-     * article, create date and status.
-     *
-     * @param oldArticle the specified old article
-     * @param article the specified article
-     * @param createDate the specified create date
-     * @param status the specified status
-     * @return permalink
-     * @throws Exception if duplicated permalink occurs
-     */
-    private String getPermalinkForUpdateArticle(final JSONObject oldArticle,
-                                                final JSONObject article,
-                                                final Date createDate,
-                                                final JSONObject status)
-            throws Exception {
-        final String articleId = article.getString(Keys.OBJECT_ID);
-        String ret = article.optString(ARTICLE_PERMALINK).trim();
-        final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
-        if (!oldPermalink.equals(ret)) {
-            if (Strings.isEmptyOrNull(ret)) {
-                ret = "/articles/" + PERMALINK_FORMAT.format(
-                        createDate) + "/" + articleId + ".html";
-            }
-
-            if (!ret.startsWith("/")) {
-                ret = "/" + ret;
-            }
-
-            if (permalinks.invalidArticlePermalinkFormat(ret)) {
-                status.put(Keys.CODE,
-                           StatusCodes.UPDATE_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
-
-                throw new Exception("Update article fail, caused by invalid permalink format["
-                                    + ret + "]");
-            }
-
-            if (!oldPermalink.equals(ret)
-                && permalinks.exist(ret)) {
-                status.put(Keys.CODE,
-                           StatusCodes.UPDATE_ARTICLE_FAIL_DUPLICATED_PERMALINK);
-
-                throw new Exception("Update article fail, caused by duplicated permalink["
-                                    + ret + "]");
-            }
         }
 
         return ret;

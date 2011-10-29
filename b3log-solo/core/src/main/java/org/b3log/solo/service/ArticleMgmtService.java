@@ -15,6 +15,11 @@
  */
 package org.b3log.solo.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import org.b3log.solo.util.Articles;
+import org.b3log.solo.util.ArchiveDates;
+import org.b3log.latke.event.EventException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +40,6 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.jsonrpc.impl.ArticleService;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -62,6 +66,7 @@ import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import static org.b3log.solo.model.Article.*;
 
 /**
  * Article management service.
@@ -140,6 +145,163 @@ public final class ArticleMgmtService {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * Archive date utilities.
+     */
+    private static ArchiveDates archiveDateUtils = ArchiveDates.getInstance();
+    /**
+     * Article utilities.
+     */
+    private static Articles articleUtils = Articles.getInstance();
+    /**
+     * Permalink date format(yyyy/MM/dd).
+     */
+    public static final DateFormat PERMALINK_FORMAT =
+            new SimpleDateFormat("yyyy/MM/dd");
+
+    /**
+     * Updates an article by the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "article": {
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleAbstract": "",
+     *         "articleContent": "",
+     *         "articleTags": "tag1,tag2,tag3",
+     *         "articlePermalink": "", // optional
+     *         "articleIsPublished": boolean,
+     *         "articleSign_oId": "" // optional
+     *     }
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @throws ServiceException service exception 
+     */
+    public void updateArticle(final JSONObject requestJSONObject,
+                              final HttpServletRequest request)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+
+        final Transaction transaction = articleRepository.beginTransaction();
+
+        try {
+            final JSONObject article = requestJSONObject.getJSONObject(ARTICLE);
+            final String articleId = article.getString(Keys.OBJECT_ID);
+            // Set permalink
+            final JSONObject oldArticle = articleRepository.get(articleId);
+            final String permalink = getPermalinkForUpdateArticle(
+                    oldArticle, article, (Date) oldArticle.get(
+                    ARTICLE_CREATE_DATE));
+            article.put(ARTICLE_PERMALINK, permalink);
+            // Process tag
+            processTagsForArticleUpdate(oldArticle, article);
+            // Fill auto properties
+            fillAutoProperties(oldArticle, article);
+            // Set date
+            article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final String timeZoneId =
+                    preference.getString(Preference.TIME_ZONE_ID);
+            final Date date = timeZoneUtils.getTime(timeZoneId);
+            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
+                if (articleUtils.hadBeenPublished(oldArticle)) {
+                    // Edit update date only for published article
+                    article.put(ARTICLE_UPDATE_DATE, date);
+                } else { // This article is a draft and this is the first time to publish it
+                    article.put(ARTICLE_CREATE_DATE, date);
+                    article.put(ARTICLE_UPDATE_DATE, date);
+                    article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
+                }
+            } else { // Save as draft
+                if (articleUtils.hadBeenPublished(oldArticle)) {
+                    // Save update date only for published article
+                    article.put(ARTICLE_UPDATE_DATE, date);
+                } else {
+                    // Reset create/update date to indicate this is an new draft
+                    article.put(ARTICLE_CREATE_DATE, date);
+                    article.put(ARTICLE_UPDATE_DATE, date);
+                }
+            }
+
+            final boolean publishNewArticle =
+                    !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)
+                    && article.getBoolean(ARTICLE_IS_PUBLISHED);
+            // Set statistic
+            if (publishNewArticle) {
+                // This article is updated from unpublished to published
+                statistics.incPublishedBlogArticleCount();
+                final int blogCmtCnt =
+                        statistics.getPublishedBlogCommentCount();
+                final int articleCmtCnt =
+                        article.getInt(ARTICLE_COMMENT_COUNT);
+                statistics.setPublishedBlogCommentCount(
+                        blogCmtCnt + articleCmtCnt);
+            }
+            // Add article-sign relation
+            final String signId =
+                    article.getString(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+            final JSONObject articleSignRelation =
+                    articleSignRepository.getByArticleId(articleId);
+            if (null != articleSignRelation) {
+                articleSignRepository.remove(
+                        articleSignRelation.getString(Keys.OBJECT_ID));
+            }
+
+            addArticleSignRelation(signId, articleId);
+            article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+            if (publishNewArticle) {
+                archiveDateUtils.incArchiveDatePublishedRefCount(articleId);
+            }
+
+            // Update
+            articleRepository.update(articleId, article);
+
+            if (publishNewArticle) {
+                // Fire add article event
+                final JSONObject eventData = new JSONObject();
+                eventData.put(ARTICLE, article);
+                eventData.put(Keys.RESULTS, ret);
+                try {
+                    eventManager.fireEventSynchronously(
+                            new Event<JSONObject>(EventTypes.ADD_ARTICLE,
+                                                  eventData));
+                } catch (final EventException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
+            } else {
+                // Fire update article event
+                final JSONObject eventData = new JSONObject();
+                eventData.put(ARTICLE, article);
+                eventData.put(Keys.RESULTS, ret);
+                try {
+                    eventManager.fireEventSynchronously(
+                            new Event<JSONObject>(EventTypes.UPDATE_ARTICLE,
+                                                  eventData));
+                } catch (final EventException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                }
+            }
+
+            transaction.commit();
+        } catch (final ServiceException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw e;
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Updates an article failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Adds an article from the specified request json object.
@@ -237,10 +399,8 @@ public final class ArticleMgmtService {
             // Step 8: Set permalink
             String permalink = article.optString(Article.ARTICLE_PERMALINK);
             if (Strings.isEmptyOrNull(permalink)) {
-                permalink = "/articles/" + ArticleService.PERMALINK_FORMAT.
-                        format(
-                        date) + "/"
-                            + ret + ".html";
+                permalink = "/articles/" + PERMALINK_FORMAT.format(
+                        date) + "/" + ret + ".html";
             }
 
             if (!permalink.startsWith("/")) {
@@ -839,6 +999,83 @@ public final class ArticleMgmtService {
                                 articleId);
 
         articleSignRepository.add(articleSignRelation);
+    }
+
+    /**
+     * Fills 'auto' properties for the specified article and old article.
+     *
+     * <p>
+     * Some properties of an article are not been changed while article updating,
+     * these properties are called 'auto' properties.
+     * </p>
+     *
+     * <p>
+     * The property(named {@value org.b3log.solo.model.Article#ARTICLE_RANDOM_DOUBLE})
+     * of the specified article will be regenerated.
+     * </p>
+     *
+     * @param oldArticle the specified old article
+     * @param article the specified article
+     * @throws JSONException json exception
+     */
+    private void fillAutoProperties(final JSONObject oldArticle,
+                                    final JSONObject article) throws
+            JSONException {
+
+        final Date createDate =
+                (Date) oldArticle.get(ARTICLE_CREATE_DATE);
+        article.put(ARTICLE_CREATE_DATE, createDate);
+        article.put(ARTICLE_COMMENT_COUNT,
+                    oldArticle.getInt(ARTICLE_COMMENT_COUNT));
+        article.put(ARTICLE_VIEW_COUNT, oldArticle.getInt(ARTICLE_VIEW_COUNT));
+        article.put(ARTICLE_PUT_TOP, oldArticle.getBoolean(ARTICLE_PUT_TOP));
+        article.put(ARTICLE_HAD_BEEN_PUBLISHED,
+                    oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
+        article.put(ARTICLE_AUTHOR_EMAIL,
+                    oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
+        article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
+    }
+
+    /**
+     * Gets article permalink for updating article with the specified old article,
+     * article, create date and status.
+     *
+     * @param oldArticle the specified old article
+     * @param article the specified article
+     * @param createDate the specified create date
+     * @return permalink
+     * @throws ServiceException if invalid permalink occurs
+     * @throws JSONException json exception 
+     */
+    private String getPermalinkForUpdateArticle(final JSONObject oldArticle,
+                                                final JSONObject article,
+                                                final Date createDate)
+            throws ServiceException, JSONException {
+        final String articleId = article.getString(Keys.OBJECT_ID);
+        String ret = article.optString(ARTICLE_PERMALINK).trim();
+        final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
+        if (!oldPermalink.equals(ret)) {
+            if (Strings.isEmptyOrNull(ret)) {
+                ret = "/articles/" + PERMALINK_FORMAT.format(
+                        createDate) + "/" + articleId + ".html";
+            }
+
+            if (!ret.startsWith("/")) {
+                ret = "/" + ret;
+            }
+
+            if (permalinks.invalidArticlePermalinkFormat(ret)) {
+                throw new ServiceException(langPropsService.get(
+                        "invalidPermalinkFormatLabel"));
+            }
+
+            if (!oldPermalink.equals(ret) && permalinks.exist(ret)) {
+                throw new ServiceException(langPropsService.get(
+                        "duplicatedPermalinkLabel"));
+            }
+        }
+
+        return ret;
     }
 
     /**
