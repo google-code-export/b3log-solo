@@ -144,14 +144,6 @@
         <url-pattern>/add-article-from-symphony-comment.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>JSONRPCServlet</servlet-name>
-        <servlet-class>org.jabsorb.JSONRPCServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>JSONRPCServlet</servlet-name>
-        <url-pattern>/json-rpc.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>AdminError</servlet-name>
         <servlet-class>org.b3log.solo.web.action.impl.AdminErrorAction</servlet-class>
     </servlet>
