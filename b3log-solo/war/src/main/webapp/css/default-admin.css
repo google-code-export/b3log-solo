@@ -152,10 +152,9 @@ a:hover {
 #tabs a, #tabs>ul>li>div {
     color: #21759B;
     display: block;
-    height: 28px;
-    line-height: 28px;
     text-decoration: none;
     cursor: pointer;
+    letter-spacing: 1px;
 }
 #tabs a:hover, #tabs>ul>li>div:hover {
     color: #D54121;
@@ -165,6 +164,9 @@ a:hover {
     border-top: 1px solid #F9F9F9;
     font-weight: bold;
     padding-left: 12px;
+    font-size: 14px;
+    line-height: 30px;
+    height: 30px;
 }
 
 #tabs>ul>li>div>a.tab-current{
@@ -179,8 +181,9 @@ a:hover {
 
 #tabs li li a {
     background-color: #FFFFFF;
-    font-size: 12px;
-    padding-left: 12px;
+    text-align: center;
+    line-height: 28px;
+    height: 28px;
 }
 
 #tabs .tab-current {
@@ -202,17 +205,18 @@ a:hover {
 
 /* start sub tabs */
 #tabPreference {
-    border-bottom: 1px solid #DFDFDF;
     height: 30px;
 }
 #tabPreference ul {
-    list-style: none;
+    float: right;
+    list-style: none outside none;
+    margin-right: 24px;
 }
 #tabPreference li {
     float: left;
 }
 #tabPreference li a {
-    background-color: #F5F5F5;
+    background-color: #ECECEC;
     border: 1px solid #DFDFDF;
     border-bottom: 0px;
     border-radius: 5px 5px 0 0;
@@ -223,14 +227,19 @@ a:hover {
     text-decoration: none;
     width: 80px;
 }
-#tabPreference .tab-current, #tabPreference a:hover {
+#tabPreference .tab-current, #tabPreference .tab-current:hover {
     background-color: #FFFFFF;
     font-weight: bold;
+    line-height: 30px;
+}
+#tabPreference a:hover {
+    background-color: #F5F5F5;
 }
 #tabPreferencePanel {
-    background-color: #F5F5F5;
-    border-bottom: 1px solid #DFDFDF;
+    background-color: #FFFFFF;
+    border: 1px solid #DFDFDF;
     padding: 12px;
+    border-radius: 6px;
 }
 /* end preference tabs*/
 
@@ -278,12 +287,6 @@ a:hover {
 /* end module */
 
 /* start preference */
-.subTable {
-    background-color: #FFFFFF;
-    border-radius: 12px;
-    margin: 12px;
-    padding: 12px;
-}
 #skinsPanel {
     min-width: 328px;
     width: 99%;
@@ -482,38 +485,30 @@ a:hover {
 }
 .table-main {
     margin: 0;
-    overflow: auto;
     padding: 0;
     position: relative;
 }
 .table-main table {
-    background: url("/images/icon.png") repeat scroll center bottom transparent;
-    table-layout: fixed;
     word-break: break-all;
     word-wrap: break-word;
-    table-layout: fixed;
-}
-.table-main .table-body table {
-    background-image: none;
 }
 
 .table-header {
-    border-radius: 5px 5px 0 0;
-    border-top: 1px solid #D0D0D0;
+    border: 1px solid #D0D0D0;
+    border-bottom: 0px;
+    border-radius: 6px 6px 0 0;
 }
 
-.table-header,.table-body {
-    overflow: auto;
-}
 .table-header th {
-    border-bottom: 1px solid #A0A0A0;
-    height: 29px;
-    line-height: 29px;
+    height: 34px;
+    line-height: 34px;
     text-align: left;
-    text-indent: 4px;
+    text-indent: 6px;
     font-size: 14px;
     font-weight: normal;
+    background: url("/images/icon.png") repeat scroll center bottom #F1F1F1;
 }
+
 .table-main td {
     border-bottom: 1px solid #D0D0D0;
     border-right: 1px solid #FFF;
@@ -552,35 +547,8 @@ a:hover {
 .table-expendRow td a:hover {
     background-color: #BBBBBB;
 }
-.table-center {
-    margin: 0 auto;
-}
-.table-upIcon,.table-downIcon {
-    background-image: url("../images/icon.png");
-    cursor: pointer;
-    float: left;
-    height: 16px;
-    width: 16px;
-    background-position: -79px -32px;
-}
-.table-upIcon {
-    background-position: -64px -32px;
-    margin-right: 6px;
-}
-.bowknot-none {
-    display: none;
-}
-.bowknot-clear {
-    clear: both;
-    font-size: 0;
-    height: 0;
-    line-height: 0;
-}
-.bowknot-left {
-    float: left;
-}
 .tip-panel {
-    background-color: #FFFFFF;
+    background-color: #FFF;
     box-shadow: 0 4px 10px #8B8B8B;
     display: none;
     max-height: 500px;
