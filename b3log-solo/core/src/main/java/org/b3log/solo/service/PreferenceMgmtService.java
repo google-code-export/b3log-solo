@@ -180,9 +180,10 @@ public final class PreferenceMgmtService {
             final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
             preference.put(ADMIN_EMAIL, adminEmail);
 
-            final boolean pageCacheEnabled =
-                    oldPreference.getBoolean(PAGE_CACHE_ENABLED);
-            preference.put(PAGE_CACHE_ENABLED, pageCacheEnabled);
+            if (!preference.has(PAGE_CACHE_ENABLED)) {
+                preference.put(PAGE_CACHE_ENABLED,
+                               oldPreference.getBoolean(PAGE_CACHE_ENABLED));
+            }
 
             final String version = oldPreference.optString(VERSION);
             if (!Strings.isEmptyOrNull(version)) {
