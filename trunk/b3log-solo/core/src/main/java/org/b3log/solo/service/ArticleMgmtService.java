@@ -536,6 +536,8 @@ public final class ArticleMgmtService {
     public void removeArticle(final String articleId) throws ServiceException {
         LOGGER.log(Level.FINER, "Removing an article[id={0}]", articleId);
 
+         final Transaction transaction = articleRepository.beginTransaction();
+         
         try {
             decTagRefCount(articleId);
             unArchiveDate(articleId);
@@ -550,7 +552,13 @@ public final class ArticleMgmtService {
             if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 statistics.decPublishedBlogArticleCount();
             }
+            
+            transaction.commit();
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            
             LOGGER.log(Level.SEVERE, "Removes an article[id=" + articleId
                                      + "] failed", e);
             throw new ServiceException(e);
