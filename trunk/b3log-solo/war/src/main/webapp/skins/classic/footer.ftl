@@ -7,7 +7,11 @@ ver ${version}&nbsp;&nbsp;
 Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 <div class='goTopIcon' onclick='common.goTop();'></div>
 <div class='goBottomIcon' onclick='common.goBottom();'></div>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js" charset="utf-8"></script>
+<#if "" == miniPostfix>
+<script type="text/javascript" src="/js/lib/jquery/jquery-1.6.4.min.js" charset="utf-8"></script>
+<#else>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" charset="utf-8"></script>
+</#if>
 <script type="text/javascript" src="/js/common${miniPostfix}.js" charset="utf-8"></script>
 <script type="text/javascript">
     var common = new Common({
