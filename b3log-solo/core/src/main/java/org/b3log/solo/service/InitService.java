@@ -216,10 +216,8 @@ public final class InitService {
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
 
-        final JSONObject addArticleRet = new JSONObject();
-        articleMgmtService.addArticleInternal(
-                article, addArticleRet, new JSONObject(), request);
-        final String articleId = addArticleRet.getString(Keys.OBJECT_ID);
+        final String articleId =
+                articleMgmtService.addArticleInternal(article, request);
 
         final JSONObject requestJSONObject = new JSONObject();
         final String captchaForInit = "captchaForInit";

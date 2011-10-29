@@ -29,6 +29,7 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
@@ -58,7 +59,6 @@ import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Users;
-import org.b3log.solo.web.action.StatusCodes;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -136,107 +136,164 @@ public final class ArticleMgmtService {
      * Event manager.
      */
     private EventManager eventManager = EventManager.getInstance();
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * Adds an article from the specified request json object.
+     *
+     * @param requestJSONObject the specified request json object, for example,
+     * <pre>
+     * {
+     *     "article": {
+     *         "articleTitle": "",
+     *         "articleAbstract": "",
+     *         "articleContent": "",
+     *         "articleTags": "tag1,tag2,tag3",
+     *         "articlePermalink": "", // optional
+     *         "articleIsPublished": boolean,
+     *         "postToCommunity": boolean,
+     *         "articleSign_oId": "" // optional
+     *     }
+     * }
+     * </pre>
+     * @param request the specified http servlet request
+     * @return generated article id
+     * @throws ServiceException service exception
+     */
+    public String addArticle(final JSONObject requestJSONObject,
+                             final HttpServletRequest request)
+            throws ServiceException {
+        // TODO: add article args check
+
+        final Transaction transaction = articleRepository.beginTransaction();
+        try {
+            final JSONObject article =
+                    requestJSONObject.getJSONObject(Article.ARTICLE);
+
+            final String ret = addArticleInternal(article, request);
+
+            transaction.commit();
+
+            return ret;
+        } catch (final ServiceException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw e;
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Adds the specified article for internal invocation purposes.
      * 
      * @param article the specified article
-     * @param dataModel the specified data model
-     * @param status the specified status
      * @param request the specified request
-     * @throws Exception exception
+     * @return generated article id
+     * @throws ServiceException service exception
      */
-    public void addArticleInternal(final JSONObject article,
-                                   final JSONObject dataModel,
-                                   final JSONObject status,
-                                   final HttpServletRequest request)
-            throws Exception {
-        final String articleId = Ids.genTimeMillisId();
-        article.put(Keys.OBJECT_ID, articleId);
-        dataModel.put(Keys.OBJECT_ID, articleId);
+    public String addArticleInternal(final JSONObject article,
+                                     final HttpServletRequest request)
+            throws ServiceException {
+        try {
+            final String ret = Ids.genTimeMillisId();
+            article.put(Keys.OBJECT_ID, ret);
 
-        // Step 1: Add tags
-        final String tagsString =
-                article.getString(Article.ARTICLE_TAGS_REF);
-        final String[] tagTitles = tagsString.split(",");
-        final JSONArray tags = tag(tagTitles, article);
-        // Step 2; Set comment/view count to 0
-        article.put(Article.ARTICLE_COMMENT_COUNT, 0);
-        article.put(Article.ARTICLE_VIEW_COUNT, 0);
-        // Step 3: Set create/updat date
-        final JSONObject preference = preferenceQueryService.getPreference();
-        final String timeZoneId =
-                preference.getString(Preference.TIME_ZONE_ID);
-        final Date date = timeZoneUtils.getTime(timeZoneId);
-        article.put(Article.ARTICLE_UPDATE_DATE, date);
-        article.put(Article.ARTICLE_CREATE_DATE, date);
-        // Step 4: Set put top to false
-        article.put(Article.ARTICLE_PUT_TOP, false);
-        // Step 5: Add tag-article relations
-        addTagArticleRelation(tags, article);
-        // Step 6: Inc blog article count statictis
-        statistics.incBlogArticleCount();
-        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            statistics.incPublishedBlogArticleCount();
-        }
-        // Step 7: Add archive date-article relations
-        archiveDate(article);
-        // Step 8: Set permalink
-        String permalink = article.optString(Article.ARTICLE_PERMALINK);
-        if (Strings.isEmptyOrNull(permalink)) {
-            permalink = "/articles/" + ArticleService.PERMALINK_FORMAT.format(
-                    date) + "/"
-                        + articleId + ".html";
-        }
+            // Step 1: Add tags
+            final String tagsString =
+                    article.getString(Article.ARTICLE_TAGS_REF);
+            final String[] tagTitles = tagsString.split(",");
+            final JSONArray tags = tag(tagTitles, article);
+            // Step 2; Set comment/view count to 0
+            article.put(Article.ARTICLE_COMMENT_COUNT, 0);
+            article.put(Article.ARTICLE_VIEW_COUNT, 0);
+            // Step 3: Set create/updat date
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final String timeZoneId =
+                    preference.getString(Preference.TIME_ZONE_ID);
+            final Date date = timeZoneUtils.getTime(timeZoneId);
+            article.put(Article.ARTICLE_UPDATE_DATE, date);
+            article.put(Article.ARTICLE_CREATE_DATE, date);
+            // Step 4: Set put top to false
+            article.put(Article.ARTICLE_PUT_TOP, false);
+            // Step 5: Add tag-article relations
+            addTagArticleRelation(tags, article);
+            // Step 6: Inc blog article count statictis
+            statistics.incBlogArticleCount();
+            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                statistics.incPublishedBlogArticleCount();
+            }
+            // Step 7: Add archive date-article relations
+            archiveDate(article);
+            // Step 8: Set permalink
+            String permalink = article.optString(Article.ARTICLE_PERMALINK);
+            if (Strings.isEmptyOrNull(permalink)) {
+                permalink = "/articles/" + ArticleService.PERMALINK_FORMAT.
+                        format(
+                        date) + "/"
+                            + ret + ".html";
+            }
 
-        if (!permalink.startsWith("/")) {
-            permalink = "/" + permalink;
-        }
+            if (!permalink.startsWith("/")) {
+                permalink = "/" + permalink;
+            }
 
-        if (permalinks.invalidArticlePermalinkFormat(permalink)) {
-            status.put(Keys.CODE,
-                       StatusCodes.ADD_ARTICLE_FAIL_INVALID_PERMALINK_FORMAT);
+            if (permalinks.invalidArticlePermalinkFormat(permalink)) {
+                throw new ServiceException(langPropsService.get(
+                        "invalidPermalinkFormatLabel"));
+            }
 
-            throw new Exception("Add article fail, caused by invalid permalink format["
-                                + permalink + "]");
-        }
+            if (permalinks.exist(permalink)) {
+                throw new ServiceException(langPropsService.get(
+                        "duplicatedPermalinkLabel"));
+            }
 
-        if (permalinks.exist(permalink)) {
-            status.put(Keys.CODE,
-                       StatusCodes.ADD_ARTICLE_FAIL_DUPLICATED_PERMALINK);
+            article.put(Article.ARTICLE_PERMALINK, permalink);
+            // Step 9: Add article-sign relation
+            final String signId =
+                    article.getString(Article.ARTICLE_SIGN_REF + "_"
+                                      + Keys.OBJECT_ID);
+            addArticleSignRelation(signId, ret);
+            article.remove(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
+            // Step 10: Set had been published status
+            article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
+            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                // Publish it directly
+                article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
+            }
+            // Step 11: Set author email
+            final JSONObject currentUser = users.getCurrentUser(request);
+            article.put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(
+                    User.USER_EMAIL));
+            // Step 12: Set random double
+            article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+            // Step 13: Addarticle
+            articleRepository.add(article);
 
-            throw new Exception("Add article fail, caused by duplicated permalink["
-                                + permalink + "]");
-        }
-        article.put(Article.ARTICLE_PERMALINK, permalink);
-        // Step 9: Add article-sign relation
-        final String signId =
-                article.getString(Article.ARTICLE_SIGN_REF + "_"
-                                  + Keys.OBJECT_ID);
-        addArticleSignRelation(signId, articleId);
-        article.remove(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
-        // Step 10: Set had been published status
-        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
-        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            // Publish it directly
-            article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
-        }
-        // Step 11: Set author email
-        final JSONObject currentUser = users.getCurrentUser(request);
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(
-                User.USER_EMAIL));
-        // Step 12: Set random double
-        article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-        // Step 13: Addarticle
-        articleRepository.add(article);
+            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                // Fire add article event
+                final JSONObject eventData = new JSONObject();
+                eventData.put(Article.ARTICLE, article);
+                eventManager.fireEventSynchronously(
+                        new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+            }
 
-        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            // Fire add article event
-            final JSONObject eventData = new JSONObject();
-            eventData.put(Article.ARTICLE, article);
-            eventData.put(Keys.RESULTS, dataModel);
-            eventManager.fireEventSynchronously(
-                    new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
+            return ret;
+        } catch (final ServiceException e) {
+            throw e;
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, "Adds an article failed", e);
+
+            throw new ServiceException(e);
         }
     }
 
