@@ -28,7 +28,7 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.util.Users;
-import org.b3log.solo.web.action.impl.InitAction;
+import org.b3log.solo.web.processor.InitProcessor;
 import org.b3log.solo.web.processor.LoginProcessor;
 import org.json.JSONObject;
 
@@ -67,7 +67,7 @@ public final class TopBars {
                                        final HttpServletResponse response)
             throws Exception {
         final Template topBarTemplate =
-                InitAction.TEMPLATE_CFG.getTemplate("top-bar.ftl");
+                InitProcessor.TEMPLATE_CFG.getTemplate("top-bar.ftl");
         final StringWriter stringWriter = new StringWriter();
 
 

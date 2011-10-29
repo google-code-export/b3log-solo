@@ -172,14 +172,22 @@
                     "userEmail": $("#userEmail").val(),
                     "userPassword": $("#userPassword").val()
                 };
-                    
+                
                 if(confirm("${confirmInitLabel}")){
-                    var rslt = jsonRpc.adminService.init(requestJSONObject);
-                    if ("INIT_B3LOG_SOLO_SUCC" === rslt.sc) {
-                        window.location.href = "/admin-index.do#tools/user-list";
-                    } else {
-                        alert("init error!");
-                    }
+                    $.ajax({
+                        url: "/init",
+                        type: "POST",
+                        data: JSON.stringify(requestJSONObject),
+                        success: function(result, textStatus){
+                            if (!result.sc) {
+                                alert(result.msg);
+                            
+                                return;
+                            }
+                    
+                            window.location.href = "/admin-index.do#tools/user-list";
+                        }
+                    });
                 }
             };
         </script>

@@ -22,7 +22,6 @@ import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import freemarker.template.Template;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import org.b3log.solo.web.action.impl.InitAction;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
@@ -287,7 +286,8 @@ public final class IndexProcessor {
 
             try {
                 final Template template =
-                        InitAction.TEMPLATE_CFG.getTemplate("kill-browser.ftl");
+                        InitProcessor.TEMPLATE_CFG.getTemplate(
+                        "kill-browser.ftl");
 
                 final PrintWriter writer = response.getWriter();
 

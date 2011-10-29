@@ -128,14 +128,6 @@
         <url-pattern>/admin-about.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>InitAction</servlet-name>
-        <servlet-class>org.b3log.solo.web.action.impl.InitAction</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>InitAction</servlet-name>
-        <url-pattern>/init.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>DataStoreFileAccessServlet</servlet-name>
         <servlet-class>org.b3log.solo.web.action.file.DataStoreFileAccessServlet</servlet-class>
     </servlet>

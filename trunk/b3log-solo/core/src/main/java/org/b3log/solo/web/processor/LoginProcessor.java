@@ -46,7 +46,6 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.web.action.impl.InitAction;
 import org.b3log.solo.web.util.Filler;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,7 +109,8 @@ public final class LoginProcessor {
                     @Override
                     protected Template getTemplate(final String templateName)
                             throws IOException {
-                        return InitAction.TEMPLATE_CFG.getTemplate(templateName);
+                        return InitProcessor.TEMPLATE_CFG.getTemplate(
+                                templateName);
                     }
 
                     @Override

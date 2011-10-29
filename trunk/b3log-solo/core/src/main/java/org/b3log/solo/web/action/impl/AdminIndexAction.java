@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.model.User;
@@ -38,6 +37,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.7, Jul 10, 2011
+ * @since 0.3.1
  */
 public final class AdminIndexAction extends AbstractAdminAction {
 
@@ -77,15 +77,6 @@ public final class AdminIndexAction extends AbstractAdminAction {
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-            if (null == preference) {
-                LOGGER.log(Level.WARNING,
-                           "B3log Solo has not been initialized, so redirects to /init.do");
-                final RequestDispatcher requestDispatcher =
-                        request.getRequestDispatcher("/init.do");
-                requestDispatcher.forward(request, response);
-
-                return ret;
-            }
 
             final String localeString = preference.getString(
                     Preference.LOCALE_STRING);
