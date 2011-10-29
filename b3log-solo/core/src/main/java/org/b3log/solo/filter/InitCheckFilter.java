@@ -21,12 +21,13 @@ import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
@@ -56,7 +57,7 @@ public final class InitCheckFilter implements Filter {
     }
 
     /**
-     * If Solo has not been initialized, so redirects to /init.do.
+     * If Solo has not been initialized, so redirects to /init.
      *
      * @param request the specified request
      * @param response the specified response
@@ -94,10 +95,18 @@ public final class InitCheckFilter implements Filter {
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 LOGGER.log(Level.WARNING,
-                           "B3log Solo has not been initialized, so redirects to /init.do");
-                final RequestDispatcher requestDispatcher =
-                        httpServletRequest.getRequestDispatcher("/init.do");
-                requestDispatcher.forward(request, response);
+                           "B3log Solo has not been initialized, so redirects to /init");
+
+                final HTTPRequestContext context = new HTTPRequestContext();
+                context.setRequest((HttpServletRequest) request);
+                context.setResponse((HttpServletResponse) response);
+
+                request.setAttribute("requestURI", "/init");
+                request.setAttribute("method", "GET");
+
+                HTTPRequestDispatcher.dispatch(context);
+
+                return;
             } else {
                 // XXX: Wrong state of SoloServletListener.isInited()
                 chain.doFilter(request, response);

@@ -112,10 +112,6 @@ public enum StatusCodes {
      */
     UPLOAD_FILES_SUCC,
     /**
-     * Indicates initializes B3log Solo successfully.
-     */
-    INIT_B3LOG_SOLO_SUCC,
-    /**
      * Indicates cancels a published article successfully.
      */
     CANCEL_PUBLISH_ARTICLE_SUCC,

@@ -31,6 +31,7 @@ import org.b3log.latke.action.ActionException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.web.processor.InitProcessor;
 import org.json.JSONObject;
 
 /**
@@ -117,7 +118,7 @@ public abstract class AbstractAdminAction extends AbstractAction {
         final String pageName = getTemplateName(request.getRequestURI());
 
         try {
-            return InitAction.TEMPLATE_CFG.getTemplate(pageName);
+            return InitProcessor.TEMPLATE_CFG.getTemplate(pageName);
         } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Can't find template by the specified request[URI="
                                      + request.getRequestURI() + "]",
