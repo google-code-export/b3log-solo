@@ -7,3 +7,13 @@
  # 在 article.ftl 中找到 <#if 0 != relevantArticles?size>，对其中的 div 加上 id="relevantArticles"，并移除其内部所有元素；删除 <#if 0 != relevantArticles?size> 及相匹配的 </#if>
  # 修改 macro-comments.ftl 中 addComment
 http://imgmi.net/b/b55cff18.png
+
+=== ver 0.4.0 ===
+ # jQuery 升级为 1.6.2，开发环境采用本地 js。修改 footer.ftl 如下：
+{{{
+<#if "" == miniPostfix>
+<script type="text/javascript" src="jquery-1.6.4.min.js" charset="utf-8"></script>
+<#else>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" charset="utf-8"></script>
+</#if>
+}}}
