@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Oct 2, 2011
+ * @version 1.1.0.2, Oct 31, 2011
  * @since 0.3.1
  */
 public final class Preference {
@@ -117,11 +117,6 @@ public final class Preference {
      */
     public static final String HTML_HEAD = "htmlHead";
     /**
-     * Key of OAuth consumer secret.
-     */
-    public static final String GOOGLE_OAUTH_CONSUMER_SECRET =
-            "googleOAuthConsumerSecret";
-    /**
      * Key of meta keywords.
      */
     public static final String META_KEYWORDS =
@@ -140,31 +135,6 @@ public final class Preference {
      * Key of signs.
      */
     public static final String SIGNS = "signs";
-    /**
-     * Key of tencent micro blog app key.
-     */
-    public static final String TENCENT_MICROBLOG_APP_KEY =
-            "tencentMicroblogAppKey";
-    /**
-     * Key of tencent micro blog app secret.
-     */
-    public static final String TENCENT_MICROBLOG_APP_SECRET =
-            "tencentMicroblogAppSecret";
-    /**
-     * Key of tencent micro blog token key.
-     */
-    public static final String TENCENT_MICROBLOG_TOKEN_KEY =
-            "tencentMicroblogTokenKey";
-    /**
-     * Key of tencent micro blog token secret.
-     */
-    public static final String TENCENT_MICROBLOG_TOKEN_SECRET =
-            "tencentMicroblogTokenSecret";
-    /**
-     * Key of enable post to tencent micro blog.
-     */
-    public static final String ENABLE_POST_TO_TENCENT_MICROBLOG =
-            "enablePostToTencentMicroblog";
     /**
      * Key of key of Solo.
      */
@@ -287,10 +257,6 @@ public final class Preference {
          */
         public static final String DEFAULT_HTML_HEAD = "";
         /**
-         * Default OAuth consumer secret for Google.
-         */
-        public static final String DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET = "";
-        /**
          * Default relevant articles display count.
          */
         public static final int DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT = 5;
@@ -327,7 +293,8 @@ public final class Preference {
         /**
          * Default article list display style.
          */
-        public static final String DEFAULT_ARTICLE_LIST_STYLE = "titleAndAbstract";
+        public static final String DEFAULT_ARTICLE_LIST_STYLE =
+                "titleAndAbstract";
 
         static {
             final JSONArray signs = new JSONArray();

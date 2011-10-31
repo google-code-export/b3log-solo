@@ -50,9 +50,7 @@ public final class Skips {
         "/admin-about.do",
         "/rm-all-data.do",
         "/init",
-        "/clear-cache.do",
-        "/tencent-microblog-oauth-authorize-token.do",
-        "/tencent-microblog-oauth-callback.do"
+        "/clear-cache.do"
     };
 
     /**

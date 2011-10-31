@@ -56,7 +56,7 @@ import static org.b3log.solo.model.Preference.*;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 28, 2011
+ * @version 1.0.0.1, Oct 31, 2011
  * @since 0.4.0
  */
 public final class InitService {
@@ -328,8 +328,6 @@ public final class InitService {
                 Default.DEFAULT_META_DESCRIPTION);
         ret.put(META_KEYWORDS, Default.DEFAULT_META_KEYWORDS);
         ret.put(HTML_HEAD, Default.DEFAULT_HTML_HEAD);
-        ret.put(GOOGLE_OAUTH_CONSUMER_SECRET,
-                Default.DEFAULT_GOOLE_OAUTH_CONSUMER_SECRET);
         ret.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,
                 Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
         ret.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT,
@@ -358,8 +356,6 @@ public final class InitService {
         ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
         ret.put(ENABLE_ARTICLE_UPDATE_HINT,
                 Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
-        ret.put(ENABLE_POST_TO_TENCENT_MICROBLOG,
-                Default.DEFAULT_ENABLE_POST_TO_TENCENT_MICROBLOG);
         ret.put(SIGNS, Default.DEFAULT_SIGNS);
         ret.put(TIME_ZONE_ID, Default.DEFAULT_TIME_ZONE);
         ret.put(PAGE_CACHE_ENABLED, Default.DEFAULT_PAGE_CACHE_ENABLED);

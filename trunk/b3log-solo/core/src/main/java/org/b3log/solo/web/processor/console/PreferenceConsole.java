@@ -161,7 +161,6 @@ public final class PreferenceConsole {
      *         }, ....]",
      *         "noticeBoard": "",
      *         "htmlHead": "",
-     *         "googleOAuthConsumerSecret": "",
      *         "externalRelevantArticlesDisplayCount": int,
      *         "relevantArticlesDisplayCount": int,
      *         "randomArticlesDisplayCount": int,
@@ -173,7 +172,6 @@ public final class PreferenceConsole {
      *             "oId": "",
      *             "signHTML": ""
      *         }, ...]",
-     *         "enablePostToTencentMicroblog": boolean,
      *         "allowVisitDraftViaPermalink": boolean,
      *         "version": "",
      *         "articleListStyle": ""
@@ -244,7 +242,6 @@ public final class PreferenceConsole {
      *         "timeZoneId": "",
      *         "noticeBoard": "",
      *         "htmlHead": "",
-     *         "googleOAuthConsumerSecret": "",
      *         "externalRelevantArticlesDisplayCount": int,
      *         "relevantArticlesDisplayCount": int,
      *         "randomArticlesDisplayCount": int,
@@ -255,7 +252,6 @@ public final class PreferenceConsole {
      *             "oId": "",
      *             "signHTML": ""
      *         }, ...],
-     *         "enablePostToTencentMicroblog": boolean,
      *         "allowVisitDraftViaPermalink": boolean,
      *         "articleListStyle": ""
      *     }
