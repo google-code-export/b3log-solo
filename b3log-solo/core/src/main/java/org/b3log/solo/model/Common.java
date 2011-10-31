@@ -19,11 +19,15 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.8, Oct 24, 2011
+ * @version 1.0.3.9, Oct 31, 2011
  * @since 0.3.1
  */
 public final class Common {
 
+    /**
+     * Key of direction.
+     */
+    public static final String DIRECTION = "direction";
     /**
      * Most used tags.
      */

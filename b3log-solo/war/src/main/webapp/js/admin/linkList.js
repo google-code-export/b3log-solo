@@ -301,16 +301,10 @@ admin.linkList = {
     changeOrder: function (id, order, status) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        var srcOrder = order;
-        if (status === "up") {
-            srcOrder--;
-        } else {
-            srcOrder++;
-        }
         
         var requestJSONObject = {
             "oId": id.toString(),
-            "linkOrder": srcOrder
+            "direction": status
         };
         
         $.ajax({
