@@ -259,29 +259,53 @@ public final class PageMgmtService {
     }
 
     /**
-     * Changes the order of a page specified by the given page id to the 
-     * specified target order.
+     * Changes the order of a page specified by the given page id with the 
+     * specified direction.
      *
      * @param pageId the given page id
-     * @param targetPageOrder the specified target order
+     * @param direction the specified direction
      * @throws ServiceException service exception
      */
-    public void changeOrder(final String pageId, final int targetPageOrder)
+    public void changeOrder(final String pageId, final String direction)
             throws ServiceException {
 
         final Transaction transaction = pageRepository.beginTransaction();
         try {
-            final JSONObject page1 = pageRepository.get(pageId);
-            final JSONObject page2 = pageRepository.getByOrder(targetPageOrder);
+            final JSONObject srcPage = pageRepository.get(pageId);
+            final int srcPageOrder = srcPage.getInt(Page.PAGE_ORDER);
+            
+            JSONObject targetPage = null;
+            int targetPageOrder = 0;
+            if ("up".equals(direction)) {
+                if (0 == srcPageOrder) { // The source page is the top one
+                    return;
+                }
+                
+                targetPageOrder = srcPageOrder - 1;
+                targetPage = pageRepository.getByOrder(targetPageOrder);
+            } else { // Down
+                final int maxOrder = pageRepository.getMaxOrder();
+                if (maxOrder == srcPageOrder) { // The page page is the bottom one
+                    return;
+                }
 
-            final int srcPageOrder = page1.getInt(Page.PAGE_ORDER);
+                targetPageOrder = srcPageOrder + 1;
+                targetPage = pageRepository.getByOrder(targetPageOrder);
+            }
+
+            if (null == targetPage) {
+                LOGGER.log(Level.WARNING,
+                           "Cant not find the target page of source page[order={0}]",
+                           srcPageOrder);
+                return;
+            }
 
             // Swaps
-            page2.put(Page.PAGE_ORDER, srcPageOrder);
-            page1.put(Page.PAGE_ORDER, targetPageOrder);
+            targetPage.put(Page.PAGE_ORDER, srcPageOrder);
+            srcPage.put(Page.PAGE_ORDER, direction);
 
-            pageRepository.update(page1.getString(Keys.OBJECT_ID), page1);
-            pageRepository.update(page2.getString(Keys.OBJECT_ID), page2);
+            pageRepository.update(srcPage.getString(Keys.OBJECT_ID), srcPage);
+            pageRepository.update(targetPage.getString(Keys.OBJECT_ID), targetPage);
 
             transaction.commit();
         } catch (final Exception e) {

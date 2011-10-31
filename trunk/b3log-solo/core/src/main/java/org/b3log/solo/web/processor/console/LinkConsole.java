@@ -27,7 +27,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.solo.model.Link;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.util.QueryResults;
@@ -152,7 +152,7 @@ public final class LinkConsole {
      *         "linkTitle": "",
      *         "linkAddress": ""
      *     }
-     * }, see {@link Link} for more details
+     * }, see {@link org.b3log.solo.model.Link} for more details
      * </pre>
      * @param context the specified http request context
      * @param response the specified http servlet response
@@ -194,7 +194,7 @@ public final class LinkConsole {
     }
 
     /**
-     * Changes a link order by the specified link id and order.
+     * Changes a link order by the specified link id and direction.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -210,7 +210,7 @@ public final class LinkConsole {
      * <pre>
      * {
      *     "oId": "",
-     *     "linkOrder": int // the target order
+     *     "direction": "" // "up"/"down"
      * }
      * </pre>
      * @param response the specified http servlet response
@@ -238,10 +238,10 @@ public final class LinkConsole {
                     AbstractAction.parseRequestJSONObject(request, response);
             final String linkId =
                     requestJSONObject.getString(Keys.OBJECT_ID);
-            final int targetLinkOrder =
-                    requestJSONObject.getInt(Link.LINK_ORDER);
+            final String direction =
+                    requestJSONObject.getString(Common.DIRECTION);
 
-            linkMgmtService.changeOrder(linkId, targetLinkOrder);
+            linkMgmtService.changeOrder(linkId, direction);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));

@@ -111,29 +111,53 @@ public final class LinkMgmtService {
     }
 
     /**
-     * Changes the order of a link specified by the given link id to the 
-     * specified target order.
+     * Changes the order of a link specified by the given link id with the 
+     * specified direction.
      *
      * @param linkId the given link id
-     * @param targetLinkOrder the specified target order
+     * @param direction the specified direction
      * @throws ServiceException service exception
      */
-    public void changeOrder(final String linkId, final int targetLinkOrder)
+    public void changeOrder(final String linkId, final String direction)
             throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
-            final JSONObject link1 = linkRepository.get(linkId);
-            final JSONObject link2 = linkRepository.getByOrder(targetLinkOrder);
+            final JSONObject srcLink = linkRepository.get(linkId);
+            final int srcLinkOrder = srcLink.getInt(Link.LINK_ORDER);
 
-            final int srcLinkOrder = link1.getInt(Link.LINK_ORDER);
+            JSONObject targetLink = null;
+            int targetLinkOrder = 0;
+            if ("up".equals(direction)) {
+                if (0 == srcLinkOrder) { // The source link is the top one
+                    return;
+                }
+                
+                targetLinkOrder = srcLinkOrder - 1;
+                targetLink = linkRepository.getByOrder(targetLinkOrder);
+            } else { // Down
+                final int maxOrder = linkRepository.getMaxOrder();
+                if (maxOrder == srcLinkOrder) { // The source link is the bottom one
+                    return;
+                }
+
+                targetLinkOrder = srcLinkOrder + 1;
+                targetLink = linkRepository.getByOrder(targetLinkOrder);
+            }
+
+            if (null == targetLink) {
+                LOGGER.log(Level.WARNING,
+                           "Cant not find the target link of source link[order={0}]",
+                           srcLinkOrder);
+                return;
+            }
 
             // Swaps
-            link2.put(Link.LINK_ORDER, srcLinkOrder);
-            link1.put(Link.LINK_ORDER, targetLinkOrder);
+            targetLink.put(Link.LINK_ORDER, srcLinkOrder);
+            srcLink.put(Link.LINK_ORDER, targetLinkOrder);
 
-            linkRepository.update(link1.getString(Keys.OBJECT_ID), link1);
-            linkRepository.update(link2.getString(Keys.OBJECT_ID), link2);
+            linkRepository.update(srcLink.getString(Keys.OBJECT_ID), srcLink);
+            linkRepository.update(targetLink.getString(Keys.OBJECT_ID), targetLink);
 
             transaction.commit();
         } catch (final Exception e) {

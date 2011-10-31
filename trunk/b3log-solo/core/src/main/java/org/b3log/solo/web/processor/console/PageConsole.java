@@ -28,7 +28,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.solo.model.Page;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.PageQueryService;
 import org.b3log.solo.util.QueryResults;
@@ -105,7 +105,7 @@ public final class PageConsole {
      *         "pageCommentCount": int,
      *         "pagePermalink": ""
      *     }
-     * }, see {@link Page} for more details
+     * }, see {@link org.b3log.solo.model.Page} for more details
      * </pre>
      * @param response the specified http servlet response
      * @param context the specified http request context
@@ -221,7 +221,7 @@ public final class PageConsole {
      *         "pageContent": "",
      *         "pagePermalink": "" // optional
      *     }
-     * }, see {@link Page} for more details
+     * }, see {@link org.b3log.solo.model.Page} for more details
      * </pre>
      * @param response the specified http servlet response
      * @throws Exception exception
@@ -263,7 +263,7 @@ public final class PageConsole {
     }
 
     /**
-     * Changes a page order by the specified page id and order.
+     * Changes a page order by the specified page id and direction.
      * 
      * <p>
      * Renders the response with a json object, for example,
@@ -279,7 +279,7 @@ public final class PageConsole {
      * <pre>
      * {
      *     "oId": "",
-     *     "pageOrder": int // the target order
+     *     "direction": "" // "up"/"down"
      * }
      * </pre>
      * @param response the specified http servlet response
@@ -307,10 +307,10 @@ public final class PageConsole {
                     AbstractAction.parseRequestJSONObject(request, response);
             final String linkId =
                     requestJSONObject.getString(Keys.OBJECT_ID);
-            final int targetLinkOrder =
-                    requestJSONObject.getInt(Page.PAGE_ORDER);
+            final String direction =
+                    requestJSONObject.getString(Common.DIRECTION);
 
-            pageMgmtService.changeOrder(linkId, targetLinkOrder);
+            pageMgmtService.changeOrder(linkId, direction);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
