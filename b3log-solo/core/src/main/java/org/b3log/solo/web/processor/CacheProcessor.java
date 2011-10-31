@@ -28,6 +28,7 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.json.JSONObject;
@@ -75,6 +76,8 @@ public final class CacheProcessor {
             } else { // Clears all page caches
                 clearAllPageCache(httpServletRequest, httpServletResponse);
             }
+            
+            context.setRenderer(new DoNothingRenderer());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }

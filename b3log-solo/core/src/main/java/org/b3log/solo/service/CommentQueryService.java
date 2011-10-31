@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Comment query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 26, 2011
+ * @version 1.0.0.2, Oct 31, 2011
  * @since 0.3.5
  */
 public final class CommentQueryService {
@@ -195,7 +195,6 @@ public final class CommentQueryService {
 
                 comment.put(Comment.COMMENT_TIME,
                             ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
-                comment.remove(Comment.COMMENT_DATE);
 
                 comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
 

@@ -39,6 +39,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -85,7 +86,8 @@ public final class IndexProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/*"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/\\d*"}, uriPatternsMode = URIPatternMode.REGEX,
+                       method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();

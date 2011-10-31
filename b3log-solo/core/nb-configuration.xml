@@ -18,7 +18,6 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>ftl</word>
         <word>Gmail</word>
         <word>http</word>
-        <word>Jabsorb</word>
         <word>json</word>
         <word>loc</word>
         <word>memcache</word>
@@ -33,7 +32,6 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>servlet</word>
         <word>servlets</word>
         <word>sitemap</word>
-        <word>tencent</word>
         <word>Upgrader</word>
         <word>Upgraders</word>
     </spellchecker-wordlist>
