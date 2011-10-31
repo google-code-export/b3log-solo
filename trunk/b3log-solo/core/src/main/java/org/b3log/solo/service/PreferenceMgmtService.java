@@ -82,6 +82,31 @@ public final class PreferenceMgmtService {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
+     * Updates the reply notification template with the specified reply 
+     * notification template.
+     * 
+     * @param replyNotificationTemplate the specified reply notification 
+     * template
+     * @throws ServiceException service exception
+     */
+    public void updateReplyNotificationTemplate(
+            final JSONObject replyNotificationTemplate) throws ServiceException {
+        final Transaction transaction = preferenceRepository.beginTransaction();
+
+        try {
+            preferenceRepository.update(Preference.REPLY_NOTIFICATION_TEMPLATE,
+                                        replyNotificationTemplate);
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Updates reply notification failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Updates the preference with the specified preference.
      *
      * @param preference the specified preference

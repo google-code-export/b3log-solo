@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Link console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 27, 2011
+ * @version 1.0.0.2, Oct 31, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -150,7 +150,8 @@ public final class LinkConsole {
      *     "link": {
      *         "oId": "",
      *         "linkTitle": "",
-     *         "linkAddress": ""
+     *         "linkAddress": "",
+     *         "linkDescription": ""
      *     }
      * }, see {@link org.b3log.solo.model.Link} for more details
      * </pre>
@@ -275,7 +276,8 @@ public final class LinkConsole {
      * {
      *     "link": {
      *         "linkTitle": "",
-     *         "linkAddress": ""
+     *         "linkAddress": "",
+     *         "linkDescription": ""
      *     }
      * }
      * </pre>
@@ -341,6 +343,7 @@ public final class LinkConsole {
      *         "oId": "",
      *         "linkTitle": "",
      *         "linkAddress": "",
+     *         "linkDescription": ""
      *      }, ....]
      * }
      * </pre>
@@ -398,7 +401,8 @@ public final class LinkConsole {
      *     "link": {
      *         "oId": "",
      *         "linkTitle": "",
-     *         "linkAddress": ""
+     *         "linkAddress": "",
+     *         "linkDescription": ""
      *     }
      * }
      * </pre>

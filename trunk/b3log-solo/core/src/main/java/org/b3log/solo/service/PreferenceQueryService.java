@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Preference query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2011
+ * @version 1.0.0.1, Oct 31, 2011
  * @since 0.4.0
  */
 public final class PreferenceQueryService {
@@ -43,6 +43,23 @@ public final class PreferenceQueryService {
      */
     private PreferenceRepository preferenceRepository =
             PreferenceRepositoryImpl.getInstance();
+
+    /**
+     * Gets the reply notification template.
+     * 
+     * @return reply notification template, returns {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getReplyNotificationTemplate() throws ServiceException {
+        try {
+            return preferenceRepository.get(
+                    Preference.REPLY_NOTIFICATION_TEMPLATE);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE,
+                       "Updates reply notification template failed", e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets the user preference.

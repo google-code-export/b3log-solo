@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing article comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Aug 8, 2011
+ * @version 1.0.1.4, Oct 31, 2011
  * @since 0.3.1
  */
 public final class ArticleCommentReplyNotifier
@@ -111,7 +111,10 @@ public final class ArticleCommentReplyNotifier
             final Message message = new Message();
             message.setFrom(adminEmail);
             message.addRecipient(originalCommentEmail);
-            final String mailSubject = blogTitle + ": New reply of your comment";
+            final JSONObject replyNotificationTemplate =
+                    preferenceQueryService.getReplyNotificationTemplate();
+            final String mailSubject = replyNotificationTemplate.getString(
+                    "subject").replace("${blogTitle}", blogTitle);
             message.setSubject(mailSubject);
             final String articleTitle = article.getString(Article.ARTICLE_TITLE);
             final String blogHost = preference.getString(Preference.BLOG_HOST);
@@ -126,11 +129,14 @@ public final class ArticleCommentReplyNotifier
             } else {
                 commenter = commentName;
             }
-            final String mailBody =
-                    "Your comment on article[<a href='" + articleLink + "'>"
-                    + articleTitle + "</a>] received an reply: <p>" + commenter
-                    + ": <span><a href=\"http://" + blogHost + commentSharpURL
-                    + "\">" + commentContent + "</a></span></p>";
+
+            final String mailBody = replyNotificationTemplate.getString("body").
+                    replace("${postLInk}", articleLink).
+                    replace("${postTitle}", articleTitle).
+                    replace("${replier}", commenter).
+                    replace("${replyURL}", "http://" + blogHost
+                                           + commentSharpURL).
+                    replace("${replyContent}", commentContent);
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.FINER,
                        "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
