@@ -34,7 +34,7 @@ import org.json.JSONObject;
  * Link query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 27, 2011
+ * @version 1.0.0.2, Oct 31, 2011
  * @since 0.4.0
  */
 public final class LinkQueryService {
@@ -71,6 +71,7 @@ public final class LinkQueryService {
      *         "oId": "",
      *         "linkTitle": "",
      *         "linkAddress": "",
+     *         ""linkDescription": ""
      *      }, ....]
      * }
      * </pre>
@@ -125,7 +126,8 @@ public final class LinkQueryService {
      *     "link": {
      *         "oId": "",
      *         "linkTitle": "",
-     *         "linkAddress": ""
+     *         "linkAddress": "",
+     *         "linkDescription": ""
      *     }
      * }
      * </pre>, returns {@code null} if not found

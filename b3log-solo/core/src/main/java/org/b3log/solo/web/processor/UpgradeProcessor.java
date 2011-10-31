@@ -176,9 +176,9 @@ public final class UpgradeProcessor {
 
             final JSONObject preference =
                     preferenceRepository.get(Preference.PREFERENCE);
-            
+
             preference.put(Preference.VERSION, "0.3.1");
-            
+
             preferenceRepository.update(Preference.PREFERENCE, preference);
 
             final JSONArray users =
@@ -214,7 +214,15 @@ public final class UpgradeProcessor {
      *       Restores the orders of links
      *     </li>
      *     <li>
+     *       Adds a property(named {@value Link#LINK_ADDRESS}) to entity 
+     *      {@link Link link}
+     *     </li>
+     *     <li>
      *       Restores the orders of pages
+     *     </li>
+     *     <li>
+     *       Adds an entity(named {@value Preference#REPLY_NOTIFICATION_TEMPLATE}) to
+     *       repository {@link Preference preference}.
      *     </li>
      *   </ul>
      * </p>
@@ -237,6 +245,8 @@ public final class UpgradeProcessor {
             for (int i = 0; i < links.length(); i++) {
                 final JSONObject link = links.getJSONObject(i);
                 link.put(Link.LINK_ORDER, i);
+                
+                link.put(Link.LINK_DESCRIPTION, ""); // Adds default link description
 
                 linkRepository.update(link.getString(Keys.OBJECT_ID), link);
             }
@@ -252,6 +262,20 @@ public final class UpgradeProcessor {
                 page.put(Page.PAGE_ORDER, i);
 
                 pageRepository.update(page.getString(Keys.OBJECT_ID), page);
+            }
+
+            JSONObject replyNotificationTemplate = preferenceRepository.get(
+                    Preference.REPLY_NOTIFICATION_TEMPLATE);
+            if (null == replyNotificationTemplate) {
+                replyNotificationTemplate = new JSONObject();
+                replyNotificationTemplate.put(Keys.OBJECT_ID,
+                                              Preference.REPLY_NOTIFICATION_TEMPLATE);
+                replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
+                replyNotificationTemplate.put("body",
+                                              "Your comment on post[<a href='${postLink}'>"
+                                              + "${postTitle}</a>] received an reply: <p>${replier}"
+                                              + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
+                preferenceRepository.add(replyNotificationTemplate);
             }
 
             preference.put(Preference.VERSION, "0.4.0");

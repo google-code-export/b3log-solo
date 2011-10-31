@@ -75,6 +75,60 @@ public final class PreferenceConsole {
     private static final String PREFERENCE_URI_PREFIX = "/console/preference/";
 
     /**
+     * Gets reply template.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "replyNotificationTemplate": {
+     *         "subject": "",
+     *         "body": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/reply/notification/template",
+                       method = HTTPRequestMethod.GET)
+    public void getReplyNotificationTemplate(final HttpServletRequest request,
+                                             final HttpServletResponse response,
+                                             final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        try {
+            final JSONObject replyNotificationTemplate =
+                    preferenceQueryService.getReplyNotificationTemplate();
+
+            final JSONObject ret = new JSONObject();
+            renderer.setJSONObject(ret);
+
+            ret.put(Preference.REPLY_NOTIFICATION_TEMPLATE,
+                    replyNotificationTemplate);
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
+
+    /**
      * Gets signs.
      * 
      * <p>
@@ -119,10 +173,10 @@ public final class PreferenceConsole {
             for (int i = 1; i < allSigns.length(); i++) { // excludes the empty sign
                 signs.put(allSigns.getJSONObject(i));
             }
-            
+
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
-            
+
             ret.put(Sign.SIGNS, signs);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {

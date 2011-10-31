@@ -50,6 +50,11 @@ admin.linkList = {
             text: Label.urlLabel,
             index: "linkAddress",
             minWidth: 180
+        }, {
+            style: "padding-left: 12px;",
+            text: Label.linkDescriptionLabel,
+            index: "linkDescription",
+            minWidth: 230
         }]);
     
         this.tablePagination.initPagination();
@@ -111,9 +116,11 @@ admin.linkList = {
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
                             </div>';
                     }
+                    
                     linkData[i].linkTitle = links[i].linkTitle;
                     linkData[i].linkAddress = "<a target='_blank' class='no-underline' href='" + links[i].linkAddress + "'>"
                     + links[i].linkAddress + "</a>";
+                    linkData[i].linkDescription = links[i].linkDescription;
                     linkData[i].expendRow = "<span><a href='" + links[i].linkAddress + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.get('" + links[i].oId + "')\">" + Label.updateLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.del('" + links[i].oId + "')\">" + Label.removeLabel + "</a></span>";
@@ -136,7 +143,8 @@ admin.linkList = {
             var requestJSONObject = {
                 "link": {
                     "linkTitle": $("#linkTitle").val(),
-                    "linkAddress": $("#linkAddress").val()
+                    "linkAddress": $("#linkAddress").val(),
+                    "linkDescription": $("#linkDescription").val()
                 }
             };
             
@@ -153,6 +161,7 @@ admin.linkList = {
                     
                     $("#linkTitle").val("");
                     $("#linkAddress").val("");
+                    $("#linkDescription").val("");
                     if (admin.linkList.pageInfo.currentCount === Label.PAGE_SIZE &&
                         admin.linkList.pageInfo.currentPage === admin.linkList.pageInfo.pageCount) {
                         admin.linkList.pageInfo.pageCount++;
@@ -188,8 +197,11 @@ admin.linkList = {
                 }
                 
                 admin.linkList.id = id;
+                
                 $("#linkTitleUpdate").val(result.link.linkTitle);
                 $("#linkAddressUpdate").val(result.link.linkAddress);
+                $("#linkDescriptionUpdate").val(result.link.linkDescription);
+                
                 $("#loadMsg").text("");
             }
         });
@@ -208,7 +220,8 @@ admin.linkList = {
                 "link": {
                     "linkTitle": $("#linkTitleUpdate").val(),
                     "oId": this.id,
-                    "linkAddress": $("#linkAddressUpdate").val()
+                    "linkAddress": $("#linkAddressUpdate").val(),
+                    "linkDescription": $("#linkDescriptionUpdate").val()
                 }
             };
             

@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Aug 8, 2011
+ * @version 1.0.1.1, Oct 31, 2011
  * @since 0.3.1
  */
 public final class PageCommentReplyNotifier
@@ -64,6 +64,7 @@ public final class PageCommentReplyNotifier
      */
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject eventData = event.getData();
@@ -110,7 +111,10 @@ public final class PageCommentReplyNotifier
             final Message message = new Message();
             message.setFrom(adminEmail);
             message.addRecipient(originalCommentEmail);
-            final String mailSubject = blogTitle + ": New reply of your comment";
+            final JSONObject replyNotificationTemplate =
+                    preferenceQueryService.getReplyNotificationTemplate();
+            final String mailSubject = replyNotificationTemplate.getString(
+                    "subject").replace("${blogTitle}", blogTitle);
             message.setSubject(mailSubject);
             final String pageTitle = page.getString(Page.PAGE_TITLE);
             final String blogHost = preference.getString(Preference.BLOG_HOST);
@@ -126,11 +130,13 @@ public final class PageCommentReplyNotifier
                 commenter = commentName;
             }
 
-            final String mailBody =
-                    "Your comment on page[<a href='" + pageLink + "'>"
-                    + pageTitle + "</a>] received an reply: <p>" + commenter
-                    + ": <span><a href=\"http://" + blogHost + commentSharpURL
-                    + "\">" + commentContent + "</a></span></p>";
+            final String mailBody = replyNotificationTemplate.getString("body").
+                    replace("${postLInk}", pageLink).
+                    replace("${postTitle}", pageTitle).
+                    replace("${replier}", commenter).
+                    replace("${replyURL}", "http://" + blogHost
+                                           + commentSharpURL).
+                    replace("${replyContent}", commentContent);
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.FINER,
                        "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",

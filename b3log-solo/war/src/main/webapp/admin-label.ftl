@@ -6,7 +6,7 @@
         "localeString": "${localeString}",
         "version": "${version}",
         "reportIssueLabel": "please report this issue on http://code.google.com/p/b3log-solo/issues/list",
-        
+        "linkDescriptionLabel": "${linkDescriptionLabel}",
         "addressInvalidLabel": "${addressInvalidLabel}",
         "selectLabel": "${selectLabel}",
         "outOfDateLabel":　"${outOfDateLabel}",

@@ -27,6 +27,14 @@
             </td>
         </tr>
         <tr>
+            <th>
+                ${linkDescription1Label}
+            </th>
+            <td>
+                <input id="linkDescription" type="text"/>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2" align="right">
                 <button onclick="admin.linkList.add();">${saveLabel}</button>
             </td>
@@ -57,6 +65,14 @@
                 </th>
                 <td>
                     <input id="linkAddressUpdate" type="text"/>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    ${linkDescription1Label}
+                </th>
+                <td>
+                    <input id="linkDescriptionUpdate" type="text"/>
                 </td>
             </tr>
             <tr>

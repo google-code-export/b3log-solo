@@ -156,6 +156,11 @@ public final class Preference {
      * Key of article list display style.
      */
     public static final String ARTICLE_LIST_STYLE = "articleListStyle";
+    /**
+     * Key of reply notification template.
+     */
+    public static final String REPLY_NOTIFICATION_TEMPLATE =
+            "replyNotificationTemplate";
 
     /**
      * Private default constructor.
@@ -167,7 +172,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.1.0.2, Oct 2, 2011
+     * @version 1.1.0.3, Oct 31, 2011
      * @since 0.3.1
      */
     public static final class Default {
@@ -295,6 +300,10 @@ public final class Preference {
          */
         public static final String DEFAULT_ARTICLE_LIST_STYLE =
                 "titleAndAbstract";
+        /**
+         * Default reply notification template.
+         */
+        public static final String DEFAULT_REPLY_NOTIFICATION_TEMPLATE;
 
         static {
             final JSONArray signs = new JSONArray();
@@ -311,8 +320,19 @@ public final class Preference {
 
                 // Sign(id=0) is the 'empty' sign, used for article user needn't
                 // a sign
-
                 DEFAULT_SIGNS = signs.toString();
+
+                final JSONObject replyNotificationTemplate = new JSONObject();
+                replyNotificationTemplate.put(Keys.OBJECT_ID,
+                                              Preference.REPLY_NOTIFICATION_TEMPLATE);
+                replyNotificationTemplate.put("subject",
+                                              "${blogTitle}: New reply of your comment");
+                replyNotificationTemplate.put("body",
+                                              "Your comment on post[<a href='${postLink}'>"
+                                              + "${postTitle}</a>] received an reply: <p>${replier}"
+                                              + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
+                DEFAULT_REPLY_NOTIFICATION_TEMPLATE = 
+                        replyNotificationTemplate.toString();
             } catch (final Exception e) {
                 LOGGER.log(Level.SEVERE, "Creates sign error!", e);
                 throw new IllegalStateException(e);
