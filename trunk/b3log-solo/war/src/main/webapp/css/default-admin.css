@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.0, Sep 30, 2011
+ * @version 1.0.2.1, Sep 31, 2011
 */
 /* start resset */
 *, input, textarea {
@@ -547,6 +547,22 @@ a:hover {
 .table-expendRow td a:hover {
     background-color: #BBBBBB;
 }
+.table-center {
+    margin: 0 auto;
+}
+.table-upIcon,.table-downIcon {
+    background-image: url("/images/icon.png");
+    cursor: pointer;
+    float: left;
+    height: 16px;
+    width: 16px;
+    background-position: -79px -32px;
+}
+.table-upIcon {
+    background-position: -64px -32px;
+    margin-right: 6px;
+}
+
 .tip-panel {
     background-color: #FFF;
     box-shadow: 0 3px 10px #8B8B8B;

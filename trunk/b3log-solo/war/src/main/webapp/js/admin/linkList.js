@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Oct 27, 2011
+ * @version 1.0.0.9, Oct 31, 2011
  */
 
 /* link-list 相关操作 */
@@ -62,7 +62,7 @@ admin.linkList = {
         
         $("#updateLink").dialog({
             width: 700,
-            height: 160,
+            height: 180,
             "modal": true,
             "hideFooter": true
         });
