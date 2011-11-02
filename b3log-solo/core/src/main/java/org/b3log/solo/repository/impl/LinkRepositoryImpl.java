@@ -118,7 +118,9 @@ public final class LinkRepositoryImpl extends AbstractRepository
             final Query query = new Query();
             query.addFilter(Link.LINK_ORDER,
                             FilterOperator.LESS_THAN,
-                            link.getInt(Link.LINK_ORDER));
+                            link.getInt(Link.LINK_ORDER)).
+                    addSort(Link.LINK_ORDER,
+                            SortDirection.DESCENDING);
             query.setCurrentPageNum(1);
             query.setPageSize(1);
 
@@ -147,7 +149,9 @@ public final class LinkRepositoryImpl extends AbstractRepository
             final Query query = new Query();
             query.addFilter(Link.LINK_ORDER,
                             FilterOperator.GREATER_THAN,
-                            link.getInt(Link.LINK_ORDER));
+                            link.getInt(Link.LINK_ORDER)).
+                    addSort(Link.LINK_ORDER,
+                            SortDirection.ASCENDING);
             query.setCurrentPageNum(1);
             query.setPageSize(1);
 
