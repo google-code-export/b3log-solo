@@ -61,7 +61,8 @@ import org.json.JSONObject;
  * Symphony</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Sep 17, 2011
+ * @version 1.0.0.7, Nov 2, 2011
+ * @since 0.3.1
  */
 public final class AddArticleCommentFromSymphonyAction
         extends AbstractAction {
@@ -123,10 +124,9 @@ public final class AddArticleCommentFromSymphonyAction
     private static EventManager eventManager = EventManager.getInstance();
 
     @Override
-    protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ActionException {
+    protected Map<?, ?> doFreeMarkerAction(final HttpServletRequest request,
+                                           final HttpServletResponse response)
+            throws ActionException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

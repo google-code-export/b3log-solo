@@ -32,7 +32,8 @@ import org.json.JSONObject;
  * Admin console error action. admin-error.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 4, 2010
+ * @version 1.0.0.1, Nov 2, 2011
+ * @since 0.3.1
  */
 public final class AdminErrorAction extends AbstractAdminAction {
 
@@ -47,10 +48,9 @@ public final class AdminErrorAction extends AbstractAdminAction {
             Logger.getLogger(AdminErrorAction.class.getName());
 
     @Override
-    protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws ActionException {
+    protected Map<?, ?> doFreeMarkerAction(final HttpServletRequest request,
+                                           final HttpServletResponse response)
+            throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
 
         try {
