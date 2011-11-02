@@ -148,6 +148,7 @@ public final class InitService {
                 if (null == statistic) {
                     initStatistic();
                     initPreference(requestJSONObject);
+                    initReplyNotificationTemplate();
                     initAdmin(requestJSONObject, request, response);
                 }
 
@@ -310,6 +311,26 @@ public final class InitService {
     }
 
     /**
+     * Initializes reply notification template.
+     * 
+     * @throws Exception exception
+     */
+    private void initReplyNotificationTemplate()
+            throws Exception {
+        LOGGER.info("Initializing reply notification template");
+
+        final JSONObject replyNotificationTemplate =
+                new JSONObject(
+                Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+        replyNotificationTemplate.put(Keys.OBJECT_ID,
+                                      Preference.REPLY_NOTIFICATION_TEMPLATE);
+
+        preferenceRepository.add(replyNotificationTemplate);
+
+        LOGGER.info("Initialized reply notification template");
+    }
+
+    /**
      * Initializes preference.
      *
      * @param requestJSONObject the specified json object
@@ -322,7 +343,6 @@ public final class InitService {
 
         final JSONObject ret = new JSONObject();
 
-        final String preferenceId = PREFERENCE;
         ret.put(NOTICE_BOARD, Default.DEFAULT_NOTICE_BOARD);
         ret.put(META_DESCRIPTION,
                 Default.DEFAULT_META_DESCRIPTION);
@@ -396,10 +416,8 @@ public final class InitService {
 
         timeZoneUtils.setTimeZone("Asia/Shanghai");
 
-        ret.put(Keys.OBJECT_ID, preferenceId);
+        ret.put(Keys.OBJECT_ID, PREFERENCE);
         preferenceRepository.add(ret);
-
-        preferenceRepository.update(preferenceId, ret);
 
         LOGGER.info("Initialized preference");
 

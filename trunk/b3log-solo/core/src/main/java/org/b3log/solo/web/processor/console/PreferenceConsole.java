@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2011
+ * @version 1.0.0.1, Nov 2, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -125,6 +125,62 @@ public final class PreferenceConsole {
             final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
+
+    /**
+     * Updates reply template.
+     * 
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "replyNotificationTemplate": {
+     *         "subject": "",
+     *         "body": ""
+     *     }
+     * }
+     * </pre>
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/reply/notification/template",
+                       method = HTTPRequestMethod.PUT)
+    public void updateReplyNotificationTemplate(final HttpServletRequest request,
+                                                final HttpServletResponse response,
+                                                final HTTPRequestContext context)
+            throws Exception {
+        if (!userUtils.isLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        try {
+            final JSONObject requestJSONObject =
+                    AbstractAction.parseRequestJSONObject(request, response);
+
+            final JSONObject replyNotificationTemplate =
+                    requestJSONObject.getJSONObject(
+                    Preference.REPLY_NOTIFICATION_TEMPLATE);
+
+            preferenceMgmtService.updateReplyNotificationTemplate(
+                    replyNotificationTemplate);
+
+            final JSONObject ret = new JSONObject();
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+
+            renderer.setJSONObject(ret);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
     }
 

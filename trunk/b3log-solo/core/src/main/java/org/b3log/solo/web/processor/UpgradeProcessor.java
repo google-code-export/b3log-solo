@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.4, Oct 28, 2011
+ * @version 1.1.0.5, Nov 2, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -267,14 +267,11 @@ public final class UpgradeProcessor {
             JSONObject replyNotificationTemplate = preferenceRepository.get(
                     Preference.REPLY_NOTIFICATION_TEMPLATE);
             if (null == replyNotificationTemplate) {
-                replyNotificationTemplate = new JSONObject();
+                replyNotificationTemplate = 
+                        new JSONObject(Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
                 replyNotificationTemplate.put(Keys.OBJECT_ID,
                                               Preference.REPLY_NOTIFICATION_TEMPLATE);
-                replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
-                replyNotificationTemplate.put("body",
-                                              "Your comment on post[<a href='${postLink}'>"
-                                              + "${postTitle}</a>] received an reply: <p>${replier}"
-                                              + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
+
                 preferenceRepository.add(replyNotificationTemplate);
             }
 
