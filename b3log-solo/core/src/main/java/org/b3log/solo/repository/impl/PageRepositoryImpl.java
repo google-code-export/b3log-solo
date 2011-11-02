@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Page repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 20, 2011
+ * @version 1.0.0.6, Nov 2, 2011
  * @since 0.3.1
  */
 public final class PageRepositoryImpl extends AbstractRepository
@@ -83,6 +83,68 @@ public final class PageRepositoryImpl extends AbstractRepository
         try {
             return array.getJSONObject(0).getInt(Page.PAGE_ORDER);
         } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
+    }
+
+    @Override
+    public JSONObject getUpper(final String id) throws RepositoryException {
+        try {
+            final JSONObject page = get(id);
+            if (null == page) {
+                return null;
+            }
+
+            final Query query = new Query();
+            query.addFilter(Page.PAGE_ORDER,
+                            FilterOperator.LESS_THAN,
+                            page.getInt(Page.PAGE_ORDER)).
+                    addSort(Page.PAGE_ORDER,
+                            SortDirection.DESCENDING);
+            query.setCurrentPageNum(1);
+            query.setPageSize(1);
+
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (1 != array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
+    }
+
+    @Override
+    public JSONObject getUnder(final String id) throws RepositoryException {
+        try {
+            final JSONObject page = get(id);
+            if (null == page) {
+                return null;
+            }
+
+            final Query query = new Query();
+            query.addFilter(Page.PAGE_ORDER,
+                            FilterOperator.GREATER_THAN,
+                            page.getInt(Page.PAGE_ORDER)).
+                    addSort(Page.PAGE_ORDER,
+                            SortDirection.ASCENDING);
+            query.setCurrentPageNum(1);
+            query.setPageSize(1);
+
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (1 != array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             throw new RepositoryException(e);
         }
