@@ -319,7 +319,8 @@ var goTranslate = function () {
         // append year archive
         if (year !== $this.data("year")) {
             year = $this.data("year");
-            $this.before("<li class='archive-year'><div onclick='collapseArchive(this, " + year + ")' class='expand-ico'>" + year + "&nbsp;年</div></li>");
+            $this.before("<li class='archive-year'><div onclick='collapseArchive(this, " + 
+                year + ")' class='expand-ico'>" + year + "&nbsp;\u5e74</div></li>");
         }
     });
     
