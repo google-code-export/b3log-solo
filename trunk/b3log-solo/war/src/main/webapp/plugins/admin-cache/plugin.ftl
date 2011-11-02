@@ -36,10 +36,10 @@
                     }
 
                     that.tablePagination.updateTablePagination(cacheData, pageNum, result.pagination);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         },
     
         changeStatus: function (it) {
@@ -70,10 +70,9 @@
                     
                     $("#tipMsg").text("${updateSuccLabel}");
                     
+                    $("#loadMsg").text("");
                 }
             });
-            
-            $("#loadMsg").text("");
         },
         
         getCache: function () {
@@ -105,10 +104,10 @@
                         + "${pageCachedCnt1Label}<span class='f-blue'>" + result.pageCachedCnt; 
                     
                     $("#cacheContent").html(cacheHTML);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         },
     
         init: function (page) {   

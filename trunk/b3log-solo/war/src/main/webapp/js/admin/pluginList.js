@@ -92,11 +92,12 @@ admin.pluginList = {
                     }
                     datas[i].expendRow += "</a>";
                 }
+                
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     changeStatus: function (pluginId, status) {

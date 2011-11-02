@@ -116,10 +116,10 @@ admin.commentList = {
                 }
                 
                 that.tablePagination.updateTablePagination(commentsData, pageNum, result.pagination);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     /* 
@@ -142,10 +142,10 @@ admin.commentList = {
                     }
                     
                     admin.commentList.getList(admin.commentList.pageInfo.currentPage);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     }
 };
