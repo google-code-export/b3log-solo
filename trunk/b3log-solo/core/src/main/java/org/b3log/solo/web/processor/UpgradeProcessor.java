@@ -27,6 +27,8 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
+import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -102,6 +104,9 @@ public final class UpgradeProcessor {
     @RequestProcessing(value = {"/upgrade/checker.do"},
                        method = HTTPRequestMethod.GET)
     public void upgrade(final HTTPRequestContext context) {
+        final AbstractHTTPResponseRenderer renderer = new DoNothingRenderer();
+        context.setRenderer(renderer);
+        
         try {
             final JSONObject preference =
                     preferenceRepository.get(Preference.PREFERENCE);
