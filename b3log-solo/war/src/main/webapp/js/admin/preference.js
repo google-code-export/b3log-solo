@@ -104,10 +104,10 @@ admin.preference = {
                         
                 // Article list style
                 $("#articleListDisplay").val(preference.articleListStyle);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     /*
@@ -185,10 +185,10 @@ admin.preference = {
                     $("#preferenceSignButton" + signs[i].oId).tip("option", "content", 
                         signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
                 }
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     }
 };
 

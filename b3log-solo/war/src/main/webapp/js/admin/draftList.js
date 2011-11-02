@@ -101,10 +101,10 @@ admin.draftList = {
                 }
                     
                 that.tablePagination.updateTablePagination(articleData, pageNum, result.pagination);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     }
 };
 

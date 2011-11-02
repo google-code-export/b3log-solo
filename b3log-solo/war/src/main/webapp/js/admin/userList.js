@@ -115,10 +115,10 @@ admin.userList = {
                 }
                         
                 that.tablePagination.updateTablePagination(userData, pageNum, result.pagination);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     /*
@@ -159,10 +159,10 @@ admin.userList = {
                     }
                     
                     admin.userList.getList(admin.userList.pageInfo.pageCount);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     
@@ -196,10 +196,10 @@ admin.userList = {
                     $userEmailUpdate.removeAttr("disabled");
                 }
                 $("#userPasswordUpdate").val(result.user.userPassword);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     /*
@@ -232,10 +232,10 @@ admin.userList = {
                     }
                     
                     admin.userList.getList(admin.userList.pageInfo.currentPage);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     
@@ -273,10 +273,10 @@ admin.userList = {
                         admin.setHashByPage(pageNum);
                     }
                     admin.userList.getList(pageNum);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     

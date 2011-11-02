@@ -93,10 +93,10 @@ admin.article = {
 
                 admin.article.setStatus();
                 $("#tipMsg").text(Label.getSuccLabel);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     /*
@@ -173,10 +173,10 @@ admin.article = {
                     }
                     
                     admin.article.isConfirm = false;
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     
@@ -249,10 +249,10 @@ admin.article = {
                     
                     admin.article.status.id = undefined;
                     admin.article.isConfirm = false;
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     

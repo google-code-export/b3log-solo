@@ -127,10 +127,10 @@ admin.linkList = {
                 }
 
                 that.tablePagination.updateTablePagination(linkData, pageNum, result.pagination);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     /*
@@ -170,11 +170,12 @@ admin.linkList = {
                     if (admin.linkList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
                         admin.setHashByPage(admin.linkList.pageInfo.pageCount);
                     }
+                    
                     admin.linkList.getList(admin.linkList.pageInfo.pageCount);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     
@@ -205,8 +206,6 @@ admin.linkList = {
                 $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     /*
@@ -238,10 +237,10 @@ admin.linkList = {
                     }
                     
                     admin.linkList.getList(admin.linkList.pageInfo.currentPage);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     
@@ -278,10 +277,10 @@ admin.linkList = {
                     }
                     
                     admin.linkList.getList(pageNum);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     
@@ -329,10 +328,10 @@ admin.linkList = {
                 
                 // Refershes the link list
                 admin.linkList.getList(admin.linkList.pageInfo.currentPage);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     }
 };
 

@@ -87,10 +87,10 @@ admin.comment = {
                 }
                 
                 $("#" + fromId + "Comments").html(commentsHTML);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     /*
@@ -118,10 +118,10 @@ admin.comment = {
                     }
                     
                     admin.comment.getList(articleId, fromId);
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     }
 };

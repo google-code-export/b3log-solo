@@ -108,10 +108,10 @@ admin.fileList = {
                 }
 
                 that.tablePagination.updateTablePagination(fileData, pageNum, result.pagination);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
 
     /* 

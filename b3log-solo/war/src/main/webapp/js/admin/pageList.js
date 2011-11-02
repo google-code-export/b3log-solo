@@ -143,10 +143,10 @@ admin.pageList = {
                 }
                         
                 that.tablePagination.updateTablePagination(pageData, pageNum, result.pagination);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
     
     /*
@@ -171,10 +171,10 @@ admin.pageList = {
                 $("#pageTitle").val(result.page.pageTitle);
                 
                 $("#tipMsg").text(result.msg);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     },
 
     /* 
@@ -209,10 +209,10 @@ admin.pageList = {
                     } else {
                         admin.setHashByPage(pageNum);
                     }
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     
@@ -261,10 +261,10 @@ admin.pageList = {
                     } else {
                         admin.setHashByPage(admin.pageList.pageInfo.pageCount);
                     }
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     
@@ -300,10 +300,10 @@ admin.pageList = {
                     $("#pageTitle").val("");
                     tinyMCE.get('pageContent').setContent("");
                     $("#pagePermalink").val("");
+                    
+                    $("#loadMsg").text("");
                 }
             });
-        
-            $("#loadMsg").text("");
         }
     },
     
@@ -354,10 +354,10 @@ admin.pageList = {
                 
                 // Refershes the page list
                 admin.pageList.getList(admin.pageList.pageInfo.currentPage);
+                
+                $("#loadMsg").text("");
             }
         });
-        
-        $("#loadMsg").text("");
     }
 };
 
