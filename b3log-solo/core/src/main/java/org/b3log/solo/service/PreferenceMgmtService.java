@@ -96,6 +96,7 @@ public final class PreferenceMgmtService {
         try {
             preferenceRepository.update(Preference.REPLY_NOTIFICATION_TEMPLATE,
                                         replyNotificationTemplate);
+            transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
