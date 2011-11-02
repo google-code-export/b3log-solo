@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Page management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2011
+ * @version 1.0.0.1, Nov 2, 2011
  * @since 0.4.0
  */
 public final class PageMgmtService {
@@ -273,27 +273,19 @@ public final class PageMgmtService {
         try {
             final JSONObject srcPage = pageRepository.get(pageId);
             final int srcPageOrder = srcPage.getInt(Page.PAGE_ORDER);
-            
-            JSONObject targetPage = null;
-            int targetPageOrder = 0;
-            if ("up".equals(direction)) {
-                if (0 == srcPageOrder) { // The source page is the top one
-                    return;
-                }
-                
-                targetPageOrder = srcPageOrder - 1;
-                targetPage = pageRepository.getByOrder(targetPageOrder);
-            } else { // Down
-                final int maxOrder = pageRepository.getMaxOrder();
-                if (maxOrder == srcPageOrder) { // The page page is the bottom one
-                    return;
-                }
 
-                targetPageOrder = srcPageOrder + 1;
-                targetPage = pageRepository.getByOrder(targetPageOrder);
+            JSONObject targetPage = null;
+            if ("up".equals(direction)) {
+                targetPage = pageRepository.getUpper(pageId);
+            } else { // Down
+                targetPage = pageRepository.getUnder(pageId);
             }
 
             if (null == targetPage) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
                 LOGGER.log(Level.WARNING,
                            "Cant not find the target page of source page[order={0}]",
                            srcPageOrder);
@@ -305,7 +297,8 @@ public final class PageMgmtService {
             srcPage.put(Page.PAGE_ORDER, direction);
 
             pageRepository.update(srcPage.getString(Keys.OBJECT_ID), srcPage);
-            pageRepository.update(targetPage.getString(Keys.OBJECT_ID), targetPage);
+            pageRepository.update(targetPage.getString(Keys.OBJECT_ID),
+                                  targetPage);
 
             transaction.commit();
         } catch (final Exception e) {

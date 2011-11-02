@@ -24,7 +24,8 @@ import org.json.JSONObject;
  * Page repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 17, 2011
+ * @version 1.0.0.4, Nov 2, 2011
+ * @since 0.3.1
  */
 public interface PageRepository extends Repository {
 
@@ -43,6 +44,24 @@ public interface PageRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     int getMaxOrder() throws RepositoryException;
+
+    /**
+     * Gets the upper page of the page specified by the given id.
+     * 
+     * @param id the given id
+     * @return upper page, returns {@code null} if not found
+     * @throws RepositoryException repository exception 
+     */
+    JSONObject getUpper(final String id) throws RepositoryException;
+
+    /**
+     * Gets the under page of the page specified by the given id.
+     * 
+     * @param id the given id
+     * @return under page, returns {@code null} if not found
+     * @throws RepositoryException repository exception 
+     */
+    JSONObject getUnder(final String id) throws RepositoryException;
 
     /**
      * Gets a page by the specified order.
