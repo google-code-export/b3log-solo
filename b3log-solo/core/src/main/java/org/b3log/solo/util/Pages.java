@@ -34,7 +34,8 @@ import org.json.JSONObject;
  * Page utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 25, 2011
+ * @version 1.0.0.4, Nov 2, 2011
+ * @since 0.3.1
  */
 public final class Pages {
 
@@ -142,9 +143,15 @@ public final class Pages {
     public void removePageComments(final String pageId)
             throws JSONException, RepositoryException {
         final int removedCnt = commentRepository.removeComments(pageId);
+
         int blogCommentCount = statistics.getBlogCommentCount();
         blogCommentCount -= removedCnt;
         statistics.setBlogCommentCount(blogCommentCount);
+
+        int publishedBlogCommentCount =
+                statistics.getPublishedBlogCommentCount();
+        publishedBlogCommentCount -= removedCnt;
+        statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
     }
 
     /**
