@@ -33,7 +33,8 @@ $.extend(TablePaginate.prototype, {
      */
     buildTable: function (colModel, noExpend) {
         var tableData = {
-            colModel: colModel
+            colModel: colModel,
+            noDataTip: Label.noDataLabel
         }
         if (!noExpend) {
             tableData.expendRow = {
