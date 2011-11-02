@@ -2,7 +2,7 @@
     <ul>
         <li>
             <div id="tabOthers_email">
-                <a class="tab-current" href="#tools/others/email">Email</a>
+                <a class="tab-current" href="#tools/others/email">${replayEmailTemplateLabel}</a>
             </div>
         </li>
         <li>
@@ -17,23 +17,28 @@
         <table class="form" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
-                    <th width="234px" valign="top">
-                        <label for="replayEmailTemplateTitle">${replayEmailTemplate1Label}</label>
+                    <th width="90px" valign="top">
+                        <label for="replayEmailTemplateTitle">${emailSubject1Label}</label>
                     </th>
                     <td>
                         <input id="replayEmailTemplateTitle" type="text" />
                     </td>
+                    <td rowspan="2" valign="top" width="250px">
+                        <div class="marginLeft12">
+                           ${replayEmailExplanationLabel}
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <th valign="top">
-                        <label for="replayEmailTemplateBody">${replayEmailTemplate1Label}</label>
+                        <label for="replayEmailTemplateBody">${emailContent1Label}</label>
                     </th>
                     <td>
                         <textarea rows="9" id="replayEmailTemplateBody"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" align="right">
+                    <td colspan="3" align="right">
                         <button onclick="admin.others.update()">${updateLabel}</button>
                     </td>
                 </tr>
