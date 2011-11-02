@@ -1,4 +1,4 @@
-<div id="tabPreference">
+<div id="tabPreference" class="sub-tabs">
     <ul>
         <li>
             <div id="tabPreference_skins">
@@ -27,7 +27,7 @@
         </li>
     </ul>
 </div>
-<div id="tabPreferencePanel">
+<div id="tabPreferencePanel" class="sub-tabs-main">
     <div id="tabPreferencePanel_config" class="none">
         <table class="form" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
@@ -90,14 +90,6 @@
                     </th>
                     <td>
                         <textarea rows="9" id="noticeBoard"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th valign="top">
-                        <label for="replayEmailTemplate">${replayEmailTemplate1Label}</label>
-                    </th>
-                    <td>
-                        <textarea rows="9" id="replayEmailTemplate"></textarea>
                     </td>
                 </tr>
                 <tr>
