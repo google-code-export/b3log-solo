@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Link management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2011
+ * @version 1.0.0.1, Nov 2, 2011
  * @since 0.4.0
  */
 public final class LinkMgmtService {
@@ -127,25 +127,17 @@ public final class LinkMgmtService {
             final int srcLinkOrder = srcLink.getInt(Link.LINK_ORDER);
 
             JSONObject targetLink = null;
-            int targetLinkOrder = 0;
             if ("up".equals(direction)) {
-                if (0 == srcLinkOrder) { // The source link is the top one
-                    return;
-                }
-                
-                targetLinkOrder = srcLinkOrder - 1;
-                targetLink = linkRepository.getByOrder(targetLinkOrder);
+                targetLink = linkRepository.getUpper(linkId);
             } else { // Down
-                final int maxOrder = linkRepository.getMaxOrder();
-                if (maxOrder == srcLinkOrder) { // The source link is the bottom one
-                    return;
-                }
-
-                targetLinkOrder = srcLinkOrder + 1;
-                targetLink = linkRepository.getByOrder(targetLinkOrder);
+                targetLink = linkRepository.getUnder(linkId);
             }
 
             if (null == targetLink) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+                
                 LOGGER.log(Level.WARNING,
                            "Cant not find the target link of source link[order={0}]",
                            srcLinkOrder);
@@ -153,8 +145,8 @@ public final class LinkMgmtService {
             }
 
             // Swaps
+            srcLink.put(Link.LINK_ORDER, targetLink.getInt(Link.LINK_ORDER));
             targetLink.put(Link.LINK_ORDER, srcLinkOrder);
-            srcLink.put(Link.LINK_ORDER, targetLinkOrder);
 
             linkRepository.update(srcLink.getString(Keys.OBJECT_ID), srcLink);
             linkRepository.update(targetLink.getString(Keys.OBJECT_ID), targetLink);

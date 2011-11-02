@@ -23,7 +23,8 @@ import org.json.JSONObject;
  * Link repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Dec 5, 2010
+ * @version 1.0.0.3, Nov 2, 2011
+ * @since 0.3.1
  */
 public interface LinkRepository extends Repository {
 
@@ -42,6 +43,24 @@ public interface LinkRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     int getMaxOrder() throws RepositoryException;
+
+    /**
+     * Gets the upper link of the link specified by the given id.
+     * 
+     * @param id the given id
+     * @return upper link, returns {@code null} if not found
+     * @throws RepositoryException repository exception 
+     */
+    JSONObject getUpper(final String id) throws RepositoryException;
+
+    /**
+     * Gets the under link of the link specified by the given id.
+     * 
+     * @param id the given id
+     * @return under link, returns {@code null} if not found
+     * @throws RepositoryException repository exception 
+     */
+    JSONObject getUnder(final String id) throws RepositoryException;
 
     /**
      * Gets a link by the specified order.

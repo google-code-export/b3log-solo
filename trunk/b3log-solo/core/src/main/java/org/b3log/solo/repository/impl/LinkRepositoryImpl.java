@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Link repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 12, 2011
+ * @version 1.0.0.4, Nov 2, 2011
  * @since 0.3.1
  */
 public final class LinkRepositoryImpl extends AbstractRepository
@@ -104,6 +104,64 @@ public final class LinkRepositoryImpl extends AbstractRepository
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             return null;
+        }
+    }
+
+    @Override
+    public JSONObject getUpper(final String id) throws RepositoryException {
+        try {
+            final JSONObject link = get(id);
+            if (null == link) {
+                return null;
+            }
+
+            final Query query = new Query();
+            query.addFilter(Link.LINK_ORDER,
+                            FilterOperator.LESS_THAN,
+                            link.getInt(Link.LINK_ORDER));
+            query.setCurrentPageNum(1);
+            query.setPageSize(1);
+
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (1 != array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
+        }
+    }
+
+    @Override
+    public JSONObject getUnder(final String id) throws RepositoryException {
+        try {
+            final JSONObject link = get(id);
+            if (null == link) {
+                return null;
+            }
+
+            final Query query = new Query();
+            query.addFilter(Link.LINK_ORDER,
+                            FilterOperator.GREATER_THAN,
+                            link.getInt(Link.LINK_ORDER));
+            query.setCurrentPageNum(1);
+            query.setPageSize(1);
+
+            final JSONObject result = get(query);
+            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+
+            if (1 != array.length()) {
+                return null;
+            }
+
+            return array.getJSONObject(0);
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new RepositoryException(e);
         }
     }
 
