@@ -293,8 +293,8 @@ public final class PageMgmtService {
             }
 
             // Swaps
+            srcPage.put(Page.PAGE_ORDER, targetPage.getInt(Page.PAGE_ORDER));
             targetPage.put(Page.PAGE_ORDER, srcPageOrder);
-            srcPage.put(Page.PAGE_ORDER, direction);
 
             pageRepository.update(srcPage.getString(Keys.OBJECT_ID), srcPage);
             pageRepository.update(targetPage.getString(Keys.OBJECT_ID),
