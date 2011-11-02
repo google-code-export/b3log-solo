@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.1, Sep 31, 2011
+ * @version 1.0.2.2, Nov 1, 2011
 */
 /* start resset */
 *, input, textarea {
@@ -204,18 +204,18 @@ a:hover {
 /* end first tabs */
 
 /* start sub tabs */
-#tabPreference {
+.sub-tabs {
     height: 30px;
 }
-#tabPreference ul {
+.sub-tabs ul {
     float: right;
     list-style: none outside none;
     margin-right: 24px;
 }
-#tabPreference li {
+.sub-tabs li {
     float: left;
 }
-#tabPreference li a {
+.sub-tabs li a {
     background-color: #ECECEC;
     border: 1px solid #DFDFDF;
     border-bottom: 0px;
@@ -227,15 +227,15 @@ a:hover {
     text-decoration: none;
     width: 80px;
 }
-#tabPreference .tab-current, #tabPreference .tab-current:hover {
+.sub-tabs .tab-current, .sub-tabs .tab-current:hover {
     background-color: #FFFFFF;
     font-weight: bold;
     line-height: 30px;
 }
-#tabPreference a:hover {
+.sub-tabs a:hover {
     background-color: #F5F5F5;
 }
-#tabPreferencePanel {
+.sub-tabs-main {
     background-color: #FFFFFF;
     border: 1px solid #DFDFDF;
     padding: 12px;

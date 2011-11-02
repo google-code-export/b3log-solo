@@ -18,14 +18,14 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.2, Oct 28, 2011
+ * @version 1.0.1.3, Nov 1, 2011
  */
 
 var Admin = function () {
     this.register = {};
     // 工具栏下的工具
     this.tools = ['#page-list', '#file-list', '#link-list', '#preference', 
-    '#user-list', '#plugin-list'];
+    '#user-list', '#plugin-list', '#others'];
     // 多用户时，一般用户不能使用的功能
     this.adTools = ['link-list', 'preference', 'file-list', 'page-list',
     'user-list', 'plugin-list'];
@@ -140,7 +140,8 @@ $.extend(Admin.prototype, {
                 
                     // 页面包含子 tab，需根据 hash 定位到相应的 tab
                     if (subTab) {
-                        $("#tabPreference").tabs("setCurrent", subTab);
+                        $("#tab" + tab.substring(0, 1).toUpperCase() + tab.substring(1)).
+                            tabs("setCurrent", subTab);
                     }
                 
                     // 根据 hash 调用现有的插件函数
@@ -158,7 +159,8 @@ $.extend(Admin.prototype, {
             
                 // 页面包含子 tab，需根据 hash 定位到相应的 tab
                 if (subTab) {
-                    $("#tabPreference").tabs("setCurrent", subTab);
+                    $("#tab" + tab.substring(0, 1).toUpperCase() + tab.substring(1)).
+                        tabs("setCurrent", subTab);
                 }
                 
                 // 根据 hash 调用现有的插件函数
