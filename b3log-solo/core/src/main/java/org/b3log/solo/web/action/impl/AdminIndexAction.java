@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Admin index action. admin-index.ftl.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jul 10, 2011
+ * @version 1.0.0.8, Nov 2, 2011
  * @since 0.3.1
  */
 public final class AdminIndexAction extends AbstractAdminAction {
@@ -70,7 +70,6 @@ public final class AdminIndexAction extends AbstractAdminAction {
 
     @Override
     protected Map<?, ?> doFreeMarkerAction(
-            final freemarker.template.Template template,
             final HttpServletRequest request,
             final HttpServletResponse response) throws ActionException {
         final Map<String, Object> ret = new HashMap<String, Object>();
