@@ -101,7 +101,7 @@
                              src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /></a>
                     <a href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">${link.linkTitle}
                     </a>
-                    ~${link.linkDescription}~
+                    <#-- ${link.linkDescription} -->
                 </li>
                 </#list>
             </ul>
