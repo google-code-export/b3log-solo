@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Feb 22, 2011
+ * @version 1.0.0.7, Nov 5, 2011
  * @since 0.3.1
  */
 public final class UserRepositoryImpl extends AbstractRepository
@@ -46,7 +46,7 @@ public final class UserRepositoryImpl extends AbstractRepository
             Logger.getLogger(UserRepositoryImpl.class.getName());
 
     @Override
-    public JSONObject getByEmail(final String email) {
+    public JSONObject getByEmail(final String email) throws RepositoryException {
         final Query query = new Query();
         query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL,
                         email.toLowerCase().trim());
@@ -63,7 +63,7 @@ public final class UserRepositoryImpl extends AbstractRepository
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            return null;
+            throw new RepositoryException(e);
         }
     }
 

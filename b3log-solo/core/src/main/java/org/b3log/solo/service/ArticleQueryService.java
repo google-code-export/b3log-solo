@@ -57,7 +57,7 @@ import static org.b3log.solo.model.Article.*;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 28, 2011
+ * @version 1.0.0.3, Nov 5, 2011
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -94,6 +94,25 @@ public final class ArticleQueryService {
      * Article utilities.
      */
     private static Articles articleUtils = Articles.getInstance();
+
+    /**
+     * Gets the recent articles with the specified fetch size.
+     * 
+     * @param fetchSize the specified fetch size
+     * @return a list of json object, its size less or equal to the specified
+     * fetch size
+     * @throws ServiceException service exception 
+     */
+    public List<JSONObject> getRecentArticles(final int fetchSize)
+            throws ServiceException {
+        try {
+            return articleRepository.getRecentArticles(fetchSize);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets recent articles failed", e);
+
+            return Collections.emptyList();
+        }
+    }
 
     /**
      * Gets an article by the specified article id.

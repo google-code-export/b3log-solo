@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Oct 18, 2011
+ * @version 1.0.2.5, Nov 5, 2011
  * @since 0.3.1
  */
 public final class Articles {
@@ -98,7 +98,15 @@ public final class Articles {
             throws JSONException {
         final String email = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
 
-        JSONObject ret = userRepository.getByEmail(email);
+        JSONObject ret = null;
+        try {
+            ret = userRepository.getByEmail(email);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.WARNING,
+                       "Gets author of article failed, assumes the administrator is the author of this article[id="
+                       + article.getString(Keys.OBJECT_ID) + "]", e);
+        }
+
         if (null == ret) {
             // This author may be deleted by admin, use admin as the author
             // of this article

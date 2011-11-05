@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.solo.util.Users;
 import org.b3log.latke.service.ServiceException;
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +57,7 @@ import static org.b3log.solo.model.Preference.*;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 31, 2011
+ * @version 1.0.0.2, Nov 5, 2011
  * @since 0.4.0
  */
 public final class InitService {
@@ -93,6 +94,10 @@ public final class InitService {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
+    /**
+     * User utilities.
+     */
+    private Users users = Users.getInstance();
     /**
      * Maximum count of initialization.
      */
@@ -174,7 +179,7 @@ public final class InitService {
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
-            helloWorld(request, response);
+            helloWorld(request);
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -189,11 +194,9 @@ public final class InitService {
      * Publishes the first article "Hello World".
      *
      * @param request the specified http servlet request
-     * @param response the specified http servlet response
      * @throws Exception exception
      */
-    private void helloWorld(final HttpServletRequest request,
-                            final HttpServletResponse response)
+    private void helloWorld(final HttpServletRequest request)
             throws Exception {
         final JSONObject article = new JSONObject();
 
@@ -216,9 +219,12 @@ public final class InitService {
         article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID, "0");
+        final JSONObject currentUser = users.getCurrentUser(request);
+        article.put(Article.ARTICLE_AUTHOR_EMAIL,
+                    currentUser.getString(User.USER_EMAIL));
 
         final String articleId =
-                articleMgmtService.addArticleInternal(article, request);
+                articleMgmtService.addArticleInternal(article);
 
         final JSONObject requestJSONObject = new JSONObject();
         final String captchaForInit = "captchaForInit";

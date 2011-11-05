@@ -23,6 +23,7 @@ import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -53,6 +54,23 @@ public final class UserQueryService {
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
+
+    /**
+     * Gets a user by the specified email.
+     *
+     * @param email the specified email
+     * @return user, returns {@code null} if not found
+     * @throws ServiceException 
+     */
+    public JSONObject getUserByEmail(final String email) throws ServiceException {
+        try {
+            return userRepository.getByEmail(email);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets user by email[" + email + "] failed",
+                       e);
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Gets users by the specified request json object.

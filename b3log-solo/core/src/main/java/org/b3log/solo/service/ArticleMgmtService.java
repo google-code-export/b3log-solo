@@ -43,6 +43,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.model.Tag;
@@ -73,7 +74,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 26, 2011
+ * @version 1.0.0.3, Nov 5, 2011
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -243,7 +244,7 @@ public final class ArticleMgmtService {
      *         "articleTags": "tag1,tag2,tag3",
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
-     *         "articleSign_oId": "" // optional
+     *         "articleSign_oId": ""
      *     }
      * }
      * </pre>
@@ -386,7 +387,7 @@ public final class ArticleMgmtService {
      *         "articleTags": "tag1,tag2,tag3",
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
-     *         "postToCommunity": boolean,
+     *         "postToCommunity": boolean, // optional
      *         "articleSign_oId": "" // optional
      *     }
      * }
@@ -405,7 +406,11 @@ public final class ArticleMgmtService {
             final JSONObject article =
                     requestJSONObject.getJSONObject(Article.ARTICLE);
 
-            final String ret = addArticleInternal(article, request);
+            final JSONObject currentUser = users.getCurrentUser(request);
+            article.put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(
+                    User.USER_EMAIL));
+
+            final String ret = addArticleInternal(article);
 
             transaction.commit();
 
@@ -429,12 +434,10 @@ public final class ArticleMgmtService {
      * Adds the specified article for internal invocation purposes.
      * 
      * @param article the specified article
-     * @param request the specified request
      * @return generated article id
      * @throws ServiceException service exception
      */
-    public String addArticleInternal(final JSONObject article,
-                                     final HttpServletRequest request)
+    public String addArticleInternal(final JSONObject article)
             throws ServiceException {
         try {
             final String ret = Ids.genTimeMillisId();
@@ -490,8 +493,8 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_PERMALINK, permalink);
             // Step 9: Add article-sign relation
             final String signId =
-                    article.getString(Article.ARTICLE_SIGN_REF + "_"
-                                      + Keys.OBJECT_ID);
+                    article.optString(Article.ARTICLE_SIGN_REF + "_"
+                                      + Keys.OBJECT_ID, "0");
             addArticleSignRelation(signId, ret);
             article.remove(Article.ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             // Step 10: Set had been published status
@@ -500,14 +503,16 @@ public final class ArticleMgmtService {
                 // Publish it directly
                 article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
             }
-            // Step 11: Set author email
-            final JSONObject currentUser = users.getCurrentUser(request);
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(
-                    User.USER_EMAIL));
-            // Step 12: Set random double
+            // Step 11: Set random double
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-            // Step 13: Addarticle
+            // Step 12: Set post to community
+            final boolean postToCommunity =
+                    article.optBoolean(Common.POST_TO_COMMUNITY, true);
+            article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
+            // Step 13: Add article
             articleRepository.add(article);
+
+            article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
 
             if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 // Fire add article event
@@ -536,8 +541,8 @@ public final class ArticleMgmtService {
     public void removeArticle(final String articleId) throws ServiceException {
         LOGGER.log(Level.FINER, "Removing an article[id={0}]", articleId);
 
-         final Transaction transaction = articleRepository.beginTransaction();
-         
+        final Transaction transaction = articleRepository.beginTransaction();
+
         try {
             decTagRefCount(articleId);
             unArchiveDate(articleId);
@@ -552,13 +557,13 @@ public final class ArticleMgmtService {
             if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 statistics.decPublishedBlogArticleCount();
             }
-            
+
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            
+
             LOGGER.log(Level.SEVERE, "Removes an article[id=" + articleId
                                      + "] failed", e);
             throw new ServiceException(e);

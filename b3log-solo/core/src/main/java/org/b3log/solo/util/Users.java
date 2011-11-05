@@ -153,7 +153,15 @@ public final class Users {
         }
 
         final String email = currentUser.getEmail();
-        return userRepository.getByEmail(email);
+
+        try {
+            return userRepository.getByEmail(email);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE,
+                       "Gets current user by request failed, returns null", e);
+
+            return null;
+        }
     }
 
     /**
