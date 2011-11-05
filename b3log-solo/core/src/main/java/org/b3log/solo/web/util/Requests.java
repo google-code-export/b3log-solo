@@ -17,6 +17,7 @@ package org.b3log.solo.web.util;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.util.Strings;
 import org.json.JSONException;
@@ -26,7 +27,7 @@ import org.json.JSONObject;
  * Request utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 27, 2011
+ * @version 1.0.0.3, Nov 5, 2011
  * @see #PAGINATION_PATH_PATTERN
  */
 // TODO: 88250, moves the class into Latke
@@ -66,6 +67,19 @@ public final class Requests {
      * Default window size.
      */
     private static final int DEFAULT_WINDOW_SIZE = 20;
+    
+    /**
+     * Determines whether the specified request dose come from 
+     * mobile device or not with its header ""User-Agent".
+     * 
+     * @param request the specified request
+     * @return {@code true} if the specified request come from mobile device,
+     * returns {@code false} otherwise
+     */
+    public static boolean mobileRequest(final HttpServletRequest request) {
+        // TODO: dx, ;-)
+        return false;
+    }
 
     /**
      * Builds pagination request with the specified path.
