@@ -88,7 +88,8 @@ public final class ArticleRepositoryImpl extends AbstractRepository
     }
 
     @Override
-    public List<JSONObject> getRecentArticles(final int fetchSize) {
+    public List<JSONObject> getRecentArticles(final int fetchSize)
+            throws RepositoryException {
         final Query query = new Query();
         query.addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true);
         query.addSort(Article.ARTICLE_UPDATE_DATE,
@@ -103,9 +104,9 @@ public final class ArticleRepositoryImpl extends AbstractRepository
             return CollectionUtils.jsonArrayToList(array);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
 
-        return Collections.emptyList();
+            throw new RepositoryException(e);
+        }
     }
 
     @Override

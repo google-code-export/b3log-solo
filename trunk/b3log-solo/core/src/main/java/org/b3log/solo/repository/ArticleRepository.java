@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Oct 3, 2011
+ * @version 1.0.1.7, Nov 5, 2011
  * @since 0.3.1
  */
 public interface ArticleRepository extends Repository {
@@ -68,8 +68,10 @@ public interface ArticleRepository extends Repository {
      *
      * @param fetchSize the specified fetch size
      * @return a list of articles recently, returns an empty list if not found
+     * @throws RepositoryException repository exception 
      */
-    List<JSONObject> getRecentArticles(final int fetchSize);
+    List<JSONObject> getRecentArticles(final int fetchSize) 
+            throws RepositoryException;
 
     /**
      * Gets most commented and published articles with the specified number.
