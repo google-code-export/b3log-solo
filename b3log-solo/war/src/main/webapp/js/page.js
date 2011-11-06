@@ -18,7 +18,8 @@
  * @fileoverview Page util, load heighlight and process comment.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1, Oct 15, 2011
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.1.2, Nov 6, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -251,7 +252,7 @@ $.extend(Page.prototype, {
                 for (var i = 0; i < randomArticles.length; i++) {
                     var article = randomArticles[i];
                     var title = article.articleTitle;
-                    var randomArticleLiHtml = "<li>" + "<a href='" + article.articlePermalink +"'>" +  title + "</a></li>";
+                    var randomArticleLiHtml = "<li>" + "<a title='" + title + "' href='" + article.articlePermalink +"'>" +  title + "</a></li>";
                     listHtml += randomArticleLiHtml;
                 }
 
@@ -283,7 +284,7 @@ $.extend(Page.prototype, {
                         var article = articles[i];
                         var title = article.articleTitle;
                         var articleLiHtml = "<li>"
-                        + "<a href='" + article.articlePermalink + "'>"
+                        + "<a title='" + title + "' href='" + article.articlePermalink + "'>"
                         +  title + "</a></li>"
                         listHtml += articleLiHtml
                     }
@@ -319,7 +320,7 @@ $.extend(Page.prototype, {
                         var article = articles[i];
                         var title = article.articleTitle;
                         var articleLiHtml = "<li>"
-                        + "<a target='_blank' href='" + article.articlePermalink + "'>"
+                        + "<a title='" + title + "' target='_blank' href='" + article.articlePermalink + "'>"
                         +  title + "</a></li>"
                         listHtml += articleLiHtml
                     }
