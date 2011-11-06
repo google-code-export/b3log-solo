@@ -10,3 +10,6 @@ MetaWeblog API 是用于离线管理文章的（比如使用 [http://explore.liv
  * metaWeblog.newPost - 发布文章/保存草稿
  * metaWeblog.editPost - 编辑文章
  * blogger.deletePost - 删除文章
+
+配置地址：/apis/metaweblog
+用户名/密码：同登录博客时用的口令
