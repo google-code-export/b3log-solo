@@ -176,17 +176,6 @@ public final class MetaWeblogAPI {
     /**
      * MetaWeblog requests processing.
      * 
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "msg": ""
-     * }
-     * </pre>
-     * // TODO: 88250, metaweblog response render
-     * </p>
-     *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
