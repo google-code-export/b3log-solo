@@ -123,11 +123,19 @@ public final class MetaWeblogAPI {
     /**
      * Method name: "metaWeblog.newPost".
      */
-    private static final String MEHTOD_NEW_POST = "metaWeblog.newPost";
+    private static final String METHOD_NEW_POST = "metaWeblog.newPost";
+    /**
+     * Method name: "metaWeblog.editPost".
+     */
+    private static final String METHOD_EDIT_POST = "metaWeblog.editPost";
     /**
      * Method name: "metaWeblog.getPost".
      */
     private static final String METHOD_GET_POST = "metaWeblog.getPost";
+    /**
+     * Method name: "blogger.deletePost".
+     */
+    private static final String METHOD_DELETE_POST = "blogger.deletePost";
     /**
      * Argument "username" index.
      */
@@ -196,6 +204,11 @@ public final class MetaWeblogAPI {
 
             final JSONArray params = methodCall.getJSONObject("params").
                     getJSONArray("param");
+
+            if (METHOD_DELETE_POST.equals(methodName)) {
+                params.remove(0); // Removes the first argument "appkey"
+            }
+
             final String userEmail = params.getJSONObject(INDEX_USER_EMAIL).
                     getJSONObject(
                     "value").getString("string");
@@ -219,7 +232,7 @@ public final class MetaWeblogAPI {
                 final int numOfPosts = params.getJSONObject(INDEX_NUM_OF_POSTS).
                         getJSONObject("value").getInt("int");
                 responseContent = getRecentPosts(numOfPosts);
-            } else if (MEHTOD_NEW_POST.equals(methodName)) {
+            } else if (METHOD_NEW_POST.equals(methodName)) {
                 final JSONObject article = parsetPost(methodCall);
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
                 addArticle(article);
@@ -227,6 +240,18 @@ public final class MetaWeblogAPI {
                 final String postId = params.getJSONObject(INDEX_POST_ID).
                         getJSONObject("value").getString("string");
                 responseContent = getPost(postId);
+            } else if (METHOD_EDIT_POST.equals(methodName)) {
+                final JSONObject article = parsetPost(methodCall);
+                final String postId = params.getJSONObject(INDEX_POST_ID).
+                        getJSONObject("value").getString("string");
+                article.put(Keys.OBJECT_ID, postId);
+
+                article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
+                articleMgmtService.updateArticle(article);
+            } else if (METHOD_DELETE_POST.equals(methodName)) {
+                final String postId = params.getJSONObject(INDEX_POST_ID).
+                        getJSONObject("value").getString("string");
+                articleMgmtService.removeArticle(postId);
             }
 
             renderer.setContent(responseContent);
@@ -256,6 +281,7 @@ public final class MetaWeblogAPI {
 
         return stringBuilder.toString();
     }
+
 
     /**
      * Adds the specified article.
@@ -458,10 +484,11 @@ public final class MetaWeblogAPI {
 
         stringBuilder.append("<member><name>categories</name>").
                 append("<value><array><data>");
-        final JSONArray tags = 
+        final JSONArray tags =
                 article.getJSONArray(Article.ARTICLE_TAGS_REF);
         for (int i = 0; i < tags.length(); i++) {
-            final String tagTitle = tags.getJSONObject(i).getString(Tag.TAG_TITLE);
+            final String tagTitle = tags.getJSONObject(i).getString(
+                    Tag.TAG_TITLE);
             stringBuilder.append("<value>").append(tagTitle).append("</value>");
         }
         stringBuilder.append("</data></array></value></member></struct>");

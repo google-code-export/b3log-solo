@@ -248,11 +248,9 @@ public final class ArticleMgmtService {
      *     }
      * }
      * </pre>
-     * @param request the specified http servlet request
      * @throws ServiceException service exception 
      */
-    public void updateArticle(final JSONObject requestJSONObject,
-                              final HttpServletRequest request)
+    public void updateArticle(final JSONObject requestJSONObject)
             throws ServiceException {
         final JSONObject ret = new JSONObject();
 

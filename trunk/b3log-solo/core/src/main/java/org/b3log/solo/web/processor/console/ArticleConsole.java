@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Article console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 28, 2011
+ * @version 1.0.0.1, Nov 6, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -529,7 +529,7 @@ public final class ArticleConsole {
                 return;
             }
 
-            articleMgmtService.updateArticle(requestJSONObject, request);
+            articleMgmtService.updateArticle(requestJSONObject);
 
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
             ret.put(Keys.STATUS_CODE, true);
