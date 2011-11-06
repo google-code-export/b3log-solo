@@ -128,6 +128,7 @@ public final class ArticleQueryService {
      *         "articleContent": "",
      *         "articlePermalink": "",
      *         "articleHadBeenPublished": boolean,
+     *         "articleCreateDate": java.util.Date,
      *         "articleTags": [{
      *             "oId": "",
      *             "tagTitle": ""
@@ -181,7 +182,6 @@ public final class ArticleQueryService {
             // Remove unused properties
             article.remove(ARTICLE_AUTHOR_EMAIL);
             article.remove(ARTICLE_COMMENT_COUNT);
-            article.remove(ARTICLE_CREATE_DATE);
             article.remove(ARTICLE_IS_PUBLISHED);
             article.remove(ARTICLE_PUT_TOP);
             article.remove(ARTICLE_UPDATE_DATE);
