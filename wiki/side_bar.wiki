@@ -7,6 +7,7 @@
      * [basic_configuration 基本配置]
      * [upgrade 升级]
    * 特性
+     * [feed Atom/RSS]
      * [has_update “有更新”]
      * [multi_users 多用户]
      * [article_sign 文章签名档]
