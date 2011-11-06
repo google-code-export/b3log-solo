@@ -8,6 +8,7 @@
      * [upgrade 升级]
    * 特性
      * [feed Atom/RSS]
+     * [sitemap Sitemap]
      * [has_update “有更新”]
      * [multi_users 多用户]
      * [article_sign 文章签名档]
