@@ -1,4 +1,4 @@
-#summary “MetaWeblog API”
+#summary MetaWeblog API
 
 ===MetaWeblog API===
 MetaWeblog API 是用于离线管理文章的（比如使用 [http://explore.live.com/windows-live-writer WLW]），目前支持以下 APIs：
