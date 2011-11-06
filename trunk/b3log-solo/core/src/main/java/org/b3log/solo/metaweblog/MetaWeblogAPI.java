@@ -175,7 +175,7 @@ public final class MetaWeblogAPI {
 
         try {
             final ServletInputStream inputStream = request.getInputStream();
-            final String xml = IOUtils.toString(inputStream);
+            final String xml = IOUtils.toString(inputStream, "UTF-8");
             final JSONObject requestJSONObject = XML.toJSONObject(xml);
 
             final JSONObject methodCall =
@@ -276,9 +276,13 @@ public final class MetaWeblogAPI {
             } else if ("categories".equals(name)) {
                 final StringBuilder tagBuilder = new StringBuilder();
 
-                final Object value =
-                        member.getJSONObject("value").
-                        getJSONObject("array").getJSONObject("data").get("value");
+                final JSONObject data = member.getJSONObject("value").
+                        getJSONObject("array").getJSONObject("data");
+                if (0 == data.length()) {
+                    throw new Exception("At least on Tag");
+                }
+
+                final Object value = data.get("value");
                 if (value instanceof JSONArray) {
                     final JSONArray tags = (JSONArray) value;
                     for (int j = 0; j < tags.length(); j++) {
