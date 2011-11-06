@@ -125,9 +125,17 @@ public final class MetaWeblogAPI {
      */
     private static final String MEHTOD_NEW_POST = "metaWeblog.newPost";
     /**
+     * Method name: "metaWeblog.getPost".
+     */
+    private static final String METHOD_GET_POST = "metaWeblog.getPost";
+    /**
      * Argument "username" index.
      */
     private static final int INDEX_USER_EMAIL = 1;
+    /**
+     * Argument "postid" index.
+     */
+    private static final int INDEX_POST_ID = 0;
     /**
      * Argument "password" index.
      */
@@ -212,17 +220,41 @@ public final class MetaWeblogAPI {
                         getJSONObject("value").getInt("int");
                 responseContent = getRecentPosts(numOfPosts);
             } else if (MEHTOD_NEW_POST.equals(methodName)) {
-                final JSONObject article = getArticle(methodCall);
-
+                final JSONObject article = parsetPost(methodCall);
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
-
                 addArticle(article);
+            } else if (METHOD_GET_POST.equals(methodName)) {
+                final String postId = params.getJSONObject(INDEX_POST_ID).
+                        getJSONObject("value").getString("string");
+                responseContent = getPost(postId);
             }
 
             renderer.setContent(responseContent);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
+    }
+
+    /**
+     * Processes {@value #METHOD_GET_POST}.
+     * 
+     * @param postId the specified post id
+     * @return method response XML
+     * @throws Exception exception
+     */
+    private String getPost(final String postId) throws Exception {
+        final StringBuilder stringBuilder =
+                new StringBuilder(
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value>");
+
+        final String posts = buildPost(postId);
+
+        stringBuilder.append(posts);
+
+        stringBuilder.append(
+                "</value></param></params></methodResponse>");
+
+        return stringBuilder.toString();
     }
 
     /**
@@ -247,13 +279,13 @@ public final class MetaWeblogAPI {
     }
 
     /**
-     * Gets an article with the specified method call.
+     * Parses the specified method call for an article.
      * 
      * @param methodCall the specified method call
      * @return article
      * @throws Exception exception 
      */
-    private JSONObject getArticle(final JSONObject methodCall) throws Exception {
+    private JSONObject parsetPost(final JSONObject methodCall) throws Exception {
         final JSONObject ret = new JSONObject();
 
         final JSONArray params = methodCall.getJSONObject("params").
@@ -385,7 +417,60 @@ public final class MetaWeblogAPI {
     }
 
     /**
-     * Builds recent posts (array of post info structs) with the specified 
+     * Builds a post (post struct) with the specified post id.
+     * 
+     * @param postId the specified post id
+     * @return blog info XML
+     * @throws Exception exception 
+     */
+    private String buildPost(final String postId) throws Exception {
+        final StringBuilder stringBuilder = new StringBuilder();
+
+        final JSONObject result = articleQueryService.getArticle(postId);
+
+        if (null == result) {
+            throw new Exception("Not found article[id=" + postId + "]");
+        }
+
+        final JSONObject article = result.getJSONObject(Article.ARTICLE);
+
+        final Date createDate =
+                (Date) article.get(Article.ARTICLE_CREATE_DATE);
+        final String articleTitle =
+                StringEscapeUtils.escapeXml(
+                article.getString(Article.ARTICLE_TITLE));
+
+        stringBuilder.append("<struct>");
+
+        stringBuilder.append("<member><name>dateCreated</name>").
+                append("<value><dateTime.iso8601>").append(articleTitle).
+                append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(
+                createDate)).append("</dateTime.iso8601></value></member>");
+
+        stringBuilder.append("<member><name>description</name>").
+                append("<value>").append(StringEscapeUtils.escapeXml(
+                article.getString(Article.ARTICLE_CONTENT))).
+                append("</value></member>");
+
+        stringBuilder.append("<member><name>title</name>").
+                append("<value>").append(articleTitle).
+                append("</value></member>");
+
+        stringBuilder.append("<member><name>categories</name>").
+                append("<value><array><data>");
+        final JSONArray tags = 
+                article.getJSONArray(Article.ARTICLE_TAGS_REF);
+        for (int i = 0; i < tags.length(); i++) {
+            final String tagTitle = tags.getJSONObject(i).getString(Tag.TAG_TITLE);
+            stringBuilder.append("<value>").append(tagTitle).append("</value>");
+        }
+        stringBuilder.append("</data></array></value></member></struct>");
+
+        return stringBuilder.toString();
+    }
+
+    /**
+     * Builds recent posts (array of post structs) with the specified 
      * fetch size.
      * 
      * @param fetchSize the specified fetch size
@@ -422,6 +507,21 @@ public final class MetaWeblogAPI {
             stringBuilder.append("<member><name>title</name>").
                     append("<value>").append(articleTitle).
                     append("</value></member>");
+
+            stringBuilder.append("<member><name>postid</name>").
+                    append("<value>").append(article.getString(Keys.OBJECT_ID)).
+                    append("</value></member>");
+
+            stringBuilder.append("<member><name>categories</name>").
+                    append("<value><array><data>");
+            final String tagTitles = article.getString(Article.ARTICLE_TAGS_REF);
+            final String[] tagTitleArray = tagTitles.split(",");
+            for (int i = 0; i < tagTitleArray.length; i++) {
+                final String tagTitle = tagTitleArray[i];
+                stringBuilder.append("<value>").append(tagTitle).append(
+                        "</value>");
+            }
+            stringBuilder.append("</data></array></value></member>");
 
             stringBuilder.append("</struct></value>");
         }
