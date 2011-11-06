@@ -57,7 +57,7 @@ import static org.b3log.solo.model.Article.*;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 5, 2011
+ * @version 1.0.0.4, Nov 6, 2011
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -121,24 +121,25 @@ public final class ArticleQueryService {
      * @return for example,
      * <pre>
      * {
-     *     "oId": "",
-     *     "articleTitle": "",
-     *     "articleAbstract": "",
-     *     "articleContent": "",
-     *     "articlePermalink": "",
-     *     "articleHadBeenPublished": boolean,
-     *     "articleTags": [{
+     *     "article": {
      *         "oId": "",
-     *         "tagTitle": ""
-     *     }, ....],
-     *     "articleSign_oId": "",
-     *     "signs": [{
-     *         "oId": "",
-     *         "signHTML": ""
-     *     }, ....]
-     *     "sc": "GET_ARTICLE_SUCC"
+     *         "articleTitle": "",
+     *         "articleAbstract": "",
+     *         "articleContent": "",
+     *         "articlePermalink": "",
+     *         "articleHadBeenPublished": boolean,
+     *         "articleTags": [{
+     *             "oId": "",
+     *             "tagTitle": ""
+     *         }, ....],
+     *         "articleSign_oId": "",
+     *         "signs": [{
+     *             "oId": "",
+     *             "signHTML": ""
+     *         }, ....]
+     *     }
      * }
-     * </pre>
+     * </pre>, returns {@code null} if not found
      * @throws ServiceException service exception
      */
     public JSONObject getArticle(final String articleId)
@@ -147,6 +148,11 @@ public final class ArticleQueryService {
             final JSONObject ret = new JSONObject();
 
             final JSONObject article = articleRepository.get(articleId);
+            
+            if (null == article) {
+                return null;
+            }
+            
             ret.put(ARTICLE, article);
 
             final JSONArray tags = new JSONArray();
