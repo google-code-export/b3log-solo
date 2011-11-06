@@ -54,7 +54,7 @@ import org.json.XML;
  * requests processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Nov 5, 2011
+ * @version 1.0.0.1, Nov 6, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -188,6 +188,7 @@ public final class MetaWeblogAPI {
         final TextXMLRenderer renderer = new TextXMLRenderer();
         context.setRenderer(renderer);
 
+        String responseContent = null;
         try {
             final ServletInputStream inputStream = request.getInputStream();
             final String xml = IOUtils.toString(inputStream, "UTF-8");
@@ -218,7 +219,6 @@ public final class MetaWeblogAPI {
                 throw new Exception("Wrong password");
             }
 
-            String responseContent = null;
             if (METHOD_GET_USERS_BLOGS.equals(methodName)) {
                 responseContent = getUsersBlogs();
             } else if (METHOD_GET_CATEGORIES.equals(methodName)) {
@@ -231,6 +231,14 @@ public final class MetaWeblogAPI {
                 final JSONObject article = parsetPost(methodCall);
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
                 addArticle(article);
+
+                final StringBuilder stringBuilder =
+                        new StringBuilder(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><string>").
+                        append(article.getString(Keys.OBJECT_ID)).
+                        append(
+                        "</string></value></param></params></methodResponse>");
+                responseContent = stringBuilder.toString();
             } else if (METHOD_GET_POST.equals(methodName)) {
                 final String postId = params.getJSONObject(INDEX_POST_ID).
                         getJSONObject("value").getString("string");
@@ -243,16 +251,42 @@ public final class MetaWeblogAPI {
 
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
                 articleMgmtService.updateArticle(article);
+
+                final StringBuilder stringBuilder =
+                        new StringBuilder(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><string>").
+                        append(article.getString(Keys.OBJECT_ID)).
+                        append(
+                        "</string></value></param></params></methodResponse>");
+                responseContent = stringBuilder.toString();
             } else if (METHOD_DELETE_POST.equals(methodName)) {
                 final String postId = params.getJSONObject(INDEX_POST_ID).
                         getJSONObject("value").getString("string");
                 articleMgmtService.removeArticle(postId);
-            }
 
-            renderer.setContent(responseContent);
+                final StringBuilder stringBuilder =
+                        new StringBuilder(
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><boolean>").
+                        append(true).append(
+                        "</boolean></value></param></params></methodResponse>");
+                responseContent = stringBuilder.toString();
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            responseContent = "";
+            final StringBuilder stringBuilder =
+                    new StringBuilder(
+                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><fault><value><struct>").
+                    append(
+                    "<member><name>faultCode</name><value><int>500</int></value></member>").
+                    append("<member><name>faultString</name><value><string>").
+                    append(e.getMessage()).append(
+                    "</string></value></member></struct></value></fault></methodResponse>");
+            responseContent = stringBuilder.toString();
         }
+
+        renderer.setContent(responseContent);
     }
 
     /**
@@ -276,7 +310,6 @@ public final class MetaWeblogAPI {
 
         return stringBuilder.toString();
     }
-
 
     /**
      * Adds the specified article.
