@@ -44,7 +44,6 @@ import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,10 +65,6 @@ public final class MetaWeblogAPI {
      */
     private static final Logger LOGGER =
             Logger.getLogger(MetaWeblogAPI.class.getName());
-    /**
-     * User utilities.
-     */
-    private Users userUtils = Users.getInstance();
     /**
      * Preference query service.
      */
