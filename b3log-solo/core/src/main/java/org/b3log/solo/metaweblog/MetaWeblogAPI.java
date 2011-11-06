@@ -133,6 +133,10 @@ public final class MetaWeblogAPI {
      */
     private static final int INDEX_USER_PWD = 2;
     /**
+     * Argument "numberOfPosts" index.
+     */
+    private static final int INDEX_NUM_OF_POSTS = 3;
+    /**
      * Argument "post" index.
      */
     private static final int INDEX_POST = 3;
@@ -204,7 +208,9 @@ public final class MetaWeblogAPI {
             } else if (METHOD_GET_CATEGORIES.equals(methodName)) {
                 responseContent = getCategories();
             } else if (METHOD_GET_RECENT_POSTS.equals(methodName)) {
-                responseContent = getRecentPosts(1); // TODO: metaWeblog.getRecentPosts
+                final int numOfPosts = params.getJSONObject(INDEX_NUM_OF_POSTS).
+                        getJSONObject("value").getInt("int");
+                responseContent = getRecentPosts(numOfPosts);
             } else if (MEHTOD_NEW_POST.equals(methodName)) {
                 final JSONObject article = getArticle(methodCall);
 
