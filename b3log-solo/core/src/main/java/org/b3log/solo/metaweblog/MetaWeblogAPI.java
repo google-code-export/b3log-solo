@@ -52,6 +52,19 @@ import org.json.XML;
 /**
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> 
  * requests processing.
+ * 
+ * <p>
+ * Implemented the following APIs:
+ *   <ul>
+ *     <li>blogger.deletePost</li>
+ *     <li>blogger.getUsersBlogs</li>
+ *     <li>metaWeblog.editPost</li>
+ *     <li>metaWeblog.getCategories</li>
+ *     <li>metaWeblog.getPost</li>
+ *     <li>metaWeblog.getRecentPosts</li>
+ *     <li>metaWeblog.newPost</li>
+ *   </ul>
+ * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Nov 6, 2011
