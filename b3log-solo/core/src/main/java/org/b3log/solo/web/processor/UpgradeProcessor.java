@@ -188,6 +188,7 @@ public final class UpgradeProcessor {
 
             final JSONArray users =
                     userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+            LOGGER.log(Level.INFO, "Users[length={0}]", users.length());
             for (int i = 0; i < users.length(); i++) {
                 final JSONObject user = users.getJSONObject(i);
                 user.put(User.USER_PASSWORD,
