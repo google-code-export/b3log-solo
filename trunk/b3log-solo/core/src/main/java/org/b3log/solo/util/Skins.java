@@ -155,8 +155,8 @@ public final class Skins {
             skinArray.put(skin);
         }
 
-        final String currentSkinDirName = preference.getString(SKIN_DIR_NAME);
-        final String skinName = preference.getString(SKIN_NAME);
+        final String currentSkinDirName = preference.optString(SKIN_DIR_NAME);
+        final String skinName = preference.optString(SKIN_NAME);
         LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
 
         if (!skinDirNames.contains(currentSkinDirName)) {
