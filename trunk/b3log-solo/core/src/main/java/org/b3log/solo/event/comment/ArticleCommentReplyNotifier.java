@@ -131,7 +131,7 @@ public final class ArticleCommentReplyNotifier
             }
 
             final String mailBody = replyNotificationTemplate.getString("body").
-                    replace("${postLInk}", articleLink).
+                    replace("${postLink}", articleLink).
                     replace("${postTitle}", articleTitle).
                     replace("${replier}", commenter).
                     replace("${replyURL}", "http://" + blogHost
