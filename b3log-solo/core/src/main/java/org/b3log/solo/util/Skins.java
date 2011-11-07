@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Skin utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Oct 21, 2011
+ * @version 1.0.2.2, Nov 7, 2011
  * @since 0.3.1
  */
 public final class Skins {
@@ -155,15 +155,6 @@ public final class Skins {
             skinArray.put(skin);
         }
 
-        final String skinsString = skinArray.toString();
-        if (!skinsString.equals(preference.getString(SKINS))) {
-            LOGGER.log(Level.INFO, "The skins directory has been changed, persists "
-                                   + "the change into preference");
-            preference.put(SKINS, skinsString);
-            PreferenceMgmtService.getInstance().updatePreference(preference);
-            PageCaches.removeAll(); // Clears cache manually.
-        }
-
         final String currentSkinDirName = preference.getString(SKIN_DIR_NAME);
         final String skinName = preference.getString(SKIN_NAME);
         LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
@@ -185,6 +176,15 @@ public final class Skins {
             preference.put(SKIN_DIR_NAME, "classic");
             preference.put(SKIN_NAME, "经典淡蓝");
 
+            PreferenceMgmtService.getInstance().updatePreference(preference);
+            PageCaches.removeAll(); // Clears cache manually.
+        }
+
+        final String skinsString = skinArray.toString();
+        if (!skinsString.equals(preference.getString(SKINS))) {
+            LOGGER.log(Level.INFO, "The skins directory has been changed, persists "
+                                   + "the change into preference");
+            preference.put(SKINS, skinsString);
             PreferenceMgmtService.getInstance().updatePreference(preference);
             PageCaches.removeAll(); // Clears cache manually.
         }
