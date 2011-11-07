@@ -131,7 +131,7 @@ public final class PageCommentReplyNotifier
             }
 
             final String mailBody = replyNotificationTemplate.getString("body").
-                    replace("${postLInk}", pageLink).
+                    replace("${postLink}", pageLink).
                     replace("${postTitle}", pageTitle).
                     replace("${replier}", commenter).
                     replace("${replyURL}", "http://" + blogHost
