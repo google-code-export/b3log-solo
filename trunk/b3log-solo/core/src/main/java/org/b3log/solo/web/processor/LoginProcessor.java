@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * <p>Initializes administrator</p>.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Oct 2, 2011
+ * @version 1.1.0.3, Nov 7, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -186,6 +186,7 @@ public final class LoginProcessor {
 
             final JSONObject user = userRepository.getByEmail(userEmail);
             if (null == user) {
+                LOGGER.log(Level.WARNING, "Not found user[email={0}", userEmail);
                 return;
             }
 
@@ -199,6 +200,8 @@ public final class LoginProcessor {
 
                 return;
             }
+            
+            LOGGER.log(Level.WARNING, "Wrong password[{0}]", userPwd);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }

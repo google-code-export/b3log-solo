@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * Request utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 5, 2011
+ * @version 1.0.0.4, Nov 7, 2011
  * @see #PAGINATION_PATH_PATTERN
  */
 // TODO: 88250, moves the class into Latke
@@ -58,7 +58,7 @@ public final class Requests {
     /**
      * Default current page number.
      */
-    private static final int DEFAULT_CURRENT_PAGE_NUM = 1;
+    public static final int DEFAULT_CURRENT_PAGE_NUM = 1;
     /**
      * Default page size.
      */

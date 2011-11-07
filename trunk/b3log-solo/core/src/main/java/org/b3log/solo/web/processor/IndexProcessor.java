@@ -52,7 +52,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Oct 2, 2011
+ * @version 1.1.0.6, Nov 7, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -101,16 +101,7 @@ public final class IndexProcessor {
         final String requestURI = request.getRequestURI();
         try {
             final int currentPageNum = getCurrentPageNum(requestURI);
-            if (-1 == currentPageNum) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
             final JSONObject preference = preferenceQueryService.getPreference();
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
 
             skins.fillSkinLangs(preference, dataModel);
 
