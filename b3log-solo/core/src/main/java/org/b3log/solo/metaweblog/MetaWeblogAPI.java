@@ -67,7 +67,7 @@ import org.json.XML;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 6, 2011
+ * @version 1.0.0.2, Nov 7, 2011
  * @since 0.4.0
  */
 @RequestProcessor
@@ -179,14 +179,12 @@ public final class MetaWeblogAPI {
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/apis/metaweblog",
                        method = HTTPRequestMethod.POST)
     public void metaWeblog(final HttpServletRequest request,
                            final HttpServletResponse response,
-                           final HTTPRequestContext context)
-            throws Exception {
+                           final HTTPRequestContext context) {
         final TextXMLRenderer renderer = new TextXMLRenderer();
         context.setRenderer(renderer);
 
