@@ -3,7 +3,7 @@
 ===IDE===
 [http://b3log-solo.googlecode.com B3log Solo] 是使用 [http://maven.apache.org Maven2] 进行的项目构建，所以并不依赖于任何一款 Java IDE，只要支持 [http://maven.apache.org Maven] 的 IDE 都可以进行开发。
 
-但折腾 eclipse 开发环境比较伤血，慎行。
+（<font color='green'>但折腾 eclipse 开发环境比较伤血，慎行</font>）
 ====`NetBeans`_（<font color='red'>推荐的</font>）_====
  * `NetBeans`:  http://netbeans.org/downloads/index.html
 =====配置=====
