@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Page repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 2, 2011
+ * @version 1.0.0.5, Nov 8, 2011
  * @since 0.3.1
  */
 public interface PageRepository extends Repository {
@@ -34,8 +34,9 @@ public interface PageRepository extends Repository {
      *
      * @param permalink the specified permalink
      * @return page, returns {@code null} if not found
+     * @throws RepositoryException repository exception 
      */
-    JSONObject getByPermalink(final String permalink);
+    JSONObject getByPermalink(final String permalink) throws RepositoryException;
 
     /**
      * Gets the maximum order.
