@@ -101,16 +101,19 @@ public final class Articles {
         JSONObject ret = null;
         try {
             ret = userRepository.getByEmail(email);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARNING,
-                       "Gets author of article failed, assumes the administrator is the author of this article[id="
-                       + article.getString(Keys.OBJECT_ID) + "]", e);
-        }
 
-        if (null == ret) {
-            // This author may be deleted by admin, use admin as the author
-            // of this article
-            ret = userRepository.getAdmin();
+            if (null == ret) {
+                LOGGER.log(Level.WARNING,
+                           "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
+                           article.getString(Keys.OBJECT_ID));
+                // This author may be deleted by admin, use admin as the author
+                // of this article
+                ret = userRepository.getAdmin();
+            }
+
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets author of article[id={0}] failed",
+                       article.optString(Keys.OBJECT_ID));
         }
 
         return ret;
