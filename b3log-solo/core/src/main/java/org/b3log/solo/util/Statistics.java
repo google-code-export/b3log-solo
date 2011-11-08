@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Sep 26, 2011
+ * @version 1.0.1.0, Nov 8, 2011
  * @since 0.3.1
  */
 public final class Statistics {
@@ -158,9 +158,10 @@ public final class Statistics {
      * There is a cron job to flush the blog view count from memcache to 
      * datastore.
      * </p>
-     * @throws Exception exception
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception 
      */
-    public void incBlogViewCount() throws Exception {
+    public void incBlogViewCount() throws RepositoryException, JSONException {
         final JSONObject statistic =
                 statisticRepository.get(Statistic.STATISTIC);
         if (null == statistic) {
@@ -184,10 +185,11 @@ public final class Statistics {
      * </p>
      *
      * @param articleId the given article id
-     * @throws Exception exception
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception 
      */
     public void incArticleViewCount(final String articleId)
-            throws Exception {
+            throws JSONException, RepositoryException {
         final JSONObject article = articleRepository.get(articleId);
         if (null == article) {
             return;

@@ -35,6 +35,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.action.util.PageCaches;
 import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
@@ -44,6 +45,7 @@ import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.web.util.TopBars;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -189,7 +191,16 @@ public final class PageCacheFilter implements Filter {
             writer.write(cachedPageContent);
             writer.flush();
             writer.close();
-        } catch (final Exception e) {
+        } catch (final JSONException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            chain.doFilter(request, response);
+
+            return;
+        } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }

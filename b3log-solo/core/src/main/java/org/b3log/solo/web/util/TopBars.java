@@ -16,6 +16,8 @@
 package org.b3log.solo.web.util;
 
 import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -30,6 +33,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.web.processor.InitProcessor;
 import org.b3log.solo.web.processor.LoginProcessor;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -61,15 +65,16 @@ public final class TopBars {
      * @param request the specified request
      * @param response the specified response
      * @return top bar HTML
-     * @throws Exception exception
+     * @throws JSONException json exception
+     * @throws IOException io exception
+     * @throws RepositoryException repository exception
      */
     public static String getTopBarHTML(final HttpServletRequest request,
                                        final HttpServletResponse response)
-            throws Exception {
+            throws JSONException, IOException, RepositoryException {
         final Template topBarTemplate =
                 InitProcessor.TEMPLATE_CFG.getTemplate("top-bar.ftl");
         final StringWriter stringWriter = new StringWriter();
-
 
         final Map<String, Object> topBarModel =
                 new HashMap<String, Object>();
@@ -83,8 +88,12 @@ public final class TopBars {
             topBarModel.put(Common.LOGIN_URL,
                             userService.createLoginURL(Common.ADMIN_INDEX_URI));
             topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
-            
-            topBarTemplate.process(topBarModel, stringWriter);
+
+            try {
+                topBarTemplate.process(topBarModel, stringWriter);
+            } catch (final TemplateException e) {
+                throw new IOException(e);
+            }
 
             return stringWriter.toString();
         }
@@ -106,7 +115,11 @@ public final class TopBars {
         final String userName = currentUser.getString(User.USER_NAME);
         topBarModel.put(User.USER_NAME, userName);
 
-        topBarTemplate.process(topBarModel, stringWriter);
+        try {
+            topBarTemplate.process(topBarModel, stringWriter);
+        } catch (final TemplateException e) {
+            throw new IOException(e);
+        }
 
         return stringWriter.toString();
     }

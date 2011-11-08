@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Level;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
@@ -200,7 +201,7 @@ public final class LoginProcessor {
 
                 return;
             }
-            
+
             LOGGER.log(Level.WARNING, "Wrong password[{0}]", userPwd);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -231,10 +232,12 @@ public final class LoginProcessor {
      * Checks logged in with the specified context.
      * 
      * @param context the specified context
+     * @throws Exception exception 
      */
     @RequestProcessing(value = {"/check-login.do"},
                        method = HTTPRequestMethod.POST)
-    public void checkLoggedIn(final HTTPRequestContext context) {
+    public void checkLoggedIn(final HTTPRequestContext context)
+            throws Exception {
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
@@ -275,45 +278,43 @@ public final class LoginProcessor {
      * 
      * @param request the specified request
      * @param response the specified response
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception 
      */
     public static void tryLogInWithCookie(final HttpServletRequest request,
-                                          final HttpServletResponse response) {
-        try {
-            final Cookie[] cookies = request.getCookies();
-            if (null == cookies) {
-                return;
-            }
+                                          final HttpServletResponse response)
+            throws JSONException, RepositoryException {
+        final Cookie[] cookies = request.getCookies();
+        if (null == cookies) {
+            return;
+        }
 
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
-                if ("b3log-latke".equals(cookie.getName())) {
-                    final JSONObject cookieJSONObject =
-                            new JSONObject(cookie.getValue());
+        for (int i = 0; i < cookies.length; i++) {
+            final Cookie cookie = cookies[i];
+            if ("b3log-latke".equals(cookie.getName())) {
+                final JSONObject cookieJSONObject =
+                        new JSONObject(cookie.getValue());
 
-                    final String userEmail =
-                            cookieJSONObject.getString(User.USER_EMAIL);
-                    if (Strings.isEmptyOrNull(userEmail)) {
-                        break;
-                    }
+                final String userEmail =
+                        cookieJSONObject.getString(User.USER_EMAIL);
+                if (Strings.isEmptyOrNull(userEmail)) {
+                    break;
+                }
 
-                    final JSONObject user =
-                            userRepository.getByEmail(
-                            userEmail.toLowerCase().trim());
-                    if (null == user) {
-                        break;
-                    }
+                final JSONObject user = userRepository.getByEmail(
+                        userEmail.toLowerCase().trim());
+                if (null == user) {
+                    break;
+                }
 
-                    final String userPassword =
-                            user.getString(User.USER_PASSWORD);
-                    final String hashPassword =
-                            cookieJSONObject.getString(User.USER_PASSWORD);
-                    if (MD5.hash(userPassword).equals(hashPassword)) {
-                        Sessions.login(request, response, user);
-                    }
+                final String userPassword =
+                        user.getString(User.USER_PASSWORD);
+                final String hashPassword =
+                        cookieJSONObject.getString(User.USER_PASSWORD);
+                if (MD5.hash(userPassword).equals(hashPassword)) {
+                    Sessions.login(request, response, user);
                 }
             }
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARNING, "Try login with cookie failed", e);
         }
     }
 }
