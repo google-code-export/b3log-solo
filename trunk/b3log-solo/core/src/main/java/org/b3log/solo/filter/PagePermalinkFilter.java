@@ -100,6 +100,7 @@ public final class PagePermalinkFilter implements Filter {
 
             HTTPRequestDispatcher.dispatch(context);
         } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Processes page permalink filter failed", e);
             ((HttpServletResponse) response).sendError(
                     HttpServletResponse.SC_NOT_FOUND);
 
