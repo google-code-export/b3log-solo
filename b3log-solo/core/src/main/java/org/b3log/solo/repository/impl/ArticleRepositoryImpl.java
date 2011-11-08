@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.2, Oct 15, 2011
+ * @version 1.0.3.3, Nov 8, 2011
  * @since 0.3.1
  */
 public final class ArticleRepositoryImpl extends AbstractRepository
@@ -67,24 +67,19 @@ public final class ArticleRepositoryImpl extends AbstractRepository
     }
 
     @Override
-    public JSONObject getByPermalink(final String permalink) {
+    public JSONObject getByPermalink(final String permalink)
+            throws RepositoryException {
         final Query query = new Query();
         query.addFilter(Article.ARTICLE_PERMALINK,
                         FilterOperator.EQUAL, permalink);
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        if (0 == array.length()) {
+            return null;
         }
 
-        return null;
+        return array.optJSONObject(0);
     }
 
     @Override

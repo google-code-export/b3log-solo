@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Nov 5, 2011
+ * @version 1.0.1.8, Nov 8, 2011
  * @since 0.3.1
  */
 public interface ArticleRepository extends Repository {
@@ -60,8 +60,9 @@ public interface ArticleRepository extends Repository {
      *
      * @param permalink the specified permalink
      * @return an article, returns {@code null} if not found
+     * @throws RepositoryException repository exception 
      */
-    JSONObject getByPermalink(final String permalink);
+    JSONObject getByPermalink(final String permalink) throws RepositoryException;
 
     /**
      * Gets post articles recently with the specified fetch size.
@@ -70,7 +71,7 @@ public interface ArticleRepository extends Repository {
      * @return a list of articles recently, returns an empty list if not found
      * @throws RepositoryException repository exception 
      */
-    List<JSONObject> getRecentArticles(final int fetchSize) 
+    List<JSONObject> getRecentArticles(final int fetchSize)
             throws RepositoryException;
 
     /**
