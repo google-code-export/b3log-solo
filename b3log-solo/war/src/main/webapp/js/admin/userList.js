@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Nov 1, 2011
+ * @version 1.0.0.9, Nov 8, 2011
  */
 
 /* user-list 相关操作 */
@@ -91,7 +91,7 @@ admin.userList = {
                 admin.userList.pageInfo.currentCount = users.length;
                 admin.userList.pageInfo.pageCount = result.pagination.paginationPageCount;
                 if (users.length < 1) {
-                    alert("No user\n " + Label.reportIssueLabel);
+                    $("#tipMsg").text("No user  " + Label.reportIssueLabel);
                     $("#loadMsg").text("");
                     return;
                 }

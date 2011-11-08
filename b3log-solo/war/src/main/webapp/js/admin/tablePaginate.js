@@ -18,7 +18,7 @@
  * table and paginate util
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Aug 19, 2011
+ * @version 1.0.0.7, Nov 8, 2011
  */
 
 var TablePaginate = function (id) {
@@ -89,7 +89,8 @@ $.extend(TablePaginate.prototype, {
     updateTablePagination: function (data, currentPage, pageInfo) {
         currentPage = parseInt(currentPage);
         if (currentPage > pageInfo.paginationPageCount && currentPage > 1) {
-            alert(Label.pageLabel + ":" + currentPage + " " + Label.noDataLable);
+            $("#tipMsg").text(Label.pageLabel + ":" + currentPage + " " + Label.noDataLable);
+             $("#loadMsg").text("");
             return;
         }
         $("#" + this.id + "Table").table("update", {

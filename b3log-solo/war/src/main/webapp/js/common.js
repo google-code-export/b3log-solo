@@ -18,13 +18,14 @@
  * @fileoverview util and every page should be userd.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.4, Oct 22, 2011
+ * @version 1.0.1.5, Nov 8, 2011
  */
 var Util = {
     error: function () {
-        alert("Error: " + arguments[0] +
-            "\nFile: " + arguments[1] + "\nLine: " + arguments[2] +
-            "\nplease report this issue on http://code.google.com/p/b3log-solo/issues/list");
+        $("#tipMsg").text("Error: " + arguments[0] +
+            " File: " + arguments[1] + "\nLine: " + arguments[2] +
+            " please report this issue on http://code.google.com/p/b3log-solo/issues/list");
+        $("#loadMsg").text("");
     },
         
     killIE: function () {
