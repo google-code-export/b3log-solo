@@ -26,6 +26,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Page;
@@ -37,7 +38,8 @@ import org.json.JSONObject;
  * Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Jul 11, 2011
+ * @version 1.0.0.7, Nov 8, 2011
+ * @since 0.3.1
  */
 public final class PagePermalinkFilter implements Filter {
 
@@ -80,14 +82,13 @@ public final class PagePermalinkFilter implements Filter {
             return;
         }
 
-        final JSONObject page = pageRepository.getByPermalink(requestURI);
-        if (null == page) {
-            chain.doFilter(request, response);
-
-            return;
-        }
-
         try {
+            final JSONObject page = pageRepository.getByPermalink(requestURI);
+            if (null == page) {
+                chain.doFilter(request, response);
+
+                return;
+            }
             final HTTPRequestContext context = new HTTPRequestContext();
             context.setRequest(httpServletRequest);
             context.setResponse((HttpServletResponse) response);
@@ -98,7 +99,7 @@ public final class PagePermalinkFilter implements Filter {
             httpServletRequest.setAttribute("method", "GET");
 
             HTTPRequestDispatcher.dispatch(context);
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             ((HttpServletResponse) response).sendError(
                     HttpServletResponse.SC_NOT_FOUND);
 

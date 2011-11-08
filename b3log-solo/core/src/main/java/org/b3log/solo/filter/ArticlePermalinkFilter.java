@@ -26,6 +26,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Article;
@@ -37,7 +38,8 @@ import org.json.JSONObject;
  * Article permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Jul 11, 2011
+ * @version 1.0.1.1, Nov 8, 2011
+ * @since 0.3.1
  */
 public final class ArticlePermalinkFilter implements Filter {
 
@@ -100,7 +102,7 @@ public final class ArticlePermalinkFilter implements Filter {
             httpServletRequest.setAttribute("method", "GET");
             
             HTTPRequestDispatcher.dispatch(context);
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             ((HttpServletResponse) response).sendError(
                     HttpServletResponse.SC_NOT_FOUND);
 

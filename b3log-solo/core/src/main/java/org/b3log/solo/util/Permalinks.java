@@ -18,8 +18,11 @@ package org.b3log.solo.util;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.ArticleRepository;
@@ -31,11 +34,16 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.3, Oct 3, 2011
+ * @version 1.1.0.4, Nov 8, 2011
  * @since 0.3.1
  */
 public final class Permalinks {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(Permalinks.class.getName());
     /**
      * Article repository.
      */
@@ -184,10 +192,18 @@ public final class Permalinks {
      * @return {@code true} if exists, returns {@code false} otherwise
      */
     public boolean exist(final String permalink) {
-        return isReserved(permalink)
-               || null != articleRepository.getByPermalink(permalink)
-               || null != pageRepository.getByPermalink(permalink)
-               || permalink.endsWith(".ftl");
+        try {
+            return isReserved(permalink)
+                   || null != articleRepository.getByPermalink(permalink)
+                   || null != pageRepository.getByPermalink(permalink)
+                   || permalink.endsWith(".ftl");
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Determines whether the permalink["
+                                     + permalink
+                                     + "] exists failed, returns true", e);
+
+            return true;
+        }
     }
 
     /**
