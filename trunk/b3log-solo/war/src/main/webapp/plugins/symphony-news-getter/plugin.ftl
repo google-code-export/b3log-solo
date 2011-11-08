@@ -20,7 +20,8 @@
                 dataType:"jsonp",
                 jsonp: "callback",
                 error: function(){
-                    alert("Error loading B3log Announcement error!");
+                    $("#tipMsg").text("Error loading B3log Announcement error!");
+                    $("#loadMsg").text("");
                 },
                 success: function(data, textStatus){
                     var articles = data.articles;
