@@ -20,8 +20,7 @@
                 dataType:"jsonp",
                 jsonp: "callback",
                 error: function(){
-                    $("#tipMsg").text("Error loading B3log Announcement error!");
-                    $("#loadMsg").text("");
+                    $("#symphonyNewsGetter").html("Loading B3log Announcement failed :-(");
                 },
                 success: function(data, textStatus){
                     var articles = data.articles;
@@ -40,9 +39,10 @@
                     listHTML += "</ul>";
                     
                     $("#symphonyNewsGetter").html(listHTML);
-                    $("#loadMsg").text("");
                 }
             });
+            
+            $("#loadMsg").text("");
         }
     };
     
