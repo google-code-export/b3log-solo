@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
@@ -36,7 +35,6 @@ import org.b3log.solo.repository.ArticleSignRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleSignRepositoryImpl;
-import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,11 +54,6 @@ public final class Articles {
      */
     private static final Logger LOGGER =
             Logger.getLogger(Articles.class.getName());
-    /**
-     * Tag-Article repository.
-     */
-    private TagArticleRepository tagArticleRepository =
-            TagArticleRepositoryImpl.getInstance();
     /**
      * Article repository.
      */
