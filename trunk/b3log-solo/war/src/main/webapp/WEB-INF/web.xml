@@ -162,8 +162,10 @@
         <error-code>400</error-code>
         <location>/admin-error.do</location>
     </error-page>
+    <!--
     <error-page>
         <exception-type>com.google.apphosting.api.ApiProxy.OverQuotaException</exception-type>
         <location>/over-quota.html</location>
     </error-page>
+    -->
 </web-app>
