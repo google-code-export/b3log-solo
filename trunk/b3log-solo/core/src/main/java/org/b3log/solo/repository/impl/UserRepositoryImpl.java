@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
@@ -26,7 +25,6 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -51,41 +49,29 @@ public final class UserRepositoryImpl extends AbstractRepository
         query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL,
                         email.toLowerCase().trim());
 
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            throw new RepositoryException(e);
+        if (0 == array.length()) {
+            return null;
         }
+
+        return array.optJSONObject(0);
     }
 
     @Override
-    public JSONObject getAdmin() {
+    public JSONObject getAdmin() throws RepositoryException {
         final Query query = new Query();
         query.addFilter(User.USER_ROLE, FilterOperator.EQUAL,
                         Role.ADMIN_ROLE);
-        try {
-            final JSONObject result = get(query);
-            final JSONArray array = result.getJSONArray(Keys.RESULTS);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-            if (0 == array.length()) {
-                return null;
-            }
-
-            return array.getJSONObject(0);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
+        if (0 == array.length()) {
             return null;
         }
+
+        return array.optJSONObject(0);
     }
 
     @Override
@@ -97,13 +83,7 @@ public final class UserRepositoryImpl extends AbstractRepository
             return false;
         }
 
-        try {
-            return Role.ADMIN_ROLE.equals(user.getString(User.USER_ROLE));
-        } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-
-            throw new RepositoryException(e);
-        }
+        return Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE));
     }
 
     /**
