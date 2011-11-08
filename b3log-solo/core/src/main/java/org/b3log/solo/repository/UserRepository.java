@@ -23,7 +23,7 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 5, 2011
+ * @version 1.0.0.4, Nov 8, 2011
  */
 public interface UserRepository extends Repository {
 
@@ -50,6 +50,7 @@ public interface UserRepository extends Repository {
      * Gets the administrator user.
      *
      * @return administrator user, returns {@code null} if not found or error
+     * @throws RepositoryException repository exception
      */
-    JSONObject getAdmin();
+    JSONObject getAdmin() throws RepositoryException;
 }
