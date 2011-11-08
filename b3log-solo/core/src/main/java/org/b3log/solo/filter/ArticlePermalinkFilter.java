@@ -95,14 +95,16 @@ public final class ArticlePermalinkFilter implements Filter {
             final HTTPRequestContext context = new HTTPRequestContext();
             context.setRequest(httpServletRequest);
             context.setResponse((HttpServletResponse) response);
-            
+
             httpServletRequest.setAttribute(Article.ARTICLE, article);
-            
+
             httpServletRequest.setAttribute("requestURI", "/article");
             httpServletRequest.setAttribute("method", "GET");
-            
+
             HTTPRequestDispatcher.dispatch(context);
         } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Processes article permalink filter failed",
+                       e);
             ((HttpServletResponse) response).sendError(
                     HttpServletResponse.SC_NOT_FOUND);
 
