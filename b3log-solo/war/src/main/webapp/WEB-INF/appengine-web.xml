@@ -63,6 +63,8 @@
         <include path="/plugins/**.gif" />
         <include path="/plugins/**.html" />
         <include path="/plugins/**.htm" />
+        
+        <include path="/over-quota.html" />
     </static-files>
     
     <static-error-handlers>
