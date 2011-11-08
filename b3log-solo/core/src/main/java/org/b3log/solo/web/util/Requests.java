@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * Request utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 7, 2011
+ * @version 1.0.0.5, Nov 8, 2011
  * @see #PAGINATION_PATH_PATTERN
  */
 // TODO: 88250, moves the class into Latke
@@ -56,10 +56,6 @@ public final class Requests {
      */
     public static final String PAGINATION_PATH_PATTERN = "*/*/*";
     /**
-     * Default current page number.
-     */
-    public static final int DEFAULT_CURRENT_PAGE_NUM = 1;
-    /**
      * Default page size.
      */
     private static final int DEFAULT_PAGE_SIZE = 15;
@@ -67,7 +63,7 @@ public final class Requests {
      * Default window size.
      */
     private static final int DEFAULT_WINDOW_SIZE = 20;
-    
+
     /**
      * Determines whether the specified request dose come from 
      * mobile device or not with its header ""User-Agent".
@@ -128,16 +124,17 @@ public final class Requests {
         LOGGER.log(Level.FINEST, "Page number[string={0}]", path);
 
         if (Strings.isEmptyOrNull(path)) {
-            return DEFAULT_CURRENT_PAGE_NUM;
+            return 1;
         }
 
         final String currentPageNumber = path.split("/")[0];
 
         if (!Strings.isNumeric(currentPageNumber)) {
-            return DEFAULT_CURRENT_PAGE_NUM;
+            return 1;
         }
 
-        return Integer.valueOf(currentPageNumber);
+        // return Integer.valueOf(currentPageNumber);
+        return 1;
     }
 
     /**
