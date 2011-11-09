@@ -116,7 +116,7 @@ public final class Requests {
      * 
      * @param path the specified path, see {@link #PAGINATION_PATH_PATTERN} 
      * for the details
-     * @return page number, returns {@value #DEFAULT_CURRENT_PAGE_NUM} if the 
+     * @return page number, returns {@code 1} if the 
      * specified request URI can not convert to an number
      * @see #PAGINATION_PATH_PATTERN
      */
