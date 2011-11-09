@@ -133,8 +133,7 @@ public final class Requests {
             return 1;
         }
 
-        // return Integer.valueOf(currentPageNumber);
-        return 1;
+        return Integer.valueOf(currentPageNumber);
     }
 
     /**
