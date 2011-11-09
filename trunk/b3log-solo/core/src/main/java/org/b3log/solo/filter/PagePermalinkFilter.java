@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.util.Permalinks;
 import org.json.JSONObject;
 
 /**
@@ -75,7 +76,9 @@ public final class PagePermalinkFilter implements Filter {
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
-        if (Skips.shouldSkip(requestURI)) {
+
+        if (!Permalinks.matchDefaultPagePermalinkFormat(requestURI)
+            && Skips.shouldSkip(requestURI)) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 

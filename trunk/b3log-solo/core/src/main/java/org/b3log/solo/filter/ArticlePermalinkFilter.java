@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.util.Permalinks;
 import org.json.JSONObject;
 
 /**
@@ -76,7 +77,9 @@ public final class ArticlePermalinkFilter implements Filter {
                 (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
-        if (Skips.shouldSkip(requestURI)) {
+
+        if (!Permalinks.matchDefaultArticlePermalinkFormat(requestURI)
+            && Skips.shouldSkip(requestURI)) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 
