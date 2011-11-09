@@ -26,6 +26,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.SoloServletListener;
@@ -36,7 +37,7 @@ import org.json.JSONObject;
  * Checks initialization filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 8, 2011
+ * @version 1.0.0.5, Nov 9, 2011
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -112,7 +113,7 @@ public final class InitCheckFilter implements Filter {
                 chain.doFilter(request, response);
                 return;
             }
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             ((HttpServletResponse) response).sendError(
                     HttpServletResponse.SC_NOT_FOUND);
 
