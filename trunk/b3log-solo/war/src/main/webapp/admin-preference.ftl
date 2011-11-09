@@ -1,8 +1,13 @@
 <div id="tabPreference" class="sub-tabs">
     <ul>
         <li>
+            <div id="tabPreference_config">
+                <a class="tab-current" href="#tools/preference/config">${configSettingsLabel}</a>
+            </div>
+        </li>
+        <li>
             <div id="tabPreference_skins">
-                <a class="tab-current" href="#tools/preference/skins">${skinLabel}</a>
+                <a href="#tools/preference/skins">${skinLabel}</a>
             </div>
         </li>
         <li>
@@ -16,11 +21,6 @@
             </div>
         </li>
         <li>
-            <div id="tabPreference_config">
-                <a href="#tools/preference/config">${configSettingsLabel}</a>
-            </div>
-        </li>
-        <li>
             <div id="tabPreference_solo">
                 <a href="#tools/preference/solo">Solo</a>
             </div>
@@ -28,7 +28,7 @@
     </ul>
 </div>
 <div id="tabPreferencePanel" class="sub-tabs-main">
-    <div id="tabPreferencePanel_config" class="none">
+    <div id="tabPreferencePanel_config">
         <table class="form" width="98%" cellpadding="0" cellspacing="9px">
             <tbody>
                 <tr>
@@ -256,7 +256,7 @@
             </tbody>
         </table>
     </div>
-    <div id="tabPreferencePanel_skins">
+    <div id="tabPreferencePanel_skins" class="none">
         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
         <div class="clear"></div>
         <div id="skinMain">
