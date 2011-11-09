@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Article permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Nov 8, 2011
+ * @version 1.0.1.2, Nov 9, 2011
  * @since 0.3.1
  */
 public final class ArticlePermalinkFilter implements Filter {
@@ -87,6 +87,8 @@ public final class ArticlePermalinkFilter implements Filter {
             final JSONObject article =
                     articleRepository.getByPermalink(requestURI);
             if (null == article) {
+                LOGGER.log(Level.FINER, "Not found article with permalink[{0}]",
+                           requestURI);
                 chain.doFilter(request, response);
 
                 return;

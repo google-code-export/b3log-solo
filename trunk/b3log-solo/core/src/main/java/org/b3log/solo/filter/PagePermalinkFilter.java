@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Nov 8, 2011
+ * @version 1.0.0.8, Nov 9, 2011
  * @since 0.3.1
  */
 public final class PagePermalinkFilter implements Filter {
@@ -85,10 +85,13 @@ public final class PagePermalinkFilter implements Filter {
         try {
             final JSONObject page = pageRepository.getByPermalink(requestURI);
             if (null == page) {
+                LOGGER.log(Level.FINER, "Not found page with permalink[{0}]",
+                           requestURI);
                 chain.doFilter(request, response);
 
                 return;
             }
+
             final HTTPRequestContext context = new HTTPRequestContext();
             context.setRequest(httpServletRequest);
             context.setResponse((HttpServletResponse) response);

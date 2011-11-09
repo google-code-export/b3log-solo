@@ -15,16 +15,12 @@
  */
 package org.b3log.solo.util;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
@@ -34,7 +30,7 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.4, Nov 8, 2011
+ * @version 1.1.0.5, Nov 9, 2011
  * @since 0.3.1
  */
 public final class Permalinks {
@@ -57,32 +53,58 @@ public final class Permalinks {
     /**
      * Reserved permalinks.
      */
-    private static final Set<String> RESERVED_LINKS = new HashSet<String>();
-
-    static {
-        RESERVED_LINKS.add("/");
-        RESERVED_LINKS.add("/article");
-        RESERVED_LINKS.add("/tags.html");
-        RESERVED_LINKS.add("/tags");
-        RESERVED_LINKS.add("/page");
-        RESERVED_LINKS.add("/blog-articles-feed.do");
-        RESERVED_LINKS.add("/tag-articles-feed.do");
-        RESERVED_LINKS.add("/captcha.do");
-        RESERVED_LINKS.add("/error.do");
-        RESERVED_LINKS.add("/file-access.do");
-        RESERVED_LINKS.add("/datastore-file-access.do");
-        RESERVED_LINKS.add("/kill-browser.html");
-        RESERVED_LINKS.add("/check-login.do");
-        RESERVED_LINKS.add("/add-article-comment.do");
-        RESERVED_LINKS.add("/add-article-from-symphony-comment.do");
-        RESERVED_LINKS.add("/add-page-comment.do");
-        RESERVED_LINKS.add("/get-article-content");
-        RESERVED_LINKS.add("/sitemap.xml");
-        RESERVED_LINKS.add("/login");
-        RESERVED_LINKS.add("/logout");
-
-        RESERVED_LINKS.addAll(Arrays.asList(Skips.ADMIN_ACTIONS));
-    }
+    public static final String[] RESERVED_LINKS = new String[]{
+        "/",
+        "/archives/",
+        "/article",
+        "/console/",
+        "/over-quota.html",
+        "/tags.html",
+        "/tags",
+        "/page",
+        "/blog-articles-feed.do",
+        "/tag-articles-feed.do",
+        "/get-random-articles.do",
+        "/article-random-double-gen.do",
+        "/upgrade/checker.do",
+        "/captcha.do",
+        "/error.do",
+        "/file-access.do",
+        "/datastore-file-access.do",
+        "/kill-browser.html",
+        "/check-login.do",
+        "/add-article-comment.do",
+        "/add-article-from-symphony-comment.do",
+        "/add-page-comment.do",
+        "/get-article-content",
+        "/sitemap.xml",
+        "/login",
+        "/logout",
+        "/_ah/", // For local dev server
+        "/skins/",
+        "/images/",
+        "/styles/",
+        "/get-article-content",
+        "/admin-index.do",
+        "/admin-article.do",
+        "/admin-article-list.do",
+        "/admin-link-list.do",
+        "/admin-preference.do",
+        "/admin-file-list.do",
+        "/admin-page-list.do",
+        "/admin-others.do",
+        "/admin-draft-list.do",
+        "/admin-user-list.do",
+        "/admin-plugin-list.do",
+        "/admin-main.do",
+        "/admin-about.do",
+        "/admin-label",
+        "/admin-about.do",
+        "/rm-all-data.do",
+        "/init",
+        "/clear-cache.do",
+        "/apis/metaweblog"
+    };
 
     /**
      * Checks whether the specified article permalink matches the system 

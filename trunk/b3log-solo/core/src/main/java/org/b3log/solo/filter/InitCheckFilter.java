@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Checks initialization filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 27, 2011
+ * @version 1.0.0.4, Nov 8, 2011
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -75,16 +75,16 @@ public final class InitCheckFilter implements Filter {
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINEST, "Request[URI={0}]", requestURI);
 
-        if (Skips.shouldSkip(requestURI)) {
-            LOGGER.log(Level.FINEST, "Skip filter request[URI={0}]",
-                       requestURI);
-            chain.doFilter(request, response);
-
-            return;
-        }
-
         try {
             if (SoloServletListener.isInited()) {
+                chain.doFilter(request, response);
+
+                return;
+            }
+
+            if ("POST".equalsIgnoreCase(httpServletRequest.getMethod())
+                && "/init".equals(requestURI)) {
+                // Do initailization
                 chain.doFilter(request, response);
 
                 return;
