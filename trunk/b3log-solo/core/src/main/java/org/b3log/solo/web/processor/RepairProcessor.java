@@ -166,7 +166,7 @@ public final class RepairProcessor {
                 final String tagId = tag.getString(Keys.OBJECT_ID);
                 final JSONObject tagArticleResult =
                         tagArticleRepository.getByTagId(tagId, 1,
-                                                        Integer.MAX_VALUE);
+                                                        Integer.MAX_VALUE, 1);
                 final JSONArray tagArticles =
                         tagArticleResult.getJSONArray(Keys.RESULTS);
                 final int tagRefCnt = tagArticles.length();

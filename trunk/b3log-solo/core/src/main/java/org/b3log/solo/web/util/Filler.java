@@ -146,8 +146,16 @@ public final class Filler {
         final int windowSize =
                 preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
+        final JSONObject statistic =
+                statisticRepository.get(Statistic.STATISTIC);
+        final int publishedArticleCnt =
+                statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT);
+        final int pageCount = (int) Math.ceil((double) publishedArticleCnt
+                                              / (double) pageSize);
+
         final Query query = new Query().setCurrentPageNum(currentPageNum).
                 setPageSize(pageSize).
+                setPageCount(pageCount).
                 addFilter(Article.ARTICLE_IS_PUBLISHED,
                           FilterOperator.EQUAL, PUBLISHED).
                 addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
@@ -159,9 +167,6 @@ public final class Filler {
         }
 
         final JSONObject result = articleRepository.get(query);
-        final int pageCount = result.getJSONObject(Pagination.PAGINATION).
-                getInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final List<Integer> pageNums = Paginator.paginate(currentPageNum,
                                                           pageSize,
                                                           pageCount,

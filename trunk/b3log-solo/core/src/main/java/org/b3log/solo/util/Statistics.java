@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * Statistic utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Nov 8, 2011
+ * @version 1.0.1.1, Nov 8, 2011
  * @since 0.3.1
  */
 public final class Statistics {
@@ -131,6 +131,24 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT,
                       count);
         statisticRepository.update(Statistic.STATISTIC, statistic);
+    }
+
+    /**
+     * Gets blog statistic published article count.
+     *
+     * @return published blog article count
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public int getPublishedBlogArticleCount()
+            throws JSONException, RepositoryException {
+        final JSONObject statistic =
+                statisticRepository.get(Statistic.STATISTIC);
+        if (null == statistic) {
+            throw new RepositoryException("Not found statistic");
+        }
+
+        return statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT);
     }
 
     /**
