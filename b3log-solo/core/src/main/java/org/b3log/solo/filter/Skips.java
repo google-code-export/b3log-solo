@@ -16,6 +16,7 @@
 package org.b3log.solo.filter;
 
 import java.util.logging.Logger;
+import org.b3log.solo.util.Permalinks;
 
 /**
  * Skips for request filtering.
@@ -32,27 +33,6 @@ public final class Skips {
      */
     private static final Logger LOGGER =
             Logger.getLogger(Skips.class.getName());
-    /**
-     * Administrator action serve URLs.
-     */
-    public static final String[] ADMIN_ACTIONS = new String[]{
-        "/admin-index.do",
-        "/admin-article.do",
-        "/admin-article-list.do",
-        "/admin-link-list.do",
-        "/admin-preference.do",
-        "/admin-file-list.do",
-        "/admin-page-list.do",
-        "/admin-others.do",
-        "/admin-draft-list.do",
-        "/admin-user-list.do",
-        "/admin-plugin-list.do",
-        "/admin-about.do",
-        "/rm-all-data.do",
-        "/init",
-        "/clear-cache.do",
-        "/apis/metaweblog"
-    };
 
     /**
      * Determines whether the specified request URI should be skipped filter.
@@ -69,43 +49,43 @@ public final class Skips {
     // XXX: performance issue, super hard coding....
     // TODO: skips new urls....
     static boolean shouldSkip(final String requestURI) {
-        return requestURI.startsWith("/console/")
-               || requestURI.equals("/captcha.do")
-               || requestURI.equals("/tag-articles-feed.do")
-               || requestURI.equals("/blog-articles-feed.do")
-               || requestURI.equals("/tag-articles-rss.do")
-               || requestURI.equals("/blog-articles-rss.do")
-               || requestURI.equals("/file-access.do")
-               || requestURI.equals("/check-login.do")
-               || requestURI.equals("/add-article-comment.do")
-               || requestURI.equals("/add-page-comment.do")
-               || requestURI.equals("/get-random-articles.do")
-               || requestURI.equals("/article-random-double-gen.do")
-               || requestURI.equals("/upgrade/checker.do")
-               || requestURI.equals("/login")
-               || requestURI.equals("/logout")
-               || requestURI.contains("/_ah/") // For local dev server
-               || requestURI.contains("/datastore-file-access.do")
-               || requestURI.contains("/skins/")
-               || requestURI.contains("/images/")
-               || requestURI.contains("/styles/")
-               || requestURI.contains("/get-article-content")
-               || equalAdminActions(requestURI)
-               || isStatic(requestURI);
+        return containsMoreThenOneSlash(requestURI)
+               || isReservedLink(requestURI) || isStatic(requestURI);
     }
 
     /**
-     * Determines whether the specified request URI is equals to admin action
-     * URI patterns.
-     *
+     * Determines whether the specified request URI contains more then one slash. 
+     * 
      * @param requestURI the specified request URI
-     * @return {@code true} if it is equals to, returns {@code false} 
-     * otherwise
-     * @see #ADMIN_ACTIONS
+     * @return {@code true} if it contains more then one slash, returns 
+     * {@code false} otherwise
      */
-    private static boolean equalAdminActions(final String requestURI) {
-        for (int i = 0; i < ADMIN_ACTIONS.length; i++) {
-            if (ADMIN_ACTIONS[i].equals(requestURI)) {
+    private static boolean containsMoreThenOneSlash(final String requestURI) {
+        int slashCnt = 0;
+        for (int i = 0; i < requestURI.length(); i++) {
+            if ('/' == requestURI.charAt(i)) {
+                slashCnt++;
+            }
+
+            if (slashCnt > 1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determines whether the specified request URI is a reserved link.
+     * 
+     * @param requestURI the specified request URI
+     * @return {@code true} if it is a reserved link, returns {@code false}
+     * otherwise
+     */
+    private static boolean isReservedLink(final String requestURI) {
+        for (int i = 0; i < Permalinks.RESERVED_LINKS.length; i++) {
+            final String reservedLink = Permalinks.RESERVED_LINKS[i];
+            if (reservedLink.equals(requestURI)) {
                 return true;
             }
         }
