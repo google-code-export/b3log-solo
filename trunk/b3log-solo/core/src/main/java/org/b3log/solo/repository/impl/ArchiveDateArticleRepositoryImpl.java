@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
@@ -32,31 +31,27 @@ import org.json.JSONObject;
  * Archive date-Article relation repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 12, 2011
+ * @version 1.0.0.6, Nov 9, 2011
  * @since 0.3.1
  */
 public final class ArchiveDateArticleRepositoryImpl
         extends AbstractRepository
         implements ArchiveDateArticleRepository {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER =
-            Logger.getLogger(ArchiveDateArticleRepositoryImpl.class.getName());
-
     @Override
     public JSONObject getByArchiveDateId(final String archiveDateId,
                                          final int currentPageNum,
-                                         final int pageSize)
+                                         final int pageSize,
+                                         final int pageCount)
             throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, archiveDateId);
-        query.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                      SortDirection.DESCENDING);
-        query.setCurrentPageNum(currentPageNum);
-        query.setPageSize(pageSize);
+        final Query query = new Query().
+                addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
+                          FilterOperator.EQUAL, archiveDateId).
+                addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                        SortDirection.DESCENDING).
+                setCurrentPageNum(currentPageNum).
+                setPageSize(pageSize).
+                setPageCount(pageCount);
 
         return get(query);
     }

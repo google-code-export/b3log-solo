@@ -418,8 +418,9 @@ public final class ArticleProcessor {
             final JSONObject archiveDate =
                     archiveDateRepository.getByArchiveDate(archiveDateString);
             if (null == archiveDate) {
-                LOGGER.log(Level.WARNING, "Can not find articles for the specified "
-                                          + "archive date[string={0}]",
+                LOGGER.log(Level.WARNING,
+                           "Can not find articles for the specified "
+                           + "archive date[string={0}]",
                            archiveDate);
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -431,9 +432,14 @@ public final class ArticleProcessor {
             final int pageSize = preference.getInt(
                     Preference.ARTICLE_LIST_DISPLAY_COUNT);
 
+            final int articleCount = archiveDate.getInt(
+                    ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
+            final int pageCount = (int) Math.ceil((double) articleCount
+                                                  / (double) pageSize);
+
             final JSONObject result =
                     archiveDateArticleRepository.getByArchiveDateId(
-                    archiveDateId, currentPageNum, pageSize);
+                    archiveDateId, currentPageNum, pageSize, articleCount);
 
             @SuppressWarnings("unchecked")
             final JSONArray archiveDateArticleRelations = result.getJSONArray(
@@ -465,10 +471,6 @@ public final class ArticleProcessor {
 
                 articles.add(article);
             }
-
-            final int pageCount = result.getJSONObject(
-                    Pagination.PAGINATION).getInt(
-                    Pagination.PAGINATION_PAGE_COUNT);
 
             sort(preference, articles);
 
@@ -706,10 +708,12 @@ public final class ArticleProcessor {
      */
     private static int getAuthorCurrentPageNum(final String requestURI,
                                                final String authorId) {
-        final String pageNumString =
-                requestURI.substring(("/authors/" + authorId + "/").length());
-
-        return Requests.getCurrentPageNum(pageNumString);
+//        final String pageNumString =
+//                requestURI.substring(("/authors/" + authorId + "/").length());
+//
+//        return Requests.getCurrentPageNum(pageNumString);
+        return 1; // TODO: 88250, 041 to fix, upgrades user model by adding two 
+        // properties (published article count & article count)
     }
 
     /**
