@@ -35,6 +35,7 @@ import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.plugin.PluginRefresher;
@@ -208,7 +209,7 @@ public final class SoloServletListener extends AbstractServletListener {
                     UserRepositoryImpl.getInstance().getAdmin();
 
             return null != admin;
-        } catch (final Exception e) {
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.WARNING, "B3log Solo has not been initialized");
             return false;
         }
