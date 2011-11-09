@@ -32,7 +32,6 @@ import org.b3log.solo.util.Users;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
-import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -72,10 +71,6 @@ public final class AdminCacheService {
      */
     private PreferenceMgmtService preferenceMgmtService =
             PreferenceMgmtService.getInstance();
-    /**
-     * Language service.
-     */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Gets page cache status with the specified http servlet request and http
