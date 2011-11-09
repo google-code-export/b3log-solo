@@ -23,7 +23,7 @@ import org.json.JSONObject;
  * Archive date-Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 23, 2010
+ * @version 1.0.0.2, Nov 9, 2011
  */
 public interface ArchiveDateArticleRepository extends Repository {
 
@@ -35,6 +35,7 @@ public interface ArchiveDateArticleRepository extends Repository {
      * then {@code 0}
      * @param pageSize the specified page size(count of a page contains objects),
      * MUST greater then {@code 0}
+     * @param pageCount the specified page count
      * @return for example
      * <pre>
      * {
@@ -52,7 +53,8 @@ public interface ArchiveDateArticleRepository extends Repository {
      */
     JSONObject getByArchiveDateId(final String archiveDateId,
                                   final int currentPageNum,
-                                  final int pageSize)
+                                  final int pageSize,
+                                  final int pageCount)
             throws RepositoryException;
 
     /**
