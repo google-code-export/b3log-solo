@@ -174,10 +174,15 @@ public final class TagProcessor {
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
             request.setAttribute(CACHED_LINK, requestURI);
 
+            final int tagArticleCount =
+                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            final int pageCount = (int) Math.ceil((double) tagArticleCount
+                                                  / (double) pageSize);
+
             final JSONObject result =
                     tagArticleRepository.getByTagId(tagId,
                                                     currentPageNum,
-                                                    pageSize);
+                                                    pageSize, pageCount);
             final JSONArray tagArticleRelations =
                     result.getJSONArray(Keys.RESULTS);
             if (0 == tagArticleRelations.length()) {
@@ -206,9 +211,6 @@ public final class TagProcessor {
                 articles.add(article);
             }
 
-            final int pageCount = result.getJSONObject(
-                    Pagination.PAGINATION).getInt(
-                    Pagination.PAGINATION_PAGE_COUNT);
             LOGGER.log(Level.FINEST,
                        "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
                        new Object[]{currentPageNum,

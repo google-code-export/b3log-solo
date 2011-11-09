@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Tag-Article relation repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 12, 2011
+ * @version 1.0.0.9, Nov 9, 2011
  * @since 0.3.1
  */
 public final class TagArticleRepositoryImpl extends AbstractRepository
@@ -69,15 +69,16 @@ public final class TagArticleRepositoryImpl extends AbstractRepository
     @Override
     public JSONObject getByTagId(final String tagId,
                                  final int currentPageNum,
-                                 final int pageSize)
+                                 final int pageSize,
+                                 final int pageCount)
             throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(Tag.TAG + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, tagId);
-        query.addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                      SortDirection.DESCENDING);
-        query.setCurrentPageNum(currentPageNum);
-        query.setPageSize(pageSize);
+        final Query query = new Query().addFilter(Tag.TAG + "_" + Keys.OBJECT_ID,
+                                                  FilterOperator.EQUAL, tagId).
+                addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
+                        SortDirection.DESCENDING).
+                setCurrentPageNum(currentPageNum).
+                setPageSize(pageSize).
+                setPageCount(pageCount);
 
         return get(query);
     }

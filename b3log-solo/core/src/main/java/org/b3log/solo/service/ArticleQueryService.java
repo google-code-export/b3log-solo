@@ -149,11 +149,11 @@ public final class ArticleQueryService {
             final JSONObject ret = new JSONObject();
 
             final JSONObject article = articleRepository.get(articleId);
-            
+
             if (null == article) {
                 return null;
             }
-            
+
             ret.put(ARTICLE, article);
 
             final JSONArray tags = new JSONArray();
@@ -259,10 +259,18 @@ public final class ArticleQueryService {
                     addFilter(ARTICLE_IS_PUBLISHED,
                               FilterOperator.EQUAL,
                               articleIsPublished);
-            final JSONObject result = articleRepository.get(query);
+            int articleCount = -1;
+            if (!articleIsPublished) {
+                articleCount = statistics.getBlogArticleCount();
+            } else {
+                articleCount = statistics.getPublishedBlogArticleCount();
+            }
 
-            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
-                    getInt(Pagination.PAGINATION_PAGE_COUNT);
+            final int pageCount = (int) Math.ceil((double) articleCount
+                                                  / (double) pageSize);
+            query.setPageCount(pageCount);
+
+            final JSONObject result = articleRepository.get(query);
 
             final JSONObject pagination = new JSONObject();
             ret.put(Pagination.PAGINATION, pagination);
@@ -354,7 +362,7 @@ public final class ArticleQueryService {
                 final JSONObject tag = tagRepository.getByTitle(tagTitle);
                 final String tagId = tag.getString(Keys.OBJECT_ID);
                 final JSONObject result =
-                        tagArticleRepository.getByTagId(tagId, 1, displayCnt);
+                        tagArticleRepository.getByTagId(tagId, 1, displayCnt, 1);
                 final JSONArray tagArticleRelations =
                         result.getJSONArray(Keys.RESULTS);
 

@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * Tag-Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Aug 23, 2010
+ * @version 1.0.0.3, Nov 8, 2011
  */
 public interface TagArticleRepository extends Repository {
 
@@ -53,6 +53,7 @@ public interface TagArticleRepository extends Repository {
      * then {@code 0}
      * @param pageSize the specified page size(count of a page contains objects),
      * MUST greater then {@code 0}
+     * @param pageCount the specified page count
      * @return for example
      * <pre>
      * {
@@ -70,5 +71,6 @@ public interface TagArticleRepository extends Repository {
      */
     JSONObject getByTagId(final String tagId,
                           final int currentPageNum,
-                          final int pageSize) throws RepositoryException;
+                          final int pageSize,
+                          final int pageCount) throws RepositoryException;
 }
