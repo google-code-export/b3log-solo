@@ -318,7 +318,8 @@ public final class ArticleProcessor {
             final int windowSize = preference.getInt(
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-            final JSONObject author = userQueryService.getUser(authorId);
+            final JSONObject result = userQueryService.getUser(authorId);
+            final JSONObject author = result.getJSONObject(User.USER);
 
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
