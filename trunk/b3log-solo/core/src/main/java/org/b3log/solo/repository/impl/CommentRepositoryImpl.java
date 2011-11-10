@@ -88,11 +88,12 @@ public final class CommentRepositoryImpl extends AbstractRepository
     public List<JSONObject> getComments(final String onId,
                                         final int currentPageNum,
                                         final int pageSize) {
-        final Query query = new Query();
-        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        query.addFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId);
-        query.setCurrentPageNum(currentPageNum);
-        query.setPageSize(pageSize);
+        final Query query = new Query().addSort(Keys.OBJECT_ID,
+                                                SortDirection.DESCENDING).
+                addFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId).
+                setCurrentPageNum(currentPageNum).
+                setPageSize(pageSize).
+                setPageCount(1);
 
         List<JSONObject> ret = new ArrayList<JSONObject>();
         try {

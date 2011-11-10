@@ -57,8 +57,10 @@ public final class TagRepositoryImpl extends AbstractRepository
     @Override
     public JSONObject getByTitle(final String tagTitle)
             throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, tagTitle);
+        final Query query = new Query().addFilter(Tag.TAG_TITLE,
+                                                  FilterOperator.EQUAL, tagTitle).
+                setPageCount(1);
+
         try {
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
