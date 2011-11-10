@@ -62,6 +62,7 @@ import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Tags;
+import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +71,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.4, Oct 13, 2011
+ * @version 1.0.4.5, Nov 10, 2011
  * @since 0.3.1
  */
 public final class Filler {
@@ -189,7 +190,18 @@ public final class Filler {
             final List<JSONObject> articles =
                     org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                     getJSONArray(Keys.RESULTS));
-            setArticlesExProperties(articles, preference);
+
+            final boolean hasMultipleUsers =
+                    Users.getInstance().hasMultipleUsers();
+            if (hasMultipleUsers) {
+                setArticlesExProperties(articles, preference);
+            } else {
+                if (!articles.isEmpty()) {
+                    final JSONObject author =
+                            articleUtils.getAuthor(articles.get(0));
+                    setArticlesExProperties(articles, author, preference);
+                }
+            }
 
             dataModel.put(Article.ARTICLES, articles);
         } catch (final JSONException e) {
@@ -630,6 +642,54 @@ public final class Filler {
 
     /**
      * Sets some extra properties into the specified article with the specified 
+     * author and preference.
+     * 
+     * <p>
+     * Article ext properties:
+     * <pre>
+     * {
+     *     ...., 
+     *     "authorName": "",
+     *     "authorId": "",
+     *     "hasUpdated": boolean
+     * }
+     * </pre>
+     * </p>
+     * 
+     * @param article the specified article
+     * @param author the specified author
+     * @param preference the specified preference
+     * @throws JSONException json exception
+     * @see #setArticlesExProperties(java.util.List, org.json.JSONObject) 
+     */
+    private void setArticleExProperties(final JSONObject article,
+                                        final JSONObject author,
+                                        final JSONObject preference)
+            throws JSONException {
+        final String authorName = author.getString(User.USER_NAME);
+        article.put(Common.AUTHOR_NAME, authorName);
+        final String authorId = author.getString(Keys.OBJECT_ID);
+        article.put(Common.AUTHOR_ID, authorId);
+
+        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            article.put(Common.HAS_UPDATED,
+                        articleUtils.hasUpdated(article));
+        } else {
+            article.put(Common.HAS_UPDATED, false);
+        }
+
+        final String articleListStyle =
+                preference.getString(Preference.ARTICLE_LIST_STYLE);
+        if ("titleOnly".equals(articleListStyle)) {
+            article.put(Article.ARTICLE_ABSTRACT, "");
+        } else if ("titleAndContent".equals(articleListStyle)) {
+            article.put(Article.ARTICLE_ABSTRACT,
+                        article.getString(Article.ARTICLE_CONTENT));
+        }
+    }
+
+    /**
+     * Sets some extra properties into the specified article with the specified 
      * preference.
      * 
      * <p>
@@ -649,8 +709,8 @@ public final class Filler {
      * @throws JSONException json exception
      * @see #setArticlesExProperties(java.util.List, org.json.JSONObject) 
      */
-    public void setArticleExProperties(final JSONObject article,
-                                       final JSONObject preference)
+    private void setArticleExProperties(final JSONObject article,
+                                        final JSONObject preference)
             throws JSONException {
         final JSONObject author = articleUtils.getAuthor(article);
         final String authorName = author.getString(User.USER_NAME);
@@ -672,6 +732,42 @@ public final class Filler {
         } else if ("titleAndContent".equals(articleListStyle)) {
             article.put(Article.ARTICLE_ABSTRACT,
                         article.getString(Article.ARTICLE_CONTENT));
+        }
+    }
+
+    /**
+     * Sets some extra properties into the specified article with the specified 
+     * author and preference.
+     * 
+     * <p>
+     * The batch version of method 
+     * {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
+     * </p>
+     *
+     * <p>
+     * Article ext properties:
+     * <pre>
+     * {
+     *     ...., 
+     *     "authorName": "",
+     *     "authorId": "",
+     *     "hasUpdated": boolean
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param articles the specified articles
+     * @param author the specified author
+     * @param preference the specified preference
+     * @throws JSONException json exception
+     * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject) 
+     */
+    public void setArticlesExProperties(final List<JSONObject> articles,
+                                        final JSONObject author,
+                                        final JSONObject preference)
+            throws JSONException {
+        for (final JSONObject article : articles) {
+            setArticleExProperties(article, author, preference);
         }
     }
 
