@@ -521,19 +521,21 @@ public final class ArticleProcessor {
     @RequestProcessing(value = {"/article-random-double-gen.do"},
                        method = HTTPRequestMethod.GET)
     public void updateArticlesRandomValue(final HttpServletRequest request) {
-        int updateCnt = DEFAULT_UPDATE_CNT;
-        try {
-            updateCnt =
-                    Integer.valueOf(request.getParameter("cnt"));
-        } catch (final NumberFormatException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
-        }
-
-        try {
-            articleMgmtService.updateArticlesRandomValue(updateCnt);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, "Updates articles random values failed", e);
-        }
+        // Commented for issue 308, see http://code.google.com/p/b3log-solo/issues/detail?id=308#c4 and 
+        // cron.xml for more details.
+//        int updateCnt = DEFAULT_UPDATE_CNT;
+//        try {
+//            updateCnt =
+//                    Integer.valueOf(request.getParameter("cnt"));
+//        } catch (final NumberFormatException e) {
+//            LOGGER.log(Level.WARNING, e.getMessage(), e);
+//        }
+//
+//        try {
+//            articleMgmtService.updateArticlesRandomValue(updateCnt);
+//        } catch (final ServiceException e) {
+//            LOGGER.log(Level.SEVERE, "Updates articles random values failed", e);
+//        }
     }
 
     /**
