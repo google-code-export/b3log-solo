@@ -54,14 +54,15 @@ public final class ArticleRepositoryImpl extends AbstractRepository
                                        final int currentPageNum,
                                        final int pageSize)
             throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(Article.ARTICLE_AUTHOR_EMAIL,
-                        FilterOperator.EQUAL, authorEmail);
-        query.addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true);
-        query.addSort(Article.ARTICLE_UPDATE_DATE,
-                      SortDirection.DESCENDING);
-        query.setCurrentPageNum(currentPageNum);
-        query.setPageSize(pageSize);
+        final Query query = new Query().addFilter(Article.ARTICLE_AUTHOR_EMAIL,
+                                                  FilterOperator.EQUAL,
+                                                  authorEmail).
+                addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL,
+                          true).
+                addSort(Article.ARTICLE_UPDATE_DATE,
+                        SortDirection.DESCENDING).
+                setCurrentPageNum(currentPageNum).
+                setPageSize(pageSize).setPageCount(1);
         // TODO: 88250, 041 to fix, upgrades user model by adding two 
         // properties (published article count & article count), then setPageCount
 
