@@ -45,7 +45,7 @@ public final class UserRepositoryImpl extends AbstractRepository
 
     @Override
     public JSONObject getByEmail(final String email) throws RepositoryException {
-        final Query query = new Query();
+        final Query query = new Query().setPageCount(1);
         query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL,
                         email.toLowerCase().trim());
 
