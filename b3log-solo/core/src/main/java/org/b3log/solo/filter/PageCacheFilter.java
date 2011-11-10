@@ -43,6 +43,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.web.util.TopBars;
@@ -110,7 +111,9 @@ public final class PageCacheFilter implements Filter {
             return;
         }
 
-        if (Skips.shouldSkip(requestURI)) {
+        if (!Permalinks.matchDefaultArticlePermalinkFormat(requestURI)
+            && !Permalinks.matchDefaultPagePermalinkFormat(requestURI)
+            && Skips.shouldSkip(requestURI)) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
 
