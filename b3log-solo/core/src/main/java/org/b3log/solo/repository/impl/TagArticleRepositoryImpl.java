@@ -51,9 +51,11 @@ public final class TagArticleRepositoryImpl extends AbstractRepository
     @Override
     public List<JSONObject> getByArticleId(final String articleId)
             throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, articleId);
+        final Query query = new Query().addFilter(Article.ARTICLE + "_"
+                                                  + Keys.OBJECT_ID,
+                                                  FilterOperator.EQUAL,
+                                                  articleId).
+                setPageCount(1);
 
         try {
             final JSONObject result = get(query);
