@@ -111,15 +111,6 @@ public final class PageCacheFilter implements Filter {
             return;
         }
 
-        if (!Permalinks.matchDefaultArticlePermalinkFormat(requestURI)
-            && !Permalinks.matchDefaultPagePermalinkFormat(requestURI)
-            && Skips.shouldSkip(requestURI)) {
-            LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
-            chain.doFilter(request, response);
-
-            return;
-        }
-
         if (Requests.mobileRequest(httpServletRequest)) {
             // TODO: 88250, mobile request dispatching
             LOGGER.log(Level.FINER,
