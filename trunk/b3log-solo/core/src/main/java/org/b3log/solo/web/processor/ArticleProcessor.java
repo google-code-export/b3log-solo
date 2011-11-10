@@ -335,10 +335,9 @@ public final class ArticleProcessor {
             request.setAttribute(CACHED_LINK, requestURI);
 
             final String authorEmail = author.getString(User.USER_EMAIL);
-            final JSONObject result =
-                    articleQueryService.getArticlesByAuthorEmail(authorEmail,
-                                                                 currentPageNum,
-                                                                 pageSize);
+            result = articleQueryService.getArticlesByAuthorEmail(authorEmail,
+                                                                  currentPageNum,
+                                                                  pageSize);
             final List<JSONObject> articles =
                     org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.
                     getJSONArray(Keys.RESULTS));
