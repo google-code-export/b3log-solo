@@ -95,6 +95,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository
                       SortDirection.DESCENDING);
         query.setCurrentPageNum(1);
         query.setPageSize(fetchSize);
+        query.setPageCount(1);
 
         try {
             final JSONObject result = get(query);
@@ -110,15 +111,14 @@ public final class ArticleRepositoryImpl extends AbstractRepository
 
     @Override
     public List<JSONObject> getMostCommentArticles(final int num) {
-        final Query query = new Query();
-        query.addSort(Article.ARTICLE_COMMENT_COUNT,
-                      SortDirection.DESCENDING).
-                addSort(Article.ARTICLE_UPDATE_DATE,
-                        SortDirection.DESCENDING);
-        query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                        FilterOperator.EQUAL, true);
-        query.setCurrentPageNum(1);
-        query.setPageSize(num);
+        final Query query = new Query().addSort(Article.ARTICLE_COMMENT_COUNT,
+                                                SortDirection.DESCENDING).
+                addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
+                addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL,
+                          true).
+                setCurrentPageNum(1).
+                setPageSize(num).
+                setPageCount(1);
 
         try {
             final JSONObject result = get(query);
@@ -142,6 +142,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository
                         FilterOperator.EQUAL, true);
         query.setCurrentPageNum(1);
         query.setPageSize(num);
+        query.setPageCount(1);
 
         try {
             final JSONObject result = get(query);
@@ -260,6 +261,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository
                         FilterOperator.EQUAL, true);
         query.setCurrentPageNum(1);
         query.setPageSize(fetchSize);
+        query.setPageCount(1);
 
         final JSONObject result1 = get(query);
         final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
@@ -280,6 +282,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository
                                 FilterOperator.EQUAL, true);
                 query.setCurrentPageNum(1);
                 query.setPageSize(reminingSize);
+                query.setPageCount(1);
 
                 final JSONObject result2 = get(query);
                 final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
