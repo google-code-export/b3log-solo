@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.3, Nov 8, 2011
+ * @version 1.0.3.4, Nov 10, 2011
  * @since 0.3.1
  */
 public final class ArticleRepositoryImpl extends AbstractRepository
@@ -62,6 +62,8 @@ public final class ArticleRepositoryImpl extends AbstractRepository
                       SortDirection.DESCENDING);
         query.setCurrentPageNum(currentPageNum);
         query.setPageSize(pageSize);
+         // TODO: 88250, 041 to fix, upgrades user model by adding two 
+        // properties (published article count & article count), then setPageCount
 
         return get(query);
     }
@@ -69,9 +71,11 @@ public final class ArticleRepositoryImpl extends AbstractRepository
     @Override
     public JSONObject getByPermalink(final String permalink)
             throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(Article.ARTICLE_PERMALINK,
-                        FilterOperator.EQUAL, permalink);
+        final Query query = new Query().addFilter(Article.ARTICLE_PERMALINK,
+                                                  FilterOperator.EQUAL,
+                                                  permalink).
+                setPageCount(1);
+
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
