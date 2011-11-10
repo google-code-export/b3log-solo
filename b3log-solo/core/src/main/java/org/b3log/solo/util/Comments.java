@@ -22,6 +22,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 16, 2011
+ * @version 1.0.0.6, Nov 10, 2011
  */
 public final class Comments {
 
@@ -45,10 +46,31 @@ public final class Comments {
     private static final Logger LOGGER =
             Logger.getLogger(Comments.class.getName());
     /**
+     * Language service.
+     */
+    private static LangPropsService langPropsService =
+            LangPropsService.getInstance();
+    /**
      * Mail service.
      */
     private static final MailService MAIL_SVC =
             MailServiceFactory.getMailService();
+    /**
+     * Minimum length of comment name.
+     */
+    private static final int MIN_COMMENT_NAME_LENGTH = 2;
+    /**
+     * Maximum length of comment name.
+     */
+    private static final int MAX_COMMENT_NAME_LENGTH = 20;
+    /**
+     * Minimum length of comment content.
+     */
+    private static final int MIN_COMMENT_CONTENT_LENGTH = 2;
+    /**
+     * Maximum length of comment content.
+     */
+    private static final int MAX_COMMENT_CONTENT_LENGTH = 500;
     /**
      * Comment mail HTML body.
      */
@@ -57,6 +79,77 @@ public final class Comments {
             + "{title}</a>]" + " received a new comment:</p>"
             + "{commenter}: <span><a href=\"http://{commentSharpURL}\">"
             + "{commentContent}</a></span>";
+
+    /**
+     * Checks the specified comment adding request.
+     * 
+     * @param requestJSONObject the specified comment adding request
+     * @return check result, for example, 
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": "" // Exists if "sc" equals to false
+     * }
+     * </pre>
+     */
+    public static JSONObject checkAddCommentRequest(
+            final JSONObject requestJSONObject) {
+        final JSONObject ret = new JSONObject();
+
+        try {
+            ret.put(Keys.STATUS_CODE, false);
+
+            final String commentName =
+                    requestJSONObject.getString(Comment.COMMENT_NAME);
+            if (MAX_COMMENT_NAME_LENGTH < commentName.length()
+                || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
+                ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
+
+                return ret;
+            }
+
+            final String commentEmail =
+                    requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().
+                    toLowerCase();
+            if (!Strings.isEmail(commentEmail)) {
+                ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));
+
+                return ret;
+            }
+
+            final String commentURL =
+                    requestJSONObject.optString(Comment.COMMENT_URL);
+            // TODO: checks comment URL
+
+            final String commentContent =
+                    requestJSONObject.getString(Comment.COMMENT_CONTENT).
+                    replaceAll("\\n", SoloServletListener.ENTER_ESC);
+            if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length()
+                || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
+                ret.put(Keys.MSG, langPropsService.get(
+                        "commentContentCannotEmptyLabel"));
+
+                return ret;
+            }
+
+            ret.put(Keys.STATUS_CODE, true);
+
+            return ret;
+        } catch (final JSONException e) {
+            LOGGER.log(Level.WARNING, "Checks add comment request["
+                                      + requestJSONObject.toString()
+                                      + "] failed", e);
+
+            try {
+                ret.put(Keys.STATUS_CODE, false);
+                ret.put(Keys.MSG, langPropsService.get("addFailLabel"));
+
+                return ret;
+            } catch (final JSONException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
 
     /**
      * Sends a notification mail to administrator for notifying the specified
@@ -152,7 +245,7 @@ public final class Comments {
                 replace("{commentSharpURL}", blogHost + commentSharpURL).
                 replace("{commenter}", commenter);
         message.setHtmlBody(mailBody);
-        
+
         LOGGER.log(Level.FINER,
                    "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
                    new Object[]{mailSubject, mailBody, adminEmail});

@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  * Comment query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Oct 31, 2011
+ * @version 1.0.0.3, Nov 10, 2011
  * @since 0.3.5
  */
 public final class CommentQueryService {
@@ -195,6 +196,13 @@ public final class CommentQueryService {
 
                 comment.put(Comment.COMMENT_TIME,
                             ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
+
+                comment.put(Comment.COMMENT_NAME,
+                            StringEscapeUtils.escapeHtml(comment.getString(
+                        Comment.COMMENT_NAME)));
+                comment.put(Comment.COMMENT_URL,
+                            StringEscapeUtils.escapeHtml(comment.getString(
+                        Comment.COMMENT_URL)));
 
                 comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
 

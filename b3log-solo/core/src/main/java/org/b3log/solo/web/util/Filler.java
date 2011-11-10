@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.model.Article;
@@ -71,7 +72,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.4.5, Nov 10, 2011
+ * @version 1.0.4.6, Nov 10, 2011
  * @since 0.3.1
  */
 public final class Filler {
@@ -439,13 +440,19 @@ public final class Filler {
             final List<JSONObject> recentComments =
                     commentRepository.getRecentComments(recentCommentDisplayCnt);
 
-            // Erase email for security reason
             for (final JSONObject comment : recentComments) {
                 final String content =
                         comment.getString(Comment.COMMENT_CONTENT).
                         replaceAll(SoloServletListener.ENTER_ESC, "&nbsp;");
                 comment.put(Comment.COMMENT_CONTENT, content);
-                comment.remove(Comment.COMMENT_EMAIL);
+                comment.put(Comment.COMMENT_NAME,
+                            StringEscapeUtils.escapeHtml(comment.getString(
+                        Comment.COMMENT_NAME)));
+                comment.put(Comment.COMMENT_URL,
+                            StringEscapeUtils.escapeHtml(comment.getString(
+                        Comment.COMMENT_URL)));
+
+                comment.remove(Comment.COMMENT_EMAIL); // Erases email for security reason
             }
 
             dataModel.put(Common.RECENT_COMMENTS, recentComments);

@@ -30,6 +30,7 @@ import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,6 +42,7 @@ import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -60,7 +62,6 @@ import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.web.action.StatusCodes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,7 +69,7 @@ import org.json.JSONObject;
  * Comment processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Sep 28, 2011
+ * @version 1.1.0.3, Nov 10, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -79,6 +80,11 @@ public final class CommentProcessor {
      */
     private static final Logger LOGGER =
             Logger.getLogger(CommentProcessor.class.getName());
+    /**
+     * Language service.
+     */
+    private static LangPropsService langPropsService =
+            LangPropsService.getInstance();
     /**
      * Page repository.
      */
@@ -160,36 +166,46 @@ public final class CommentProcessor {
      *                                    // is an reply
      * }
      * </pre>
+     * @throws ServletException servlet exception
+     * @throws IOException io exception
      */
     @RequestProcessing(value = {"/add-page-comment.do"},
                        method = HTTPRequestMethod.POST)
-    public void addPageComment(final HTTPRequestContext context) {
+    public void addPageComment(final HTTPRequestContext context)
+            throws ServletException, IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
-        // TODO: add article comment args check
+        final JSONObject requestJSONObject =
+                AbstractAction.parseRequestJSONObject(httpServletRequest,
+                                                      httpServletResponse);
 
-        final JSONObject jsonObject = new JSONObject();
+        final JSONObject jsonObject =
+                Comments.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
+        if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
+            LOGGER.log(Level.WARNING, "Can''t add comment[msg={0}]", jsonObject.
+                    optString(Keys.MSG));
+            return;
+        }
+
         final Transaction transaction = commentRepository.beginTransaction();
 
         String pageId, commentId;
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(httpServletRequest,
-                                                          httpServletResponse);
-
             final String captcha = requestJSONObject.getString(
                     CaptchaProcessor.CAPTCHA);
             final HttpSession session = httpServletRequest.getSession();
             final String storedCaptcha = (String) session.getAttribute(
                     CaptchaProcessor.CAPTCHA);
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-                jsonObject.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
+                jsonObject.put(Keys.STATUS_CODE, false);
+                jsonObject.put(Keys.MSG, langPropsService.get(
+                        "captchaErrorLabel"));
 
                 return;
             }
@@ -279,7 +295,7 @@ public final class CommentProcessor {
                                           eventData));
 
             transaction.commit();
-            jsonObject.put(Keys.STATUS_CODE, StatusCodes.COMMENT_PAGE_SUCC);
+            jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.OBJECT_ID, commentId);
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -289,9 +305,9 @@ public final class CommentProcessor {
             LOGGER.log(Level.SEVERE, "Can not add comment on page", e);
 
             try {
-                context.getResponse().sendError(
-                        HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
+                jsonObject.put(Keys.STATUS_CODE, false);
+                jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
+            } catch (final JSONException ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -328,26 +344,42 @@ public final class CommentProcessor {
      *                                    // is an reply
      * }
      * </pre>
+     * @throws ServletException servlet exception
+     * @throws IOException io exception 
      */
     @RequestProcessing(value = {"/add-article-comment.do"},
                        method = HTTPRequestMethod.POST)
-    public void addArticleComment(final HTTPRequestContext context) {
+    public void addArticleComment(final HTTPRequestContext context)
+            throws ServletException, IOException {
         // TODO: add article comment args check
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
+        final JSONObject requestJSONObject =
+                AbstractAction.parseRequestJSONObject(httpServletRequest,
+                                                      httpServletResponse);
+
+        JSONObject jsonObject =
+                Comments.checkAddCommentRequest(requestJSONObject);
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        renderer.setJSONObject(jsonObject);
+
+        if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
+            LOGGER.log(Level.WARNING, "Can''t add comment[msg={0}]", jsonObject.
+                    optString(Keys.MSG));
+            return;
+        }
+
         final Transaction transaction = commentRepository.beginTransaction();
         try {
-            final JSONObject requestJSONObject =
-                    AbstractAction.parseRequestJSONObject(httpServletRequest,
-                                                          httpServletResponse);
-            final JSONObject jsonObject =
+            jsonObject =
                     addArticleCommentInternal(requestJSONObject,
                                               httpServletRequest);
 
             transaction.commit();
 
-            final JSONRenderer renderer = new JSONRenderer();
             context.setRenderer(renderer);
             renderer.setJSONObject(jsonObject);
         } catch (final Exception e) {
@@ -357,9 +389,9 @@ public final class CommentProcessor {
 
             LOGGER.log(Level.SEVERE, "Can not add comment on article", e);
             try {
-                context.getResponse().sendError(
-                        HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
+                jsonObject.put(Keys.STATUS_CODE, false);
+                jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
+            } catch (final JSONException ex) {
                 throw new RuntimeException(ex);
             }
         }
@@ -386,7 +418,9 @@ public final class CommentProcessor {
         final String storedCaptcha =
                 (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
         if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-            ret.put(Keys.STATUS_CODE, StatusCodes.CAPTCHA_ERROR);
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, langPropsService.get(
+                    "captchaErrorLabel"));
 
             return ret;
         }
@@ -476,7 +510,7 @@ public final class CommentProcessor {
                 new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE,
                                       eventData));
 
-        ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
+        ret.put(Keys.STATUS_CODE, true);
         ret.put(Keys.OBJECT_ID, commentId);
 
         return ret;
