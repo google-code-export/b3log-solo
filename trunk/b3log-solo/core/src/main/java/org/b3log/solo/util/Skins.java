@@ -29,6 +29,7 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.action.util.PageCaches;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.freemarker.Templates;
@@ -37,6 +38,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceMgmtService;
 import static org.b3log.solo.model.Skin.*;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -68,55 +70,67 @@ public final class Skins {
      * 
      * @param preference the specified preference
      * @param dataModel the specified data model
-     * @throws Exception exception 
+     * @throws ServiceException service exception 
      */
     public void fillSkinLangs(final JSONObject preference,
                               final Map<String, Object> dataModel)
-            throws Exception {
+            throws ServiceException {
         Stopwatchs.start("Fill Skin Langs");
 
-        final String localeString = preference.getString(
-                Preference.LOCALE_STRING);
-        final String currentSkinDirName =
-                preference.getString(SKIN_DIR_NAME);
+        try {
+            final String localeString = preference.getString(
+                    Preference.LOCALE_STRING);
+            final String currentSkinDirName =
+                    preference.getString(SKIN_DIR_NAME);
 
-        final String langName = currentSkinDirName + "." + localeString;
-        Map<String, String> langs = LANG_MAP.get(langName);
-        if (null == langs) {
-            LANG_MAP.clear(); // Collect unused skin languages
+            final String langName = currentSkinDirName + "." + localeString;
+            Map<String, String> langs = LANG_MAP.get(langName);
+            if (null == langs) {
+                LANG_MAP.clear(); // Collect unused skin languages
 
-            LOGGER.log(Level.INFO,
-                       "Loading skin[dirName={0}, locale={1}]",
-                       new Object[]{currentSkinDirName, localeString});
-            langs = new HashMap<String, String>();
+                LOGGER.log(Level.INFO,
+                           "Loading skin[dirName={0}, locale={1}]",
+                           new Object[]{currentSkinDirName, localeString});
+                langs = new HashMap<String, String>();
 
-            final String webRootPath = SoloServletListener.getWebRoot();
+                final String webRootPath = SoloServletListener.getWebRoot();
 
-            final String language = Locales.getLanguage(localeString);
-            final String country = Locales.getCountry(localeString);
+                final String language = Locales.getLanguage(localeString);
+                final String country = Locales.getCountry(localeString);
 
-            final Properties props = new Properties();
-            props.load(new FileReader(webRootPath + "skins" + File.separator
-                                      + currentSkinDirName + File.separator
-                                      + Keys.LANGUAGE + File.separator
-                                      + Keys.LANGUAGE + '_' + language + '_'
-                                      + country + ".properties"));
-            final Set<Object> keys = props.keySet();
-            for (final Object key : keys) {
-                langs.put((String) key, props.getProperty((String) key));
+                final Properties props = new Properties();
+                props.load(new FileReader(webRootPath + "skins"
+                                          + File.separator
+                                          + currentSkinDirName
+                                          + File.separator
+                                          + Keys.LANGUAGE + File.separator
+                                          + Keys.LANGUAGE + '_' + language
+                                          + '_'
+                                          + country + ".properties"));
+                final Set<Object> keys = props.keySet();
+                for (final Object key : keys) {
+                    langs.put((String) key, props.getProperty((String) key));
+                }
+
+                LANG_MAP.put(langName, langs);
+                LOGGER.log(Level.INFO,
+                           "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
+                           new Object[]{currentSkinDirName,
+                                        localeString,
+                                        langs.size()});
             }
 
-            LANG_MAP.put(langName, langs);
-            LOGGER.log(Level.INFO,
-                       "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
-                       new Object[]{currentSkinDirName,
-                                    localeString,
-                                    langs.size()});
+            dataModel.putAll(langs);
+
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Fills skin langs failed", e);
+            throw new ServiceException(e);
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Fills skin langs failed", e);
+            throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
         }
-
-        dataModel.putAll(langs);
-
-        Stopwatchs.end();
     }
 
     /**

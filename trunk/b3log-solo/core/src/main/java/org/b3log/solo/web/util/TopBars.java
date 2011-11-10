@@ -21,14 +21,18 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.web.processor.InitProcessor;
@@ -40,11 +44,16 @@ import org.json.JSONObject;
  * Top bar utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 2, 2011
+ * @version 1.0.0.1, Nov 10, 2011
  * @since 0.3.5
  */
 public final class TopBars {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER =
+            Logger.getLogger(TopBars.class.getName());
     /**
      * User utilities.
      */
@@ -65,63 +74,72 @@ public final class TopBars {
      * @param request the specified request
      * @param response the specified response
      * @return top bar HTML
-     * @throws JSONException json exception
-     * @throws IOException io exception
-     * @throws RepositoryException repository exception
+     * @throws ServiceException service exception 
      */
     public static String getTopBarHTML(final HttpServletRequest request,
                                        final HttpServletResponse response)
-            throws JSONException, IOException, RepositoryException {
-        final Template topBarTemplate =
-                InitProcessor.TEMPLATE_CFG.getTemplate("top-bar.ftl");
-        final StringWriter stringWriter = new StringWriter();
-
-        final Map<String, Object> topBarModel =
-                new HashMap<String, Object>();
-
-        LoginProcessor.tryLogInWithCookie(request, response);
-        final JSONObject currentUser = userUtils.getCurrentUser(request);
-
-        topBarModel.put(Common.IS_LOGGED_IN, false);
-
-        if (null == currentUser) {
-            topBarModel.put(Common.LOGIN_URL,
-                            userService.createLoginURL(Common.ADMIN_INDEX_URI));
-            topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
-
-            try {
-                topBarTemplate.process(topBarModel, stringWriter);
-            } catch (final TemplateException e) {
-                throw new IOException(e);
-            }
-
-            return stringWriter.toString();
-        }
-
-        topBarModel.put(Common.IS_LOGGED_IN, true);
-        topBarModel.put(Common.LOGOUT_URL,
-                        userService.createLogoutURL("/"));
-        topBarModel.put(Common.IS_ADMIN,
-                        Role.ADMIN_ROLE.equals(currentUser.getString(
-                User.USER_ROLE)));
-
-        topBarModel.put("clearAllCacheLabel",
-                        langPropsService.get("clearAllCacheLabel"));
-        topBarModel.put("clearCacheLabel",
-                        langPropsService.get("clearCacheLabel"));
-        topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
-        topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
-
-        final String userName = currentUser.getString(User.USER_NAME);
-        topBarModel.put(User.USER_NAME, userName);
+            throws ServiceException {
+        Stopwatchs.start("Gens Top Bar HTML");
 
         try {
-            topBarTemplate.process(topBarModel, stringWriter);
-        } catch (final TemplateException e) {
-            throw new IOException(e);
-        }
+            final Template topBarTemplate =
+                    InitProcessor.TEMPLATE_CFG.getTemplate("top-bar.ftl");
+            final StringWriter stringWriter = new StringWriter();
 
-        return stringWriter.toString();
+            final Map<String, Object> topBarModel =
+                    new HashMap<String, Object>();
+
+            LoginProcessor.tryLogInWithCookie(request, response);
+            final JSONObject currentUser = userUtils.getCurrentUser(request);
+
+            topBarModel.put(Common.IS_LOGGED_IN, false);
+
+            if (null == currentUser) {
+                topBarModel.put(Common.LOGIN_URL,
+                                userService.createLoginURL(
+                        Common.ADMIN_INDEX_URI));
+                topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
+
+                topBarTemplate.process(topBarModel, stringWriter);
+
+                return stringWriter.toString();
+            }
+
+            topBarModel.put(Common.IS_LOGGED_IN, true);
+            topBarModel.put(Common.LOGOUT_URL,
+                            userService.createLogoutURL("/"));
+            topBarModel.put(Common.IS_ADMIN,
+                            Role.ADMIN_ROLE.equals(currentUser.getString(
+                    User.USER_ROLE)));
+
+            topBarModel.put("clearAllCacheLabel",
+                            langPropsService.get("clearAllCacheLabel"));
+            topBarModel.put("clearCacheLabel",
+                            langPropsService.get("clearCacheLabel"));
+            topBarModel.put("adminLabel", langPropsService.get("adminLabel"));
+            topBarModel.put("logoutLabel", langPropsService.get("logoutLabel"));
+
+            final String userName = currentUser.getString(User.USER_NAME);
+            topBarModel.put(User.USER_NAME, userName);
+
+            topBarTemplate.process(topBarModel, stringWriter);
+
+            return stringWriter.toString();
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            throw new ServiceException(e);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            throw new ServiceException(e);
+        } catch (final IOException e) {
+            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            throw new ServiceException(e);
+        } catch (final TemplateException e) {
+            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**

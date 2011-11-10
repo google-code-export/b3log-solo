@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.web.util.TopBars;
 import org.b3log.latke.util.Locales;
@@ -151,7 +152,7 @@ public final class IndexProcessor {
             }
 
             dataModel.put(Common.PATH, "");
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
@@ -167,12 +168,12 @@ public final class IndexProcessor {
      * 
      * @param context the specified context
      * @param request the specified request
-     * @param resposne the specified response 
+     * @param response the specified response 
      */
     @RequestProcessing(value = {"/error.do"}, method = HTTPRequestMethod.GET)
     public void handleErrors(final HTTPRequestContext context,
                              final HttpServletRequest request,
-                             final HttpServletResponse resposne) {
+                             final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
         context.setRenderer(renderer);
 
@@ -184,7 +185,7 @@ public final class IndexProcessor {
                     preferenceQueryService.getPreference();
 
             // Adds the top bar HTML content for output
-            final String topBarHTML = TopBars.getTopBarHTML(request, resposne);
+            final String topBarHTML = TopBars.getTopBarHTML(request, response);
             dataModel.put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY,
                           topBarHTML);
 
@@ -193,11 +194,11 @@ public final class IndexProcessor {
             filler.fillSide(dataModel, preference);
             filler.fillBlogHeader(dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
-                resposne.sendError(HttpServletResponse.SC_NOT_FOUND);
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
@@ -232,7 +233,7 @@ public final class IndexProcessor {
             request.setAttribute(CACHED_TYPE,
                                  langs.get(PageTypes.KILL_BROWSER_PAGE));
             request.setAttribute(CACHED_LINK, request.getRequestURI());
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
