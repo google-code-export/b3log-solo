@@ -62,7 +62,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository
                       SortDirection.DESCENDING);
         query.setCurrentPageNum(currentPageNum);
         query.setPageSize(pageSize);
-         // TODO: 88250, 041 to fix, upgrades user model by adding two 
+        // TODO: 88250, 041 to fix, upgrades user model by adding two 
         // properties (published article count & article count), then setPageCount
 
         return get(query);
@@ -159,15 +159,13 @@ public final class ArticleRepositoryImpl extends AbstractRepository
     public JSONObject getPreviousArticle(final String articleId)
             throws RepositoryException {
         try {
-            final Query query = new Query();
-            query.addFilter(Keys.OBJECT_ID,
-                            FilterOperator.LESS_THAN, articleId);
-            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                            FilterOperator.EQUAL, true);
-            query.addSort(Keys.OBJECT_ID,
-                          SortDirection.DESCENDING);
-            query.setCurrentPageNum(1);
-            query.setPageSize(1);
+            final Query query = new Query().addFilter(Keys.OBJECT_ID,
+                                                      FilterOperator.LESS_THAN,
+                                                      articleId).addFilter(
+                    Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                    addSort(Keys.OBJECT_ID,
+                            SortDirection.DESCENDING).setCurrentPageNum(1).
+                    setPageSize(1).setPageCount(1);
 
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
@@ -194,15 +192,14 @@ public final class ArticleRepositoryImpl extends AbstractRepository
     public JSONObject getNextArticle(final String articleId)
             throws RepositoryException {
         try {
-            final Query query = new Query();
-            query.addFilter(Keys.OBJECT_ID,
-                            FilterOperator.GREATER_THAN, articleId);
-            query.addFilter(Article.ARTICLE_IS_PUBLISHED,
-                            FilterOperator.EQUAL, true);
-            query.addSort(Keys.OBJECT_ID,
-                          SortDirection.ASCENDING);
-            query.setCurrentPageNum(1);
-            query.setPageSize(1);
+            final Query query = new Query().addFilter(Keys.OBJECT_ID,
+                                                      FilterOperator.GREATER_THAN,
+                                                      articleId).addFilter(
+                    Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                    addSort(Keys.OBJECT_ID,
+                            SortDirection.ASCENDING).setCurrentPageNum(1).
+                    setPageSize(1).
+                    setPageCount(1);
 
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
