@@ -70,6 +70,7 @@ import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 
@@ -349,7 +350,7 @@ public final class ArticleProcessor {
                 }
             }
 
-            filler.setArticlesExProperties(articles, preference);
+            filler.setArticlesExProperties(articles, author, preference);
 
             if (preference.optBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles,
@@ -468,9 +469,19 @@ public final class ArticleProcessor {
                     continue;
                 }
 
-                filler.setArticleExProperties(article, preference);
-
                 articles.add(article);
+            }
+
+            final boolean hasMultipleUsers =
+                    Users.getInstance().hasMultipleUsers();
+            if (hasMultipleUsers) {
+                filler.setArticlesExProperties(articles, preference);
+            } else {
+                if (!articles.isEmpty()) {
+                    final JSONObject author =
+                            articleUtils.getAuthor(articles.get(0));
+                    filler.setArticlesExProperties(articles, author, preference);
+                }
             }
 
             sort(preference, articles);

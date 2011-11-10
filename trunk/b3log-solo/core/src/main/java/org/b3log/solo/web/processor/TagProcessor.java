@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.util.Articles;
+import org.b3log.solo.util.Users;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Tags;
 import org.b3log.latke.repository.Query;
@@ -64,7 +66,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.3, Oct 3, 2011
+ * @version 1.1.0.4, Nov 10, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -96,6 +98,10 @@ public final class TagProcessor {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
+    /**
+     * Article utilities.
+     */
+    private Articles articleUtils = Articles.getInstance();
     /**
      * Tag-Article repository.
      */
@@ -206,9 +212,19 @@ public final class TagProcessor {
                     continue;
                 }
 
-                filler.setArticleExProperties(article, preference);
-
                 articles.add(article);
+            }
+
+            final boolean hasMultipleUsers =
+                    Users.getInstance().hasMultipleUsers();
+            if (hasMultipleUsers) {
+                filler.setArticlesExProperties(articles, preference);
+            } else {
+                if (!articles.isEmpty()) {
+                    final JSONObject author =
+                            articleUtils.getAuthor(articles.get(0));
+                    filler.setArticlesExProperties(articles, author, preference);
+                }
             }
 
             LOGGER.log(Level.FINEST,
