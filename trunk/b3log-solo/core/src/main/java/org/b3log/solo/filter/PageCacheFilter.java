@@ -43,7 +43,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
-import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.web.util.TopBars;
@@ -132,7 +131,8 @@ public final class PageCacheFilter implements Filter {
                                                                   true);
 
         if (null == cachedPageContentObject) {
-            LOGGER.log(Level.FINER, "Page cache miss");
+            LOGGER.log(Level.FINER, "Page cache miss for request URI[{0}]",
+                       requestURI);
             chain.doFilter(request, response);
 
             return;
