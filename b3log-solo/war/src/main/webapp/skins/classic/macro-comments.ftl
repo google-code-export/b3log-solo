@@ -132,7 +132,6 @@
         "mailInvalidLabel": "${mailInvalidLabel}",
         "commentContentCannotEmptyLabel": "${commentContentCannotEmptyLabel}",
         "captchaCannotEmptyLabel": "${captchaCannotEmptyLabel}",
-        "captchaErrorLabel": "${captchaErrorLabel}",
         "loadingLabel": "${loadingLabel}",
         "oId": "${oId}",
         "skinDirName": "${skinDirName}",
