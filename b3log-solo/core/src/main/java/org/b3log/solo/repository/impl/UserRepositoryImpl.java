@@ -31,7 +31,7 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Nov 5, 2011
+ * @version 1.0.0.8, Nov 10, 2011
  * @since 0.3.1
  */
 public final class UserRepositoryImpl extends AbstractRepository
@@ -61,9 +61,10 @@ public final class UserRepositoryImpl extends AbstractRepository
 
     @Override
     public JSONObject getAdmin() throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(User.USER_ROLE, FilterOperator.EQUAL,
-                        Role.ADMIN_ROLE);
+        final Query query = new Query().addFilter(User.USER_ROLE,
+                                                  FilterOperator.EQUAL,
+                                                  Role.ADMIN_ROLE).
+                setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
