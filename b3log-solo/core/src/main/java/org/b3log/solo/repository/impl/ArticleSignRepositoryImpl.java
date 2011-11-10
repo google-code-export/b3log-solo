@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Article-Sign relation repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.2, Nov 10, 2011
  * @since 0.3.1
  */
 public final class ArticleSignRepositoryImpl extends AbstractRepository
@@ -52,10 +52,11 @@ public final class ArticleSignRepositoryImpl extends AbstractRepository
     @Override
     public List<JSONObject> getBySignId(final String signId)
             throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(Sign.SIGN + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, signId);
-        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+        final Query query = new Query().addFilter(Sign.SIGN + "_"
+                                                  + Keys.OBJECT_ID,
+                                                  FilterOperator.EQUAL, signId).
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setPageCount(1);
 
         final JSONObject result = get(query);
         try {
@@ -71,9 +72,11 @@ public final class ArticleSignRepositoryImpl extends AbstractRepository
     @Override
     public JSONObject getByArticleId(final String articleId)
             throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID,
-                        FilterOperator.EQUAL, articleId);
+        final Query query = new Query().addFilter(Article.ARTICLE + "_"
+                                                  + Keys.OBJECT_ID,
+                                                  FilterOperator.EQUAL,
+                                                  articleId).
+                setPageCount(1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
