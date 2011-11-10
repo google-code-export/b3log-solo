@@ -38,6 +38,7 @@ import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
@@ -52,7 +53,7 @@ import org.json.JSONObject;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 5, 2011
+ * @version 1.0.0.5, Nov 10, 2011
  * @since 0.3.1
  */
 public final class PageCacheFilter implements Filter {
@@ -201,6 +202,15 @@ public final class PageCacheFilter implements Filter {
 
             return;
         } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            chain.doFilter(request, response);
+
+            return;
+        } catch (final ServiceException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }

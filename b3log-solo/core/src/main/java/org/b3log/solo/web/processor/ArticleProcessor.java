@@ -20,8 +20,6 @@ import org.b3log.solo.util.Statistics;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.latke.action.util.Paginator;
@@ -70,6 +68,7 @@ import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.CommentQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
@@ -78,7 +77,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.6, Oct 18, 2011
+ * @version 1.1.0.7, Nov 10, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -140,9 +139,9 @@ public final class ArticleProcessor {
     private ArchiveDateRepository archiveDateRepository =
             ArchiveDateRepositoryImpl.getInstance();
     /**
-     * User repository.
+     * User query service.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    private UserQueryService userQueryService = UserQueryService.getInstance();
     /**
      * Default update count for article random value.
      */
@@ -270,12 +269,15 @@ public final class ArticleProcessor {
      * 
      * @param context the specified context
      * @param request the specified request
-     * @param response the specified response 
+     * @param response the specified response
+     * @throws IOException io exception
+     * @throws JSONException json exception 
      */
     @RequestProcessing(value = {"/authors/**"}, method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context,
                                    final HttpServletRequest request,
-                                   final HttpServletResponse response) {
+                                   final HttpServletResponse response)
+            throws IOException, JSONException {
         final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
@@ -315,7 +317,7 @@ public final class ArticleProcessor {
             final int windowSize = preference.getInt(
                     Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-            final JSONObject author = userRepository.get(authorId);
+            final JSONObject author = userQueryService.getUser(authorId);
 
             final Map<String, String> langs =
                     langPropsService.getAll(Latkes.getLocale());
@@ -349,7 +351,7 @@ public final class ArticleProcessor {
 
             filler.setArticlesExProperties(articles, preference);
 
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            if (preference.optBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles,
                                  Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
             } else {
@@ -357,8 +359,8 @@ public final class ArticleProcessor {
                                  Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
 
-            final int pageCount = result.getJSONObject(
-                    Pagination.PAGINATION).getInt(
+            final int pageCount = result.optJSONObject(
+                    Pagination.PAGINATION).optInt(
                     Pagination.PAGINATION_PAGE_COUNT);
             final List<Integer> pageNums =
                     Paginator.paginate(currentPageNum, pageSize, pageCount,
@@ -369,12 +371,11 @@ public final class ArticleProcessor {
                                       currentPageNum, articles, author,
                                       preference);
 
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
@@ -747,7 +748,7 @@ public final class ArticleProcessor {
      * @param articles the specified articles
      * @param author the specified author
      * @param preference the specified preference
-     * @throws Exception exception
+     * @throws ServiceException service exception
      */
     private void prepareShowAuthorArticles(final List<Integer> pageNums,
                                            final Map<String, Object> dataModel,
@@ -756,7 +757,7 @@ public final class ArticleProcessor {
                                            final List<JSONObject> articles,
                                            final JSONObject author,
                                            final JSONObject preference)
-            throws Exception {
+            throws ServiceException {
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM,
                           pageNums.get(0));
@@ -780,11 +781,11 @@ public final class ArticleProcessor {
         }
 
         dataModel.put(Article.ARTICLES, articles);
-        final String authorId = author.getString(Keys.OBJECT_ID);
+        final String authorId = author.optString(Keys.OBJECT_ID);
         dataModel.put(Common.PATH, "/authors/" + authorId);
         dataModel.put(Keys.OBJECT_ID, authorId);
 
-        dataModel.put(Common.AUTHOR_NAME, author.getString(User.USER_NAME));
+        dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
 
         filler.fillSide(dataModel, preference);
