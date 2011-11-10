@@ -33,7 +33,9 @@
                             ${articleTag}</a><#if articleTag_has_next>,</#if>
                     </span>
                     </#list>&nbsp;&nbsp;&nbsp;
+                    <#-- 注释掉填充用户名部分
                     ${author1Label}<a href="/authors/${article.authorId}">${article.authorName}</a>
+                    -->
                 </div>
             </div>
             <div class="clear"></div>
