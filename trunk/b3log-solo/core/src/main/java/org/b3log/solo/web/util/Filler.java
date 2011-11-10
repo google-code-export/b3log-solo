@@ -263,7 +263,7 @@ public final class Filler {
             LOGGER.finer("Filling most used tags....");
             final int mostUsedTagDisplayCnt =
                     preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
-
+            
             final List<JSONObject> tags =
                     tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
             tagUtils.removeForUnpublishedArticles(tags);
