@@ -119,10 +119,10 @@ public final class CommentRepositoryImpl extends AbstractRepository
             }
         }
 
-        final Query query = new Query();
-        query.addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        query.setCurrentPageNum(1);
-        query.setPageSize(num);
+        final Query query = new Query().addSort(Keys.OBJECT_ID,
+                                                SortDirection.DESCENDING).
+                setCurrentPageNum(1).
+                setPageSize(num).setPageCount(1);
 
         List<JSONObject> ret = new ArrayList<JSONObject>();
         try {
@@ -131,7 +131,7 @@ public final class CommentRepositoryImpl extends AbstractRepository
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
 
             ret = CollectionUtils.jsonArrayToList(array);
-            
+
             // Removes unpublished article related comments
             removeForUnpublishedArticles(ret);
         } catch (final Exception e) {
