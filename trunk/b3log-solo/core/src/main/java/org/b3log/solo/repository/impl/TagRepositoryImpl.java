@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Tag repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Mar 7, 2011
+ * @version 1.0.1.0, Nov 10, 2011
  * @since 0.3.1
  */
 public final class TagRepositoryImpl extends AbstractRepository
@@ -77,11 +77,11 @@ public final class TagRepositoryImpl extends AbstractRepository
 
     @Override
     public List<JSONObject> getMostUsedTags(final int num) {
-        final Query query = new Query();
-        query.addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT,
-                      SortDirection.DESCENDING);
-        query.setCurrentPageNum(1);
-        query.setPageSize(num);
+        final Query query = new Query().addSort(
+                Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING).
+                setCurrentPageNum(1).
+                setPageSize(num).
+                setPageCount(1);
 
         try {
             final JSONObject result = get(query);
