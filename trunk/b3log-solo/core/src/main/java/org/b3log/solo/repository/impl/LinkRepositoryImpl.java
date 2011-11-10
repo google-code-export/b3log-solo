@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Link repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 2, 2011
+ * @version 1.0.0.5, Nov 10, 2011
  * @since 0.3.1
  */
 public final class LinkRepositoryImpl extends AbstractRepository
@@ -47,8 +47,9 @@ public final class LinkRepositoryImpl extends AbstractRepository
 
     @Override
     public JSONObject getByAddress(final String address) {
-        final Query query = new Query();
-        query.addFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address);
+        final Query query = new Query().addFilter(Link.LINK_ADDRESS,
+                                                  FilterOperator.EQUAL, address).
+                setPageCount(1);
 
         try {
             final JSONObject result = get(query);
