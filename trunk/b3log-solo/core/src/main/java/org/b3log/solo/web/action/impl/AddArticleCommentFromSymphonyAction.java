@@ -39,7 +39,6 @@ import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.web.action.StatusCodes;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -61,7 +60,7 @@ import org.json.JSONObject;
  * Symphony</a> action.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Nov 2, 2011
+ * @version 1.0.0.8, Nov 10, 2011
  * @since 0.3.1
  */
 public final class AddArticleCommentFromSymphonyAction
@@ -273,7 +272,7 @@ public final class AddArticleCommentFromSymphonyAction
                                           eventData));
 
             transaction.commit();
-            ret.put(Keys.STATUS_CODE, StatusCodes.COMMENT_ARTICLE_SUCC);
+            ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.OBJECT_ID, commentId);
         } catch (final Exception e) {
             if (transaction.isActive()) {
