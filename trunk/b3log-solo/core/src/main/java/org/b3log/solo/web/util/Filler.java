@@ -516,8 +516,8 @@ public final class Filler {
                           preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION,
                           preference.getString(Preference.META_DESCRIPTION));
-
-            final JSONObject result = userRepository.get(new Query());
+            final Query query = new Query().setPageCount(1);
+            final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
             final List<JSONObject> userList = CollectionUtils.jsonArrayToList(
                     users);
