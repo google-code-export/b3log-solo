@@ -56,7 +56,8 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
             final Query query = new Query();
             query.addFilter(ArchiveDate.ARCHIVE_TIME,
                             FilterOperator.EQUAL,
-                            ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime());
+                            ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime()).
+                    setPageCount(1);
 
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
@@ -75,8 +76,9 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository
     @Override
     public List<JSONObject> getArchiveDates() throws RepositoryException {
         final org.b3log.latke.repository.Query query =
-                new org.b3log.latke.repository.Query().addSort(
-                ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING);
+                new Query().addSort(
+                ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).
+                setPageCount(1);
         final JSONObject result = get(query);
 
         List<JSONObject> ret = new ArrayList<JSONObject>();
