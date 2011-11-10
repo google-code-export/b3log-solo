@@ -333,8 +333,9 @@ public final class TagProcessor {
             request.setAttribute(CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_LINK, "/tags.html");
-
-            final JSONObject result = tagRepository.get(new Query());
+            
+            final Query query = new Query().setPageCount(1);
+            final JSONObject result = tagRepository.get(query);
             final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
 
             final List<JSONObject> tags =
