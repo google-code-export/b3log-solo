@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Page repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Nov 8, 2011
+ * @version 1.0.0.8, Nov 10, 2011
  * @since 0.3.1
  */
 public final class PageRepositoryImpl extends AbstractRepository
@@ -51,9 +51,10 @@ public final class PageRepositoryImpl extends AbstractRepository
     @Override
     public JSONObject getByPermalink(final String permalink)
             throws RepositoryException {
-        final Query query = new Query();
-        query.addFilter(Page.PAGE_PERMALINK,
-                        FilterOperator.EQUAL, permalink);
+        final Query query = new Query().addFilter(Page.PAGE_PERMALINK,
+                                                  FilterOperator.EQUAL,
+                                                  permalink).
+                setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
@@ -66,8 +67,9 @@ public final class PageRepositoryImpl extends AbstractRepository
 
     @Override
     public int getMaxOrder() throws RepositoryException {
-        final Query query = new Query();
-        query.addSort(Page.PAGE_ORDER, SortDirection.DESCENDING);
+        final Query query = new Query().addSort(Page.PAGE_ORDER,
+                                                SortDirection.DESCENDING).
+                setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
@@ -91,14 +93,13 @@ public final class PageRepositoryImpl extends AbstractRepository
                 return null;
             }
 
-            final Query query = new Query();
-            query.addFilter(Page.PAGE_ORDER,
-                            FilterOperator.LESS_THAN,
-                            page.getInt(Page.PAGE_ORDER)).
+            final Query query = new Query().addFilter(
+                    Page.PAGE_ORDER, FilterOperator.LESS_THAN,
+                    page.getInt(Page.PAGE_ORDER)).
                     addSort(Page.PAGE_ORDER,
-                            SortDirection.DESCENDING);
-            query.setCurrentPageNum(1);
-            query.setPageSize(1);
+                            SortDirection.DESCENDING).
+                    setCurrentPageNum(1).
+                    setPageSize(1).setPageCount(1);
 
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
@@ -122,14 +123,13 @@ public final class PageRepositoryImpl extends AbstractRepository
                 return null;
             }
 
-            final Query query = new Query();
-            query.addFilter(Page.PAGE_ORDER,
-                            FilterOperator.GREATER_THAN,
-                            page.getInt(Page.PAGE_ORDER)).
+            final Query query = new Query().addFilter(
+                    Page.PAGE_ORDER, FilterOperator.GREATER_THAN,
+                    page.getInt(Page.PAGE_ORDER)).
                     addSort(Page.PAGE_ORDER,
-                            SortDirection.ASCENDING);
-            query.setCurrentPageNum(1);
-            query.setPageSize(1);
+                            SortDirection.ASCENDING).setCurrentPageNum(1).
+                    setPageSize(1).
+                    setPageCount(1);
 
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
@@ -147,8 +147,9 @@ public final class PageRepositoryImpl extends AbstractRepository
 
     @Override
     public JSONObject getByOrder(final int order) {
-        final Query query = new Query();
-        query.addFilter(Page.PAGE_ORDER, FilterOperator.EQUAL, order);
+        final Query query = new Query().addFilter(Page.PAGE_ORDER,
+                                                  FilterOperator.EQUAL, order).
+                setPageCount(1);
         try {
             final JSONObject result = get(query);
             final JSONArray array = result.getJSONArray(Keys.RESULTS);
@@ -169,7 +170,7 @@ public final class PageRepositoryImpl extends AbstractRepository
     public List<JSONObject> getPages() throws RepositoryException {
         List<JSONObject> ret = new ArrayList<JSONObject>();
         final Query query = new Query().addSort(
-                Page.PAGE_ORDER, SortDirection.ASCENDING);
+                Page.PAGE_ORDER, SortDirection.ASCENDING).setPageCount(1);
         final JSONObject result = get(query);
 
         try {
