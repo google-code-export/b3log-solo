@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Oct 4, 2011
+ * @version 1.0.1.2, Nov 10, 2011
  * @since 0.3.1
  */
 public final class Users {
@@ -72,7 +72,8 @@ public final class Users {
      */
     public boolean hasMultipleUsers() throws JSONException,
                                              RepositoryException {
-        final JSONArray users = userRepository.get(new Query()).
+        final Query query = new Query().setPageCount(1);
+        final JSONArray users = userRepository.get(query).
                 getJSONArray(Keys.RESULTS);
 
         return 1 != users.length();
@@ -173,7 +174,8 @@ public final class Users {
      */
     public boolean isSoloUser(final String email) {
         try {
-            final JSONObject result = userRepository.get(new Query());
+            final Query query = new Query().setPageCount(1);
+            final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
 
             return existEmail(email, users);
