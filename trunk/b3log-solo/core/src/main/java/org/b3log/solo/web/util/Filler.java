@@ -229,7 +229,8 @@ public final class Filler {
                     new HashMap<String, SortDirection>();
             sorts.put(Link.LINK_ORDER, SortDirection.ASCENDING);
             final Query query = new Query().addSort(Link.LINK_ORDER,
-                                                    SortDirection.ASCENDING);
+                                                    SortDirection.ASCENDING).
+                    setPageCount(1);
             final JSONObject linkResult = linkRepository.get(query);
             final List<JSONObject> links = org.b3log.latke.util.CollectionUtils.
                     jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
@@ -263,7 +264,7 @@ public final class Filler {
             LOGGER.finer("Filling most used tags....");
             final int mostUsedTagDisplayCnt =
                     preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
-            
+
             final List<JSONObject> tags =
                     tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
             tagUtils.removeForUnpublishedArticles(tags);
