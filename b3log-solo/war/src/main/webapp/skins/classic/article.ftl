@@ -109,8 +109,12 @@
         </div>
         <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
+        <#if 0 != randomArticlesDisplayCount>
         page.loadRandomArticles();
+        </#if>
+        <#if 0 != relevantArticlesDisplayCount>
         page.loadRelevantArticles('${article.oId}', '${relevantArticles1Label}');
+        </#if>
         <#if 0 != externalRelevantArticlesDisplayCount>
         page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
         </#if>
