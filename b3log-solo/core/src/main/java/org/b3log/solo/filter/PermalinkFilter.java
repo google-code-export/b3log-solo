@@ -30,30 +30,39 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Permalinks;
 import org.json.JSONObject;
 
 /**
- * Article permalink filter.
+ * Article/Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Nov 9, 2011
+ * @version 1.0.1.3, Nov 11, 2011
  * @since 0.3.1
+ * @see org.b3log.solo.web.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext) 
+ * @see org.b3log.solo.web.processor.PageProcessor#showPage(org.b3log.latke.servlet.HTTPRequestContext) 
  */
-public final class ArticlePermalinkFilter implements Filter {
+public final class PermalinkFilter implements Filter {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER =
-            Logger.getLogger(ArticlePermalinkFilter.class.getName());
+            Logger.getLogger(PermalinkFilter.class.getName());
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
+    /**
+     * Page repository.
+     */
+    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -79,6 +88,7 @@ public final class ArticlePermalinkFilter implements Filter {
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
         if (!Permalinks.matchDefaultArticlePermalinkFormat(requestURI)
+            && !Permalinks.matchDefaultPagePermalinkFormat(requestURI)
             && Skips.shouldSkip(requestURI)) {
             LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", requestURI);
             chain.doFilter(request, response);
@@ -86,27 +96,22 @@ public final class ArticlePermalinkFilter implements Filter {
             return;
         }
 
+        JSONObject article = null;
+        JSONObject page = null;
         try {
-            final JSONObject article =
-                    articleRepository.getByPermalink(requestURI);
+            article = articleRepository.getByPermalink(requestURI);
             if (null == article) {
-                LOGGER.log(Level.FINER, "Not found article with permalink[{0}]",
+                page = pageRepository.getByPermalink(requestURI);
+            }
+
+            if (null == page && null == article) {
+                LOGGER.log(Level.FINER,
+                           "Not found article/page with permalink[{0}]",
                            requestURI);
                 chain.doFilter(request, response);
 
                 return;
             }
-
-            final HTTPRequestContext context = new HTTPRequestContext();
-            context.setRequest(httpServletRequest);
-            context.setResponse((HttpServletResponse) response);
-
-            httpServletRequest.setAttribute(Article.ARTICLE, article);
-
-            httpServletRequest.setAttribute("requestURI", "/article");
-            httpServletRequest.setAttribute("method", "GET");
-
-            HTTPRequestDispatcher.dispatch(context);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Processes article permalink filter failed",
                        e);
@@ -115,6 +120,38 @@ public final class ArticlePermalinkFilter implements Filter {
 
             return;
         }
+
+        dispatchToArticleOrPageProcessor(request, response, article, page);
+    }
+
+    /**
+     * Dispatches the specified request to the specified article or page 
+     * processor with the specified response.
+     * 
+     * @param request the specified request
+     * @param response the specified response
+     * @param article the specified article
+     * @param page the specified page
+     * @see HTTPRequestDispatcher#dispatch(org.b3log.latke.servlet.HTTPRequestContext) 
+     */
+    private void dispatchToArticleOrPageProcessor(
+            final ServletRequest request, final ServletResponse response,
+            final JSONObject article, final JSONObject page) {
+        final HTTPRequestContext context = new HTTPRequestContext();
+        context.setRequest((HttpServletRequest) request);
+        context.setResponse((HttpServletResponse) response);
+        
+        if (null != article) {
+            request.setAttribute(Article.ARTICLE, article);
+            request.setAttribute("requestURI", "/article");
+        } else {
+            request.setAttribute(Page.PAGE, page);
+            request.setAttribute("requestURI", "/page");
+        }
+
+        request.setAttribute("method", "GET");
+        
+        HTTPRequestDispatcher.dispatch(context);
     }
 
     @Override
