@@ -22,6 +22,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -67,16 +68,25 @@ public final class Users {
      * Determines whether if exists multiple users in current Solo.
      *
      * @return {@code true} if exists, {@code false} otherwise
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws ServiceException service exception
      */
-    public boolean hasMultipleUsers() throws JSONException,
-                                             RepositoryException {
+    public boolean hasMultipleUsers() throws ServiceException {
         final Query query = new Query().setPageCount(1);
-        final JSONArray users = userRepository.get(query).
-                getJSONArray(Keys.RESULTS);
 
-        return 1 != users.length();
+        try {
+            final JSONArray users = userRepository.get(query).
+                    getJSONArray(Keys.RESULTS);
+
+            return 1 != users.length();
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Determines multiple users failed", e);
+
+            throw new ServiceException(e);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Determines multiple users failed", e);
+
+            throw new ServiceException(e);
+        }
     }
 
     /**

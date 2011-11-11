@@ -667,32 +667,37 @@ public final class Filler {
      * @param article the specified article
      * @param author the specified author
      * @param preference the specified preference
-     * @throws JSONException json exception
+     * @throws ServiceException service exception
      * @see #setArticlesExProperties(java.util.List, org.json.JSONObject) 
      */
     private void setArticleExProperties(final JSONObject article,
                                         final JSONObject author,
                                         final JSONObject preference)
-            throws JSONException {
-        final String authorName = author.getString(User.USER_NAME);
-        article.put(Common.AUTHOR_NAME, authorName);
-        final String authorId = author.getString(Keys.OBJECT_ID);
-        article.put(Common.AUTHOR_ID, authorId);
+            throws ServiceException {
+        try {
+            final String authorName = author.getString(User.USER_NAME);
+            article.put(Common.AUTHOR_NAME, authorName);
+            final String authorId = author.getString(Keys.OBJECT_ID);
+            article.put(Common.AUTHOR_ID, authorId);
 
-        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-            article.put(Common.HAS_UPDATED,
-                        articleUtils.hasUpdated(article));
-        } else {
-            article.put(Common.HAS_UPDATED, false);
-        }
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                article.put(Common.HAS_UPDATED,
+                            articleUtils.hasUpdated(article));
+            } else {
+                article.put(Common.HAS_UPDATED, false);
+            }
 
-        final String articleListStyle =
-                preference.getString(Preference.ARTICLE_LIST_STYLE);
-        if ("titleOnly".equals(articleListStyle)) {
-            article.put(Article.ARTICLE_ABSTRACT, "");
-        } else if ("titleAndContent".equals(articleListStyle)) {
-            article.put(Article.ARTICLE_ABSTRACT,
-                        article.getString(Article.ARTICLE_CONTENT));
+            final String articleListStyle =
+                    preference.getString(Preference.ARTICLE_LIST_STYLE);
+            if ("titleOnly".equals(articleListStyle)) {
+                article.put(Article.ARTICLE_ABSTRACT, "");
+            } else if ("titleAndContent".equals(articleListStyle)) {
+                article.put(Article.ARTICLE_ABSTRACT,
+                            article.getString(Article.ARTICLE_CONTENT));
+            }
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Sets article extra properties failed", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -714,32 +719,37 @@ public final class Filler {
      * 
      * @param article the specified article
      * @param preference the specified preference
-     * @throws JSONException json exception
+     * @throws ServiceException service exception
      * @see #setArticlesExProperties(java.util.List, org.json.JSONObject) 
      */
     private void setArticleExProperties(final JSONObject article,
                                         final JSONObject preference)
-            throws JSONException {
-        final JSONObject author = articleUtils.getAuthor(article);
-        final String authorName = author.getString(User.USER_NAME);
-        article.put(Common.AUTHOR_NAME, authorName);
-        final String authorId = author.getString(Keys.OBJECT_ID);
-        article.put(Common.AUTHOR_ID, authorId);
+            throws ServiceException {
+        try {
+            final JSONObject author = articleUtils.getAuthor(article);
+            final String authorName = author.getString(User.USER_NAME);
+            article.put(Common.AUTHOR_NAME, authorName);
+            final String authorId = author.getString(Keys.OBJECT_ID);
+            article.put(Common.AUTHOR_ID, authorId);
 
-        if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-            article.put(Common.HAS_UPDATED,
-                        articleUtils.hasUpdated(article));
-        } else {
-            article.put(Common.HAS_UPDATED, false);
-        }
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                article.put(Common.HAS_UPDATED,
+                            articleUtils.hasUpdated(article));
+            } else {
+                article.put(Common.HAS_UPDATED, false);
+            }
 
-        final String articleListStyle =
-                preference.getString(Preference.ARTICLE_LIST_STYLE);
-        if ("titleOnly".equals(articleListStyle)) {
-            article.put(Article.ARTICLE_ABSTRACT, "");
-        } else if ("titleAndContent".equals(articleListStyle)) {
-            article.put(Article.ARTICLE_ABSTRACT,
-                        article.getString(Article.ARTICLE_CONTENT));
+            final String articleListStyle =
+                    preference.getString(Preference.ARTICLE_LIST_STYLE);
+            if ("titleOnly".equals(articleListStyle)) {
+                article.put(Article.ARTICLE_ABSTRACT, "");
+            } else if ("titleAndContent".equals(articleListStyle)) {
+                article.put(Article.ARTICLE_ABSTRACT,
+                            article.getString(Article.ARTICLE_CONTENT));
+            }
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Sets article extra properties failed", e);
+            throw new ServiceException(e);
         }
     }
 
@@ -767,13 +777,13 @@ public final class Filler {
      * @param articles the specified articles
      * @param author the specified author
      * @param preference the specified preference
-     * @throws JSONException json exception
+     * @throws ServiceException service exception
      * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject) 
      */
     public void setArticlesExProperties(final List<JSONObject> articles,
                                         final JSONObject author,
                                         final JSONObject preference)
-            throws JSONException {
+            throws ServiceException {
         for (final JSONObject article : articles) {
             setArticleExProperties(article, author, preference);
         }
@@ -802,12 +812,12 @@ public final class Filler {
      *
      * @param articles the specified articles
      * @param preference the specified preference
-     * @throws JSONException json exception
+     * @throws ServiceException service exception
      * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject) 
      */
     public void setArticlesExProperties(final List<JSONObject> articles,
                                         final JSONObject preference)
-            throws JSONException {
+            throws ServiceException {
         for (final JSONObject article : articles) {
             setArticleExProperties(article, preference);
         }
