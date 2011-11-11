@@ -78,7 +78,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, Nov 10, 2011
+ * @version 1.1.0.8, Nov 11, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -937,6 +937,10 @@ public final class ArticleProcessor {
         dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
                       preference.getInt(
                 Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+        dataModel.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT,
+                      preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT));
+        dataModel.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT,
+                      preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT));
 
         filler.fillSide(dataModel, preference);
         filler.fillBlogHeader(dataModel, preference);
