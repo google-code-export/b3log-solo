@@ -212,7 +212,7 @@ public final class FeedProcessor {
         try {
             final JSONObject tagArticleResult =
                     tagArticleRepository.getByTagId(tagId, 1,
-                                                    ENTRY_OUTPUT_CNT, 1);
+                                                    ENTRY_OUTPUT_CNT);
             final JSONArray tagArticleRelations =
                     tagArticleResult.getJSONArray(Keys.RESULTS);
             if (0 == tagArticleRelations.length()) {
@@ -424,8 +424,7 @@ public final class FeedProcessor {
         final Channel channel = new Channel();
         try {
             final JSONObject tagArticleResult =
-                    tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT,
-                                                    1);
+                    tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
             final JSONArray tagArticleRelations =
                     tagArticleResult.getJSONArray(Keys.RESULTS);
             if (0 == tagArticleRelations.length()) {

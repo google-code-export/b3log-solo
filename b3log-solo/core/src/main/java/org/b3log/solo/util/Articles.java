@@ -27,6 +27,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
@@ -85,15 +86,14 @@ public final class Articles {
      *
      * @param article the specified article
      * @return user, {@code null} if not found
-     * @throws JSONException json exception
+     * @throws ServiceException service exception
      */
     public JSONObject getAuthor(final JSONObject article)
-            throws JSONException {
-        final String email = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
-
-        JSONObject ret = null;
+            throws ServiceException {
         try {
-            ret = userRepository.getByEmail(email);
+            final String email = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
+
+            JSONObject ret = userRepository.getByEmail(email);
 
             if (null == ret) {
                 LOGGER.log(Level.WARNING,
@@ -104,12 +104,16 @@ public final class Articles {
                 ret = userRepository.getAdmin();
             }
 
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets author of article[id={0}] failed",
                        article.optString(Keys.OBJECT_ID));
+            throw new ServiceException(e);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Gets author of article[id={0}] failed",
+                       article.optString(Keys.OBJECT_ID));
+            throw new ServiceException(e);
         }
-
-        return ret;
     }
 
     /**

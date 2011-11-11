@@ -71,8 +71,7 @@ public final class TagArticleRepositoryImpl extends AbstractRepository
     @Override
     public JSONObject getByTagId(final String tagId,
                                  final int currentPageNum,
-                                 final int pageSize,
-                                 final int pageCount)
+                                 final int pageSize)
             throws RepositoryException {
         final Query query = new Query().addFilter(Tag.TAG + "_" + Keys.OBJECT_ID,
                                                   FilterOperator.EQUAL, tagId).
@@ -80,7 +79,7 @@ public final class TagArticleRepositoryImpl extends AbstractRepository
                         SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).
                 setPageSize(pageSize).
-                setPageCount(pageCount);
+                setPageCount(1);
 
         return get(query);
     }

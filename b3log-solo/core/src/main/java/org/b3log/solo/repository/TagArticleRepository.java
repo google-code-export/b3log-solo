@@ -53,7 +53,6 @@ public interface TagArticleRepository extends Repository {
      * then {@code 0}
      * @param pageSize the specified page size(count of a page contains objects),
      * MUST greater then {@code 0}
-     * @param pageCount the specified page count
      * @return for example
      * <pre>
      * {
@@ -71,6 +70,5 @@ public interface TagArticleRepository extends Repository {
      */
     JSONObject getByTagId(final String tagId,
                           final int currentPageNum,
-                          final int pageSize,
-                          final int pageCount) throws RepositoryException;
+                          final int pageSize) throws RepositoryException;
 }

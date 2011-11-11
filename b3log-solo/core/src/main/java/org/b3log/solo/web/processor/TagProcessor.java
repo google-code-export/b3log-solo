@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.json.JSONException;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -22,12 +24,9 @@ import org.b3log.solo.util.Tags;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
-import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.Collections;
 import org.b3log.latke.action.util.Paginator;
 import org.b3log.latke.model.Pagination;
@@ -58,6 +57,8 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.PageTypes;
+import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import static org.b3log.latke.action.AbstractCacheablePageAction.*;
@@ -66,7 +67,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.4, Nov 10, 2011
+ * @version 1.1.0.5, Nov 11, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -108,10 +109,15 @@ public final class TagProcessor {
     private TagArticleRepository tagArticleRepository =
             TagArticleRepositoryImpl.getInstance();
     /**
-     * Article repository.
+     * Article query service.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleQueryService articleQueryService =
+            ArticleQueryService.getInstance();
+    /**
+     * Tag query service.
+     */
+    private TagQueryService tagQueryService =
+            TagQueryService.getInstance();
     /**
      * Tag utilities.
      */
@@ -121,9 +127,11 @@ public final class TagProcessor {
      * Shows articles related with a tag with the specified context.
      * 
      * @param context the specified context
+     * @throws IOException io exception 
      */
     @RequestProcessing(value = {"/tags/**"}, method = HTTPRequestMethod.GET)
-    public void showTagArticles(final HTTPRequestContext context) {
+    public void showTagArticles(final HTTPRequestContext context)
+            throws IOException {
         final AbstractFreeMarkerRenderer renderer =
                 new FrontFreeMarkerRenderer();
         context.setRenderer(renderer);
@@ -150,12 +158,13 @@ public final class TagProcessor {
                        new Object[]{tagTitle, currentPageNum});
 
             tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
-            final JSONObject tag = tagRepository.getByTitle(tagTitle);
+            final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
 
-            if (null == tag) {
+            if (null == result) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
+            final JSONObject tag = result.getJSONObject(Tag.TAG);
 
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
@@ -180,18 +189,10 @@ public final class TagProcessor {
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
             request.setAttribute(CACHED_LINK, requestURI);
 
-            final int tagArticleCount =
-                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-            final int pageCount = (int) Math.ceil((double) tagArticleCount
-                                                  / (double) pageSize);
-
-            final JSONObject result =
-                    tagArticleRepository.getByTagId(tagId,
-                                                    currentPageNum,
-                                                    pageSize, pageCount);
-            final JSONArray tagArticleRelations =
-                    result.getJSONArray(Keys.RESULTS);
-            if (0 == tagArticleRelations.length()) {
+            final List<JSONObject> articles =
+                    articleQueryService.getArticlesByTag(
+                    tagId, currentPageNum, pageSize);
+            if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     return;
@@ -200,32 +201,21 @@ public final class TagProcessor {
                 }
             }
 
-            final List<JSONObject> articles = new ArrayList<JSONObject>();
-            for (int i = 0; i < tagArticleRelations.length(); i++) {
-                final JSONObject tagArticleRelation =
-                        tagArticleRelations.getJSONObject(i);
-                final String articleId =
-                        tagArticleRelation.getString(Article.ARTICLE + "_"
-                                                     + Keys.OBJECT_ID);
-                final JSONObject article = articleRepository.get(articleId);
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {  // Skips the unpublished article
-                    continue;
-                }
-
-                articles.add(article);
-            }
-
             final boolean hasMultipleUsers =
                     Users.getInstance().hasMultipleUsers();
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
-                if (!articles.isEmpty()) {
-                    final JSONObject author =
-                            articleUtils.getAuthor(articles.get(0));
-                    filler.setArticlesExProperties(articles, author, preference);
-                }
+                // All articles composed by the same author
+                final JSONObject author =
+                        articleUtils.getAuthor(articles.get(0));
+                filler.setArticlesExProperties(articles, author, preference);
             }
+
+            final int tagArticleCount =
+                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            final int pageCount = (int) Math.ceil((double) tagArticleCount
+                                                  / (double) pageSize);
 
             LOGGER.log(Level.FINEST,
                        "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
@@ -256,12 +246,19 @@ public final class TagProcessor {
             filler.fillSide(dataModel, preference);
             filler.fillBlogHeader(dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
-        } catch (final Exception e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }
@@ -333,7 +330,7 @@ public final class TagProcessor {
             request.setAttribute(CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_LINK, "/tags.html");
-            
+
             final Query query = new Query().setPageCount(1);
             final JSONObject result = tagRepository.get(query);
             final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);

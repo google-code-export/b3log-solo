@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+import org.json.JSONException;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.model.Tag;
 import java.util.Date;
@@ -313,6 +314,65 @@ public final class ArticleQueryService {
     }
 
     /**
+     * Gets a list of published articles with the specified tag id, current page
+     * number and page size.
+     * 
+     * @param tagId the specified tag id
+     * @param currentPageNum the specified current page number
+     * @param pageSize the specified page size
+     * @return a list of articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getArticlesByTag(final String tagId,
+                                             final int currentPageNum,
+                                             final int pageSize)
+            throws ServiceException {
+        try {
+            final JSONObject result = tagArticleRepository.getByTagId(tagId,
+                                                                      currentPageNum,
+                                                                      pageSize);
+            final JSONArray tagArticleRelations =
+                    result.getJSONArray(Keys.RESULTS);
+            if (0 == tagArticleRelations.length()) {
+                return Collections.emptyList();
+            }
+
+            final List<JSONObject> ret = new ArrayList<JSONObject>();
+            for (int i = 0; i < tagArticleRelations.length(); i++) {
+                final JSONObject tagArticleRelation =
+                        tagArticleRelations.getJSONObject(i);
+                final String articleId =
+                        tagArticleRelation.getString(Article.ARTICLE + "_"
+                                                     + Keys.OBJECT_ID);
+
+                final JSONObject article = articleRepository.get(articleId);
+                if (null == article) {
+                    LOGGER.log(Level.WARNING, "Not found article[id={0}]",
+                               articleId);
+                    continue;
+                }
+
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    // Skips the unpublished article
+                    continue;
+                }
+
+                ret.add(article);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets articles by tag[id=" + tagId
+                                     + "] failed", e);
+            throw new ServiceException(e);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Gets articles by tag[id=" + tagId
+                                     + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets a list of articles randomly with the specified fetch size.
      *
      * @param fetchSize the specified fetch size
@@ -362,7 +422,7 @@ public final class ArticleQueryService {
                 final JSONObject tag = tagRepository.getByTitle(tagTitle);
                 final String tagId = tag.getString(Keys.OBJECT_ID);
                 final JSONObject result =
-                        tagArticleRepository.getByTagId(tagId, 1, displayCnt, 1);
+                        tagArticleRepository.getByTagId(tagId, 1, displayCnt);
                 final JSONArray tagArticleRelations =
                         result.getJSONArray(Keys.RESULTS);
 
