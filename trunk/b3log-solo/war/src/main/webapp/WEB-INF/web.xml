@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.3.7, Oct 31, 2011
+    Version: 1.0.3.8, Nov 11, 2011
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -58,19 +58,11 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
-        <filter-name>ArticlePermalinkFilter</filter-name>
-        <filter-class>org.b3log.solo.filter.ArticlePermalinkFilter</filter-class>
+        <filter-name>PermalinkFilter</filter-name>
+        <filter-class>org.b3log.solo.filter.PermalinkFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>ArticlePermalinkFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter>
-        <filter-name>PagePermalinkFilter</filter-name>
-        <filter-class>org.b3log.solo.filter.PagePermalinkFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PagePermalinkFilter</filter-name>
+        <filter-name>PermalinkFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter>
