@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Nov 10, 2011
+ * @version 1.0.1.4, Nov 12, 2011
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -231,6 +231,19 @@ $.extend(Page.prototype, {
         });
 
         // cookie
+        var $top = $("#top #admin");
+        if ($top.length === 1) {
+            if ($top.find("a").length > 1) {
+                if (Cookie.readCookie("commentURL") === "") {
+                    Cookie.createCookie("commentURL", window.location.host, 365);
+                }
+                
+                if (Cookie.readCookie("commentName") === "") {
+                    Cookie.createCookie("commentName", $top.find("span").text(), 365); 
+                }
+            }
+        }
+        
         $("#commentEmail").val(Cookie.readCookie("commentEmail"));
         $("#commentURL").val(Cookie.readCookie("commentURL"));
         $("#commentName").val(Cookie.readCookie("commentName"));

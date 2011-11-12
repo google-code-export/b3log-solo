@@ -3,7 +3,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.4, Oct 29, 2011
+ * @version 1.0.1.5, Nov 12, 2011
 */
 *,html,body {
     margin: 0;
@@ -138,10 +138,6 @@ button:hover,.button:hover {
     width: 100%;
     padding: 0 3px;
 }
-
-.form textarea {
-    overflow: auto;
-}
 .form input {
     height: 24px;
 }
@@ -165,6 +161,8 @@ button:hover,.button:hover {
 
 .form textarea {
     padding: 3px;
+    overflow: auto;
+    resize: vertical;    
 }
 /* end form */
 

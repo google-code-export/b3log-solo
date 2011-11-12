@@ -18,7 +18,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.4, Nov 8, 2011
+ * @version 1.0.1.5, Nov 12, 2011
  */
 
 var Admin = function () {
@@ -196,18 +196,25 @@ $.extend(Admin.prototype, {
     },
     
     /*
-     * tools and article collapse
-     * @it 触发事件对象
+     * @description tools and article collapse
+     * @param {bom} it 触发事件对象
      */
     collapseNav: function (it) {
-        var subNav = $(it).next()[0];
-        if (subNav.className === "none") {
+        var subNav = $(it).next();
+        subNav.slideToggle("normal", function () {
+            if (this.style.display !== "none") {
+                $(it).find(".ico-arrow-down")[0].className = "ico-arrow-up";
+            } else {
+                $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
+            }
+        });
+        /*if (subNav.className === "none") {
             $(it).find(".ico-arrow-down")[0].className = "ico-arrow-up";
             subNav.className = "collapsed";
         } else {
             $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
             subNav.className = "none";
-        }
+        }*/
     },
     
     /*

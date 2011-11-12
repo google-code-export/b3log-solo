@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.2, Nov 1, 2011
+ * @version 1.0.2.3, Nov 12, 2011
 */
 /* start resset */
 *, input, textarea {
@@ -259,6 +259,7 @@ a:hover {
     box-shadow: 0 1px 0 #FFFFFF inset;
     background-color: #F5F5F5;
     margin-bottom: 36px;
+    min-height: 160px;
 }
 .module-header {
     background-color: #f1f1f1;
@@ -308,7 +309,7 @@ a:hover {
     background-color: #D54121;
 }
 .skinItem:hover {
-    background-color: #FFFFFF;
+    background-color: #EEE;
 }
 .f-blue, .error-msg {
     color: #3366CC;
@@ -421,20 +422,18 @@ a:hover {
     line-height: 27px;
     margin-left: 3px;
 }
-.dialog-header-left, .dialog-header-right {
+.dialog-header-left, .dialog-header-right, .dialog-header-bg {
     background-color: #666666;
     float: left;
-    height: 16px;
+    height: 24px;
+    cursor: move;
     width: 4px;
 }
 .dialog-header-middle {
     float: left;
 }
 .dialog-header-bg {
-    background-color: #666666;
-    cursor: move;
-    float: left;
-    height: 16px;
+    width: auto;
 }
 .dialog-close-icon {
     background: url("/images/icon.png") repeat scroll -49px -16px transparent;
@@ -443,6 +442,7 @@ a:hover {
     height: 6px;
     padding: 5px;
     width: 7px;
+    margin-top: 5px;
 }
 .dialog-main {
     background-color: #FFFFFF;
