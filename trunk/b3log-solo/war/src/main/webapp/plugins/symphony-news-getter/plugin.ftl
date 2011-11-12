@@ -14,13 +14,17 @@
     plugins.symphonyNewsGetter = {
         init: function () {
             $("#loadMsg").text("${loadingLabel}");
+            
+            $("#symphonyNewsGetter").css("background",
+            "url(/images/loader.gif) no-repeat scroll center center transparent");
+            
             $.ajax({
                 url: "http://symphony.b3log.org:80/get-news",
                 type: "GET",
                 dataType:"jsonp",
                 jsonp: "callback",
                 error: function(){
-                    $("#symphonyNewsGetter").html("Loading B3log Announcement failed :-(");
+                    $("#symphonyNewsGetter").html("Loading B3log Announcement failed :-(").css("background", "none");
                 },
                 success: function(data, textStatus){
                     var articles = data.articles;
@@ -38,7 +42,7 @@
                     }
                     listHTML += "</ul>";
                     
-                    $("#symphonyNewsGetter").html(listHTML);
+                    $("#symphonyNewsGetter").html(listHTML).css("background", "none");
                 }
             });
             

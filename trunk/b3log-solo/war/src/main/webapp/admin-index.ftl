@@ -43,7 +43,7 @@
                             ${articleLabel}
                             <span class="ico-arrow-up"></span>
                         </div>
-                        <ul class="collapsed" id="tabArticleMgt">
+                        <ul id="tabArticleMgt">
                             <li>
                                 <div id="tabs_article">
                                     <a href="#article/article" onclick="admin.article.prePost()">${postArticleLabel}</a>
