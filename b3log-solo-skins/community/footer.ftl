@@ -33,9 +33,9 @@
     <div class="clear"></div>
 </div>
 <#if "" == miniPostfix>
-<script type="text/javascript" src="/js/lib/jquery/jquery-1.6.4.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/lib/jquery/jquery-1.7.min.js" charset="utf-8"></script>
 <#else>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" charset="utf-8"></script>
 </#if>
 <script type="text/javascript" src="/js/common${miniPostfix}.js" charset="utf-8"></script>
 <script type="text/javascript">
