@@ -33,4 +33,16 @@ Theme by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
     });
     common.init();
     common.replaceSideEm($("#recentComments li"));
+    
+    var toggleArchive = function (it) {
+        var $it = $(it);
+        $it.next().slideToggle(260, function () {
+            var h4Obj = $it.find("h4");
+            if (this.style.display === "none") {
+                h4Obj.html("${archiveLabel} +");
+            } else {
+                h4Obj.html("${archiveLabel} -");
+            }
+        });
+    }
 </script>

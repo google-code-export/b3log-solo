@@ -111,10 +111,10 @@
     </#if>
     <#if 0 != archiveDates?size>
     <ul>
-        <li>
-            <h4>${archiveLabel}</h4>
+        <li onclick="toggleArchive(this)">
+            <h4>${archiveLabel} +</h4>
         </li>
-        <li>
+        <li class="none">
             <ul>
                 <#list archiveDates as archiveDate>
                 <li>
