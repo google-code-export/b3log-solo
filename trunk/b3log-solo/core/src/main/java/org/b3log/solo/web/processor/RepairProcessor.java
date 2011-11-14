@@ -63,6 +63,8 @@ import org.json.JSONObject;
 
 /**
  * Provides patches on some special issues.
+ * 
+ * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.1.0.1, Oct 3, 2011
@@ -113,11 +115,8 @@ public final class RepairProcessor {
     @RequestProcessing(value = {"/fix/restore-signs.do"},
                        method = HTTPRequestMethod.GET)
     public void restoreSigns(final HTTPRequestContext context) {
-        final TextHTMLRenderer renderer =
-                new TextHTMLRenderer();
+        final TextHTMLRenderer renderer = new TextHTMLRenderer();
         context.setRenderer(renderer);
-
-        final Repository repository = PreferenceRepositoryImpl.getInstance();
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
