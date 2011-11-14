@@ -36,6 +36,6 @@
     * [b3_tasks 任务情况]
  * FAQ
    * [dev_faq 开发常见问题]
- * [thirdparty_deploy_gae 第三方文档] 
- * [thirdparty_skins 第三方皮肤] 
+ * [thirdparty_deploy_gae 非官方文档] 
+ * [thirdparty_skins 非官方皮肤] 
   
