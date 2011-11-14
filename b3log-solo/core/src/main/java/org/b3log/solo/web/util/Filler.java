@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.web.util;
 
+import freemarker.template.Template;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,7 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.model.Preference;
@@ -581,13 +583,37 @@ public final class Filler {
         Stopwatchs.start("Fill Side");
         try {
             LOGGER.fine("Filling side....");
-            fillLinks(dataModel);
-//        fillRecentArticles(dataModel, preference);
-            fillRecentComments(dataModel, preference);
-            fillMostUsedTags(dataModel, preference);
-            fillMostCommentArticles(dataModel, preference);
-            fillMostViewCountArticles(dataModel, preference);
-            fillArchiveDates(dataModel, preference);
+
+            final Template template = Templates.getTemplate("side.ftl");
+
+// TODO:       fillRecentArticles(dataModel, preference);
+            if (Templates.hasExpression(template, "<#list links as link>")) {
+                fillLinks(dataModel);
+            }
+
+            if (Templates.hasExpression(template,
+                                        "<#list recentComments as comment>")) {
+                fillRecentComments(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template, "<#list mostUsedTags as tag>")) {
+                fillMostUsedTags(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template,
+                                        "<#list mostCommentArticles as article>")) {
+                fillMostCommentArticles(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template,
+                                        "<#list mostViewCountArticles as article>")) {
+                fillMostViewCountArticles(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template,
+                                        "<#list archiveDates as archiveDate>")) {
+                fillArchiveDates(dataModel, preference);
+            }
 
             final String noticeBoard =
                     preference.getString(Preference.NOTICE_BOARD);
