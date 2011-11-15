@@ -26,7 +26,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
-import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
 import java.util.logging.Logger;
@@ -59,6 +58,7 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
+import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Comments;
@@ -105,13 +105,14 @@ public final class CommentProcessor {
     private static PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
     /**
+     * Comment management service.
+     */
+    private CommentMgmtService commentMgmtService =
+            CommentMgmtService.getInstance();
+    /**
      * Time zone utilities.
      */
     private static TimeZones timeZoneUtils = TimeZones.getInstance();
-    /**
-     * Page utilities.
-     */
-    private Pages pageUtils = Pages.getInstance();
     /**
      * Article utilities.
      */
@@ -171,6 +172,7 @@ public final class CommentProcessor {
      */
     @RequestProcessing(value = {"/add-page-comment.do"},
                        method = HTTPRequestMethod.POST)
+    // TODO: encap txn
     public void addPageComment(final HTTPRequestContext context)
             throws ServletException, IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
@@ -275,7 +277,7 @@ public final class CommentProcessor {
             comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.update(commentId, comment);
             // Step 2: Update page comment count
-            pageUtils.incPageCommentCount(pageId);
+            commentMgmtService.incPageCommentCount(pageId);
             // Step 3: Update blog statistic comment count
             statistics.incBlogCommentCount();
             statistics.incPublishedBlogCommentCount();

@@ -15,13 +15,13 @@
  */
 package org.b3log.solo.web.processor;
 
+import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.util.Pages;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -64,14 +64,15 @@ public final class PageProcessor {
      */
     private Filler filler = Filler.getInstance();
     /**
-     * Page utilities.
-     */
-    private Pages pageUtils = Pages.getInstance();
-    /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService =
             PreferenceQueryService.getInstance();
+    /**
+     * Comment query service.
+     */
+    private CommentQueryService commentQueryService =
+            CommentQueryService.getInstance();
     /**
      * Skin utilities.
      */
@@ -121,7 +122,8 @@ public final class PageProcessor {
                                  page.getString(Page.PAGE_PERMALINK));
 
             dataModel.put(Page.PAGE, page);
-            final List<JSONObject> comments = pageUtils.getComments(pageId);
+            final List<JSONObject> comments = 
+                    commentQueryService.getComments(pageId);
             dataModel.put(Page.PAGE_COMMENTS_REF, comments);
 
             filler.fillSide(dataModel, preference);

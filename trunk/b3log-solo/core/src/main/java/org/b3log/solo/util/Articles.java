@@ -134,23 +134,6 @@ public final class Articles {
     }
 
     /**
-     * Article comment count -1 for an article specified by the given article id.
-     *
-     * @param articleId the given article id
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
-     */
-    public void decArticleCommentCount(final String articleId)
-            throws JSONException, RepositoryException {
-        final JSONObject article = articleRepository.get(articleId);
-        final JSONObject newArticle =
-                new JSONObject(article, JSONObject.getNames(article));
-        final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
-        newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt - 1);
-        articleRepository.update(articleId, newArticle);
-    }
-
-    /**
      * Gets sign id of an article specified by the article id.
      *
      * @param articleId the specified article id
