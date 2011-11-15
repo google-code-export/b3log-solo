@@ -107,7 +107,7 @@ public final class PageMgmtService {
                     permalink = "/" + permalink;
                 }
 
-                if (permalinks.invalidPagePermalinkFormat(permalink)) {
+                if (Permalinks.invalidPagePermalinkFormat(permalink)) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
@@ -215,7 +215,7 @@ public final class PageMgmtService {
                 permalink = "/" + permalink;
             }
 
-            if (permalinks.invalidPagePermalinkFormat(permalink)) {
+            if (Permalinks.invalidPagePermalinkFormat(permalink)) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }

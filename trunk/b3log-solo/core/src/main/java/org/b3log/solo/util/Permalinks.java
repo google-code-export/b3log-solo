@@ -144,7 +144,7 @@ public final class Permalinks {
      * @param permalink the specified article permalink
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
-    public boolean invalidArticlePermalinkFormat(final String permalink) {
+    public static boolean invalidArticlePermalinkFormat(final String permalink) {
         if (Strings.isEmptyOrNull(permalink)) {
             return true;
         }
@@ -162,7 +162,7 @@ public final class Permalinks {
      * @param permalink the specified page permalink
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
-    public boolean invalidPagePermalinkFormat(final String permalink) {
+    public static boolean invalidPagePermalinkFormat(final String permalink) {
         if (Strings.isEmptyOrNull(permalink)) {
             return true;
         }
@@ -180,7 +180,8 @@ public final class Permalinks {
      * @param permalink the specified user-defined permalink
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
-    private boolean invalidUserDefinedPermalinkFormat(final String permalink) {
+    private static boolean invalidUserDefinedPermalinkFormat(
+            final String permalink) {
         if (Strings.isEmptyOrNull(permalink)) {
             return true;
         }
@@ -229,12 +230,12 @@ public final class Permalinks {
     }
 
     /**
-     * Determines whether the specified permalink reserved.
+     * Determines whether the specified permalink is reserved.
      *
      * @param permalink the specified permalink
-     * @return {@code true} if reserved, returns {@code false} otherwise
+     * @return {@code true} if it is reserved, returns {@code false} otherwise
      */
-    private boolean isReserved(final String permalink) {
+    private static boolean isReserved(final String permalink) {
         for (final String reservedLink : RESERVED_LINKS) {
             if (permalink.equals(reservedLink)) {
                 return true;
