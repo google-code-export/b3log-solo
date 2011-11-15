@@ -35,12 +35,6 @@ import org.b3log.solo.web.processor.LoginProcessor;
 /**
  * Authentication filter.
  *
- * <p>
- * User not logged in was filtered by GAE, see the section &lt;security-constraint&gt;
- * in web.xml and GAE official document <a href="http://code.google.com/appengine/docs/java/config/
- * webxml.html#Security_and_Authentication">Security and Authentication</a>.
- * </p>
- *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.3, Oct 4, 2011
  * @since 0.3.1
