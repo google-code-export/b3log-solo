@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Oct 29, 2011
+ * @version 1.0.1.3, Nov 15, 2011
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -303,7 +303,10 @@ admin.article = {
         } else {
             $("#abstract").val("");
         }
+        // reset tag
         $("#tag").val("");
+        $("#tagCheckboxPanel").hide().find("span").removeClass("selected");
+        
         $("#title").val("");
         $("#permalink").val("");
         $(".signs button").each(function (i) {

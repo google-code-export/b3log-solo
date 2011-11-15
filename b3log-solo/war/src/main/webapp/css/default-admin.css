@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.3, Nov 12, 2011
+ * @version 1.0.2.4, Nov 15, 2011
 */
 /* start resset */
 *, input, textarea {
@@ -374,6 +374,9 @@ a:hover {
 .completed-panel a.selected {
     background-color: #FFFFFF;
     color: #D54121;
+}
+.completed-ck {
+    margin-top: 9px;
 }
 .completed-ck span {
     background: url(/images/icon.png) repeat center bottom;
