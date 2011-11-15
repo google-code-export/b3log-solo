@@ -17,7 +17,7 @@
 
 -->
 <!--
-    Description: Datastore index configuration for GAE. See
+    Description: Datastore index configurations on GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/indexconfig.html
                  for more details.
     Version: 1.0.1.8, Oct 15, 2011

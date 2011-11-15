@@ -17,7 +17,7 @@
 
 -->
 <!--
-    Description: Web deployment descriptor for GAE. See
+    Description: Web deployment descriptor on GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/appconfig.html
                  for more details.
     Version: 1.0.2.9, Nov 8, 2011

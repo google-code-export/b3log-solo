@@ -78,14 +78,19 @@ public final class Skips {
     /**
      * Determines whether the specified request URI is a reserved link.
      * 
+     * <p>
+     * A URI starts with one of {@link Permalinks#RESERVED_LINKS reserved links}
+     * will be treated as reserved link.
+     * </p>
+     * 
      * @param requestURI the specified request URI
      * @return {@code true} if it is a reserved link, returns {@code false}
      * otherwise
      */
-    private static boolean isReservedLink(final String requestURI) {
+    public static boolean isReservedLink(final String requestURI) {
         for (int i = 0; i < Permalinks.RESERVED_LINKS.length; i++) {
             final String reservedLink = Permalinks.RESERVED_LINKS[i];
-            if (reservedLink.equals(requestURI)) {
+            if (reservedLink.startsWith(requestURI)) {
                 return true;
             }
         }
@@ -100,7 +105,7 @@ public final class Skips {
      * @return {@code true} if the specified request URI points to a static 
      * resource, returns {@code false} otherwise
      */
-    private static boolean isStatic(final String requestURI) {
+    public static boolean isStatic(final String requestURI) {
         return requestURI.endsWith(".css") || requestURI.endsWith(".js")
                || requestURI.endsWith("png"); // TODO: todo static postfix, see HTTPRequestDispatcher#service
     }

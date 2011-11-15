@@ -36,9 +36,14 @@ import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.taskqueue.Queue;
+import org.b3log.latke.taskqueue.Task;
+import org.b3log.latke.taskqueue.TaskQueueService;
+import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.plugin.PluginRefresher;
+import org.b3log.solo.filter.Skips;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -49,7 +54,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.3, Nov 2, 2011
+ * @version 1.0.6.4, Nov 15, 2011
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -72,6 +77,10 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final String B3LOG_RHYTHM_ADDRESS =
             "http://b3log-rhythm.appspot.com:80";
+    /**
+     * Task queue service.
+     */
+    private TaskQueueService taskQueueService;
     /**
      * Enter escape.
      */
@@ -113,6 +122,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
         registerEventProcessor();
 
+        taskQueueService = TaskQueueServiceFactory.getTaskQueueService();
+
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
@@ -140,8 +151,18 @@ public final class SoloServletListener extends AbstractServletListener {
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
         final HttpServletRequest servletRequest =
                 (HttpServletRequest) servletRequestEvent.getServletRequest();
-        Stopwatchs.start("Request Initialized[requestURI=" + servletRequest.
-                getRequestURI() + "]");
+        final String requestURI = servletRequest.getRequestURI();
+        Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
+
+        if (Skips.isReservedLink(requestURI) || Skips.isStatic(requestURI)) {
+            return;
+        }
+
+        // For request statistics
+//        final Queue queue = taskQueueService.getQueue("request-stat-queue");
+//        final Task task = new Task();
+//        task.setURL("/console/stat/request");
+//        queue.add(task);
     }
 
     @Override
