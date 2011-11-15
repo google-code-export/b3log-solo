@@ -17,7 +17,6 @@ package org.b3log.solo.web.processor;
 
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.ArchiveDateRepository;
@@ -94,11 +93,6 @@ public final class ArticleProcessor {
      */
     private ArticleQueryService articleQueryService =
             ArticleQueryService.getInstance();
-    /**
-     * Article management service.
-     */
-    private ArticleMgmtService articleMgmtService =
-            ArticleMgmtService.getInstance();
     /**
      * Comment query service.
      */

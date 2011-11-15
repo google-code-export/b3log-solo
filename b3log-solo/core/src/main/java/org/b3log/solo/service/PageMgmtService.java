@@ -25,10 +25,12 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
-import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Permalinks;
+import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,9 +53,14 @@ public final class PageMgmtService {
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
     /**
-     * Page utilities.
+     * Comment repository.
      */
-    private Pages pageUtils = Pages.getInstance();
+    private CommentRepository commentRepository =
+            CommentRepositoryImpl.getInstance();
+    /**
+     * Statistic utilities.
+     */
+    private Statistics statistics = Statistics.getInstance();
     /**
      * Permalink utilities.
      */
@@ -162,7 +169,7 @@ public final class PageMgmtService {
         final Transaction transaction = pageRepository.beginTransaction();
         try {
             LOGGER.log(Level.FINER, "Removing a page[oId={0}]", pageId);
-            pageUtils.removePageComments(pageId);
+            removePageComments(pageId);
             pageRepository.remove(pageId);
 
             transaction.commit();
@@ -319,6 +326,31 @@ public final class PageMgmtService {
      */
     public static PageMgmtService getInstance() {
         return SingletonHolder.SINGLETON;
+    }
+
+    /**
+     * Removes page comments by the specified page id.
+     *
+     * <p>
+     * Removes related comments, sets page/blog comment statistic count.
+     * </p>
+     *
+     * @param pageId the specified page id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void removePageComments(final String pageId)
+            throws JSONException, RepositoryException {
+        final int removedCnt = commentRepository.removeComments(pageId);
+
+        int blogCommentCount = statistics.getBlogCommentCount();
+        blogCommentCount -= removedCnt;
+        statistics.setBlogCommentCount(blogCommentCount);
+
+        int publishedBlogCommentCount =
+                statistics.getPublishedBlogCommentCount();
+        publishedBlogCommentCount -= removedCnt;
+        statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
     }
 
     /**

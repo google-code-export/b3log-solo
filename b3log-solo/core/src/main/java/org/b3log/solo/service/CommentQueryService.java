@@ -174,19 +174,19 @@ public final class CommentQueryService {
     }
 
     /**
-     * Gets comments of an article specified by the article id.
+     * Gets comments of an article or page specified by the on id.
      *
-     * @param articleId the specified article id
+     * @param onId the specified on id
      * @return a list of comments, returns an empty list if not found
      * @throws ServiceException repository exception
      */
-    public List<JSONObject> getComments(final String articleId)
+    public List<JSONObject> getComments(final String onId)
             throws ServiceException {
         try {
             final List<JSONObject> ret = new ArrayList<JSONObject>();
 
             final List<JSONObject> comments =
-                    commentRepository.getComments(articleId, 1,
+                    commentRepository.getComments(onId, 1,
                                                   Integer.MAX_VALUE);
             for (final JSONObject comment : comments) {
                 final String content =

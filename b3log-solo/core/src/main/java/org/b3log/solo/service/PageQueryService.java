@@ -132,7 +132,8 @@ public final class PageQueryService {
             
             final Query query = new Query().setCurrentPageNum(currentPageNum).
                     setPageSize(pageSize).
-                    addSort(Page.PAGE_ORDER, SortDirection.ASCENDING);
+                    addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).
+                    setPageCount(1);
             final JSONObject result = pageRepository.get(query);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).
                     getInt(Pagination.PAGINATION_PAGE_COUNT);

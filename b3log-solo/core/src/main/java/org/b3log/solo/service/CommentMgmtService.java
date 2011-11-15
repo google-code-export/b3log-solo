@@ -17,16 +17,21 @@ package org.b3log.solo.service;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
+import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Articles;
-import org.b3log.solo.util.Pages;
 import org.b3log.solo.util.Statistics;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -54,13 +59,14 @@ public final class CommentMgmtService {
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
     /**
+     * Page repository.
+     */
+    private PageRepository pageRepository =
+            PageRepositoryImpl.getInstance();
+    /**
      * Article utilities.
      */
     private Articles articleUtils = Articles.getInstance();
-    /**
-     * Page utilities.
-     */
-    private Pages pageUtils = Pages.getInstance();
     /**
      * Statistic utilities.
      */
@@ -82,7 +88,7 @@ public final class CommentMgmtService {
             // Step 1: Remove comment
             commentRepository.remove(commentId);
             // Step 2: Update page comment count
-            pageUtils.decPageCommentCount(pageId);
+            decPageCommentCount(pageId);
             // Step 3: Update blog statistic comment count
             statistics.decBlogCommentCount();
             statistics.decPublishedBlogCommentCount();
@@ -115,7 +121,7 @@ public final class CommentMgmtService {
             // Step 1: Remove comment
             commentRepository.remove(commentId);
             // Step 2: Update article comment count
-            articleUtils.decArticleCommentCount(articleId);
+            decArticleCommentCount(articleId);
             // Step 3: Update blog statistic comment count
             statistics.decBlogCommentCount();
             statistics.decPublishedBlogCommentCount();
@@ -129,6 +135,57 @@ public final class CommentMgmtService {
             LOGGER.log(Level.SEVERE, "Removes a comment of an article failed", e);
             throw new ServiceException(e);
         }
+    }
+
+    /**
+     * Page comment count +1 for an page specified by the given page id.
+     *
+     * @param pageId the given page id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void incPageCommentCount(final String pageId)
+            throws JSONException, RepositoryException {
+        final JSONObject page = pageRepository.get(pageId);
+        final JSONObject newPage =
+                new JSONObject(page, JSONObject.getNames(page));
+        final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
+        newPage.put(Page.PAGE_COMMENT_COUNT, commentCnt + 1);
+        pageRepository.update(pageId, newPage);
+    }
+
+    /**
+     * Article comment count -1 for an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void decArticleCommentCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final JSONObject article = articleRepository.get(articleId);
+        final JSONObject newArticle =
+                new JSONObject(article, JSONObject.getNames(article));
+        final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
+        newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt - 1);
+        articleRepository.update(articleId, newArticle);
+    }
+
+    /**
+     * Page comment count -1 for an page specified by the given page id.
+     *
+     * @param pageId the given page id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void decPageCommentCount(final String pageId)
+            throws JSONException, RepositoryException {
+        final JSONObject page = pageRepository.get(pageId);
+        final JSONObject newPage =
+                new JSONObject(page, JSONObject.getNames(page));
+        final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
+        newPage.put(Page.PAGE_COMMENT_COUNT, commentCnt - 1);
+        pageRepository.update(pageId, newPage);
     }
 
     /**
