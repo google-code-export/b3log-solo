@@ -19,7 +19,6 @@ import org.b3log.solo.util.Tags;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import org.b3log.solo.util.Articles;
-import org.b3log.solo.util.ArchiveDates;
 import org.b3log.latke.event.EventException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -74,7 +73,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Nov 5, 2011
+ * @version 1.0.0.4, Nov 15, 2011
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -148,10 +147,6 @@ public final class ArticleMgmtService {
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
     /**
-     * Archive date utilities.
-     */
-    private static ArchiveDates archiveDateUtils = ArchiveDates.getInstance();
-    /**
      * Article utilities.
      */
     private static Articles articleUtils = Articles.getInstance();
@@ -179,7 +174,7 @@ public final class ArticleMgmtService {
             final JSONObject article = articleRepository.get(articleId);
             article.put(ARTICLE_IS_PUBLISHED, false);
             tagUtils.decTagPublishedRefCount(articleId);
-            archiveDateUtils.decArchiveDatePublishedRefCount(articleId);
+            decArchiveDatePublishedRefCount(articleId);
             articleRepository.update(articleId, article);
             statistics.decPublishedBlogArticleCount();
             final int blogCmtCnt =
@@ -322,7 +317,7 @@ public final class ArticleMgmtService {
             addArticleSignRelation(signId, articleId);
             article.remove(ARTICLE_SIGN_REF + "_" + Keys.OBJECT_ID);
             if (publishNewArticle) {
-                archiveDateUtils.incArchiveDatePublishedRefCount(articleId);
+                incArchiveDatePublishedRefCount(articleId);
             }
 
             // Update
@@ -1157,6 +1152,50 @@ public final class ArticleMgmtService {
         }
 
         return ret;
+    }
+
+    /**
+     * Decrements reference count of archive date of an published article specified
+     * by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void decArchiveDatePublishedRefCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final JSONObject archiveDateArticleRelation =
+                archiveDateArticleRepository.getByArticleId(articleId);
+        final String archiveDateId =
+                archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
+                                                     + "_" + Keys.OBJECT_ID);
+        final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
+        archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                        archiveDate.getInt(
+                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) - 1);
+        archiveDateRepository.update(archiveDateId, archiveDate);
+    }
+
+    /**
+     * Increments reference count of archive date of an published article specified
+     * by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    private void incArchiveDatePublishedRefCount(final String articleId)
+            throws JSONException, RepositoryException {
+        final JSONObject archiveDateArticleRelation =
+                archiveDateArticleRepository.getByArticleId(articleId);
+        final String archiveDateId =
+                archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE
+                                                     + "_" + Keys.OBJECT_ID);
+        final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
+        archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
+                        archiveDate.getInt(
+                ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
+        archiveDateRepository.update(archiveDateId, archiveDate);
     }
 
     /**
