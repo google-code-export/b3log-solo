@@ -23,7 +23,7 @@
                     <td>
                         <input id="replayEmailTemplateTitle" type="text" />
                     </td>
-                    <td rowspan="2" valign="top" width="250px">
+                    <td rowspan="2" valign="top" width="260px">
                         <div class="marginLeft12">
                            ${replayEmailExplanationLabel}
                         </div>
