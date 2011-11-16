@@ -7,8 +7,6 @@
         <meta name="keywords" content="${article.articleTags}" />
         <meta name="description" content="${article.articleAbstract?html}" />
         </@head>
-        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shCoreEclipse.css" charset="utf-8" />
-        <link type="text/css" rel="stylesheet" href="/js/lib/SyntaxHighlighter/styles/shThemeEclipse.css" charset="utf-8" />
     </head>
     <body>
         ${topBarReplacement}
