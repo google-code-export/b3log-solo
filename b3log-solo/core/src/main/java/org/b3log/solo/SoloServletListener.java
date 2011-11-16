@@ -36,6 +36,8 @@ import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.taskqueue.Queue;
+import org.b3log.latke.taskqueue.Task;
 import org.b3log.latke.taskqueue.TaskQueueService;
 import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
 import org.b3log.latke.util.Stopwatchs;
@@ -46,6 +48,7 @@ import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.web.processor.stat.StatProcessor;
 import org.json.JSONObject;
 
 /**
@@ -152,15 +155,17 @@ public final class SoloServletListener extends AbstractServletListener {
         final String requestURI = servletRequest.getRequestURI();
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
 
-        if (Skips.isReservedLink(requestURI) || Skips.isStatic(requestURI)) {
+        if (StatProcessor.STAT_REQUEST_URI.equals(requestURI)
+            || Skips.isStatic(requestURI)) {
             return;
         }
 
         // For request statistics
-//        final Queue queue = taskQueueService.getQueue("request-stat-queue");
-//        final Task task = new Task();
-//        task.setURL("/console/stat/request");
-//        queue.add(task);
+        final Queue queue = taskQueueService.getQueue("request-stat-queue");
+        final Task task = new Task();
+        task.setURL("/console/stat/request");
+        queue.add(task);
+        LOGGER.log(Level.FINEST, "Added a task");
     }
 
     @Override
