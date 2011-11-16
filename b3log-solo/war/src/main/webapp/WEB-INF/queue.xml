@@ -20,7 +20,7 @@
     Description: Task queue configurations on GAE. See
                  https://code.google.com/appengine/docs/java/config/queue.html
                  for more details.
-    Version: 1.0.1.0, Nov 15, 2011
+    Version: 1.0.1.1, Nov 16, 2011
     Author: Liang Ding
 -->
 <queue-entries>
@@ -28,5 +28,8 @@
         <name>request-stat-queue</name>
         <rate>20/m</rate>
         <bucket-size>60</bucket-size>
+        <retry-parameters>
+            <task-retry-limit>7</task-retry-limit>
+        </retry-parameters>
     </queue>
 </queue-entries>
