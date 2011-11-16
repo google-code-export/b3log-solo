@@ -1,14 +1,14 @@
 #summary 版本更新
-
 === ver 0.4.0 ===
- # jQuery 升级为 1.6.2，开发环境采用本地 js。修改 footer.ftl 如下：
+ # jQuery 升级为 1.7，开发环境采用本地 js。修改 footer.ftl 如下：
 {{{
 <#if "" == miniPostfix>
-<script type="text/javascript" src="/js/lib/jquery/jquery-1.6.4.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/lib/jquery/jquery-1.7.min.js" charset="utf-8"></script>
 <#else>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js" charset="utf-8"></script>
 </#if>
 }}}
+ # 删除 article.ftl 和 page.ftl head 中的 <link .../>; 删除 macro-comment.ftl 中引入的 JS 文件：shAutoloader.js 和 shCore.js
 
 === ver 0.3.5 ===
  # 删除 top-nav.ftl 文件
