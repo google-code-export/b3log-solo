@@ -3,7 +3,7 @@
  * skin neoease min style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Oct 3, 2011
+ * @version 1.0.0.8, Nov 16, 2011
 */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6{margin:0;padding:0;}
 body{background-color:#F9F9F9;color:#555;font-family:"Lucida Grande",Verdana,'\u5fae\u8f6f\u96c5\u9ed1','Microsoft YaHei';font-size:12px;}
@@ -148,6 +148,7 @@ textarea, input{outline:none;}
 #tagsSide .tags4{font-size:18px;}
 #tagsSide .tags5{font-size:20px;}
 .main>h2{margin-top:16px;}
-.error{float:left;margin:100px 0 0 100px;}
-.error a{background-color:#9CD941;border-color:#D0F29D #398A38 #398A38 #D0F29D;border-style:solid;border-width:1px;color:#555;float:left;margin:20px 0 0 40px;padding:10px 15px;}
+.error {background-image: url("/skins/neoease/images/404.png");float: left;height: 536px;margin: 50px 80px;position: relative; width: 363px;}
+.error h2 {left: -68px;position: absolute;top: -20px;}
+.error a {background-color: #9CD941;border: 265px none;bottom: 12px;color: #555555;float: left;padding: 10px 15px;position: absolute;right: -106px;}
 .error a:hover{background-color:#ADEb51;}
