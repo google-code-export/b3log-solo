@@ -3,7 +3,7 @@
  * skin neoease style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Oct 25, 2011
+ * @version 1.0.0.9, Nov 16, 2011
 */
 /* start base */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6 {
@@ -815,19 +815,29 @@ textarea, input {
 }
 
 .error {
+    background-image: url("/skins/neoease/images/404.png");
     float: left;
-    margin: 100px 0 0 100px;
+    height: 536px;
+    margin: 50px 80px;
+    position: relative;
+    width: 363px;
+}
+
+.error h2 {
+    left: -68px;
+    position: absolute;
+    top: -20px;
 }
 
 .error a {
     background-color: #9CD941;
-    border-color: #D0F29D #398A38 #398A38 #D0F29D;
-    border-style: solid;
-    border-width: 1px;
-    color: #555;
+    border: 265px none;
+    bottom: 12px;
+    color: #555555;
     float: left;
-    margin: 20px 0 0 40px;
     padding: 10px 15px;
+    position: absolute;
+    right: -106px;
 }
 
 .error a:hover {
