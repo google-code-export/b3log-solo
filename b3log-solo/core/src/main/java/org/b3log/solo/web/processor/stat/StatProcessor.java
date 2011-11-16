@@ -15,10 +15,13 @@
  */
 package org.b3log.solo.web.processor.stat;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.util.Stopwatchs;
 
 /**
@@ -51,10 +54,14 @@ public final class StatProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = "/console/stat/request")
+    @RequestProcessing(value = "/console/stat/request",
+                       method = HTTPRequestMethod.POST)
     public void incRequest(final HTTPRequestContext context) {
-        Stopwatchs.start("Inc Articles");
+        Stopwatchs.start("Inc Request Stat.");
 
+        context.setRenderer(new DoNothingRenderer());
+
+        LOGGER.log(Level.FINER, "Inc Request Stat.");
 
         Stopwatchs.end();
     }
