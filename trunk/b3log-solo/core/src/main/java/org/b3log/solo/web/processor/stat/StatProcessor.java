@@ -48,19 +48,23 @@ public final class StatProcessor {
      */
     private static final Logger LOGGER =
             Logger.getLogger(StatProcessor.class.getName());
+    /**
+     * Request statistics URI.
+     */
+    public static final String STAT_REQUEST_URI = "/console/stat/request";
 
     /**
      * Increments request counter.
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = "/console/stat/request",
+    @RequestProcessing(value = STAT_REQUEST_URI,
                        method = HTTPRequestMethod.POST)
-    public void incRequest(final HTTPRequestContext context) {
+    public void statRequest(final HTTPRequestContext context) {
         Stopwatchs.start("Inc Request Stat.");
 
         context.setRenderer(new DoNothingRenderer());
-
+        
         LOGGER.log(Level.FINER, "Inc Request Stat.");
 
         Stopwatchs.end();
