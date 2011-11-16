@@ -1,4 +1,4 @@
-/*
+    /*
  * Copyright (c) 2009, 2010, 2011, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,6 @@ import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Preference;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.taskqueue.Queue;
-import org.b3log.latke.taskqueue.Task;
 import org.b3log.latke.taskqueue.TaskQueueService;
 import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
 import org.b3log.latke.util.Stopwatchs;
@@ -161,11 +159,11 @@ public final class SoloServletListener extends AbstractServletListener {
         }
 
         // For request statistics
-        final Queue queue = taskQueueService.getQueue("request-stat-queue");
-        final Task task = new Task();
-        task.setURL("/console/stat/request");
-        queue.add(task);
-        LOGGER.log(Level.FINEST, "Added a task");
+//        final Queue queue = taskQueueService.getQueue("request-stat-queue");
+//        final Task task = new Task();
+//        task.setURL("/console/stat/request");
+//        queue.add(task);
+//        LOGGER.log(Level.FINEST, "Added a task");
     }
 
     @Override
