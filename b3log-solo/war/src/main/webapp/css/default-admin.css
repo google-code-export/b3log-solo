@@ -12,6 +12,7 @@
 html, body {
     height: 100%;
     min-width: 1024px;
+    background-color: #FAFAFA;
 }
 a:link {
     color: #21759B;
@@ -50,7 +51,7 @@ a:hover {
     position: relative;
 }
 #tabsPanel {
-    margin: 24px 0 0 151px;
+    margin: 30px 0 0 162px;
     padding: 0 12px;
 }
 
@@ -71,7 +72,7 @@ a:hover {
     z-index: 2;
 }
 #tipMsg {
-    top: 30px;
+    top: 33px;
 }
 .footer {
     bottom: 12px;
@@ -93,7 +94,7 @@ a:hover {
 
 #top a, #top span span {
     float: left;
-    line-height: 14px;
+    line-height: 18px;
     margin: 6px 0;
     padding: 0 6px;
     text-decoration: none;
@@ -110,7 +111,7 @@ a:hover {
 #top a:hover, #top a.hover {
     border-radius: 0 13px 13px 0;
     margin: 0px;
-    line-height: 26px;
+    line-height: 30px;
     background-color: #4C4C4C;
     border-left-color: #707070;
 }
@@ -131,13 +132,14 @@ a:hover {
 #tabs {
     background-color: #ECECEC;
     border-radius: 0 5px 5px 0;
-    border-right: 1px solid #CCCCCC;
+    border-right: 1px solid #CCC;
+    border-top: 1px solid #DDD;
     bottom: 0;
     box-shadow: 6px 0 6px #ECECEC;
     min-height: 468px;
-    padding: 10px 0;
+    padding: 15px 0;
     position: absolute;
-    top: 48px;
+    top: 58px;
     width: 145px;
 }
 
@@ -297,8 +299,9 @@ a:hover {
     width: 280px;
 }
 .skinItem {
+    background-color: #FAFAFA;
     border-radius: 3px;
-    box-shadow: 0 0 2px #333333;
+    box-shadow: 1px 1px 3px #333333;
     line-height: 16px;
     margin: 24px 12px;
     padding: 10px 5px;
@@ -512,7 +515,6 @@ a:hover {
 
 .table-main td {
     border-bottom: 1px solid #D0D0D0;
-    border-right: 1px solid #FFF;
     color: #333;
     padding: 3px 0;
 }
@@ -521,14 +523,8 @@ a:hover {
     border-bottom: 0px;
 }
 .table-heiglight td, .table-lineHover td {
-    background-color: #F5F5F5;
-    border-right-color: #F5F5F5;
-}
-.table-oddRow {
-    background-color: #FFF;
-}
-.table-evenRow {
-    background-color: #FFF;
+    background-color: #F2F2F2;
+    border-right-color: #F2F2F2;
 }
 .table-expendRow td {
     padding: 0 0 5px 36px;
