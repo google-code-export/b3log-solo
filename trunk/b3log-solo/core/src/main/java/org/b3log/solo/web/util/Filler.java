@@ -166,7 +166,8 @@ public final class Filler {
                     setPageCount(pageCount).
                     addFilter(Article.ARTICLE_IS_PUBLISHED,
                               FilterOperator.EQUAL, PUBLISHED).
-                    addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+                    addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).
+                    index(Article.ARTICLE_PERMALINK);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 query.addSort(Article.ARTICLE_UPDATE_DATE,
