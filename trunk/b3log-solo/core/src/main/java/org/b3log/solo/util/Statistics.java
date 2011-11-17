@@ -17,6 +17,7 @@ package org.b3log.solo.util;
 
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.ArticleRepository;
@@ -50,10 +51,6 @@ public final class Statistics {
      */
     private ArticleRepository articleRepository =
             ArticleRepositoryImpl.getInstance();
-    /**
-     * Statistic cache name.
-     */
-    public static final String STATISTIC_CACHE_NAME = "statisticCache";
 
     /**
      * Get blog comment count.
@@ -190,7 +187,8 @@ public final class Statistics {
                 statistic.getLong(Statistic.STATISTIC_BLOG_VIEW_COUNT);
         ++blogViewCnt;
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
-        statisticRepository.update(Statistic.STATISTIC, statistic);
+        
+        statisticRepository.getCache().putAsync(Statistic.STATISTIC, statistic);
     }
 
     /**
@@ -208,6 +206,8 @@ public final class Statistics {
      */
     public void incArticleViewCount(final String articleId)
             throws JSONException, RepositoryException {
+        Stopwatchs.start("Inc Article View Count");
+        
         final JSONObject article = articleRepository.get(articleId);
         if (null == article) {
             return;
@@ -217,8 +217,10 @@ public final class Statistics {
                 article.getInt(Article.ARTICLE_VIEW_COUNT) + 1;
         article.put(Article.ARTICLE_VIEW_COUNT, viewCnt);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-
+        
         articleRepository.update(articleId, article);
+        
+        Stopwatchs.end();
     }
 
     /**

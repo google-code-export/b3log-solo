@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.repository.Repository;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
@@ -35,7 +34,7 @@ import org.b3log.solo.web.util.TopBars;
  * renderer.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Sep 18, 2011
+ * @version 1.0.0.4, Nov 17, 2011
  * @since 0.3.1
  */
 public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
@@ -109,16 +108,9 @@ public final class FrontFreeMarkerRenderer extends CacheFreeMarkerRenderer {
             throws Exception {
         super.afterRender(context);
 
-        final Transaction transaction = statisticRepository.beginTransaction();
-        transaction.clearQueryCache(false);
         try {
             statistics.incBlogViewCount();
-            transaction.commit();
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
             LOGGER.log(Level.WARNING, "After render failed", e);
         }
     }
