@@ -21,6 +21,6 @@
  # 用 SVN 把项目迁出 http://b3log-solo.googlecode.com/svn/trunk/b3log-solo
  # Win+R->cmd 进入命令行，进入项目所在目录（e.g: D: 回车；cd foldername 回车  etc...），你如果成功进入会发现 pom.xml，运行命令 mvn eclipse:eclipse，静静等待，Build 成功即可
  # 在 Eclipse 中右键项目，选择刷新（refresh），可以很明显的看到目录结构的变化。这是因为上一步生成了 eclipse 的 .project、.classpath 配置文件，现在可以识别 maven 项目了
- # 更新 GAE 相关资源。右键项目，run as maven build... --> Goals: gae:unpack
+ # 更新 GAE 相关资源。右键 solo-gae 项目，run as maven build... --> Goals: gae:unpack
  # 运行项目。右键 solo-gae 项目，run as maven build... --> Goals: gae:run
  # 部署项目，run as maven build... --> Goals: gae:deploy
