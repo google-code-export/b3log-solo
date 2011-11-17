@@ -19,26 +19,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.util.Stopwatchs;
+import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+import org.json.JSONObject;
 
 /**
  * Statistics processor.
  * 
  * <p>
- * Statistics of B3log Solo runtime: 
+ * Statistics of B3log Solo: 
  * 
  *   <ul>
- *     <li>{@link #incRequest(org.b3log.latke.servlet.HTTPRequestContext) Increments request counter}</li>
+ *     <li>{@link #statRequest(org.b3log.latke.servlet.HTTPRequestContext) Increments request counting}</li>
+ *     <li>{@link #viewCounter(org.b3log.latke.servlet.HTTPRequestContext) Blog/Article view counting}</li>
  *     <li>TODO: 88250, stat proc</li>
  *   </ul>
  * <p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.8, Nov 11, 2011
- * @since 0.3.1
+ * @version 1.0.0.9, Nov 17, 2011
+ * @since 0.4.0
  */
 @RequestProcessor
 public final class StatProcessor {
@@ -52,6 +59,11 @@ public final class StatProcessor {
      * Request statistics URI.
      */
     public static final String STAT_REQUEST_URI = "/console/stat/request";
+    /**
+     * Statistic repository.
+     */
+    private StatisticRepository statisticRepository =
+            StatisticRepositoryImpl.getInstance();
 
     /**
      * Increments request counter.
@@ -64,9 +76,40 @@ public final class StatProcessor {
         Stopwatchs.start("Inc Request Stat.");
 
         context.setRenderer(new DoNothingRenderer());
-        
+
         LOGGER.log(Level.FINER, "Inc Request Stat.");
 
         Stopwatchs.end();
+    }
+
+    /**
+     * Increments request counter.
+     * 
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/console/stat/viewcnt",
+                       method = HTTPRequestMethod.POST)
+    public void viewCounter(final HTTPRequestContext context) {
+        LOGGER.log(Level.INFO, "Sync statistic from memcache to repository");
+
+        context.setRenderer(new DoNothingRenderer());
+        final JSONObject statistic =
+                (JSONObject) statisticRepository.getCache().
+                get(Statistic.STATISTIC);
+        if (null == statistic) {
+            LOGGER.log(Level.INFO, "Not found statistic in memcache");
+        }
+
+        final Transaction transaction = statisticRepository.beginTransaction();
+        transaction.clearQueryCache(false);
+        try {
+            statisticRepository.update(Statistic.STATISTIC, statistic);
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            LOGGER.log(Level.SEVERE, "Updates statistic failed", e);
+        }
     }
 }
