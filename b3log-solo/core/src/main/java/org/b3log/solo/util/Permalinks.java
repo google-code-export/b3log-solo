@@ -186,6 +186,10 @@ public final class Permalinks {
             return true;
         }
 
+        if ("/".equals(permalink)) {
+            return true;
+        }
+
         if (Strings.isNumeric(permalink.substring(1))) {
             // See issue 120 (http://code.google.com/p/b3log-solo/issues/detail?id=120#c4)
             // for more details
