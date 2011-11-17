@@ -24,8 +24,6 @@ import org.b3log.solo.util.Tags;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
-import org.b3log.solo.repository.TagArticleRepository;
-import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import java.net.URLDecoder;
 import java.util.Collections;
 import org.b3log.latke.action.util.Paginator;
@@ -67,7 +65,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.5, Nov 11, 2011
+ * @version 1.1.0.6, Nov 17, 2011
  * @since 0.3.1
  */
 @RequestProcessor
@@ -103,11 +101,6 @@ public final class TagProcessor {
      * Article utilities.
      */
     private Articles articleUtils = Articles.getInstance();
-    /**
-     * Tag-Article repository.
-     */
-    private TagArticleRepository tagArticleRepository =
-            TagArticleRepositoryImpl.getInstance();
     /**
      * Article query service.
      */
@@ -147,6 +140,7 @@ public final class TagProcessor {
             if (!requestURI.endsWith("/")) {
                 requestURI += "/";
             }
+
             String tagTitle = getTagTitle(requestURI);
             final int currentPageNum = getCurrentPageNum(requestURI, tagTitle);
             if (-1 == currentPageNum) {
@@ -164,8 +158,8 @@ public final class TagProcessor {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
-            final JSONObject tag = result.getJSONObject(Tag.TAG);
 
+            final JSONObject tag = result.getJSONObject(Tag.TAG);
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceQueryService.getPreference();

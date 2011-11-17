@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+import java.util.Set;
 import org.json.JSONException;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.model.Tag;
@@ -29,6 +30,7 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.model.Pagination;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -328,16 +330,16 @@ public final class ArticleQueryService {
                                              final int pageSize)
             throws ServiceException {
         try {
-            final JSONObject result = tagArticleRepository.getByTagId(tagId,
-                                                                      currentPageNum,
-                                                                      pageSize);
+            JSONObject result = tagArticleRepository.getByTagId(tagId,
+                                                                currentPageNum,
+                                                                pageSize);
             final JSONArray tagArticleRelations =
                     result.getJSONArray(Keys.RESULTS);
             if (0 == tagArticleRelations.length()) {
                 return Collections.emptyList();
             }
 
-            final List<JSONObject> ret = new ArrayList<JSONObject>();
+            final Set<String> articleIds = new HashSet<String>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation =
                         tagArticleRelations.getJSONObject(i);
@@ -345,12 +347,19 @@ public final class ArticleQueryService {
                         tagArticleRelation.getString(Article.ARTICLE + "_"
                                                      + Keys.OBJECT_ID);
 
-                final JSONObject article = articleRepository.get(articleId);
-                if (null == article) {
-                    LOGGER.log(Level.WARNING, "Not found article[id={0}]",
-                               articleId);
-                    continue;
-                }
+                articleIds.add(articleId);
+            }
+
+            final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+            final Query query = new Query().addFilter(Keys.OBJECT_ID,
+                                                      FilterOperator.IN,
+                                                      articleIds).
+                    setPageCount(1).index(Article.ARTICLE_PERMALINK);
+            result = articleRepository.get(query);
+            final JSONArray articles = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.getJSONObject(i);
 
                 if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     // Skips the unpublished article
