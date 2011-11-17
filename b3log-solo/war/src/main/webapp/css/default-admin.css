@@ -3,7 +3,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.4, Nov 15, 2011
+ * @version 1.0.2.5, Nov 16, 2011
 */
 /* start resset */
 *, input, textarea {
@@ -68,7 +68,7 @@ a:hover {
     padding: 2px 0;
     position: fixed;
     text-align: center;
-    top: 1px;
+    top: 3px;
     z-index: 2;
 }
 #tipMsg {
@@ -331,10 +331,20 @@ a:hover {
 #commentTable .table-hasExpend {
     line-height: 24px;
 }
+
 .small-head {
-    height: 24px;
-    width: 24px;
-    margin-right: 3px;
+    margin: 3px 12px 12px 0;
+    text-align: center;
+    font-size: 10px;
+}
+
+.small-head img {
+    height: 38px;
+    width: 38px;
+}
+
+#commentTable .table-main td  {
+    vertical-align: top;
 }
 /* end common list */
 
@@ -532,17 +542,17 @@ a:hover {
 .table-expendRow td  span {
     margin-left: 60px;
 }
-.table-expendRow td a {
-    background-color: #999999;
+.table-expendRow td a, .table-main a.action  {
+    background-color: #999;
     border-radius: 3px;
-    color: #FFFFFF;
+    color: #FFF;
     font-size: 12px;
     margin-right: 5px;
     padding: 1px 6px;
     text-decoration: none;
 }
-.table-expendRow td a:hover {
-    background-color: #BBBBBB;
+.table-expendRow td a:hover, .table-main a.action:hover {
+    background-color: #BBB;
 }
 .table-center {
     margin: 0 auto;

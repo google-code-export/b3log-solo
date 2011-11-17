@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Oct 28, 2011
+ * @version 1.0.0.7, Nov 17, 2011
  */
 
 /* comment-list 相关操作 */
@@ -33,32 +33,17 @@ admin.commentList = {
      * 初始化 table, pagination, comments dialog 
      */
     init: function (page) {
-        this.tablePagination.buildTable([{
-            text: Label.commentContentLabel,
-            index: "content",
-            minWidth: 300,
-            style: "padding-left: 12px;"
-        }, {
-            text: Label.titleLabel,
+        this.tablePagination.buildTable([ {
+            text: "",
             index: "title",
             width: 300,
             style: "padding-left: 12px;"
         }, {
-            text: Label.authorLabel,
-            index: "userName",
-            width: 120,
+            text: Label.commentContentLabel,
+            index: "content",
+            minWidth: 300,
             style: "padding-left: 12px;"
-        }, {
-            text: Label.commentEmailLabel,
-            index: "userEmail",
-            width: 150,
-            style: "padding-left: 12px;"
-        }, {
-            text: Label.createDateLabel,
-            index: "date",
-            width: 150,
-            style: "padding-left: 12px;"
-        }]);
+        }], true);
         this.tablePagination.initPagination();
         this.getList(page);
     },
@@ -89,30 +74,34 @@ admin.commentList = {
                     
                     commentsData[i].content = Util.replaceEmString(comments[i].commentContent);
                             
-                    commentsData[i].title = "<a href='" + comments[i].commentSharpURL + 
+                    commentsData[i].title = "<div style='margin:9px 0'><a href='" + comments[i].commentSharpURL + 
                     "' target='_blank'>" + comments[i].commentTitle +
-                    "</a>";
-                        
-                    commentsData[i].userName  = "<img class='small-head' src='" + comments[i].commentThumbnailURL + "'/>";
+                    "</a></div>";
+                
+                    commentsData[i].title += "<div class='left small-head'><img src='" + comments[i].commentThumbnailURL + "'/><br/>";
                     if ("http://" === comments[i].commentURL) {
-                        commentsData[i].userName += comments[i].commentName;
+                        commentsData[i].title += comments[i].commentName;
                     } else {
-                        commentsData[i].userName = "<a href='" + comments[i].commentURL +
-                        "' target='_blank' class='no-underline'>" + commentsData[i].userName + comments[i].commentName + 
+                        commentsData[i].title += "<a href='" + comments[i].commentURL +
+                        "' target='_blank' class='no-underline'>" + comments[i].commentName + 
                         "</a>";
                     }
+                    
+                    commentsData[i].title += "</div><div class='left'>";
                             
-                    commentsData[i].userEmail = "<a href='mailto:" + comments[i].commentEmail +
-                    "'>" + comments[i].commentEmail + "</a>";
+                    commentsData[i].title += Label.commentEmailLabel + ": <a href='mailto:" + comments[i].commentEmail +
+                    "'>" + comments[i].commentEmail + "</a><br/>";
                         
-                    commentsData[i].date = $.bowknot.getDate(comments[i].commentTime, 1);
+                    commentsData[i].title += Label.createDateLabel + ": " +$.bowknot.getDate(comments[i].commentTime, 1);
                             
                     var type = "Article"
                     if (comments[i].type === "pageComment") {
                         type = "Page"
                     }
-                    commentsData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.commentList.del('" +
+                    commentsData[i].title += "<br/><a class='action' href='javascript:void(0)' onclick=\"admin.commentList.del('" +
                     comments[i].oId + "', '" + type + "')\">" + Label.removeLabel + "</a>";
+                
+                    commentsData[i].title += "</div>";
                 }
                 
                 that.tablePagination.updateTablePagination(commentsData, pageNum, result.pagination);
