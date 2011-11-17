@@ -35,7 +35,6 @@ public interface ArchiveDateArticleRepository extends Repository {
      * then {@code 0}
      * @param pageSize the specified page size(count of a page contains objects),
      * MUST greater then {@code 0}
-     * @param pageCount the specified page count
      * @return for example
      * <pre>
      * {
@@ -53,8 +52,7 @@ public interface ArchiveDateArticleRepository extends Repository {
      */
     JSONObject getByArchiveDateId(final String archiveDateId,
                                   final int currentPageNum,
-                                  final int pageSize,
-                                  final int pageCount)
+                                  final int pageSize)
             throws RepositoryException;
 
     /**

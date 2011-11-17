@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.solo.repository.ArchiveDateArticleRepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import java.util.Set;
 import org.json.JSONException;
 import org.b3log.solo.model.Sign;
@@ -60,7 +62,7 @@ import static org.b3log.solo.model.Article.*;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Nov 6, 2011
+ * @version 1.0.0.5, Nov 17, 2011
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -89,6 +91,11 @@ public final class ArticleQueryService {
      */
     private TagArticleRepository tagArticleRepository =
             TagArticleRepositoryImpl.getInstance();
+    /**
+     * Archive date-Article repository.
+     */
+    private ArchiveDateArticleRepository archiveDateArticleRepository =
+            ArchiveDateArticleRepositoryImpl.getInstance();
     /**
      * Statistic utilities.
      */
@@ -377,6 +384,71 @@ public final class ArticleQueryService {
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Gets articles by tag[id=" + tagId
                                      + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets a list of published articles with the specified archive date id, 
+     * current page number and page size.
+     * 
+     * @param archiveDateId the specified archive date id
+     * @param currentPageNum the specified current page number
+     * @param pageSize the specified page size
+     * @return a list of articles, returns an empty list if not found
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getArticlesByArchiveDate(
+            final String archiveDateId,
+            final int currentPageNum,
+            final int pageSize) throws ServiceException {
+        try {
+            JSONObject result =
+                    archiveDateArticleRepository.getByArchiveDateId(
+                    archiveDateId, currentPageNum, pageSize);
+
+            final JSONArray relations = result.getJSONArray(Keys.RESULTS);
+            if (0 == relations.length()) {
+                return Collections.emptyList();
+            }
+
+            final Set<String> articleIds = new HashSet<String>();
+            for (int i = 0; i < relations.length(); i++) {
+                final JSONObject relation = relations.getJSONObject(i);
+                final String articleId =
+                        relation.getString(Article.ARTICLE + "_"
+                                           + Keys.OBJECT_ID);
+
+                articleIds.add(articleId);
+            }
+
+            final List<JSONObject> ret = new ArrayList<JSONObject>();
+
+            final Query query = new Query().addFilter(Keys.OBJECT_ID,
+                                                      FilterOperator.IN,
+                                                      articleIds).
+                    setPageCount(1).index(Article.ARTICLE_PERMALINK);
+            result = articleRepository.get(query);
+            final JSONArray articles = result.getJSONArray(Keys.RESULTS);
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.getJSONObject(i);
+
+                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    // Skips the unpublished article
+                    continue;
+                }
+
+                ret.add(article);
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets articles by archive date[id="
+                                     + archiveDateId + "] failed", e);
+            throw new ServiceException(e);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Gets articles by archive date[id="
+                                     + archiveDateId + "] failed", e);
             throw new ServiceException(e);
         }
     }

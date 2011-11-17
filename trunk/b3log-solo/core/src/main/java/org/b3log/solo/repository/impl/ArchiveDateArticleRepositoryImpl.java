@@ -41,8 +41,7 @@ public final class ArchiveDateArticleRepositoryImpl
     @Override
     public JSONObject getByArchiveDateId(final String archiveDateId,
                                          final int currentPageNum,
-                                         final int pageSize,
-                                         final int pageCount)
+                                         final int pageSize)
             throws RepositoryException {
         final Query query = new Query().
                 addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
@@ -51,7 +50,7 @@ public final class ArchiveDateArticleRepositoryImpl
                         SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).
                 setPageSize(pageSize).
-                setPageCount(pageCount);
+                setPageCount(1);
 
         return get(query);
     }

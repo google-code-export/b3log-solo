@@ -27,13 +27,9 @@ import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.web.util.Requests;
 import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.repository.ArchiveDateArticleRepository;
-import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.web.processor.renderer.FrontFreeMarkerRenderer;
-import java.util.ArrayList;
 import java.util.Collections;
 import org.b3log.solo.util.comparator.Comparators;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -123,11 +119,6 @@ public final class ArticleProcessor {
      * Skin utilities.
      */
     private Skins skins = Skins.getInstance();
-    /**
-     * Archive date-Article repository.
-     */
-    private ArchiveDateArticleRepository archiveDateArticleRepository =
-            ArchiveDateArticleRepositoryImpl.getInstance();
     /**
      * Archive date repository.
      */
@@ -433,37 +424,17 @@ public final class ArticleProcessor {
             final int pageCount = (int) Math.ceil((double) articleCount
                                                   / (double) pageSize);
 
-            final JSONObject result =
-                    archiveDateArticleRepository.getByArchiveDateId(
-                    archiveDateId, currentPageNum, pageSize, articleCount);
-
-            @SuppressWarnings("unchecked")
-            final JSONArray archiveDateArticleRelations = result.getJSONArray(
-                    Keys.RESULTS);
-            if (0 == archiveDateArticleRelations.length()) {
+            final List<JSONObject> articles =
+                    articleQueryService.getArticlesByArchiveDate(archiveDateId,
+                                                                 currentPageNum,
+                                                                 pageSize);
+            if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     return;
                 } catch (final IOException ex) {
                     LOGGER.severe(ex.getMessage());
                 }
-            }
-
-            final List<JSONObject> articles = new ArrayList<JSONObject>();
-            for (int i = 0; i < archiveDateArticleRelations.length(); i++) {
-                final JSONObject archiveDateArticleRelation =
-                        archiveDateArticleRelations.getJSONObject(i);
-                final String articleId =
-                        archiveDateArticleRelation.getString(Article.ARTICLE
-                                                             + "_"
-                                                             + Keys.OBJECT_ID);
-                final JSONObject article =
-                        articleQueryService.getArticleById(articleId);
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) { // Skips the unpublished article
-                    continue;
-                }
-
-                articles.add(article);
             }
 
             final boolean hasMultipleUsers =
