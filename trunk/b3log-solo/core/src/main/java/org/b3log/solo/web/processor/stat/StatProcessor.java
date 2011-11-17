@@ -89,6 +89,7 @@ public final class StatProcessor {
      */
     @RequestProcessing(value = "/console/stat/viewcnt",
                        method = HTTPRequestMethod.POST)
+    // TODO: 88250, callback this method if memcache be cleared
     public void viewCounter(final HTTPRequestContext context) {
         LOGGER.log(Level.INFO, "Sync statistic from memcache to repository");
 
