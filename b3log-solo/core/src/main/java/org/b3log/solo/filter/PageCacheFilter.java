@@ -172,8 +172,9 @@ public final class PageCacheFilter implements Filter {
                         AbstractCacheablePageAction.CACHED_OID);
                 statistics.incArticleViewCount(articleId);
             }
-            statistics.incBlogViewCount();
             transaction.commit();
+
+            statistics.incBlogViewCount();
 
             final long endimeMillis = System.currentTimeMillis();
             final String dateString = DateFormatUtils.format(
